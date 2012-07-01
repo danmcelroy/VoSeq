@@ -56,6 +56,8 @@ try:
 
 	filename = sys.argv[1];
 	for item in open(filename, "r"):
+		item = item.replace('"', '');
+		item = item.replace("'", "");
 		item = item.split(",");
 		cur.execute("select code, geneCode from sequences where code='" + item[0].strip() + "' and geneCode='" + item[1].strip() + "'")
 		data = cur.fetchone()
@@ -63,14 +65,14 @@ try:
 			print data
 			file_out1.write("It IS in database: " + data[0] + ", " + data[1] + "\n");
 		else:
-			file_out2.write("\nNot in db: " + item[0] + ", " + item[1]);
+			file_out2.write("Not in db: " + item[0] + ", " + item[1]);
 
 		# check for vouchers
 		cur.execute("select code from vouchers where code='" + item[0].strip() + "'")
 		data = cur.fetchone()
 		if data == None:
 			print "Voucher not in database" + item[0];
-			file_out3.write("\nNot in db: " + item[0] );
+			file_out3.write("Not in db: " + item[0] );
 		else:
 			file_out4.write("It is in db: " + item[0] );
 
