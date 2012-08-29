@@ -674,7 +674,7 @@ elseif ($_POST['submitNew']) {
 			echo "<li>$errorList[$x]";
 			}
 		echo '</ul>
-				Don\'t forget to fill up at least two fields: code and genus';
+				You need to fill up at least two fields: code and genus!';
 		echo "</td>";
 		echo "<td class=\"sidebar\" valign=\"top\">";
 			admin_make_sidebar();
@@ -1046,6 +1046,13 @@ elseif ($_POST['submitNoNew'])
 					    <br />Please add it accordingly: YYYY-MM-DD";
 		}
 	}
+	if( $extraction == "" ) {
+		unset($extraction);
+	}
+	if( $extractionTube == "" ) {
+		unset($extractionTube);
+	}
+
 
 	$publishedIn       = $_POST['publishedIn'];
 	$notes             = $_POST['notes'];
@@ -1192,8 +1199,8 @@ elseif ($_POST['submitNoNew'])
 		$sex = mysql_real_escape_string($sex);
 		$hostorg = mysql_real_escape_string($hostorg);
 		$voucherCode = mysql_real_escape_string($voucherCode);
-		$extraction = mysql_real_escape_string($extraction);
-		$extractionTube = mysql_real_escape_string($extractionTube);
+		if (isset($extraction)){$extraction = mysql_real_escape_string($extraction);}
+		if (isset($extractionTube)){$extractionTube = mysql_real_escape_string($extractionTube);}
 		if (isset($dateExtraction)){$dateExtraction = mysql_real_escape_string($dateExtraction);}
 		$publishedIn = mysql_real_escape_string($publishedIn);
 		$notes = mysql_real_escape_string($notes);
@@ -1219,20 +1226,44 @@ elseif ($_POST['submitNoNew'])
 			$query .= " typeSpecies='$typeSpecies', ";
 		}
 		if (isset($dateExtraction)) {$query .= "dateExtraction='$dateExtraction', ";}
-		$query .= "altitude='$altitude', collector='$collector', dateCollection='$dateCollection', voucherLocality='$voucherLocality', voucher='$voucher', determinedBy='$determinedBy', sex='$sex', hostorg='$hostorg', voucherCode='$voucherCode', extraction='$extraction', extractionTube='$extractionTube',  publishedIn='$publishedIn', notes='$notes', timestamp=NOW(), edits='$editsed', latesteditor='$latesteditor' WHERE id='$id1'";
+		$query .= "altitude='$altitude', collector='$collector', dateCollection='$dateCollection', voucherLocality='$voucherLocality', voucher='$voucher', determinedBy='$determinedBy', sex='$sex', hostorg='$hostorg', voucherCode='$voucherCode', ";
+		if (isset($extraction)) {$query .= "extraction='$extraction', ";}
+		if (isset($extractionTube)) {$query .= "extractionTube='$extractionTube', ";}
+		$query .= "publishedIn='$publishedIn', notes='$notes', timestamp=NOW(), edits='$editsed', latesteditor='$latesteditor' WHERE id='$id1'";
 
 		$result = mysql_query($query) or die ("Error in query: $query. " . mysql_error());
 
 
 		// update sequences table and primer tables
 		if( $old_code != $code1 ) {
-			$query = "UPDATE sequences set code='$code1' WHERE code='$old_code'";
+			$query = "UPDATE ". $p_ . "sequences set code='$code1' WHERE code='$old_code'";
 			$result = mysql_query($query) or die ("Error in query: $query. " . mysql_error());
 
-			$query = "UPDATE primers set code='$code1' WHERE code='$old_code'";
+			$query = "UPDATE ". $p_ . "primers set code='$code1' WHERE code='$old_code'";
 			$result = mysql_query($query) or die ("Error in query: $query. " . mysql_error());
 		}
-		
+		// update taxon sets with new code
+			$query_ts = "SELECT taxonset_list, taxonset_id FROM " . $p_ . "taxonsets ORDER BY taxonset_id";
+			$result_ts = mysql_query($query_ts) or die("Error in query: $query_ts. " . mysql_error());
+			
+			// if records present
+			if (mysql_num_rows($result_ts) > 0) {
+				// iterate through result set
+				while ($row = mysql_fetch_object($result_ts)) { 
+					if (strpos($row->taxonset_list, $old_code) !== False) {
+						$tsid = $row->taxonset_id;
+						$ts1 = explode(",",$row->taxonset_list);
+						for($i = 0; $i < count($ts1); $i++) {
+							//Check if the value at the 'ith' element in the array is the one you want to change
+							//if it is, set the ith element to 0
+							if ($ts1[$i] == $old_code) { $ts1[$i] = $code1;}
+						}
+						$ts1 = implode(",", $ts1);
+						$queryts1 = "UPDATE ". $p_ . "taxonsets set taxonset_list='$ts1' WHERE taxonset_id='$tsid'";
+						$resultts1 = mysql_query($queryts1) or die ("Error in query: $queryts1. " . mysql_error());
+					}
+				}
+			}
 		// get title
 		$title = "$config_sitename - Record " . $code1 . " updated";
 				
