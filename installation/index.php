@@ -112,20 +112,34 @@ function check() {
 						<td colspan="2">
 							<br />
 							<label class="config-label"><b>Enter the absolute folder path:</b></label>
+						
 							<div class="mw-help-field-container">
 								<span class="mw-help-field-hint">help</span>
 								<span class="mw-help-field-data">
 									<p>Enter the absolute URL for your site. Leave it if used as stand-alone system. For example: 
+										<b>http://127.0.0.1/mybutterflies</b> OR <br />
 										<b>http://localhost/mybutterflies</b>
 									</p>
 								</span>
 							</div>
 							<br />
-							<input class="inputbox" type="text" name="url" value="<?php 
-																					$path_folder = trim($_SERVER['HTTP_REFERER']);
-																					$path_folder = preg_replace('/\/?\w+\.php\/?$/i', '', $path_folder);
-																					echo preg_replace('/\/?installation\/?$/i', '', $path_folder);
-																				   ?>" size="40" />
+							<?php
+								if( strtoupper(PHP_OS) === 'DARWIN' ) {
+									echo '<input class="inputbox" type="text" name="url" value="'; 
+									$path_folder = trim($_SERVER['HTTP_REFERER']);
+									$path_folder = preg_replace('/\/?\w+\.php\/?$/i', '', $path_folder);
+									$path_folder = str_replace('localhost', '127.0.0.1', $path_folder);
+									echo preg_replace('/\/?installation\/?$/i', '', $path_folder);
+									echo '" size="40" />';
+								}
+								else {
+									echo '<input class="inputbox" type="text" name="url" value="'; 
+									$path_folder = trim($_SERVER['HTTP_REFERER']);
+									$path_folder = preg_replace('/\/?\w+\.php\/?$/i', '', $path_folder);
+									echo preg_replace('/\/?installation\/?$/i', '', $path_folder);
+									echo '" size="40" />';
+							   }
+						   ?>
 						</td>
 					</tr>
 					<tr>
