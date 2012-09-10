@@ -40,7 +40,7 @@ $whichDojo[] = 'Tooltip';
 $title = $config_sitename;
 
 // print html headers
-include_once'../includes/header.php';
+include_once '../includes/header.php';
 
 // print navegation bar
 admin_nav();
@@ -98,7 +98,7 @@ else { ?>
 //output input field
 ?>
 <br />
-		<form action="process_upload_sequences.php" method="post">
+		<form action="process_upload_sequences.php" method="post" accept-charset="utf-8">
 		<table border="0" width="960px" cellpadding="5px"> <!-- super table -->
 		<td>
 			<input type="submit" name="submit" value="Process data">
