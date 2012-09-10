@@ -1,6 +1,9 @@
 VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 Changelog:
+*Version 1.2.6
+		- [Tobias] Change in form: accept-charset="utf8" in the upload_sequences.php file to allow windows systems to properly import all utf8 characters - before it gave error and stopped the import process when encountering a special symbol.
+
 *Version 1.2.5
 		- [Carlos 2012-09-02] In Mac systems the installation script will prefill the url address to http://127.0.0.1/yadaya For all other systems the default is http://localhost/yadaya
 		- [Tobias] when you change a voucher code, it should be updated in TaxonSets as well.
