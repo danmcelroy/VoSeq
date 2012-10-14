@@ -1,6 +1,10 @@
 VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 Changelog:
+*Version 1.2.7
+	- [Carlos] fixing bugs for uploading sequences and voucher data. Making sure that white spaces are stripped.
+	- [Carlos] adding citation of PLOS paper to intro page.
+
 *Version 1.2.6
 		- [Tobias] Change in form: accept-charset="utf8" in the upload_sequences.php file to allow windows systems to properly import all utf8 characters - before it gave error and stopped the import process when encountering a special symbol.
 
