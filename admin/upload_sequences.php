@@ -82,7 +82,7 @@ if ($seqvsvouch == 'vouch') {echo "Voucher upload";} else { echo "Sequence uploa
 	</ul>
 	<td><u>Please edit your field headers names accordingly (not necessarily all or in that order):</u></br>
 	Code Order Family Subfamily Tribe Subtribe Genus Species Subspecies Auctor Hostorg Typespecies Country Locality Collector Coll.date<br />
-	Longitide Latitude Altitude  Vouchercode Voucher Voucherlocality determined.by Sex Extraction Extractor Extractiontube Extr.date Publ.in Notes<br /> </td>
+	Longitude Latitude Altitude  Vouchercode Voucher Voucherlocality determined.by Sex Extraction Extractor Extractiontube Extr.date Publ.in Notes<br /> </td>
 <?php $example_input = "Something like this should be fine:\nCode	Order	Family	Genus	Species	Collector	Coll.date	Longitude	Latitude\ntA1	Hymenoptera	Tenthredinidae	Tenthredo	arcuata	Tobias Malm	2011-05-01	13.1111	12.1111\ntA2	Diptera	Syrphidae	Volucella	sp.	Tobias Malm	2010-06-01	10.1111	8.2222"; 
 }
 else { ?>

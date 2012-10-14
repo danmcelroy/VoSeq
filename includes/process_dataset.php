@@ -915,14 +915,18 @@ else{
 		$output .= "\nset autoclose=yes;\n";
 		if (isset($outgroup)){ $output .= "outgroup $outgroup;\n"; }
 		if (in_array("aas", $positions)) {
-			$output .= "prset applyto=(all) aamodelpr=mixed ratepr=variable brlensp=unconstrained:Exp(100.0);\n";
+			$output .= "prset applyto=(all) aamodelpr=mixed ratepr=variable brlensp=unconstrained:Exp(100.0) ";
+			$output .= "shapepr=exp(1.0) tratiopr=beta(2.0,1.0);\n";
 			$output .= "lset applyto=(all) rates=gamma [invgamma];\nunlink shape=(all) statefreq=(all) revmat=(all) [pinvar=(all)];\n";
 		}
 		else {
-			$output .= "prset applyto=(all) ratepr=variable brlensp=unconstrained:Exp(100.0);\n";
-			$output .= "lset applyto=(all) nst=6 rates=gamma [invgamma];\nunlink shape=(all) statefreq=(all) revmat=(all) tratio=(all) [pinvar=(all)];\n";
+			$output .= "prset applyto=(all) ratepr=variable brlensp=unconstrained:Exp(100.0) ";
+			$output .= "shapepr=exp(1.0) tratiopr=beta(2.0,1.0);\n";
+			$output .= "lset applyto=(all) nst=6 rates=gamma [invgamma];\n";
+			$output .= "unlink shape=(all) statefreq=(all) revmat=(all) tratio=(all) [pinvar=(all)];\n";
 		}
-		$output .= "mcmc ngen=10000000 printfreq=1000 samplefreq=1000 nchains=4 nruns=2 savebrlens=yes [temp=0.11];\nsump burnin = 2500;\nsumt burnin = 2500;\nend;" ;
+		$output .= "mcmc ngen=10000000 printfreq=1000 samplefreq=1000 nchains=4 nruns=2 savebrlens=yes [temp=0.11];\n";	
+		$output .= " [sump burnin = 2500;]\n [sumt burnin = 2500;]\nend;" ;
 	}
 
 	// #################################################################################
