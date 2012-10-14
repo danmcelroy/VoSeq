@@ -4,6 +4,14 @@
   font-size:1.2em;
 }
 
+.highlight {
+	background-color: #C2FFFF;
+	-moz-border-radius: 5px; /* Firefox */
+	-webkit-border-radius: 5px; /* Safari, Chrome */
+	border-radius: 5px; /* CSS3 */
+	padding: 10px;
+}
+
 img.voucher {
 	border: 1px solid gray;
 	padding: 4px;
