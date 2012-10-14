@@ -59,6 +59,9 @@ echo "<!--standard page header begins-->
 				<b>3.</b> The full documentation is here: <a href='http://nymphalidae.utu.fi/cpena/VoSeq_docu.html'>http://nymphalidae.utu.fi/cpena/VoSeq_docu.html</a>.
 			<br />
 				<b>4.</b> The source code is available at: <a href='https://github.com/carlosp420/VoSeq'>https://github.com/carlosp420/VoSeq</a>.
+			<br />
+				<b>5.</b> If you find VoSeq useful you might want cite us:
+				<div class='highlight'><b>Peña, C. &amp; Malm, T.</b> 2012. VoSeq: a Voucher and DNA Sequence Web Application. <i>PLoS ONE</i>, 7(6): e39071. <a href=\"http://dx.doi.org/10.1371/journal.pone.0039071\">doi:10.1371/journal.pone.0039071</a></div>
 			
 			</p>
 		</div>

@@ -51,7 +51,7 @@ if( !isset($version) ) {
 		<div class='error'>
 		<p>Configuration file: "conf.php" not found.</p>
 		<p>
-			Please <a href="index.php">install the software</a> first.
+			<a href="index.php">Ready to install VoSeq</a>
 		</p>
 		<p>
 			Also, so can read the <a href="http://nymphalidae.utu.fi/cpena/VoSeq_docu.html">documentation here</a>.

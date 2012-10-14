@@ -104,7 +104,28 @@ $raw_voucher_upload = str_replace("\r\n", "\n", $_POST['input_data']);
 $raw_voucher_upload = str_replace("\n\n", "\n", $raw_voucher_upload);
 //$raw_voucher_upload = str_replace("	", "','", $raw_voucher_upload);
 $raw_voucher_upload = rtrim($raw_voucher_upload, "\n\r\0 \x0B");
+
 $lines = explode("\n", $raw_voucher_upload);
+
+
+$tmp_line = array();
+foreach($lines as $line) {
+	$line = trim($line);
+	$line = explode("	", $line);
+
+	$tmp = array();
+	foreach($line as $item) {
+		$item = trim($item);
+		$tmp[] = $item;
+	}
+	$line = implode("	", $tmp);
+	unset($tmp);
+
+	$tmp_line[] = $line;
+}
+
+$lines = $tmp_line;
+
 
 //get first line of array - the field header line into its own array
 $fields = explode("	", strtolower(array_shift($lines)));
