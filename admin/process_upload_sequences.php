@@ -108,9 +108,10 @@ $raw_voucher_upload = rtrim($raw_voucher_upload, "\n\r\0 \x0B");
 $lines = explode("\n", $raw_voucher_upload);
 
 
+
+# trim white spaces from values
 $tmp_line = array();
 foreach($lines as $line) {
-	$line = trim($line);
 	$line = explode("	", $line);
 
 	$tmp = array();
@@ -123,8 +124,8 @@ foreach($lines as $line) {
 
 	$tmp_line[] = $line;
 }
-
 $lines = $tmp_line;
+
 
 
 //get first line of array - the field header line into its own array
