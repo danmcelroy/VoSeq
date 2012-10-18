@@ -3,7 +3,7 @@ VoSeq
 
 What is VoSeq?
 -------------
-VoSeq is a database to store voucher and DNA sequence data for phylogenetic analysis.
+VoSeq is a database to store and manage voucher and DNA sequence data for phylogenetic analysis.
 
 Please send all bug complaints to Carlos Peña (mycalesis@gmail.com) or Tobias Malm (tobias.malm@uef.fi) 
 
