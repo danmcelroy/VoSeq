@@ -30,13 +30,13 @@ function nav() {
 	if( $mask_url == "true" ) {
 		echo "<a href='" . $base_url . "/home.php'  onclick=\"return redirect('". $base_url . "/index.php');\" title='This link takes you back to the homepage' >home</a>";
 		echo "<a href='" . $base_url . "/home.php'  onclick=\"return redirect('". $base_url . "/search.php');\" title='Go to search page' >search</a>";
-		echo "<a href='" . $base_url . "/home.php'  onclick=\"return redirect('". $base_url . "/admin/admin.php');\" title='Go to search page' >admin</a>";
+		echo "<a href='" . $base_url . "/home.php'  onclick=\"return redirect('". $base_url . "/admin/admin.php');\" title='Go to Administration page' >admin</a>";
 		echo "</div>\n\n";
 	}
 	else {
 		echo "<a href='" . $base_url . "/index.php' title='This link takes you back to the homepage' >home</a>";
 		echo "<a href='" . $base_url . "/search.php' title='Go to search page' >search</a>";
-		echo "<a href='" . $base_url . "/admin/admin.php' title='Go to search page' >admin</a>";
+		echo "<a href='" . $base_url . "/admin/admin.php' title='Go to Administration page' >admin</a>";
 		echo "</div>\n\n";
 	}
 }
