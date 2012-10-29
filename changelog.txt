@@ -1,6 +1,9 @@
 VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 Changelog:
+*Version 1.2.8
+	- [Carlos] fixes to take into account tildes and accents when creating users.
+
 *Version 1.2.7
 	- [Carlos] fixing bugs for uploading sequences and voucher data. Making sure that white spaces are stripped.
 	- [Carlos] adding citation of PLOS paper to intro page.
