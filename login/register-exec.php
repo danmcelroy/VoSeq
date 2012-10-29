@@ -10,6 +10,9 @@
 //
 // Script overview: stores the new user details
 // #################################################################################
+
+header('Content-type: text/html; charset=utf8');
+
 	//check admin login session
 	include'auth-admin.php';
 	
@@ -38,6 +41,10 @@
 	if(!$db) {
 		die("Unable to select database");
 	}
+	if( function_exists(mysql_set_charset) ) {
+		mysql_set_charset("utf8");
+	}
+
 	
 	//Function to sanitize values received from the form. Prevents SQL injection
 	function clean($str) {
