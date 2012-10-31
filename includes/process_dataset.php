@@ -21,6 +21,7 @@ include '../functions.php';
 include '../markup-functions.php';
 include "translation_functions.php";
 
+$warning = array();
 $charset_count = array();
 $errorList = array();
 $geneCodes = array();
@@ -155,25 +156,39 @@ else { //if special mode or Amino acid mode is not enabled, checking and buildin
 				$geneCodes[] =  $k1;
 			}
 		}
-	}else {$errorList[] = "No genes choosen - Please try again!"; }
+	}
+	else {
+		$errorList[] = "No genes choosen - Please try again!"; 
+	}
 
 	 //input data
-	if (trim($_POST['codes']) != ""){
+	if (trim($_POST['codes']) != "") {
 		$raw_codes = explode("\n", $_POST['codes']);
-	}else{ unset($raw_codes); }
+	}
+	else { 
+		unset($raw_codes); 
+	}
 
 	$format = $_POST['format'];
-	if ( !isset($format) || $format == ''){$errorList[] = "No dataset FORMAT choosen - Please try again!"; }
+	if ( !isset($format) || $format == '') {
+		$errorList[] = "No dataset FORMAT choosen - Please try again!";
+	}
 
 	$by_positions = $_POST['by_positions'];
 
-	if ($format == "NEXUS" || $format == "TNT" ){
+	if ($format == "NEXUS" || $format == "TNT" ) {
 		if (isset($_POST['outgroup']) && trim($_POST['outgroup']) != "") {
 			$outgroup = clean_item($_POST['outgroup']);
 			$outgroup = trim($outgroup);
 			//$outgroup = trim($_POST['outgroup']);
-		}else {unset($outgroup);}
-	}else {unset($outgroup);}
+		}
+		else {
+			unset($outgroup);
+		}
+	}
+	else {
+		unset($outgroup);
+	}
 
 	$taxonadds = array();
 	foreach ( $_POST['taxonadds'] as $k=> $c){
@@ -183,38 +198,38 @@ else { //if special mode or Amino acid mode is not enabled, checking and buildin
 	}
 
 	// if ($format != "FASTA") { removing this - thus allowing for fasta retrieval of certain positions
-		if ( isset($_POST['positions'])){
-			$positions = array();
-			foreach ( $_POST['positions'] as $k2=> $c2){ //putting choosen genes into array
-				if ($c2 == 'on')	{
-					$positions[] =  $k2;
-				}
+	if ( isset($_POST['positions'])){
+		$positions = array();
+		foreach ( $_POST['positions'] as $k2=> $c2){ //putting choosen genes into array
+			if ($c2 == 'on')	{
+				$positions[] =  $k2;
 			}
-		}else {$positions = array("all"); }
+		}
+	}else {$positions = array("all"); }
 
-		// do some test for "position choices"
-		if (in_array('aas', $positions)){ // setting up for amino acid partition mode
-			unset( $positions ); 
-			$positions = array('aas') ;
-			$by_positions = "asone";
-			}
-		elseif (in_array('special', $positions)){ // setting up for special gene codon partition mode
-			unset( $positions ); 
-			$positions = array('special') ;
+	// do some test for "position choices"
+	if (in_array('aas', $positions)){ // setting up for amino acid partition mode
+		unset( $positions ); 
+		$positions = array('aas') ;
+		$by_positions = "asone";
 		}
-		elseif (in_array("all", $positions) || in_array("1st", $positions) && in_array("2nd", $positions) && in_array("3rd", $positions)) { 
-			unset( $positions ); 
-			$positions = array('all') ;
-		}
+	elseif (in_array('special', $positions)){ // setting up for special gene codon partition mode
+		unset( $positions ); 
+		$positions = array('special') ;
+	}
+	elseif (in_array("all", $positions) || in_array("1st", $positions) && in_array("2nd", $positions) && in_array("3rd", $positions)) { 
+		unset( $positions ); 
+		$positions = array('all') ;
+	}
 
-		elseif ( ! in_array("all", $positions) && count($positions) < 2 && $by_positions !='special') { //if only one codon position choosen - force "asone"
-			$by_positions = "asone";
+	elseif ( ! in_array("all", $positions) && count($positions) < 2 && $by_positions !='special') { //if only one codon position choosen - force "asone"
+		$by_positions = "asone";
+	}
+	else {
+		if ($by_positions == "123") {
+			$errorList[] = "Cannot use the '12+3' partitioning without including all positions!";
 		}
-		else {
-			if ($by_positions == "123") {
-				$errorList[] = "Cannot use the '12+3' partitioning without including all positions!";
-			}
-		}
+	}
 
 
 	$result = mysql_query("set names utf8") or die("Error in query: $query. " . mysql_error());
@@ -258,38 +273,39 @@ else { //if special mode or Amino acid mode is not enabled, checking and buildin
 		//$item = clean_item($item);
 		$gCquery = "SELECT geneCode, length, readingframe FROM ". $p_ . "genes WHERE geneCode='$item'";
 		$gCresult = mysql_query($gCquery) or die("Error in query: $query. " . mysql_error());
-			// if records present
-			if( mysql_num_rows($gCresult) > 0 ) {
-				while( $row = mysql_fetch_object($gCresult) ) {
-					if ($row->length != "0") {
-						$bp = $bp + $row->length;
-						$charset_count[$item] = $row->length;
-						}
-					else { 
-						if ($format != "FASTA"){
-							$errorList[] = "The length of gene <b>$item</b> (in bp's) has not been specified!
-											</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											Please do that in the gene edit section!";
-						}
+		// if records present
+		if( mysql_num_rows($gCresult) > 0 ) {
+			while( $row = mysql_fetch_object($gCresult) ) {
+				if ($row->length != "0") {
+					$bp = $bp + $row->length;
+					$charset_count[$item] = $row->length;
+				}
+				else { 
+					if ($format != "FASTA"){
+						$errorList[] = "The length of gene <b>$item</b> (in bp's) has not been specified!
+										</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										Please do that in the gene edit section!";
 					}
-					$rf = $row->readingframe;
-					$rfs[$item] = $rf ;
-					if ( $rf != "1" && $rf != "2" && $rf != "3"){ 
-						if ( $by_positions == "123" || ! in_array("all", $positions) || in_array('aas', $positions)) {
-							$errors = "Gene $item doesn't have a specified reading frame!
-											</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-							if ($by_positions =="123") { $errors .="Cannot use 12+3 partioning";}
-							elseif (in_array('aas', $positions)) { $errors .="Cannot translate to amino acids";}
-							else  { $errors .="Cannot use individual position choices";}
-							$errorList[] = $errors;
-						}
+				}
+				$rf = $row->readingframe;
+				$rfs[$item] = $rf ;
+				if ( $rf != "1" && $rf != "2" && $rf != "3"){ 
+					if ( $by_positions == "123" || ! in_array("all", $positions) || in_array('aas', $positions)) {
+						$errors = "Gene $item doesn't have a specified reading frame!
+										</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+						if ($by_positions =="123") { $errors .="Cannot use 12+3 partioning";}
+						elseif (in_array('aas', $positions)) { $errors .="Cannot translate to amino acids";}
+						else  { $errors .="Cannot use individual position choices";}
+						$errorList[] = $errors;
 					}
 				}
 			}
-		else {
-		$errorList[] = "Gene <b>$item</b> does not exist in database!</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please add it in the gene edit section!";
 		}
-	}unset($item);
+		else {
+			$errorList[] = "Gene <b>$item</b> does not exist in database!</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please add it in the gene edit section!";
+		}
+	}
+	unset($item);
 
 	// checking taxonset choice
 	$taxonset = $_POST['taxonsets'];
@@ -540,34 +556,46 @@ else{
 	// #################################################################################
 	// Section: Build dataset and adding choosen name-extensions
 	// #################################################################################
-	else{
-	$num_genes = 0;
-	$output_lines = "";
-	$taxout_array = array();
-	$seqout_array = array();
-	foreach ($geneCodes AS $geneCode) {
-		$num_genes = $num_genes + 1;
-		
-		foreach ($codes AS $item) {
-			$item = clean_item($item);
-			$query = "SELECT code, genus, species, orden, family, subfamily, tribe, subtribe, subspecies, hostorg, auctor FROM ". $p_ . "vouchers WHERE code='$item'";
-			$result = mysql_query($query) or die("Error in query: $query. " . mysql_error());
-			// if records present
-			if( mysql_num_rows($result) > 0 ) {
-				while( $row = mysql_fetch_object($result) ) {
-					$seq = "?";
-					$currentcode = $row->code;
-					// #################################################################################
-					// Section: Name builder
-					// #################################################################################
-					$taxon = "";
-					$taxarray = array();
-						if( $format == "FASTA" ) {	$taxon .= ">";	}
+	else {
+		$num_genes = 0;
+		$output_lines = "";
+		$taxout_array = array();
+		$seqout_array = array();
+		foreach ($geneCodes AS $geneCode) {
+			$num_genes = $num_genes + 1;
+			
+			foreach ($codes AS $item) {
+				$item = clean_item($item);
+				$query = "SELECT code, genus, species, orden, family, subfamily, tribe, ";
+				$query .= "subtribe, subspecies, hostorg, auctor FROM ". $p_ . "vouchers WHERE code='$item'";
+				$result = mysql_query($query) or die("Error in query: $query. " . mysql_error());
+				// if records present
+				if( mysql_num_rows($result) > 0 ) {
+					while( $row = mysql_fetch_object($result) ) {
+						$seq = "?";
+						$currentcode = $row->code;
+						// #################################################################################
+						// Section: Name builder
+						// #################################################################################
+						$taxon = "";
+						$taxarray = array();
+						if( $format == "FASTA" ) {	
+							$taxon .= ">";	
+						}
 						//foreach ( $_POST['taxonadds'] as $k=> $c){
 						//	if ($c == 'on')	{
 						foreach ($taxonadds as $k){
-							if ($k == genecode) { if ($format == "NEXUS"){$taxarray[] .=  "[$geneCode]";} else {$taxarray[] .=  "$geneCode";	}}
-								else {	$taxarray[] .=  $row->$k;	}
+							if ($k == genecode) { 
+								if ($format == "NEXUS") {
+									$taxarray[] .=  "[$geneCode]";
+								} 
+								else {
+									$taxarray[] .=  "$geneCode";	
+								}
+							}
+							else {	
+								$taxarray[] .=  $row->$k;	
+							}
 						}
 						//	}
 						//}
@@ -593,21 +621,21 @@ else{
 						if ($format == "PHYLIP" && $num_genes > 1) {	$taxon = str_pad("", 55, " ");	}
 						if ($format != "FASTA" ) { $taxon = "$taxon ";}
 						$taxout_array[$geneCode][$item] = $taxon;
-						
-					// #################################################################################
-					// Section: Sequence builder
-					// #################################################################################
-					$query_b = "SELECT sequences FROM ". $p_ . "sequences WHERE code='$row->code' AND geneCode='$geneCode'";
-					$result_b = mysql_query($query_b) or die("Error in query: $query_b. " . mysql_error());
-					// if records present
-					if( mysql_num_rows($result_b) > 0 ) {
-						while( $row_b = mysql_fetch_object($result_b) ) {
-							$seq = $row_b->sequences;
-							//if( $format == "FASTA" ) { // do nothing - just present raw sequences
-									//$seq = "\n" . $seq;
-									$seqout_array[$geneCode][$item] = $seq;
-							// }
-							//else {						// do something
+							
+						// #################################################################################
+						// Section: Sequence builder
+						// #################################################################################
+						$query_b = "SELECT sequences FROM ". $p_ . "sequences WHERE code='$row->code' AND geneCode='$geneCode'";
+						$result_b = mysql_query($query_b) or die("Error in query: $query_b. " . mysql_error());
+						// if records present
+						if( mysql_num_rows($result_b) > 0 ) {
+							while( $row_b = mysql_fetch_object($result_b) ) {
+								$seq = $row_b->sequences;
+								//if( $format == "FASTA" ) { // do nothing - just present raw sequences
+										//$seq = "\n" . $seq;
+										$seqout_array[$geneCode][$item] = $seq;
+								// }
+								//else {						// do something
 								if ($format!="FASTA" && strlen($charset_count[$geneCode] < strlen($seq))){ // checking for too long sequence
 									$errorList[] = "The $geneCode sequence of $item is longer (". strlen($seq) . ">" . $charset_count[$geneCode] .")that the specified gene length!
 									</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please edit gene length or check the sequence";
@@ -654,99 +682,124 @@ else{
 									// padding string for aligned datasets
 									//$seq = str_pad($seq, $charset_count[$geneCode], "?");
 								}
-							// }
-						}
-					}
-					else {
-						if( $format == "FASTA" ) {
-							$seq = "\n";
+								// }
+							}
 						}
 						else {
-						if (in_array("aas", $positions)) { $seq = "X"; }
-						else { $seq = "?"; }
-						$seqout_array[$geneCode][$item] = $seq;
-						//$seq = str_pad($seq, $charset_count[$geneCode], "?");
+							if( $format == "FASTA" ) {
+								$seq = "\n";
+							}
+							else {
+								if (in_array("aas", $positions)) { 
+									$seq = "X"; 
+								}
+								else { 
+									$seq = "?"; 
+									$seq = str_pad($seq, $charset_count[$geneCode], "?");
+								}
+								$seqout_array[$geneCode][$item] = $seq;
+							}
 						}
-						}
-						//$output_lines .= $seq . "\n";
+							//$output_lines .= $seq . "\n";
+					}
 				}
 			}
 		}
-	}unset($item);
+		unset($item);
 	
-	// #################################################################################
-	// Section: setting bp numbers for partitions if needed
-	// #################################################################################
-	if ($format != "FASTA" ) { //&& ! in_array("all", $positions)) {
-		unset ($charset_count);
-		if (isset($seqout_array)){
-			foreach ($seqout_array as $g => $s) { 
-				if (in_array("aas", $positions)) {$charset_count[$g] = 0; }
-				foreach ($s as $n) {
+		// #################################################################################
+		// Section: setting bp numbers for partitions if needed
+		// #################################################################################
+		if ($format != "FASTA" ) { //&& ! in_array("all", $positions)) {
+			unset ($charset_count);
+			if (isset($seqout_array)){
+				foreach ($seqout_array as $g => $s) { 
+					if (in_array("aas", $positions)) {$charset_count[$g] = 0; }
+					foreach ($s as $n) {
 						if (strlen($n) > $charset_count[$g] ) { $charset_count[$g] = strlen($n);}
-				}
-			} unset($s, $g, $n);
-		$bp = array_sum($charset_count);
-		}
-	}
-	// #################################################################################
-	// Section: check for error and if none proceed with building dataset
-	// #################################################################################
-	if (sizeof($errorList) != 0 ){
-		$title = "$config_sitename: Dataset Error";
-		// print html headers
-		$admin = false;
-		$in_includes = true;
-		include_once 'header.php';
-		//print errors
-		show_errors($errorList);
-	}
-	else{ //start building dataset
-	
-	// #################################################################################
-	// Section: Build output - intro lines
-	// #################################################################################
-	if( $format == "TNT" ) {  // creating intro lines
-		if (in_array("aas", $positions)) {$output = "nstates dna;\nxread\n$bp $number_of_taxa\n";}
-		else {$output = "nstates prot;\nxread\n$bp $number_of_taxa\n";}
-	}
-	elseif( $format == "PHYLIP" ) {
-		$output = "$number_of_taxa $bp\n";
-		$phy_partitions = array();
-	}
-	elseif( $format == "FASTA" ) {
-		$output = "";
-	}
-	else {
-		$which_nex_partitions = array();
-		$nex_partitions = array();
-		if (in_array("aas", $positions)) {$output = "#NEXUS\n\nBEGIN DATA;\nDIMENSIONS NTAX=$number_of_taxa NCHAR=$bp;\nFORMAT INTERLEAVE DATATYPE=PROTEIN MISSING=X GAP=-;\nMATRIX\n";}
-		else {$output = "#NEXUS\n\nBEGIN DATA;\nDIMENSIONS NTAX=$number_of_taxa NCHAR=$bp;\nFORMAT INTERLEAVE DATATYPE=DNA MISSING=? GAP=-;\nMATRIX\n";}
-	}
-	// #################################################################################
-	// Section: Build output - sequence blocks
-	// #################################################################################
-	foreach ($geneCodes as $geCo){   // creating sequence blocks / gene
-		if( $format == "TNT" ) {
-			if (in_array("aas", $positions)) {$output .= "\n&[PROTEIN]\n";}
-			else{ $output .= "\n&[dna]\n"; }
-		}
-		elseif( $format == "FASTA" ) {	
-			$output .= ">$geCo\n--------------\n";
-		}
-		elseif ( $format == "NEXUS" ) {
-			$output .= "\n[$geCo]\n";
-		}
-		else {}
-		foreach ($codes AS $item) {
-			$item = clean_item($item);
-			$output .= $taxout_array[$geCo][$item];
-			if ($format != "FASTA"){
-				if (in_array("aas", $positions)) { $output .= str_pad($seqout_array[$geCo][$item], $charset_count[$geCo], "X") . "\n"; }
-				else { $output .= str_pad($seqout_array[$geCo][$item], $charset_count[$geCo], "?") . "\n"; }
+					}
+				} unset($s, $g, $n);
+			$bp = array_sum($charset_count);
 			}
-			else { $output .= "\n" . $seqout_array[$geCo][$item] . "\n"; }
 		}
+		// #################################################################################
+		// Section: check for error and if none proceed with building dataset
+		// #################################################################################
+		if (sizeof($errorList) != 0 ){
+			$title = "$config_sitename: Dataset Error";
+			// print html headers
+			$admin = false;
+			$in_includes = true;
+			include_once 'header.php';
+			//print errors
+			show_errors($errorList);
+		}
+		else{ //start building dataset
+			
+			// #################################################################################
+			// Section: Build output - intro lines
+			// #################################################################################
+			if( $format == "TNT" ) {  // creating intro lines
+				if (in_array("aas", $positions)) {$output = "nstates dna;\nxread\n$bp $number_of_taxa\n";}
+				else {$output = "nstates prot;\nxread\n$bp $number_of_taxa\n";}
+			}
+			elseif( $format == "PHYLIP" ) {
+				$output = "$number_of_taxa $bp\n";
+				$phy_partitions = array();
+			}
+			elseif( $format == "FASTA" ) {
+				$output = "";
+			}
+			else {
+				$which_nex_partitions = array();
+				$nex_partitions = array();
+				if (in_array("aas", $positions)) {
+					$output = "#NEXUS\n\nBEGIN DATA;\nDIMENSIONS NTAX=$number_of_taxa NCHAR=$bp;\nFORMAT INTERLEAVE DATATYPE=PROTEIN MISSING=X GAP=-;\nMATRIX\n";
+				}
+				else {
+					$output = "#NEXUS\n\nBEGIN DATA;\nDIMENSIONS NTAX=$number_of_taxa NCHAR=$bp;\nFORMAT INTERLEAVE DATATYPE=DNA MISSING=? GAP=-;\nMATRIX\n";
+				}
+			}
+			// #################################################################################
+			// Section: Build output - sequence blocks
+			// #################################################################################
+				
+			// creating sequence blocks / gene
+			foreach ($geneCodes as $geCo) { 
+				## check if there is any sequence at all for this gene, for this list of specimens
+				## has_seqs?
+				if( has_seqs($seqout_array, $geCo) == "false" ) {
+					$warning[] = "Warning, no sequences in partition $geCo"; 
+				}
+
+				if( $format == "TNT" ) {
+					if (in_array("aas", $positions)) {$output .= "\n&[PROTEIN]\n";}
+					else{ $output .= "\n&[dna]\n"; }
+				}
+				elseif( $format == "FASTA" ) {	
+					$output .= ">$geCo\n--------------\n";
+				}
+				elseif ( $format == "NEXUS" ) {
+					## check if there is any sequence at all for this gene, for this list of specimens
+					## has_seqs?
+					$has_seqs = has_seqs($seqout_array, $geCo);
+					if( $has_seqs == "true" ) {
+						$output .= "\n[$geCo]\n";
+					}
+					else {
+						$output .= "\n[$geCo - warning no sequences in this partition]\n";
+					}
+				}
+				else {}
+				foreach ($codes AS $item) {
+					$item = clean_item($item);
+					$output .= $taxout_array[$geCo][$item];
+					if ($format != "FASTA"){
+						if (in_array("aas", $positions)) { $output .= str_pad($seqout_array[$geCo][$item], $charset_count[$geCo], "X") . "\n"; }
+						else { $output .= str_pad($seqout_array[$geCo][$item], $charset_count[$geCo], "?") . "\n"; }
+					}
+					else { $output .= "\n" . $seqout_array[$geCo][$item] . "\n"; }
+				}
 	}
 	// #################################################################################
 	// Section: Build output - partition specifying block
@@ -944,6 +997,15 @@ else{
 
 	// begin HTML page content
 	echo "<div id=\"content\">";
+
+	if( count($warning) > 0 ) {
+		// issue warnings using javascript
+		echo "<script type=\"text/javascript\">\n";
+		foreach( $warning as $item ) {
+			echo "alert(\"" . $item . "\")\n";
+		}
+		echo "</script>";
+	}
 	?>
 			<form action="dataset_to_file.php" method="post">
 			<table border="0" width="960px" cellpadding="5px"> <!-- super table -->
