@@ -244,7 +244,7 @@ function clean_string($string) {
 }
 
 // #################################################################################
-// Section: unpdate_comboboxes() function 
+// Section: update_comboboxes() function 
 // updates the Dojo comboboxes in /Dojo
 // #################################################################################
 function update_comboboxes() {
@@ -368,5 +368,29 @@ function update_comboboxes() {
     	//echo "$value\n";
 		fclose($handle);
     }
+}
+
+
+// #################################################################################
+// Section: includes/process_dataset.php
+// has_seqs? checks if array of sequences consist only of "?"
+// @input: $seqout_array
+// @output: string "true" or "false"
+// #################################################################################
+function has_seqs($seqout_array, $gen) {
+	$total_seqs = "";
+	foreach($seqout_array[$gen] as $code => $seq) {
+		$total_seqs .= $seq;
+	}
+	$total_seqs = str_ireplace("?", "", $total_seqs);
+	$total_seqs = str_ireplace("N", "", $total_seqs);
+	$total_seqs = str_ireplace("-", "", $total_seqs);
+	$total_seqs = trim($total_seqs);
+	if( strlen($total_seqs) > 0) {
+		return "true";
+	}
+	else {
+		return "false";
+	}
 }
 ?>
