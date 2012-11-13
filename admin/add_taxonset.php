@@ -21,10 +21,14 @@ include'../login/auth-admin.php';
 error_reporting (E_ALL); // ^ E_NOTICE);
 
 // includes
-include '../login/redirect.html';
 ob_start();//Hook output buffer - disallows web printing of file info...
 include'../conf.php';
 ob_end_clean();//Clear output buffer//includes
+
+if( $mask_url == "true" ) {
+	include '../login/redirect.html';
+}
+
 include 'adfunctions.php'; // administrator functions
 include 'admarkup-functions.php';
 include '../includes/validate_coords.php';
