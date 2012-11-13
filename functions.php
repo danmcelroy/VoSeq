@@ -296,6 +296,10 @@ function update_comboboxes() {
 
 	// do table vouchers
 	foreach ($comboName as $value) {
+		if( !is_dir($local_folder . '/dojo_data') ) {
+			mkdir($local_folder . '/dojo_data', 0755);
+		}
+
     	$query = "SELECT DISTINCT $value FROM " . $p_ . "vouchers ORDER BY $value ASC";
 		$result = mysql_query($query) or die("Error in query: $query. " . mysql_error());
 		
