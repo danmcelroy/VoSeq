@@ -1,9 +1,11 @@
 VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 Changelog:
-*Version 1.3.j
+*Version 1.3.1
 	- [Carlos 2012-11-13] Adding remove voucher button. It will delete a record including
-		sequences, primers and remove them from taxonlists
+	  sequences, primers and remove them from taxonlists.
+	  Fixing adding taxonlist links and behaviour.
+
 *Version 1.3.0
 	- [Carlos 2012-10-31] Will issue alert dialogs when sequences blocks have 
       no sequences when creating datasets
