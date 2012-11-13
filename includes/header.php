@@ -86,7 +86,7 @@ echo "
 	$(document).ready(function() {
 		$('#delete_record').click(function(){
 			var id = $('#delete_record').attr('name');
-			if(confirm('Delete record? Notice that you will loose also accompanying sequences!')) {
+			if(confirm('Delete record? Notice that you will lose also accompanying sequences!')) {
 				$.post('delete_record.php', {id: id},
 					function(data) {
 						if(data == 'ok') {
