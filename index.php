@@ -11,7 +11,7 @@
 // #################################################################################
 // Section: Startup/includes
 // #################################################################################
-error_reporting(E_ALL); // ^ E_NOTICE);
+error_reporting(E_ALL ^ E_NOTICE);
 
 //check if conf.php exists. If not, this is a fresh download and needs installation
 if( !file_exists("conf.php") ) {
@@ -154,7 +154,7 @@ if (mysql_num_rows($result) > 0) {
 
 		// masking URLs, this variable is set to "true" or "false" in conf.php file
 		if( $mask_url == "true" ) {
-			echo "<a href=\"home.php\" onclick=\"return redirect('story.php?code=$row->code')\">$row->code</a>";
+			echo "<a href=\"home.php\" onClick=\"return redirect('story.php?code=$row->code');\">$row->code</a>";
 		}
 		else {
 			echo "<a href=\"story.php?code=$row->code\">$row->code</a>";
