@@ -71,14 +71,19 @@ if( isset($dojo) && $dojo == true ) {
 }
 
 // redirect function for masking urls
-echo "
-<script type=\"text/javascript\">
-	$(document).ready(function() {
+if ($mask_url == "true") {
+	echo "
+	<script type=\"text/javascript\">
 		function redirect(URL) {
 			document.location=URL;
 			return false;
 		}
+	</script>\n";
+}
 	
+echo "
+<script type=\"text/javascript\">
+	$(document).ready(function() {
 		$('#delete_record').click(function(){
 			var id = $('#delete_record').attr('name');
 			if(confirm('Delete record? Notice that you will loose also accompanying sequences!')) {

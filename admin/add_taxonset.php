@@ -17,18 +17,10 @@
 
 //check admin login session
 include'../login/auth-admin.php';
-
-error_reporting (E_ALL); // ^ E_NOTICE);
-
 // includes
 ob_start();//Hook output buffer - disallows web printing of file info...
 include'../conf.php';
-ob_end_clean();//Clear output buffer//includes
-
-if( $mask_url == "true" ) {
-	include '../login/redirect.html';
-}
-
+ob_end_clean();//Clear output buffer
 include 'adfunctions.php'; // administrator functions
 include 'admarkup-functions.php';
 include '../includes/validate_coords.php';
@@ -591,7 +583,13 @@ elseif ($_GET['new'] || $_POST['sort'] || $_POST['mark'] || $_POST['unmark']) {
 									$table .= "></td>";
 									$table .= "<td class='field2' ";
 									if ($i == 1){ $table .= "style=\"background-color: #FFF8C6;\"";} 
-									$table .= "><a href=" . $base_url . "/home.php onclick=\"return redirect('../story.php?code=$col');\">$col</a></td>";
+									if( $mask_url == "true" ) {
+										$table .= "><a href='" . $base_url . "/home.php' ";
+										$table .= "onclick=\"return redirect('../story.php?code=$col');\">$col</a></td>";
+									}
+									else {
+										$table .= "><a href=\"" . $base_url . "/story.php?code=$col\">$col</a></td>";
+									}
 								}
 								else {
 									$table .= "<td class='field2' ";
@@ -789,7 +787,12 @@ elseif ($_POST['submitNew'])
 						<tr><td valign=\"top\">";
 				// print result
 				echo "<span class=\"title\"><img src=\"images/success.png\" alt=\"\"> Taxon set creation of:</br>";  
-				echo "</b><a href='$base_url/home.php' onclick=\"return redirect('add_taxonset.php?taxonset_name=$taxonset_name');\">$taxonset_name</a></b>";
+				if( $mask_url == "true" ) {
+					echo "</b><a href='$base_url/home.php' onclick=\"return redirect('add_taxonset.php?taxonset_name=$taxonset_name');\">$taxonset_name</a></b>";
+				}
+				else {
+					echo "</b><a href='$base_url/admin/add_taxonset.php?taxonset_name=$taxonset_name'>$taxonset_name</a></b>";
+				}
 				echo " was successful!</span>";
 				}
 
@@ -1027,37 +1030,6 @@ elseif (!$_POST['submitNoNew'] && $_GET['taxonset_name'] || $_POST['sort2'] || $
 	
 	?>
 	
-	<!-- 	show previous and next links -->
-	<?php
-	echo "<h1>" . "$taxonset_name1" . "</h1>";
-	echo "<table border=\"0\" width=\"1000px\"> <!-- super table -->
-			<tr><td valign=\"top\">";
-			
-	if ( isset($_GET['search']) || trim($_GET['search']) != '')
-		{
-		if ($link_previous)
-			{ ?>
-			<span dojoType="tooltip" connectId="previous" delay="1" toggle="explode">Previous</span>
-			<?php echo "<a href='" .$base_url . "/home.php'" ?> onclick="return redirect('add_taxonset.php?taxonset_name=<?php echo $prevtaxonset_name; ?>&amp;search=<?php echo $current_id_search_id; ?>');"><img src="images/leftarrow.png" class="link" alt="previous" id="previous" /></a>&nbsp;&nbsp;
-			<?php
-			}
-		else
-			{
-			echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-			}
-		
-		if ($link_next)
-			{ ?>
-			<span dojoType="tooltip" connectId="next" delay="1" toggle="explode">Next</span>
-			<?php echo "<a href='" .$base_url . "/home.php'" ?> onclick="return redirect('add_taxonset.php?taxonset_name=<?php echo $nexttaxonset_name; ?>&amp;search=<?php echo $current_id_search_id; ?>');"><img src="images/rightarrow.png" class="link" alt="next" id="next" /></a>
-			<?php
-			}
-		else
-			{
-			echo "&nbsp;";
-			}
-		}
-	?>
 	
 
 <table border="0" width="1000px"> <!-- super table -->
@@ -1249,7 +1221,16 @@ elseif (!$_POST['submitNoNew'] && $_GET['taxonset_name'] || $_POST['sort2'] || $
 									$table .= "></td>";
 									$table .= "<td class='field2' ";
 									if ($i == 1){ $table .= "style=\"background-color: #FFF8C6;\"";} 
-									$table .= "><a href=" . $base_url . "/home.php onclick=\"return redirect('../story.php?code=$col');\">$col</a></td>";
+									if ($mask_url == "true") {
+										$table .= "><a href=" . $base_url;
+										$table .= "/home.php onclick=\"return redirect('../story.php?code=";
+										$table .= $col. "');\">$col</a></td>";
+									}
+									else {
+										$table .= "><a href='" . $base_url;
+										$table .= "/story.php?code=";
+										$table .= $col. "'>$col</a></td>";
+									}
 								}
 								else {
 									$table .= "<td class='field2' ";
@@ -1421,9 +1402,18 @@ elseif ($_POST['submitNoNew'])
 		echo "<div id=\"content_wide\">";
 		echo "<table border=\"0\" width=\"850px\"> <!-- super table -->
 				<tr><td valign=\"top\">";
-			echo "<span class=\"title\"><img src=\"images/success.png\" alt=\"\"> Taxon set update of:</br>";  
-			echo "</b><a href='$base_url/home.php' onclick=\"return redirect('add_taxonset.php?taxonset_name=$taxonset_name1');\">$taxonset_name1</a></b>";
-			echo " was successful!</span>";
+		echo "<span class=\"title\"><img src=\"images/success.png\" alt=\"\"> Taxon set update of:</br>";  
+		if ($mask_url == "true") {
+			echo "</b><a href='$base_url/home.php' ";
+			echo "onclick=\"return redirect('add_taxonset.php?taxonset_name=";
+			echo $taxonset_name1 . "');\">$taxonset_name1</a></b>";
+		}
+		else {
+			echo "</b><a href='$base_url";
+			echo "/admin/add_taxonset.php?taxonset_name=";
+			echo $taxonset_name1 . "'>$taxonset_name1</a></b>";
+		}
+		echo " was successful!</span>";
 		echo "</td>";
 		echo "<td class='sidebar' valign='top'>";
 		admin_make_sidebar(); // includes td and /td already
@@ -1548,12 +1538,22 @@ elseif (!$_GET['new'] && !$_POST['submitNew'] && !$_POST['submitNoNew'] &&  !$_G
 	echo "<table border=\"0\" width=\"1000px\"> <!-- super table -->
 			<tr>
 				<td valign=\"top\" style=\"text-align: left;\">";
-					echo "<a href='" .$base_url . "/home.php'" ?> onclick="return redirect('add_taxonset.php?new=new');">
-						<b>Add Taxon set by browsing</b></a><br /><br /> <?php
-					echo "<a href='" .$base_url . "/home.php'" ?> onclick="return redirect('add_taxonset.php?list=list');">
+					if ( $mask_url == 'true' ) {
+						echo "<a href='" .$base_url . "/home.php' onclick=\"return redirect('add_taxonset.php?new=new');\">";
+						echo "<b>Add Taxon set by browsing</b></a><br /><br />";
+						echo "<a href='" .$base_url . "/home.php' onclick=\"return redirect('add_taxonset.php?list=list');\">";
+					}
+					else {
+						echo "<a href='" .$base_url . "/admin/add_taxonset.php?new=new'>";
+						echo "<b>Add Taxon set by browsing</b></a><br /><br />";
+						echo "<a href='" .$base_url . "/admin/add_taxonset.php?list=list'>";
+					}
+					echo "
 						<b> Add Taxon set with voucher list</b></a>
 						  <br />
 						  <br />
+						  ";
+					?>
 	<?php
 	// print as list
 	// open database connection
@@ -1585,8 +1585,17 @@ elseif (!$_GET['new'] && !$_POST['submitNew'] && !$_POST['submitNoNew'] &&  !$_G
 			// query from sequences table
 			?>
 			<li><b>
-			<?php echo "<a href='" .$base_url . "/home.php'" ?> onclick="return redirect('add_taxonset.php?taxonset_name=<?php echo $row -> taxonset_name; ?>');"><?php echo $row -> taxonset_name; ?></a></b>
-			<i><?php 
+			<?php
+			if ( $mask_url == "true" ) {
+				echo "<a href='" .$base_url . "/home.php' ";
+				echo "onclick=\"return redirect('add_taxonset.php?taxonset_name=";
+				echo "$row->taxonset_name');\">$row->taxonset_name</a></b> ";
+			}
+			else {
+				echo "<a href='" .$base_url . "/admin/add_taxonset.php?taxonset_name=$row->taxonset_name";
+				echo "'>$row->taxonset_name</a></b> ";
+			}
+			echo "<i>";
 				$numtax = count(explode("," , $row->taxonset_list));
 				echo $numtax . " taxa";
 				if ($row->taxonset_description != ""){echo ', ' . $row->taxonset_description ;}				
