@@ -720,6 +720,10 @@ elseif (!$_POST['submitNoNew'] && $_GET['code']) {
 <!-- 	show previous and next links -->
 	<?php
 	echo "<h1>" . "$code1" . "</h1>";
+
+	// delete button
+	echo "<input type='submit' />";
+	
 	echo "<table border=\"0\" width=\"960px\"> <!-- super table -->
 			<tr><td valign=\"top\">";
 			
