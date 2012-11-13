@@ -47,6 +47,7 @@ header('Content-type: text/html; charset=utf8');
 		echo "</script>";
 	}
 	echo "\n\n<script type=\"text/javascript\" src=\"" . $base_url . "/includes/jquery.js\"></script>\n";
+	echo "\n\n<script type=\"text/javascript\" src=\"" . $base_url . "/includes/jquery-ui.js\"></script>\n";
 
 	?>
 	
@@ -72,10 +73,27 @@ if( isset($dojo) && $dojo == true ) {
 // redirect function for masking urls
 echo "
 <script type=\"text/javascript\">
-	function redirect(URL) {
-		document.location=URL;
-		return false;
-	}
+	$(document).ready(function() {
+		function redirect(URL) {
+			document.location=URL;
+			return false;
+		}
+	
+		$('#delete_voucher').click(function(){
+			if(confirm('Delete record?')) {
+				$.post('delete_record.php', {id: ''},
+					function(data) {
+						if(data == 'ok') {
+							alert('Your record was successfully deleted');
+							window.location.replace('admin.php');
+						}
+						else {
+							alert('I could not remove your record');
+						}
+					});
+			}
+		});
+	});
 </script>\n";
 ?>
 </head>
