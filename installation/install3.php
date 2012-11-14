@@ -43,7 +43,16 @@ function docheck() {
 	}
 
 	// try to connect to MySQL using host, user and passwd to see whether the info given is correct
-	$connection = @mysql_connect($checkdatabase_host, $checkdatabase_username, $checkdatabase_password) or die ("<html><head><title>Error</title><link rel=\"stylesheet\" href=\"install.css\" type=\"text/css\" /></head><body><div class=\"error\"><h2><img src=\"error.png\" alt=\"\" /> Unable to connect to MySQL database. Make sure that you entered correct host, username and password, please try again</h2></div></body></html>");
+	$connection = @mysql_connect($checkdatabase_host, $checkdatabase_username, $checkdatabase_password);
+	if( !$connection ) {
+		die("<html><head><title>Error</title><link rel=\"stylesheet\" href=\"install.css\" type=\"text/css\" /></head><body><div class=\"error\"><h2><img src=\"error.png\" alt=\"\" /> Unable to connect to MySQL database using socket: <code>/tmp/mysql.sock</code></h2><br />Please modify your MySQL installation file <code>/usr/local/mysql/support-files/my-large.cnf</code> file parameters:
+				<ol>
+					<li>Modify the lines <code>/var/mysqld/mysqld.sock</code> to <code>/tmp/mysql.sock</code></li>
+					<li>Save the file as <code>/etc/my.cnf</code> in your computer</li>
+					<li>Restart your <code>mysqld</code> daemon and continue this installation (press F5 to refresh).</li>
+				</ol>
+				</div></body></html>");
+	}
 
 	mysql_query("CREATE DATABASE IF NOT EXISTS $checkdatabase_name");
 	mysql_select_db($checkdatabase_name) or die ('<html><head><title>Error</title><link rel=\"stylesheet\" href=\"install.css\" type=\"text/css\" /></head><body><div class=\"error\"><h2><img src=\"error.png\" alt=\"\" /> Unable to select database. You need to enter the right MySQL database name</h2></div></body></html>');
