@@ -1,11 +1,2 @@
 [
-	["Cho"],
-	["EF44"],
-	["EF51.9"],
-	["efmrc4"],
-	["EFrcM4"],
-	["Luke"],
-	["Monica"],
-	["Starsky"],
-	["Verdi"],
 ]
