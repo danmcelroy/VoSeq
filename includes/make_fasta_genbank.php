@@ -197,7 +197,8 @@ foreach($genes as $geneCode) {
 				$output .= " $lineage";
 				// need to replace ? with N and put it in frame 
 				// (sequence starts with 1st codon position)
-				$sequences = process_fasta_sequence($row->sequences,
+				$sequences = $row->sequences;
+				//$sequences = process_fasta_sequence($row->sequences,
 				$output .= "\n$sequences\n";
 			}
 		}
