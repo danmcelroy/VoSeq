@@ -28,7 +28,7 @@ function clean_item ($item) {
 	$item = preg_replace('/^\s+/', '', $item);
 	$item = preg_replace('/\s+$/', '', $item);
 	$item = strtolower($item);
-	oreturn $item;
+	return $item;
 }
 function show_errors($se_in) {
 		// error found
@@ -216,7 +216,6 @@ foreach($genes as $geneCode) {
 				// need to replace ? with N and put it in frame 
 				// (sequence starts with 1st codon position)
 				$sequences = $row->sequences;
-				//$sequences = process_fasta_sequence($row->sequences,
 				//$sequences = process_fasta_sequence($row->sequences,$row->readingframe);
 				$output .= "\n$sequences\n";
 			}
