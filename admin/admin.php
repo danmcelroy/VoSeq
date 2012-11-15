@@ -175,7 +175,8 @@ else {
 			?>
 		By <?php 
 			if( $row->latesteditor ) {
-				$editor = utf8_decode($row->latesteditor);
+				//$editor = utf8_decode($row->latesteditor); // This is no really needed
+				$editor = $row->latesteditor;
 				echo $editor;
 			}
 			else {
