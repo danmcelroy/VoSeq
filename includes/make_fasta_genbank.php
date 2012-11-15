@@ -77,7 +77,7 @@ if (trim($_POST['codes']) != ""){
 }else{ unset($raw_codes); }
 //$raw_codes = split("\n", $_POST['codes']);
 
-#geneCodes here
+// geneCodes here
 unset($geneCodes);
 if (isset($_POST['geneCodes'])){
 	foreach ( $_POST['geneCodes'] as $k1=> $c1){ //putting choosen genes into array
@@ -109,7 +109,7 @@ elseif (isset($taxonset_taxa) && ! isset($raw_codes)){$raw_codes = $taxonset_tax
 elseif (! isset($taxonset_taxa) && isset($raw_codes)){$raw_codes = $raw_codes ;}
 else { $errorList[] = "No taxa are chosen!</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pointless to make a table without taxa..."; }
 
-#codes here
+// codes here
 $lines = array();
 
 if (isset($raw_codes)){
@@ -190,9 +190,15 @@ foreach($genes as $geneCode) {
 				}
 				$lineage .= " $row->genus] ";
 				$species = str_replace(" ", "_", $row->species);
-				$output .= ">" . $row->genus . "_" . $species . "_" . $row->code . " [org=$row->genus $row->species] [Specimen-voucher=$row->code]";
-				$output .= " [note=" . $row->description . " gene, partial cds.] $lineage";
-				$output .= "\n$row->sequences\n";
+				$output .= ">" . $row->genus . "_" . $species . "_";
+				$output .= $row->code . " [org=$row->genus $row->species] ";
+				$output .= "[Specimen-voucher=$row->code]";
+				$output .= " [note=" . $row->description . " gene, partial cds.]";
+				$output .= " $lineage";
+				// need to replace ? with N and put it in frame 
+				// (sequence starts with 1st codon position)
+				$sequences = process_fasta_sequence($row->sequences,
+				$output .= "\n$sequences\n";
 			}
 		}
 	}
