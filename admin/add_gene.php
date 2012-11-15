@@ -47,79 +47,6 @@ $admin = true;
 
 
 
-// #################################################################################
-// previous and next links
-// #################################################################################
-if ( isset($_GET['search']) || trim($_GET['search']) != '') {
-		// open database connection
-		$connection = mysql_connect($host, $user, $pass) or die ('Unable to connect!');
-		//select database
-		mysql_select_db($db) or die ('Unable to content');
-		if( function_exists(mysql_set_charset) ) {
-			mysql_set_charset("utf8");
-		}
-
-// generate and execute query
-$id = $_GET['geneCode'];
-$query = "SELECT id FROM ". $p_ . "genes WHERE geneCode = '$id'";
-$result = mysql_query($query) or die("Error in query: $query. " . mysql_error());
-// get result set as object
-$row = mysql_fetch_object($result);
-$current_id = $row->id;
-
-// get previous and next links from search and search_results tables
-$current_id_search_id = $_GET['search'];
-
-// current id of this record in search_results ids
-$query_c_id_t_r  = "SELECT id FROM ". $p_ . "search_results WHERE search_id='$current_id_search_id' AND record_id='$current_id'";
-$result_c_id_t_r = mysql_query($query_c_id_t_r) or die("Error in query: $query_c_id_t_r. " . mysql_error());
-$row_c_id_t_r    = mysql_fetch_object($result_c_id_t_r);
-
-$link_current  = $row_c_id_t_r->id;
-
-// link previous
-$link_previous = $link_current - 1;
-$query_link_previous      = "SELECT id FROM ". $p_ . "search_results WHERE search_id='$current_id_search_id' AND id='$link_previous'";
-$result_link_previous     = mysql_query($query_link_previous) or die("Erro in query: $query_link_previous. " . mysql_error());
-$row_result_link_previous = mysql_fetch_object($result_link_previous);
-if ($row_result_link_previous)
-	{
-	$query_lp  = "SELECT record_id FROM ". $p_ . "search_results WHERE id='$link_previous'";
-	$result_lp = mysql_query($query_lp) or die("Error in query: $query_lp. " . mysql_error());
-	$row_lp    = mysql_fetch_object($result_lp);
-	$previous  = $row_lp->record_id;
-	$query_lpcode  = "SELECT geneCode FROM ". $p_ . "genes WHERE id='$previous'";
-	$result_lpcode = mysql_query($query_lpcode) or die("Error in query: $query_lpcode. " . mysql_error());
-	$row_lpcode    = mysql_fetch_object($result_lpcode);
-	$prevgeneCode      = $row_lpcode->geneCode;
-	}
-else
-	{
-	$link_previous = false;
-	}
-
-// link next
-$link_next = $link_current + 1;
-$query_link_next  = "SELECT id FROM ". $p_ . "search_results WHERE search_id='$current_id_search_id' AND id='$link_next'";
-$result_link_next = mysql_query($query_link_next) or die("Erro in query: $query_link_next. " . mysql_error());
-$row_result_link_next = mysql_fetch_object($result_link_next);
-if ($row_result_link_next)
-	{
-	$query_ln  = "SELECT record_id FROM ". $p_ . "search_results WHERE id='$link_next'";
-	$result_ln = mysql_query($query_ln) or die("Error in query: $query_ln. " . mysql_error());
-	$row_ln    = mysql_fetch_object($result_ln);
-	$next      = $row_ln->record_id;
-	$query_lncode  = "SELECT geneCode FROM ". $p_ . "genes WHERE id='$next'";
-	$result_lncode = mysql_query($query_lncode) or die("Error in query: $query_lncode. " . mysql_error());
-	$row_lncode    = mysql_fetch_object($result_lncode);
-	$nextgeneCode      = $row_lncode->geneCode;
-	}
-else
-	{
-	$link_next = false;
-	}
-} // end previous and next links
-
 
 
 // #################################################################################
@@ -377,39 +304,8 @@ elseif (!$_POST['submitNoNew'] && $_GET['geneCode']) {
 	
 	?>
 	
-<!-- 	show previous and next links -->
-	<?php
-	echo "<h1>" . $geneCode1 . "</h1>";
-	echo "<table border=\"0\" width=\"960px\"> <!-- super table -->
-			<tr><td valign=\"top\">";
-			
-	if ( isset($_GET['search']) || trim($_GET['search']) != '')
-		{
-		if ($link_previous)
-			{ ?>
-			<span dojoType="tooltip" connectId="previous" delay="1" toggle="explode">Previous</span>
-			<?php echo "<a href='" .$base_url . "/home.php'" ?> onclick="return redirect('add_gene.php?genecode=<?php echo $prevgeneCode; ?>&amp;search=<?php echo $current_id_search_id; ?>');"><img src="images/leftarrow.png" class="link" alt="previous" id="previous" /></a>&nbsp;&nbsp;
-			<?php
-			}
-		else
-			{
-			echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-			}
-		
-		if ($link_next)
-			{ ?>
-			<span dojoType="tooltip" connectId="next" delay="1" toggle="explode">Next</span>
-			<?php echo "<a href='" .$base_url . "/home.php'" ?> onclick="return redirect('add_gene.php?genecode=<?php echo $nextgeneCode; ?>&amp;search=<?php echo $current_id_search_id; ?>');"><img src="images/rightarrow.png" class="link" alt="next" id="next" /></a>
-			<?php
-			}
-		else
-			{
-			echo "&nbsp;";
-			}
-		}
-	?>
 	
-	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 <table width="800" border="0"> <!-- big parent table -->
 <tr><td valign="top">
 	<table border="0" cellspacing="10"> <!-- table child 1 -->
@@ -632,29 +528,34 @@ elseif ($_POST['submitNoNew']) {
 // #################################################################################
 elseif (!$_GET['new'] && !$_POST['submitNew'] && !$_POST['submitNoNew'] &&  !$_GET['geneCode'] ) {
 	// get title
-		$title = "$config_sitename - Gene list";
-				
-		// print html headers
-		include_once('../includes/header.php');
-		admin_nav();
-				
-		// begin HTML page content
-		echo "<div id=\"content_narrow\">";
-		echo "<table border=\"0\" width=\"850px\"> <!-- super table -->
-				<tr><td valign=\"top\">";
-				 echo "<a href='" .$base_url . "/home.php'" ?> onclick="return redirect('add_gene.php?new=new');"><b>Add gene</b></a><br />
-<?php
+	$title = "$config_sitename - Gene list";
+			
+	// print html headers
+	include_once('../includes/header.php');
+	admin_nav();
+			
+	// begin HTML page content
+	echo "<div id=\"content_narrow\">";
+	echo "<table border=\"0\" width=\"850px\"> <!-- super table -->
+			<tr><td valign=\"top\">";
+	if( $mask_url == "true" ) {
+		echo "<a href='" .$base_url . "/home.php' onclick=\"return redirect('add_gene.php?new=new');\"><b>Add gene</b></a><br />";
+	}
+	else {
+		echo "<a href='" .$base_url . "/admin/add_gene.php?new=new'><b>";
+		echo "Add gene</b></a><br />";
+	}
 
-		// print as list
-		// open database connection
-		@$connection = mysql_connect($host, $user, $pass) or die ('Unable to connect!');
-		
-		//select database
-		mysql_select_db($db) or die ('Unable to content');
-		if( function_exists(mysql_set_charset) ) {
-			mysql_set_charset("utf8");
-		}
-		// generate and execute query from genes table
+	// print as list
+	// open database connection
+	@$connection = mysql_connect($host, $user, $pass) or die ('Unable to connect!');
+	
+	//select database
+	mysql_select_db($db) or die ('Unable to content');
+	if( function_exists(mysql_set_charset) ) {
+		mysql_set_charset("utf8");
+	}
+	// generate and execute query from genes table
 	$query = "SELECT id, geneCode, length, description, timestamp FROM ". $p_ . "genes ORDER BY geneCode";
 	$result = mysql_query($query) or die("Error in query: $query. " . mysql_error());
 	
@@ -664,24 +565,34 @@ elseif (!$_GET['new'] && !$_POST['submitNew'] && !$_POST['submitNoNew'] &&  !$_G
 		// print article titles
 		echo "<h1>Existing genes:</h1>\n";
 
-		echo "<b>Create a definition for genes. Specify \"Reading frame\" if you want to create datasets by codon positions.</b>";
+		echo "<b>Create a definition for genes. Specify \"Reading frame\" if you";
+		echo " want to create datasets by codon positions.</b>";
 
 		echo "<ul>";
-		$i = 1; // count for tooltips in dojo
-		while ($row = mysql_fetch_object($result))
-			{
-			// query from sequences table
-			$code    = $row->geneCode;
-			$queryS  = "SELECT id, geneCode, length, timestamp FROM ". $p_ . "genes WHERE geneCode='$geneCode'";
-			$resultS = mysql_query($queryS) or die("Error in query: $queryS. " . mysql_error());
+		while ($row = mysql_fetch_object($result)) {
+			$descrutf8 = "";
 			$descrutf8 = utf8_decode($row->description);
-			?>
-			<li><b>
-			<?php echo "<a href='" .$base_url . "/home.php'" ?> onclick="return redirect('add_gene.php?geneCode=<?php echo $row -> geneCode; ?>');"><?php echo $row -> geneCode; ?></a></b>
-			<i><?php echo $descrutf8; echo ' - ' . $row->length . 'bp.'; ?></i>
-			<?php
+
+			echo "<li>";
+			if( $mask_url == "true" ) {
+				echo "<a href='" . $base_url . "/home.php' onclick=\"return ";
+				echo "redirect('add_gene.php?geneCode=$row->geneCode');\">";
+				echo "<b>$row->geneCode</b></a>";
+				echo " <i>$descrutf8";
+				echo ' - ' . $row->length . 'bp.';
+				echo "</i>";
 			}
+			else {
+				echo "<a href='" . $base_url . "/admin/add_gene.php?geneCode=";
+				echo $row->geneCode . "'><b>$row->geneCode</b></a>";
+				echo " <i>$descrutf8";
+				echo ' - ' . $row->length . 'bp.';
+				echo "</i>";
+			}
+			echo "</li>";
 		}
+		echo "</ul>";
+	}
 
 	// if no records present
 	// display message
