@@ -1,5 +1,4 @@
 [
-	["Diptera"],
+	["Hymenoptera"],
 	["Lepidoptera"],
-	["ööööö"],
 ]
