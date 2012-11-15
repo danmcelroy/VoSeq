@@ -1,6 +1,8 @@
 VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 Changelog:
+*Version 1.3.2
+	- [Carlos 2012-11-15] Fixing mask_url bug in add_gene.php file.
 	- [Carlos 2012-11-14] Fixing installation script to consider altenate socket
 
 *Version 1.3.1
