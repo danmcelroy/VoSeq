@@ -61,6 +61,23 @@ function show_errors($se_in) {
 		make_footer($date_timezone, $config_sitename, $version, $base_url);
 		?></body></html><?php
 }
+
+
+// #################################################################################
+// Section: Function - process_fasta_sequence
+// #################################################################################
+// @brief: takes a sequence string and puts it in frame (starts with 1st codon position
+// @input:  string sequence
+// @input:  int readingframe 
+// @output: string sequence in frame
+function process_fasta_sequence($sequences,$readingframe) {
+	echo "reading frame: $readingframe\n";
+	exit(0);
+}
+
+
+
+// open database connections
 // #################################################################################
 // Section: Get code(s) and gene(s) and taxonomic info
 // #################################################################################
@@ -162,6 +179,7 @@ foreach($genes as $geneCode) {
 						 " . $p_ . "vouchers.genus, 
 						 " . $p_ . "vouchers.species, 
 						 " . $p_ . "sequences.sequences, 
+						 " . $p_ . "genes.readingframe, 
 						 " . $p_ . "genes.description FROM 
 						 " . $p_ . "vouchers, 
 						 " . $p_ . "sequences, 
@@ -197,7 +215,7 @@ foreach($genes as $geneCode) {
 				$output .= " $lineage";
 				// need to replace ? with N and put it in frame 
 				// (sequence starts with 1st codon position)
-				$sequences = process_fasta_sequence($row->sequences,
+				$sequences = process_fasta_sequence($row->sequences,$row->readingframe);
 				$output .= "\n$sequences\n";
 			}
 		}
