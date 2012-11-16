@@ -217,7 +217,7 @@ foreach($genes as $geneCode) {
 				// (sequence starts with 1st codon position)
 <<<<<<< HEAD
 				$sequences = $row->sequences;
-				//$sequences = process_fasta_sequence($row->sequences,
+				//$sequences = process_fasta_sequence($row->sequences,$row->readingframe);
 =======
 				$sequences = process_fasta_sequence($row->sequences,$row->readingframe);
 >>>>>>> special_char
