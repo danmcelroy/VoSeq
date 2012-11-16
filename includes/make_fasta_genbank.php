@@ -82,7 +82,15 @@ function process_fasta_sequence($sequence,$readingframe) {
 		$distances[] = strpos($sequence, "C");
 		$distances[] = strpos($sequence, "T");
 		$distances[] = strpos($sequence, "G");
-		print_r($distances);
+
+		if( count($distances) > 0 ) {
+			sort($distances);
+			$nearest = $distances[0] + 1;
+			echo $nearest;
+		}
+		else {
+			return $sequence;
+		}
 	}
 	// else: 1st bp is not ?
 	exit(0);
