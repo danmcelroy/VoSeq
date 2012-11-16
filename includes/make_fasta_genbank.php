@@ -216,6 +216,7 @@ foreach($genes as $geneCode) {
 				// need to replace ? with N and put it in frame 
 				// (sequence starts with 1st codon position)
 				$sequences = $row->sequences;
+				//$sequences = process_fasta_sequence($row->sequences,$row->readingframe);
 				$output .= "\n$sequences\n";
 			}
 		}
