@@ -641,12 +641,11 @@ elseif ($_POST['submitNew']) {
 				<?php 
 				if( $mask_url == "true" ) {
 					echo "$code". "</b>: ";
-					echo "<a href='" .$base_url . "/home.php'\" onclick=\"return redirect('listseq.php?code=$code');\">Add Sequences</a></li>";
+					echo "<a href='" . $base_url . "/home.php' onclick=\"return redirect('listseq.php?code=$code');\">Add Sequences</a></li>";
 					echo "<li><a href='" .$base_url . "/home.php' onclick=\"return redirect('add.php?new=new');\">Add another new record</a>.</li>";
 					echo "<li><a href='" .$base_url . "/home.php' onclick=\"return redirect('admin.php');\">Go back to the main menu</a>.</li>";
 				}
 				else {
-					echo "aaaaa";
 					echo $code. "</b>: <a href='" . $base_url;
 					echo "/admin/listseq.php?code=$code'>Add Sequences</a></li>";
 					echo "<li><a href='" . $base_url . "/admin/add.php?new=new'>Add another new record</a>.</li>";
@@ -1309,18 +1308,19 @@ elseif ($_POST['submitNoNew'])
 			</td>
 			</tr>
 		</table></li>
+		<li>Enter sequences for record of code <b>
 		<?php
 		if( $mask_url == "true" ) {
-			echo "<li>Enter sequences for record of code <b>";
-			echo "$code1</b>: <a href='" .$base_url . "/home.php'\" onclick=\"return redirect('listseq.php?code=$code1');\">Add Sequences</a></li>";
-			echo "<li><a href='" .$base_url . "/home.php'\" onclick=\"return redirect('add.php?new=new');\">Add a new record</a></li>";
-			echo "<li><a href='" .$base_url . "/home.php'\" onclick=\"return redirect('admin.php');\">Go back to the main menu</a>.</span></li>";
+			echo "$code1". "</b>: ";
+			echo "<a href='" . $base_url . "/home.php' onclick=\"return redirect('listseq.php?code=$code1');\">Add Sequences</a></li>";
+			echo "<li><a href='" .$base_url . "/home.php' onclick=\"return redirect('add.php?new=new');\">Add another new record</a>.</li>";
+			echo "<li><a href='" .$base_url . "/home.php' onclick=\"return redirect('admin.php');\">Go back to the main menu</a>.</li>";
 		}
 		else {
-			echo "<li>Enter sequences for record of code <b>";
-			echo "$code1</b>: <a href='" .$base_url . "/home.php'\" onclick=\"return redirect('listseq.php?code=$code1');\">Add Sequences</a></li>";
-			echo "<li><a href='" .$base_url . "/home.php'\" onclick=\"return redirect('add.php?new=new');\">Add a new record</a></li>";
-			echo "<li><a href='" .$base_url . "/home.php'\" onclick=\"return redirect('admin.php');\">Go back to the main menu</a>.</span></li>";
+			echo $code1. "</b>: <a href='" . $base_url;
+			echo "/admin/listseq.php?code=$code1'>Add Sequences</a></li>";
+			echo "<li><a href='" . $base_url . "/admin/add.php?new=new'>Add another new record</a>.</li>";
+			echo "<li><a href='" . $base_url . "/admin/admin.php'>Go back to the main menu</a>.</li>";
 		}
 		echo "</ol>";
 		echo "</td>";
