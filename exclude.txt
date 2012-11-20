@@ -15,5 +15,6 @@ myoutfile
 *csv
 *~
 *tnt
+*fasta*txt
 result.txt
 maintenance/*txt
