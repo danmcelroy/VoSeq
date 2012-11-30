@@ -1,6 +1,15 @@
 VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 Changelog:
+*Version 1.3.4
+	- [Tobias 2012-11-30] Added automatical update of gene codes in primer and sequences tables
+		when updating gene names.
+	- [Tobias 2012-11-30] Fixed small redirect bug on admin page.
+	- [Tobias 2012-11-29] Fixed bug in the code+genepair duplicate control for upload batch.
+	- [Tobias 2012-11-29] Added a batch update script allowing insertion of new values into
+		empty fields for already existing vouchers, sequences and primers. Will not overwrite
+		already existing values.
+
 *Version 1.3.3
 	- [Carlos 2012-11-20] Fixing mask_url bug in add.php file.
 
