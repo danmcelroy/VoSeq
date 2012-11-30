@@ -423,8 +423,7 @@ elseif ($_POST['submitNoNew']) {
 		// get new code
 		$newCode = $geneCode1;
 		//  if new code != old code
-		if ($oldCode != $newCode)
-			{
+		if ($oldCode != $newCode) {
 			// check for duplicate
 			$queryCode1 = "SELECT geneCode FROM ". $p_ . "genes WHERE geneCode='$newCode'";
 			$resultCode1 = mysql_query($queryCode1) or die ("Error in query: $queryCode1. " . mysql_error());
@@ -461,9 +460,16 @@ elseif ($_POST['submitNoNew']) {
 		$description = utf8_encode($description);
 		// generate and execute query UPDATE
 		$query = "UPDATE ". $p_ . "genes SET geneCode='$geneCode1', length='$length', description='$description', readingframe='$readingframe', notes='$notes', timestamp=NOW() WHERE id='$id1'";
-
 		$result = mysql_query($query) or die ("Error in query: $query. " . mysql_error());
 		
+		//update all sequences and primers with old genecode to new genecode
+		if ($oldCode != $newCode){
+			$tablelist = array("sequences", "primers");
+			foreach ($tablelist as $tabLe){
+				$querygC = "UPDATE ". $p_ . "$tabLe SET geneCode='$geneCode1' WHERE geneCode='$oldCode'";
+				$resultgC = mysql_query($querygC) or die ("Error in query: $querygC. " . mysql_error());
+			}
+		}
 		// get title
 		$title = "$config_sitename - Record " . $geneCode1 . " updated";
 				

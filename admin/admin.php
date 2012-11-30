@@ -17,8 +17,8 @@
 
 //check if conf.php exists. If not, this is a fresh download and needs installation
 if( !file_exists("../conf.php") ) {
-        header("Location: installation/NoConfFile.php" );
-        exit(0);
+	header("Location: installation/NoConfFile.php" );
+	exit(0);
 }
 
 
@@ -68,29 +68,51 @@ if( function_exists(mysql_set_charset) ) {
 
 // #################################################################################
 // Section: print beginning of page
-// #################################################################################
+// ############################################################################
 echo "<table border=\"0\" width=\"850px\"> <!-- super table -->
 			<tr><td valign=\"top\">";
-
+echo "\n<table border=\"0\" width=\"400px\"> <!-- menu table -->";
+echo "\n<tr>";
 if( $mask_url == "true" ) {
-	echo "<a href='" .$base_url . "/home.php' onclick=\"return redirect('add.php?new=new')\"><b>Add new record</b></a>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-	echo "<a href='" .$base_url . "/home.php' onclick=\"return redirect('upload_sequences.php')\"><b>Upload batch sequences/vouchers</b></a><br />
-		<br />";
-	echo "<a href='" .$base_url . "/home.php' onclick=\"return redirect('../login/register-form.php')\"><b>Add new user</b></a>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-	echo "<a href='" .$base_url . "/home.php' onclick=\"return redirect('add_gene.php')\"><b>Add/edit/view gene information</b></a><br />
-		<br />";
-	echo "<a href='" .$base_url . "/home.php' onclick=\"return redirect('add_taxonset.php')\"><b>Add/edit/view Taxon sets</b></a><br />";
+	echo "\n\t<td valign=\"top\"><a href='" .$base_url . "/home.php' ";
+	echo "onclick=\"return redirect('add.php?new=new')\">";
+	echo "<b>Add new record</b></a>";
+	echo "</td>";
+
+	echo "\n\t<td valign=\"top\"><a href='" .$base_url . "/home.php' ";
+	echo "onclick=\"return redirect('upload_sequences.php')\">";
+	echo "<b>Upload batch sequences/vouchers</b></a>";
+	echo "</td>\n</tr>";
+
+	echo "\n<tr>";
+	echo "\n\t<td valign=\"top\"><a href='" .$base_url . "/home.php' ";
+	echo "onclick=\"return redirect('../login/register-form.php')\">";
+	echo "<b>Add new user</b></a></td>";
+
+	echo "\n\t<td valign=\"top\"><a href='" .$base_url . "/home.php' ";
+	echo "onclick=\"return redirect('update_batch.php')\">";
+	echo "<b>Batch update new information</b></a></td>";
+	echo "\n</tr>";
+
+	echo "\n<tr>";
+	echo "\n\t<td valign=\"top\"><a href='" .$base_url . "/home.php' ";
+	echo "onclick=\"return redirect('add_taxonset.php')\">";
+	echo "<b>Add/edit/view Taxon sets</b></a></td>";
+
+	echo "\n\t<td valign=\"top\"><a href='" .$base_url . "/home.php' ";
+	echo "onclick=\"return redirect('add_gene.php')\">";
+	echo "<b>Add/edit/view gene information</b></a></td>";
+	echo "\n</tr>";
 }
 else {
-	echo "<a href='" .$base_url . "/admin/add.php?new=new'><b>Add new record</b></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-	echo "<a href='" .$base_url . "/admin/upload_sequences.php'><b>Upload batch sequences/vouchers</b></a><br /><br />";
-	echo "<a href='" .$base_url . "/login/register-form.php'><b>Add new user</b></a>
-		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-	echo "<a href='" .$base_url . "/admin/add_gene.php'><b>Add/edit/view gene information</b></a><br /><br />";
-	echo "<a href='" .$base_url . "/admin/add_taxonset.php'><b>Add/edit/view Taxon sets</b></a><br />";
+	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/add.php?new=new'><b>Add new record</b></a></td>";
+	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/upload_sequences.php'><b>Upload batch sequences/vouchers</b></a></td></tr>";
+	echo "<tr><td valign=\"top\"><a href='" .$base_url . "/login/register-form.php'><b>Add new user</b></a></td>";
+	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/update_batch.php'><b>Batch update new information</b></a></td></tr>";
+	echo "<tr><td valign=\"top\"><a href='" .$base_url . "/admin/add_taxonset.php'><b>Add/edit/view Taxon sets</b></a></td>";
+	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/add_gene.php'><b>Add/edit/view gene information</b></a></td></tr>";
 }
+echo "</table>";
 
 	// generate and execute query from Vouchers table
 	$query = "SELECT id, code, genus, species, extractor, latesteditor, timestamp FROM " . $p_ . "vouchers ORDER BY timestamp DESC LIMIT 0, 10";
@@ -169,8 +191,17 @@ else {
 				echo "</li>";
 			}
 			// add new sequence
-			echo "<li><a href=\"" . $base_url . "/home.php\" onclick=\"return redirect('listseq.php?code=" . $code . "');\"><b>::Add new sequence::</b></a></li>";
+			if( $mask_url == "true" ) {
+				echo "<li><a href=\"" . $base_url . "/home.php\" ";
+				echo "onclick=\"return redirect('listseq.php?code=";
+				echo $code . "');\"><b>::Add new sequence::</b></a></li>";
 				echo "</ul>";
+			}
+			else {
+				echo "<li><a href=\"" . $base_url . "/admin/listseq.php?code=";
+				echo $code . "\"><b>::Add new sequence::</b></a></li>";
+				echo "</ul>";
+			}
 				
 			?>
 		By <?php 

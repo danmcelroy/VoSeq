@@ -136,23 +136,11 @@ if ( !in_array('code', $fields)) {
 	$errorList[] = "There is no <b>Code</b> field at all
 					</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;can't proceed without unique codes!" ;
 }
-if ( $input_type == 'vouch') {
-	///find out if we have a genus field at all
-	if ( !in_array('genus', $fields)) {
-		$errorList[] = "There is no <b>Genus</b> field at all
-						</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;can't proceed without genus names!" ;
-	}
-}
 if ( $input_type == 'seq') {
-	///find out if we have a genus field at all
+	///find out if we have a geneCode field at all
 	if ( ! in_array('genecode', $fields)){
 		$errorList[] = "There is no <b>Genecode</b> field at all
 						</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no use to proceed without genecodes!" ;
-	}
-		///find out if we have a sequences field at all
-	if ( ! in_array('sequences', $fields)){
-		$errorList[] = "There is no <b>Sequences</b> field at all
-						</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no use to proceed without sequences!" ;
 	}
 }
 // check for duplicate headers
@@ -291,9 +279,7 @@ else {
 			}
 		}
 		unset($item, $xrow_num);
-
-		// Checking for duplicate code+Genecode pairs and gives error 
-		// message if found
+		//Checking for duplicate code+Genecode pairs and gives error message if found
 		$codeandgeneCode_array = $lines;
 		$codeandgeneCode_test = array();
 		foreach($codeandgeneCode_array AS $item) {
@@ -322,7 +308,7 @@ else {
 		unset($item);
 	}
 
-	// checks for existing codes - positive for sequence adding, negative for voucher adding
+	// checks for existing codes for updating - for seq code+genecode combo
 	$xrow_num = 0;
 	foreach($lines AS $item) {
 		$xrow_num = $xrow_num + 1;
@@ -338,54 +324,35 @@ else {
 			if( function_exists(mysql_set_charset) ) {
 				mysql_set_charset("utf8");
 			}
-			$query_code_test = "SELECT code FROM ". $p_ . "vouchers WHERE code='$item_columns[$where_code]'";
+			if ($input_type == "vouch") {
+				$query_code_test = "SELECT code FROM ". $p_ . "vouchers WHERE code='$item_columns[$where_code]'";
+			}
+			else {
+				$query_code_test = "SELECT code FROM ". $p_ . "sequences WHERE code='$item_columns[$where_code]' AND geneCode='$item_columns[$where_geneCode]'";
+			}
 			$result_code_test = mysql_query($query_code_test) or die("Error in query: $query. " . mysql_error());
 			// if records present
 			$num_rows_code_test = mysql_num_rows($result_code_test);
-			if ($input_type == 'vouch'){
-				if( $num_rows_code_test > 0 ) {
-					$errorList[] = "Code $item_columns[$where_code] in row <b>$xrow_num</b> already exists!
-					</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please update voucher normally!</b>" ;
+			if( $num_rows_code_test == 0 ) {
+				if ($input_type == "vouch") {
+					$errorList[] = "Code $item_columns[$where_code] in row <b>$xrow_num</b> doesn't exist!
+									</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									Can't add values to a non-existing voucher!</b>" ;
+				}
+				else {
+					$errorList[] = "A sequence for code <b>$item_columns[$where_code]</b> and <b>$item_columns[$where_geneCode]</b> 
+									in row <b>$xrow_num</b> doesn't exist!
+									</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									Can't add values to a non-existing sequence!</b>" ;
 				}
 			}
-			if ($input_type == 'seq'){
-				if( $num_rows_code_test == 0 ) {
-					$errorList[] = "Code $item_columns[$where_code] in row <b>$xrow_num</b> doesn't exists!
-									</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									Can't add sequences to a non-existing voucher!</b>" ;
-				}
-			else {
-				$query_c_gc_test = "SELECT code FROM ". $p_ . "sequences WHERE code='$item_columns[$where_code]' AND geneCode='$item_columns[$where_geneCode]'";
-				$result_c_gc_test = mysql_query($query_c_gc_test) or die("Error in query: $query. " . mysql_error());
-				// if records present
-				$num_rows_c_gc_test = mysql_num_rows($result_c_gc_test);
-				if( $num_rows_c_gc_test > 0 ) {
-					$errorList[] = "Code $item_columns[$where_code] already have a $item_columns[$where_geneCode] sequence (row: <b>$xrow_num</b>)!
-									</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									Won't overwrite existing sequences. Please do that normally!</b>" ;
-				}
-			}
-		}
-	}
-}
-unset($item, $xrow_num,$item_columns);
-
-//validate text input fields code, genus, longitude and latitude
-if ($input_type == 'vouch') {
-	// checking genus field for empty values and in that case generating error
-	$where_genus = array_search("genus", $field_array);
-	$xrow_num = 0;
-	foreach($lines AS $item) {
-		$code_num = $xrow_num;
-		$xrow_num = $xrow_num + 1;
-		$item_columns = explode("	", $item);
-		if (trim($item_columns[$where_genus]) == ''){
-			$errorList[] = "Invalid entry: <b>Genus</b> in row <b>$xrow_num</b>(code = $code_array[$code_num])";
 		}
 	}
 	unset($item, $xrow_num,$item_columns);
 
-		// checking genus field for empty values and in that case generating error
+//validate text input fields code, longitude and latitude
+if ($input_type == 'vouch') {
+	// checking extraction date field field for non-date formatted values and in that case generating error
 	$where_extrDate = array_search("dateExtraction", $field_array);
 	$xrow_num = 0;
 	if ($where_extrDate != False){
@@ -484,6 +451,60 @@ else {
 	}
 	unset($item, $xrow_num,$item_columns);
 }
+//for updating, checking all values against db to see if some field is already filled
+
+foreach ($field_array as $upfield) {
+	if ($upfield !== "code" && $upfield !== "geneCode") {
+		$where_up = array_search($upfield, $field_array);
+		$xrow_num = 0;
+		foreach($lines AS $item) {
+			$xrow_num = $xrow_num + 1;
+			$item_columns = explode("	", $item);
+			if (trim($item_columns[$where_up]) !== '') {
+				// open database connection
+				@$connection = mysql_connect($host, $user, $pass) or die ('Unable to connect!');
+				//select database
+				mysql_select_db($db) or die ('Unable to content');
+				if( function_exists(mysql_set_charset) ) {
+					mysql_set_charset("utf8");
+				}
+				if ($input_type == 'vouch') { $which_table = "vouchers";}
+				else {
+					if ($upfield == "primer1" || $upfield == "primer2" || $upfield == "primer3" || $upfield == "primer4"|| $upfield == "primer5" || $upfield == "primer6" ) {
+						$which_table = "primers";
+					}
+					else { $which_table = "sequences";}
+				}
+				if ($input_type == 'seq') {
+					$query_code_test = "SELECT $upfield FROM ". $p_ . "$which_table WHERE code='$item_columns[$where_code]' AND geneCode='$item_columns[$where_geneCode]'";
+				}
+				else {
+					$query_code_test = "SELECT $upfield FROM ". $p_ . "$which_table WHERE code='$item_columns[$where_code]'";
+				}
+				$result_code_test = mysql_query($query_code_test) or die("Error in query: $query_code_test. " . mysql_error());
+				// if records present
+				$num_rows_code_test = mysql_num_rows($result_code_test);
+				if( $num_rows_code_test > 0 ) {
+					while ($row = mysql_fetch_object($result_code_test)) {
+						if (trim($row->$upfield) !== ''){
+							if ($input_type == "vouch"){
+								$errorList[] = "Code <b>$item_columns[$where_code]</b> in row <b>$xrow_num</b> already have information in field <b>$upfield</b>!
+												</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												Please edit this manually!</b>" ;
+							}
+							else {
+								$errorList[] = "Code <b>$item_columns[$where_code]</b> for gene <b>$item_columns[$where_geneCode]</b> in row <b>$xrow_num</b> already have information in field <b>$upfield</b>!
+												</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												Please edit this manually!</b>" ;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 
 //check for error and if none proceed with inputting into mysql db
 if (sizeof($errorList) != 0 ) {
@@ -495,7 +516,7 @@ if (sizeof($errorList) != 0 ) {
 }
 else {
 	foreach($lines AS $item) {
-		unset($q_values, $q_fields, $q_primers, $fields_to_query, $created_record, $q_primer_fields, $q_primer_values, $q_field_array, $if_primers, $q_edit_add);
+		unset($prexists, $qadd_primers, $qup_primers, $qup_fields, $qup_primer_fields, $q_values, $q_fields, $q_primers, $fields_to_query, $created_record, $q_primer_fields, $q_primer_values, $q_field_array, $if_primers, $q_edit_add);
 		// open database connection
 		@$connection = mysql_connect($host, $user, $pass) or die ('Unable to connect!');
 		//select database
@@ -511,12 +532,17 @@ else {
 
 		//setting the edits add values
 		$latesteditor = utf8_encode($_SESSION['SESS_FIRST_NAME']. " ". $_SESSION['SESS_LAST_NAME']);
+		$edit_columns = explode("	", $item);
 		if ($input_type == 'vouch') {
-			$editsadd = "Added by ". $latesteditor ." on ";
+			$editsadd = "Voucher information updated by ". $latesteditor ." on ";
 		}
 		else {
-			$edit_columns = explode("	", $item);
-			$editsadd = $edit_columns[$where_geneCode] . " sequence added by " . $latesteditor . " on ";
+			if (array_search("primer1", $field_array) || array_search("primer2", $field_array) ||array_search("primer3", $field_array) ||array_search("primer4", $field_array) ||array_search("primer5", $field_array) || array_search("primer6", $field_array) ) {
+				$editsadd = $edit_columns[$where_geneCode] . " sequence and primer information updated by " . $latesteditor . " on ";
+			}
+			else {
+				$editsadd = $edit_columns[$where_geneCode] . " sequence information updated by " . $latesteditor . " on ";
+			}
 		}
 
 		//mysql_query("time for add-list");
@@ -525,103 +551,125 @@ else {
 		$rowtime    = mysql_result($resulttime,0);
 		$editsadd = $editsadd . $rowtime . "\n";
 		$queryed = "SELECT edits FROM ". $p_ . "vouchers WHERE code='$edit_columns[$where_code]'";
-		$resulted = mysql_query($queryed) or die ("Error in query: $querytime. " . mysql_error());
-
+		$resulted = mysql_query($queryed) or die ("Error in query: $queryed. " . mysql_error());
 		//check for empty edits field
 		if (mysql_num_rows($resulted) > 0) {
 			$rowed    = mysql_result($resulted,0);
 			//adding to edits
 			$editsadd = $editsadd . $rowed ;
 		}
-		else {
-			//$editsadd = $editsadd ; 
-		}
 			
 		// generate and execute query
 		if ($input_type == 'vouch') {
-			$q_fields = "INSERT INTO ". $p_ . "vouchers(";
+			$qup_start = "UPDATE ". $p_ . "vouchers SET ";
 		}
 		else {
-			$q_fields = "INSERT INTO ". $p_ . "sequences("; $q_primers = "INSERT INTO ". $p_ . "primers(";
+			$qup_start = "UPDATE ". $p_ . "sequences SET "; 
+			if (array_search("primer1", $field_array) || array_search("primer2", $field_array) ||array_search("primer3", $field_array) ||array_search("primer4", $field_array)) {
+				$querypr = "SELECT id FROM ". $p_ . "primers WHERE code='$edit_columns[$where_code]' AND geneCode='$edit_columns[$where_geneCode]'";
+				$resultpr = mysql_query($querypr) or die ("Error in query: $querypr. " . mysql_error());
+				if (mysql_num_rows($resultpr) > 0) {
+					$prexists = "TRUE";
+				}
+				else {
+					$prexists = "FALSE";
+				}
+			}
 		}
-
+		//$qup_fields = array();$qup_primer_fields = array();
 		foreach ($field_array as $field) {
 			$item_columns = explode("	", $item); // enter field value into query
 			$where_field = array_search($field, $field_array);
-			if ($field == 'sequences') {
-				$cleaned_sequences = preg_replace("/\s/", "",trim($item_columns[$where_field]));
-				$cleaned_sequences = strtoupper($cleaned_sequences);
-				$q_values[] = "'$cleaned_sequences'";
-				$q_field_array[] = $field;
-			}
-			elseif ($field == 'primer1' || $field == 'primer2' || $field == 'primer3' || $field == 'primer4' || $field == 'primer5' || $field == 'primer6') {
-				$if_primers = $if_primers + 1;
-				$q_primer_fields[] = $field;
-				$q_primer_values[] = "'$item_columns[$where_field]'";
-			}
-			else {
-				$q_field_array[] = $field;
-
-				// check is value is empty
-				if( trim($item_columns[$where_field]) == "" ) {
-					$q_values[] = "NULL";
-				}
-				// check is value is "null"
-				elseif( trim(strtoupper($item_columns[$where_field])) == "NULL" ) {
-					$q_values[] = "NULL";
-				}
+			if (trim($item_columns[$where_field]) !== '') {
+				if ($field == "code") { 
+					$created_record[] = $item_columns[$where_field];
+					$actual_code = $item_columns[$where_field];
+				} // just adds the code to a list to show as successful upon finished creations, skips adding code to update query
+				elseif ($field == "geneCode") { 
+					$created_record[] = $item_columns[$where_field];
+					$actual_geneCode = $item_columns[$where_field];
+				} // just adds the genecode to a list to show as successful upon finished creations, skips adding genecode to update query
 				else {
-					$q_values[] = "'$item_columns[$where_field]'";
+					if ($field == 'sequences') {
+						$cleaned_sequences = preg_replace("/\s/", "",trim($item_columns[$where_field]));
+						$cleaned_sequences = strtoupper($cleaned_sequences);
+						$qup_fields[] = "$field='$cleaned_sequences'";
+					}
+					elseif ($field == 'primer1' || $field == 'primer2' || $field == 'primer3' || $field == 'primer4' || $field == 'primer5' || $field == 'primer6') {
+						$if_primers = $if_primers + 1;
+						$q_primer_fields[] = $field;
+						$q_primer_values[] = "'$item_columns[$where_field]'";
+						$qup_primer_fields[] = "$field='$item_columns[$where_field]'";
+					}
+					else {
+						// check is value is empty
+						if( trim($item_columns[$where_field]) == "" ) {
+							$q_value = "NULL";
+						}
+						// check is value is "null"
+						elseif( trim(strtoupper($item_columns[$where_field])) == "NULL" ) {
+							$q_value = "NULL";
+						}
+						else {
+							$q_value = "$item_columns[$where_field]";
+						}
+						$qup_fields[] = "$field='$q_value'";
+					}
 				}
-			}
-
-			if ($field == "code") { 
-				$created_record[] = $item_columns[$where_field];
-			} // just adds the code to a list to show as successful upon finished creations
-
-			if ($field == "geneCode") { 
-				$created_record[] = $item_columns[$where_field];
 			}
 		}
 		unset($field);
 
 		$created_records[] = implode(" ", $created_record);
 		if ($if_primers > 0) {
-			$q_primer_fields = implode(", " , $q_primer_fields);
-			$q_primer_values = implode(", " , $q_primer_values);
+			if (isset($q_primer_fields)) {$q_primer_fields = implode(", " , $q_primer_fields);}
+			if (isset($q_primer_values)) {$q_primer_values = implode(", " , $q_primer_values);}
+			if (isset($qup_primer_fields)) {$qup_primer_fields = implode(", " , $qup_primer_fields);}
 		}
-		$fields_to_query = implode(", " , $q_field_array);
-		$q_values = implode (", " , $q_values);
+		if (isset($qup_fields)) {$qup_fields = implode (", " , $qup_fields);}
 
 		if ($input_type == 'vouch') {
-			$q_fields .= "$fields_to_query, timestamp, edits, latesteditor) VALUES ( $q_values, NOW(), '$editsadd', '$latesteditor' )";
+			if (isset($qup_fields)) {
+				$q_fields = "$qup_start $qup_fields, timestamp=NOW(), edits='$editsadd', latesteditor='$latesteditor' WHERE code='$actual_code'";
+			}
 		}
 		else {
-			$dateCreation = date('Y-m-d');
-			$q_fields .= "$fields_to_query, timestamp, dateCreation) VALUES ( $q_values, NOW(), '$dateCreation')";
+			$dateModification = date('Y-m-d');
+			if (isset($qup_fields)) {
+				$q_fields = "$qup_start $qup_fields, timestamp=NOW(), dateModification='$dateModification' WHERE code='$actual_code' AND geneCode='$actual_geneCode'";
+			}
 			if ($if_primers > 0) {
-				$q_primers .= "$q_primer_fields, code, geneCode, timestamp) VALUES ( $q_primer_values, '$item_columns[$where_code]', '$item_columns[$where_geneCode]', NOW())";
+				if ($prexists == "FALSE") {
+					if (isset($q_primer_fields) && isset($q_primer_values)){
+						$qadd_primers .= "INSERT INTO ". $p_ . "primers ($q_primer_fields, code, geneCode, timestamp) VALUES ( $q_primer_values, '$item_columns[$where_code]', '$item_columns[$where_geneCode]', NOW())";
+						$q_primers = $qadd_primers;
+					}
+				}
+				else {
+					if (isset($qup_primer_fields)){
+						$qup_primers .= "UPDATE ". $p_ . "primers SET $qup_primer_fields, timestamp=NOW() WHERE code='$actual_code' AND geneCode='$actual_geneCode'";
+						$q_primers = $qup_primers;
+					}
+				}
 			}
 		}
 		
 		//echo "$q_fields<br />"; //only for test purposes
 		//echo "$q_primers<br />"; //only for test purposes
-
-		$result = mysql_query($q_fields) or die ("Error in query: $query. " . mysql_error());
-		if ($input_type == 'seq') {
-			$q_edit_add = "UPDATE ". $p_ . "vouchers SET edits='$editsadd', latesteditor='$latesteditor', timestamp=NOW() WHERE code='$item_columns[$where_code]'";
-		
-			//echo "$q_edit_add</br>";
-			$result = mysql_query($q_edit_add) or die ("Error in query: $query. " . mysql_error());
+		if (isset($q_fields)){
+			$result = mysql_query($q_fields) or die ("Error in query: $q_fields. " . mysql_error());
 		}
-
-		if ($if_primers > 0) {
-			$result = mysql_query($q_primers) or die ("Error in query: $query. " . mysql_error());
+		if ($input_type == 'seq' && isset($q_fields) || isset($q_primers)) {
+				$q_edit_add = "UPDATE ". $p_ . "vouchers SET edits='$editsadd', latesteditor='$latesteditor', timestamp=NOW() WHERE code='$item_columns[$where_code]'";
+				$result = mysql_query($q_edit_add) or die ("Error in query: $q_edit_add. " . mysql_error());
+		}
+		if ($if_primers > 0 && isset($q_primers)) {
+			$result = mysql_query($q_primers) or die ("Error in query: $q_primers. " . mysql_error());
 		}
 	}
 
 	// process title
-	$title = "$config_sitename - Records created";
+	$title = "$config_sitename - Records updated";
 
 	// print html headers
 	include_once('../includes/header.php');
@@ -635,7 +683,7 @@ else {
 			<tr><td valign=\"top\">";
 	// print result
 	$created_records = implode("," , $created_records);
-	echo "<span class=\"title\"><img src=\"images/success.png\" alt=\"\"> Record creation was successful for the following codes: $created_records.</span>";
+	echo "<span class=\"title\"><img src=\"images/success.png\" alt=\"\"> Record update was successful for the following codes: $created_records.</span>";
 	echo "<td class=\"sidebar\" valign=\"top\">";
 	admin_make_sidebar();
 	echo "</td>";
