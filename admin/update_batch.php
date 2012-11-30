@@ -24,7 +24,7 @@ ob_end_clean();//Clear output buffer//includes
 include'../functions.php';
 include'adfunctions.php';
 include'admarkup-functions.php';
-#include'../login/redirect.html';
+
 
 // to indicate this is an administrator page
 $admin = true;
@@ -41,6 +41,7 @@ $title = $config_sitename;
 
 // print html headers
 include_once '../includes/header.php';
+include'../login/redirect.html';
 
 // print navegation bar
 admin_nav();
@@ -63,22 +64,22 @@ if( function_exists(mysql_set_charset) ) {
 echo "<h1>";
 $seqvsvouch = $_POST['seqvsvouch'];
 if ($seqvsvouch != 'vouch'){$seqvsvouch = 'seq';}
-if ($seqvsvouch == 'vouch') {echo "Voucher upload";} else { echo "Sequence upload";} 
+if ($seqvsvouch == 'vouch') {echo "Voucher update";} else { echo "Sequence update";} 
 ?> 
 </h1><ul>
-<form action="upload_sequences.php" method="post">
+<form action="update_batch.php" method="post">
 <input type="hidden" name="seqvsvouch" value=<?php if ($seqvsvouch == 'vouch') {echo "'seq'";} else { echo "'vouch'";} ?> >
-<input type="submit" name="submit" value=<?php if ($seqvsvouch == 'vouch') {echo "'Upload sequences instead'";} else { echo "'Upload vouchers instead'";} ?>>
+<input type="submit" name="submit" value=<?php if ($seqvsvouch == 'vouch') {echo "'Update sequences instead'";} else { echo "'Update vouchers instead'";} ?>>
 </form>
 <div id="rest1" align="center"> <!-- begin rest of page -->
 <span class="text">
 <table columns=2>
 	<ul>
 	<?php if ($seqvsvouch == 'vouch') { ?>
-	<li>You can upload batches of voucher data.</li>  
+	<li>You can batch update voucher data.</li>  
 	<li>Copy <u>tab deliminated</u> data, with <u>one row for each voucher</u>, into the field below - see pre-printed example</li>
-	<li>The <u>first line</u> should have the field names (code, family, genus etc.). Code and genus must be listed for completion.</li>
-	<li>This is only for adding data - not updating! If data is already present - the new data will be discarded (but listed as error)</li> 
+	<li>The <u>first line</u> should have the field names (code, family, genus etc.). Code must be listed for completion, but other than the code field the information should be new.</li>
+	<li><b>This is only for adding information to empty fields for existing vouchers</b> (e.g. author information) - not updating filled fields! If data is already present in a field will the new data will be discarded (but listed as error)</li> 
 	</ul>
 	<td><u>Please edit your field headers names accordingly (not necessarily all or in that order):</u></br>
 	Code Order Family Subfamily Tribe Subtribe Genus Species Subspecies Auctor Hostorg Typespecies Country Locality Collector Coll.date<br />
@@ -86,10 +87,10 @@ if ($seqvsvouch == 'vouch') {echo "Voucher upload";} else { echo "Sequence uploa
 <?php $example_input = "Something like this should be fine:\nCode	Order	Family	Genus	Species	Collector	Coll.date	Longitude	Latitude\ntA1	Hymenoptera	Tenthredinidae	Tenthredo	arcuata	Tobias Malm	2011-05-01	13.1111	12.1111\ntA2	Diptera	Syrphidae	Volucella	sp.	Tobias Malm	2010-06-01	10.1111	8.2222"; 
 }
 else { ?>
-	<li>You can upload batches of sequence data.</li>  
+	<li>You can batch update sequence data.</li>  
 	<li>Copy <u>tab deliminated</u> data, with <u>one row per sequence</u> (including code), into the field below - see pre-printed example</li>
-	<li>The <u>first line</u> should have the field names (code, gene, primers etc.). Gene, code and sequence must be listed for completion.</li>
-	<li>This is only for adding data - not updating! If data is already present - the new data will be discarded (but listed as error)</li> 
+	<li>The <u>first line</u> should have the field names (code, gene, primers etc.). Genecode and code must be listed for completion, but other than the code and genecode fields the information should be new.</li>
+	<li><b>This is only for adding information to empty fields for existing sequences pages</b> (e.g. accession numbers) - not updating filled fields! If data is already present in a field will the new data will be discarded (but listed as error)</li> 
 	</ul>
 	<td><u>Please edit your field headers names accordingly (not necessarily all or in that order):</u></br>
 	Code Genecode Sequences Laborator Accession Primer1 Primer2 Primer3 Primer4 Primer5 Primer6 <br /> </td>
@@ -98,7 +99,7 @@ else { ?>
 //output input field
 ?>
 <br />
-		<form action="process_upload_sequences.php" method="post" accept-charset="utf-8">
+		<form action="process_update_batch.php" method="post" accept-charset="utf-8">
 		<table border="0" width="960px" cellpadding="5px"> <!-- super table -->
 		<td>
 			<input type="submit" name="submit" value="Process data">
