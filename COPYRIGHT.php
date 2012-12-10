@@ -2,7 +2,7 @@
 /**
     package: VoSeq, web application store voucher and sequence data.
     Copyleft (C) 2012 Carlos Peña, Tobias Malm
-    eMail: mycalesis@yahoo.com
+    eMail: mycalesis@gmail.com
     License http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 
     This file is part of VoSeq
