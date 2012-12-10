@@ -383,8 +383,11 @@ function update_comboboxes() {
 // #################################################################################
 function has_seqs($seqout_array, $gen) {
 	$total_seqs = "";
-	foreach($seqout_array[$gen] as $code => $seq) {
-		$total_seqs .= $seq;
+
+	if( count($seqout_array) > 0 ) {
+		foreach($seqout_array[$gen] as $code => $seq) {
+			$total_seqs .= $seq;
+		}
 	}
 	$total_seqs = str_ireplace("?", "", $total_seqs);
 	$total_seqs = str_ireplace("N", "", $total_seqs);
