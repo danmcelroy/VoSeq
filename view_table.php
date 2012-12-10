@@ -206,21 +206,21 @@ echo "<div id=\"content\">";
 	<caption>Taxon informaton</caption>
 	</table>
 	<table width="800px" cellspacing="0" cellpadding="0" border="0">
-		<td class="label1">Show seqs: </td><td class="field1" colspan="4">
+		<td class="label1">Show seqs: </td><td class="field1" colspan="6">
 			<?php // fix the genecode checkbox field
-				$genetable = "";
+				$genetable = "<table cellspacing='0' cellpadding='0'>";
 				 $i = 0;
 					foreach ($geneCodes_array as $gene) {
 						$i = $i +1;
-						$genetable .= "<input type=\"checkbox\" name=\"geneCodes[$gene]\"";
+						$genetable .= "<td><input type=\"checkbox\" name=\"geneCodes[$gene]\"";
 						if (isset($genes)) {if (in_array($gene, $genes)){ $genetable .= " checked "; }}
-						$genetable .= ">$gene"; 
-						if ($i == 8) {
-							$genetable .= "<br />";
+						$genetable .= ">$gene</td>"; 
+						if ($i == 6) {
+							$genetable .= "</tr>";
 							$i = 0;
 							}
 					}unset ($gene);
-					echo "$genetable" ;?>
+					echo "$genetable</table>" ;?>
 		</td>
 		</tr>
 			<td class="label">Filter names:</td>
