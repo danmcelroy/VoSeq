@@ -1,6 +1,10 @@
 VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 Changelog:
+*Version 1.3.5
+	- [Tobias 2012-12-04] Edited some table outputs for dataset and table creation and 
+		overview table.
+
 *Version 1.3.4
 	- [Tobias 2012-11-30] Added automatical update of gene codes in primer and sequences tables
 		when updating gene names.
