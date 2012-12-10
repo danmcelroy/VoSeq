@@ -79,38 +79,54 @@ This table will be ready to attach to a manuscript for publication.</b>
 				<tr>
 					<td class="label"> Voucher info: </td>
 					<td class="field">
-						<input type="checkbox" name="tableadds[code]"checked>Code
-						<input type="checkbox" name="tableadds[orden]">Order
-						<input type="checkbox" name="tableadds[family]">Family
-						<input type="checkbox" name="tableadds[subfamily]">Subfamily
-						<input type="checkbox" name="tableadds[tribe]">Tribe
-						<input type="checkbox" name="tableadds[subtribe]">Subtribe <br />
-						<input type="checkbox" name="tableadds[genus]"checked>Genus
-						<input type="checkbox" name="tableadds[species]"checked>Species
-						<input type="checkbox" name="tableadds[subspecies]">Subspecies
-						<input type="checkbox" name="tableadds[auctor]">Auctor
-						<input type="checkbox" name="tableadds[hostorg]">Host org.
+					<table border="0">
+						<tr>
+						<td><input type="checkbox" name="tableadds[code]"checked>Code</td>
+						<td><input type="checkbox" name="tableadds[orden]">Order</td>
+						<td><input type="checkbox" name="tableadds[family]">Family</td>
+						<td><input type="checkbox" name="tableadds[subfamily]">Subfamily</td>
+						<td><input type="checkbox" name="tableadds[tribe]">Tribe</td>
+						<td><input type="checkbox" name="tableadds[subtribe]">Subtribe</td>
+						</tr />
+						<tr>
+						<td><input type="checkbox" name="tableadds[genus]"checked>Genus</td>
+						<td><input type="checkbox" name="tableadds[species]"checked>Species</td>
+						<td><input type="checkbox" name="tableadds[subspecies]">Subspecies</td>
+						<td><input type="checkbox" name="tableadds[auctor]">Auctor</td>
+						<td><input type="checkbox" name="tableadds[hostorg]">Host org.</td>
+						</tr>
+					</table>
 					</td>
 				</tr>
 				<tr>
 					<td class="label"> Locality and collector info: </td>
 					<td class="field">
-						<input type="checkbox" name="tableadds[country]">Country
-						<input type="checkbox" name="tableadds[specificLocality]">Locality
-						<input type="checkbox" name="tableadds[collector]">Collector
-						<input type="checkbox" name="tableadds[dateCollection]">Coll. date
-						<input type="checkbox" name="tableadds[determinedBy]">Determined by</br>
-						<input type="checkbox" name="tableadds[altitude]">Altitude
-						<input type="checkbox" name="tableadds[latitude]">Latitude
-						<input type="checkbox" name="tableadds[longitude]">Longitude
+					<table border="0">
+						<tr>
+						<td><input type="checkbox" name="tableadds[country]">Country</td>
+						<td><input type="checkbox" name="tableadds[specificLocality]">Locality</td>
+						<td><input type="checkbox" name="tableadds[collector]">Collector</td>
+						<td><input type="checkbox" name="tableadds[dateCollection]">Coll. date</td>
+						<td><input type="checkbox" name="tableadds[determinedBy]">Determined by</td>
+						</tr>
+						<tr>
+						<td><input type="checkbox" name="tableadds[altitude]">Altitude</td>
+						<td><input type="checkbox" name="tableadds[latitude]">Latitude</td>
+						<td><input type="checkbox" name="tableadds[longitude]">Longitude</td>
+						</tr>
+					</table>
 					</td>
 				</tr>
 				<tr>
 					<td class="label"> Choose what gene info to display: </td>
 					<td class="field">
-						<input type="radio" name="geneinfo" value="nobp" checked>Number of bases
-						<input type="radio" name="geneinfo" value="accno" >Accession number
-						<input type="radio" name="geneinfo" value="x-" >X/- (exist/empty)
+					<table border="0">
+						<tr>
+						<td><input type="radio" name="geneinfo" value="nobp" checked>Number of bases</td>
+						<td><input type="radio" name="geneinfo" value="accno" >Accession number</td>
+						<td><input type="radio" name="geneinfo" value="x-" >X/- (exist/empty)</td>
+						</tr>
+					</table>
 					</td>
 				</tr>
 				<tr>
@@ -118,10 +134,16 @@ This table will be ready to attach to a manuscript for publication.</b>
 						Choose your field delimitor:
 					</td>
 					<td class="field">
-						<input type="radio" name="field_delimitor" value='comma' >comma  
-						<input type="radio" name="field_delimitor" value='tab' checked>tab   <br />
-						&nbsp;&nbsp;<b>Display missing sequence beginnings/ends with star(*)?:</b>
-						<input type="radio" name="star" value='star'>  
+					<table border="0">
+						<tr>
+						<td><input type="radio" name="field_delimitor" value='comma' >comma 
+						<input type="radio" name="field_delimitor" value='tab' checked>tab</td>
+						</tr>
+						<tr>
+						<td>&nbsp;&nbsp;<b>Display missing sequence beginnings/ends with star(*)?:</b></td>
+						<td><input type="radio" name="star" value='star'></td>
+						</tr>
+					</table>
 					</td>
 				</tr>
 			</table>
@@ -167,14 +189,16 @@ This table will be ready to attach to a manuscript for publication.</b>
 					</td>
 					<td class="field1">
 						<?php $i = 0;
-							foreach ($geneCodes_array as $genes) {
-								$i = $i +1;
-								echo "<input type=\"checkbox\" name=\"geneCodes[$genes]\">$genes&nbsp;&nbsp;&nbsp;"; 
-								if ($i == 4) {
-									echo "</br>";
-									$i = 0;
+								echo "<table border=\"0\">";
+								foreach ($geneCodes_array as $genes) {
+									$i = $i +1;
+									echo "<td><input type=\"checkbox\" name=\"geneCodes[$genes]\" />$genes</td>"; 
+									if ($i == 4) {
+										echo "</tr />";
+										$i = 0;
+									}
 								}
-							} 
+								echo "</table>";
 						?>
 					</td>
 				</tr>
