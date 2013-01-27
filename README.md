@@ -13,6 +13,8 @@ Documentation
 
 * A test installation containing sample data is here: [http://www.nymphalidae.net/VoSeq/](http://www.nymphalidae.net/VoSeq/)
 
+* [Changelog here.](https://github.com/carlosp420/VoSeq/blob/master/changelog.md)
+
 Requirements
 ------------
 * [Apache web server](http://httpd.apache.org/)
@@ -25,4 +27,5 @@ Peña, C. & Malm, T. 2012. VoSeq: a Voucher and DNA Sequence Web Application. PL
 
 Contributing
 ------------
-VoSeq is an open source project, you are welcome to contribute.
+* VoSeq is an open source project, you are welcome to contribute.
+* Please [report errors or give feedback](https://github.com/carlosp420/VoSeq/issues).
