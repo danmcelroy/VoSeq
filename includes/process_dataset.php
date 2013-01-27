@@ -197,6 +197,9 @@ else { //if special mode or Amino acid mode is not enabled, checking and buildin
 		}
 	}
 
+	$exclude_missing = $_POST['exclude_missing'];
+	$less_than_genes = trim($_POST[less_than_genes]);
+	
 	// if ($format != "FASTA") { removing this - thus allowing for fasta retrieval of certain positions
 	if ( isset($_POST['positions'])){
 		$positions = array();
@@ -387,7 +390,69 @@ else { //if special mode or Amino acid mode is not enabled, checking and buildin
 			array_unshift( $codes, $outgroup_to_taxa );
 		}
 	}
+	
+	// for single genes if exclude taxa box "yes" is checked, removing taxa that lacks that gene sequence
+	if (count($geneCodes) == 1 && $exclude_missing == "yes"){
+	$codes_to_remove = array();
+		foreach($codes AS $item) {
+			$cquery = "SELECT sequences FROM ". $p_ . "sequences WHERE code='$item' AND geneCode='$geneCodes[0]'";
+			$cresult = mysql_query($cquery) or die("Error in query: $query. " . mysql_error());
+			// if records present
+			if( mysql_num_rows($cresult) > 0 ) {
+				while( $row = mysql_fetch_object($cresult) ) {
+					$ctrlseq = clean_item(trim($row->sequences));
+					$del_list = array("'\?'", "'\-'", "'N'", "'X'", "'\s'");
+					foreach ($del_list as $del_char) {$ctrlseq = preg_replace($del_char,'',$ctrlseq);}
+					if ($ctrlseq == '') {$codes_to_remove[] = $item;}
+				}
+			}
+			else {$codes_to_remove[] = $item;}
+		}
+		if (count($codes_to_remove) > 0) {$codes = array_diff($codes, $codes_to_remove);}
+	}
+	// for multi gene datasets with specified minimum number of genes present, remove taxa with less
+	if ($less_than_genes != '' && count($geneCodes) > 1){
+		if (!is_numeric($less_than_genes) && $less_than_genes != '') {$errorList[] = "Multigene taxa removal gene count number is not in numeric format!</br>
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										Please add a number between 1 and max number of genes!";
+		}
+		else {
+			$less_than_genes = intval($less_than_genes);
+			if ( $less_than_genes > 0 && $less_than_genes <= count($geneCodes)) {
+				$less_than_genes = $less_than_genes;
+				$codes_to_remove = array();
+				$genecodeloop = array();
+				foreach($codes AS $item) {
+					$ng = count($geneCodes);
+					foreach ($geneCodes as $gcl) {
+						$cquery = "SELECT sequences FROM ". $p_ . "sequences WHERE code='$item' AND geneCode='$gcl'";
+						$cresult = mysql_query($cquery) or die("Error in query: $query. " . mysql_error());
+						// if records present
+						if( mysql_num_rows($cresult) > 0 ){
+							while( $row = mysql_fetch_object($cresult) ) {
+								$ctrlseq = clean_item(trim($row->sequences));
+								$del_list = array("'\?'", "'\-'", "'N'", "'X'", "'\s'");
+								foreach ($del_list as $del_char) {$ctrlseq = preg_replace($del_char,'',$ctrlseq);}
+								if ($ctrlseq == '') {$ng = $ng - 1; }
+							}
+						}
+						else {$ng = $ng - 1;}
+					}
+				if ($ng < $less_than_genes) {$codes_to_remove[] = $item;}
+				}
+				if (count($codes_to_remove) > 0) {$codes = array_diff($codes, $codes_to_remove);}
+			}
+			elseif ($less_than_genes > count($geneCodes)) {
+				$errorList[] = "Trying to remove taxa with more genes</br>
+								than total number of genes!!
+								</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								Please enter a number from 1 to max number of genes!";
+			}
+		}
+	}
 
+	
+	//if no taxa left or presented
 	$number_of_taxa = count($codes);
 	if ($number_of_taxa == 0) {$errorList[] = "No codes specified! No use creating empty datasets...
 												</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -645,8 +710,9 @@ else{
 									if ($rfs[$geneCode] == "2") { $seq = substr($seq,1);}
 									elseif ($rfs[$geneCode] == "3") { $seq = substr($seq,2);}
 									$seq = translate_DNA_to_protein($seq,$genetic_codes[$geneCode]);
-									$seq = str_replace("?", "X", $seq);
-									$seq = str_replace(" ", "X", $seq);
+									//$seq = str_replace("?", "X", $seq);
+									$seq = str_replace("X", "?", $seq);
+									$seq = str_replace(" ", "?", $seq);
 									$seqout_array[$geneCode][$item] = $seq;
 									//$seqout_1 = translate_DNA_to_protein($seq,$genetic_codes[$geneCode]);
 									//echo ">$item</br>$seqout_1</br>";
@@ -686,16 +752,16 @@ else{
 							}
 						}
 						else {
-							if( $format == "FASTA" ) {
+							if( $format == "FASTA" && count($geneCodes) == 1) {
 								$seq = "\n";
 							}
 							else {
 								if (in_array("aas", $positions)) { 
-									$seq = "X"; 
+									$seq = "?"; 
 								}
 								else { 
 									$seq = "?"; 
-									$seq = str_pad($seq, $charset_count[$geneCode], "?");
+									//$seq = str_pad($seq, $charset_count[$geneCode], "?");
 								}
 								$seqout_array[$geneCode][$item] = $seq;
 							}
@@ -710,7 +776,8 @@ else{
 		// #################################################################################
 		// Section: setting bp numbers for partitions if needed
 		// #################################################################################
-		if ($format != "FASTA" ) { //&& ! in_array("all", $positions)) {
+		if ($format == "FASTA" && count($geneCodes) == 1 ) { }//&& ! in_array("all", $positions)) {
+		else{
 			unset ($charset_count);
 			if (isset($seqout_array)){
 				foreach ($seqout_array as $g => $s) { 
@@ -740,8 +807,12 @@ else{
 			// Section: Build output - intro lines
 			// #################################################################################
 			if( $format == "TNT" ) {  // creating intro lines
-				if (in_array("aas", $positions)) {$output = "nstates dna;\nxread\n$bp $number_of_taxa\n";}
-				else {$output = "nstates prot;\nxread\n$bp $number_of_taxa\n";}
+				if (in_array("aas", $positions)) {
+					$output = "nstates prot;\nxread\n$bp $number_of_taxa\n";
+				}
+				else {
+					$output = "nstates dna;\nxread\n$bp $number_of_taxa\n";
+				}
 			}
 			elseif( $format == "PHYLIP" ) {
 				$output = "$number_of_taxa $bp\n";
@@ -765,42 +836,56 @@ else{
 			// #################################################################################
 				
 			// creating sequence blocks / gene
-			foreach ($geneCodes as $geCo) { 
-				## check if there is any sequence at all for this gene, for this list of specimens
-				## has_seqs?
-				if( has_seqs($seqout_array, $geCo) == "false" ) {
-					$warning[] = "Warning, no sequences in partition $geCo"; 
-				}
-
-				if( $format == "TNT" ) {
-					if (in_array("aas", $positions)) {$output .= "\n&[PROTEIN]\n";}
-					else{ $output .= "\n&[dna]\n"; }
-				}
-				elseif( $format == "FASTA" ) {	
-					$output .= ">$geCo\n--------------\n";
-				}
-				elseif ( $format == "NEXUS" ) {
-					## check if there is any sequence at all for this gene, for this list of specimens
-					## has_seqs?
-					$has_seqs = has_seqs($seqout_array, $geCo);
-					if( $has_seqs == "true" ) {
-						$output .= "\n[$geCo]\n";
-					}
-					else {
-						$output .= "\n[$geCo - warning no sequences in this partition]\n";
-					}
-				}
-				else {}
+			$multigenefasta = array();
+			if ($format == "FASTA" && count($geneCodes) > 1){
 				foreach ($codes AS $item) {
 					$item = clean_item($item);
-					$output .= $taxout_array[$geCo][$item];
-					if ($format != "FASTA"){
-						if (in_array("aas", $positions)) { $output .= str_pad($seqout_array[$geCo][$item], $charset_count[$geCo], "X") . "\n"; }
-						else { $output .= str_pad($seqout_array[$geCo][$item], $charset_count[$geCo], "?") . "\n"; }
+					$output .= $taxout_array[$geneCodes[0]][$item] . "\n";
+					foreach ($geneCodes as $genCod) {
+						$output .= str_pad($seqout_array[$genCod][$item], $charset_count[$genCod], "?");
 					}
-					else { $output .= "\n" . $seqout_array[$geCo][$item] . "\n"; }
+					$output .= "\n";
 				}
-	}
+			}
+			else {
+				foreach ($geneCodes as $geCo) { 
+					## check if there is any sequence at all for this gene, for this list of specimens
+					## has_seqs?
+					if( has_seqs($seqout_array, $geCo) == "false" ) {
+						$warning[] = "Warning, no sequences in partition $geCo"; 
+					}
+
+					if( $format == "TNT" ) {
+						if (in_array("aas", $positions)) {$output .= "\n&[PROTEIN]\n";}
+						else{ $output .= "\n&[dna]\n"; }
+					}
+					elseif( $format == "FASTA" && count($geneCodes) == 1) {	
+						$output .= ">$geCo\n--------------\n";
+					}
+					elseif ( $format == "NEXUS" ) {
+						## check if there is any sequence at all for this gene, for this list of specimens
+						## has_seqs?
+						$has_seqs = has_seqs($seqout_array, $geCo);
+						if( $has_seqs == "true" ) {
+							$output .= "\n[$geCo]\n";
+						}
+						else {
+							$output .= "\n[$geCo - warning no sequences in this partition]\n";
+						}
+					}
+					else {}
+					foreach ($codes AS $item) {
+						$item = clean_item($item);
+						$output .= $taxout_array[$geCo][$item];
+						if ($format != "FASTA"){
+							$output .= str_pad($seqout_array[$geCo][$item], $charset_count[$geCo], "?") . "\n"; 
+						}
+						else {
+							$output .= "\n" . $seqout_array[$geCo][$item] . "\n"; 
+							}
+						}
+					}
+				}
 	// #################################################################################
 	// Section: Build output - partition specifying block
 	// #################################################################################
