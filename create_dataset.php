@@ -99,24 +99,43 @@ echo "<div id=\"content\">";
 						What info do you want in the taxon names?
 					</td>
 					<td class="field">
-						<table border="0">
-							<tr>
-							<td><input type="checkbox" name="taxonadds[code]"checked>Code</td>
-							<td><input type="checkbox" name="taxonadds[orden]">Order</td>
-							<td><input type="checkbox" name="taxonadds[family]">Family</td>
-							<td><input type="checkbox" name="taxonadds[subfamily]">Subfamily</td>
-							<td><input type="checkbox" name="taxonadds[tribe]">Tribe</td>
-							<td><input type="checkbox" name="taxonadds[subtribe]">Subtribe</td>
-							</tr />
+						<table>
+						<td><input type="checkbox" name="taxonadds[code]"checked>Code</td>
+						<td><input type="checkbox" name="taxonadds[orden]">Order</td>
+						<td><input type="checkbox" name="taxonadds[family]">Family</td>
+						<td><input type="checkbox" name="taxonadds[subfamily]">Subfamily</td>
+						<td><input type="checkbox" name="taxonadds[tribe]">Tribe</td>
+						<td><input type="checkbox" name="taxonadds[subtribe]">Subtribe</td>
 
-							<tr>
-							<td><input type="checkbox" name="taxonadds[genus]"checked>Genus</td>
-							<td><input type="checkbox" name="taxonadds[species]"checked>Species</td>
-							<td><input type="checkbox" name="taxonadds[subspecies]">Subspecies</td>
-							<td><input type="checkbox" name="taxonadds[auctor]">Auctor</td>
-							<td><input type="checkbox" name="taxonadds[hostorg]">Host org.</td>
-							<td><input type="checkbox" name="taxonadds[genecode]">Gene code</td>
-							</tr>
+						</tr />
+
+						<td><input type="checkbox" name="taxonadds[genus]"checked>Genus</td>
+						<td><input type="checkbox" name="taxonadds[species]"checked>Species</td>
+						<td><input type="checkbox" name="taxonadds[subspecies]">Subspecies</td>
+						<td><input type="checkbox" name="taxonadds[auctor]">Auctor</td>
+						<td><input type="checkbox" name="taxonadds[hostorg]">Host org.</td>
+						<td><input type="checkbox" name="taxonadds[genecode]">Gene code</td>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">
+						For single gene datasets, exclude taxa missing this gene?
+					</td>
+					<td class="field">
+						<table>
+						<td><input type="radio" name="exclude_missing" value="yes" checked>yes</td>
+						<td><input type="radio" name="exclude_missing" value="no" >no</td>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">
+						For multigene datasets, exclude taxa with less than X genes?
+					</td>
+					<td class="field">
+						<table>
+							Minimum number of genes: <input type="text" name="less_than_genes" size="3">
 						</table>
 					</td>
 				</tr>
@@ -162,7 +181,7 @@ echo "<div id=\"content\">";
 					</td>
 					<td class="field1">
 						<?php $i = 0;
-								echo "<table border=\"0\">";
+								echo "<table>";
 								foreach ($geneCodes_array as $genes) {
 									$i = $i +1;
 									echo "<td><input type=\"checkbox\" name=\"geneCodes[$genes]\" />$genes</td>"; 
