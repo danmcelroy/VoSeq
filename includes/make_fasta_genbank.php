@@ -68,32 +68,13 @@ function show_errors($se_in) {
 // #################################################################################
 // @brief: takes a sequence string and puts it in frame (starts with 1st codon position
 // @input:  string sequence
-// @input:  int readingframe 
-// @output: string sequence in frame
-function process_fasta_sequence($sequence,$readingframe) {
-	echo "reading frame: $readingframe\n";
-	echo "$sequence\n";
-	$pattern = '/^\?/';
-	// if 1st bp is ?
-	if( preg_match($pattern, $sequence, $match) ) {
-		// find position of nearest nucleotide
-		$distances = array();
-		$distances[] = strpos($sequence, "A");
-		$distances[] = strpos($sequence, "C");
-		$distances[] = strpos($sequence, "T");
-		$distances[] = strpos($sequence, "G");
-
-		if( count($distances) > 0 ) {
-			sort($distances);
-			$nearest = $distances[0] + 1;
-			echo $nearest;
-		}
-		else {
-			return $sequence;
-		}
-	}
-	// else: 1st bp is not ?
-	exit(0);
+// @output: string sequence replaces ?s with Ns
+//			remove ?s from the end
+// TODO: put it in frame
+function process_fasta_sequence($sequences) {
+	$sequences = str_replace("?", "N", $sequences);
+	$sequences = preg_replace("/N+$/", "", $sequences);
+	return $sequences;
 }
 
 
@@ -237,7 +218,7 @@ foreach($genes as $geneCode) {
 				// need to replace ? with N and put it in frame 
 				// (sequence starts with 1st codon position)
 				$sequences = $row->sequences;
-				$sequences = process_fasta_sequence($row->sequences,$row->readingframe);
+				$sequences = process_fasta_sequence($sequences);
 				$output .= "\n$sequences\n";
 			}
 		}
