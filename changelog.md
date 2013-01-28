@@ -1,6 +1,9 @@
 #VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 ##Changelog:
+* Version
+	- [Carlos 2013-01-28] In tool to create FASTA files for GenBank submissions: replace the ?-marks at the beginnings by "N".  
+
 * Version 1.3.6
 	- [Tobias 2013-01-27] Added a checkbox for single gene datasets to exclude 
 	  taxa missing that gene from the dataset (yes/no).
@@ -11,8 +14,7 @@
 	  taxa with less than 7 of your choosen genes.
 
 * Version 1.3.5
-	- [Tobias 2012-12-04] Edited some table outputs for dataset and table creation and 
-		overview table.
+	- [Tobias 2012-12-04] Edited some table outputs for dataset and table creation and overview table.
 
 * Version 1.3.4
 	- [Tobias 2012-11-30] Added automatical update of gene codes in primer and sequences tables
