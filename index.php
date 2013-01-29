@@ -33,6 +33,7 @@ else {
 include 'login/auth.php';
 include 'functions.php';
 include 'markup-functions.php';
+include 'mysql_upgrade.php';
 
 //update comboboxes
 update_comboboxes();
@@ -87,45 +88,7 @@ if( function_exists(mysql_set_charset)) {
 // #################################################################################
 // Section: Upgrade MySQL tables if needed
 // #################################################################################
-$query = "SELECT * FROM information_schema.COLUMNS WHERE 
-			TABLE_SCHEMA = '" . $db . "' 
-			AND TABLE_NAME = '" . $p_ . "vouchers' 
-			AND COLUMN_NAME = 'determinedBy'";
-$result = mysql_query($query) or die("Error in query: $query. " . mysql_error());
-if( mysql_num_rows($result) < 1 ) {
-	# Upgrading table vouchers
-	$query = "alter table ". $p_ . "vouchers add column determinedBy varchar(255)";
-	$query .= " default null after flickr_id";
-	mysql_query($query) or die ("Error in query: $query. " . mysql_error());
-}
-
-
-
-$query = "SELECT * FROM information_schema.COLUMNS WHERE 
-			TABLE_SCHEMA = '" . $db . "' 
-			AND TABLE_NAME = '" . $p_ . "vouchers' 
-			AND COLUMN_NAME = 'auctor'";
-$result = mysql_query($query) or die("Error in query: $query. " . mysql_error());
-if( mysql_num_rows($result) < 1 ) {
-	# Upgrading table vouchers
-	$query = "alter table ". $p_ . "vouchers add column auctor varchar(255)";
-	$query .= " default null after determinedBy";
-	mysql_query($query) or die ("Error in query: $query. " . mysql_error());
-}
-
-
-
-$query = "SELECT * FROM information_schema.COLUMNS WHERE 
-			TABLE_SCHEMA = '" . $db . "' 
-			AND TABLE_NAME = '" . $p_ . "sequences' 
-			AND COLUMN_NAME = 'notes'";
-$result = mysql_query($query) or die("Error in query: $query. " . mysql_error());
-if( mysql_num_rows($result) < 1 ) {
-	# Upgrading table sequences
-	$query = "alter table ". $p_ . "sequences add column notes varchar(255)";
-	$query .= " default null after dateModification";
-	mysql_query($query) or die ("Error in query: $query. " . mysql_error());
-}
+mysql_upgrade($db, $p_);
 // #################################################################################
 
 
