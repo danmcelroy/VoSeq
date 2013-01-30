@@ -6,9 +6,9 @@
  */
 
 if( !isset($version) ) {
-	if( file_exists("../changelog.txt") ) {
-		$changelog = file_get_contents("../changelog.txt");
-		preg_match_all("/version \d+\.\d+.\d+/i", $changelog, $matches);
+	if( file_exists("../changelog.md") ) {
+		$changelog = file_get_contents("../changelog.md");
+		preg_match_all("/version \d+\.\d+\.\d+/i", $changelog, $matches);
 		$version = $matches[0][0];
 	}
 }
