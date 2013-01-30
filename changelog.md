@@ -1,6 +1,9 @@
 #VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 ##Changelog:
+* Version
+	- [Carlos 2013-01-31] Users will get a notification in Login page when there is a new version of VoSeq available in GitHub.
+
 * Version 1.3.7
 	- [Carlos 2013-01-30] Improved installation script to detect problems during connection with MySQL. Error will be shown to user for further inspection.
 	- [Carlos 2013-01-29] Moved scripts to upgrade mysql schema into file mysql_upgrade.php
