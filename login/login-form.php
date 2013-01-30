@@ -39,7 +39,9 @@ else {
 $most_recent_version = check_repo_tags();
 $output = "";
 if( $version != $most_recent_version ) {
-	$output = "There is a new version of VoSeq in Github";
+	$output = "There is a new version of VoSeq in Github. <br />";
+	$output .= "Version " . $most_recent_version . ": <a href='https://github.com/carlosp420/VoSeq/tags'>";
+	$output .= "Download</a>";
 }
 
 ?>
@@ -50,19 +52,27 @@ if( $version != $most_recent_version ) {
 <title>Login Form</title>
 <?php
 	echo "<link href=\"" . $base_url . "/login/loginmodule.css\" rel=\"stylesheet\" type=\"text/css\" />";
+	echo "<script src='" . $base_url . "/includes/jquery.js'></script>";
+	echo "<script src='" . $base_url . "/includes/jquery-ui.js'></script>";
 ?>
 </head>
 <body>
 
-<?php
-if( $output != "") {
-	echo "aaaaaaaaaaa";
-}
-?>
 <p>&nbsp;</p>
 <form id="loginForm" name="loginForm" method="post" action="<?php echo "$base_url/login/login-exec.php"; ?>">
   <table width="300" border="0" align="center" cellpadding="2" cellspacing="0">
-    <tr>
+		<?php
+		if( $output != "") {
+			echo "<tr><td colspan='2' align='center'>";
+			echo "<div id='new_version'>" . $output . "</div>";
+			echo "</td> </tr>";
+
+			echo "<script>
+					$('#new_version').effect('shake', {'direction': 'down'});
+				</script>";
+		}
+		?>
+	<tr>
       <td width="112"><b>Login</b></td>
       <td width="188"><input name="login" type="text" class="textfield" id="login" /></td>
     </tr>
