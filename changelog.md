@@ -1,7 +1,8 @@
 #VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 ##Changelog:
-* Version
+* Version 1.3.7
+	- [Carlos 2013-01-30] Improved installation script to detect problems during connection with MySQL. Error will be shown to user for further inspection.
 	- [Carlos 2013-01-29] Moved scripts to upgrade mysql schema into file mysql_upgrade.php
 	- [Carlos 2013-01-29] Using changelog.md instead of changelog.txt
 	- [Carlos 2013-01-28] In tool to create FASTA files for GenBank submissions: replace the ?-marks at the beginnings by "N".  

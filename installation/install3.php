@@ -45,13 +45,48 @@ function docheck() {
 	// try to connect to MySQL using host, user and passwd to see whether the info given is correct
 	$connection = @mysql_connect($checkdatabase_host, $checkdatabase_username, $checkdatabase_password);
 	if( !$connection ) {
-		die("<html><head><title>Error</title><link rel=\"stylesheet\" href=\"install.css\" type=\"text/css\" /></head><body><div class=\"error\"><h2><img src=\"error.png\" alt=\"\" /> Unable to connect to MySQL database using socket: <code>/tmp/mysql.sock</code></h2><br />Please modify your MySQL installation file <code>/usr/local/mysql/support-files/my-large.cnf</code> file parameters:
-				<ol>
-					<li>Modify the lines <code>/var/mysqld/mysqld.sock</code> to <code>/tmp/mysql.sock</code></li>
-					<li>Save the file as <code>/etc/my.cnf</code> in your computer</li>
-					<li>Restart your <code>mysqld</code> daemon and continue this installation (press F5 to refresh).</li>
-				</ol>
-				</div></body></html>");
+		$error_code = "";
+		$error_code = mysql_errno();
+		if( $error_code != 0 ) {
+			echo "<html><head><title>Error</title><link rel=\"stylesheet\" 
+				  href=\"install.css\" type=\"text/css\" /></head>
+				  <body>";
+			echo "Error number: " . $error_code;
+			echo "<div class=\"error\">
+				  <h2><img src=\"error.png\" alt=\"\" /> Unable to connect to MySQL database (possible errors):</h2>";
+
+			if( $error_code == "2002" ){
+				echo "<ul>
+						<li>" . mysql_error() . "</li>";
+				echo "  <li>Please modify your MySQL installation file 
+					      <code>/usr/local/mysql/support-files/my-large.cnf</code>
+						  file parameters:
+						  <ol>
+							<li>Modify the lines <code>/var/mysqld/mysqld.sock</code> to <code>/tmp/mysql.sock</code></li>
+							<li>Save the file as <code>/etc/mysql/my.cnf</code> in your computer</li>
+							<li>Restart your computer and continue this installation (press F5 to refresh).</li>
+						  </ol>
+						 </li>
+					</ul>";
+			}
+			elseif( $error_code == "1045" ){
+				echo "<ul>
+						<li>" . mysql_error() . "</li>";
+				echo "  <li>Make sure you entered the right password for MySQL</li>
+					</ul>";
+			}
+			else {
+				echo "A unforseen error ocurred. The error number is <u>" . $error_code . "</u> 
+					  <br /><br />Please report this error in: <br />
+					  <a href='https://github.com/carlosp420/VoSeq/issues'>https://github.com/carlosp420/VoSeq/issues</a>";
+				echo "<ul><li>" . mysql_error() . "</li></ul>";
+			}
+
+
+			echo "</div></body></html>";
+			exit(0);
+		}
+
 	}
 
 	mysql_query("CREATE DATABASE IF NOT EXISTS $checkdatabase_name");
