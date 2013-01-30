@@ -10,25 +10,37 @@
 //
 // Script overview: Print login form page
 // #################################################################################
-	//Start session
-	if( session_id() == "" ) {
-		session_start();
-	}
-	
-	//Unset the variables stored in session
-	unset($_SESSION['SESS_MEMBER_ID']);
-	unset($_SESSION['SESS_FIRST_NAME']);
-	unset($_SESSION['SESS_LAST_NAME']);
-	unset($_SESSION['SESS_ADMIN']);
 
-	ob_start(); //Hook output buffer - disallows web printing of file info...
-	include("../conf.php");
-	if( $mask_url == "true" ) {
-		ob_end_clean();//Clear output buffer
-	}
-	else {
-		ob_clean();
-	}
+//Start session
+if( session_id() == "" ) {
+	session_start();
+}
+
+//Unset the variables stored in session
+unset($_SESSION['SESS_MEMBER_ID']);
+unset($_SESSION['SESS_FIRST_NAME']);
+unset($_SESSION['SESS_LAST_NAME']);
+unset($_SESSION['SESS_ADMIN']);
+
+ob_start(); //Hook output buffer - disallows web printing of file info...
+include("../conf.php");
+if( $mask_url == "true" ) {
+	ob_end_clean();//Clear output buffer
+	include("../functions.php");
+	include("../includes/check_new_version.php");
+}
+else {
+	ob_clean();
+	include("functions.php");
+	include("includes/check_new_version.php");
+}
+
+// This function goes to repository in GitHub and gets the latest tag
+$most_recent_version = check_repo_tags();
+$output = "";
+if( $version != $most_recent_version ) {
+	$output = "There is a new version of VoSeq in Github";
+}
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -42,6 +54,11 @@
 </head>
 <body>
 
+<?php
+if( $output != "") {
+	echo "aaaaaaaaaaa";
+}
+?>
 <p>&nbsp;</p>
 <form id="loginForm" name="loginForm" method="post" action="<?php echo "$base_url/login/login-exec.php"; ?>">
   <table width="300" border="0" align="center" cellpadding="2" cellspacing="0">
