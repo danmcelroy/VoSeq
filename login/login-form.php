@@ -40,11 +40,21 @@ $this_version = "";
 $most_recent_version = check_repo_tags();
 $output = "";
 // find version in changelog.md file instead
-if( file_exists("../changelog.md") ) {
-	$changelog = file_get_contents("../changelog.md");
-	preg_match_all("/Version\s+(\d*\.\d*\.\d*)/", $changelog, $matches);
-	$this_version = $matches[1][0];
+if( $mask_url == "true" ) {
+	if( file_exists("../changelog.md") ) {
+		$changelog = file_get_contents("../changelog.md");
+		preg_match_all("/Version\s+(\d*\.\d*\.\d*)/", $changelog, $matches);
+		$this_version = $matches[1][0];
+	}
 }
+else {
+	if( file_exists("changelog.md") ) {
+		$changelog = file_get_contents("changelog.md");
+		preg_match_all("/Version\s+(\d*\.\d*\.\d*)/", $changelog, $matches);
+		$this_version = $matches[1][0];
+	}
+}
+
 if( $this_version != $most_recent_version ) {
 	$output = "There is a new version of VoSeq in Github. <br />";
 	$output .= "Version " . $most_recent_version . ": <a href='https://github.com/carlosp420/VoSeq/tags'>";
