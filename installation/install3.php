@@ -63,7 +63,7 @@ function docheck() {
 						  file parameters:
 						  <ol>
 							<li>Modify the lines <code>/var/mysqld/mysqld.sock</code> to <code>/tmp/mysql.sock</code></li>
-							<li>Save the file as <code>/etc/mysql/my.cnf</code> in your computer</li>
+							<li>Save the file as <code>/etc/my.cnf</code> and <code>/etc/mysql/my.cnf</code> in your computer</li>
 							<li>Restart your computer and continue this installation (press F5 to refresh).</li>
 						  </ol>
 						 </li>
