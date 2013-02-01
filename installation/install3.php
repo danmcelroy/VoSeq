@@ -25,9 +25,7 @@ function docheck() {
 	$a = clean_string($checkdatabase_username);
 	$checkdatabase_username = $a[0];
 
-	$checkdatabase_password = getParam( $_POST, 'database_password', '');
-	$a = clean_string($checkdatabase_password);
-	$checkdatabase_password = $a[0];
+	$checkdatabase_password = $_POST['database_password'];
 
 	$checksiteName = getParam( $_POST, 'siteName', '');
 	$a = clean_string($checksiteName);
@@ -43,7 +41,7 @@ function docheck() {
 	}
 
 	// try to connect to MySQL using host, user and passwd to see whether the info given is correct
-	$connection = @mysql_connect($checkdatabase_host, $checkdatabase_username, $checkdatabase_password);
+	$connection = mysql_connect($checkdatabase_host, $checkdatabase_username, $checkdatabase_password);
 	if( !$connection ) {
 		$error_code = "";
 		$error_code = mysql_errno();
@@ -64,6 +62,12 @@ function docheck() {
 						  <ol>
 							<li>Modify the lines <code>/var/mysqld/mysqld.sock</code> to <code>/tmp/mysql.sock</code></li>
 							<li>Save the file as <code>/etc/my.cnf</code> and <code>/etc/mysql/my.cnf</code> in your computer</li>
+							<li>Do the same to the file <code>php.ini</code>:
+								<ol>
+									<li><code>mysql.default_socket = /tmp/mysql.sock<code></li>
+									<li>See more info here: 
+									<a href='http://nymphalidae.utu.fi/cpena/VoSeq_docu.html#Installation%20FAQ'>Installation FAQ</a>.</li>
+								</ol>
 							<li>Restart your computer and continue this installation (press F5 to refresh).</li>
 						  </ol>
 						 </li>
@@ -90,7 +94,7 @@ function docheck() {
 	}
 
 	mysql_query("CREATE DATABASE IF NOT EXISTS $checkdatabase_name");
-	mysql_select_db($checkdatabase_name) or die ('<html><head><title>Error</title><link rel=\"stylesheet\" href=\"install.css\" type=\"text/css\" /></head><body><div class=\"error\"><h2><img src=\"error.png\" alt=\"\" /> Unable to select database. You need to enter the right MySQL database name</h2></div></body></html>');
+	mysql_select_db($checkdatabase_name) or die ("<html><head><title>Error</title><link rel=\"stylesheet\" href=\"install.css\" type=\"text/css\" /></head><body><div class=\"error\"><h2><img src=\"error.png\" alt=\"\" /> Unable to select database</h2></div><ul><li>" . mysql_error() . "</li><li>Error number: " . mysql_errno() . "</li></ul></body></html>");
 
 
 	return array("siteName" => $checksiteName,
