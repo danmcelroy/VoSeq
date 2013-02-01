@@ -41,7 +41,7 @@ function docheck() {
 	}
 
 	// try to connect to MySQL using host, user and passwd to see whether the info given is correct
-	$connection = mysql_connect($checkdatabase_host, $checkdatabase_username, $checkdatabase_password);
+	$connection = @mysql_connect($checkdatabase_host, $checkdatabase_username, $checkdatabase_password);
 	if( !$connection ) {
 		$error_code = "";
 		$error_code = mysql_errno();
