@@ -2,6 +2,9 @@
 
 ##Changelog:
 * Version
+	- [Carlos 2013-02-01] During installation, suggest user to check that the 
+	socket in php.ini points to the same file as in the my.cnf configuration 
+	file. [Thanks to Pierre Solbès]
 	- [Carlos 2013-01-31] Users will get a notification in Login page when there
 	is a new version of VoSeq available in GitHub.
 	- [Carlos 2013-01-31] Version is taken from changelog.md file.
