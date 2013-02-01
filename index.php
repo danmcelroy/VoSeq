@@ -77,7 +77,7 @@ echo "<div id=\"content_narrow\">";
 
 
 // open database connections
-@$connection = mysql_connect($host, $user, $pass) or die('Unable to connect');
+@$connection = mysql_connect($host, $user, $pass) or die('Unable to connect'. mysql_error());
 mysql_select_db($db) or die ('Unable to select database; <b>You might need to configure the file "conf.php"</b>' . mysql_error());
 
 if( function_exists(mysql_set_charset)) {
