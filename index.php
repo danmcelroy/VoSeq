@@ -97,10 +97,9 @@ mysql_upgrade($db, $p_);
 // Section: Upgrade conf.php file if needed
 // #################################################################################
 
-// add variable to conf.php file.
+// add variable $photos_repository to conf.php file.
 // use flickr by default
 if( !isset($photos_repository) ) {
-	//$fp = fopen("conf.php", "r");
 	$contents = file("conf.php");
 
 	$fp = fopen("conf.php", "w");
