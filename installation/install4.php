@@ -29,9 +29,7 @@ function docheck() {
 	$a = clean_string($checkdatabase_username);
 	$checkdatabase_username = $a[0];
 
-	$checkdatabase_password = getParam( $_POST, 'pass', '');
-	$a = clean_string($checkdatabase_password);
-	$checkdatabase_password = $a[0];
+	$checkdatabase_password = $_POST['pass'];
 
 	$a = explode(" ", $_POST['admin_name']);
 	$a = clean_string($a[0]);
@@ -45,14 +43,8 @@ function docheck() {
 	$a = clean_string($checkadmin_login);
 	$checkadmin_login = $a[0];
 
-	$checkadmin_password1 = getParam( $_POST, 'admin_password1', '');
-	$a = clean_string($checkadmin_password1);
-	$checkadmin_password1 = $a[0];
-
-
-	$checkadmin_password2 = getParam( $_POST, 'admin_password2', '');
-	$a = clean_string($checkadmin_password2);
-	$checkadmin_password2 = $a[0];
+	$checkadmin_password1 = $_POST['admin_password1'];
+	$checkadmin_password2 = $_POST['admin_password2'];
 
 	if ( $checkadmin_password1 != $checkadmin_password2 ) {
 		echo "<html><head><title>Error</title><link rel=\"stylesheet\" href=\"install.css\" type=\"text/css\" /></head><body><div class=\"error\"><h2><img src=\"error.png\" alt=\"\" /> The two passwords that you entered do not match, please try again</h2></div></body></html>";
