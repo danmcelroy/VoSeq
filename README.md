@@ -13,6 +13,10 @@ Documentation
 * A test installation containing sample data is here: [http://www.nymphalidae.net/VoSeq/](http://www.nymphalidae.net/VoSeq/)
 * [Changelog here.](https://github.com/carlosp420/VoSeq/blob/master/changelog.md)
 
+Frequently asked questions
+--------------------------
+* Installation [FAQ](http://nymphalidae.utu.fi/cpena/VoSeq_docu.html#Installation%20FAQ).
+
 Requirements
 ------------
 * [Apache web server](http://httpd.apache.org/)
