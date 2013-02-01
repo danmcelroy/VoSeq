@@ -1,7 +1,10 @@
 #VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 ##Changelog:
-* Version
+* Version 1.3.8
+	- [Carlos 2013-02-01] During installation, passwords for MySQL and VoSeq
+	 administrator go under permissive checks in case they are complex passwords
+	[Thanks to Pierre Solbès]
 	- [Carlos 2013-02-01] During installation, suggest user to check that the 
 	socket in php.ini points to the same file as in the my.cnf configuration 
 	file. [Thanks to Pierre Solbès]
