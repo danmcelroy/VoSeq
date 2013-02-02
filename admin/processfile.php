@@ -25,21 +25,23 @@ ob_end_clean();//Clear output buffer//includes
 
 include 'admarkup-functions.php';
 
-require_once'../api/phpFlickr/phpFlickr.php';
+if( $photos_repository == "flickr" ) {
+	require_once'../api/phpFlickr/phpFlickr.php';
 
-// create an api
-$f = new phpFlickr($flickr_api_key, $flickr_api_secret);
-$f->setToken($flickr_api_token);
+	// create an api
+	$f = new phpFlickr($flickr_api_key, $flickr_api_secret);
+	$f->setToken($flickr_api_token);
+}
 
 // array to keep track of the photo ids as they're uploaded
 $photo_ids = array();
 
+
 function strip_ext($name) {
 	$ext = strrchr($name, '.');
-	if($ext !== false)
-		{
-      $name = substr($name, 0, -strlen($ext));
-      }
+	if($ext !== false) {
+		$name = substr($name, 0, -strlen($ext));
+	}
    return $name;
 }
 
@@ -152,28 +154,46 @@ else {
 		$extension = substr($item, - strlen(PHOTO_EXTENSION));
 		print "Uploading $item...\n";
 
-		$photo_id = $f->sync_upload($item, "$code $genus $species $subspecies", "$country $specificLocality $publishedIn $notes <a href=\"$base_url/story.php?code=$code\">see in our database</a>", "$country,$family,$subfamily,$tribe,$subtribe,$genus,$species,$subspecies");
-		$info = $f->photos_getInfo($photo_id);
-		$sizes = $f->photos_getSizes($photo_id);
-		$my_voucherImage = $info['photo']['urls']['url'][0]['_content'];
-		$status = $f->photos_geo_setLocation($photo_id, $latitude, $longitude, "3");
+		if( $photos_repository == "flickr" ) {
+			$photo_id = $f->sync_upload($item, "$code $genus $species $subspecies", "$country $specificLocality $publishedIn $notes <a href=\"$base_url/story.php?code=$code\">see in our database</a>", "$country,$family,$subfamily,$tribe,$subtribe,$genus,$species,$subspecies");
+			$info = $f->photos_getInfo($photo_id);
+			$sizes = $f->photos_getSizes($photo_id);
+			$my_voucherImage = $info['photo']['urls']['url'][0]['_content'];
+			$status = $f->photos_geo_setLocation($photo_id, $latitude, $longitude, "3");
 		
-		/*** create thumbnails ***/
-		foreach( $sizes as $item) {
-			foreach($item as $k => $v) {
-				if($k == "width" && $v == "240") {
-					$my_url = $item['source'];
-				}
-				elseif($k == 'label' && $v == 'Small') {
-					$my_url = $item['source'];
-				}
-				elseif($k == 'label' && $v == 'Thumbnail') {
-					$my_url = $item['source'];
+			/*** create thumbnails ***/
+			foreach( $sizes as $item) {
+				foreach($item as $k => $v) {
+					if($k == "width" && $v == "240") {
+						$my_url = $item['source'];
+					}
+					elseif($k == 'label' && $v == 'Small') {
+						$my_url = $item['source'];
+					}
+					elseif($k == 'label' && $v == 'Thumbnail') {
+						$my_url = $item['source'];
+					}
 				}
 			}
+			$query = "UPDATE ". $p_ . "vouchers set timestamp=now(), thumbnail=\"$my_url\", flickr_id=\"$photo_id\", voucherImage=\"$my_voucherImage\" where code=\"$code\""; 
+			mysql_query($query) or die("Error in query: $query. " . mysql_error());
 		}
-		$query = "UPDATE ". $p_ . "vouchers set timestamp=now(), thumbnail=\"$my_url\", flickr_id=\"$photo_id\", voucherImage=\"$my_voucherImage\" where code=\"$code\""; 
-		mysql_query($query) or die("Error in query: $query. " . mysql_error());
+		else {  // $photos_repository == "local" 
+			$dest_folder = $local_folder . "/pictures/";
+
+			$filename = $_FILES['userfile']['name'];
+			// check that file doesnot exist to avoid overwritting
+			$i = 1;
+			while ( file_exists($dest_folder . $filename) ) {
+				$filename = $_FILES['userfile']['name'];
+				$filename = $i . "_" . $filename;
+				$i = $i + 1;
+			}
+			echo $filename;
+			echo "<br>";
+			exit(0);
+		}
+
 
 
 		echo "\n";
