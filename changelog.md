@@ -1,6 +1,10 @@
 #VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 ##Changelog:
+* Version 1.4.0
+	- [Carlos 2013-02-03] It is possible to host all voucher photos in local
+	 server. No need for Flickr then. Add the line ```$photos_repository = 'local';``` to your ```conf.php``` file.
+
 * Version 1.3.8
 	- [Carlos 2013-02-01] During installation, passwords for MySQL and VoSeq
 	 administrator go under permissive checks in case they are complex passwords
