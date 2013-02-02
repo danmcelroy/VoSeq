@@ -24,6 +24,7 @@ ob_end_clean();//Clear output buffer//includes
 #include'../login/redirect.html';
 
 include 'admarkup-functions.php';
+include '../includes/smart_resize_image.php';
 
 if( $photos_repository == "flickr" ) {
 	require_once'../api/phpFlickr/phpFlickr.php';
@@ -179,19 +180,46 @@ else {
 			mysql_query($query) or die("Error in query: $query. " . mysql_error());
 		}
 		else {  // $photos_repository == "local" 
-			$dest_folder = $local_folder . "/pictures/";
+			$dest_folder = $local_folder . "/pictures";
 
 			$filename = $_FILES['userfile']['name'];
 			// check that file doesnot exist to avoid overwritting
 			$i = 1;
-			while ( file_exists($dest_folder . $filename) ) {
+			while ( file_exists("$dest_folder/$filename") ) {
 				$filename = $_FILES['userfile']['name'];
 				$filename = $i . "_" . $filename;
 				$i = $i + 1;
 			}
-			echo $filename;
-			echo "<br>";
-			exit(0);
+			echo " as file name: <b>$filename</b>";
+			$tmp_name = $_FILES['userfile']['tmp_name'];
+			move_uploaded_file($tmp_name, "$dest_folder/$filename");
+
+			if( !function_exists('imagecreatefromjpeg') ) {
+				echo "<p> <img src='../images/warning.png' />Warning: You need to ";
+				echo "install the library GD in your computer in ";
+				echo "order to create thumbnails for images.</p>";
+				echo "<p>If you compiled PHP from source, compile it with support for GD.";
+				echo "<br />I will proceed but it would be best if you install GD! ";
+				echo "See more info <a href='http://www.php.net/manual/en/image.installation.php'>";
+				echo "here</a>.</p>";
+				$thumbnail_name = $base_url . "/pictures/" . $filename;
+			}	
+			else {
+				$thumbnail_name = "$dest_folder/thumbnails/tn_$filename";
+				smart_resize_image("$dest_folder/$filename",
+								200,
+								0,
+								true,
+								$thumbnail_name,
+								$delete_original=false,
+								false
+								);
+				$thumbnail_name = $base_url . "/pictures/thumbnails/tn_" . $filename;
+			}
+			$filename = $base_url . "/pictures/" . $filename;
+
+			$query = "UPDATE ". $p_ . "vouchers set timestamp=now(), thumbnail=\"$thumbnail_name\", flickr_id=null, voucherImage=\"$filename\" where code=\"$code\""; 
+			mysql_query($query) or die("Error in query: $query. " . mysql_error());
 		}
 
 
@@ -205,11 +233,18 @@ else {
 		?>
 		<br /><br />
 		Do you want to:
-				<ol>
-				<li>Enter sequences for record of code <b><?php echo "$code"; ?></b>: <?php echo "<a href='" .$base_url . "/home.php'" ?> onclick="return redirect('listseq.php?code=<?php echo "$code"; ?>');">Add Sequences</a></li>
-				<li><?php echo "<a href='" .$base_url . "/home.php'" ?> onclick="return redirect('admin.php');">Go back to the main menu</a>.</li>
-				</ol>
-		<?php
+		<ol>
+			<li>Enter sequences for record of code <b><?php echo "$code"; ?></b>:
+				<?php 
+				if( $mask_url == "true" ) {
+					echo "<a href='" .$base_url . "/home.php' onclick=\"return redirect('listseq.php?code=$code')\">Add Sequences</a></li>";
+					echo "<li><a href='" .$base_url . "/home.php' onclick=\"return redirect('admin.php')\">Go back to the main menu</a>.</li>";
+				}
+				else {
+					echo "<a href='" .$base_url . "/admin/listseq.php?code=$code'>Add Sequences</a></li>";
+					echo "<li><a href='" .$base_url . "/admin/admin.php'>Go back to the main menu</a>.</li>";
+				}
+		echo "</ol>";
 		echo "</td>";
 		echo "<td class=\"sidebar\" valign=\"top\">";
 		admin_make_sidebar();
