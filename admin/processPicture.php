@@ -24,7 +24,7 @@ ob_end_clean();//Clear output buffer//includes
 
 
 
-if( trim($flickr_api_token) == "" ) {
+if( trim($flickr_api_token) == "" && trim($photos_repository) == "flickr" ) {
 	// redirect user to page for obtaining flickr_api_token
 	header("location: http://nymphalidae.utu.fi/cpena/VoSeq");
 	exit(0);
