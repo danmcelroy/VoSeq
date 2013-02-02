@@ -138,9 +138,9 @@ function formatDate($val, $date_timezone, $php_version) {
 // #################################################################################
 function getSeqs($code, $host, $user, $pass, $db, $p_) {
 	// open database connection
-	$connection = mysql_connect($host, $user, $pass) or die ('Unable to connect!');
+	$connection = mysql_connect($host, $user, $pass) or die ('Unable to connect! ' . mysql_error());
 	// select database
-	mysql_select_db($db) or die ('Unable to select database');
+	mysql_select_db($db) or die ('Unable to select database ' . mysql_error());
 	if( function_exists(mysql_set_charset) ) {
 		mysql_set_charset("utf8");
 	}
@@ -288,8 +288,8 @@ function update_comboboxes() {
 	$cwd = dirname(__FILE__);
 
     // connect to database
-	@$connection = mysql_connect($host, $user, $pass) or die('Unable to connect');
-	mysql_select_db($db) or die ('Unable to select database');
+	@$connection = mysql_connect($host, $user, $pass) or die('Unable to connect ' . mysql_error());
+	mysql_select_db($db) or die ('Unable to select database '. mysql_error());
 	if( function_exists(mysql_set_charset) ) {
     	mysql_set_charset("utf8");
 	}
