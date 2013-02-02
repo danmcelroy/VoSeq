@@ -77,8 +77,8 @@ echo "<div id=\"content_narrow\">";
 
 
 // open database connections
-@$connection = mysql_connect($host, $user, $pass) or die('Unable to connect');
-mysql_select_db($db) or die ('Unable to select database; <b>You might need to configure the file "conf.php"</b>');
+@$connection = mysql_connect($host, $user, $pass) or die('Unable to connect'. mysql_error());
+mysql_select_db($db) or die ('Unable to select database; <b>You might need to configure the file "conf.php"</b>' . mysql_error());
 
 if( function_exists(mysql_set_charset)) {
 	mysql_set_charset("utf8");
@@ -92,6 +92,29 @@ mysql_upgrade($db, $p_);
 // #################################################################################
 
 
+
+// #################################################################################
+// Section: Upgrade conf.php file if needed
+// #################################################################################
+
+// add variable $photos_repository to conf.php file.
+// use flickr by default
+if( !isset($photos_repository) ) {
+	$contents = file("conf.php");
+
+	$fp = fopen("conf.php", "w");
+	foreach( $contents as $line ) {
+		$line = trim($line);
+		if( $line == "?>" ) {
+			$line = "\n// What repository you want to use to store voucher ";
+			$line .= "photos?\n\$photos_repository = 'flickr';\n";
+			$line .= "\n?>";
+		}
+		fwrite($fp, $line . "\n");
+	}
+	fclose($fp);
+}
+// #################################################################################
 
 
 // generate and execute query
