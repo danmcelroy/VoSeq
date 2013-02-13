@@ -395,7 +395,7 @@ if ($input_type == 'vouch') {
 			$item_columns = explode("	", $item);
 			$extrDate = trim($item_columns[$where_extrDate]);
 			$dElist = explode("-", $extrDate);
-			if ($extrDate != '' && checkdate($dElist[2],$dElist[1],$dElist[0]) == FALSE){
+			if ($extrDate != '' && checkdate($dElist[1],$dElist[2],$dElist[0]) == FALSE){
 				$errorList[] = "Invalid entry: <b>Extraction Date</b> in row <b>$xrow_num</b>(code = $code_array[$code_num])
 					</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date format should be: YYYY-MM-DD";
 			}
