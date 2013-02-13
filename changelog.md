@@ -1,6 +1,9 @@
 #VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 ##Changelog:
+* Version 1.4.2
+	- [Carlos 2013-02-13] Fixing checkdate bug in files for batch upload/update. [Thanks to Marianne Espeland].
+
 * Version 1.4.1
 	- [Tobias 2013-02-10] Fixing curl function in Windows [connection to Github].
 
