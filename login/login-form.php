@@ -31,6 +31,7 @@ if( $mask_url == "true" ) {
 }
 else {
 	ob_clean();
+	chdir($local_folder);
 	include("functions.php");
 	include("includes/check_new_version.php");
 }
