@@ -117,7 +117,7 @@ session_start();\n
 \$pass = '" . $variables['pass']. "';
 \$db   = '" . $variables['db']  . "';\n
 \$config_sitename = '" . $variables['config_sitename'] . "';
-\$version = \"1.4.2\";
+\$version = \"1.4.3\";
 \$currentTemplate = 'templates/mytemplate';\n
 \$base_url = '" . $variables['url']. "';
 \$local_folder = '" . $variables['local_folder']. "';\n";
