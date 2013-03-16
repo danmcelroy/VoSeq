@@ -129,12 +129,10 @@ if ($row || $row1)
 		<tr>
 			<td class="label">Sequence</td><td class="field4" colspan="4">&nbsp;</td>
 		</tr>
-		<tr><td class="field5" colspan="5"><textarea  cols="27" rows="10" wrap="soft" readonly="yes">
-				<?php
+		<tr><td class="field5" colspan="5"><textarea  cols="27" rows="10" wrap="soft" readonly="yes"><?php
 				$wrapped_sequence = wordwrap($row1['6'], 25, "\n", 1);
-				echo $wrapped_sequence;
-				?>
-			 &nbsp;</textarea></td></tr>
+				echo trim($wrapped_sequence);
+				?>&nbsp;</textarea></td></tr>
 		<tr><td class="label">No of bp</td>
 			 <td class="field"><?php echo $row1['0']; ?></td>
 			 <td class="label3">Amb.</td>
