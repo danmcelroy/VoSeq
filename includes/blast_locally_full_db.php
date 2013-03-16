@@ -350,7 +350,8 @@ else {
 		foreach ($line_cols as $k => $col){
 			if ($k == "0") {
 				if( $mask_url == "true" ) {
-					$table .= "<td class=\"field4\"><a href=" . $base_url . "/home.php onclick=\"return redirect('../story.php?code=$col');\">$col</a></td>";
+					$table .= "<td class=\"field4\"><a href=\"" . $base_url . "/home.php\" ";
+					$table .= "onclick=\"return redirect('../story.php?code=$col');\">$col</a></td>";
 				}
 				else {
 					$table .= "<td class=\"field4\"><a href=\"" . $base_url . "/story.php?code=$col\">$col</a></td>";
