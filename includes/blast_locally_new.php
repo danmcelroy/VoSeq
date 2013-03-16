@@ -115,7 +115,7 @@ if (isset($_POST['new_sequence']) && $_POST['new_sequence'] != "") {
 	$sequence      = preg_replace("/\s/", "", $sequence);
 	$replace_chars = array("?", "-", "~");
 	$sequence = str_replace($replace_chars, "", $sequence);
-	if (strlen($sequence)<11) {$errorList[] = "The BLASTed sequence was too short (<11n)!";}
+	if (strlen($sequence)<11) {$errorList[] = "The BLASTed sequence was too short (< 11 base pairs)!";}
 	if (isset($_POST['name'])){
 		$name = trim($_POST['name']);
 		$name = str_replace(" ", "_", $name);
@@ -315,18 +315,19 @@ unset($output_to_user);
 // Section: Handle response
 // #################################################################################
 $output_to_user = "";
-if (isset($output_win)) { $output = array();
-	foreach($output_win as $item) { 
-		if ($item[0] != "#" ){
-		$ow = preg_replace("'\s+'", '#', $item);
-		$ow_array = explode("#", $ow); 
-		$ow_array2 = array($ow_array[1],$ow_array[2],$ow_array[3],$ow_array[4],$ow_array[5],$ow_array[6],$ow_array[7],$ow_array[16],$ow_array[10],$ow_array[8],$ow_array[11],$ow_array[12],$ow_array[13],$ow_array[14]);
-		$output[] = implode("#",$ow_array2);
+if( isset($output_win) ) { 
+	$output = array();
+	foreach( $output_win as $item ) { 
+		if( $item[0] != "#" ) {
+			$ow = preg_replace("'\s+'", '#', $item);
+			$ow_array = explode("#", $ow); 
+			$ow_array2 = array($ow_array[1],$ow_array[2],$ow_array[3],$ow_array[4],$ow_array[5],$ow_array[6],$ow_array[7],$ow_array[16],$ow_array[10],$ow_array[8],$ow_array[11],$ow_array[12],$ow_array[13],$ow_array[14]);
+			$output[] = implode("#",$ow_array2);
 		}
 	}
 }
-foreach($output as $item) {
-	if ($item[0] != "#" ){
+foreach( $output as $item ) {
+	if( $item[0] != "#" ) {
 		$output_to_user[] = $itemvar = $str = preg_replace("'\s+'", '#', $item);
 	}
 }
