@@ -1,6 +1,9 @@
 #VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 ##Changelog:
+* Version 1.4.4
+	- [Carlos 2013-03-17] Fixing mask_url links in BLAST scripts.
+
 * Version 1.4.3
 	- [Carlos 2013-02-16] Fixing directory chage for login-form.
 

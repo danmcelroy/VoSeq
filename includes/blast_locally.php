@@ -338,7 +338,7 @@ foreach($output_to_user as $line) {
 	$line_cols = explode(" ", str_replace("#", " ", $line));
 	foreach ($line_cols as $k => $v){
 		if ($k == "0") {
-			$table .= "<td class=\"field4\"><a href=" . $base_url . "/home.php onclick=\"return redirect('../story.php?code=$v');\">$v</a></td>";
+			$table .= "<td class=\"field4\"><a href='" . $base_url . "/story.php?code=$v'>$v</a></td>";
 		}
 		elseif ($k == "1" || $k == "2" || $k == "3") {
 			$table .= "<td class=\"field4\">$v</td>";
