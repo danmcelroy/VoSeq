@@ -65,13 +65,16 @@ function show_multi_photos($voucherImage, $thumbnail, $admin) {
 					echo "\n<div class=\"voucher\" id=\"" . $i . "\">";
 					echo "\n<a href='#' title='Delete photo' class='delete'><img class='delete' src='images/delete.png' /></a>";
 					echo "\n<a href='" . $v . "' target=\"_blank\">";
+					echo "\n<img class='voucher' src=\"" . $t . "\"/>";
+					echo "\n</a>";
+					echo "\n</div>";
 				}
-				echo "<img class='voucher' src=\"" . $t . "\"/>";
-				if( $admin == true ) {
-					echo "</a>\n";
+				else {
+					echo "\n<div class=\"voucher\">";
+					echo "\n<img class='voucher' src=\"" . $t . "\"/>";
 					echo "</div>\n";
-					$i = $i + 1;
 				}
+				$i = $i + 1;
 			}
 		}
 	}
