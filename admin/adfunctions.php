@@ -104,23 +104,23 @@ function addRecordResult($code) {
 // show lists of retrieved records in search, unordered list
 // #################################################################################
 function searchList($code, $genus, $species, $extractor, $latesteditor, $search_id, $timestamp, $date_timezone, $base_url, $php_version, $mask_url, $p_) {
-	echo "<ul class=\"text\">
-	 		<li><b>";
+	echo "<ul class=\"text\"><li>";
 	if( $mask_url == "true" ) {
-		echo "<a href=\"" . $base_url . "/home.html\" onclick=\"return redirect('add.php?code=" . $code . "&amp;search=" . $search_id . "');\">";
+		echo "<a href=\"" . $base_url . "/home.php\" onclick=\"return redirect('add.php?code=" . $code . "&amp;search=" . $search_id . "');\">";
 	}
 	else {
 		echo "<a href=\"" . $base_url . "/admin/add.php?code=" . $code . "&amp;search=" . $search_id . "\">";
 	}
-	echo $code . "</a></b> <i>" . $genus . " " . $species . " </i>";
+	echo $code . "</a> <i>" . $genus . " " . $species . " </i>";
 		
 	//get info about picture
 	$queryV  = "SELECT code, voucherImage FROM ". $p_ . "vouchers WHERE code='$code'";
 	$resultV = mysql_query($queryV) or die("Error in query: $queryV. " . mysql_error());
 	$rowV    = mysql_fetch_object($resultV);
-	if ($rowV->voucherImage == 'na.gif') {
+	if( $rowV->voucherImage == 'na.gif' || $rowV->voucherImage == "" ) {
 		if( $mask_url == "true" ) {
-			echo "<a href=\"" . $base_url . "/home.html\" onclick=\"return redirect('processPicture.php?code=" . $code . "');\">";
+			echo "<a href=\"" . $base_url . "/home.php\" onclick=\"return ";
+			echo "redirect('processPicture.php?code=" . $code . "');\">";
 		}
 		else {
 			echo "<a href=\"" . $base_url . "/admin/processPicture.php?code=" . $code . "\">";
@@ -129,16 +129,20 @@ function searchList($code, $genus, $species, $extractor, $latesteditor, $search_
 		}
 	else {
 		if( $mask_url == "true" ) {
-			echo "<a href=\"" . $base_url . "/home.html\" onclick=\"return redirect('../pictures/" . $rowV->voucherImage . "');\">
-			  <img class=\"link\" src=\"images/image.png\" alt=\"See photo\" title=\"See photo\" /></a>";
-			echo "<a href=\"" . $base_url . "/home.html\" onclick=\"return redirect('processPicture.php?code=" . $rowV->code . "');\">
-			  <img class=\"link\" src=\"images/change_pic.png\" alt=\"Change photo\" title=\"Change photo\" /></a>";
+			echo "<a href=\"" . $base_url . "/home.php\" onclick=\"return ";
+			echo "redirect('add.php?code=" . $rowV->code . "');\"><img class=\"link\" ";
+			echo "src=\"images/image.png\" alt=\"See photos\" title=\"See photos\" /></a>";
+			echo "&nbsp;<a href=\"" . $base_url . "/home.php\" onclick=\"return ";
+			echo "redirect('processPicture.php?code=" . $rowV->code . "');\"><img ";
+			echo "class=\"link\" src=\"images/add.png\" alt=\"Add photo\" title=\"Add photo\" /></a>";
 		}
 		else {
-			echo "<a href=\"" . $base_url . "/../pictures/" . $rowV->voucherImage . "\">
-			  <img class=\"link\" src=\"images/image.png\" alt=\"See photo\" title=\"See photo\" /></a>";
-			echo "<a href=\"" . $base_url . "/admin/processPicture.php?code=" . $rowV->code . "\">
-			  <img class=\"link\" src=\"images/change_pic.png\" alt=\"Change photo\" title=\"Change photo\" /></a>";
+			echo "<a href=\"" . $base_url . "/admin/add.php?code=" . $rowV->code;
+			echo "\"><img class=\"link\" src=\"images/image.png\" alt=\"See photos\" ";
+			echo "title=\"See photos\" /></a>";
+			echo "&nbsp;<a href=\"" . $base_url . "/admin/processPicture.php?code=";
+			echo $rowV->code . "\"><img class=\"link\" src=\"images/add.png\" ";
+			echo "alt=\"Add photo\" title=\"Add photo\" /></a>";
 		}
 	}
 	echo "<ul><li>";
