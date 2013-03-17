@@ -46,9 +46,11 @@ if (!function_exists('stripos')) // for php 4
 // It will show up to two photos on top right
 // All other photos will be shown at the bottom with another function
 // #################################################################################
-function show_multi_photos($voucherImage, $thumbnail) {
+function show_multi_photos($voucherImage, $thumbnail, $admin) {
 	if( $voucherImage == NULL && $thumbnail == NULL ) {
+		echo "<div class='voucher'>";
 		echo "<img class=\"voucher\" src=\"na.gif\"/>";
+		echo "</div>";
 	}
 	else {
 		$voucherImages = explode("|", $voucherImage);
@@ -56,16 +58,26 @@ function show_multi_photos($voucherImage, $thumbnail) {
 		$photos = array_combine($voucherImages, $thumbnails);
 		# show only the first two photos
 		$photos = array_slice($photos, 0, 3);
+		$i = 1;
 		foreach($photos as $v => $t) {
 			if( $v != "" && $t != "" ) {
-				echo "<a href='" . $v . "' target=\"_blank\">";
-				echo "<img class=\"voucher\" src=\"" . $t . "\"/></a>";
+				if( $admin == true ) {
+					echo "\n<div class=\"voucher\" id=\"" . $i . "\">";
+					echo "\n<a href='#' title='Delete photo' class='delete'><img class='delete' src='images/delete.png' /></a>";
+					echo "\n<a href='" . $v . "' target=\"_blank\">";
+				}
+				echo "<img class='voucher' src=\"" . $t . "\"/>";
+				if( $admin == true ) {
+					echo "</a>\n";
+					echo "</div>\n";
+					$i = $i + 1;
+				}
 			}
 		}
 	}
 }
 
-function show_all_other_photos($voucherImage, $thumbnail) {
+function show_all_other_photos($voucherImage, $thumbnail, $admin) {
 	if( $voucherImage == NULL && $thumbnail == NULL ) {
 		echo "";
 	}
@@ -84,15 +96,21 @@ function show_all_other_photos($voucherImage, $thumbnail) {
 			echo "<table border='0' width='760px' cellpadding='5px'>";
 			echo "<th><h1>Additional photos</h1></th>";
 			echo "<tr>";
-			$i = 1;
+			$i = 3;
 			foreach($photos as $v => $t) {
 				if( $v != "" && $t != "" ) {
-					echo "<td>";
+					echo "<td width='200px'>\n";
+					echo "<div class='voucher' id=\"". $i . "\">\n";
+					if( $admin == true ) {
+						echo "<a href='#' class='delete'><img class='delete'";
+						echo " src='images/delete.png' title='Delete photo' /></a>\n";
+					}
 					echo "<a href='" . $v . "' target=\"_blank\">";
-					echo "<img class=\"voucher\" src=\"" . $t . "\"/></a>";
-					echo "</td>";
+					echo "<img class=\"voucher\" src=\"" . $t . "\"/></a>\n";
+					echo "</div>\n";
+					echo "</td>\n";
 				}
-				if( $i % 3 == 0 ) {
+				if( $i % 3 == 2 ) {
 					echo "</tr><tr>";
 				}
 				$i = $i + 1;
