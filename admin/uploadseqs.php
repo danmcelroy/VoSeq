@@ -118,7 +118,7 @@ Select the fields you will be uploading:
 <br />
 Enter you file:
 <form enctype="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-    			<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+    			<input type="hidden" name="MAX_FILE_SIZE" value="4000000" />
     			<input name="userfile" type="file" /><br />
     			<input type="Submit" name="submit" value="Upload" />
 </form>
