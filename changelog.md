@@ -1,6 +1,10 @@
 #VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 ##Changelog:
+* Version 1.5.0
+	- [Carlos 2013-03-18] Allowing several photos for each voucher.
+	- [Carlos 2013-03-18] MySQL table definition for voucher images changed to accomodate several strings separated by "|".
+
 * Version 1.4.4
 	- [Carlos 2013-03-17] Fixing mask_url links in BLAST scripts.
 

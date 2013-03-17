@@ -60,6 +60,12 @@ function update_photo_details($p_, $my_url, $photo_id, $my_voucherImage, $code) 
 	if (mysql_num_rows($result) > 0) {
 		while ($row = mysql_fetch_object($result)) {
 			$photos = $row;
+			
+			# remove na.gif if necessary
+			if( $photos->thumbnail == "na.gif" && $photos->voucherImage == "na.gif" ) {
+				$photos->thumbnail = "";
+				$photos->voucherImage = "";
+			}
 			$photos->thumbnail .= "|" . $my_url;
 			$photos->flickr_id .= "|" . $photo_id;
 			$photos->voucherImage .= "|" . $my_voucherImage;
