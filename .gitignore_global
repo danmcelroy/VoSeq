@@ -18,3 +18,6 @@ result.txt
 maintenance/*txt
 *txt
 dojo_data/combo*js
+
+pictures/*png
+pictures/thumbnails/*png
