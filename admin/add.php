@@ -921,7 +921,9 @@ elseif (!$_POST['submitNoNew'] && $_GET['code']) {
 
 					</td>
 					<td width="200px">
-						<a href="<?php echo $row1->voucherImage; ?>"><img class="voucher" src="<?php echo $row1->thumbnail; ?>" alt="" /></a>
+						<?php
+							show_multi_photos($row1->voucherImage, $row1->thumbnail, $admin);
+						?>
 					</td>
 	
 				</tr>
@@ -978,7 +980,12 @@ elseif (!$_POST['submitNoNew'] && $_GET['code']) {
 <td class="sidebar" valign="top">
 	<?php admin_make_sidebar();  ?>
 </td>
+
 </tr>
+<?php
+# show all other photos if they exist
+show_all_other_photos($row1->voucherImage, $row1->thumbnail, $admin);
+?>
 </table> <!-- end super table -->
 
 </div> <!-- end content -->
