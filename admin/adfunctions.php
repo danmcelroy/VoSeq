@@ -74,7 +74,7 @@ function addRecordResult($code) {
 				<table>
 				<tr><td>
 				<form enctype="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-    			<input type="hidden" name="MAX_FILE_SIZE" value="500000" />
+    			<input type="hidden" name="MAX_FILE_SIZE" value="4000000" />
     			<input name="userfile" type="file" /><br />
     			<input type="Submit" name="submit" value="Upload" />
 				</form>

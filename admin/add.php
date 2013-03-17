@@ -630,7 +630,7 @@ elseif ($_POST['submitNew']) {
 				<table>
 				<tr><td>
 				<form enctype="multipart/form-data" action="processfile.php?code=<?php echo "$code"; ?>" method="post">
-    			<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+    			<input type="hidden" name="MAX_FILE_SIZE" value="4000000" />
     			<input name="userfile" type="file" size="40" /><br />
     			<input type="submit" name="submit" value="Upload" />
 				</form>
@@ -1301,7 +1301,7 @@ elseif ($_POST['submitNoNew'])
 		<table>
 			<tr><td>
 			<form enctype="multipart/form-data" action="processfile.php?code=<?php echo "$code1"; ?>" method="post">
-  			<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+  			<input type="hidden" name="MAX_FILE_SIZE" value="4000000" />
    		<input name="userfile" type="file" size="40" /><br />
   			<input type="submit" name="submit" value="Upload" />
 			</form>
