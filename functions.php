@@ -43,18 +43,68 @@ if (!function_exists('stripos')) // for php 4
 
 // #################################################################################
 // Section: story.php Shows voucher images in Voucher page (multi photos)
+// It will show up to two photos on top right
+// All other photos will be shown at the bottom with another function
 // #################################################################################
 function show_multi_photos($voucherImage, $thumbnail) {
-	$voucherImages = explode("|", $voucherImage);
-	$thumbnails = explode("|", $thumbnail);
-	$photos = array_combine($voucherImages, $thumbnails);
-	foreach($photos as $v => $t) {
-		if( $v != "" && $t != "" ) {
-			echo "<a href='" . $v . "' target=\"_blank\">";
-			echo "<img class=\"voucher\" src=\"" . $t . "\"/></a>";
+	if( $voucherImage == NULL && $thumbnail == NULL ) {
+		echo "<img class=\"voucher\" src=\"na.gif\"/>";
+	}
+	else {
+		$voucherImages = explode("|", $voucherImage);
+		$thumbnails = explode("|", $thumbnail);
+		$photos = array_combine($voucherImages, $thumbnails);
+		# show only the first two photos
+		$photos = array_slice($photos, 0, 3);
+		foreach($photos as $v => $t) {
+			if( $v != "" && $t != "" ) {
+				echo "<a href='" . $v . "' target=\"_blank\">";
+				echo "<img class=\"voucher\" src=\"" . $t . "\"/></a>";
+			}
 		}
 	}
 }
+
+function show_all_other_photos($voucherImage, $thumbnail) {
+	if( $voucherImage == NULL && $thumbnail == NULL ) {
+		echo "";
+	}
+	elseif ( $voucherImage == "na.gif" || $thumbnail == "na.gif" ) {
+		echo "";
+	}
+	else {
+		$voucherImages = explode("|", $voucherImage);
+		$thumbnails = explode("|", $thumbnail);
+		$photos = array_combine($voucherImages, $thumbnails);
+
+		if( count($photos) > 3 ) {
+			$photos = array_slice($photos, 3);
+			# show from the 3rd photo onwards
+			echo "<tr>\n<td>\n";
+			echo "<table border='0' width='760px' cellpadding='5px'>";
+			echo "<th><h1>Additional photos</h1></th>";
+			echo "<tr>";
+			$i = 1;
+			foreach($photos as $v => $t) {
+				if( $v != "" && $t != "" ) {
+					echo "<td>";
+					echo "<a href='" . $v . "' target=\"_blank\">";
+					echo "<img class=\"voucher\" src=\"" . $t . "\"/></a>";
+					echo "</td>";
+				}
+				if( $i % 3 == 0 ) {
+					echo "</tr><tr>";
+				}
+				$i = $i + 1;
+			}
+			echo "\n</tr>\n";
+			echo "</table>";
+			echo "</td>\n</tr>\n";
+		}
+	}
+}
+
+
 
 // #################################################################################
 // Section: dofastafiles() function 

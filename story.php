@@ -314,21 +314,12 @@ if ($row)
 		</tr>
 		
 		<tr>
-			<td class="label2">Flickr photo id</td>
-			<td class="label2">Voucher Code</td>
-			<td class="label2">Determined By</td>
+			<td class="label2">&nbsp;</td>
+			<td class="label3">Voucher Code</td>
+			<td class="label3">Determined By</td>
 		</tr>
 		<tr>
-			<td id="photo_id" class="image"><?php
-									$photo_id  = $row->flickr_id;
-									if( $photo_id != "" && $photo_id != "null" ) {
-										echo $photo_id;
-									}
-									else {
-										echo "&nbsp";
-									}
-									echo "</td>";
-									?>
+			<td class="field">&nbsp;</td>
 			<td class="field2"><?php echo $row->voucherCode; ?>&nbsp;</td>
 			<td class="field2"><?php echo $row->determinedBy; ?>&nbsp;</td>
 		</tr>
@@ -374,7 +365,7 @@ if ($row)
 		<?php
 			show_multi_photos($row->voucherImage, $row->thumbnail);
 
-			if( $row->voucherImage != "na.gif" ) {
+			if( $row->voucherImage != NULL ) {
 				echo "<div class='eol_button' onclick='send_to_EOL();'><img src='images/eol_button.png' alt='' />Share photo with EOL</div>";
 			}
 
@@ -451,8 +442,10 @@ if ($row)
 	</td></tr>
 	</table><!-- end table child 2 -->
 
-</td></tr>
-</table><!-- end big parent table -->
+</td>
+</tr>
+</table>
+<!-- end big parent table -->
 
 </td>
 
@@ -466,6 +459,10 @@ if ($row)
 </td>
 
 </tr>
+<?php
+# show all other photos if they exist
+show_all_other_photos($row->voucherImage, $row->thumbnail);
+?>
 </table> <!-- end super table -->
 
 </div> <!-- end content -->
