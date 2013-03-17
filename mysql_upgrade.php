@@ -73,6 +73,32 @@ function mysql_upgrade($db, $p_) {
 		$query .= " default null after timestamp";
 		mysql_query($query) or die ("Error in query: $query. " . mysql_error());
 	}
+
+	// table definition for voucher images changed to accomodate several strings separated by "|".
+	// version 1.5.0
+	$query = "SELECT * FROM information_schema.COLUMNS WHERE 
+				TABLE_SCHEMA = '" . $db . "' 
+				AND TABLE_NAME = '" . $p_ . "vouchers' 
+				AND COLUMN_NAME = 'flickr_id'";
+
+	$query  = "SELECT data_type FROM information_schema.COLUMNS WHERE
+				TABLE_SCHEMA = '" . $db . "' 
+				AND TABLE_NAME = '" . $p_ . "vouchers'
+				AND COLUMN_NAME = 'thumbnail'";
+	$result = mysql_query($query) or die ("Error in query: $query. " . mysql_error());
+	if( mysql_num_rows($result) > 0 ) {
+		while( $row = mysql_fetch_object($result) ) {
+			if( $row->data_type == "varchar" ) {
+				$query = "ALTER TABLE ". $p_ . "vouchers MODIFY voucherImage text default null";
+				mysql_query($query) or die ("Error in query: $query. " . mysql_error());
+				$query = "ALTER TABLE ". $p_ . "vouchers MODIFY flickr_id text default null";
+				mysql_query($query) or die ("Error in query: $query. " . mysql_error());
+				$query = "ALTER TABLE ". $p_ . "vouchers MODIFY thumbnail text default null";
+				mysql_query($query) or die ("Error in query: $query. " . mysql_error());
+			}
+		}
+	}
+	
 }
 	
 ?>
