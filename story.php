@@ -371,8 +371,9 @@ if ($row)
 	
 	</td>
 	<td>
-		<a href="<?php echo $row->voucherImage; ?>" target="_blank"><img class="voucher" src="<?php echo $row->thumbnail; ?>" /></a>
 		<?php
+			show_multi_photos($row->voucherImage, $row->thumbnail);
+
 			if( $row->voucherImage != "na.gif" ) {
 				echo "<div class='eol_button' onclick='send_to_EOL();'><img src='images/eol_button.png' alt='' />Share photo with EOL</div>";
 			}
