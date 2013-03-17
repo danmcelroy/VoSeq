@@ -1,8 +1,25 @@
 /* CSS Document */
-img.voucher {
+div.voucher {
 	border: 1px solid gray;
+}
+
+img.voucher {
+	margin: 0px;
 	padding: 4px;
 }
+
+img.delete {
+	padding: 2px;
+	float: left;
+}
+
+a.delete {
+	position: relative;
+	float: left;
+	top: 0;
+	right: 0;
+}
+
 
 img.link {
 	border: 0px;
@@ -559,3 +576,4 @@ td.code {
 	color: red;
 	padding: 4px;
 }
+
