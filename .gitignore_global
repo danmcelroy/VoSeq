@@ -20,4 +20,6 @@ maintenance/*txt
 dojo_data/combo*js
 
 pictures/*png
+pictures/*jpg
 pictures/thumbnails/*png
+pictures/thumbnails/*jpg
