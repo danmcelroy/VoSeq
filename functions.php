@@ -29,6 +29,7 @@ if (!function_exists('array_combine')) // for php 4
 		return $out;
 	}
 }
+
 // #################################################################################
 // Section: stripos() function for PHP versions earlier than 5 
 // #################################################################################
@@ -38,6 +39,23 @@ if (!function_exists('stripos')) // for php 4
 		return strpos($haystack, stristr( $haystack, $needle ));
 	}
 }
+
+
+// #################################################################################
+// Section: story.php Shows voucher images in Voucher page (multi photos)
+// #################################################################################
+function show_multi_photos($voucherImage, $thumbnail) {
+	$voucherImages = explode("|", $voucherImage);
+	$thumbnails = explode("|", $thumbnail);
+	$photos = array_combine($voucherImages, $thumbnails);
+	foreach($photos as $v => $t) {
+		if( $v != "" && $t != "" ) {
+			echo "<a href='" . $v . "' target=\"_blank\">";
+			echo "<img class=\"voucher\" src=\"" . $t . "\"/></a>";
+		}
+	}
+}
+
 // #################################################################################
 // Section: dofastafiles() function 
 // returns a fasta file in GenBank format
