@@ -162,13 +162,13 @@ echo "</table>";
 				if( $mask_url == "true" ) {
 					echo " <a href=\"" . $base_url . "/home.php\" onclick=\"return redirect('add.php?code=" . $rowV->code . "');\"><img id=\"see_pic" . $i . "\" class=\"link\" src=\"images/image.png\" /></a>";
 					echo "<span dojoType=\"tooltip\" connectId=\"see_pic" . $i . "\" delay=\"1\" toggle=\"explode\">See photos</span>";
-					echo "<a href=\"" . $base_url . "/home.php\" onclick=\"return redirect('processPicture.php?code=" . $rowV->code . "');\"><img id=\"change_pic" . $i . "\" class=\"link\" src=\"images/add.png\" /></a>";
+					echo "&nbsp;<a href=\"" . $base_url . "/home.php\" onclick=\"return redirect('processPicture.php?code=" . $rowV->code . "');\"><img id=\"change_pic" . $i . "\" class=\"link\" src=\"images/add.png\" /></a>";
 					echo "<span dojoType=\"tooltip\" connectId=\"change_pic" . $i . "\" delay=\"1\" toggle=\"explode\">Add photo</span>";
 				}
 				else {
 					echo " <a href=\"add.php?code=" . $rowV->code . "\"><img id=\"see_pic" . $i . "\" class=\"link\" src=\"images/image.png\" /></a>";
 					echo "<span dojoType=\"tooltip\" connectId=\"see_pic" . $i . "\" delay=\"1\" toggle=\"explode\">See photos</span>";
-					echo "<a href=\"" . $base_url . "/admin/processPicture.php?code=" . $rowV->code . "\"><img id=\"change_pic" . $i . "\" class=\"link\" src=\"images/add.png\" /></a>";
+					echo "&nbsp;<a href=\"" . $base_url . "/admin/processPicture.php?code=" . $rowV->code . "\"><img id=\"change_pic" . $i . "\" class=\"link\" src=\"images/add.png\" /></a>";
 					echo "<span dojoType=\"tooltip\" connectId=\"change_pic" . $i . "\" delay=\"1\" toggle=\"explode\">Add photo</span>";
 				}
 			}
