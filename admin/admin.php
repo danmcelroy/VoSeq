@@ -148,7 +148,7 @@ echo "</table>";
 			$resultV = mysql_query($queryV) or die("Error in query: $queryV. " . mysql_error());
 			$rowV    = mysql_fetch_object($resultV);
 			
-			if ($rowV->voucherImage == 'na.gif') {
+			if ($rowV->voucherImage == 'na.gif' || $rowV->voucherImage == NULL ) {
 				if( $mask_url == "true" ) {
 					echo " <a href='" .$base_url . "/home.php' onclick=\"return redirect('processPicture.php?code=$rowV->code')\">Picture missing</a>
 						<img src=\"images/warning.png\" alt=\"\" />";

@@ -922,6 +922,14 @@ elseif (!$_POST['submitNoNew'] && $_GET['code']) {
 					</td>
 					<td width="200px">
 						<?php
+							if( $mask_url == "true" ) {
+								echo " <a href='" .$base_url . "/home.php' onclick=\"return redirect('processPicture.php?code=$row1->code')\">Add photo
+									<img src=\"images/add.png\" alt=\"\" /></a>";
+							}
+							else {
+								echo " <a href='" .$base_url . "/admin/processPicture.php?code=$row1->code'>Add photo
+									<img src=\"images/add.png\" alt=\"\" /></a>";
+							}
 							show_multi_photos($row1->voucherImage, $row1->thumbnail, $admin);
 						?>
 					</td>
