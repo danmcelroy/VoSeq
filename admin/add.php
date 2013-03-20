@@ -992,7 +992,7 @@ elseif (!$_POST['submitNoNew'] && $_GET['code']) {
 </tr>
 <?php
 # show all other photos if they exist
-show_all_other_photos($row1->voucherImage, $row1->thumbnail, $admin);
+show_all_other_photos($row1->flickr_id, $row1->voucherImage, $row1->thumbnail, $admin);
 ?>
 </table> <!-- end super table -->
 
