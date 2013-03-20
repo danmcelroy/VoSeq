@@ -716,7 +716,7 @@ elseif (!$_POST['submitNoNew'] && $_GET['code']) {
 	$query1  = "SELECT id, code, extractor, genus, orden, family, subfamily, tribe, subtribe, species, subspecies, auctor, typeSpecies, country, specificLocality, latitude, longitude, altitude, collector, dateCollection, voucherLocality, voucher, determinedBy, sex, hostorg, voucherCode, extraction, extractionTube, dateExtraction, publishedIn, notes, edits, voucherImage, thumbnail FROM ". $p_ . "vouchers WHERE code='$code1'";
 	$result1 = mysql_query($query1) or die ("Error in query: $query1. " . mysql_error());
 	$row1    = mysql_fetch_object($result1);
-	
+
 	// get title
 	$title = "$config_sitename - Edit " . $code1;
 				
