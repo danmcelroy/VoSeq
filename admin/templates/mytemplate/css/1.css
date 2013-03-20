@@ -1,6 +1,7 @@
 /* CSS Document */
 div.voucher {
 	border: 1px solid gray;
+	max-width: 220px;
 }
 
 img.voucher {

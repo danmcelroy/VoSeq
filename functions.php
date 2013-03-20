@@ -124,10 +124,10 @@ function show_all_other_photos($flickr_id, $voucherImage, $thumbnail, $admin) {
 
 		# show from photo 3 onwards
 		if( count($v) > 3 ) {
-			$j = 0;
+			$j = 3;
 			$photos = array();
 			while( $j < count($v) ) {
-				if( $j > 3 ) {
+				if( $j > 2 ) {
 					$tmp = new stdClass;
 					$tmp->flickr_id = trim($f[$j]);
 					$tmp->voucherImage = trim($v[$j]);
@@ -569,5 +569,38 @@ function get_from_URL($url){
 	return $result;
 }
 
+
+// #################################################################################
+// Section: admin
+// cleans fields voucherImage, thumbnail for photos, removes double | and makes sure
+// there is always one | at the begining of field
+// @input: $p_ table prefix
+// @input: voucher id
+// #################################################################################
+function clean_fields($p_, $id) {
+	$query2  = "SELECT voucherImage, flickr_id, thumbnail FROM ". $p_;
+	$query2 .= "vouchers WHERE id='" . $id . "'";
+	$result2 = mysql_query($query2) or die("Error in query: $query2 ". mysql_error());
+	if( mysql_num_rows($result2) > 0 ) {
+		while( $row2 = mysql_fetch_object($result2) ) {
+			$v = trim($row2->voucherImage);
+			$f = trim($row2->flickr_id);
+			$t = trim($row2->thumbnail);
+
+			$v = preg_replace("/^\|{2,}/", "|", $v);
+			$f = preg_replace("/^\|{2,}/", "|", $f);
+			$t = preg_replace("/^\|{2,}/", "|", $t);
+
+			$v = preg_replace("/\|+/", "|", $v);
+			$f = preg_replace("/\|+/", "|", $f);
+			$t = preg_replace("/\|+/", "|", $t);
+
+			$q2  = "UPDATE ". $p_ . "vouchers SET ";
+			$q2 .= "voucherImage='$v', flickr_id='$f', thumbnail='$t' ";
+			$q2 .= "WHERE id=$id";	
+			mysql_query($q2) or die("Error in query: $q2 ". mysql_error());
+		}
+	}
+}
 
 ?>

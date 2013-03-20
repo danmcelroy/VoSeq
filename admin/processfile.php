@@ -52,7 +52,7 @@ function strip_ext($name) {
 # (p_, thumbnail, flickr_id, voucherImage, code)
 function update_photo_details($p_, $my_url, $photo_id, $my_voucherImage, $code) { 
 	# See if we are already have a photo for this voucher
-	$query  = "SELECT thumbnail, flickr_id, voucherImage FROM ";
+	$query  = "SELECT id, thumbnail, flickr_id, voucherImage FROM ";
 	$query .= $p_ . "vouchers WHERE code='" . $code . "'";
 
 	$result = mysql_query($query) or die("Error in query: $query. " . mysql_error());
@@ -68,7 +68,7 @@ function update_photo_details($p_, $my_url, $photo_id, $my_voucherImage, $code) 
 			}
 			$photos->thumbnail .= "|" . $my_url;
 			if( trim($photo_id) == "" ) {
-				$photo_id = " ";
+				$photo_id = "";
 			}
 			$photos->flickr_id .= "|" . $photo_id;
 			$photos->voucherImage .= "|" . $my_voucherImage;
