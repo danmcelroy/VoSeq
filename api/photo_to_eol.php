@@ -47,7 +47,8 @@ mysql_select_db($db) or die('Unable to select database');
 if( function_exists(mysql_set_charset) ) {
 	mysql_set_charset('utf8');
 }
-$query = "SELECT family, genus, species, subspecies, latitude, longitude FROM ". $p_ . "vouchers where flickr_id = '$photo_id'";
+$query  = "SELECT family, genus, species, subspecies, latitude, longitude FROM ". $p_;
+$query .= "vouchers where flickr_id like '%$photo_id%'";
 $result = mysql_query($query) or die("Error in query: $query. " . mysql_error());
 while( $row = mysql_fetch_object($result) ) {
 	if( $row->family != "" ) {

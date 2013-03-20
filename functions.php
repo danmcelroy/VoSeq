@@ -55,32 +55,49 @@ function show_multi_photos($flickr_id, $voucherImage, $thumbnail, $admin) {
 	else {
 		$f = explode("|", $flickr_id);
 		$v = explode("|", $voucherImage);
-		print_r($v);
 		$t = explode("|", $thumbnail);
-		# show only the first two photos
-		$i = 0;
-		while( $i < 3 ) {
-			$f = str_replace("|", "", $f[$i]);
-			$f = trim($f);
 
-			if( $v[$i] != "" && $t[$i] != "" ) {
+		# create an array with each photo data as array as well 
+		$j = 0;
+		$photos = array();
+		while( $j < count($v) ) {
+			if( $j < 3 ) {
+				$tmp = new stdClass;
+				$tmp->flickr_id = trim($f[$j]);
+				$tmp->voucherImage = trim($v[$j]);
+				$tmp->thumbnail = trim($t[$j]);
+
+				$photos[] = $tmp;
+			}
+			$j = $j + 1;
+		}
+
+		$i = 1;
+		foreach( $photos as $photo ) {
+			$photo->flickr_id = str_replace("|", "", $photo->flickr_id);
+			$photo->flickr_id = trim($photo->flickr_id);
+
+			if( $photo->voucherImage != "" && $photo->thumbnail != "" ) {
 				if( $admin == true ) {
 					echo "\n<div class=\"voucher\" id=\"" . $i . "\">";
-					echo "\n<a href='#' title='Delete photo' class='delete'><img class='delete' src='images/delete.png' /></a>";
-					echo "\n<a href='" . $v[$i] . "' target=\"_blank\">";
-					echo "\n<img class='voucher' src=\"" . $t[$i] . "\"/>";
+					echo "\n<a href='#' title='Delete photo' class='delete'>";
+					echo "<img class='delete' src='images/delete.png' /></a>";
+					echo "\n<a href='" . $photo->voucherImage . "' target=\"_blank\">";
+					echo "\n<img class='voucher' src=\"" . $photo->thumbnail . "\" />";
 					echo "\n</a>";
 					echo "\n</div>";
+					echo "<br />";
 				}
 				else {
 					echo "\n<div class=\"voucher\">";
-					echo "\n<img class='voucher' src=\"" . $t[$i] . "\"/>";
+					echo "\n<a href='" . $photo->voucherImage . "' target='_blank'>";
+					echo "\n<img class='voucher' src=\"" . $photo->thumbnail . "\"/>";
+					echo "\n</a>";
 
-					if( $f[$i] != "" && $f[$i] != NULL ) {
-						echo "\n<div class='eol_button' onclick='send_to_EOL();'>";
+					if( $photo->flickr_id != "" && $photo->flickr_id != NULL ) {
+						echo "\n<div class='eol_button' onclick='send_to_EOL(". $photo->flickr_id . ");'>";
 						echo "<img src='images/eol_button.png' ";
-						echo "id='" . $f[$i] . "' ";
-						echo "alt='' />";
+						echo "id='" . $photo->flickr_id . "' alt='' />";
 						echo "Share photo with EOL</div>";
 					}
 
@@ -93,7 +110,7 @@ function show_multi_photos($flickr_id, $voucherImage, $thumbnail, $admin) {
 	}
 }
 
-function show_all_other_photos($voucherImage, $thumbnail, $admin) {
+function show_all_other_photos($flickr_id, $voucherImage, $thumbnail, $admin) {
 	if( $voucherImage == NULL && $thumbnail == NULL ) {
 		echo "";
 	}
@@ -101,28 +118,52 @@ function show_all_other_photos($voucherImage, $thumbnail, $admin) {
 		echo "";
 	}
 	else {
-		$voucherImages = explode("|", $voucherImage);
-		$thumbnails = explode("|", $thumbnail);
-		$photos = array_combine($voucherImages, $thumbnails);
+		$f = explode("|", $flickr_id);
+		$v = explode("|", $voucherImage);
+		$t = explode("|", $thumbnail);
 
-		if( count($photos) > 3 ) {
-			$photos = array_slice($photos, 3);
-			# show from the 3rd photo onwards
+		# show from photo 3 onwards
+		if( count($v) > 3 ) {
+			$j = 0;
+			$photos = array();
+			while( $j < count($v) ) {
+				if( $j > 3 ) {
+					$tmp = new stdClass;
+					$tmp->flickr_id = trim($f[$j]);
+					$tmp->voucherImage = trim($v[$j]);
+					$tmp->thumbnail = trim($t[$j]);
+
+					$photos[] = $tmp;
+				}
+				$j = $j + 1;
+			}
+			
 			echo "<tr>\n<td>\n";
 			echo "<table border='0' width='760px' cellpadding='5px'>";
 			echo "<th><h1>Additional photos</h1></th>";
 			echo "<tr>";
 			$i = 3;
-			foreach($photos as $v => $t) {
-				if( $v != "" && $t != "" ) {
+			foreach( $photos as $photo ) {
+				$photo->flickr_id = str_replace("|", "", $photo->flickr_id);
+				$photo->flickr_id = trim($photo->flickr_id);
+	
+				if( $photo->voucherImage != "" && $photo->thumbnail != "" ) {
 					echo "<td width='200px'>\n";
 					echo "<div class='voucher' id=\"". $i . "\">\n";
+
 					if( $admin == true ) {
 						echo "<a href='#' class='delete'><img class='delete'";
 						echo " src='images/delete.png' title='Delete photo' /></a>\n";
 					}
-					echo "<a href='" . $v . "' target=\"_blank\">";
-					echo "<img class=\"voucher\" src=\"" . $t . "\"/></a>\n";
+					echo "<a href='" . $photo->voucherImage . "' target=\"_blank\">";
+					echo "<img class=\"voucher\" src=\"" . $photo->thumbnail . "\"/></a>\n";
+
+					if( $photo->flickr_id != "" && $photo->flickr_id != NULL ) {
+						echo "\n<div class='eol_button' onclick='send_to_EOL(". $photo->flickr_id . ");'>";
+						echo "<img src='images/eol_button.png' ";
+						echo "id='" . $photo->flickr_id . "' alt='' />";
+						echo "Share photo with EOL</div>";
+					}
 					echo "</div>\n";
 					echo "</td>\n";
 				}
