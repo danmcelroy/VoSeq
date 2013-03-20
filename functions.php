@@ -46,36 +46,49 @@ if (!function_exists('stripos')) // for php 4
 // It will show up to two photos on top right
 // All other photos will be shown at the bottom with another function
 // #################################################################################
-function show_multi_photos($voucherImage, $thumbnail, $admin) {
+function show_multi_photos($flickr_id, $voucherImage, $thumbnail, $admin) {
 	if( $voucherImage == NULL && $thumbnail == NULL ) {
 		echo "<div class='voucher'>";
 		echo "<img class=\"voucher\" src=\"na.gif\"/>";
 		echo "</div>";
 	}
 	else {
-		$voucherImages = explode("|", $voucherImage);
-		$thumbnails = explode("|", $thumbnail);
-		$photos = array_combine($voucherImages, $thumbnails);
+		$f = explode("|", $flickr_id);
+		$v = explode("|", $voucherImage);
+		print_r($v);
+		$t = explode("|", $thumbnail);
 		# show only the first two photos
-		$photos = array_slice($photos, 0, 3);
-		$i = 1;
-		foreach($photos as $v => $t) {
-			if( $v != "" && $t != "" ) {
+		$i = 0;
+		while( $i < 3 ) {
+			$f = str_replace("|", "", $f[$i]);
+			$f = trim($f);
+
+			if( $v[$i] != "" && $t[$i] != "" ) {
 				if( $admin == true ) {
 					echo "\n<div class=\"voucher\" id=\"" . $i . "\">";
 					echo "\n<a href='#' title='Delete photo' class='delete'><img class='delete' src='images/delete.png' /></a>";
-					echo "\n<a href='" . $v . "' target=\"_blank\">";
-					echo "\n<img class='voucher' src=\"" . $t . "\"/>";
+					echo "\n<a href='" . $v[$i] . "' target=\"_blank\">";
+					echo "\n<img class='voucher' src=\"" . $t[$i] . "\"/>";
 					echo "\n</a>";
 					echo "\n</div>";
 				}
 				else {
 					echo "\n<div class=\"voucher\">";
-					echo "\n<img class='voucher' src=\"" . $t . "\"/>";
+					echo "\n<img class='voucher' src=\"" . $t[$i] . "\"/>";
+
+					if( $f[$i] != "" && $f[$i] != NULL ) {
+						echo "\n<div class='eol_button' onclick='send_to_EOL();'>";
+						echo "<img src='images/eol_button.png' ";
+						echo "id='" . $f[$i] . "' ";
+						echo "alt='' />";
+						echo "Share photo with EOL</div>";
+					}
+
 					echo "</div>\n";
+					echo "<br />";
 				}
-				$i = $i + 1;
 			}
+			$i = $i + 1;
 		}
 	}
 }
