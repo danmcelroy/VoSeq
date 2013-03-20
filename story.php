@@ -367,34 +367,21 @@ if ($row)
 
 			echo "<script type='text/javascript'>
 
-					var photo_id = $('td#photo_id').html();
-
-					// -------------------------------------------
-					$(document).ready(function(){
-						$('.eol_button').hover(function(){
-								$('.eol_button img')
-								// first jump  
-								.animate({top:'-12px'}, 200).animate({top:'-4px'}, 200)
-								// second jump
-								.animate({top:'-7px'}, 100).animate({top:'-4px'}, 100)
-								// the last jump
-								.animate({top:'-5px'}, 100).animate({top:'-4px'}, 100);
-						});
-					});
-
-					// -------------------------------------------
-					function send_to_EOL() {
-						$('.eol_button').fadeOut('slow', function() {
+					function send_to_EOL(photo_id) {
+						var id = photo_id;
+						$('#' + id).fadeOut('slow', function() {
 								// Animation complete
 
-								$('.eol_button').delay(200).fadeIn('slow', function() {}).html('Submitted to EOL').fadeTo('slow', 0.5, function() {} );
+								$(this).parent().delay(200).fadeIn('slow', function() {}).html('Submitted to EOL').fadeTo('slow', 0.5, function() {} );
 
 								// Tell Flickr to add special Tag to photo for EOL, change photo license if needed and add to EOL group pool of photos
-								$.getJSON('api/photo_to_eol.php?photo_id=' + photo_id + '&callback=?',
-									function(data) {
-									});
+								var url = 'api/photo_to_eol.php?photo_id=' + id;
+								$.post(url, function(data) {
+									alert(data.stat);
+											}, 'json');
 								});
 					}
+
 
 				  </script>";
 		?>
@@ -457,7 +444,7 @@ if ($row)
 </tr>
 <?php
 # show all other photos if they exist
-show_all_other_photos($row->voucherImage, $row->thumbnail, $admi, $admin);
+show_all_other_photos($row->flickr_id, $row->voucherImage, $row->thumbnail, $admin);
 ?>
 </table> <!-- end super table -->
 
