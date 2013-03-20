@@ -363,11 +363,7 @@ if ($row)
 	</td>
 	<td>
 		<?php
-			show_multi_photos($row->voucherImage, $row->thumbnail, $admin);
-
-			if( $row->voucherImage != NULL ) {
-				echo "<div class='eol_button' onclick='send_to_EOL();'><img src='images/eol_button.png' alt='' />Share photo with EOL</div>";
-			}
+			show_multi_photos($row->flickr_id, $row->voucherImage, $row->thumbnail, $admin);
 
 			echo "<script type='text/javascript'>
 

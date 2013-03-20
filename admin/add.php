@@ -930,7 +930,7 @@ elseif (!$_POST['submitNoNew'] && $_GET['code']) {
 								echo " <a href='" .$base_url . "/admin/processPicture.php?code=$row1->code'>Add photo
 									<img src=\"images/add.png\" alt=\"\" /></a>";
 							}
-							show_multi_photos($row1->voucherImage, $row1->thumbnail, $admin);
+							show_multi_photos($row1->flickr_id, $row1->voucherImage, $row1->thumbnail, $admin);
 						?>
 					</td>
 	
