@@ -6,6 +6,7 @@ div.voucher {
 img.voucher {
 	margin: 0px;
 	padding: 4px;
+	max-width: 200px;
 }
 
 img.delete {
