@@ -17,6 +17,10 @@ Frequently asked questions
 --------------------------
 * Installation [FAQ](http://nymphalidae.utu.fi/cpena/VoSeq_docu.html#Installation%20FAQ).
 
+VoSeq's discussion list
+-----------------------
+* Subscribe for upgrade notifications, questions, answers, requests, bug fixes, etc: [VoSeq's Google Groups](https://groups.google.com/d/forum/voseq-discussion-list)
+
 Requirements
 ------------
 * [Apache web server](http://httpd.apache.org/)
