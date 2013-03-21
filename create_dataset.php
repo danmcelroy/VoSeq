@@ -79,7 +79,7 @@ echo "<div id=\"content\">";
 					</td>
 				</tr>
 				<tr>
-					<td class="label">Choose codon positions to use<br /><br /> (Override priority: <br />Amino Acids->Special->All->1st&#151;2nd,3rd):</td>
+					<td class="label"><b>Only for Protein coding:</br>(others will be output as standard)</b></br>Choose codon positions to use<br /><br /> (Override priority: <br />Amino Acids->Special->All->1st&#151;2nd,3rd):</td>
 					<td class="field">
 						<input type="checkbox" name="positions[all]" checked>all 
 						<input type="checkbox" name="positions[1st]">1st 
@@ -120,7 +120,7 @@ echo "<div id=\"content\">";
 				</tr>
 				<tr>
 					<td class="label">
-						For single gene datasets, exclude taxa missing this gene?
+						For single gene datasets, </br>exclude taxa missing this gene?
 					</td>
 					<td class="field">
 						<table>
@@ -131,11 +131,22 @@ echo "<div id=\"content\">";
 				</tr>
 				<tr>
 					<td class="label">
-						For multigene datasets, exclude taxa with less than X genes?
+						For multigene datasets, </br>exclude taxa with less than X genes?
 					</td>
 					<td class="field">
 						<table>
 							Minimum number of genes: <input type="text" name="less_than_genes" size="3">
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">
+						Ignore introns? </br>('yes' will not use them in the data set)
+					</td>
+					<td class="field">
+						<table>
+						<td><input type="radio" name="ignore_introns" value="yes" checked>yes</td>
+						<td><input type="radio" name="ignore_introns" value="no" >no</td>
 						</table>
 					</td>
 				</tr>
@@ -147,7 +158,7 @@ echo "<div id=\"content\">";
 			<table border="0" cellspacing="5px">
 				<tr>
 					<td class="label4">
-						Choose ready-made taxonset
+						Choose taxonset
 					</td>
 					<td class="field1">
 						<select name="taxonsets" size="1" style=" BORDER-BOTTOM: outset; BORDER-LEFT: 
@@ -164,20 +175,22 @@ echo "<div id=\"content\">";
 				</tr>
 				<tr>
 					<td class="label4">
-						...and/or a list of codes:<br />
-						(with a -- sign before taxon names<br />
-						to disable them from the taxon set)<br />
+						...and/or a <br />list of codes:
 					</td>
 					<td class="field1">
-						One code per line, <br />for example: <br />
-						&nbsp;&nbsp;&nbsp;tA1<br />
-						&nbsp;&nbsp;&nbsp;--S077<br />
-						&nbsp;&nbsp;&nbsp;and so on...<br />
+						Enter one code per line</br>in the box below.</br>
+						(with a -- sign before taxon</br>
+						names to disable them from </br>the taxon set)</br>
+						For example:<br />
+						&nbsp;&nbsp;&nbsp;&nbsp;tA1<br />
+						&nbsp;&nbsp;&nbsp;&nbsp;S077<br />
+						&nbsp;&nbsp;&nbsp;&nbsp;--S078<br />
+						&nbsp;&nbsp;&nbsp;&nbsp;and so on...
 					</td>
 					<td>
 					</td>
 					<td class="label4">
-						Check to select your Gene codes:
+						Check to select</br> your alignment/gene:
 					</td>
 					<td class="field1">
 						<?php $i = 0;
@@ -201,16 +214,10 @@ echo "<div id=\"content\">";
 						<textarea name="codes" rows="10">
 						</textarea>
 					</td>
+					<td></td><td><input type="submit" name="process_dataset" value="Create dataset" /><td>
 				</tr>
 				<tr>
 					<td>
-					</td>
-				</tr>
-				<tr>
-					<td>
-					</td>
-					<td align="Left" valign="top">
-						<input type="submit" name="process_dataset" value="Create dataset" />
 					</td>
 				</tr>
 			</table>
