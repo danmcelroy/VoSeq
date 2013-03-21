@@ -149,10 +149,10 @@ if (mysql_num_rows($result) > 0) {
 		?>
 		 </b> <i><?php echo $row->genus; echo ' ' . $row->species; ?></i>
 		<?php 
-		if ($row->voucherImage != 'na.gif') { 
-			echo "<a href=\"" . $row->voucherImage . "\">
+		if ($row->voucherImage != 'na.gif' && $row->voucherImage != "" ) { 
+			echo "<a href=\"story.php?code=$row->code\">
 		 		  <img width=\"16px\" height=\"16px\" id=\"see_pic" . $dojo_i . "\" class=\"link\" src=\"images/image.png\" /></a>"; 
-			echo "<span dojoType=\"tooltip\" connectId=\"see_pic" . $dojo_i . "\" delay=\"1\" toggle=\"explode\">See photo</span>";
+			echo "<span dojoType=\"tooltip\" connectId=\"see_pic" . $dojo_i . "\" delay=\"1\" toggle=\"explode\">See photos</span>";
 			}
 		?>
 		<br />

@@ -12,9 +12,20 @@
 	padding: 10px;
 }
 
-img.voucher {
+div.voucher {
 	border: 1px solid gray;
+	max-width: 220px;
+}
+
+img.voucher {
+	margin: 0px;
 	padding: 4px;
+	max-width: 200px;
+}
+
+img.delete {
+	padding: 2px;
+	float: left;
 }
 
 img.link {

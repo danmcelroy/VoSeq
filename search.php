@@ -349,9 +349,9 @@ if(   (!$new_POST['orden']  || trim($new_POST['orden'])     == '') &&
 							echo $row->code . "</a></b> <i>$row->genus $row->species</i>";
 						}
 
-						if( $row->voucherImage != 'na.gif' ) {
-							echo " <a href=\"$row->voucherImage\"  target=\"_blank\">";
-							echo "<img src=\"images/image.png\" alt=\"See photo\" class=\"link\" title=\"See photo\" />";
+						if( $row->voucherImage != 'na.gif' && $row->voucherImage != "" ) {
+							echo " <a href=\"story.php?code=$row->code&amp;search=$search_id\">";
+							echo "<img src=\"images/image.png\" alt=\"See photos\" class=\"link\" title=\"See photos\" />";
 							echo "</a>";
 						}
 					}
@@ -519,12 +519,12 @@ if(   (!$new_POST['orden']  || trim($new_POST['orden'])     == '') &&
 						echo "$row->code</a></b> <i>$row->genus $row->species</i>";
 					}
 
-							if( $row->voucherImage != 'na.gif' ) {
-								echo " <a href=\"$row->voucherImage\" target=\"_blank\">";
-								echo "<img src=\"images/image.png\" alt=\"See photo\" class=\"link\" title=\"See photo\" />";
-								echo "</a>";
-							}
-						?>
+					if( $row->voucherImage != 'na.gif' && $row->voucherImage != "" ) {
+						echo " <a href=\"story.php?code=$row->code&amp;search=$search_id\">";
+						echo "<img src=\"images/image.png\" alt=\"See photos\" class=\"link\" title=\"See photos\" />";
+						echo "</a>";
+						}
+					?>
 					   <br />
 						By <?php echo $row->latesteditor.' on '; echo formatDate($row->timestamp, $date_timezone, $php_version); ?>
 					</li>
