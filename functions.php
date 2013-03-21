@@ -595,6 +595,10 @@ function clean_fields($p_, $id) {
 			$f = preg_replace("/\|+/", "|", $f);
 			$t = preg_replace("/\|+/", "|", $t);
 
+			$v = preg_replace("/^\|$/", "", $v);
+			$f = preg_replace("/^\|$/", "", $f);
+			$t = preg_replace("/^\|$/", "", $t);
+
 			$q2  = "UPDATE ". $p_ . "vouchers SET ";
 			$q2 .= "voucherImage='$v', flickr_id='$f', thumbnail='$t' ";
 			$q2 .= "WHERE id=$id";	
