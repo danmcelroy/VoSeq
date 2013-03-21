@@ -46,6 +46,50 @@ function strip_ext($name) {
    return $name;
 }
 
+
+# Support for several photos per voucher
+# photo details will be appended and divided using "palote" |
+# (p_, thumbnail, flickr_id, voucherImage, code)
+function update_photo_details($p_, $my_url, $photo_id, $my_voucherImage, $code) { 
+	# See if we are already have a photo for this voucher
+	$query  = "SELECT id, thumbnail, flickr_id, voucherImage FROM ";
+	$query .= $p_ . "vouchers WHERE code='" . $code . "'";
+
+	$result = mysql_query($query) or die("Error in query: $query. " . mysql_error());
+	# if records present append to MySQL
+	if (mysql_num_rows($result) > 0) {
+		while ($row = mysql_fetch_object($result)) {
+			$photos = $row;
+			
+			# remove na.gif if necessary
+			if( $photos->thumbnail == "na.gif" && $photos->voucherImage == "na.gif" ) {
+				$photos->thumbnail = "";
+				$photos->voucherImage = "";
+			}
+			$photos->thumbnail .= "|" . $my_url;
+			if( trim($photo_id) == "" ) {
+				$photo_id = "";
+			}
+			$photos->flickr_id .= "|" . $photo_id;
+			$photos->voucherImage .= "|" . $my_voucherImage;
+		}
+		$query  = "UPDATE ". $p_ . "vouchers set timestamp=now(), ";
+		$query .= "thumbnail=\"$photos->thumbnail\", ";
+		$query .= "flickr_id=\"$photos->flickr_id\", ";
+		$query .= "voucherImage=\"$photos->voucherImage\" ";
+		$query .= "where code=\"$code\""; 
+		mysql_query($query) or die("Error in query: $query. " . mysql_error());
+	}
+	# no records present, fresh upload of data to MySQL
+	else {
+		$query  = "UPDATE ". $p_ . "vouchers set timestamp=now(), ";
+		$query .= "thumbnail=\"$my_url\", flickr_id=\"$photo_id\", ";
+		$query .= "voucherImage=\"$my_voucherImage\" where code=\"$code\""; 
+		mysql_query($query) or die("Error in query: $query. " . mysql_error());
+	}
+}
+
+
 // to indicate this is an administrator page
 $admin = true;
 
@@ -71,8 +115,11 @@ else {
 		echo "<div id=\"content_narrow\">";
 		echo "<table border=\"0\" width=\"850px\"> <!-- super table -->
 				<tr><td valign=\"top\">";
-		echo "<img src=\"../images/warning.png\" alt=\"\"> File <b>did not</b> upload.<br />
-				Check the file size. File must be less than 2MB. Or maybe your filename is not correct.";
+		echo "<img src=\"../images/warning.png\" alt=\"\"> ";
+		echo "File <b>did not</b> upload.<br />Check the file size. ";
+		echo "File must be less than 4MB. Or maybe your filename is not correct.<br />";
+		echo "Another posibility is that your <code>php.ini</code> file has been set ";
+		echo "to accept only small files and you might need to edit it.";
 		echo "</td>";
 		echo "<td class=\"sidebar\" valign=\"top\">";
 		admin_make_sidebar();
@@ -82,7 +129,7 @@ else {
 				</div> <!-- end content -->";
 		make_footer($date_timezone, $config_sitename, $version, $base_url, $p_);
 		echo "\n</body>\n</html>";
-		}
+	}
 	else {
 		// open database connections
 		@$connection = mysql_connect($host, $user, $pass) or die('Unable to connect');
@@ -176,8 +223,11 @@ else {
 					}
 				}
 			}
-			$query = "UPDATE ". $p_ . "vouchers set timestamp=now(), thumbnail=\"$my_url\", flickr_id=\"$photo_id\", voucherImage=\"$my_voucherImage\" where code=\"$code\""; 
-			mysql_query($query) or die("Error in query: $query. " . mysql_error());
+
+			# Support for several photos per voucher
+			# photo details will be appended and divided using "palote" |
+			# (thumbnail, flickr_id, voucherImage, code)
+			update_photo_details($p_, $my_url, $photo_id, $my_voucherImage, $code); 
 		}
 		else {  // $photos_repository == "local" 
 			$dest_folder = $local_folder . "/pictures";
@@ -218,8 +268,11 @@ else {
 			}
 			$filename = $base_url . "/pictures/" . $filename;
 
-			$query = "UPDATE ". $p_ . "vouchers set timestamp=now(), thumbnail=\"$thumbnail_name\", flickr_id=null, voucherImage=\"$filename\" where code=\"$code\""; 
-			mysql_query($query) or die("Error in query: $query. " . mysql_error());
+			# Support for several photos per voucher
+			# photo details will be appended and divided using "palote" |
+			# (thumbnail, flickr_id, voucherImage, code)
+			### $query = "UPDATE ". $p_ . "vouchers set timestamp=now(), thumbnail=\"$thumbnail_name\", flickr_id=null, voucherImage=\"$filename\" where code=\"$code\""; 
+			update_photo_details($p_, $thumbnail_name, NULL, $filename, $code); 
 		}
 
 

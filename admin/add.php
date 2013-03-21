@@ -630,7 +630,7 @@ elseif ($_POST['submitNew']) {
 				<table>
 				<tr><td>
 				<form enctype="multipart/form-data" action="processfile.php?code=<?php echo "$code"; ?>" method="post">
-    			<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+    			<input type="hidden" name="MAX_FILE_SIZE" value="4000000" />
     			<input name="userfile" type="file" size="40" /><br />
     			<input type="submit" name="submit" value="Upload" />
 				</form>
@@ -716,7 +716,7 @@ elseif (!$_POST['submitNoNew'] && $_GET['code']) {
 	$query1  = "SELECT id, code, extractor, genus, orden, family, subfamily, tribe, subtribe, species, subspecies, auctor, typeSpecies, country, specificLocality, latitude, longitude, altitude, collector, dateCollection, voucherLocality, voucher, determinedBy, sex, hostorg, voucherCode, extraction, extractionTube, dateExtraction, publishedIn, notes, edits, voucherImage, thumbnail FROM ". $p_ . "vouchers WHERE code='$code1'";
 	$result1 = mysql_query($query1) or die ("Error in query: $query1. " . mysql_error());
 	$row1    = mysql_fetch_object($result1);
-	
+
 	// get title
 	$title = "$config_sitename - Edit " . $code1;
 				
@@ -921,7 +921,17 @@ elseif (!$_POST['submitNoNew'] && $_GET['code']) {
 
 					</td>
 					<td width="200px">
-						<a href="<?php echo $row1->voucherImage; ?>"><img class="voucher" src="<?php echo $row1->thumbnail; ?>" alt="" /></a>
+						<?php
+							if( $mask_url == "true" ) {
+								echo " <a href='" .$base_url . "/home.php' onclick=\"return redirect('processPicture.php?code=$row1->code')\">Add photo
+									<img src=\"images/add.png\" alt=\"\" /></a>";
+							}
+							else {
+								echo " <a href='" .$base_url . "/admin/processPicture.php?code=$row1->code'>Add photo
+									<img src=\"images/add.png\" alt=\"\" /></a>";
+							}
+							show_multi_photos($row1->flickr_id, $row1->voucherImage, $row1->thumbnail, $admin);
+						?>
 					</td>
 	
 				</tr>
@@ -978,7 +988,12 @@ elseif (!$_POST['submitNoNew'] && $_GET['code']) {
 <td class="sidebar" valign="top">
 	<?php admin_make_sidebar();  ?>
 </td>
+
 </tr>
+<?php
+# show all other photos if they exist
+show_all_other_photos($row1->flickr_id, $row1->voucherImage, $row1->thumbnail, $admin);
+?>
 </table> <!-- end super table -->
 
 </div> <!-- end content -->
@@ -1301,7 +1316,7 @@ elseif ($_POST['submitNoNew'])
 		<table>
 			<tr><td>
 			<form enctype="multipart/form-data" action="processfile.php?code=<?php echo "$code1"; ?>" method="post">
-  			<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+  			<input type="hidden" name="MAX_FILE_SIZE" value="4000000" />
    		<input name="userfile" type="file" size="40" /><br />
   			<input type="submit" name="submit" value="Upload" />
 			</form>
