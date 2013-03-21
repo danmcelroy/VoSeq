@@ -607,4 +607,32 @@ function clean_fields($p_, $id) {
 	}
 }
 
+// #################################################################################
+// Section: Remove introns
+// removes introns from sequence string
+// @input: $sequence and $introns from genetable (w-x;y-z...)
+// @output: result shortened sequence, new length, number of introns, total intron 
+//          length and intron sequences in array using return transfer
+// #################################################################################
+function remove_introns ($sequence, $intron_string){
+	$introns_rev  = array_reverse(explode(';',$intron_string));
+	$numtrons = count($introns_rev);
+	$seq_array = preg_split('#(?<=.)(?=.)#s', $sequence); // making sequence/nucleotide array
+	$intron_array;
+	$intron_total_l = 0;
+	foreach ($introns_rev as $inrev){
+		$ir = explode('-',$inrev);
+		$len = $ir[1] - $ir[0] + 1;
+		$intron_total_l = $intron_total_l + $len;
+		$start = $ir[0]-1;
+		$intron_array[] = implode('',array_splice($seq_array, $start, $len));
+	}
+	$intron_array = array_reverse($intron_array);
+	$seqlen = count($seq_array);
+	$seqout = implode('',$seq_array);
+	$array_out = array($seqout,$seqlen,$numtrons, $intron_total_l);
+	foreach ($intron_array as $ia){$array_out[] = $ia;}
+	return $array_out;
+}
+
 ?>
