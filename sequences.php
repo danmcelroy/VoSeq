@@ -55,8 +55,8 @@ $geneCode = $_GET['geneCode'];
 
 
 $query  = "SELECT code, family, subfamily,
-                        tribe, genus, species,
-								typeSpecies, voucherImage, thumbnail, timestamp
+                  tribe, genus, species,
+                  typeSpecies, voucherImage, thumbnail, flickr_id, timestamp
 			  FROM ". $p_ . "vouchers WHERE code = '$code'";
 
 $query1 = "SELECT CHAR_LENGTH(sequences),
@@ -148,82 +148,96 @@ if ($row || $row1)
 <td valign="top">
 
 	<table border="0" cellspacing="10"> <!-- table child 2 -->
-	<tr><td valign="top">
+	<tr>
+		<td valign="top">
 	
-	<table width="200" cellspacing="0" border="0">
-	<caption>Lab Work</caption>
-		<tr><td class="label">Lab Person</td><td class="field"><?php echo $row1['2']; ?>&nbsp;</td></tr>
-		<tr><td class="label">Gene Code</td><td class="field3"><?php echo $row1['1']; ?>&nbsp;</td></tr>
-		<tr><td class="label">Accession</td><td class="field">
-		<a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Search&amp;db=nucleotide&amp;term=<?php echo $row1['3']; ?>[accn]&amp;doptcmdl=GenBank" target="_blank"><?php echo $row1['3']; ?></a>&nbsp;</td></tr>
-		<tr><td class="label">Date Creation</td><td class="field"><?php echo $row1['4']; ?>&nbsp;</td></tr>
-		<tr><td class="label">Date Modification</td><td class="field"><?php echo $row1['5']; ?>&nbsp;</td></tr>
-	</table>
+			<table width="200" cellspacing="0" border="0">
+			<caption>Lab Work</caption>
+				<tr><td class="label">Lab Person</td><td class="field"><?php echo $row1['2']; ?>&nbsp;</td></tr>
+				<tr><td class="label">Gene Code</td><td class="field3"><?php echo $row1['1']; ?>&nbsp;</td></tr>
+				<tr><td class="label">Accession</td><td class="field">
+				<a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Search&amp;db=nucleotide&amp;term=<?php echo $row1['3']; ?>[accn]&amp;doptcmdl=GenBank" target="_blank"><?php echo $row1['3']; ?></a>&nbsp;</td></tr>
+				<tr><td class="label">Date Creation</td><td class="field"><?php echo $row1['4']; ?>&nbsp;</td></tr>
+				<tr><td class="label">Date Modification</td><td class="field"><?php echo $row1['5']; ?>&nbsp;</td></tr>
+			</table>
 
-	</td>
-	<td width="200px">
-		<a href="<?php echo $row->voucherImage; ?>"><img class="voucher" src="<?php echo $row->thumbnail; ?>" alt="" width="200px" /></a>
-	</td>
-	
-	</tr>
-	<tr><td colspan="2">
-	
-	<table width="160" cellspacing="0" border="0">
-	<caption>Primers Used</caption>
-		<tr><td class="label2">In alphabetical order</td></tr>
+		</td>
+	<tr>
+		<td>
+			<table width="160" cellspacing="0" border="0">
+			<caption>Primers Used</caption>
+				<tr>
+					<td class="label2">In alphabetical order</td>
+				</tr>
 		
-		<?php
-		if (mysql_num_rows($result2) > 0)
-			{
-			while ($row2 = mysql_fetch_assoc($result2))
-				{
- 				$a = array();
-				$i = 0;
-				foreach ($row2 as $val)
+				<?php
+				if (mysql_num_rows($result2) > 0)
 					{
-					if ($val != '')
+					while ($row2 = mysql_fetch_assoc($result2))
 						{
-						$a[$i] = $val;
-						$i++;
+						$a = array();
+						$i = 0;
+						foreach ($row2 as $val)
+							{
+							if ($val != '')
+								{
+								$a[$i] = $val;
+								$i++;
+								}
+							else
+								{
+								continue;
+								}
+							}
+						sort($a); // $a is my array containing all my used primers, print now
+						foreach ($a as $value)
+							{
+							echo "\n\t\t\t<tr><td align=\"right\" class=\"field\">" . $value . "&nbsp;</td></tr>";
+							}
+						}
 						}
 					else
 						{
-						continue;
+						echo "<tr><td class=\"field\">&nbsp;</td></tr>";
 						}
-					}
-				sort($a); // $a is my array containing all my used primers, print now
-				foreach ($a as $value)
-					{
-					echo "\n\t\t\t<tr><td align=\"right\" class=\"field\">" . $value . "&nbsp;</td></tr>";
-					}
-				}
-			}
-		else
-			{
-			echo "<tr><td class=\"field\">&nbsp;</td></tr>";
-			}
-		?>
-			<td width="200px">
-				&nbsp;
-			</td>
-			
-			</tr>
-			<tr><td colspan="2">
-			<table width="160" cellspacing="0" border="0">
-			<caption>Notes</caption>
+					?>
+						<td width="200px">
+							&nbsp;
+						</td>
+				</tr>
 				<tr>
-				<td class="label2">Notes</td>
-			</tr>
-			<tr><td class="field5">
-				 <textarea name="notes" rows="3" cols="20"><?php echo $row1[8]; ?></textarea>
-				 </td>
-			</tr>
+					<td colspan="2">
+						<table width="160" cellspacing="0" border="0">
+						<caption>Notes</caption>
+							<tr>
+								<td class="label2">Notes</td>
+							</tr>
+							<tr>
+								<td class="field5">
+								<textarea name="notes" rows="3" cols="20"><?php echo $row1[8]; ?></textarea>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
 			</table>
-		</table>
-	</td></tr>
+		</td>
+	</tr>
+	</table>
+</td>
+<td>
+	<table>
+		<tr>
+			<td width="200px">
+			<?php
+				show_multi_photos($row->flickr_id, $row->voucherImage, $row->thumbnail, $admin);
+			?>
+			</td>
+		</tr>
 	</table><!-- end table child 2 -->
 
-</td></tr>
+</td>
+</tr>
 </table><!-- end big parent table -->
 
 </td>
