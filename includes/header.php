@@ -100,7 +100,42 @@ echo "
 			}
 		});
 
+
+		$('#delete_gene').click(function(){
+			var id = $('#delete_gene').attr('name');
+			if(confirm('Delete gene? Notice that you will lose also accompanying sequences!')) {
+				$.post('delete_gene.php', {id: id},
+					function(data) {
+						if(data == 'ok') {
+							alert('Your gene was successfully deleted');
+							window.location.replace('admin.php');
+						}
+						else {
+							alert('I could not remove your gene');
+						}
+					});
+			}
+		});
    
+
+		$('#delete_sequence').click(function(){
+			var id = $('#delete_sequence').attr('name');
+			if(confirm('Delete sequence?')) {
+				$.post('delete_sequence.php', {id: id},
+					function(data) {
+						if(data == 'ok') {
+							alert('Your sequence was successfully deleted');
+							window.location.replace('admin.php');
+						}
+						else {
+							alert('I could not remove your sequence');
+						}
+					});
+			}
+		});
+   
+
+
     $('a.delete').on('click',function(e){
         e.preventDefault();
 		if( confirm('Delete photo?') ) {
