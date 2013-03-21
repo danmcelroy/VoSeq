@@ -4,12 +4,13 @@
 * Version 1.5.0
 	- [Carlos 2013-03-18] Allowing several photos for each voucher.
 	- [Carlos 2013-03-18] MySQL table definition for voucher images changed to accommodate several strings separated by "|".
-	- [Tobias 2013-03-XX] Various layout and smaller bug fixes(e.g. batch seq import/update for 'notes').
-	- [Tobias 2013-03-12] Created gene/alignment (xml) table output with characteristics for a given alignment, such as variable, conserved, parsimony informative sites and nucleotide frequencies. Also specified for individual codon positions for protein coding genes.
-	- [Tobias 2013-03-12] Included new gene information in the data set retrieval scripts. It ignores introns by default. Genetic codes for amino acids translations are now set at gene info page. "Special" data set now also includes AA, AA paritions and dna paritions are now combineable in the same data set and specified as such in the output files. AA partitions will not be made of protein code is set to no.
-	- [Tobias 2013-03-10] Changed gene information to include more fields, including protein coding or not, aligned or not, intron regions and gene type. To be used for new features in the create dataset and other scripts.
-	- [Tobias 2013-03-11] Included -- ignore of taxa from taxonsetfor table output.
+	- [Tobias 2013-03-20] Various layout and smaller bug fixes(e.g. batch seq import/update for 'notes').
+	- [Tobias 2013-03-20] Created gene/alignment (xml) table output with characteristics for a given alignment, such as variable, conserved, parsimony informative sites and nucleotide frequencies. Also specified for individual codon positions for protein coding genes.
+	- [Tobias 2013-03-15] Included new gene information in the data set retrieval scripts. It ignores introns by default. Genetic codes for amino acids translations are now set at gene info page. "Special" data set now also includes AA, AA paritions and dna paritions are now combineable in the same data set and specified as such in the output files. AA partitions will not be made of protein code is set to no.
+	- [Tobias 2013-03-15] Changed gene information to include more fields, including protein coding or not, aligned or not, intron regions and gene type. To be used for new features in the create dataset and other scripts.
+	- [Tobias 2013-03-11] Included -- ignore of taxa from taxonset for table output.
 	- [Tobias 2013-03-09] Included -/N/n to be counted as missing for the * and number of bp output in tables.
+	- [Tobias 2013-03-10] Included improved delete button for sequences, as well as one for genes/alignments. NOTE! Deleting an alignment/gene will delete all accompanying seqs and primers!!! [Thanks to Rasa Bukontaite]
 
 * Version 1.4.4
 	- [Carlos 2013-03-17] Fixing mask_url links in BLAST scripts.
