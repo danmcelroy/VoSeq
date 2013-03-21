@@ -99,6 +99,26 @@ echo "
 					});
 			}
 		});
+
+   
+    $('a.delete').on('click',function(e){
+        e.preventDefault();
+		if( confirm('Delete photo?') ) {
+			var imageID = $(this).parent('.voucher')[0].id;
+			var voucherImage = $(this).siblings().attr('href');
+			var thumbnail = $(this).siblings().children().attr('src');
+			$.post('delete_photo.php', { 'voucherImage': voucherImage,
+									 'thumbnail': thumbnail
+									 });
+			$(this).closest('.voucher')
+				.fadeTo(300,0,function(){
+					$(this)
+						.animate({width:0},200,function(){
+							$(this).remove();
+						});
+				});
+			}
+		});
 	});
 </script>\n";
 ?>

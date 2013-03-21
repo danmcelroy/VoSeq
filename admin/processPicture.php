@@ -61,7 +61,7 @@ $code = $_GET['code'];
 				<table>
 				<tr><td>
 				<form enctype="multipart/form-data" action="processfile.php?code=<?php echo "$code"; ?>" method="POST">
-    			<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+    			<input type="hidden" name="MAX_FILE_SIZE" value="4000000" />
     			<input name="userfile" type="file" size="40" /><br />
     			<input type="Submit" name="submit" value="Upload" />
 				</form>
