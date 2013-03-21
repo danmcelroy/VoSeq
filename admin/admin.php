@@ -148,7 +148,7 @@ echo "</table>";
 			$resultV = mysql_query($queryV) or die("Error in query: $queryV. " . mysql_error());
 			$rowV    = mysql_fetch_object($resultV);
 			
-			if ($rowV->voucherImage == 'na.gif') {
+			if ($rowV->voucherImage == 'na.gif' || $rowV->voucherImage == NULL ) {
 				if( $mask_url == "true" ) {
 					echo " <a href='" .$base_url . "/home.php' onclick=\"return redirect('processPicture.php?code=$rowV->code')\">Picture missing</a>
 						<img src=\"images/warning.png\" alt=\"\" />";
@@ -160,16 +160,16 @@ echo "</table>";
 			}
 			else {
 				if( $mask_url == "true" ) {
-					echo " <a href=\"" . $base_url . "/home.php\" onclick=\"return redirect('" . $rowV->voucherImage . "');\"><img id=\"see_pic" . $i . "\" class=\"link\" src=\"images/image.png\" /></a>";
-					echo "<span dojoType=\"tooltip\" connectId=\"see_pic" . $i . "\" delay=\"1\" toggle=\"explode\">See pic</span>";
-					echo "<a href=\"" . $base_url . "/home.php\" onclick=\"return redirect('processPicture.php?code=" . $rowV->code . "');\"><img id=\"change_pic" . $i . "\" class=\"link\" src=\"images/change_pic.png\" /></a>";
-					echo "<span dojoType=\"tooltip\" connectId=\"change_pic" . $i . "\" delay=\"1\" toggle=\"explode\">Change picture</span>";
+					echo " <a href=\"" . $base_url . "/home.php\" onclick=\"return redirect('add.php?code=" . $rowV->code . "');\"><img id=\"see_pic" . $i . "\" class=\"link\" src=\"images/image.png\" /></a>";
+					echo "<span dojoType=\"tooltip\" connectId=\"see_pic" . $i . "\" delay=\"1\" toggle=\"explode\">See photos</span>";
+					echo "&nbsp;<a href=\"" . $base_url . "/home.php\" onclick=\"return redirect('processPicture.php?code=" . $rowV->code . "');\"><img id=\"change_pic" . $i . "\" class=\"link\" src=\"images/add.png\" /></a>";
+					echo "<span dojoType=\"tooltip\" connectId=\"change_pic" . $i . "\" delay=\"1\" toggle=\"explode\">Add photo</span>";
 				}
 				else {
-					echo " <a href=\"" . $rowV->voucherImage . "\"><img id=\"see_pic" . $i . "\" class=\"link\" src=\"images/image.png\" /></a>";
-					echo "<span dojoType=\"tooltip\" connectId=\"see_pic" . $i . "\" delay=\"1\" toggle=\"explode\">See pic</span>";
-					echo "<a href=\"" . $base_url . "/admin/processPicture.php?code=" . $rowV->code . "\"><img id=\"change_pic" . $i . "\" class=\"link\" src=\"images/change_pic.png\" /></a>";
-					echo "<span dojoType=\"tooltip\" connectId=\"change_pic" . $i . "\" delay=\"1\" toggle=\"explode\">Change picture</span>";
+					echo " <a href=\"add.php?code=" . $rowV->code . "\"><img id=\"see_pic" . $i . "\" class=\"link\" src=\"images/image.png\" /></a>";
+					echo "<span dojoType=\"tooltip\" connectId=\"see_pic" . $i . "\" delay=\"1\" toggle=\"explode\">See photos</span>";
+					echo "&nbsp;<a href=\"" . $base_url . "/admin/processPicture.php?code=" . $rowV->code . "\"><img id=\"change_pic" . $i . "\" class=\"link\" src=\"images/add.png\" /></a>";
+					echo "<span dojoType=\"tooltip\" connectId=\"change_pic" . $i . "\" delay=\"1\" toggle=\"explode\">Add photo</span>";
 				}
 			}
 			$i ++;

@@ -29,6 +29,7 @@ if (!function_exists('array_combine')) // for php 4
 		return $out;
 	}
 }
+
 // #################################################################################
 // Section: stripos() function for PHP versions earlier than 5 
 // #################################################################################
@@ -38,6 +39,148 @@ if (!function_exists('stripos')) // for php 4
 		return strpos($haystack, stristr( $haystack, $needle ));
 	}
 }
+
+
+// #################################################################################
+// Section: story.php Shows voucher images in Voucher page (multi photos)
+// It will show up to two photos on top right
+// All other photos will be shown at the bottom with another function
+// #################################################################################
+function show_multi_photos($flickr_id, $voucherImage, $thumbnail, $admin) {
+	if( $voucherImage == NULL && $thumbnail == NULL ) {
+		echo "<div class='voucher'>";
+		echo "<img class=\"voucher\" src=\"na.gif\"/>";
+		echo "</div>";
+	}
+	else {
+		$f = explode("|", $flickr_id);
+		$v = explode("|", $voucherImage);
+		$t = explode("|", $thumbnail);
+
+		# create an array with each photo data as array as well 
+		$j = 0;
+		$photos = array();
+		while( $j < count($v) ) {
+			if( $j < 3 ) {
+				$tmp = new stdClass;
+				$tmp->flickr_id = trim($f[$j]);
+				$tmp->voucherImage = trim($v[$j]);
+				$tmp->thumbnail = trim($t[$j]);
+
+				$photos[] = $tmp;
+			}
+			$j = $j + 1;
+		}
+
+		$i = 1;
+		foreach( $photos as $photo ) {
+			$photo->flickr_id = str_replace("|", "", $photo->flickr_id);
+			$photo->flickr_id = trim($photo->flickr_id);
+
+			if( $photo->voucherImage != "" && $photo->thumbnail != "" ) {
+				if( $admin == true ) {
+					echo "\n<div class=\"voucher\" id=\"" . $i . "\">";
+					echo "\n<a href='#' title='Delete photo' class='delete'>";
+					echo "<img class='delete' src='images/delete.png' /></a>";
+					echo "\n<a href='" . $photo->voucherImage . "' target=\"_blank\">";
+					echo "\n<img class='voucher' src=\"" . $photo->thumbnail . "\" />";
+					echo "\n</a>";
+					echo "\n</div>";
+					echo "<br />";
+				}
+				else {
+					echo "\n<div class=\"voucher\">";
+					echo "\n<a href='" . $photo->voucherImage . "' target='_blank'>";
+					echo "\n<img class='voucher' src=\"" . $photo->thumbnail . "\"/>";
+					echo "\n</a>";
+
+					if( $photo->flickr_id != "" && $photo->flickr_id != NULL ) {
+						echo "\n<div class='eol_button' onclick='send_to_EOL(". $photo->flickr_id . ");'>";
+						echo "<img src='images/eol_button.png' ";
+						echo "id='" . $photo->flickr_id . "' alt='' />";
+						echo "Share photo with EOL</div>";
+					}
+
+					echo "</div>\n";
+					echo "<br />";
+				}
+			}
+			$i = $i + 1;
+		}
+	}
+}
+
+function show_all_other_photos($flickr_id, $voucherImage, $thumbnail, $admin) {
+	if( $voucherImage == NULL && $thumbnail == NULL ) {
+		echo "";
+	}
+	elseif ( $voucherImage == "na.gif" || $thumbnail == "na.gif" ) {
+		echo "";
+	}
+	else {
+		$f = explode("|", $flickr_id);
+		$v = explode("|", $voucherImage);
+		$t = explode("|", $thumbnail);
+
+		# show from photo 3 onwards
+		if( count($v) > 3 ) {
+			$j = 3;
+			$photos = array();
+			while( $j < count($v) ) {
+				if( $j > 2 ) {
+					$tmp = new stdClass;
+					$tmp->flickr_id = trim($f[$j]);
+					$tmp->voucherImage = trim($v[$j]);
+					$tmp->thumbnail = trim($t[$j]);
+
+					$photos[] = $tmp;
+				}
+				$j = $j + 1;
+			}
+			
+			echo "<tr>\n<td>\n";
+			echo "<table border='0' width='760px' cellpadding='5px'>";
+			echo "<th><h1>Additional photos</h1></th>";
+			echo "<tr>";
+			$i = 3;
+			foreach( $photos as $photo ) {
+				$photo->flickr_id = str_replace("|", "", $photo->flickr_id);
+				$photo->flickr_id = trim($photo->flickr_id);
+	
+				if( $photo->voucherImage != "" && $photo->thumbnail != "" ) {
+					echo "<td width='200px'>\n";
+					echo "<div class='voucher' id=\"". $i . "\">\n";
+
+					if( $admin == true ) {
+						echo "<a href='#' class='delete'><img class='delete'";
+						echo " src='images/delete.png' title='Delete photo' /></a>\n";
+					}
+					echo "<a href='" . $photo->voucherImage . "' target=\"_blank\">";
+					echo "<img class=\"voucher\" src=\"" . $photo->thumbnail . "\"/></a>\n";
+
+					if( $photo->flickr_id != "" && $photo->flickr_id != NULL ) {
+						echo "\n<div class='eol_button' onclick='send_to_EOL(". $photo->flickr_id . ");'>";
+						echo "<img src='images/eol_button.png' ";
+						echo "id='" . $photo->flickr_id . "' alt='' />";
+						echo "Share photo with EOL</div>";
+					}
+					echo "</div>\n";
+					echo "</td>\n";
+				}
+				if( $i % 3 == 2 ) {
+					echo "</tr><tr>";
+				}
+				$i = $i + 1;
+			}
+			echo "\n</tr>\n";
+			echo "</table>";
+			echo "</td>\n</tr>\n";
+		}
+	}
+}
+
+
+
 // #################################################################################
 // Section: dofastafiles() function 
 // returns a fasta file in GenBank format
@@ -426,5 +569,38 @@ function get_from_URL($url){
 	return $result;
 }
 
+
+// #################################################################################
+// Section: admin
+// cleans fields voucherImage, thumbnail for photos, removes double | and makes sure
+// there is always one | at the begining of field
+// @input: $p_ table prefix
+// @input: voucher id
+// #################################################################################
+function clean_fields($p_, $id) {
+	$query2  = "SELECT voucherImage, flickr_id, thumbnail FROM ". $p_;
+	$query2 .= "vouchers WHERE id='" . $id . "'";
+	$result2 = mysql_query($query2) or die("Error in query: $query2 ". mysql_error());
+	if( mysql_num_rows($result2) > 0 ) {
+		while( $row2 = mysql_fetch_object($result2) ) {
+			$v = trim($row2->voucherImage);
+			$f = trim($row2->flickr_id);
+			$t = trim($row2->thumbnail);
+
+			$v = preg_replace("/^\|{2,}/", "|", $v);
+			$f = preg_replace("/^\|{2,}/", "|", $f);
+			$t = preg_replace("/^\|{2,}/", "|", $t);
+
+			$v = preg_replace("/\|+/", "|", $v);
+			$f = preg_replace("/\|+/", "|", $f);
+			$t = preg_replace("/\|+/", "|", $t);
+
+			$q2  = "UPDATE ". $p_ . "vouchers SET ";
+			$q2 .= "voucherImage='$v', flickr_id='$f', thumbnail='$t' ";
+			$q2 .= "WHERE id=$id";	
+			mysql_query($q2) or die("Error in query: $q2 ". mysql_error());
+		}
+	}
+}
 
 ?>

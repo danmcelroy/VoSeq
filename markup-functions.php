@@ -105,18 +105,7 @@ function make_sidebar() {
 				";
 	}
 			
-	echo "</div>
-
-		<br /><br />
-
-		<h1>Powered by:</h1>
-		<div class=\"submenu\">
-			<a href=\"http://httpd.apache.org\"><img width=\"80px\" height=\"30px\" src=\"" . $base_url . "/images/apache.png\" alt=\"Apache\" class=\"link\" /></a>
-			<a href=\"http://www.php.net\"><img width=\"80px\" height=\"15px\" src=\"" . $base_url . "/images/php.png\" alt=\"PHP\" class=\"link\" /></a>
-			<a href=\"http://www.mysql.com\"><img width=\"88px\" height=\"31px\" src=\"" . $base_url . "/images/mysql.png\" alt=\"MySQL\" class=\"link\" /></a>
-			<a href=\"http://www.ubuntu.com\"><img width=\"40px\" height=\"41px\" src=\"" . $base_url . "/images/ubuntu.png\" alt=\"Ubuntu\" class=\"link\" /></a>
-			<a href=\"http://dojotoolkit.org\"><img width=\"42px\" height=\"38px\" src=\"" . $base_url . "/images/dojo.png\" alt=\"Dojo toolkit\" class=\"link\" /></a>
-		</div>";
+	echo "</div>";
 }
 
 
