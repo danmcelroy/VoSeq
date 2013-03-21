@@ -127,27 +127,44 @@ else { $errorList[] = "No taxa are chosen!</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb
 $lines = array();
 
 if (isset($raw_codes)){
-$raw_codes = array_unique($raw_codes);
-foreach($raw_codes AS $item) {
-	$item = clean_item($item);
-	$item = trim($item);
-	if ($item != "") {
-		$cquery = "SELECT code FROM ". $p_ . "vouchers WHERE code='$item'";
-		$cresult = mysql_query($cquery) or die("Error in query: $query. " . mysql_error());
-		// if records present
-		if( mysql_num_rows($cresult) > 0 ) {
-			while( $row = mysql_fetch_object($cresult) ) {		
-				array_push($lines, $item);
+	$raw_codes = array_unique($raw_codes);
+	foreach($raw_codes AS $item) {
+		$item = clean_item($item);
+		$item = trim($item);
+		if (strpos($item, "--") === 0) {$item = str_replace("--","",$item);}
+		if ($item != "") {
+			$cquery = "SELECT code FROM ". $p_ . "vouchers WHERE code='$item'";
+			$cresult = mysql_query($cquery) or die("Error in query: $query. " . mysql_error());
+			// if records present
+			if( mysql_num_rows($cresult) > 0 ) {
+				while( $row = mysql_fetch_object($cresult) ) {		
+					array_push($lines, $item);
+				}
+			}
+			else {
+			$errorList[] = "No voucher named <b>$item</b> exists in database!</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please add it in the voucher section or remove it from taxon set!";
 			}
 		}
-		else {
-		$errorList[] = "No voucher named <b>$item</b> exists in database!</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please add it in the voucher section or remove it from taxon set!";
+	}unset($item);
+
+	$lines = array_unique($lines);
+}
+
+// removing taxa from list that have the removal code -- before them
+$codes_to_remove = array();
+if (isset($taxonset_taxa) && isset($raw_codes)){
+	$raw_codes_delete = $raw_codes;
+	foreach($raw_codes_delete AS $item) {
+		if(strpos($item,'--') !== false) {
+			$item = clean_item($item);
+			$item = trim($item);
+			$item2 = str_replace('--','',$item);
+			$codes_to_remove[] = $item2;
 		}
 	}
-}unset($item);
+	$lines = array_diff($lines, $codes_to_remove);
+}unset($item,$item2);
 
-$lines = array_unique($lines);
-}
 //check for error and if none proceed with building table
 if (sizeof($errorList) != 0 ){
 	$title = "$config_sitename: Dataset Error";
@@ -220,12 +237,12 @@ foreach ( $lines as $line ) {
 						
 						 if ($_POST['star'] == 'star' ) {
 							unset($firstbase, $lastbase);
-							if ( $row1->sequences[0] == "?" ) { $firstbase = "*";}
-							if ( $row1->sequences[strlen($row1->sequences)-1]  == "?" ) { $lastbase = "*";}
-							$geneCodes[$gene] = $firstbase . strlen(str_replace("?" , "" , $row1->sequences)) . $lastbase;
+							if ( $row1->sequences[0] == "?" || $row1->sequences[0] == "N" || $row1->sequences[0] == "n" || $row1->sequences[0] == "-") { $firstbase = "*";}
+							if ( $row1->sequences[strlen($row1->sequences)-1]  == "?" || $row1->sequences[strlen($row1->sequences)-1]  == "N" || $row1->sequences[strlen($row1->sequences)-1]  == "n" || $row1->sequences[strlen($row1->sequences)-1]  == "-") { $lastbase = "*";}
+							$geneCodes[$gene] = $firstbase . strlen(str_replace(array("?","-", "N", "n") , "" , $row1->sequences)) . $lastbase;
 						 }
 						else{
-							$geneCodes[$gene] = strlen(str_replace("?" , "" , $row1->sequences));
+							$geneCodes[$gene] = strlen(preg_replace(array("/\?/","/-/", "/N/", "/n/"), "" , $row1->sequences));
 						}
 					}
 				}

@@ -5,6 +5,7 @@ include("../conf.php");
 mysql_select_db($db) or die ("Unable to select database");
 mysql_query("set names utf8") or die ("Error in query: $query. ". mysql_error());
 
+
 $code = mysql_real_escape_string($_POST['id']);
 
 $query = "DELETE FROM ". $p_ . "vouchers WHERE code='$code'";
