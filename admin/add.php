@@ -735,7 +735,7 @@ elseif (!$_POST['submitNoNew'] && $_GET['code']) {
 
 	// Delete button
 	//echo "<form action='delete_voucher.php' method='post'>";
-	echo "<button class='delete' id='delete_record' name='" . $code1 . "' class='delete'>Delete me</button>";
+	echo "<button class='delete' style='background-color:red;color:white' id='delete_record' name='" . $code1 . "' class='delete'>Delete me</button>";
 	
 	echo "<table border=\"0\" width=\"960px\"> <!-- super table -->
 			<tr><td valign=\"top\">";

@@ -92,7 +92,7 @@ if ($input_type == 'vouch') {
 	$field_values = array("code","order","family","subfamily","tribe","subtribe","genus","species","subspecies","auctor","hostorg","typespecies","country","locality","longitude","latitude","altitude","collector","coll.date","vouchercode","voucher","voucherlocality","determined.by","sex","extraction","extractiontube","extractor","extr.date","publ.in", "notes");
 }
 else {
-	$field_values = array("code","genecode","sequences","laborator","accession","primer1","primer2","primer3","primer4","primer5","primer6");
+	$field_values = array("code","genecode","sequences","laborator","accession","primer1","primer2","primer3","primer4","primer5","primer6","notes");
 }
 
 
