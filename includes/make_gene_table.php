@@ -397,35 +397,53 @@ else{
 					$sequence_array = preg_split('#(?<=.)(?=.)#s', $seqout_array[$geneCode][$item]); // making sequence/nucleotide array
 					for ($i=0; $i <= $geneinfo_array[$geneCode]['length']; $i+=3){
 						if ($geneinfo_array[$geneCode]['reading_frame'] == "1") {
-							$geneinfo_array[$geneCode][$item]['1'][] = $sequence_array[$i];
+							if (isset($sequence_array[$i])){
+								$geneinfo_array[$geneCode][$item]['1'][] = $sequence_array[$i];
+							}
 						}
 						if ($geneinfo_array[$geneCode]['reading_frame'] == "2") {
-							$geneinfo_array[$geneCode][$item]['3'][] = $sequence_array[$i];
+							if (isset($sequence_array[$i])){
+								$geneinfo_array[$geneCode][$item]['3'][] = $sequence_array[$i];
+							}
 						}
 						if ($geneinfo_array[$geneCode]['reading_frame'] == "3") {
-							$geneinfo_array[$geneCode][$item]['2'][] = $sequence_array[$i];
+							if (isset($sequence_array[$i])){
+								$geneinfo_array[$geneCode][$item]['2'][] = $sequence_array[$i];
+							}
 						}
 					}
 					for ($i=1; $i <= $geneinfo_array[$geneCode]['length']; $i+=3){
 						if ($geneinfo_array[$geneCode]['reading_frame'] == "1") {
-							$geneinfo_array[$geneCode][$item]['2'][] = $sequence_array[$i];
+							if (isset($sequence_array[$i])){
+								$geneinfo_array[$geneCode][$item]['2'][] = $sequence_array[$i];
+							}
 						}
 						if ($geneinfo_array[$geneCode]['reading_frame'] == "2") {
-							$geneinfo_array[$geneCode][$item]['1'][] = $sequence_array[$i];
+							if (isset($sequence_array[$i])){
+								$geneinfo_array[$geneCode][$item]['1'][] = $sequence_array[$i];
+							}
 						}
 						if ($geneinfo_array[$geneCode]['reading_frame'] == "3") {
-							$geneinfo_array[$geneCode][$item]['3'][] = $sequence_array[$i];
+							if (isset($sequence_array[$i])){
+								$geneinfo_array[$geneCode][$item]['3'][] = $sequence_array[$i];
+							}
 						}
 					}
 					for ($i=2; $i <= $geneinfo_array[$geneCode]['length']; $i+=3){
 						if ($geneinfo_array[$geneCode]['reading_frame'] == "1") {
-							$geneinfo_array[$geneCode][$item]['3'][] = $sequence_array[$i];
+							if (isset($sequence_array[$i])){
+								$geneinfo_array[$geneCode][$item]['3'][] = $sequence_array[$i];
+							}
 						}
 						if ($geneinfo_array[$geneCode]['reading_frame'] == "2") {
-							$geneinfo_array[$geneCode][$item]['2'][] = $sequence_array[$i];
+							if (isset($sequence_array[$i])){
+								$geneinfo_array[$geneCode][$item]['2'][] = $sequence_array[$i];
+							}
 						}
 						if ($geneinfo_array[$geneCode]['reading_frame'] == "3") {
-							$geneinfo_array[$geneCode][$item]['1'][] = $sequence_array[$i];
+							if (isset($sequence_array[$i])){
+								$geneinfo_array[$geneCode][$item]['1'][] = $sequence_array[$i];
+							}
 						}
 					}
 					$geneinfo_array[$geneCode]['1'][] = implode("",$geneinfo_array[$geneCode][$item]['1']);
@@ -552,6 +570,7 @@ else{
 							$table1[$i][] = "";
 							$table1[$i][] = "";
 					}
+					//$table1[$i][] = implode("-", $geneinfo_array[$geneCode][$codes[0]][$i]);
 					//put codon position info in table
 					$xls .= implode($field_delimitor, $table1[$i]) . "\n";
 				}
