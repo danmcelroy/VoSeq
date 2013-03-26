@@ -242,7 +242,7 @@ foreach ( $lines as $line ) {
 							$geneCodes[$gene] = $firstbase . strlen(str_replace(array("?","-", "N", "n") , "" , $row1->sequences)) . $lastbase;
 						 }
 						else{
-							$geneCodes[$gene] = strlen(preg_replace(array("/\?/","/-/", "/N/", "/n/"), "" , $row1->sequences));
+							$geneCodes[$gene] = strlen(str_replace(array("?","-", "N", "n"), "" , $row1->sequences));
 						}
 					}
 				}
