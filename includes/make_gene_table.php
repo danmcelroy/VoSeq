@@ -287,7 +287,7 @@ if (sizeof($errorList) != 0 ){
 	//print errors
 	show_errors($errorList);
 }
-else{ 
+else { 
 // #################################################################################
 // Section: Start building dataset for calculations
 // #################################################################################
@@ -386,6 +386,7 @@ else{
 		include_once 'header.php';
 		//print errors
 		show_errors($errorList);
+		exit(0);
 	}
 	else{ //start calculating and building table
 		foreach ($geneCodes AS $geneCode) {
