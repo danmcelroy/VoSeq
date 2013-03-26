@@ -66,9 +66,13 @@ echo "<div id=\"content\">";
 
 <b>You can create a MS Excel table of genes/alignments for a certain dataset or list of taxa. <br /> 
 Instead of typing your specimen codes in the text area below, you could select a Taxonset  
-(provided that it has been set <a href="admin/add_taxonset.php">here</a>).<br /></br>
-This can only be done for aligned genes/alignments!</br></br>
+(provided that it has been set <a href="admin/add_taxonset.php">here</a>).<br /><br />
+This can only be done for aligned genes/alignments!<br /><br />
 This table will be ready to attach to a manuscript for publication.</b>
+<p>
+<b>You will get information on gene length, dataset completion, percentage of variable, conserved and parsimony informative sites,<br />
+as well as frequency of base pairs in your dataset.</b>
+</p>
 
 
 <form action="includes/make_gene_table.php" method="post">
