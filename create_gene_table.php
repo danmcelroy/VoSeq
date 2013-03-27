@@ -6,7 +6,7 @@
 // license   GNU GPL v2
 // source code available at https://github.com/carlosp420/VoSeq
 //
-// Script overview: Input for creation of (xml) tables
+// Script overview: Input for creation of gene (xml) tables
 // #################################################################################
 // #################################################################################
 // Section: Startup/includes
@@ -64,12 +64,16 @@ nav();
 echo "<div id=\"content\">";
 ?>
 
-<b>You can create a MS Excel table with specimen codes, genus and species names, genes used in analysis along with their accession numbers. <br /> Instead of
-typing your specimen codes in the text area below, you could select a Taxonset (provided that it has been set <a href="admin/add_taxonset.php">here</a>).<br />
+<b>You can create a MS Excel table of genes/alignments for a certain dataset or list of taxa. <br /> 
+Instead of typing your specimen codes in the text area below, you could select a Taxonset  
+(provided that it has been set <a href="admin/add_taxonset.php">here</a>).<br /></br>
+This can only be done for aligned genes/alignements!</br>
+- Parsimony informative sites will only be calculated for datasets of more than 3 taxa!</br>
+- Variable and conservative sites will only be calculated for datasets of more than 1 taxa!</br></br>
 This table will be ready to attach to a manuscript for publication.</b>
 
 
-<form action="includes/make_table.php" method="post">
+<form action="includes/make_gene_table.php" method="post">
 <table border="0" width="960px" cellpadding="5px"> <!-- super table --> 
 	<tr>
 		<td valign="top" colspan="2">
@@ -77,71 +81,41 @@ This table will be ready to attach to a manuscript for publication.</b>
 			<table border="0" width="800px" cellspacing="0" cellpadding="0px">
 				<caption>Enter the required info to make yourself a table in MS Excel format</caption>
 				<tr>
-					<td class="label"> Voucher info: </td>
-					<td class="field">
-					<table border="0">
-						<tr>
-						<td><input type="checkbox" name="tableadds[code]"checked>Code</td>
-						<td><input type="checkbox" name="tableadds[orden]">Order</td>
-						<td><input type="checkbox" name="tableadds[family]">Family</td>
-						<td><input type="checkbox" name="tableadds[subfamily]">Subfamily</td>
-						<td><input type="checkbox" name="tableadds[tribe]">Tribe</td>
-						<td><input type="checkbox" name="tableadds[subtribe]">Subtribe</td>
-						</tr />
-						<tr>
-						<td><input type="checkbox" name="tableadds[genus]"checked>Genus</td>
-						<td><input type="checkbox" name="tableadds[species]"checked>Species</td>
-						<td><input type="checkbox" name="tableadds[subspecies]">Subspecies</td>
-						<td><input type="checkbox" name="tableadds[auctor]">Auctor</td>
-						<td><input type="checkbox" name="tableadds[hostorg]">Host org.</td>
-						</tr>
-					</table>
-					</td>
-				</tr>
-				<tr>
-					<td class="label"> Locality and collector info: </td>
-					<td class="field">
-					<table border="0">
-						<tr>
-						<td><input type="checkbox" name="tableadds[country]">Country</td>
-						<td><input type="checkbox" name="tableadds[specificLocality]">Locality</td>
-						<td><input type="checkbox" name="tableadds[collector]">Collector</td>
-						<td><input type="checkbox" name="tableadds[dateCollection]">Coll. date</td>
-						<td><input type="checkbox" name="tableadds[determinedBy]">Determined by</td>
-						</tr>
-						<tr>
-						<td><input type="checkbox" name="tableadds[altitude]">Altitude</td>
-						<td><input type="checkbox" name="tableadds[latitude]">Latitude</td>
-						<td><input type="checkbox" name="tableadds[longitude]">Longitude</td>
-						</tr>
-					</table>
-					</td>
-				</tr>
-				<tr>
-					<td class="label"> Choose what gene info to display: </td>
-					<td class="field">
-					<table border="0">
-						<tr>
-						<td><input type="radio" name="geneinfo" value="nobp" checked>Number of bases</td>
-						<td><input type="radio" name="geneinfo" value="accno" >Accession number</td>
-						<td><input type="radio" name="geneinfo" value="x-" >X/- (exist/empty)</td>
-						</tr>
-					</table>
-					</td>
-				</tr>
-				<tr>
 					<td class="label">
 						Choose your field delimitor:
 					</td>
 					<td class="field">
 					<table border="0">
 						<tr>
-						<td><input type="radio" name="field_delimitor" value='comma' >comma 
-						<input type="radio" name="field_delimitor" value='tab' checked>tab</td>
+						<td>
+						<tr><td><input type="radio" name="field_delimitor" value='comma' >comma(,)</td></tr> 
+						<tr><td><input type="radio" name="field_delimitor" value='tab' checked>tab(well, a tab...)</td></tr>
 						</tr>
+					</table>
+					</td>
+					<td class="label">
+						Choose your decimal sign:
+					</td>
+					<td class="field">
+					<table border="0">
 						<tr>
-						<td>&nbsp;&nbsp;<b>Display missing sequence beginnings/ends with star(*)?:</b></td>
-						<td><input type="radio" name="star" value='star'></td>
+						<td>
+						<tr><td><input type="radio" name="decimal" value='comma' >comma(,)</td></tr> 
+						<tr><td><input type="radio" name="decimal" value='dot' checked>dot(.)<td></tr>
+						</td>
+						</tr>
+					</table>
+					</td>
+					<td class="label">
+						For protein codinng genes</br>
+						- include individual codon positions?
+					</td>
+					<td class="field">
+					<table border="0">
+						<tr>
+						<td>
+						<tr><td><input type="radio" name="codpos" value='yes' >yes</td></tr>
+						<tr><td><input type="radio" name="codpos" value='no' checked>no</td></tr>
 						</tr>
 					</table>
 					</td>
@@ -172,7 +146,7 @@ This table will be ready to attach to a manuscript for publication.</b>
 				</tr>
 				<tr>
 					<td class="label4">
-						...and/or a <br />listof codes:,
+						...and/or a <br />list of codes:,
 						:
 					</td>
 					<td class="field1">
@@ -210,11 +184,17 @@ This table will be ready to attach to a manuscript for publication.</b>
 					<td> &nbsp; </td>
 					<td class="field1">
 						<textarea name="codes" rows="14"></textarea>
-					</td>
-					<td></td><td><input type="submit" name="make_table" value="Create table" /></td>
-				</tr>
+					</td><td></td>
+					<td colspan=3 style="font-size:16px">Keep in mind that this might take</br> a few minutes for large data sets!
+				</br>
+				</br>
+					<input type="submit" name="make_gene_table" value="Create gene table" />
+				</td>
 			</table>
 		</td>
+	</tr>
+	<tr>
+		
 	</tr>
 </table>
 

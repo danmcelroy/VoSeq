@@ -99,6 +99,27 @@ function mysql_upgrade($db, $p_) {
 		}
 	}
 	
+	
+	// genes -> genetype, prot_code, intron, aligned, genetic_code - version 1.4.5
+	$new_fields = array("genetype", "prot_code", "intron", "aligned", "genetic_code");
+	foreach ($new_fields as $new_field) {
+		$query = "SELECT * FROM information_schema.COLUMNS WHERE 
+					TABLE_SCHEMA = '" . $db . "' 
+					AND TABLE_NAME = '" . $p_ . "genes' 
+					AND COLUMN_NAME = '$new_field'";
+		$result = mysql_query($query) or die("Error in query: $query. " . mysql_error());
+		if( mysql_num_rows($result) < 1 ) {
+			# Upgrading table sequences
+			$query = "alter table ". $p_ . "genes add column $new_field";
+			if ($new_field == 'genetype'){$query .= " varchar(255) default null";}
+			if ($new_field == 'prot_code' || $new_field == 'aligned'){$query .= " ENUM('yes','no','notset') default 'notset'";}
+			if ($new_field == 'intron'){$query .= " varchar(255) default null";}
+			if ($new_field == 'genetic_code'){$query .= " INT(3) default null";}
+			$query .= " after timestamp";
+			mysql_query($query) or die ("Error in query: $query. " . mysql_error());
+		}
+	}
+	
 }
 	
 ?>
