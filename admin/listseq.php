@@ -282,13 +282,17 @@ elseif ($_GET['code'] && $_GET['geneCode'] && $_GET['id'])
 	echo "<table border=\"0\" width=\"960px\"> <!-- super table -->
 				<tr><td valign=\"top\">";
 	?>
-	<img src="images/info.png" alt=""> Update sequence for record <b><?php echo "$code"; ?></b>
+	<!-- delete button -->
+	<img src="images/info.png" alt=""> Update sequence for record <b>
+	<?php echo "$code"; ?></b>
 
-<form action="processSeq.php" method="post">
+
 	<br />
-	<input class="delete" type="submit" name="delete_seq" value="Delete me" /><!-- Delete this sequence! -->
-		
+	
 <table width="800px" border="0"> <!-- big parent table -->
+<tr><td><button class='delete' id='delete_sequence' style='background-color:red;color:white' name='<?php echo $id; ?>' class='delete'>or delete me</button></td> 
+	</tr>
+<form action="processSeq.php" method="post">
 <tr><td valign="top">
 	<table border="0" cellspacing="10" width="240px"> <!-- table child 1-->
 	<tr><td>
@@ -340,7 +344,7 @@ elseif ($_GET['code'] && $_GET['geneCode'] && $_GET['id'])
 				<td class="label3">Amb.</td>
 				<td class="field2"><?php echo $row['8']; ?></td>
 			</tr>
-		</form>
+		<!--</form>-->
 		</table>
 	
 	</td></tr>

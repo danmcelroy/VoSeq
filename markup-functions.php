@@ -86,20 +86,22 @@ function make_sidebar() {
 			<div class=\"submenu\">";
 	if( $mask_url == "true" ) {
 		echo   "<a href='" . $base_url . "/home.php'  onclick=\"return redirect('". $base_url . "/blast_new.php');\">Blast new sequence</a>
-				<a href='" . $base_url . "/home.php'  onclick=\"return redirect('". $base_url . "/view_table.php');\">Overview table</a>
+				<a href='" . $base_url . "/home.php'  onclick=\"return redirect('". $base_url . "/view_table.php');\">Interactive overview table</a>
 				<a href='" . $base_url . "/home.php'  onclick=\"return redirect('". $base_url . "/genes.php');\">View genes</a>
 				<a href='" . $base_url . "/home.php'  onclick=\"return redirect('". $base_url . "/create_dataset.php');\">Create new dataset</a>
-				<a href='" . $base_url . "/home.php'  onclick=\"return redirect('". $base_url . "/create_table.php');\">Create MS Excel table</a>
+				<a href='" . $base_url . "/home.php'  onclick=\"return redirect('". $base_url . "/create_table.php');\">Create Voucher table</a>
+				<a href='" . $base_url . "/home.php'  onclick=\"return redirect('". $base_url . "/create_gene_table.php');\">Create Gene table</a>
 				<a href='" . $base_url . "/home.php'  onclick=\"return redirect('". $base_url . "/create_genbank_fasta_file.php');\">Create GenBank FASTA file</a>
 				<a href='" . $base_url . "/home.php'  onclick=\"return redirect('". $base_url . "/share_data_gbif.php');\">Share data with GBIF</a>
 				";
 	}
 	else {
 		echo   "<a href='" . $base_url . "/blast_new.php'\">Blast new sequence</a>
-				<a href='" . $base_url . "/view_table.php'\">Overview table</a>
+				<a href='" . $base_url . "/view_table.php'\">Interactive overview table</a>
 				<a href='" . $base_url . "/genes.php'\">View genes</a>
 				<a href='" . $base_url . "/create_dataset.php'\">Create new dataset</a>
-				<a href='" . $base_url . "/create_table.php'\">Create MS Excel table</a>
+				<a href='" . $base_url . "/create_table.php'\">Create Voucher table</a>
+				<a href='" . $base_url . "/create_gene_table.php'\">Create Gene table</a>
 				<a href='" . $base_url . "/create_genbank_fasta_file.php'\">Create GenBank FASTA file</a>
 				<a href='" . $base_url . "/share_data_gbif.php'\">Share data with GBIF</a>
 				";
