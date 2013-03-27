@@ -22,7 +22,7 @@ include '../markup-functions.php';
 include "translation_functions.php";
 
 // set increased time limit for larger calculations -> 1000 seconds
-set_time_limit(1000);
+set_time_limit(1500);
 
 $warning = array();
 $charset_count = array();
@@ -287,7 +287,7 @@ if (sizeof($errorList) != 0 ){
 	//print errors
 	show_errors($errorList);
 }
-else { 
+else{ 
 // #################################################################################
 // Section: Start building dataset for calculations
 // #################################################################################
@@ -386,7 +386,6 @@ else {
 		include_once 'header.php';
 		//print errors
 		show_errors($errorList);
-		exit(0);
 	}
 	else{ //start calculating and building table
 		foreach ($geneCodes AS $geneCode) {
@@ -494,19 +493,19 @@ else {
 		if ($cpon == "on") {$table1['headers'][] = "pos.";}
 		$table1['headers'][] = "Gene type";
 		$table1['headers'][] = "Length";
-		$table1['headers'][] = "Dataset completion(%)";
+		$table1['headers'][] = "Dataset completion (%)";
 		
-		if (count($codes) > 3){
-			$table1['headers'][] = "Variable";
-			$table1['headers'][] = "Pars. Inf.";
-			$table1['headers'][] = "Conserved";
+		if (count($codes) > 1){
+			$table1['headers'][] = "Variable (%)";
+			if (count($codes) > 3){$table1['headers'][] = "Pars. Inf.(%)";}
+			$table1['headers'][] = "Conserved (%)";
 		}
-		$table1['headers'][] = "Freq A(%)";
-		$table1['headers'][] = "Freq T(%)";
-		$table1['headers'][] = "Freq C(%)";
-		$table1['headers'][] = "Freq G(%)";
+		$table1['headers'][] = "Freq. A (%)";
+		$table1['headers'][] = "Freq. T (%)";
+		$table1['headers'][] = "Freq. C (%)";
+		$table1['headers'][] = "Freq. G (%)";
 		if($intrOn == 'on'){ 
-			$table1['headers'][] = "n Introns";
+			$table1['headers'][] = "Introns (n)";
 			$table1['headers'][] = "Tot. intron length (bp)";
 		}
 		// input headers in table
@@ -519,18 +518,18 @@ else {
 			$table1[$geneCode][] = $geneinfo_array[$geneCode]['genetype'];
 			$table1[$geneCode][] = $geneinfo_array[$geneCode]['length'];
 			$capt_array = nuc_chars($geneinfo_array[$geneCode]['tot_count']);
-			$table1[$geneCode][] = number_format(($capt_array[1] / $capt_array[0]), 3, $decimal, '');
+			$table1[$geneCode][] = number_format(round(($capt_array[1] / $capt_array[0])*100,1), 2, $decimal, '');
 			
-			if (count($codes) > 3){
+			if (count($codes) > 1){
 				$capt_array_PI = PIchars($geneinfo_array[$geneCode]['tot']);
-				$table1[$geneCode][] = number_format($capt_array_PI[0], 3, $decimal, '');
-				$table1[$geneCode][] = number_format($capt_array_PI[1], 3, $decimal, '');
-				$table1[$geneCode][] = number_format($capt_array_PI[2], 3, $decimal, '');
+				$table1[$geneCode][] = number_format(round($capt_array_PI[0]*100, 2), 2, $decimal, '');
+				if (count($codes) > 3){$table1[$geneCode][] = number_format(($capt_array_PI[1]*100), 2, $decimal, '');}
+				$table1[$geneCode][] = number_format(100-round($capt_array_PI[0]*100, 2), 2, $decimal, '');
 			}
-			$table1[$geneCode][] = number_format(($geneinfo_array[$geneCode]['tot_count']['A'] / $capt_array[1]), 3, $decimal, '');
-			$table1[$geneCode][] = number_format(($geneinfo_array[$geneCode]['tot_count']['T'] / $capt_array[1]), 3, $decimal, '');
-			$table1[$geneCode][] = number_format(($geneinfo_array[$geneCode]['tot_count']['C'] / $capt_array[1]), 3, $decimal, '');
-			$table1[$geneCode][] = number_format(($geneinfo_array[$geneCode]['tot_count']['G'] / $capt_array[1]), 3, $decimal, '');
+			$table1[$geneCode][] = number_format(($geneinfo_array[$geneCode]['tot_count']['A'] / $capt_array[1])*100, 2, $decimal, '');
+			$table1[$geneCode][] = number_format(($geneinfo_array[$geneCode]['tot_count']['T'] / $capt_array[1])*100, 2, $decimal, '');
+			$table1[$geneCode][] = number_format(($geneinfo_array[$geneCode]['tot_count']['C'] / $capt_array[1])*100, 2, $decimal, '');
+			$table1[$geneCode][] = number_format(($geneinfo_array[$geneCode]['tot_count']['G'] / $capt_array[1])*100, 2, $decimal, '');
 			if($intrOn == 'on'){ 
 				if (isset($geneinfo_array[$geneCode]['intron_info'])){
 					$table1[$geneCode][] = $geneinfo_array[$geneCode]['intron_info'][2];
@@ -555,18 +554,18 @@ else {
 					$table1[$i][] = "";
 					$table1[$i][] = count($geneinfo_array[$geneCode][$codes[0]][$i]);
 					$capt_array = nuc_chars($geneinfo_array[$geneCode][$i."_count"]);
-					$table1[$i][] = number_format(($capt_array[1] / $capt_array[0]), 3, $decimal, '');
+					$table1[$i][] = number_format(($capt_array[1] / $capt_array[0])*100, 2, $decimal, '');
 					
-					if (count($codes) > 3){
+					if (count($codes) > 1){
 						$capt_array_PI = PIchars($geneinfo_array[$geneCode][$i]);
-						$table1[$i][] = number_format($capt_array_PI[0], 3, $decimal, '');
-						$table1[$i][] = number_format($capt_array_PI[1], 3, $decimal, '');
-						$table1[$i][] = number_format($capt_array_PI[2], 3, $decimal, '');
+						$table1[$i][] = number_format(round($capt_array_PI[0]*100,2), 2, $decimal, '');
+						if (count($codes) > 3){$table1[$i][] = number_format($capt_array_PI[1]*100, 2, $decimal, '');}
+						$table1[$i][] = number_format(100-round($capt_array_PI[0]*100, 2), 2, $decimal, '');
 					}
-					$table1[$i][] = number_format(($geneinfo_array[$geneCode][$i."_count"]['A'] / $capt_array[1]), 3, $decimal, '');
-					$table1[$i][] = number_format(($geneinfo_array[$geneCode][$i."_count"]['T'] / $capt_array[1]), 3, $decimal, '');
-					$table1[$i][] = number_format(($geneinfo_array[$geneCode][$i."_count"]['C'] / $capt_array[1]), 3, $decimal, '');
-					$table1[$i][] = number_format(($geneinfo_array[$geneCode][$i."_count"]['G'] / $capt_array[1]), 3, $decimal, '');
+					$table1[$i][] = number_format(($geneinfo_array[$geneCode][$i."_count"]['A'] / $capt_array[1])*100, 2, $decimal, '');
+					$table1[$i][] = number_format(($geneinfo_array[$geneCode][$i."_count"]['T'] / $capt_array[1])*100, 2, $decimal, '');
+					$table1[$i][] = number_format(($geneinfo_array[$geneCode][$i."_count"]['C'] / $capt_array[1])*100, 2, $decimal, '');
+					$table1[$i][] = number_format(($geneinfo_array[$geneCode][$i."_count"]['G'] / $capt_array[1])*100, 2, $decimal, '');
 					if($intrOn == 'on'){ 
 							$table1[$i][] = "";
 							$table1[$i][] = "";
