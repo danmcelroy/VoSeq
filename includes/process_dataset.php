@@ -1072,7 +1072,7 @@ else{
 				$which_nex_partitions = array();
 				$nex_partitions = array();
 				if (in_array("aas", $positions) || in_array("yes", $aa_or_not)) {
-					if (!in_array("no", $aa_or_not) && $ignore_introns == 'yes' && !count($intron_lengths) > 0){
+					if (!in_array("no", $aa_or_not) && $ignore_introns == 'yes'){
 						$output = "#NEXUS\n\nBEGIN DATA;\nDIMENSIONS NTAX=$number_of_taxa NCHAR=$bp;\nFORMAT INTERLEAVE DATATYPE=PROTEIN MISSING=? GAP=-;\nMATRIX\n";
 					}
 					else {
@@ -1290,7 +1290,7 @@ else{
 					$nex_partitions[] = "\tcharset " . $gCPHY . "_intron_$intr = " . $phybp . "-" . ($phybp+$il-1) . ";" ;
 					$which_nex_partitions[] = $gCPHY . "_intron_$intr";
 					$nex_all_partitions[] = $gCPHY . "_intron_$intr";
-					$phy_partitions[] = "DNA, " . $gCPHY . "_intron_$intr = " . $phybp . "-" . ($phybp+$i-1);
+					$phy_partitions[] = "DNA, " . $gCPHY . "_intron_$intr = " . $phybp . "-" . ($phybp+$il-1);
 					$phybp = $phybp+$il;
 					$intr++;
 					
@@ -1332,7 +1332,7 @@ else{
 			else { $part_list_sum['special_dna'][] = $i;}
 		}
 		//print_r ($part_list_sum);echo "</br>";
-		//if (count($part_list_sum[full_dna])==0){$part_list_sum[full_dna][] = "";} 
+		if (count($part_list_sum[full_dna])==0){$part_list_sum[full_dna][] = "";} 
 	}
 	// creating end block of file
 	if( $format == "TNT" ) { 
@@ -1377,25 +1377,38 @@ else{
 			$output .= "outgroup $outgroup;\n"; 
 		}
 		$output .= "prset applyto=(all) ratepr=variable brlensp=unconstrained:Exp(100.0) ";
-		$output .= "shapepr=exp(1.0) tratiopr=beta(2.0,1.0);\n";
+		$output .= "shapepr=exp(1.0)";
+		if ($part_list_sum['full_dna'][0] != "" && $part_list_sum['special_dna'] > 0){
+			$output .= "tratiopr=beta(2.0,1.0)";
+		}
+		$output .= ";\n";
 		if( in_array("yes", $aa_or_not) || in_array("aas", $positions) ) {
+		//print_r ($aa_or_not);
 			if( $which_nex_partitions != $nex_all_partitions ) {
 				$output .= "prset applyto=(". implode(',', $part_list_sum['special_aa'])  ." [". implode(',', $part_list_sum['full_aa'])  ."]) aamodelpr=mixed;\n";
 				$output .= "lset  applyto=(". implode(',', $part_list_sum['special_aa'])  ." [". implode(',', $part_list_sum['full_aa'])  ."]) rates=gamma [invgamma];\n";
-				$output .= "lset  applyto=(". implode(',', $part_list_sum['special_dna']) ." [". implode(',', $part_list_sum['full_dna']) ."]) nst=mixed rates=gamma [invgamma];\n";
+				if (in_array("no", $aa_or_not) || $ignore_introns == 'no' && count($intron_lengths) > 0){
+					$output .= "lset  applyto=(". implode(',', $part_list_sum['special_dna']) ." [". implode(',', $part_list_sum['full_dna']) ."]) nst=mixed rates=gamma [invgamma];\n";
+					$output .= "unlink statefreq=(". implode(',', $part_list_sum['special_dna']) ." [". implode(',', $part_list_sum['full_dna']) ."]);\n";
+					}
 			}
 			else { 
 				$output .= "prset applyto=(". implode(',', $part_list_sum['full_aa']) .") aamodelpr=mixed;\n";
 				$output .= "lset  applyto=(". implode(',', $part_list_sum['full_aa'])  .") rates=gamma [invgamma];\n";
-				$output .= "lset  applyto=(". implode(',', $part_list_sum['full_dna']) .") nst=mixed rates=gamma [invgamma];\n";
+				if (in_array("no", $aa_or_not) || $ignore_introns == 'no' && count($intron_lengths) > 0 ){
+					$output .= "lset  applyto=(". implode(',', $part_list_sum['full_dna']) .") nst=mixed rates=gamma [invgamma];\n";
+					$output .= "unlink statefreq=(". implode(',', $part_list_sum['full_dna']) .");\n";
+				}
 			}
 		}
 		else {
 			$output .= "lset applyto=(all) nst=mixed rates=gamma [invgamma];\n";
+			$output .= "unlink statefreq=(all);\n";
 		}
-		$output .= "unlink shape=(all) statefreq=(all) revmat=(all) tratio=(all) [pinvar=(all)];\n";
+		
+		$output .= "unlink shape=(all) revmat=(all) tratio=(all) [pinvar=(all)];\n";
 		$output .= "mcmc ngen=10000000 printfreq=1000 samplefreq=1000 nchains=4 nruns=2 savebrlens=yes [temp=0.11];\n";	
-		$output .= " sump relburnin=no [yes] burnin[frac] = 2500 [0.25] contype = allcompat[halfcompat];\n sumt relburnin=no [yes] burnin[frac] = 2500 [0.25] contype = allcompat[halfcompat];\nend;" ;
+		$output .= " sump relburnin=no [yes] burnin[frac] = 2500 [0.25];\n sumt relburnin=no [yes] burnin[frac] = 2500 [0.25] contype = allcompat[halfcompat];\nend;" ;
 	}
 
 	// #################################################################################
