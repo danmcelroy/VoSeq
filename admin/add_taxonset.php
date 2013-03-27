@@ -24,7 +24,8 @@ ob_end_clean();//Clear output buffer
 include 'adfunctions.php'; // administrator functions
 include 'admarkup-functions.php';
 include '../includes/validate_coords.php';
-
+// set increased time limit for larger calculations -> 1000 seconds
+set_time_limit(1000);
 // need dojo?
 $dojo = true;
 
