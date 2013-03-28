@@ -122,8 +122,8 @@ else {
 echo "</table>";
 
 	echo "<div id='backup_confirm' title='Backup your MySQL database?'>
-			<p><span class='ui-icon ui-icon-alert' style='float: left; margin: 0 7px 20px 0;'></span>
-			It will create a dump file containing XXXXX.</p>
+			<p><span class='ui-icon ui-icon-info' style='float: left; margin: 0 7px 20px 0;'></span>
+			I will create a SQL file containing a backup of your MySQL database: <b><i>" . $db . "</i></b></p>
 	</div>";
 
 	echo "<script>

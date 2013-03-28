@@ -30,7 +30,7 @@ header('Content-type: text/html; charset=utf8');
 	if( isset($admin) && $admin != false ) {
 		echo $base_url . "/";
 	}
-	echo $currentTemplate . "/jquery-ui/redmond/jquery-ui-1.10.2.custom.css\" type=\"text/css\">";
+	echo $currentTemplate . "/jquery-ui/start/jquery-ui-1.10.2.custom.css\" type=\"text/css\">";
 
 	echo "<link rel=\"stylesheet\" href=\"";
 
