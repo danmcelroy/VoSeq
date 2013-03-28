@@ -54,6 +54,7 @@ header('Content-type: text/html; charset=utf8');
 	}
 	echo "\n\n<script type=\"text/javascript\" src=\"" . $base_url . "/includes/jquery.js\"></script>\n";
 	echo "\n\n<script type=\"text/javascript\" src=\"" . $base_url . "/includes/jquery-ui.js\"></script>\n";
+	echo "\n\n<script type=\"text/javascript\" src=\"" . $base_url . "/includes/jquery_download.js\"></script>\n";
 
 	?>
 	
