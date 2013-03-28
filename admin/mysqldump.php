@@ -39,6 +39,7 @@ if( mysql_num_rows($result) > 0 ) {
 	}
 }
 
+
 if( $mysql_dir == "" ) {
 	ob_start();
 	phpinfo();
@@ -65,18 +66,26 @@ if( $mysql_dir == "" ) {
  */
 if( $mysql_dir == "" ) {
 	// hope that mysqldump is in the path
-	$cmd = "mysqldump ";
+	$cmd = "mysqldump";
 }
 else {
-	$cmd = $mysql_dir . "/bin/mysqldump ";
+	$cmd = $mysql_dir . "/bin/mysqldump";
+}
+
+if( strtoupper(substr(PHP_OS, 0, 3)) === "WIN" ) {
+	$cmd .= '.exe"';
+	$cmd = str_replace("/", "\\", $cmd);
+	$cmd = preg_replace('/^/', '"', $cmd);
 }
 
 @$connection = mysql_connect($host, $user, $pass) or die('Unable to connect'. mysql_error());
-$cmd .= $db;
+$cmd .= " " . $db;
 $cmd .= " -h" . $host;
 $cmd .= " -u" . $user;
 $cmd .= " -p" . $pass;
 	
+//$f = fopen("a.txt", "w");
+//fwrite($f, $cmd); exit(0);
 
 unset($output);
 exec($cmd, $output);
