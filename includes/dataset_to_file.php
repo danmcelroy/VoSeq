@@ -2,7 +2,7 @@
 // #################################################################################
 // #################################################################################
 // Voseq includes/dataset_to_file.php
-// author(s): Carlos Peña & Tobias Malm
+// author(s): Carlos PeÃ±a & Tobias Malm
 // license   GNU GPL v2
 // source code available at https://github.com/carlosp420/VoSeq
 //
