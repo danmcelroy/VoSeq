@@ -22,6 +22,7 @@ else {
 	ob_clean();
 }
 
+error_reporting(E_ALL);
 
 /* 
  * try to get the base directory for mysql
@@ -76,6 +77,7 @@ $cmd .= " -h" . $host;
 $cmd .= " -u" . $user;
 $cmd .= " -p" . $pass;
 	
+
 unset($output);
 exec($cmd, $output);
 
@@ -86,11 +88,15 @@ $filename  = 'db-backup-';
 $filename .= date('Y-m-d') . "_" ;
 $filename .= time() . ".sql";
 
-header("Content-Disposition: attachment; filename=\"$filename\"");
-header("Content-Type: text/plain");
+$dump = "";
 foreach( $output as $item) {
-	echo $item . "\n";
+	$dump .= $item . "\n";
 }
-exit(0);
 
+header('Content-Description: File Transfer');
+header('Content-Type: text/plain');
+header('Content-Disposition: attachment; filename=' . basename($filename));
+header('Expires: 0');
+header('Pragma: public');
+echo $dump;
 ?>
