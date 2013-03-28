@@ -136,7 +136,9 @@ echo "</table>";
 										modal: true ,
 										buttons: {
 											'Create dump file': function() {
-                                                $.download('mysqldump.php', 'filename=', '');
+                                                $.download('mysqldump.php', 'filename=a.txt');
+
+
 												$(this).dialog('close');
 											},
 											Cancel: function() {
