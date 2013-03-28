@@ -135,6 +135,7 @@ echo "</table>";
 										modal: true ,
 										buttons: {
 											'Create dump file': function() {
+												$.post('../includes/mysqldump.php');
 												$(this).dialog('close');
 											},
 											Cancel: function() {
