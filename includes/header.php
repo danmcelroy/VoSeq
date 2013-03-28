@@ -27,6 +27,12 @@ header('Content-type: text/html; charset=utf8');
 	
 	<?php
 	echo "<link rel=\"stylesheet\" href=\"";
+	if( isset($admin) && $admin != false ) {
+		echo $base_url . "/";
+	}
+	echo $currentTemplate . "/jquery-ui/redmond/jquery-ui-1.10.2.custom.css\" type=\"text/css\">";
+
+	echo "<link rel=\"stylesheet\" href=\"";
 
 	if( isset($admin) && $admin != false ) {
 		echo $base_url . "/admin/" . $currentTemplate . "/css/1.css\" type=\"text/css\" />"; //"/admin/" 
@@ -156,6 +162,8 @@ echo "
 		});
 	});
 </script>\n";
+
+
 ?>
 </head>
 <body>

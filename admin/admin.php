@@ -111,8 +111,41 @@ else {
 	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/update_batch.php'><b>Batch update new information</b></a></td></tr>";
 	echo "<tr><td valign=\"top\"><a href='" .$base_url . "/admin/add_taxonset.php'><b>Add/edit/view Taxon sets</b></a></td>";
 	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/add_gene.php'><b>Add/edit/view gene information</b></a></td></tr>";
+
+	echo "<tr>";
+	echo "<td>";
+	echo "<button id='opener'>Backup database</button>";
+	echo "</td>";
+	echo "</tr>";
 }
 echo "</table>";
+
+	echo "<div id='backup_confirm' title='Backup your MySQL database?'>
+			<p><span class='ui-icon ui-icon-alert' style='float: left; margin: 0 7px 20px 0;'></span>
+			It will create a dump file containing XXXXX.</p>
+	</div>";
+
+	echo "<script>
+			$('#opener').button();
+
+			$('#backup_confirm').dialog({ autoOpen: false });
+			$('#opener').click(function() {
+					$('#backup_confirm').dialog('open').dialog({ 
+										resizable: false,
+										modal: true ,
+										buttons: {
+											'Create dump file': function() {
+												$(this).dialog('close');
+											},
+											Cancel: function() {
+												$(this).dialog('close');
+											}
+										}
+									}
+						);
+					});
+			</script>";
+
 
 	// generate and execute query from Vouchers table
 	$query = "SELECT id, code, genus, species, extractor, latesteditor, timestamp FROM " . $p_ . "vouchers ORDER BY timestamp DESC LIMIT 0, 10";
