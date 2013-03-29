@@ -1,6 +1,9 @@
 #VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 ##Changelog:
+* Version
+    - [Carlos 2013-03-29] Added button to get a Backup file of the MySQL database.
+
 * Version 1.5.0
 	- [Carlos 2013-03-18] Allowing several photos for each voucher.
 	- [Carlos 2013-03-18] MySQL table definition for voucher images changed to accommodate several strings separated by "|".
