@@ -69,10 +69,19 @@ if( $this_version != $most_recent_version ) {
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Login Form</title>
 <?php
-	echo "<link href=\"" . $base_url . "/login/loginmodule.css\" rel=\"stylesheet\" type=\"text/css\" />";
-	echo "<script src='" . $base_url . "/includes/jquery.js'></script>";
-	echo "<script src='" . $base_url . "/includes/jquery-ui.js'></script>";
+	echo "\n<link href=\"" . $base_url . "/login/loginmodule.css\" rel=\"stylesheet\" type=\"text/css\" />";
+
+    echo "\n<link href=\"" . $base_url . "/templates/mytemplate/jquery-ui/start/";
+    echo "jquery-ui-1.10.2.custom.css\" rel=\"stylesheet\" type=\"text/css\" />";
+
+	echo "\n<script src='" . $base_url . "/includes/jquery.js'></script>";
+	echo "\n<script src='" . $base_url . "/includes/jquery-ui.js'></script>";
 ?>
+    <script>
+        $(document).ready(function() {
+            $("input[type=submit]").button();
+        });
+    </script>
 </head>
 <body>
 
