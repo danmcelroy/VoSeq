@@ -103,6 +103,9 @@ if( $mask_url == "true" ) {
 	echo "onclick=\"return redirect('add_gene.php')\">";
 	echo "<b>Add/edit/view gene information</b></a></td>";
 	echo "\n</tr>";
+	echo "<tr>";
+	echo "<td><button id='opener'>Backup database</button></td>";
+	echo "</tr>";
 }
 else {
 	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/add.php?new=new'><b>Add new record</b></a></td>";
@@ -111,8 +114,40 @@ else {
 	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/update_batch.php'><b>Batch update new information</b></a></td></tr>";
 	echo "<tr><td valign=\"top\"><a href='" .$base_url . "/admin/add_taxonset.php'><b>Add/edit/view Taxon sets</b></a></td>";
 	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/add_gene.php'><b>Add/edit/view gene information</b></a></td></tr>";
+
+	echo "<tr>";
+	echo "<td><button id='opener'>Backup database</button></td>";
+	echo "</tr>";
 }
 echo "</table>";
+
+	echo "<div id='backup_confirm' title='Backup your MySQL database?'>
+			<p><span class='ui-icon ui-icon-info' style='float: left; margin: 0 7px 20px 0;'></span>
+			I will create a SQL file containing a backup of your MySQL database: <b><i>" . $db . "</i></b></p>
+	</div>";
+
+	echo "<script>
+			$('#opener').button();
+
+			$('#backup_confirm').dialog({ autoOpen: false });
+			$('#opener').click(function() {
+					$('#backup_confirm').dialog('open').dialog({ 
+										resizable: false,
+										modal: true ,
+										buttons: {
+											'Create dump file': function() {
+                                                $.download('mysqldump.php', 'filename=', '');
+												$(this).dialog('close');
+											},
+											Cancel: function() {
+												$(this).dialog('close');
+											}
+										}
+									}
+						);
+					});
+			</script>";
+
 
 	// generate and execute query from Vouchers table
 	$query = "SELECT id, code, genus, species, extractor, latesteditor, timestamp FROM " . $p_ . "vouchers ORDER BY timestamp DESC LIMIT 0, 10";

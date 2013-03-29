@@ -27,6 +27,12 @@ header('Content-type: text/html; charset=utf8');
 	
 	<?php
 	echo "<link rel=\"stylesheet\" href=\"";
+	if( isset($admin) && $admin != false ) {
+		echo $base_url . "/";
+	}
+	echo $currentTemplate . "/jquery-ui/start/jquery-ui-1.10.2.custom.css\" type=\"text/css\">";
+
+	echo "<link rel=\"stylesheet\" href=\"";
 
 	if( isset($admin) && $admin != false ) {
 		echo $base_url . "/admin/" . $currentTemplate . "/css/1.css\" type=\"text/css\" />"; //"/admin/" 
@@ -48,6 +54,7 @@ header('Content-type: text/html; charset=utf8');
 	}
 	echo "\n\n<script type=\"text/javascript\" src=\"" . $base_url . "/includes/jquery.js\"></script>\n";
 	echo "\n\n<script type=\"text/javascript\" src=\"" . $base_url . "/includes/jquery-ui.js\"></script>\n";
+	echo "\n\n<script type=\"text/javascript\" src=\"" . $base_url . "/includes/jquery_download.js\"></script>\n";
 
 	?>
 	
@@ -156,6 +163,8 @@ echo "
 		});
 	});
 </script>\n";
+
+
 ?>
 </head>
 <body>
