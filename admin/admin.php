@@ -131,27 +131,30 @@ echo "</table>";
 	</div>";
 
 	echo "<script>
-			$('#opener').button();
+            $('#opener').button();
             $('#mysqlimport').button();
 
-			$('#backup_confirm').dialog({ autoOpen: false });
-			$('#opener').click(function() {
-					$('#backup_confirm').dialog('open').dialog({ 
-										resizable: true,
-										modal: true,
-										buttons: [{ 
-                                            text: 'Create dump file', click: function() {
-                                                $.download('mysqldump.php', 'filename=', '');
-												$(this).dialog('close');
-											}},
-                                            {
-                                            text: 'Cancel', click: function() {
-												$(this).dialog('close');
-											}
-										}]
-									}
-						);
-					});
+            $('#backup_confirm').dialog({
+                autoOpen: false
+            });
+            $('#opener').click(function () {
+                $('#backup_confirm').dialog('open').dialog({
+                    modal: true
+                }).dialog('option', 'buttons', [{
+                    text: 'Create dump file',
+                    click: function () {
+                        $.download('mysqldump.php', 'filename=', '');
+                        $(this).dialog('close');
+                    }
+                }, {
+                    text: 'Cancel',
+                    click: function () {
+                        $(this).dialog('close');
+                    }
+                }]
+
+                );
+            });
 			</script>";
 
 
