@@ -1,4 +1,15 @@
 <?php
+// ############################################################################
+// ############################################################################
+// Voseq admin/mysqldump.php
+// author(s): Carlos Peña & Tobias Malm
+// license   GNU GPL v2
+// source code available at https://github.com/carlosp420/VoSeq
+//
+// Script overview: create a MySQL dump file using executable mysqldump
+//
+// ############################################################################
+
 
 session_start();
 //Check whether the session variable SESS_MEMBER_ID is present or not
@@ -22,7 +33,6 @@ else {
 	ob_clean();
 }
 
-error_reporting(E_ALL);
 
 /* 
  * try to get the base directory for mysql

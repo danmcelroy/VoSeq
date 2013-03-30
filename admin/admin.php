@@ -116,6 +116,10 @@ else {
 	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/add_gene.php'><b>Add/edit/view gene information</b></a></td></tr>";
 
 	echo "<tr>";
+	echo "<td><a id='mysqlimport' href='mysqlimport.php'>Import database</a></td>";
+	echo "</tr>";
+
+	echo "<tr>";
 	echo "<td><button id='opener'>Backup database</button></td>";
 	echo "</tr>";
 }
@@ -123,11 +127,12 @@ echo "</table>";
 
 	echo "<div id='backup_confirm' title='Backup your MySQL database?'>
 			<p><span class='ui-icon ui-icon-info' style='float: left; margin: 0 7px 20px 0;'></span>
-			I will create a SQL file containing a backup of your MySQL database: <b><i>" . $db . "</i></b></p>
+			Accept to download a backup of your MySQL database: <b><i>" . $db . "</i></b></p>
 	</div>";
 
 	echo "<script>
 			$('#opener').button();
+            $('#mysqlimport').button();
 
 			$('#backup_confirm').dialog({ autoOpen: false });
 			$('#opener').click(function() {
