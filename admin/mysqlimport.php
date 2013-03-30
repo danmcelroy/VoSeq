@@ -45,10 +45,26 @@ include_once('../includes/header.php');
 
 admin_nav();
 
+echo "<script>";
+echo "$(document).ready(function() {
+    $('#droppable').droppable({
+            activeClass: 'ui-state-hover',
+            hoverClass: 'ui-state-active',
+            drop: function( event, ui) {
+                $(this)
+                    .addClass('ui-state-highlight')
+                    .find('span')
+                    .html('Dropped!');
+                }
+        });
+    });";
+echo "</script>";
+
 echo "<div id=\"content_narrow\">";
 echo "<h1>Restore your database from a backup SQL file</h1>";
 
-echo "<div id='droppable'>";
+echo "<div id='droppable' class='ui-widget-header'>";
+echo "<p>accept: </p>";
 echo "<button id='upload_droppable'>";
 echo "<img class='upload_icon' src='images/pixel.gif'>";
 echo "<span id='upload-button-text'>Select file to upload</span>";
