@@ -579,3 +579,41 @@ td.code {
 	padding: 4px;
 }
 
+#droppable {
+    width: 600px;
+    height: 350px;
+    border: 1px solid #e6e6e6;
+    background: #ffffff;
+    text-align: center;
+}
+
+#upload_droppable {
+    margin-top: 50px;
+    border: 1px solid transparent;
+    background: none;
+}
+
+#upload-button-text {
+    display: block;
+    margin: 15px 0px 10px 0px;
+    font-size: 20px;
+    color: #444;
+    font-weight: normal;
+}
+#drag-and-drop {
+    padding: 7px;
+    font-size: 15px;
+    font-weight: normal;
+    color: #666;
+}
+
+.upload_icon {
+    background-image: url(../images/up.png);
+    width: 128px;
+    height: 128px;
+}
+.upload_icon:hover {
+    background-image: url(../images/up_hover.png);
+    width: 128px;
+    height: 128px;
+}
