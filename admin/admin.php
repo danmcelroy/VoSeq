@@ -137,17 +137,18 @@ echo "</table>";
 			$('#backup_confirm').dialog({ autoOpen: false });
 			$('#opener').click(function() {
 					$('#backup_confirm').dialog('open').dialog({ 
-										resizable: false,
-										modal: true ,
-										buttons: {
-											'Create dump file': function() {
+										resizable: true,
+										modal: true,
+										buttons: [{ 
+                                            text: 'Create dump file', click: function() {
                                                 $.download('mysqldump.php', 'filename=', '');
 												$(this).dialog('close');
-											},
-											Cancel: function() {
+											}},
+                                            {
+                                            text: 'Cancel', click: function() {
 												$(this).dialog('close');
 											}
-										}
+										}]
 									}
 						);
 					});
