@@ -45,34 +45,32 @@ include_once('../includes/header.php');
 
 admin_nav();
 
-echo "<script>";
-echo "$(document).ready(function() {
-    $('#droppable').droppable({
-            activeClass: 'ui-state-hover',
-            hoverClass: 'ui-state-active',
-            drop: function( event, ui) {
-                $(this)
-                    .addClass('ui-state-highlight')
-                    .find('span')
-                    .html('Dropped!');
-                }
-        });
-    });";
-echo "</script>";
 
-echo "<div id=\"content_narrow\">";
+echo "<div id=\"content_narrow\" style='font-size: 12px;'>";
 echo "<h1>Restore your database from a backup SQL file</h1>";
+echo "<p>Upload a backup of your MySQL database that were generated either by:
+    <ul>
+        <li>Using VoSeq's <b>\"Backup database\"</b> button.</li>
+        <li>From a terminal or console with the command: </li>
+        <ul>
+            <li><code>mysqldump " . $db . " -uroot -pmy_password > 
+                db-file.sql</code></li>
+        </ul>
+    </ul>
+    </p>";
 
-echo "<div id='droppable' class='ui-widget-header'>";
-echo "<p>accept: </p>";
-echo "<button id='upload_droppable'>";
-echo "<img class='upload_icon' src='images/pixel.gif'>";
-echo "<span id='upload-button-text'>Select file to upload</span>";
-echo "<span id='drag-and-drop'>";
-echo "or drag a file from your desktop and drop it here</span>";
-echo "</button>";
-echo "</div>";
+$form_output = "
+    <form accept-charset='utf-8' enctype='multipart/form-data' 
+        method='post'
+        action='" . $_SERVER['PHP_SELF'] . "'>
 
+        <input id='fileupload' type='file' name='file'>
+        <input type='Submit' name='submit' value='Upload'>
+    </form>
+";
+
+
+echo $form_output;
 echo "</div>";
 make_footer($date_timezone, $config_sitename, $version, $base_url, $p_);
 echo "</body>\n</html>";
