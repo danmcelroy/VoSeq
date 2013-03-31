@@ -32,6 +32,7 @@ header('Content-type: text/html; charset=utf8');
 	}
 	echo $currentTemplate . "/jquery-ui/start/jquery-ui-1.10.2.custom.css\" type=\"text/css\">";
 
+
 	echo "<link rel=\"stylesheet\" href=\"";
 
 	if( isset($admin) && $admin != false ) {
@@ -56,6 +57,18 @@ header('Content-type: text/html; charset=utf8');
 	echo "\n\n<script type=\"text/javascript\" src=\"" . $base_url . "/includes/jquery-ui.js\"></script>\n";
 	echo "\n\n<script type=\"text/javascript\" src=\"" . $base_url . "/includes/jquery_download.js\"></script>\n";
 
+    if( isset($plupload) ) {
+		echo "\n<link rel=\"stylesheet\" href=\"plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css\" rel=\"stylesheet\" type=\"text/css\" />";
+	    echo "<script type=\"text/javascript\" src=\"" . $base_url . "/admin/plupload/js/plupload.full.js\"></script>\n";
+	    echo "<script type=\"text/javascript\" src=\"" . $base_url . "/admin/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js\"></script>\n";
+	    echo "<script type=\"text/javascript\" src=\"" . $base_url . "/admin/plupload/js/plupload.js\"></script>\n";
+	    echo "<script type=\"text/javascript\" src=\"" . $base_url . "/admin/plupload/js/plupload.gears.js\"></script>\n";
+	    echo "<script type=\"text/javascript\" src=\"" . $base_url . "/admin/plupload/js/plupload.silverlight.js\"></script>\n";
+	    echo "<script type=\"text/javascript\" src=\"" . $base_url . "/admin/plupload/js/plupload.flash.js\"></script>\n";
+	    echo "<script type=\"text/javascript\" src=\"" . $base_url . "/admin/plupload/js/plupload.browserplus.js\"></script>\n";
+	    echo "<script type=\"text/javascript\" src=\"" . $base_url . "/admin/plupload/js/plupload.html4.js\"></script>\n";
+	    echo "<script type=\"text/javascript\" src=\"" . $base_url . "/admin/plupload/js/plupload.html5.js\"></script>\n";
+    }
 	?>
 	
 	<link rel="SHORTCUT ICON" href="<?php echo $base_url . "/favicon.ico"; ?>" />
@@ -88,6 +101,7 @@ if ($mask_url == "true") {
 	</script>\n";
 }
 	
+if ( !isset($delete_buttons) ) {
 echo "
 <script type=\"text/javascript\">
 	$(document).ready(function() {
@@ -163,6 +177,7 @@ echo "
 		});
 	});
 </script>\n";
+}
 
 
 ?>
