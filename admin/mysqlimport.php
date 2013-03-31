@@ -6,21 +6,10 @@
 // license   GNU GPL v2
 // source code available at https://github.com/carlosp420/VoSeq
 //
-// Script overview: Entry page for administrator interface
+// Script overview: upload a big file by chunks using plupload
 //
 // ############################################################################
 
-
-/*
- * taken from http://dan.cx/blog/2006/12/restore-mysql-dump-using-php
- *
- * Restore MySQL dump using PHP
- * (c) 2006 Daniel15
- * Last Update: 9th December 2006
- * Version: 0.2
- *
- * modified Carlos Peña 2013-03-29
- */
 
 
 //check admin login session
@@ -39,7 +28,11 @@ $admin = true;
 
 $dojo = false;
 
-$title = $config_sitename . " database importer";
+$plupload = true;
+
+$delete_buttons = false;
+
+$title = $config_sitename . "| Database importer";
   
 include_once('../includes/header.php');
 
@@ -56,61 +49,83 @@ echo "<p>Upload a backup of your MySQL database that were generated either by:
             <li><code>mysqldump " . $db . " -uroot -pmy_password > 
                 db-file.sql</code></li>
         </ul>
+        <li>Note that <b><u>all your current data will be replaced</u></b> by the 
+            newly uploaded backup file.</li>
     </ul>
     </p>";
 
-$form_output = "
-    <form accept-charset='utf-8' enctype='multipart/form-data' 
-        method='post'
-        action='" . $_SERVER['PHP_SELF'] . "'>
 
-        <input id='fileupload' type='file' name='file'>
-        <input type='Submit' name='submit' value='Upload'>
-    </form>
+$form_output = "
+<div id='container'>
+    <div id='filelist'>No runtime found. Your web browser doesn't support uploading big files!</div>
+    <a class='plupload_button plupload_add' id='pickfiles' href='javascript:;'>Select file</a>
+    <a class='plupload_button plupload_start' id='uploadfiles' href='javascript:;'>Upload file</a>
+</div>
 ";
 
 
 echo $form_output;
 echo "</div>";
 make_footer($date_timezone, $config_sitename, $version, $base_url, $p_);
-echo "</body>\n</html>";
-exit(0);
-
-
-
-
-
-// Name of the file
-$filename = 'test.sql';
- 
- 
-// Connect to MySQL server
-mysql_connect($host, $user, $pass) or die('Error connecting to MySQL server: ' . mysql_error());
-// Select database
-mysql_select_db($db) or die('Error selecting MySQL database: ' . mysql_error());
- 
-// Temporary variable, used to store current query
-$templine = '';
-// Read in entire file
-$lines = file($filename);
-// Loop through each line
-foreach ($lines as $line)
-{
-    // Skip it if it's a comment
-    if (substr($line, 0, 2) == '--' || $line == '' || substr($line, 0, 3) == '/*!') {
-        continue;
-    }
- 
-    // Add this line to the current segment
-    $templine .= $line;
-    // If it has a semicolon at the end, it's the end of the query
-    if (substr(trim($line), -1, 1) == ';')
-    {
-        // Perform the query
-        mysql_query($templine) or print('Error performing query \'<strong>' . $templine . '\': ' . mysql_error() . '<br /><br />');
-        // Reset temp variable to empty
-        $templine = '';
-    }
-}
- 
 ?>
+<script type="text/javascript">
+    function mysqlimport(filename) {
+        jQuery.noConflict();
+        jQuery.post('mysqlimporter.php', { name: 'Carlos' }).
+            done(function(data) {
+            alert(data);
+            });
+    }
+</script>
+
+<script type="text/javascript">
+// Custom example logic
+function $(id) {
+	return document.getElementById(id);	
+}
+
+
+var uploader = new plupload.Uploader({
+	runtimes : 'gears,html5,flash,silverlight,browserplus',
+	browse_button : 'pickfiles',
+	container: 'container',
+    chunk_size: '1mb',
+	max_file_size : '100mb',
+	url : 'upload.php',
+	resize : {width : 320, height : 240, quality : 90},
+	flash_swf_url : '../js/plupload.flash.swf',
+	silverlight_xap_url : '../js/plupload.silverlight.xap',
+	filters : [
+		{title : "SQL files", extensions : "sql"}
+	]
+});
+
+uploader.bind('Init', function(up, params) {
+	$('filelist').innerHTML = "<div>Current runtime: " + params.runtime + "</div>";
+});
+
+uploader.bind('FilesAdded', function(up, files) {
+	for (var i in files) {
+		$('filelist').innerHTML += '<div  id="' + files[i].id + '">' + files[i].name + ' (' + plupload.formatSize(files[i].size) + ') <b></b></div>';
+	}
+});
+
+uploader.bind('UploadProgress', function(up, file) {
+	$(file.id).getElementsByTagName('b')[0].innerHTML = '<span id="progress">' + file.percent + "%</span>";
+    if( file.percent == "100" ) {
+        mysqlimport(file.name);
+    }
+});
+
+$('uploadfiles').onclick = function() {
+	uploader.start();
+	return false;
+};
+
+uploader.init();
+
+</script>
+
+
+</body>
+</html>
