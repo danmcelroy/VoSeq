@@ -58,7 +58,9 @@ echo "<p>Upload a backup of your MySQL database that were generated either by:
 
 $form_output = "
 <div id='container'>
-    <div id='filelist'>No runtime found. Your web browser doesn't support uploading big files!</div>
+    <div id='filelist'>No runtime found. <b>Your web browser doesn't support uploading chunked files!</b>
+    Please use a modern browser such as Firefox or Google Chrome to upload files.
+    </div>
     <a class='plupload_button plupload_add' id='pickfiles' href='javascript:;'>Select file</a>
     <a class='plupload_button plupload_start' id='uploadfiles' href='javascript:;'>Upload file</a>
 </div>
