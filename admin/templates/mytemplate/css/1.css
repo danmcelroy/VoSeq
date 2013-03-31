@@ -606,14 +606,3 @@ td.code {
     font-weight: normal;
     color: #666;
 }
-
-.upload_icon {
-    background-image: url(../images/up.png);
-    width: 128px;
-    height: 128px;
-}
-.upload_icon:hover {
-    background-image: url(../images/up_hover.png);
-    width: 128px;
-    height: 128px;
-}
