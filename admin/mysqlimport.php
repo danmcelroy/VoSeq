@@ -6,7 +6,8 @@
 // license   GNU GPL v2
 // source code available at https://github.com/carlosp420/VoSeq
 //
-// Script overview: upload a big file by chunks using plupload
+// Script overview: splits a big file in chuncks to be uploaded by upload.php
+//                  using plupload
 //
 // ############################################################################
 
@@ -99,7 +100,7 @@ var uploader = new plupload.Uploader({
 });
 
 uploader.bind('Init', function(up, params) {
-	$('filelist').innerHTML = "<div>Current runtime: " + params.runtime + "</div>";
+	$('filelist').innerHTML = "<div>Your web browser allows uploading big files using " + params.runtime + "!</div>";
 });
 
 uploader.bind('FilesAdded', function(up, files) {
@@ -110,7 +111,12 @@ uploader.bind('FilesAdded', function(up, files) {
 
 uploader.bind('UploadProgress', function(up, file) {
 	$(file.id).getElementsByTagName('b')[0].innerHTML = '<span id="progress">' + file.percent + "%</span>";
-    if( file.percent == "100" ) {
+});
+
+// my code
+uploader.bind('FileUploaded', function(up, file, resp) {
+    var my_json = jQuery.parseJSON(resp.response);
+    if( my_json.result == null ) {
         mysqlimport(file.name);
     }
 });
