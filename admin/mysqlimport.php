@@ -68,17 +68,15 @@ echo $form_output;
 echo "</div>";
 make_footer($date_timezone, $config_sitename, $version, $base_url, $p_);
 ?>
+
 <script type="text/javascript">
     function mysqlimport(filename) {
         jQuery.noConflict();
-        jQuery.post('mysqlimporter.php', { name: 'Carlos' }).
+        jQuery.post('mysqlimporter.php', { name: filename }).
             done(function(data) {
-            alert(data);
+                alert(data);
             });
     }
-</script>
-
-<script type="text/javascript">
 // Custom example logic
 function $(id) {
 	return document.getElementById(id);	
