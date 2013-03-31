@@ -1,13 +1,21 @@
 <?php
 
-
-
-print_r($_POST);
-exit(0);
 // Name of the file
-$filename = 'test.sql';
- 
- 
+$filename = "uploads/" . trim($_POST['name']);
+$filename = str_replace("-", "_", $filename);
+
+if( !file_exists($filename) ) {
+    echo "Error, couldn't find that file!";
+    exit(0);
+}
+
+//check admin login session
+include'../login/auth-admin.php';
+// includes
+ob_start();//Hook output buffer - disallows web printing of file info...
+include'../conf.php';
+ob_end_clean();//Clear output buffer//includes
+
 // Connect to MySQL server
 mysql_connect($host, $user, $pass) or die('Error connecting to MySQL server: ' . mysql_error());
 // Select database
@@ -37,5 +45,9 @@ foreach ($lines as $line)
     }
 }
  
+if( file_exists($filename) ) {
+    unlink($filename);
+    echo "Finished importing database!";
+}
 
 ?>
