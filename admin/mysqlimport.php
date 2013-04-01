@@ -94,8 +94,8 @@ var uploader = new plupload.Uploader({
 	max_file_size : '100mb',
 	url : 'upload.php',
 	resize : {width : 320, height : 240, quality : 90},
-	flash_swf_url : '../js/plupload.flash.swf',
-	silverlight_xap_url : '../js/plupload.silverlight.xap',
+	flash_swf_url : 'plupload/js/plupload.flash.swf',
+	silverlight_xap_url : 'plupload/js/plupload.silverlight.xap',
 	filters : [
 		{title : "SQL files", extensions : "sql"}
 	]
