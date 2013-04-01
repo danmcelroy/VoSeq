@@ -1,0 +1,5 @@
+\select@language {english}
+\contentsline {chapter}{\numberline {1}Hello there}{2}{chapter.1}
+\contentsline {section}{\numberline {1.1}How to cite VoSeq}{3}{section.1.1}
+\contentsline {section}{\numberline {1.2}Help and contact information}{3}{section.1.2}
+\contentsline {chapter}{\numberline {2}BLAST plugin}{4}{chapter.2}
