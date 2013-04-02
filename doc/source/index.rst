@@ -105,9 +105,7 @@ Required software
 * A MySQL server 5.0 or higher (see http://www.mysql.com)
 * GD library
 
-These instructions assume that your are using Linux and Apache, and have installed
-`LAMP <http://en.wikipedia.org/wiki/LAMP>`_ (Linux, Apache, MySQL and PHP on your
-computer).
+.. note:: These instructions assume that your are using Linux and Apache, and have installed `LAMP <http://en.wikipedia.org/wiki/LAMP>`_ (Linux, Apache, MySQL and PHP on your computer).
 
 #. Compile PHP with support for the graphics library GD. More info `here <http://www.php.net/manual/en/image.installation.php>`_.
 #. Download VoSeq: `Download from github <https://github.com/carlosp420/VoSeq/tags>`_.
