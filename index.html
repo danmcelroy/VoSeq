@@ -10,9 +10,9 @@
     
     <link rel="stylesheet" href="static/basic.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="static/css/bootstrap-2.2.1.min.css" type="text/css" />
+    <link rel="stylesheet" href="static/bootstrap-2.3.1/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="static/css/bootstrap-responsive-2.2.1.min.css" type="text/css" />
+    <link rel="stylesheet" href="static/bootstrap-2.3.1/css/bootstrap-responsive.min.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -26,7 +26,9 @@
     <script type="text/javascript" src="static/jquery.js"></script>
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
-    <script type="text/javascript" src="static/js/bootstrap-2.2.1.min.js"></script>
+    <script type="text/javascript" src="static/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="static/bootstrap-2.3.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="static/bootstrap-sphinx.js"></script>
     <link rel="top" title="VoSeq 1.5.0 documentation" href="#" />
 <meta charset='utf-8'>
@@ -38,7 +40,7 @@
   <body>
 <div class="container">
   
-  <div id="navbar" class="navbar navbar-fixed-top">
+  <div id="navbar" class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
       <button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -54,9 +56,12 @@
         <ul class="nav">
           <li class="divider-vertical"></li>
           
-            <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Site <b class="caret"></b></a>
-  <ul class="dropdown-menu globaltoc"><ul class="simple">
+            <li class="dropdown globaltoc-container">
+  <a href="#"
+     class="dropdown-toggle"
+     data-toggle="dropdown">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+    ><ul class="simple">
 </ul>
 </ul>
 </li>
@@ -69,7 +74,14 @@
 <li><a class="reference internal" href="#help-and-contact-information">Help and contact information</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id1">BLAST plugin</a></li>
+<li><a class="reference internal" href="#getting-started">Getting Started</a><ul>
+<li><a class="reference internal" href="#install-in-linux">Install in Linux</a><ul>
+<li><a class="reference internal" href="#required-software">Required software</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#blast-plugin">BLAST plugin</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -117,7 +129,7 @@ DNA sequences with a few clicks. It also has
 <a class="reference external" href="http://en.wikipedia.org/wiki/BLAST/">BLAST</a> capabilities, meaning that you
 can find out whether one particular
 DNA sequence is most similar to other sequence in <a class="reference external" href="http://www.ncbi.nlm.nih.gov/genbank/">NCBI GenBank</a>. You can also BLAST your sequence
-against all others in your VoSeq database (see <em class="xref std std-ref">blast-plugin</em> section for
+against all others in your VoSeq database (see <a class="reference internal" href="#blast-plugin"><em>BLAST plugin</em></a> section for
 details).</p>
 <p>VoSeq is written mainly in <a class="reference external" href="http://www.php.net/">PHP</a>. It uses
 <a class="reference external" href="http://www.mysql.com">MySQL</a> as back-end and it is designed to run in a
@@ -141,9 +153,57 @@ contact <a class="reference external" href="mailto:mycalesis&#37;&#52;&#48;gmail
 <p>You can also subscribe to VoSeq&#8217;s discussion list on <a class="reference external" href="https://groups.google.com/d/forum/voseq-discussion-list">Google Groups</a>.</p>
 </div>
 </div>
-<div class="section" id="id1">
-<h2>BLAST plugin<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>xxxxxxxxx</p>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>Once you have successfully downloaded VoSeq, you can find out how to:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#install-in-linux"><em>Install in Linux</em></a></li>
+<li>[[Install in Mac OS X]]</li>
+<li>[[Install in Windows 7 / Vista / XP]]</li>
+<li>[[Quick Guide]] to get started with VoSeq.</li>
+</ul>
+<div class="section" id="install-in-linux">
+<span id="id1"></span><h3>Install in Linux<a class="headerlink" href="#install-in-linux" title="Permalink to this headline">¶</a></h3>
+<p>Before installing VoSeq, you need to install in your computer a web server
+(such as <a class="reference external" href="http://httpd.apache.org/">Apache</a>) and the relational database
+<a class="reference external" href="http://www.mysql.com/">MySQL</a>.</p>
+<div class="section" id="required-software">
+<h4>Required software<a class="headerlink" href="#required-software" title="Permalink to this headline">¶</a></h4>
+<ul>
+<li><p class="first">Web server with PHP 5.0 or higher (<a class="reference external" href="http://www.php.net/manual/install.unix.php">http://www.php.net/manual/install.unix.php</a>). <strong>Compile it with the library CURL</strong>, which is needed to do BLASTs against GenBank.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Apache HTTP Server</li>
+<li>PHP</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">A MySQL server 5.0 or higher (see <a class="reference external" href="http://www.mysql.com">http://www.mysql.com</a>)</p>
+</li>
+<li><p class="first">GD library</p>
+</li>
+</ul>
+<p>These instructions assume that your are using Linux and Apache, and have installed
+<a class="reference external" href="http://en.wikipedia.org/wiki/LAMP">LAMP</a> (Linux, Apache, MySQL and PHP on your
+computer).</p>
+<ol class="arabic simple">
+<li>Compile PHP with support for the graphics library GD. More info <a class="reference external" href="http://www.php.net/manual/en/image.installation.php">here</a>.</li>
+<li>Download VoSeq: <a class="reference external" href="https://github.com/carlosp420/VoSeq/tags">Download from github</a>.</li>
+<li>Unzip the source files in some directory: <tt class="docutils literal"><span class="pre">unzip</span> <span class="pre">VoSeq_X.Y.Z.zip</span></tt></li>
+<li>If you are not a Linux Guru and you have <a class="reference external" href="http://www.rarlab.com/">WinRAR</a> (like WinZip but works with gzipped files) on your Windows system you can cheat a little bit here. You can download the file to your Windows machine, use WinRAR to unzip the gzipped file into a directory in Windows and then use an FTP program like <a class="reference external" href="http://winscp.net/eng/index.php">WinSCP</a> to transfer the entire VoSeq directory for you to a commercial server for example.</li>
+<li>Move the directory into your web directory: e.g. <tt class="docutils literal"><span class="pre">mv</span> <span class="pre">VoSeq</span> <span class="pre">/usr/local/apache2/htdocs/myVoSeq</span></tt> or <tt class="docutils literal"><span class="pre">mv</span> <span class="pre">VoSeq</span> <span class="pre">public_html/myVoSeq</span></tt> or use your FTP software to do this for you.</li>
+<li>To run the installation script, you&#8217;ll need to temporarily make your myVoSeq directory writable by the web server. The simplest way to do this on a Unix/Linux system is to make it world-writable by typing: <tt class="docutils literal"><span class="pre">chmod</span> <span class="pre">-R</span> <span class="pre">777</span> <span class="pre">myVoSeq</span></tt>. To do this into a commercial server you will need a telnet client like <a class="reference external" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/">PuTTY</a> on your system.</li>
+<li>At this point you should have Apache and MySQL running (this varies between distributions and setups, see their documentations for details).</li>
+<li>Go to your web browser and surf into the VoSeq installation directory (under <tt class="docutils literal"><span class="pre">htdocs</span></tt> or <tt class="docutils literal"><span class="pre">public_html</span></tt> folders of Apache). It will direct you to the config script (if it doesn&#8217;t, just load up the <tt class="docutils literal"><span class="pre">http://localhost/myVoSeq/index.php</span></tt> file. Fill out the forms.</li>
+<li>If all goes well, the installer will create a configuration file named <tt class="docutils literal"><span class="pre">conf.php</span></tt> in your myVoSeq installation directory. This file will contain all the important variables and information needed to run VoSeq in your system.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="blast-plugin">
+<span id="id4"></span><h3>BLAST plugin<a class="headerlink" href="#blast-plugin" title="Permalink to this headline">¶</a></h3>
+<p>against all others in your VoSeq database (ssection for
+xxxxxxxxx</p>
+</div>
 </div>
 </div>
 
