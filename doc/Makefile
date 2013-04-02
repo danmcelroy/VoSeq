@@ -158,7 +158,7 @@ gh-pages:
 	rm -rf ../images  ../_images
 	rm -rf ../sources ../_sources 
 	rm -rf ../static  ../_static
-	rm -rf build 
+	rm -rf build _images source
 	git checkout master source
 	make html
 	mv -v build/html/* ../
