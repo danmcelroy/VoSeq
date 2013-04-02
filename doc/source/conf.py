@@ -38,7 +38,7 @@ source_suffix = '.rst'
 #source_encoding = 'utf-8-sig'
 
 # The master toctree document.
-master_doc = 'VoSeq_documentation'
+master_doc = 'index'
 
 # General information about the project.
 project = u'VoSeq'
@@ -97,7 +97,23 @@ html_theme = 'bootstrap'
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-#html_theme_options = {}
+html_theme_options = {
+    # Global TOC depth for "site" navbar tab. (Default: 1)
+    # Switching to -1 shows all levels.
+    'globaltoc_depth': 2,
+
+    # HTML navbar class (Default: "navbar") to attach to <div> element.
+    # For black navbar, do "navbar navbar-inverse"
+    'navbar_class': "navbar navbar-inverse",
+
+    # Fix navigation bar to top of page?
+    # Values: "true" (default) or "false"
+    'navbar_fixed_top': "true",
+
+    # Location of link to source.
+    # Options are "nav" (default), "footer" or anything else to exclude.
+    'source_link_position': "nav",
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
 html_theme_path = ['_themes']
@@ -132,14 +148,14 @@ html_static_path = ['_static']
 #html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
-html_sidebars = {}
+#html_sidebars = {}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.
 #html_additional_pages = {}
 
 # If false, no module index is generated.
-#html_domain_indices = True
+html_domain_indices = True
 
 # If false, no index is generated.
 html_use_index = True
@@ -165,7 +181,7 @@ html_use_index = True
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'VoSeq_documentation_doc'
+htmlhelp_basename = 'index'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -187,7 +203,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('VoSeq_documentation', 'VoSeq_documentation.tex', u'VoSeq Documentation',
+  ('index', 'index.tex', u'VoSeq Documentation',
    u'Carlos Peña, Tobias Malm', 'manual'),
 ]
 
@@ -217,7 +233,7 @@ latex_show_urls = True
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('VoSeq_documentation', 'voseq_documentation', u'VoSeq Documentation',
+    ('index', 'voseq_documentation', u'VoSeq Documentation',
      [u'Carlos Peña, Tobias Malm'], 1)
 ]
 
@@ -231,7 +247,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('VoSeq_documentation', 'VoSeq_documentation', u'VoSeq Documentation',
+  ('index', 'index', u'VoSeq Documentation',
    u'Carlos Peña, Tobias Malm', 'VoSeq documentation', 'One line description of project.',
    'Miscellaneous'),
 ]
