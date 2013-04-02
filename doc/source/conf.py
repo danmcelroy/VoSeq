@@ -38,7 +38,7 @@ source_suffix = '.rst'
 #source_encoding = 'utf-8-sig'
 
 # The master toctree document.
-master_doc = 'VoSeq_documentation'
+master_doc = 'index'
 
 # General information about the project.
 project = u'VoSeq'
@@ -165,7 +165,7 @@ html_use_index = True
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'VoSeq_documentation_doc'
+htmlhelp_basename = 'index'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -187,7 +187,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('VoSeq_documentation', 'VoSeq_documentation.tex', u'VoSeq Documentation',
+  ('index', 'index.tex', u'VoSeq Documentation',
    u'Carlos Peña, Tobias Malm', 'manual'),
 ]
 
@@ -217,7 +217,7 @@ latex_show_urls = True
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('VoSeq_documentation', 'voseq_documentation', u'VoSeq Documentation',
+    ('index', 'voseq_documentation', u'VoSeq Documentation',
      [u'Carlos Peña, Tobias Malm'], 1)
 ]
 
@@ -231,7 +231,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('VoSeq_documentation', 'VoSeq_documentation', u'VoSeq Documentation',
+  ('index', 'index', u'VoSeq Documentation',
    u'Carlos Peña, Tobias Malm', 'VoSeq documentation', 'One line description of project.',
    'Miscellaneous'),
 ]
