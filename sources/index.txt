@@ -12,6 +12,10 @@ Contents:
    :maxdepth: 2
 
 
+..
+	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><
+	Page 1.
+
 -----------
 Hello there
 -----------
@@ -62,9 +66,66 @@ contact `Carlos Peña <mycalesis@gmail.com>`_ or `Tobias Malm <tobemalm@gmail.co
 You can also subscribe to VoSeq's discussion list on `Google Groups <https://groups.google.com/d/forum/voseq-discussion-list>`_.
 
 
+
+
+
+..
+	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><
+	Page 2.
+
+---------------
+Getting Started
+---------------
+Once you have successfully downloaded VoSeq, you can find out how to:
+
+* :ref:`install_in_linux`
+* [[Install in Mac OS X]]
+* [[Install in Windows 7 / Vista / XP]]
+* [[Quick Guide]] to get started with VoSeq.
+
+
+.. _install_in_linux:
+
+^^^^^^^^^^^^^^^^
+Install in Linux
+^^^^^^^^^^^^^^^^
+Before installing VoSeq, you need to install in your computer a web server 
+(such as `Apache <http://httpd.apache.org/>`_) and the relational database
+`MySQL <http://www.mysql.com/>`_.
+
+
+"""""""""""""""""
+Required software
+"""""""""""""""""
+
+* Web server with PHP 5.0 or higher (http://www.php.net/manual/install.unix.php). **Compile it with the library CURL**, which is needed to do BLASTs against GenBank.
+
+	* Apache HTTP Server
+	* PHP
+* A MySQL server 5.0 or higher (see http://www.mysql.com)
+* GD library
+
+These instructions assume that your are using Linux and Apache, and have installed
+`LAMP <http://en.wikipedia.org/wiki/LAMP>`_ (Linux, Apache, MySQL and PHP on your
+computer).
+
+#. Compile PHP with support for the graphics library GD. More info `here <http://www.php.net/manual/en/image.installation.php>`_.
+#. Download VoSeq: `Download from github <https://github.com/carlosp420/VoSeq/tags>`_.
+#. Unzip the source files in some directory: ``unzip VoSeq_X.Y.Z.zip``
+#. If you are not a Linux Guru and you have `WinRAR <http://www.rarlab.com/>`_ (like WinZip but works with gzipped files) on your Windows system you can cheat a little bit here. You can download the file to your Windows machine, use WinRAR to unzip the gzipped file into a directory in Windows and then use an FTP program like `WinSCP <http://winscp.net/eng/index.php>`_ to transfer the entire VoSeq directory for you to a commercial server for example.
+#. Move the directory into your web directory: e.g. ``mv VoSeq /usr/local/apache2/htdocs/myVoSeq`` or ``mv VoSeq public_html/myVoSeq`` or use your FTP software to do this for you.
+#. To run the installation script, you'll need to temporarily make your myVoSeq directory writable by the web server. The simplest way to do this on a Unix/Linux system is to make it world-writable by typing: ``chmod -R 777 myVoSeq``. To do this into a commercial server you will need a telnet client like `PuTTY <http://www.chiark.greenend.org.uk/~sgtatham/putty/>`_ on your system.
+#. At this point you should have Apache and MySQL running (this varies between distributions and setups, see their documentations for details).
+#. Go to your web browser and surf into the VoSeq installation directory (under ``htdocs`` or ``public_html`` folders of Apache). It will direct you to the config script (if it doesn't, just load up the ``http://localhost/myVoSeq/index.php`` file. Fill out the forms.
+#. If all goes well, the installer will create a configuration file named ``conf.php`` in your myVoSeq installation directory. This file will contain all the important variables and information needed to run VoSeq in your system. 
+
+
 .. _blast-plugin:
-------------
+
+^^^^^^^^^^^^
 BLAST plugin
-------------
+^^^^^^^^^^^^
+against all others in your VoSeq database (ssection for
 xxxxxxxxx
+
 
