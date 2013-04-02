@@ -154,13 +154,18 @@ doctest:
 	      "results in $(BUILDDIR)/doctest/output.txt."
 
 gh-pages:
-	git checkout gh-pages
-	rm -rf build _sources _static
-	git checkout master $(GH_PAGES_SOURCES)
-	git reset HEAD
+	rm -rf ../images  ../_images
+	rm -rf ../sources ../_sources 
+	rm -rf ../static  ../_static
+	rm -rf build 
 	make html
-	mv -fv build/html/* ../
-	rm -rf $(GH_PAGES_SOURCES) build
-	mv ../VoSeq_documentation.html ../index.html
+	mv -v build/html/* ../
+	mv ../_images ../images 
+	mv ../_sources ../sources 
+	mv ../_static ../static 
+	sed -i 's/_static/static/g' ../index.html
+	sed -i 's/_images/images/g' ../index.html
+	sed -i 's/_sources/sources/g' ../index.html
+	sed -i 's/_sources/sources/g' ../index.html
 	git add -A
-	git ci -m "Generated gh-pages for `git log master -1 --pretty=short --abbrev-commit`" && git push origin gh-pages ; git checkout master
+	git commit -am "Generated gh-pages for `git log master -1 --pretty=short --abbrev-commit`" && git push origin gh-pages
