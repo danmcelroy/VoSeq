@@ -158,7 +158,7 @@ gh-pages:
 	rm -rf ../images  ../_images
 	rm -rf ../sources ../_sources 
 	rm -rf ../static  ../_static
-	rm -rf build _images source
+	rm -rf build 
 	git checkout master source
 	make html
 	mv -v build/html/* ../
@@ -170,5 +170,6 @@ gh-pages:
 	sed -i 's/_sources/sources/g' ../index.html
 	sed -i 's/_sources/sources/g' ../index.html
 	git add -A
+	git add -A ..
 	git commit -am "Generated gh-pages for `git log master -1 --pretty=short --abbrev-commit`" && git push origin gh-pages
 	git checkout master
