@@ -471,25 +471,6 @@ This can be done in both the **user interface** and the **administrator interfac
 Upload voucher photos
 ^^^^^^^^^^^^^^^^^^^^^
 
-In the **Administrator interface** you will see that some records have the link **Picture missing**. By clicking on this link, you will be able to upload a photo for that voucher.
-
-.. image:: images/picture_missing.png
-   :align: center
-   :width: 356px
-
-If you want to replace an existing picture with another, you will need to click the **Change picture** icon. 
-
-After you upload your photo, VoSeq will automatically **post the picture in Flickr** and save the necessary URL addresses in the MySQL database. Thus, you will see your photo in the corresponding voucher page.
-
-If you have not enabled the :ref:`flickr_plugin`, VoSeq will instruct you how to do this. However, it is also possible to host your photos locally on your own server or computer. For this you will need to edit a line in your ``conf.php`` file:
-
-* Change the line:
-
-	* ``$photos_repository = 'flickr';`` to this one:
-	* ``$photos_repository = 'local';``
-
-
-
 .. _blast-plugin:
 
 ^^^^^^^^^^^^
