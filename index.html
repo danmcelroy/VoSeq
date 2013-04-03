@@ -107,6 +107,9 @@
 <li><a class="reference internal" href="#adding-genes">Adding genes</a></li>
 <li><a class="reference internal" href="#adding-sequences">Adding sequences</a></li>
 <li><a class="reference internal" href="#create-taxonset">Create taxonset</a></li>
+<li><a class="reference internal" href="#create-datasets">Create datasets</a></li>
+<li><a class="reference internal" href="#search">Search</a></li>
+<li><a class="reference internal" href="#upload-voucher-photos">Upload voucher photos</a></li>
 <li><a class="reference internal" href="#blast-plugin">BLAST plugin</a></li>
 </ul>
 </li>
@@ -442,9 +445,9 @@ PHPIniDir "c:/windows"</pre>
 <li><a class="reference internal" href="#adding-genes"><em>Adding genes</em></a></li>
 <li><a class="reference internal" href="#adding-sequences"><em>Adding sequences</em></a></li>
 <li><a class="reference internal" href="#create-taxonset"><em>Create taxonset</em></a></li>
-<li>:ref:[[Create datasets]]</li>
-<li>:ref:[[Search]]</li>
-<li>:ref:[[Upload voucher photos]]</li>
+<li><a class="reference internal" href="#create-datasets"><em>Create datasets</em></a></li>
+<li><a class="reference internal" href="#my-search"><em>Search</em></a></li>
+<li><a class="reference internal" href="#upload-voucher-photos"><em>Upload voucher photos</em></a></li>
 <li>:ref:[[Create Excel table]]</li>
 <li>:ref:[[Update voucher]]</li>
 </ol>
@@ -497,8 +500,60 @@ In order to perform a filtering or after selection of a new genecode you must pr
 <p>After completing your selection of taxa and adding name and descriptions - press the <strong>Add dataset</strong> button to save it.
 If you are updating an already existing taxonset - press <strong>Update taxon set</strong>.</p>
 </div>
+<div class="section" id="create-datasets">
+<span id="id12"></span><h3>Create datasets<a class="headerlink" href="#create-datasets" title="Permalink to this headline">¶</a></h3>
+<p>We believe that one of VoSeq&#8217;s important features is the <strong>capability to create dataset files of molecular sequences that are ready-to-run in phylogenetic software</strong> such as <strong>MrBayes, TNT, PAUP, RaXML</strong>, etc.</p>
+<p>Now that you have voucher and sequence data in your installation of VoSeq, you might want to create datasets for analysis of sequences in phylogenetic software.</p>
+<p>In the <strong>user interface</strong>, you will find under the <strong>Tools</strong> section the link <strong>Create new dataset</strong>. You will be shown a page to select the sequences you want by entering the <strong>voucher codes</strong> and <strong>gene codes</strong>. You can select your data to be in several formats (FASTA, NEXUS, etc), choose between codon positions, as well as choosing what information your taxon names should include.</p>
+<p>This will create a <strong>ready-to-use</strong> data set for analyses!</p>
+<img alt="images/create_dataset_new.png" class="align-center" src="images/create_dataset_new.png" style="width: 534px;" />
+<p>The <strong>Outgroup</strong> field, if needed, should include the voucher code for the chosen outgroup taxa.</p>
+<dl class="docutils">
+<dt>Codon positions</dt>
+<dd>Marking <strong>1st</strong>, <strong>2nd</strong> or <strong>3rd</strong> and unmarking <strong>all</strong> positions will create a dataset with only the chosen position(s) for all genes.
+<strong>Special</strong> will take you to a new page where you will be able to choose which codon positions to include for each gene.
+Marking <strong>amino acids</strong> will tranlate <strong>protein-coding</strong> genes with a set <strong>genetic code</strong> , the others will be treated as normal dna, i.e. making &#8220;mixed&#8221; datatype in Nexus for MrBayes, and setting partitions correctly in Nexus and PHYLIP format.
+Note that codon position choices as well as translation to aminoacids are only able to function if the user have specified a <strong>reading frame</strong> for the chosen gene(s) (see <a class="reference internal" href="#adding-genes"><em>Adding genes</em></a>).</dd>
+<dt>Partition by (position)</dt>
+<dd>Here you can choose how to do partitioning for each gene.
+<strong>as one</strong> will create one partition per gene, regardless of which codon positions you include.
+<strong>each</strong> will create a partition per codon position, whereas <strong>1st-2nd, 3rd</strong> will create one combined partition for the 1st and 2nd positions and one separate for the 3rd codon positions.
+Note that <strong>each</strong> and <strong>all</strong> are only possible to process with a per gene specified <strong>reading frame</strong> (see <a class="reference internal" href="#adding-genes"><em>Adding genes</em></a>).</dd>
+</dl>
+<p>You can also chose to <strong>omit taxa from a taxonset that contains less than a specific number sequences</strong>. Say you have a 10 gene data set and want to remove all taxa with 5 or less! Easy! Just eneter a minimum number of genes!</p>
+<p>If you have introns in your alignment you can choose to include or remove them from the output data set. If included they will be treated as separate data blocks and partitions for the Nexus and PHYLIP outputs!</p>
+<p>The voucher codes can be entered one by one (separated by return) in the text area or you could create a <a class="reference internal" href="#create-taxonset"><em>Create taxonset</em></a> (a list of voucher codes for a specific project).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">As of version 1.5.0, protein-coding ability, aligned or not, introns and genetic code will be set for each gene/alignment in the admin gene section!</p>
+</div>
+</div>
+<div class="section" id="search">
+<span id="my-search"></span><h3>Search<a class="headerlink" href="#search" title="Permalink to this headline">¶</a></h3>
+<p>You can search for records by queries using single fields or any combination of them. The autocomplete dropboxes will help you query existing data easily.
+This can be done in both the <strong>user interface</strong> and the <strong>administrator interface</strong> - where the latter have more options to search (e.g. record history).</p>
+<img alt="images/search.png" class="align-center" src="images/search.png" style="width: 590px;" />
+</div>
+<div class="section" id="upload-voucher-photos">
+<span id="id13"></span><h3>Upload voucher photos<a class="headerlink" href="#upload-voucher-photos" title="Permalink to this headline">¶</a></h3>
+<p>In the <strong>Administrator interface</strong> you will see that some records have the link <strong>Picture missing</strong>. By clicking on this link, you will be able to upload a photo for that voucher.</p>
+<img alt="images/picture_missing.png" class="align-center" src="images/picture_missing.png" style="width: 356px;" />
+<p>If you want to replace an existing picture with another, you will need to click the <strong>Change picture</strong> icon.</p>
+<p>After you upload your photo, VoSeq will automatically <strong>post the picture in Flickr</strong> and save the necessary URL addresses in the MySQL database. Thus, you will see your photo in the corresponding voucher page.</p>
+<p>If you have not enabled the <em class="xref std std-ref">flickr_plugin</em>, VoSeq will instruct you how to do this. However, it is also possible to host your photos locally on your own server or computer. For this you will need to edit a line in your <tt class="docutils literal"><span class="pre">conf.php</span></tt> file:</p>
+<ul>
+<li><p class="first">Change the line:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">$photos_repository</span> <span class="pre">=</span> <span class="pre">'flickr';</span></tt> to this one:</li>
+<li><tt class="docutils literal"><span class="pre">$photos_repository</span> <span class="pre">=</span> <span class="pre">'local';</span></tt></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
 <div class="section" id="blast-plugin">
-<span id="id12"></span><h3>BLAST plugin<a class="headerlink" href="#blast-plugin" title="Permalink to this headline">¶</a></h3>
+<span id="id14"></span><h3>BLAST plugin<a class="headerlink" href="#blast-plugin" title="Permalink to this headline">¶</a></h3>
 <p>against all others in your VoSeq database (ssection for
 xxxxxxxxx</p>
 </div>
