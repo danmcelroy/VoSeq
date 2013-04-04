@@ -110,6 +110,17 @@
 <li><a class="reference internal" href="#create-datasets">Create datasets</a></li>
 <li><a class="reference internal" href="#search">Search</a></li>
 <li><a class="reference internal" href="#upload-voucher-photos">Upload voucher photos</a></li>
+<li><a class="reference internal" href="#create-excel-table">Create Excel table</a></li>
+<li><a class="reference internal" href="#update-voucher">Update voucher</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#faq">FAQ</a><ul>
+<li><a class="reference internal" href="#installation-faq">Installation FAQ:</a></li>
+<li><a class="reference internal" href="#post-request-error">POST request error</a></li>
+<li><a class="reference internal" href="#execution-time-error">Execution time error</a></li>
+<li><a class="reference internal" href="#too-many-variables-problem">Too many variables problem</a></li>
+<li><a class="reference internal" href="#mac-permission-problem">Mac permission problem</a></li>
+<li><a class="reference internal" href="#how-to-find-php-ini-and-see-your-php-settings">How to find php.ini and see your PHP settings</a></li>
 <li><a class="reference internal" href="#blast-plugin">BLAST plugin</a></li>
 </ul>
 </li>
@@ -448,8 +459,8 @@ PHPIniDir "c:/windows"</pre>
 <li><a class="reference internal" href="#create-datasets"><em>Create datasets</em></a></li>
 <li><a class="reference internal" href="#my-search"><em>Search</em></a></li>
 <li><a class="reference internal" href="#upload-voucher-photos"><em>Upload voucher photos</em></a></li>
-<li>:ref:[[Create Excel table]]</li>
-<li>:ref:[[Update voucher]]</li>
+<li><a class="reference internal" href="#create-excel-table"><em>Create Excel table</em></a></li>
+<li><a class="reference internal" href="#update-voucher"><em>Update voucher</em></a></li>
 </ol>
 <div class="section" id="adding-vouchers">
 <span id="id8"></span><h3>Adding vouchers<a class="headerlink" href="#adding-vouchers" title="Permalink to this headline">¶</a></h3>
@@ -552,8 +563,94 @@ This can be done in both the <strong>user interface</strong> and the <strong>adm
 </li>
 </ul>
 </div>
+<div class="section" id="create-excel-table">
+<span id="id14"></span><h3>Create Excel table<a class="headerlink" href="#create-excel-table" title="Permalink to this headline">¶</a></h3>
+<p>You can create a MS Excel table with specimen codes, genus and species names, genes used in analysis along with their accession numbers.</p>
+<p>Go to the <strong>User interface</strong> and under the <strong>Toolbox</strong> click on the link <strong>Create MS Excel table</strong></p>
+<p>Instead of typing your specimen codes in the text area below, you could select a Taxonset (provided that it has been set before (<a class="reference internal" href="#create-taxonset"><em>Create taxonset</em></a>).
+This table will be ready to attach to a manuscript for publication.</p>
+<p>You can also change the way sequence information is displayed in the table by choosing between <strong>number of bases</strong> (displays number of bases - does not count questionmarks <strong>?</strong>), <strong>accession numbers</strong> (displays stored accession numbers instead of sequence length) or <strong>X/-</strong> (displays <strong>X</strong> if sequence is present and <strong>-</strong> if sequence is missing.</p>
+<p><strong>Display missing sequence beginnings/ends with star(*)?:</strong> will show search for questionmarks (?) in the beginning or end of the sequences (when displayed by number of bases) and show if the sequence misses bases in those positions with an asterisk (*). Easy then to see during laboratory phase then where sequence information might be missing for your taxa.</p>
+<p>You may also change between comma (,) and tab-delimited table mode.</p>
+<img alt="images/create_table.png" class="align-center" src="images/create_table.png" style="width: 819px;" />
+</div>
+<div class="section" id="update-voucher">
+<span id="id15"></span><h3>Update voucher<a class="headerlink" href="#update-voucher" title="Permalink to this headline">¶</a></h3>
+<p>When you <strong>click on the code</strong> of an already existing voucher in the <strong>administrator interface</strong> you will be transferred to it&#8217;s <strong>voucher information page</strong>.</p>
+<p>Here you may make changes to all the fields - and these will be updated after pressing <strong>Update record</strong>.</p>
+<p>A changed <strong>voucher code</strong> will automaticly change the code in the connected fields for sequences and primer informations, so as to keep them connected.</p>
+<p>There is also a <strong>record history</strong> displayed for administrators that list what changes have been made to the voucher information previously, with time and the user responsible for the changes.</p>
+<img alt="images/update_voucher.png" class="align-center" src="images/update_voucher.png" style="width: 836px;" />
+</div>
+</div>
+<div class="section" id="faq">
+<h2>FAQ<a class="headerlink" href="#faq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="installation-faq">
+<h3>Installation FAQ:<a class="headerlink" href="#installation-faq" title="Permalink to this headline">¶</a></h3>
+<p><strong>Q.-</strong> <strong>During installation I get the error 2002: &#8220;Can&#8217;t connect to local MySQL server through socket ....bla bla bla...&#8221;</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first">VoSeq is trying to connect to MySQL using a file called <strong>socket</strong>. This error occurs when PHP tells VoSeq to find the socket in a folder where it is not placed. This can be fixed by telling MySQL to put the socket as the file <tt class="docutils literal"><span class="pre">/tmp/mysql.sock</span></tt> and by telling PHP to find it there and not to look for it in any other folder.</p>
+</li>
+<li><p class="first">From the installation folder of <strong>PHP</strong>, save the file <tt class="docutils literal"><span class="pre">php.ini-development</span></tt> in the folder <tt class="docutils literal"><span class="pre">/usr/local/lib/</span></tt> and name it <tt class="docutils literal"><span class="pre">php.ini</span></tt></p>
+</li>
+<li><p class="first">Edit your file <tt class="docutils literal"><span class="pre">php.ini</span></tt> and look for the command <tt class="docutils literal"><span class="pre">mysql.default_socket</span></tt> and make sure it says:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">mysql.default_socket</span> <span class="pre">=</span> <span class="pre">/tmp/mysql.sock</span></tt></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Edit your MySQL installation file <tt class="docutils literal"><span class="pre">/usr/local/mysql/support-files/my-large.cnf</span></tt>:</p>
+<blockquote>
+<div><ul class="simple">
+<li>File parameters: modify the lines <tt class="docutils literal"><span class="pre">socket</span>&nbsp; <span class="pre">=</span> <span class="pre">/var/mysqld/mysqld.sock</span></tt> to <tt class="docutils literal"><span class="pre">socket</span> <span class="pre">=</span> <span class="pre">/tmp/mysql.sock</span></tt></li>
+<li>Save the file as <tt class="docutils literal"><span class="pre">/etc/my.cnf</span></tt>  and <tt class="docutils literal"><span class="pre">/etc/mysql/my.cnf</span></tt></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Restart the server and resume the installation of VoSeq.</p>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="post-request-error">
+<h3>POST request error<a class="headerlink" href="#post-request-error" title="Permalink to this headline">¶</a></h3>
+<p><strong>Q.-</strong> ...my computer complains that &#8220;The requested resource /VoSeq_XXX/somefile.php does not allow request data with POST requests, or the amount of data provided in the request exceeds the capacity limit.&#8221;?</p>
+<p><strong>A.-</strong> Open the PHP config file (see below &#8220;How to find PHP.ini&#8221;) and increase the value for <tt class="docutils literal"><span class="pre">POST_max_size</span></tt>, save file and restart webserver.</p>
+</div>
+<div class="section" id="execution-time-error">
+<h3>Execution time error<a class="headerlink" href="#execution-time-error" title="Permalink to this headline">¶</a></h3>
+<p><strong>Q.-</strong> ...my computer stops a VoSeq page from running due to execution timeout?</p>
+<p><strong>A.-</strong> Open the PHP config file (see below &#8220;How to find PHP.ini&#8221;) and increase the value for <tt class="docutils literal"><span class="pre">max_execution_time</span></tt>, save file and restart webserver.</p>
+</div>
+<div class="section" id="too-many-variables-problem">
+<h3>Too many variables problem<a class="headerlink" href="#too-many-variables-problem" title="Permalink to this headline">¶</a></h3>
+<p><strong>Q.-</strong> ...my huge taxonsets or other lists doesnt include all the values I had marked and added for them?</p>
+<p><strong>A.-</strong> PHP may have set a too low value to <tt class="docutils literal"><span class="pre">max_input_vars</span></tt>. Open the PHP config file (see below &#8220;How to find PHP.ini&#8221;) and increase the value for <tt class="docutils literal"><span class="pre">max_input_vars</span></tt>, save file and restart webserver.</p>
+</div>
+<div class="section" id="mac-permission-problem">
+<h3>Mac permission problem<a class="headerlink" href="#mac-permission-problem" title="Permalink to this headline">¶</a></h3>
+<p><strong>Q.-</strong> ...if for example BLAST, storing pictures etc dont work on Mac!</p>
+<p><strong>A.-</strong> It happens specially when upgrading VoSeq. When you download a fresh copy of VoSeq form Github and copy the contents on your installation of VoSeq, it happens that all the files and folders have you as <strong>owner</strong>. So, VoSeq (and the Apache server) cannot write into the folders. To fix this it is necessary to set the Apache server as the <strong>owner</strong> of files and folder. In my MacBook the id for the Apache &#8220;user&#8221; is <tt class="docutils literal"><span class="pre">_www</span></tt>. So we need to do the following to transfer ownership of files and folders of VoSeq to the server:
+Open a terminal or console and use the command: <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">chown</span> <span class="pre">-R</span> <span class="pre">_www</span> <span class="pre">VoSeq_folder</span></tt>. This should give the permissions to VoSeq (actually the Apache server) to do this things!</p>
+</div>
+<div class="section" id="how-to-find-php-ini-and-see-your-php-settings">
+<h3>How to find php.ini and see your PHP settings<a class="headerlink" href="#how-to-find-php-ini-and-see-your-php-settings" title="Permalink to this headline">¶</a></h3>
+<p>Place a file named <strong>info.php</strong> containing <tt class="docutils literal"><span class="pre">&lt;?php</span> <span class="pre">phpinfo();</span> <span class="pre">?&gt;</span></tt> in your web server folder where you have your VoSeq folder.
+Open your browser and go to that file/page (ie. <strong>http://localhost/info.php</strong> for win/linux or <strong>http://127.0.0.1/~yourprivatefoldername/info.php</strong> for mac).
+This should get you the PHP config output, where you can find &#8220;Configuration File(php.ini) Path&#8221; and &#8220;Loaded Configuration File&#8221;. These fields should tell you where your config file (php.ini) is located.
+If these says &#8220;(none)&#8221; see below.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Windows - In windows the PHP configuration file (php.ini) should be found under <tt class="docutils literal"><span class="pre">C:Windows/</span></tt>. If it&#8217;s not there then copy the php.ini-??? to <tt class="docutils literal"><span class="pre">C:\WINDOWS</span></tt> and rename it php.ini. (??? can be dist, production or development).</li>
+<li>Mac - on mac the the PHP configuration file (php.ini) should be found under <tt class="docutils literal"><span class="pre">/private/etc/</span></tt> . If no php.ini is found there but a php.ini.default is, run <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">cp</span> <span class="pre">/private/etc/php.ini.default</span> <span class="pre">/private/etc/php.ini</span></tt> in terminal create a php.ini file. Then restart server.</li>
+<li>Linux - Open a terminal or console and type <tt class="docutils literal"><span class="pre">locate</span> <span class="pre">php.ini</span></tt>. In my server I got this location: <tt class="docutils literal"><span class="pre">/usr/local/lib/php.ini</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
 <div class="section" id="blast-plugin">
-<span id="id14"></span><h3>BLAST plugin<a class="headerlink" href="#blast-plugin" title="Permalink to this headline">¶</a></h3>
+<span id="id16"></span><h3>BLAST plugin<a class="headerlink" href="#blast-plugin" title="Permalink to this headline">¶</a></h3>
 <p>against all others in your VoSeq database (ssection for
 xxxxxxxxx</p>
 </div>
