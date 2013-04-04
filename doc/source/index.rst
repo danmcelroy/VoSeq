@@ -297,8 +297,8 @@ Here is a quick overview on how to use VoSeq with your data.
 #. :ref:`create_datasets`
 #. :ref:`my_search`
 #. :ref:`upload_voucher_photos`
-#. :ref:[[Create Excel table]]
-#. :ref:[[Update voucher]]
+#. :ref:`create_excel_table`
+#. :ref:`update_voucher`
 
 
 
@@ -488,6 +488,120 @@ If you have not enabled the :ref:`flickr_plugin`, VoSeq will instruct you how to
 	* ``$photos_repository = 'flickr';`` to this one:
 	* ``$photos_repository = 'local';``
 
+
+
+
+.. _create_excel_table:
+
+^^^^^^^^^^^^^^^^^^
+Create Excel table
+^^^^^^^^^^^^^^^^^^
+You can create a MS Excel table with specimen codes, genus and species names, genes used in analysis along with their accession numbers. 
+
+Go to the **User interface** and under the **Toolbox** click on the link **Create MS Excel table**
+
+Instead of typing your specimen codes in the text area below, you could select a Taxonset (provided that it has been set before (:ref:`create_taxonset`).
+This table will be ready to attach to a manuscript for publication.
+
+You can also change the way sequence information is displayed in the table by choosing between **number of bases** (displays number of bases - does not count questionmarks **?**), **accession numbers** (displays stored accession numbers instead of sequence length) or **X/-** (displays **X** if sequence is present and **-** if sequence is missing. 
+
+**Display missing sequence beginnings/ends with star(*)?:** will show search for questionmarks (?) in the beginning or end of the sequences (when displayed by number of bases) and show if the sequence misses bases in those positions with an asterisk (*). Easy then to see during laboratory phase then where sequence information might be missing for your taxa. 
+
+You may also change between comma (,) and tab-delimited table mode. 
+
+.. image:: images/create_table.png
+   :align: center
+   :width: 819px
+   
+
+
+
+
+.. _update_voucher:
+
+^^^^^^^^^^^^^^
+Update voucher
+^^^^^^^^^^^^^^
+
+When you **click on the code** of an already existing voucher in the **administrator interface** you will be transferred to it's **voucher information page**.
+
+Here you may make changes to all the fields - and these will be updated after pressing **Update record**.
+
+A changed **voucher code** will automaticly change the code in the connected fields for sequences and primer informations, so as to keep them connected.
+
+There is also a **record history** displayed for administrators that list what changes have been made to the voucher information previously, with time and the user responsible for the changes.
+
+.. image:: images/update_voucher.png
+   :align: center
+   :width: 836px
+
+
+
+---
+FAQ
+---
+
+^^^^^^^^^^^^^^^^^
+Installation FAQ:
+^^^^^^^^^^^^^^^^^
+
+**Q.-** **During installation I get the error 2002: "Can't connect to local MySQL server through socket ....bla bla bla..."**
+
+    * VoSeq is trying to connect to MySQL using a file called **socket**. This error occurs when PHP tells VoSeq to find the socket in a folder where it is not placed. This can be fixed by telling MySQL to put the socket as the file ``/tmp/mysql.sock`` and by telling PHP to find it there and not to look for it in any other folder.
+    * From the installation folder of **PHP**, save the file ``php.ini-development`` in the folder ``/usr/local/lib/`` and name it ``php.ini``
+    * Edit your file ``php.ini`` and look for the command ``mysql.default_socket`` and make sure it says:
+
+        * ``mysql.default_socket = /tmp/mysql.sock``
+
+    * Edit your MySQL installation file ``/usr/local/mysql/support-files/my-large.cnf``:
+
+        * File parameters: modify the lines ``socket  = /var/mysqld/mysqld.sock`` to ``socket = /tmp/mysql.sock``
+        * Save the file as ``/etc/my.cnf``  and ``/etc/mysql/my.cnf``
+
+    * Restart the server and resume the installation of VoSeq.
+
+
+^^^^^^^^^^^^^^^^^^
+POST request error
+^^^^^^^^^^^^^^^^^^
+**Q.-** ...my computer complains that "The requested resource /VoSeq_XXX/somefile.php does not allow request data with POST requests, or the amount of data provided in the request exceeds the capacity limit."?
+
+**A.-** Open the PHP config file (see below "How to find PHP.ini") and increase the value for ``POST_max_size``, save file and restart webserver.
+
+^^^^^^^^^^^^^^^^^^^^
+Execution time error
+^^^^^^^^^^^^^^^^^^^^
+**Q.-** ...my computer stops a VoSeq page from running due to execution timeout?
+
+**A.-** Open the PHP config file (see below "How to find PHP.ini") and increase the value for ``max_execution_time``, save file and restart webserver.
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Too many variables problem
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+**Q.-** ...my huge taxonsets or other lists doesnt include all the values I had marked and added for them?
+
+**A.-** PHP may have set a too low value to ``max_input_vars``. Open the PHP config file (see below "How to find PHP.ini") and increase the value for ``max_input_vars``, save file and restart webserver.
+
+^^^^^^^^^^^^^^^^^^^^^^
+Mac permission problem
+^^^^^^^^^^^^^^^^^^^^^^
+**Q.-** ...if for example BLAST, storing pictures etc dont work on Mac!
+
+**A.-** It happens specially when upgrading VoSeq. When you download a fresh copy of VoSeq form Github and copy the contents on your installation of VoSeq, it happens that all the files and folders have you as **owner**. So, VoSeq (and the Apache server) cannot write into the folders. To fix this it is necessary to set the Apache server as the **owner** of files and folder. In my MacBook the id for the Apache "user" is ``_www``. So we need to do the following to transfer ownership of files and folders of VoSeq to the server:
+Open a terminal or console and use the command: ``sudo chown -R _www VoSeq_folder``. This should give the permissions to VoSeq (actually the Apache server) to do this things!
+
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+How to find php.ini and see your PHP settings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Place a file named **info.php** containing ``<?php phpinfo(); ?>`` in your web server folder where you have your VoSeq folder. 
+Open your browser and go to that file/page (ie. **http://localhost/info.php** for win/linux or **http://127.0.0.1/~yourprivatefoldername/info.php** for mac).
+This should get you the PHP config output, where you can find "Configuration File(php.ini) Path" and "Loaded Configuration File". These fields should tell you where your config file (php.ini) is located.
+If these says "(none)" see below. 
+
+    * Windows - In windows the PHP configuration file (php.ini) should be found under ``C:Windows/``. If it's not there then copy the php.ini-??? to ``C:\WINDOWS`` and rename it php.ini. (??? can be dist, production or development).
+    * Mac - on mac the the PHP configuration file (php.ini) should be found under ``/private/etc/`` . If no php.ini is found there but a php.ini.default is, run ``sudo cp /private/etc/php.ini.default /private/etc/php.ini`` in terminal create a php.ini file. Then restart server. 
+    * Linux - Open a terminal or console and type ``locate php.ini``. In my server I got this location: ``/usr/local/lib/php.ini``
 
 
 .. _blast-plugin:
