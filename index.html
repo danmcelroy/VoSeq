@@ -114,6 +114,20 @@
 <li><a class="reference internal" href="#update-voucher">Update voucher</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#update-voseq">Update VoSeq</a></li>
+<li><a class="reference internal" href="#plugins">Plugins</a><ul>
+<li><a class="reference internal" href="#yahoo-maps-plugin">Yahoo! Maps plugin</a></li>
+<li><a class="reference internal" href="#flickr-plugin">Flickr plugin</a></li>
+<li><a class="reference internal" href="#blast-plugin">BLAST plugin</a></li>
+<li><a class="reference internal" href="#integration-with-eol">Integration with EOL</a></li>
+<li><a class="reference internal" href="#sharing-photos-with-eol">Sharing Photos with EOL</a></li>
+<li><a class="reference internal" href="#integration-with-gbif">Integration with GBIF</a><ul>
+<li><a class="reference internal" href="#you-can-share-your-information-hosted-in-voseq-with-gbif">You can share your information hosted in VoSeq with GBIF</a></li>
+<li><a class="reference internal" href="#create-a-dump-file-and-use-in-an-ipt-installation">Create a dump file and use in an IPT installation</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a class="reference internal" href="#faq">FAQ</a><ul>
 <li><a class="reference internal" href="#installation-faq">Installation FAQ:</a></li>
 <li><a class="reference internal" href="#post-request-error">POST request error</a></li>
@@ -121,7 +135,6 @@
 <li><a class="reference internal" href="#too-many-variables-problem">Too many variables problem</a></li>
 <li><a class="reference internal" href="#mac-permission-problem">Mac permission problem</a></li>
 <li><a class="reference internal" href="#how-to-find-php-ini-and-see-your-php-settings">How to find php.ini and see your PHP settings</a></li>
-<li><a class="reference internal" href="#blast-plugin">BLAST plugin</a></li>
 </ul>
 </li>
 </ul>
@@ -551,7 +564,7 @@ This can be done in both the <strong>user interface</strong> and the <strong>adm
 <img alt="images/picture_missing.png" class="align-center" src="images/picture_missing.png" style="width: 356px;" />
 <p>If you want to replace an existing picture with another, you will need to click the <strong>Change picture</strong> icon.</p>
 <p>After you upload your photo, VoSeq will automatically <strong>post the picture in Flickr</strong> and save the necessary URL addresses in the MySQL database. Thus, you will see your photo in the corresponding voucher page.</p>
-<p>If you have not enabled the <em class="xref std std-ref">flickr_plugin</em>, VoSeq will instruct you how to do this. However, it is also possible to host your photos locally on your own server or computer. For this you will need to edit a line in your <tt class="docutils literal"><span class="pre">conf.php</span></tt> file:</p>
+<p>If you have not enabled the <a class="reference internal" href="#flickr-plugin"><em>Flickr plugin</em></a>, VoSeq will instruct you how to do this. However, it is also possible to host your photos locally on your own server or computer. For this you will need to edit a line in your <tt class="docutils literal"><span class="pre">conf.php</span></tt> file:</p>
 <ul>
 <li><p class="first">Change the line:</p>
 <blockquote>
@@ -581,6 +594,193 @@ This table will be ready to attach to a manuscript for publication.</p>
 <p>A changed <strong>voucher code</strong> will automaticly change the code in the connected fields for sequences and primer informations, so as to keep them connected.</p>
 <p>There is also a <strong>record history</strong> displayed for administrators that list what changes have been made to the voucher information previously, with time and the user responsible for the changes.</p>
 <img alt="images/update_voucher.png" class="align-center" src="images/update_voucher.png" style="width: 836px;" />
+</div>
+</div>
+<div class="section" id="update-voseq">
+<h2>Update VoSeq<a class="headerlink" href="#update-voseq" title="Permalink to this headline">¶</a></h2>
+<p>The easiest way to update VoSeq (that does not require new install of software or database):</p>
+<ul>
+<li><p class="first"><a class="reference external" href="https://github.com/carlosp420/VoSeq/tags">Download the new files from github</a>.</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Unpack</strong> the new files to your <strong>webserver directory</strong> (htdocs, webserver, etc).</li>
+<li><strong>Rename your old &#8220;in use&#8221; ~VoSeq folder</strong> something like, &#8216;~VoSeq_old&#8217; or similar (e.g. &#8220;~VoSeq-1.4.4&#8221; -&gt; &#8220;~VoSeq_1.4.4_old&#8221;).</li>
+<li><strong>Give the newly downloaded ~VoSeq folder the same name as the old one had</strong> (e.g. &#8220;~VoSeq-1.4.4&#8221;).</li>
+<li><strong>Copy the file &#8220;conf.php&#8221;</strong> (in main folder) from the old version (e.g. &#8220;~VoSeq_1.4.4_old&#8221;) to the new version (e.g. &#8220;~VoSeq_1.4.4&#8221;).</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>Also:</p>
+<ul>
+<li><p class="first">If you have used and installed blast files, make sure to copy the files <strong>Blastdb_aliastool</strong>, <strong>Blast</strong>, <strong>Makeblastdb</strong> and <strong>Makembindex</strong> (.exe for all in windows), from the old version (blast/bin folder) to the new version (same folder). Then <strong>set permissions</strong> to read, write, and execute on the folder &#8220;blast/bin&#8221; and its content, as well as the folder &#8220;include/blast&#8221; (e.g. <tt class="docutils literal"><span class="pre">chmod</span> <span class="pre">777</span> <span class="pre">-R</span> <span class="pre">path_to/~VoSeq_folder/blast/bin</span></tt>) .</p>
+<blockquote>
+<div><ul class="simple">
+<li>For Mac users it may work better to use the <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">chown</span> <span class="pre">-R</span> <span class="pre">_www</span> <span class="pre">VoSeq_folder</span></tt> command instead, since files belong to user instead of root!</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>If you have voucher photos stored</strong>, transfer them from the old one to the new one also (in <tt class="docutils literal"><span class="pre">pictures</span></tt> folder).</p>
+</li>
+</ul>
+</div>
+<div class="section" id="plugins">
+<h2>Plugins<a class="headerlink" href="#plugins" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="yahoo-maps-plugin">
+<h3>Yahoo! Maps plugin<a class="headerlink" href="#yahoo-maps-plugin" title="Permalink to this headline">¶</a></h3>
+<p><strong>VoSeq</strong> is able to interact with Yahoo! Maps to create on-the-fly maps for vouchers when geographic coordinates are present in voucher pages.
+After installing VoSeq, you can enable this capability by getting a <strong>Yahoo! Maps API key</strong> from them and writing them in your <tt class="docutils literal"><span class="pre">conf.php</span></tt> file:</p>
+<ol class="arabic">
+<li><p class="first">Get an API key from <a class="reference external" href="http://developer.yahoo.com/maps/simple/">http://developer.yahoo.com/maps/simple/</a></p>
+</li>
+<li><p class="first">After filling in the required information you will be given a <strong>Consumer Key</strong> consisting of a long string of seemingly random characters that end with two dashes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">MwRGV2Jm1zbWNHbmnM9Y2Q9WVdrOVVHdj0yzlNQS0tJ9uc3VtZXJzZWNyZXQmeD1iMw--</span></tt></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Remove the two dashes from the end and copy your key into the <tt class="docutils literal"><span class="pre">conf.php</span></tt> file as a value for the variable <tt class="docutils literal"><span class="pre">$yahoo_key</span></tt>. Like the example below, including quotations and semicolon:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">$yahoo_key</span> <span class="pre">=</span> <span class="pre">&quot;MwRGV2Jm1zbWNHbmnM9Y2Q9WVdrOVVHdj0yzlNQS0tJ9uc3VtZXJzZWNyZXQmeD1iMw&quot;;</span></tt></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Save the file and exit.</p>
+</li>
+</ol>
+<p>After doing this, VoSeq will be able to pull maps from Yahoo! whenever there is geographic information in your database. Note that you need to enter the geographic coordinates into VoSeq converted into decimal format, using the sign minus for the Southern and Western hemispheres.</p>
+</div>
+<div class="section" id="flickr-plugin">
+<span id="id16"></span><h3>Flickr plugin<a class="headerlink" href="#flickr-plugin" title="Permalink to this headline">¶</a></h3>
+<p><strong>VoSeq</strong> hosts all the specimen photos in <a class="reference external" href="http://www.flickr.com/">Flickr</a>. If you have a free account you can host up to 200 photos. The Pro account allows you hosting unlimited number of photos for a yearly fee (25 USD).</p>
+<ol class="arabic">
+<li><p class="first">You need to get an API key from Flickr.</p>
+</li>
+<li><p class="first">Create and account in <a class="reference external" href="http://www.flickr.com/">Flickr</a> (if you don&#8217;t own one already)</p>
+</li>
+<li><p class="first">Go to <a class="reference external" href="http://nymphalidae.utu.fi/cpena/VoSeq/">http://nymphalidae.utu.fi/cpena/VoSeq/</a></p>
+</li>
+<li><p class="first">Follow the instructions to get an <strong>API key</strong>, <strong>Secret key</strong> and <strong>Token key</strong>.</p>
+</li>
+<li><p class="first">After submitting you will get your <strong>Key</strong>, <strong>Secret</strong> and <strong>Token</strong>. Write down those keys.</p>
+</li>
+<li><p class="first">From a text editor software, edit the file <tt class="docutils literal"><span class="pre">conf.php</span></tt> by copying your keys in it.</p>
+</li>
+<li><p class="first">For example [these are not real keys and will not work if you use them]:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">$flickr_api_key</span> <span class="pre">=</span> <span class="pre">&quot;2d7f59f9aaa2d5c0a2782d7f5d9083a6&quot;;</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">$flickr_api_secret</span> <span class="pre">=</span> <span class="pre">&quot;ef0def0f3d5f3f15f1&quot;;</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">$flickr_api_token</span> <span class="pre">=</span> <span class="pre">&quot;61607157718372495-f5524ead33b43129&quot;;</span></tt></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Save and exit.</p>
+</li>
+</ol>
+<p>Thus, every picture that you upload into your VoSeq installation will be uploaded into your Flickr account.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can share your voucher photos with the Encyclopedia or Life. <a class="reference internal" href="#sharing-photos-with-eol"><em>Sharing Photos with EOL</em></a></p>
+</div>
+</div>
+<div class="section" id="blast-plugin">
+<span id="id18"></span><h3>BLAST plugin<a class="headerlink" href="#blast-plugin" title="Permalink to this headline">¶</a></h3>
+<p>VoSeq has <a class="reference external" href="http://en.wikipedia.org/wiki/BLAST">BLAST capabilities</a>.</p>
+<p>You can search for homologous sequences of your markers in GenBank. If you have a VoSeq installation in your work computer (or your server provider allows you to run the BLAST executable files), you do local BLASTs. For example, BLAST any or your sequences against all sequences of the same gene, or against all your sequences (full BLAST). Click on the &#8220;BLAST&#8221; icons in your voucher&#8217;s pages:</p>
+<img alt="images/voseq01.png" class="align-center" src="images/voseq01.png" style="width: 800px;" />
+<p>You can also copy and paste any new sequence into VoSeq&#8217;s <strong>Blast new sequence</strong> tool and see whether there are any similar sequence in your data (this tool is located on the sidebar on the right).</p>
+<p>Remember that you need to download from NCBI the stand alone BLAST executable files and copy/install them in one of VoSeq&#8217;s folders:</p>
+<ul>
+<li><p class="first">In Mac OS X: when you install from the .DMG package, the executable files will be written in the folder: <tt class="docutils literal"><span class="pre">/usr/local/ncbi/blast/bin</span></tt>. You just need to copy them to the right folder in VoSeq:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">mkdir</span> <span class="pre">~/Sites/VoSeq/blast/bin</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">cp</span> <span class="pre">/usr/local/ncbi/blast/bin/*</span>&nbsp;&nbsp; <span class="pre">~/Sites/VoSeq/blast/bin/.</span></tt></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">In Linux: <tt class="docutils literal"><span class="pre">/path/to/your/VoSeq/blast/bin/</span></tt></p>
+</li>
+<li><p class="first">In Windows: <tt class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files\Apache</span> <span class="pre">Software</span> <span class="pre">Foundation\Apache2.2\htdocs\VoSeq\blast\bin\</span></tt></p>
+</li>
+<li><p class="first">It is important that the executable files are placed inside the folder <strong>bin</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="integration-with-eol">
+<h3>Integration with EOL<a class="headerlink" href="#integration-with-eol" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>VoSeq makes it easy to share your voucher photos with EOL. More information here <a class="reference internal" href="#sharing-photos-with-eol"><em>Sharing Photos with EOL</em></a>.</li>
+<li>VoSeq makes automated calls to EOL&#8217;s web services for pulling information on authors and date of description for species. VoSeq sends genus and species names and waits for a response. If EOL response is positive, the full species name will be included in voucher pages:</li>
+</ol>
+<img alt="images/authority_from_eol.png" class="align-center" src="images/authority_from_eol.png" style="width: 574px;" />
+</div>
+<div class="section" id="sharing-photos-with-eol">
+<span id="id19"></span><h3>Sharing Photos with EOL<a class="headerlink" href="#sharing-photos-with-eol" title="Permalink to this headline">¶</a></h3>
+<p>VoSeq makes it easy to share your voucher photos with EOL. You can submit your best photos to EOL from VoSeq with just one click.</p>
+<p>If you haven&#8217;t done it already, you need to create an account in Flickr. Then log in to Flickr with your account and join the EOL group:</p>
+<ol class="arabic simple">
+<li>Go to <a class="reference external" href="http://www.flickr.com/groups/encyclopedia_of_life">http://www.flickr.com/groups/encyclopedia_of_life</a></li>
+<li>Click <strong>&#8220;Join This Group&#8221;</strong></li>
+</ol>
+<p>Be aware that EOL requires that your photo is under any of the following licenses:</p>
+<ul class="simple">
+<li>Creative Commons Attribution (<a class="reference external" href="http://www.flickr.com/creativecommons/">CC-BY</a>)</li>
+<li>Creative Commons Non-Commercial (<a class="reference external" href="http://www.flickr.com/creativecommons/">CC-BY-NC</a>)</li>
+<li>Creative Commons Share-Alike (<a class="reference external" href="http://www.flickr.com/creativecommons/">CC-BY-SA</a>)</li>
+<li>Creative Commons Non-Commercial Share Alike (<a class="reference external" href="http://www.flickr.com/creativecommons/">CC-BY-NC-SA</a>)</li>
+</ul>
+<p>In your VoSeq installation, you will see a button:</p>
+<img alt="images/share_with_eol.png" class="align-left" src="images/share_with_eol.png" style="width: 158px;" />
+<p>under your voucher photos. If you click this button, VoSeq will add a &#8220;machine tag&#8221; to the corresponding page in Flickr so that in can be harvested by EOL.</p>
+<p>Thus you will be able to see your photo in EOL&#8217;s pool of photos in their Flickr account <a class="reference external" href="http://www.flickr.com/groups/encyclopedia_of_life/pool/with/4096153224/">http://www.flickr.com/groups/encyclopedia_of_life/pool/with/4096153224/</a></p>
+<p>EOL harvests the photos quite frequently, so in one day or two, you will be able to find your photo in the respective page in EOL.</p>
+</div>
+<div class="section" id="integration-with-gbif">
+<h3>Integration with GBIF<a class="headerlink" href="#integration-with-gbif" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="you-can-share-your-information-hosted-in-voseq-with-gbif">
+<h4>You can share your information hosted in VoSeq with GBIF<a class="headerlink" href="#you-can-share-your-information-hosted-in-voseq-with-gbif" title="Permalink to this headline">¶</a></h4>
+<p>GBIF prefers data owners to use their <a class="reference external" href="http://www.gbif.org/informatics/infrastructure/publishing/#c889">Integrated Publishing Toolkit (IPT)</a>. This means that you can install their IPT software to produce a resource in Darwin Core format that can be harvested by GBIF. In addition to the actual data in your VoSeq installation, IPT allows you to include a rich variety of metadata for GBIF.</p>
+<p>VoSeq is able to produce a dump file containing all the data you own. Then you can import this file into a IPT installation and choose which types of data you want to publish via GBIF. Once you include all the metadata required by GBIF you have two choices in order to expose your data taken from <a class="reference external" href="http://www.gbif.org/informatics/standards-and-tools/publishing-data/">GBIF website</a>:</p>
+<ul>
+<li><p class="first">By setting up a dynamic server software:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Acquire hardware with a permanent Internet connection (a regular PC is sufficient).</p>
+</li>
+<li><p class="first">Install data publishing software. GBIF recommends the Integrated Publishing Toolkit (IPT). You will need a web server such as Apache.</p>
+</li>
+<li><p class="first">Configure the software for your local data structure; this is the &#8216;mapping&#8217; process. Please follow the documentation of your chosen publishing software for this process.</p>
+</li>
+<li><p class="first">Register your service with GBIF and sign the GBIF Data Sharing Agreement.</p>
+</li>
+<li><p class="first">Create an archive for your entire dataset:</p>
+<blockquote>
+<div><ul class="simple">
+<li>This scenario doesn&#8217;t require a permanent Internet connection. You simply need to create a Darwin Core Archive, upload it to a repository (for example an IPT repository installed by your GBIF Participant Node, an institutional FTP or web server, or a service like Dropbox or the Internet Archive). You then just need to register the public URL for the storage location of your archive with GBIF.</li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="create-a-dump-file-and-use-in-an-ipt-installation">
+<h4>Create a dump file and use in an IPT installation<a class="headerlink" href="#create-a-dump-file-and-use-in-an-ipt-installation" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>You can create a dump file with all the data in your VoSeq installation for submitting to GBIF. In VoSeq, on the sidebar on the right, click on <strong>Share data with GBIF</strong>. Save this file and open an installation of IPT.</li>
+<li>In IPT, click on <strong>Manage Resources</strong> in the top menu, enter a name for your resource and click <strong>Create</strong>. Note: do not upload your file in this page (it will fail to recognize your tab delimited dump file).</li>
+</ol>
+<img alt="images/ipt01.png" class="align-center" src="images/ipt01.png" style="width: 591px;" />
+<ol class="arabic simple">
+<li>You will be directed to your test resource page. This is when you upload the dump file generated in VoSeq. And then you are ready to add a rich variety of metadata to your resource and become a provider of information to GBIF.</li>
+</ol>
+<img alt="images/ipt02.png" class="align-center" src="images/ipt02.png" style="width: 625px;" />
+</div>
 </div>
 </div>
 <div class="section" id="faq">
@@ -648,11 +848,6 @@ If these says &#8220;(none)&#8221; see below.</p>
 <li>Linux - Open a terminal or console and type <tt class="docutils literal"><span class="pre">locate</span> <span class="pre">php.ini</span></tt>. In my server I got this location: <tt class="docutils literal"><span class="pre">/usr/local/lib/php.ini</span></tt></li>
 </ul>
 </div></blockquote>
-</div>
-<div class="section" id="blast-plugin">
-<span id="id16"></span><h3>BLAST plugin<a class="headerlink" href="#blast-plugin" title="Permalink to this headline">¶</a></h3>
-<p>against all others in your VoSeq database (ssection for
-xxxxxxxxx</p>
 </div>
 </div>
 </div>
