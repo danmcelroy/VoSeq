@@ -54,7 +54,7 @@ if( !isset($version) ) {
 			<a href="index.php">Ready to install VoSeq</a>
 		</p>
 		<p>
-			Also, so can read the <a href="http://nymphalidae.utu.fi/cpena/VoSeq_docu.html">documentation here</a>.
+			Also, so can read the <a href="http://carlosp420.github.io/VoSeq/">documentation here</a>.
 		</p>
 		<p>
 			You can find a test installation with sample data <a href="http://nymphalidae.net/VoSeq">here</a>.
