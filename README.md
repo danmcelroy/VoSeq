@@ -9,7 +9,7 @@ Please send all bug complaints to Carlos Peña (mycalesis@gmail.com) or Tobias M
 
 Documentation
 -------------
-* Please find the documentation here: [http://carlosp420.github.io/VoSeq/#search](http://carlosp420.github.io/VoSeq/#search)
+* Please find the documentation here: [http://carlosp420.github.io/VoSeq/](http://carlosp420.github.io/VoSeq/)
 * A test installation containing sample data is here: [http://www.nymphalidae.net/VoSeq/](http://www.nymphalidae.net/VoSeq/)
 * [Changelog here.](https://github.com/carlosp420/VoSeq/blob/master/changelog.md)
 
