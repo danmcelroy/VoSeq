@@ -11,9 +11,9 @@ Documentation
 -------------
 * Please find the documentation:
     * as HTML here: [http://carlosp420.github.io/VoSeq/](http://carlosp420.github.io/VoSeq/)
-    * as a [PDF file](https://github.com/carlosp420/VoSeq/doc/VoSeq_documentation.pdf)
-    * as ebook in [EPUB format](https://github.com/carlosp420/VoSeq/doc/VoSeq_documentation.epub)
-    * as ebook for Kindle [MOBI format](https://github.com/carlosp420/VoSeq/doc/VoSeq_documentation.mobi)
+    * as a [PDF file](https://github.com/carlosp420/VoSeq/blob/master/doc/VoSeq_documentation.pdf)
+    * as ebook in [EPUB format](https://github.com/carlosp420/VoSeq/blob/master/doc/VoSeq_documentation.epub)
+    * as ebook for Kindle [MOBI format](https://github.com/carlosp420/VoSeq/blob/master/doc/VoSeq_documentation.mobi)
 
 * A test installation containing sample data is here: [http://www.nymphalidae.net/VoSeq/](http://www.nymphalidae.net/VoSeq/)
 * [Changelog here.](https://github.com/carlosp420/VoSeq/blob/master/changelog.md)
