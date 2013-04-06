@@ -66,7 +66,7 @@ function docheck() {
 								<ol>
 									<li><code>mysql.default_socket = /tmp/mysql.sock<code></li>
 									<li>See more info here: 
-									<a href='http://nymphalidae.utu.fi/cpena/VoSeq_docu.html#Installation%20FAQ'>Installation FAQ</a>.</li>
+									<a href='http://carlosp420.github.io/VoSeq/#installation-faq'>Installation FAQ</a>.</li>
 								</ol>
 							<li>Restart your computer and continue this installation (press F5 to refresh).</li>
 						  </ol>
@@ -242,7 +242,7 @@ $variables = docheck();
 </div>
 <div class="clr"></div>
 <div class="ctr">
-	<a href="http://nymphalidae.utu.fi/cpena/VoSeq_docu.html" target="_blank">VoSeq</a></div>
+	<a href="http://carlosp420.github.io/VoSeq/" target="_blank">VoSeq</a></div>
 
 </body>
 </html>

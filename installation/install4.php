@@ -369,7 +369,7 @@ if( substr(sprintf('%o', fileperms("../dojo")), -4) != "0777" ) {
 </div>
 <div class="clr"></div>
 <div class="ctr">
-	<a href="http://nymphalidae.utu.fi/cpena/VoSeq_docu.html" target="_blank">VoSeq</a></div>
+	<a href="http://carlosp420.github.io/VoSeq/" target="_blank">VoSeq</a></div>
 
 </body>
 </html>
