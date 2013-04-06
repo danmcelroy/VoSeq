@@ -113,6 +113,7 @@ html_theme_options = {
     # Location of link to source.
     # Options are "nav" (default), "footer" or anything else to exclude.
     'source_link_position': "nav",
+    #'bootswatch_theme': "united",
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
@@ -127,12 +128,12 @@ html_theme_path = ['_themes']
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-#html_logo = None
+#html_logo = "images/logo.gif"
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-#html_favicon = None
+html_favicon = "images/favicon.ico"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -141,7 +142,7 @@ html_static_path = ['_static']
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
-#html_last_updated_fmt = '%b %d, %Y'
+html_last_updated_fmt = '%b %d, %Y'
 
 # If true, SmartyPants will be used to convert quotes and dashes to
 # typographically correct entities.
@@ -266,9 +267,9 @@ texinfo_documents = [
 
 # Bibliographic Dublin Core info.
 epub_title = u'VoSeq documentation'
-epub_author = u'Carlos Peña, Tobias Malm'
-epub_publisher = u'Carlos Peña, Tobias Malm'
-epub_copyright = u'2013, Carlos Peña, Tobias Malm'
+epub_author = u'Carlos Peña \and Tobias Malm'
+epub_publisher = u'Carlos Peña \and Tobias Malm'
+epub_copyright = u'2013, Carlos Peña \and Tobias Malm'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.
