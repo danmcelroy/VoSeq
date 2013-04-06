@@ -88,7 +88,7 @@ echo "<div id=\"content\">";
 						out += "<br />A MS EXCEL will be created with all data for GBIF. <a href='dump_data.php?request=make_file'>Click here to Download</a>. ";
 						out += "<p>Submit to GBIF by using an installation of their ";
 						out += "<a href='http://www.gbif.org/informatics/infrastructure/publishing/#c889'>Integrated Publishing Toolkit (IPT)</a>.</p>";
-						out += "<p>See <a href='http://nymphalidae.utu.fi/cpena/VoSeq_docu.html'>VoSeq documentation</a> on how to upload this dump file into IPT.</p>";
+						out += "<p>See <a href='http://carlosp420.github.io/VoSeq/#integration-with-gbif'>VoSeq documentation</a> on how to upload this dump file into IPT.</p>";
 
 						$('#output').empty().html('<img src="images/loading.gif" />').fadeIn('slow', function(){}).delay(1000).fadeOut('slow', function() { 
 																																	$('#output').html(out).show();

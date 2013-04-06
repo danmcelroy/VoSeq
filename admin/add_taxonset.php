@@ -1577,7 +1577,7 @@ elseif (!$_GET['new'] && !$_POST['submitNew'] && !$_POST['submitNoNew'] &&  !$_G
 		// print article titles
 		echo "<h1>Existing taxon sets:</h1>\n";
 		
-		echo "<b>Taxonsets is a way to make a list of taxa that are being used for a specific project or analysis. A Taxonset is just a list of voucher codes. By having Taxonsets, you can quickly create datasets for them. <a href=\"http://nymphalidae.utu.fi/cpena/VoSeq_docu.html#[[Create Taxonset]]\">See more help</a>.</b>";
+		echo "<b>Taxonsets is a way to make a list of taxa that are being used for a specific project or analysis. A Taxonset is just a list of voucher codes. By having Taxonsets, you can quickly create datasets for them. <a href=\"http://carlosp420.github.io/VoSeq/#create-taxonset\">See more help</a>.</b>";
 
 		echo "<ul>";
 
@@ -1612,7 +1612,7 @@ elseif (!$_GET['new'] && !$_POST['submitNew'] && !$_POST['submitNoNew'] &&  !$_G
 	// display message
 	else {
 		?>
-		<b>Taxonsets is a way to make a list of taxa that are being used for a specific project or analysis. A Taxonset is just a list of voucher codes. By having Taxonsets, you can quickly create datasets for them. <a href="http://nymphalidae.utu.fi/cpena/VoSeq_docu.html#[[Create Taxonset]]">See more help</a>.</b>	
+		<b>Taxonsets is a way to make a list of taxa that are being used for a specific project or analysis. A Taxonset is just a list of voucher codes. By having Taxonsets, you can quickly create datasets for them. <a href="http://carlosp420.github.io/VoSeq/#create-taxonset">See more help</a>.</b>	
 
 		<br />
 		<br />

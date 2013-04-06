@@ -9,13 +9,13 @@ Please send all bug complaints to Carlos Peña (mycalesis@gmail.com) or Tobias M
 
 Documentation
 -------------
-* Please find the documentation here: [http://nymphalidae.utu.fi/cpena/VoSeq_docu.html](http://nymphalidae.utu.fi/cpena/VoSeq_docu.html)
+* Please find the documentation here: [http://carlosp420.github.io/VoSeq/#search](http://carlosp420.github.io/VoSeq/#search)
 * A test installation containing sample data is here: [http://www.nymphalidae.net/VoSeq/](http://www.nymphalidae.net/VoSeq/)
 * [Changelog here.](https://github.com/carlosp420/VoSeq/blob/master/changelog.md)
 
 Frequently asked questions
 --------------------------
-* Installation [FAQ](http://nymphalidae.utu.fi/cpena/VoSeq_docu.html#Installation%20FAQ).
+* Installation [FAQ](http://carlosp420.github.io/VoSeq/#installation-faq).
 
 VoSeq's discussion list
 -----------------------
