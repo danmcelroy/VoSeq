@@ -6,16 +6,16 @@
 Welcome to VoSeq's documentation!
 =================================
 
-Contents:
-
 .. toctree::
    :maxdepth: 2
 
+   news
 
 ..
 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><
 	Page 1.
 
+ 
 -----------
 Hello there
 -----------
@@ -179,9 +179,9 @@ Install VoSeq
 
 .. _install_in_windows:
 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Install in Windows 7 / Vista / XP
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Manual Install in Windows 7 / Vista / XP
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Follow these instructions to install Apache, PHP and MySQL and lastly VoSeq on Windows 7 / Vista / XP systems - its not as hard as it looks!
 
@@ -280,6 +280,58 @@ Install VoSeq
 #. Point your web browser to the address (that is - localhost + the name of your VoSeq folder): ``http://localhost/VoSeq_VersionNumber`` and follow the instructions for installing the software.
 #. If all goes well, the installer will create a configuration file named ``conf.php`` in your VoSeq installation directory. This file will contain all the important variables and information needed to run VoSeq in your system.
 
+
+
+.. _install_with_xampp:
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Install in Windows with XAMPP
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you dont want to install Apache, MySQL and PHP manually you may want to try using a 3-rd party installer.
+XAMPP installs all three as well as the extra protocols needed for PHP. 
+
+"""""""""""""
+Install XAMPP
+"""""""""""""
+
+You can download XAMPP installer at http://www.apachefriends.org/en/xampp.html
+Then install it with the installer (tested with version 1.8.1).
+With XAMPP MySQL is installed without password, **for security you need to create a new password for MySQL** (as well as for the XAMPP web directory which by default is accessible for everyone that know your IP adress, though you may still be somewhat protected behind a router (`read here <http://www.apachefriends.org/en/xampp-windows.html#1221>`_).
+
+* Goto ``localhost/security`` and check your security level and set passwords!
+
+"""""""""""""
+Install VoSeq
+"""""""""""""
+
+#. Download and unzip the file ``Voseq_VersionNumber.zip`` in the XAMPP/htdocs directory (rename the new folder if necessary):
+
+    * ``C:\XAMPP\htdocs``
+
+#. Point your web browser to the address (that is - localhost + the name of your VoSeq folder): ``http://localhost/VoSeq_VersionNumber`` and follow the instructions for installing the software.
+#. If all goes well, the installer will create a configuration file named ``conf.php`` in your myVoSeq installation directory. This file will contain all the important variables and information needed to run VoSeq in your system.
+
+Configuration files after XAMPP install can be seen :ref:`xampp_config`.
+
+.. note::
+    * This has only been tested quickly, and may not work for all computer systems!
+
+        * We welcome all feedback for this type of installation!
+
+    * If you already have MySQL install XAMPP SHOULD not overwrite your existing databases, but precaution is a virtue (or something...) and we advice making backups of stored data before installation. (We can not be held responsible for any loss of data)
+    * More information regarding XAMPP for windows is found here: http://www.apachefriends.org/en/xampp-windows.html
+
+
+.. _xampp_config:
+
+""""""""""""
+XAMPP config
+""""""""""""
+
+.. image:: images/XAMPP_configs.png
+   :align: center
+   :width: 571px
 
 ..
 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><
@@ -548,9 +600,9 @@ The easiest way to update VoSeq (that does not require new install of software o
 * `Download the new files from github <https://github.com/carlosp420/VoSeq/tags>`_.
 
     * **Unpack** the new files to your **webserver directory** (htdocs, webserver, etc).
-    * **Rename your old "in use" ~VoSeq folder** something like, '~VoSeq_old' or similar (e.g. "~VoSeq-1.4.4" -> "~VoSeq_1.4.4_old").
-    * **Give the newly downloaded ~VoSeq folder the same name as the old one had** (e.g. "~VoSeq-1.4.4").
-    * **Copy the file "conf.php"** (in main folder) from the old version (e.g. "~VoSeq_1.4.4_old") to the new version (e.g. "~VoSeq_1.4.4").
+    * **Rename your old "in use" VoSeq folder** something like, 'VoSeq_old' or similar (e.g. "VoSeq-1.4.4" -> "VoSeq_1.4.4_old").
+    * **Give the newly downloaded VoSeq folder the same name as the old one had** (e.g. "VoSeq-1.4.4").
+    * **Copy the file "conf.php"** (in main folder) from the old version (e.g. "VoSeq_1.4.4_old") to the new version (e.g. "VoSeq_1.4.4").
 
 Also:
 
