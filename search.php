@@ -599,7 +599,7 @@ else // empty POST, user has not entered query yet
 	?>
 	<!-- 	search boxes and options -->
 	<!-- help -->
-	<b>Query by single field or any combination of fields. <a href="http://nymphalidae.utu.fi/cpena/VoSeq_docu.html#Search" title="http://nymphalidae.utu.fi/cpena/VoSeq_docu.html#Search">See more help.</a></b>
+	<b>Query by single field or any combination of fields. <a href="http://carlosp420.github.io/VoSeq/#search" title="http://carlosp420.github.io/VoSeq/#search">See more help.</a></b>
 
 <form action="search.php" method="post">
 <table width="800" border="0"> <!-- big parent table -->
