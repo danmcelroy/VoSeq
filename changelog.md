@@ -1,7 +1,7 @@
 #VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 ##Changelog:
-* Version
+* Version 1.6.0
     - [Carlos 2013-03-29] Added button to get a Backup file of the MySQL database.
     - [Carlos 2013-03-31] Added button, page, js functions to upload big Backup files
                             of the MySQL database (using plupload).
