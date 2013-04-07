@@ -124,6 +124,7 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#update-voseq">Update VoSeq</a></li>
+<li><a class="reference internal" href="#backup-your-mysql-database">Backup your MySQL database</a></li>
 <li><a class="reference internal" href="#plugins">Plugins</a><ul>
 <li><a class="reference internal" href="#yahoo-maps-plugin">Yahoo! Maps plugin</a></li>
 <li><a class="reference internal" href="#flickr-plugin">Flickr plugin</a></li>
@@ -623,10 +624,11 @@ This can be done in both the <strong>user interface</strong> and the <strong>adm
 <div class="section" id="upload-voucher-photos">
 <span id="id15"></span><h3>Upload voucher photos<a class="headerlink" href="#upload-voucher-photos" title="Permalink to this headline">¶</a></h3>
 <p>In the <strong>Administrator interface</strong> you will see that some records have the link <strong>Picture missing</strong>. By clicking on this link, you will be able to upload a photo for that voucher.</p>
-<img alt="images/picture_missing.png" class="align-center" src="images/picture_missing.png" style="width: 356px;" />
+<img alt="images/picture_missing.png" class="align-center" src="images/picture_missing.png" style="width: 376px;" />
 <p>If you want to replace an existing picture with another, you will need to click the <strong>Change picture</strong> icon.</p>
 <p>After you upload your photo, VoSeq will automatically <strong>post the picture in Flickr</strong> and save the necessary URL addresses in the MySQL database. Thus, you will see your photo in the corresponding voucher page.</p>
-<p>If you have not enabled the <a class="reference internal" href="#flickr-plugin"><em>Flickr plugin</em></a>, VoSeq will instruct you how to do this. However, it is also possible to host your photos locally on your own server or computer. For this you will need to edit a line in your <tt class="docutils literal"><span class="pre">conf.php</span></tt> file:</p>
+<p>If you have not enabled the <a class="reference internal" href="#flickr-plugin"><em>Flickr plugin</em></a>, VoSeq will instruct you how to do this.</p>
+<p><strong>If you don&#8217;t want to use Flickr</strong>, you can host your photos locally on your own server or computer. For this you will need to edit a line in your <tt class="docutils literal"><span class="pre">conf.php</span></tt> file:</p>
 <ul>
 <li><p class="first">Change the line:</p>
 <blockquote>
@@ -637,6 +639,12 @@ This can be done in both the <strong>user interface</strong> and the <strong>adm
 </div></blockquote>
 </li>
 </ul>
+<p>Starting with version 1.5.0, VoSeq can host many photos for each voucher. Photos can be added in the voucher page using the administrator interface of VoSeq. You can delete photos individually by clicking on it&#8217;s &#8220;trash&#8221; icon.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you have more than two photos for voucher, all additional photos will appear at the bottom of the voucher page (see image below).</p>
+</div>
+<img alt="images/additional_voucher_photos.png" class="align-center" src="images/additional_voucher_photos.png" style="width: 433px;" />
 </div>
 <div class="section" id="create-excel-table">
 <span id="id16"></span><h3>Create Excel table<a class="headerlink" href="#create-excel-table" title="Permalink to this headline">¶</a></h3>
@@ -685,6 +693,12 @@ This table will be ready to attach to a manuscript for publication.</p>
 <li><p class="first"><strong>If you have voucher photos stored</strong>, transfer them from the old one to the new one also (in <tt class="docutils literal"><span class="pre">pictures</span></tt> folder).</p>
 </li>
 </ul>
+</div>
+<div class="section" id="backup-your-mysql-database">
+<h2>Backup your MySQL database<a class="headerlink" href="#backup-your-mysql-database" title="Permalink to this headline">¶</a></h2>
+<p>You can make backup copies of your data by using a button in the administrator interface.
+You will get all your voucher info and sequences into a SQL file. If your server dies you can easily restore your database by importing one of your backups using the <strong>Import database</strong> button.</p>
+<img alt="images/import_export_db.png" class="align-center" src="images/import_export_db.png" style="width: 558px;" />
 </div>
 <div class="section" id="plugins">
 <h2>Plugins<a class="headerlink" href="#plugins" title="Permalink to this headline">¶</a></h2>
@@ -924,7 +938,7 @@ If these says &#8220;(none)&#8221; see below.</p>
     </p>
     <p>
         &copy; Copyright 2013, Carlos Peña, Tobias Malm.<br/>
-      Last updated on Apr 06, 2013.<br/>
+      Last updated on Apr 07, 2013.<br/>
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.<br/>
     </p>
   </div>
