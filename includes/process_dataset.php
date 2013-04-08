@@ -1379,7 +1379,7 @@ else{
 		$output .= "prset applyto=(all) ratepr=variable brlensp=unconstrained:Exp(100.0) ";
 		$output .= "shapepr=exp(1.0)";
 		if ($part_list_sum['full_dna'][0] != "" && $part_list_sum['special_dna'] > 0){
-			$output .= "tratiopr=beta(2.0,1.0)";
+			$output .= " tratiopr=beta(2.0,1.0)";
 		}
 		$output .= ";\n";
 		if( in_array("yes", $aa_or_not) || in_array("aas", $positions) ) {
