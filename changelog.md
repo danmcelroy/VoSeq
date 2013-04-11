@@ -1,6 +1,9 @@
 #VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 ##Changelog:
+* Version
+	- [Carlos 2013-04-11] Fixing installation script 4. No need to check for writtable dojo folder.
+							Checking dojo_data instead.
 * Version 1.6.0
     - [Carlos 2013-03-29] Added button to get a Backup file of the MySQL database.
     - [Carlos 2013-03-31] Added button, page, js functions to upload big Backup files
