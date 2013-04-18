@@ -1408,7 +1408,9 @@ else{
 		
 		$output .= "unlink shape=(all) revmat=(all) tratio=(all) [pinvar=(all)];\n";
 		$output .= "mcmc ngen=10000000 printfreq=1000 samplefreq=1000 nchains=4 nruns=2 savebrlens=yes [temp=0.11];\n";	
-		$output .= " sump relburnin=no [yes] burnin[frac] = 2500 [0.25];\n sumt relburnin=no [yes] burnin[frac] = 2500 [0.25] contype = allcompat[halfcompat];\nend;" ;
+        $output .= " sump relburnin=yes [no]  burninfrac=0.25 [2500];\n";
+        $output .= " sumt relburnin=yes [no]  burninfrac=0.25 [2500] contype=halfcompat [allcompat];\n";
+        $output .= "end;";
 	}
 
 	// #################################################################################
