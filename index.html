@@ -266,7 +266,7 @@ contact <a class="reference external" href="mailto:mycalesis&#37;&#52;&#48;gmail
 <li>Unzip the source files in some directory: <tt class="docutils literal"><span class="pre">unzip</span> <span class="pre">VoSeq_X.Y.Z.zip</span></tt></li>
 <li>If you are not a Linux Guru and you have <a class="reference external" href="http://www.rarlab.com/">WinRAR</a> (like WinZip but works with gzipped files) on your Windows system you can cheat a little bit here. You can download the file to your Windows machine, use WinRAR to unzip the gzipped file into a directory in Windows and then use an FTP program like <a class="reference external" href="http://winscp.net/eng/index.php">WinSCP</a> to transfer the entire VoSeq directory for you to a commercial server for example.</li>
 <li>Move the directory into your web directory: e.g. <tt class="docutils literal"><span class="pre">mv</span> <span class="pre">VoSeq</span> <span class="pre">/usr/local/apache2/htdocs/myVoSeq</span></tt> or <tt class="docutils literal"><span class="pre">mv</span> <span class="pre">VoSeq</span> <span class="pre">public_html/myVoSeq</span></tt> or use your FTP software to do this for you.</li>
-<li>To run the installation script, you&#8217;ll need to temporarily make your myVoSeq directory writable by the web server. The simplest way to do this on a Unix/Linux system is to make it world-writable by typing: <tt class="docutils literal"><span class="pre">chmod</span> <span class="pre">-R</span> <span class="pre">777</span> <span class="pre">myVoSeq</span></tt>. To do this into a commercial server you will need a telnet client like <a class="reference external" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/">PuTTY</a> on your system.</li>
+<li>To run the installation script, you&#8217;ll need to temporarily make your myVoSeq directory writable by the web server. The simplest way to do this on a Unix/Linux system is to make it world-writable by typing: <tt class="docutils literal"><span class="pre">chmod</span> <span class="pre">777</span> <span class="pre">myVoSeq</span></tt>. To do this into a commercial server you will need a telnet client like <a class="reference external" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/">PuTTY</a> on your system.</li>
 <li>At this point you should have Apache and MySQL running (this varies between distributions and setups, see their documentations for details).</li>
 <li>Go to your web browser and surf into the VoSeq installation directory (under <tt class="docutils literal"><span class="pre">htdocs</span></tt> or <tt class="docutils literal"><span class="pre">public_html</span></tt> folders of Apache). It will direct you to the config script (if it doesn&#8217;t, just load up the <tt class="docutils literal"><span class="pre">http://localhost/myVoSeq/index.php</span></tt> file. Fill out the forms.</li>
 <li>If all goes well, the installer will create a configuration file named <tt class="docutils literal"><span class="pre">conf.php</span></tt> in your myVoSeq installation directory. This file will contain all the important variables and information needed to run VoSeq in your system.</li>
@@ -938,7 +938,7 @@ If these says &#8220;(none)&#8221; see below.</p>
     </p>
     <p>
         &copy; Copyright 2013, Carlos Peña, Tobias Malm.<br/>
-      Last updated on Apr 07, 2013.<br/>
+      Last updated on Apr 18, 2013.<br/>
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.<br/>
     </p>
   </div>
