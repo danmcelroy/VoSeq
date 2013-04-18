@@ -169,7 +169,14 @@ gh-pages:
 	sed -i 's/_images/images/g' ../index.html
 	sed -i 's/_sources/sources/g' ../index.html
 	sed -i 's/_sources/sources/g' ../index.html
-	git add -A
-	git add -A ..
+	sed -i 's/_static/static/g' ../news.html
+	sed -i 's/_images/images/g' ../news.html
+	sed -i 's/_sources/sources/g' ../news.html
+	sed -i 's/_sources/sources/g' ../news.html
+	git add ../images
+	git add ../sources
+	git add ../static
+	git add ../index.html
+	git add ../news.html
 	git commit -am "Generated gh-pages for `git log master -1 --pretty=short --abbrev-commit`" && git push origin gh-pages
 	git checkout master
