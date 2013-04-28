@@ -1,9 +1,20 @@
 #VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 ##Changelog:
-* Version
-	- [Carlos 2013-04-11] Fixing installation script 4. No need to check for writtable dojo folder.
-							Checking dojo_data instead.
+* Version 1.7.0
+	- [Tobias 2013-04-24] Added a geneset creator in similar style as for taxonsets.
+							Genesets can be now used for creating tables and datasets.
+	- [Tobias 2013-04-24] Fixed a bug in the taxonset creator that unchecked taxa
+							when filtering records with a text string.
+	- [Tobias 2013-04-24] Added an update account page where user information and
+							passwords may be changed. This may be used for the account
+							in use, but admin status can not be changed. This allows for 
+							a database manager to create temporal account names for new 
+							users, who themselves can change their info later.
+	- [Tobias 2013-04-24] Layout fixes. E.g. mainpage gene viewer.
+    - [Carlos 2013-04-11] Fixing installation script 4. No need to check for writtable 
+                            dojo folder. Checking dojo_data instead.
+
 * Version 1.6.0
     - [Carlos 2013-03-29] Added button to get a Backup file of the MySQL database.
     - [Carlos 2013-03-31] Added button, page, js functions to upload big Backup files
@@ -22,7 +33,6 @@
 							"Special" data set now also includes AA, AA partitions and dna partitions are now 
 							combineable in the same data set and specified as such in the output files.
 							AA partitions will not be made if protein code is set to no.
-
 	- [Tobias 2013-03-15] Changed gene information to include more fields, including protein coding or not,
 							aligned or not, intron regions and gene type. To be used for new features in the
 							create dataset and other scripts.

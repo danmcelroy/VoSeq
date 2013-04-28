@@ -285,9 +285,30 @@ if (isset($_POST['geneCodes2']) && isset($_POST['codes2']) && isset($_POST['gene
 			}
 		}
 	}
-	else {
+	elseif ($_POST['genesets'] == "Choose geneset"){
 		$errorList[] = "No genes choosen - Please try again!"; 
 	}
+	// checking geneset choice
+	$geneset = $_POST['genesets'];
+	$geneset_taxa = array();
+	if ($geneset != "Choose geneset"){
+		$TSquery = "SELECT geneset_list FROM ". $p_ . "genesets WHERE geneset_name='$geneset'";
+		$TSresult = mysql_query($TSquery) or die("Error in query: $TSquery. " . mysql_error());
+			// if records present
+			
+			if( mysql_num_rows($TSresult) > 0 ) {
+				while( $TSrow = mysql_fetch_object($TSresult) ) {
+					$geneset_taxa = explode(",", $TSrow->geneset_list );
+				}
+			}
+		else {$errorList[] = "No gene set named <b>$geneset</b> exists in database!";}
+	}else {unset($geneset_taxa);}
+
+	// merging choosen gene set taxa and input taxa lists
+	if (isset($geneset_taxa) && isset($geneCodes)){$geneCodes = array_merge( $geneset_taxa, $geneCodes) ;}
+	elseif (isset($geneset_taxa) && ! isset($geneCodes)){$geneCodes = $geneset_taxa ;}
+	elseif (! isset($geneset_taxa) && isset($geneCodes)){$geneCodes = $geneCodes ;}
+	else { $errorList[] = "No genes are chosen!</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pointless to make a table without genes..."; }
 
 	 //input data
 	if (trim($_POST['codes']) != "") {
@@ -1379,7 +1400,7 @@ else{
 		$output .= "prset applyto=(all) ratepr=variable brlensp=unconstrained:Exp(100.0) ";
 		$output .= "shapepr=exp(1.0)";
 		if ($part_list_sum['full_dna'][0] != "" && $part_list_sum['special_dna'] > 0){
-			$output .= " tratiopr=beta(2.0,1.0)";
+			$output .= "tratiopr=beta(2.0,1.0)";
 		}
 		$output .= ";\n";
 		if( in_array("yes", $aa_or_not) || in_array("aas", $positions) ) {
@@ -1408,9 +1429,7 @@ else{
 		
 		$output .= "unlink shape=(all) revmat=(all) tratio=(all) [pinvar=(all)];\n";
 		$output .= "mcmc ngen=10000000 printfreq=1000 samplefreq=1000 nchains=4 nruns=2 savebrlens=yes [temp=0.11];\n";	
-        $output .= " sump relburnin=yes [no]  burninfrac=0.25 [2500];\n";
-        $output .= " sumt relburnin=yes [no]  burninfrac=0.25 [2500] contype=halfcompat [allcompat];\n";
-        $output .= "end;";
+		$output .= " sump relburnin=no [yes] burnin[frac] = 2500 [0.25];\n sumt relburnin=no [yes] burnin[frac] = 2500 [0.25] contype = allcompat[halfcompat];\nend;" ;
 	}
 
 	// #################################################################################

@@ -8,13 +8,13 @@
 // Modified by Carlos Peña & Tobias Malm
 // Mods: added admin-session and sha1 - encryption for passwords
 //
-// Script overview: stores the new user details
+// Script overview: stores the edited user details
 // #################################################################################
 
 header('Content-type: text/html; charset=utf8');
 
 	//check admin login session
-	include'auth-admin.php';
+	include'auth.php';
 	
 	//Start session
 	session_start();
@@ -63,8 +63,6 @@ header('Content-type: text/html; charset=utf8');
 	$cpassword = clean($_POST['cpassword']);
 	$adminyesno = clean($_POST['admin']);
 	
-	if ($adminyesno != "1"){$adminyesno = 0;}
-	
 	//Input Validations
 	if($fname == '') {
 		$errmsg_arr[] = 'First name missing';
@@ -78,6 +76,20 @@ header('Content-type: text/html; charset=utf8');
 		$errmsg_arr[] = 'Login ID missing';
 		$errflag = true;
 	}
+	// checking against old password
+	$sessid = $_SESSION['SESS_MEMBER_ID'];
+	$qry = "SELECT * FROM ". $p_ . "members WHERE member_id='$sessid'";
+	$result = mysql_query($qry);
+	if($result) {
+		if(mysql_num_rows($result) > 0) {
+			while ($row = mysql_fetch_object($result)) {
+				if (sha1($_POST['opassword']) != $row->passwd) {
+					$errmsg_arr[] = 'Old password is not correct!';
+					$errflag = true;
+				}
+			}
+		}
+	}
 	if($password == '') {
 		$errmsg_arr[] = 'Password missing';
 		$errflag = true;
@@ -90,40 +102,41 @@ header('Content-type: text/html; charset=utf8');
 		$errmsg_arr[] = 'Passwords do not match';
 		$errflag = true;
 	}
+
 	
 	//Check for duplicate login ID
-	if($login != '') {
-		$qry = "SELECT * FROM ". $p_ . "members WHERE login='$login'";
-		$result = mysql_query($qry);
-		if($result) {
-			if(mysql_num_rows($result) > 0) {
-				$errmsg_arr[] = 'Login ID already in use';
-				$errflag = true;
-			}
-			@mysql_free_result($result);
-		}
-		else {
-			die("Query failed");
-		}
-	}
+	// if($login != '') {
+		// $qry = "SELECT * FROM ". $p_ . "members WHERE login='$login'";
+		// $result = mysql_query($qry);
+		// if($result) {
+			// if(mysql_num_rows($result) > 0) {
+				// $errmsg_arr[] = 'Login ID already in use';
+				// $errflag = true;
+			// }
+			// @mysql_free_result($result);
+		// }
+		// else {
+			// die("Query failed");
+		// }
+	// }
 	
-	//If there are input validations, redirect back to the registration form
+	//If there are input validations, redirect back to the account change form
 	if($errflag) {
 		$_SESSION['ERRMSG_ARR'] = $errmsg_arr;
 		session_write_close();
-		header("location: register-form.php");
+		header("location: account_change.php");
 		exit();
 	}
 
 	//Create INSERT query
-	$qry = "INSERT INTO ". $p_ . "members(firstname, lastname, login, passwd, admin) VALUES('$fname','$lname','$login','".sha1($_POST['password'])."','$adminyesno')";
+	$qry = "UPDATE ". $p_ . "members SET firstname='$fname', lastname='$lname', login='$login', passwd='".sha1($_POST['password'])."' WHERE member_id='$sessid'";
 	$result = @mysql_query($qry);
 	
 	//Check whether the query was successful or not
 	if($result) {
-		header("location: register-success.php");
+		header("location: account_change_success.php");
 		exit();
 	}else {
-		die("Query failed!?");
+		die("Query failed");
 	}
 ?>

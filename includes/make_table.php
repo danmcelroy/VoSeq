@@ -81,6 +81,8 @@ else {
 if (trim($_POST['codes']) != ""){
 	$raw_codes = explode("\n", $_POST['codes']);
 }else{ unset($raw_codes); }
+
+
 // open database connections
 @$connection = mysql_connect($host, $user, $pass) or die('Unable to connect');
 mysql_select_db($db) or die ('Unable to select database');
@@ -100,6 +102,27 @@ if (isset($_POST['geneCodes'])){
 		}
 	}
 } else {unset($genes, $geneCodes);}//$errorList[] = "No genes choosen - Please try again!"; }
+
+// checking geneset choice
+$geneset = $_POST['genesets'];
+$geneset_taxa = array();
+if ($geneset != "Choose geneset"){
+	$TSquery = "SELECT geneset_list FROM ". $p_ . "genesets WHERE geneset_name='$geneset'";
+	$TSresult = mysql_query($TSquery) or die("Error in query: $TSquery. " . mysql_error());
+		// if records present
+		
+		if( mysql_num_rows($TSresult) > 0 ) {
+			while( $TSrow = mysql_fetch_object($TSresult) ) {
+				$geneset_taxa = explode(",", $TSrow->geneset_list );
+			}
+		}
+}else {unset($geneset_taxa);}
+
+// merging choosen gene set taxa and input taxa lists
+if (isset($geneset_taxa) && isset($genes)){$genes = array_merge( $geneset_taxa, $genes) ;}
+elseif (isset($geneset_taxa) && ! isset($genes)){$genes = $geneset_taxa ;}
+elseif (! isset($geneset_taxa) && isset($genes)){$genes = $genes;}
+//else { $errorList[] = "No genes are chosen!</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pointless to make a table without genes..."; }
 
 // checking taxonset choice
 $taxonset = $_POST['taxonsets'];

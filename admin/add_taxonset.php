@@ -626,7 +626,8 @@ elseif ($_GET['new'] || $_POST['sort'] || $_POST['mark'] || $_POST['unmark']) {
 						}
 						else { // if filtered to hide
 							if (isset($taxonset_list) && in_array($line_cols[0], $taxonset_list)){ 
-								$table .= "<input type=\"checkbox\" name=\"taxonset_list[$line_cols[0]]\" checked style=\"display:none;\"";
+								$act_col = $line_cols[0];
+								$table .= "<td style=\"display:none;\"><input type=\"checkbox\" name=\"taxonset_list[$act_col]\" checked></td> ";
 							}
 						}
 						
@@ -1261,8 +1262,9 @@ elseif (!$_POST['submitNoNew'] && $_GET['taxonset_name'] || $_POST['sort2'] || $
 							if ($i == 0) {$i = 1;} else {$i = 0;};
 						}
 						else { // if filtered to hide
-							if (isset($taxonset_list) && in_array($line_cols[0], $taxonset_list)){ 
-								$table .= "<input type=\"checkbox\" name=\"taxonset_list[$line_cols[0]]\" checked style=\"display:none;\"";
+							if (isset($taxonset_list) && in_array($line_cols[0], $taxonset_list)){
+								$act_col = $line_cols[0];
+								$table .= "<td style=\"display:none;\"><input type=\"checkbox\" name=\"taxonset_list[$act_col]\" checked></td>";
 							}
 						}
 						

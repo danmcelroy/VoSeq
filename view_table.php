@@ -24,7 +24,8 @@ ob_end_clean();//Clear output buffer//includes
 include 'functions.php'; // administrator functions
 include 'markup-functions.php';
 include 'includes/validate_coords.php';
-
+// set increased time limit for larger calculations -> 1000 seconds
+set_time_limit(1000);
 // need dojo?
 $dojo = true;
 
@@ -394,8 +395,9 @@ echo "<div id=\"content\">";
 							if ($i == 0) {$i = 1;} else {$i = 0;};
 						}
 						else { // if filtered to hide
-							if (isset($taxonset_list) && in_array($line_cols[0], $taxonset_list)){ 
-								$table .= "<input type=\"checkbox\" name=\"taxonset_list[$line_cols[0]]\" checked style=\"display:none;\"";
+							if (isset($taxonset_list) && in_array($line_cols[0], $taxonset_list)){
+								$act_code = $line_cols[0];
+								$table .= "<td style=\"display:none;\"><input type=\"checkbox\" name=\"taxonset_list[$act_code]\" checked></td>";
 							}
 						}
 						

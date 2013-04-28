@@ -49,6 +49,16 @@ if( mysql_num_rows($gCresult) > 0 ) {
 		$taxonsets[] = $rowTs->taxonset_name;
 	}
 }
+// create geneset list
+$Tsquery = "SELECT geneset_name FROM ". $p_ . "genesets ORDER BY geneset_name";
+$Tsresult = mysql_query($Tsquery) or die ("Error in query: $Tsquery. " . mysql_error());
+// if records present
+$genesets = array();
+if( mysql_num_rows($gCresult) > 0 ) {
+	while( $rowTs = mysql_fetch_object($Tsresult) ) {
+		$genesets[] = $rowTs->geneset_name;
+	}
+}
 else {unset($taxonsets);}
 // #################################################################################
 // Section: Output
@@ -171,6 +181,21 @@ echo "<div id=\"content\">";
 						}
 						?>
 						</select>
+					</td><td></td>
+					<td class="label4">
+						Choose geneset
+					</td>
+					<td class="field1">
+						<select name="genesets" size="1" style=" BORDER-BOTTOM: outset; BORDER-LEFT: 
+						outset; BORDER-RIGHT: outset; BORDER-TOP: outset; FONT-FAMILY: 
+						Arial; FONT-SIZE: 12px"> 
+						<option selected value="Choose geneset">Choose geneset</option> 
+						<?php  // create a pulldown-list with all geneset names in the db
+						if (isset($genesets)){
+						foreach ($genesets as $geneset){ echo "<option value=\"$geneset\">$geneset</option> ";}
+						}
+						?>
+						</select>
 					</td>
 				</tr>
 				<tr>
@@ -190,7 +215,8 @@ echo "<div id=\"content\">";
 					<td>
 					</td>
 					<td class="label4">
-						Check to select</br> your alignment/gene:
+						Check to select</br> your alignment/gene:</br>
+						</br>(if geneset chosen,</br> add extra genes)
 					</td>
 					<td class="field1">
 						<?php $i = 0;

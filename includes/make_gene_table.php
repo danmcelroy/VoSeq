@@ -139,9 +139,31 @@ if (isset($_POST['geneCodes'])){
 		}
 	}
 }
-else {
+elseif ($_POST['genesets'] == "Choose geneset"){
 	$errorList[] = "No genes choosen - Please try again!"; 
 }
+// checking geneset choice
+$geneset = $_POST['genesets'];
+$geneset_taxa = array();
+if ($geneset != "Choose geneset"){
+	$TSquery = "SELECT geneset_list FROM ". $p_ . "genesets WHERE geneset_name='$geneset'";
+	$TSresult = mysql_query($TSquery) or die("Error in query: $TSquery. " . mysql_error());
+		// if records present
+		
+		if( mysql_num_rows($TSresult) > 0 ) {
+			while( $TSrow = mysql_fetch_object($TSresult) ) {
+				$geneset_taxa = explode(",", $TSrow->geneset_list );
+			}
+		}
+	else {$errorList[] = "No gene set named <b>$geneset</b> exists in database!";}
+}else {unset($geneset_taxa);}
+
+// merging choosen gene set taxa and input taxa lists
+if (isset($geneset_taxa) && isset($geneCodes)){$geneCodes = array_merge( $geneset_taxa, $geneCodes) ;}
+elseif (isset($geneset_taxa) && ! isset($geneCodes)){$geneCodes = $geneset_taxa ;}
+elseif (! isset($geneset_taxa) && isset($geneCodes)){$geneCodes = $geneCodes ;}
+else { $errorList[] = "No genes are chosen!</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pointless to make a table without genes..."; }
+
 
  //input data
 if (trim($_POST['codes']) != "") {
@@ -273,8 +295,27 @@ if ($number_of_taxa == 0) {$errorList[] = "No codes specified! No use creating e
 											</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 											Please go back and add voucher codes to run!"; 
 }
-
-
+// check for gene and taxon sets missing all sequences
+foreach ($geneCodes AS $geneCode){
+	$test = 0;
+	foreach ($codes as $c){
+		$cquery = "SELECT sequences FROM ". $p_ . "sequences WHERE code='$c' AND geneCode='$geneCode'";
+		$cresult = mysql_query($cquery) or die("Error in query: $query. " . mysql_error());
+		// if records present
+		if( mysql_num_rows($cresult) > 0 ) {
+			while( $row = mysql_fetch_object($cresult) ) {
+				$cseq = $row->sequences;
+					$cseq = str_replace(array("?", "-"), "", $cseq);
+					if (strlen($cseq) > 0 ) {$test = 1;}
+			}
+		}
+	}
+	if ($test == 0){ 
+		$errorList[] = "Gene $geneCode has no sequences for choosen taxa!
+						</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						Cannot calculate values for it!"; 
+	}
+}
 // #################################################################################
 // Section: check for error and if none proceed with building dataset
 // #################################################################################
