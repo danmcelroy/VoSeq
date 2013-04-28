@@ -52,7 +52,16 @@ if( mysql_num_rows($gCresult) > 0 ) {
 	}
 }
 else {unset($taxonsets);}
-
+// create geneset list
+$Tsquery = "SELECT geneset_name FROM ". $p_ . "genesets ORDER BY geneset_name";
+$Tsresult = mysql_query($Tsquery) or die ("Error in query: $Tsquery. " . mysql_error());
+// if records present
+$genesets = array();
+if( mysql_num_rows($gCresult) > 0 ) {
+	while( $rowTs = mysql_fetch_object($Tsresult) ) {
+		$genesets[] = $rowTs->geneset_name;
+	}
+}
 // print beginning of html page -- headers
 include_once'includes/header.php';
 nav();
@@ -165,6 +174,22 @@ This table will be ready to attach to a manuscript for publication.</b>
 						<?php  // create a pulldown-list with all taxon set names in the db
 						if (isset($taxonsets)) {
 							foreach ($taxonsets as $taxonset){ echo "<option value=\"$taxonset\">$taxonset</option> ";}
+						}
+						?>
+						</select>
+					</td>
+					</td><td></td>
+					<td class="label4">
+						Choose geneset
+					</td>
+					<td class="field1">
+						<select name="genesets" size="1" style=" BORDER-BOTTOM: outset; BORDER-LEFT: 
+						outset; BORDER-RIGHT: outset; BORDER-TOP: outset; FONT-FAMILY: 
+						Arial; FONT-SIZE: 12px"> 
+						<option selected value="Choose geneset">Choose geneset</option> 
+						<?php  // create a pulldown-list with all geneset names in the db
+						if (isset($genesets)){
+						foreach ($genesets as $geneset){ echo "<option value=\"$geneset\">$geneset</option> ";}
 						}
 						?>
 						</select>

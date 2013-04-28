@@ -73,6 +73,26 @@ echo "<table border=\"0\" width=\"850px\"> <!-- super table -->
 			<tr><td valign=\"top\">";
 echo "\n<table border=\"0\" width=\"400px\"> <!-- menu table -->";
 echo "\n<tr>";
+	// User information links
+echo "<td colspan=2><h2><u>User information</u></h2></td></tr>"; // start user info table
+if( $mask_url == "true" ) {
+	echo "\n<tr>";
+	echo "\n\t<td valign=\"top\"><a href='" .$base_url . "/home.php' ";
+	echo "onclick=\"return redirect('../login/register-form.php')\">";
+	echo "<b>Add new user</b></a></td>";
+	
+	echo "\n\t<td valign=\"top\"><a href='" .$base_url . "/home.php' ";
+	echo "onclick=\"return redirect('../login/account_change.php')\">";
+	echo "<b>Change your user details</b></a></td>";
+}
+else{
+	echo "<tr><td valign=\"top\"><a href='" .$base_url . "/login/register-form.php'><b>Add new user</b></a></td>";
+	echo "<td valign=\"top\"><a href='" .$base_url . "/login/account_change.php'><b>Change your user details</b></a></td></tr>";
+}
+// Vouchers, genes, sequences and taxon set links
+echo "\n<tr>";
+echo "<td colspan=2><h2><u>Vouchers, genes, sequences and taxon sets</u></h2></td></tr>"; //start seq voucher link table
+	
 if( $mask_url == "true" ) {
 	echo "\n\t<td valign=\"top\"><a href='" .$base_url . "/home.php' ";
 	echo "onclick=\"return redirect('add.php?new=new')\">";
@@ -81,81 +101,76 @@ if( $mask_url == "true" ) {
 
 	echo "\n\t<td valign=\"top\"><a href='" .$base_url . "/home.php' ";
 	echo "onclick=\"return redirect('upload_sequences.php')\">";
-	echo "<b>Upload batch sequences/vouchers</b></a>";
+	echo "<b>UPLOAD batch sequences/vouchers</b></a>";
 	echo "</td>\n</tr>";
 
 	echo "\n<tr>";
 	echo "\n\t<td valign=\"top\"><a href='" .$base_url . "/home.php' ";
-	echo "onclick=\"return redirect('../login/register-form.php')\">";
-	echo "<b>Add new user</b></a></td>";
+	echo "onclick=\"return redirect('add_gene.php')\">";
+	echo "<b>Add/edit/view gene information</b></a></td>";
 
 	echo "\n\t<td valign=\"top\"><a href='" .$base_url . "/home.php' ";
 	echo "onclick=\"return redirect('update_batch.php')\">";
-	echo "<b>Batch update new information</b></a></td>";
-	echo "\n</tr>";
+	echo "<b>Batch UPDATE new information</b></a></td></tr>";
+	echo "\n";
 
-	echo "\n<tr>";
-	echo "\n\t<td valign=\"top\"><a href='" .$base_url . "/home.php' ";
+	echo "<tr>\n\t<td valign=\"top\"><a href='" .$base_url . "/home.php' ";
 	echo "onclick=\"return redirect('add_taxonset.php')\">";
 	echo "<b>Add/edit/view Taxon sets</b></a></td>";
-
+	
 	echo "\n\t<td valign=\"top\"><a href='" .$base_url . "/home.php' ";
-	echo "onclick=\"return redirect('add_gene.php')\">";
-	echo "<b>Add/edit/view gene information</b></a></td>";
+	echo "onclick=\"return redirect('add_geneset.php')\">";
+	echo "<b>Add/edit/view Gene sets</b></a></td>";
 	echo "\n</tr>";
-	echo "<tr>";
-	echo "<td><button id='opener'>Backup database</button></td>";
 	echo "</tr>";
 }
 else {
 	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/add.php?new=new'><b>Add new record</b></a></td>";
 	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/upload_sequences.php'><b>Upload batch sequences/vouchers</b></a></td></tr>";
-	echo "<tr><td valign=\"top\"><a href='" .$base_url . "/login/register-form.php'><b>Add new user</b></a></td>";
-	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/update_batch.php'><b>Batch update new information</b></a></td></tr>";
-	echo "<tr><td valign=\"top\"><a href='" .$base_url . "/admin/add_taxonset.php'><b>Add/edit/view Taxon sets</b></a></td>";
-	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/add_gene.php'><b>Add/edit/view gene information</b></a></td></tr>";
-
-	echo "<tr>";
-	echo "<td><a id='mysqlimport' href='mysqlimport.php'>Import database</a></td>";
-	echo "</tr>";
-
-	echo "<tr>";
-	echo "<td><button id='opener'>Backup database</button></td>";
-	echo "</tr>";
+	echo "<tr><td valign=\"top\"><a href='" .$base_url . "/admin/add_gene.php'><b>Add/edit/view gene information</b></a></td>";
+	echo "<tr><td valign=\"top\"><a href='" .$base_url . "/admin/update_batch.php'><b>Batch update new information</b></a></td></tr>";
+	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/add_taxonset.php'><b>Add/edit/view Taxon sets</b></a></td>";
+	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/add_geneset.php'><b>Add/edit/view gene sets</b></a></td></tr>";
 }
-echo "</table>";
 
-	echo "<div id='backup_confirm' title='Backup your MySQL database?'>
-			<p><span class='ui-icon ui-icon-info' style='float: left; margin: 0 7px 20px 0;'></span>
-			Accept to download a backup of your MySQL database: <b><i>" . $db . "</i></b></p>
-	</div>";
+// backup/import table
+echo "<td colspan=2><h2><u>Import/Backup database</u></h2></td></tr>";
+echo "<tr>";
+echo "<td><a id='mysqlimport' href='mysqlimport.php'>Import database</a></td>";
+echo "<td><button id='opener'>Backup database</button></td>";
+echo "</table>"; // end super table
 
-	echo "<script>
-            $('#opener').button();
-            $('#mysqlimport').button();
+echo "<div id='backup_confirm' title='Backup your MySQL database?'>
+		<p><span class='ui-icon ui-icon-info' style='float: left; margin: 0 7px 20px 0;'></span>
+		Accept to download a backup of your MySQL database: <b><i>" . $db . "</i></b></p>
+</div>";
 
-            $('#backup_confirm').dialog({
-                autoOpen: false
-            });
-            $('#opener').click(function () {
-                $('#backup_confirm').dialog('open').dialog({
-                    modal: true
-                }).dialog('option', 'buttons', [{
-                    text: 'Create dump file',
-                    click: function () {
-                        $.download('mysqldump.php', 'filename=', '');
-                        $(this).dialog('close');
-                    }
-                }, {
-                    text: 'Cancel',
-                    click: function () {
-                        $(this).dialog('close');
-                    }
-                }]
+echo "<script>
+		$('#opener').button();
+		$('#mysqlimport').button();
 
-                );
-            });
-			</script>";
+		$('#backup_confirm').dialog({
+			autoOpen: false
+		});
+		$('#opener').click(function () {
+			$('#backup_confirm').dialog('open').dialog({
+				modal: true
+			}).dialog('option', 'buttons', [{
+				text: 'Create dump file',
+				click: function () {
+					$.download('mysqldump.php', 'filename=', '');
+					$(this).dialog('close');
+				}
+			}, {
+				text: 'Cancel',
+				click: function () {
+					$(this).dialog('close');
+				}
+			}]
+
+			);
+		});
+		</script>";
 
 
 	// generate and execute query from Vouchers table

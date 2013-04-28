@@ -57,7 +57,8 @@ if( isset($_SESSION['ERRMSG_ARR']) && is_array($_SESSION['ERRMSG_ARR']) && count
 ?>
 <form id="loginForm" name="loginForm" method="post" action="register-exec.php" accept-charset="UTF-8">
   <table width="300" border="0" align="center" cellpadding="2" cellspacing="0">
-    <tr>
+    <tr><td colspan=2><h1><b>Register new user</b></h1></td></tr>
+	<tr>
       <th>First Name </th>
       <td><input name="fname" type="text" class="textfield" id="fname" /></td>
     </tr>

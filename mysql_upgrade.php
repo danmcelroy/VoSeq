@@ -120,6 +120,24 @@ function mysql_upgrade($db, $p_) {
 		}
 	}
 	
+	// genesets - from v.1.7.0
+	$query = "SELECT *
+		FROM information_schema.tables 
+		WHERE table_schema = '" . $db . "' 
+		AND table_name = '" . $p_ . "genesets'";
+	$result = mysql_query($query) or die("Error in query: $query. " . mysql_error());
+	if( mysql_num_rows($result) < 1 ) {
+		$query = "CREATE TABLE `" . $db . "` . `" . $p_ . "genesets` (
+			`geneset_name` varchar(75) DEFAULT NULL,
+			`geneset_creator` varchar(75) DEFAULT NULL,
+			`geneset_description` varchar(100) DEFAULT NULL,
+			`geneset_list` text,
+			`geneset_id` int(11) NOT NULL AUTO_INCREMENT,
+			PRIMARY KEY (`geneset_id`),
+			UNIQUE KEY `geneset_id_UNIQUE` (`geneset_id`)
+			) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;";
+		mysql_query($query) or die("Error in query: $query. " . mysql_error());
+	}
 }
 	
 ?>
