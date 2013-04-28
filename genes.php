@@ -122,9 +122,47 @@ elseif ($_GET['geneCode']) {
 	}
 
 	// check for duplicate code
-	$query1  = "SELECT id, geneCode, length, description, readingframe FROM ". $p_ . "genes WHERE geneCode='$geneCode1'";
+	$query1  = "SELECT id, geneCode, length, description, readingframe, notes, intron, genetype, prot_code, aligned, genetic_code
+				FROM ". $p_ . "genes WHERE geneCode='$geneCode1'";
 	$result1 = mysql_query($query1) or die ("Error in query: $query1. " . mysql_error());
 	$row1    = mysql_fetch_object($result1);
+	$geneCode      = $row1->geneCode;
+	$description = utf8_decode($row1->description);
+	$length     = $row1->length;
+	if ($length == "0"){$length = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";}
+	$readingframe     = $row1->readingframe;
+	if ($readingframe == "0"){$readingframe = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";}
+	$notes     = $row1->notes;
+	$protcoding = $row1->prot_code;
+	if ($protcoding == 'notset'){$protcoding = 'no';}
+	$genetype = $row1->genetype;
+	$aligned = $row1->aligned;
+	if ($aligned == 'notset'){$aligned = 'no';}
+	$genetic_code = $row1->genetic_code;
+	$id = $row1->id;
+	if ($row1->intron != ''){
+		$introns_raw = explode(";", $row1->intron);
+				$numIntrons = count($introns_raw);
+		for ($i = 1; $i <= $numIntrons; $i++){
+			$j = $i-1;
+			$intron_raw = explode("-", $introns_raw[$j]);
+			$intron_start[$i] = $intron_raw[0];
+			$intron_end[$i] = $intron_raw[1];
+		}
+	}
+	else { $numIntrons = 0; }
+	$trans_table = array("Not applicable" => "0", "Standard" => "1", "Vertebrate Mitochondrial" => "2","Yeast Mitochondrial" => "3",
+							"Mold, Protozoan and Coelenterate Mitochondrial. Mycoplasma, Spiroplasma" => "4",
+							"Invertebrate Mitochondrial" => "5","Ciliate Nuclear; Dasycladacean Nuclear; Hexamita Nuclear" => "6",
+							"Echinoderm Mitochondrial" => "9","Euplotid Nuclear" => "10",
+							"Bacterial and Plant Plastid" => "11","Alternative Yeast Nuclear" => "12","Ascidian Mitochondrial" => "13",
+							"Flatworm Mitochondrial" => "14","Blepharisma Macronuclear" => "15",
+							"Chlorophycean Mitochondrial" => "16","Trematode Mitochondrial" => "21",
+							"Scenedesmus obliquus mitochondrial" => "22","Thraustochytrium mitochondrial code" => "23");
+	if (array_search($genetic_code, $trans_table)){
+		$genetic_code = array_search($genetic_code, $trans_table);
+	}
+	elseif ($genetic_code != "") {$genetic_code = "Not found :(";}
 	
 	// get title
 	$title = "$config_sitename - Gene " . $geneCode1;
@@ -149,37 +187,80 @@ elseif ($_GET['geneCode']) {
 	<tr>
 		<td valign="top">
 			<table border="0" cellspacing="10"> <!-- table child 1 -->
-				<tr>
-					<td>
-						<!-- 	input id of this record also, useful for changing the code -->
-						<input type="hidden" name="id" value="<?php echo $row1->id; ?>" />
-						<!-- 	end input id -->
-						<table width="350" cellspacing="0" border="0">
-							<caption>Gene information</caption>
-							<tr>
-								<td class="label">Gene code</td>
-								<td class="field">
-									<input size="12" maxlength="250" type="text" name="geneCode" value="<?php echo $row1->geneCode; ?>" /></td>
-									</select></td>
-								<td class="label3">Length</td>
-								<td class="field2">
-									<input size="10" maxlength="40" type="text" name="length" value="<?php echo $row1->length; ?>"/>
-									</select></td>
-								<td class="label3">Reading frame</td>
-								<td class="field2">
-									<input size="3" maxlength="40" type="text" name="readingframe" value="<?php echo $row1->readingframe; ?>"/>
-									</select></td>
-							</tr>
-							<tr>
-								<td class="label">Description</td>
-								<td class="field" colspan = "5">
-										<input size="60" maxlength="600" type="text" name="description" value="<?php echo $row1->description; ?>"/>
-									</select></td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-			</table><!-- end table child 1 -->
+	<tr><td>
+		<!-- 	end input id -->
+	<table width="575" cellspacing="0" border="0">
+	<caption>Gene information</caption>
+		<tr>
+			<td class="label">Gene code</td>
+			<td class="field"><?php echo $geneCode; ?></td>
+			<td class="label3">Aligned or not?</td>
+			<td class="field2" colspan="1"><?php echo $aligned; ?></td>
+			<td class="label3">Length (if aligned):</td>
+			<td class="field2"><?php echo $length; ?></td>
+		</tr>
+		<tr>
+			<td class="label">Description</td>
+			<td class="field" colspan = "5"><?php echo $description; ?></td>
+		</tr>
+		<tr>
+			<td class="label">Notes:
+			</td>
+			<td class="field" colspan="5"><?php echo $notes; ?></td>
+		</tr>
+		<tr>
+			<td class="label">Gene type:</td>
+			<td class="field" colspan = "5"><?php echo $genetype;?></td>
+		</tr>
+		</table>
+		</td>
+		</tr>
+		<tr>
+		<td>
+		<table width="575" cellspacing="0" border="0">
+		<tr><caption colspan=6>Protein coding genes</caption></tr>
+		<tr><td class="label"></td><td class="field" colspan="3">This section is only applicable for protein coding genes/alignments</td></tr>
+		<tr>
+			<td class="label">Protein coding</td>
+			<td class="field" ><?php echo $protcoding; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td class="label3" >Reading frame</td>
+			<td class="field2" ><?php echo $readingframe;?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="label">Translation table</td>
+			<td class="field" colspan = "3"><?php echo $genetic_code; ?></td>
+		</tr>
+		</table>
+		</td>
+		</tr>
+		<tr>
+		<td>
+		<table width="575" cellspacing="0" border="0">
+		<tr><caption colspan=6>Introns</caption></tr>
+		<tr>
+			<td class="label">Introns</td>
+			<td class="field" colspan="5">
+			<table><!-- small intron table -->
+				<?php
+		if($numIntrons > 0 ){
+			$outp =  "";
+			for ($i = 1; $i <= $numIntrons; $i++) {
+				$outp .= "<td>Intron $i:$intron_start[$i]-$intron_end[$i]</td>";
+				if ($i % 4 == 0) { $outp .= "</tr>";}
+				if ($i < $numIntrons){$outp .= "<td> > </td>";}
+			}
+			echo $outp;
+		}
+		else {echo "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";}
+		?>
+		</table><!-- end intron table -->
+		</tr>
+	</table>
+	
+	</td></tr>
+	</table><!-- end table child 1 -->
 		</td>
 	</tr>
 </table><!-- end big parent table -->
