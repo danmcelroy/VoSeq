@@ -27,22 +27,23 @@ header('Content-type: text/html; charset=utf8');
 	
 	<?php
 	echo "<link rel=\"stylesheet\" href=\"";
-	if( isset($admin) && $admin != false ) {
+	if( isset($admin) && $admin != false) {
 		echo $base_url . "/";
 	}
+	else {echo $base_url . "/";}
 	echo $currentTemplate . "/jquery-ui/start/jquery-ui-1.10.2.custom.css\" type=\"text/css\">";
 
 
 	echo "<link rel=\"stylesheet\" href=\"";
 
-	if( isset($admin) && $admin != false ) {
+	if( isset($admin) && $admin != false) {
 		echo $base_url . "/admin/" . $currentTemplate . "/css/1.css\" type=\"text/css\" />"; //"/admin/" 
 	}
 	elseif( isset($in_includes) && $in_includes != false ) {
 		echo $base_url . "/" . $currentTemplate . "/css/1.css\" type=\"text/css\" />";
 	}
 	else {
-		echo $currentTemplate . "/css/1.css\" type=\"text/css\" />";
+		echo $base_url . "/" . $currentTemplate . "/css/1.css\" type=\"text/css\" />";
 	}
 
 	if( isset($loginmodule) && $loginmodule != false ) {
