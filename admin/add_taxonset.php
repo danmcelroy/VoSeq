@@ -1041,7 +1041,7 @@ elseif (!$_POST['submitNoNew'] && $_GET['taxonset_name'] || $_POST['sort2'] || $
 <table width="800" border="0"> <!-- big parent table -->
 <tr><td valign="top">
 	<table border="0" cellspacing="10"> <!-- table child 1 -->
-	<tr><td><input class="delete" type="submit" name="delete_taxonset" value="Delete me" /><!-- Delete this sequence! --></td></tr>
+	<tr><td><input id="delete_taxonset" type="submit" name="delete_taxonset" value="Delete me" /><!-- Delete this sequence! --></td></tr>
 	<table width="700" cellspacing="0" border="0">
 	<caption>Dataset information</caption>
 		<tr>
@@ -1641,6 +1641,11 @@ else {
 	echo "<div id=\"rest1\"><img src=\"images/warning.png\" alt=\"\" /><span class=\"text\"> Some kind of error ocurred, but I do not know what it is, please try again!</span></div>";
 }
 ?>
+
+<script>
+	$('#delete_taxonset').button({icons:{primary: 'ui-icon-alert'}}).addClass('ui-state-error');
+</script>
+
 	
 </body>
 </html>
