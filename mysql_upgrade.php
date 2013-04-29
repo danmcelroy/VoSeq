@@ -135,7 +135,7 @@ function mysql_upgrade($db, $p_) {
 			`geneset_id` int(11) NOT NULL AUTO_INCREMENT,
 			PRIMARY KEY (`geneset_id`),
 			UNIQUE KEY `geneset_id_UNIQUE` (`geneset_id`)
-			) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;";
+			) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;";
 		mysql_query($query) or die("Error in query: $query. " . mysql_error());
 	}
 }

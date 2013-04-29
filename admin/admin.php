@@ -128,7 +128,7 @@ else {
 	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/add.php?new=new'><b>Add new record</b></a></td>";
 	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/upload_sequences.php'><b>Upload batch sequences/vouchers</b></a></td></tr>";
 	echo "<tr><td valign=\"top\"><a href='" .$base_url . "/admin/add_gene.php'><b>Add/edit/view gene information</b></a></td>";
-	echo "<tr><td valign=\"top\"><a href='" .$base_url . "/admin/update_batch.php'><b>Batch update new information</b></a></td></tr>";
+	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/update_batch.php'><b>Batch update new information</b></a></td></tr>";
 	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/add_taxonset.php'><b>Add/edit/view Taxon sets</b></a></td>";
 	echo "<td valign=\"top\"><a href='" .$base_url . "/admin/add_geneset.php'><b>Add/edit/view gene sets</b></a></td></tr>";
 }
