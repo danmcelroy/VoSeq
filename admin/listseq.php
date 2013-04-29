@@ -290,7 +290,7 @@ elseif ($_GET['code'] && $_GET['geneCode'] && $_GET['id'])
 	<br />
 	
 <table width="800px" border="0"> <!-- big parent table -->
-<tr><td><button class='delete' id='delete_sequence' style='background-color:red;color:white' name='<?php echo $id; ?>' class='delete'>or delete me</button></td> 
+<tr><td><button id='delete_sequence' name='<?php echo $id; ?>'>or delete me</button></td> 
 	</tr>
 <form action="processSeq.php" method="post">
 <tr><td valign="top">
@@ -455,6 +455,9 @@ else
 
 ?>
 	
+<script>
+	$('#delete_sequence').button({icons:{primary: 'ui-icon-alert'}}).addClass('ui-state-error');
+</script>
 
 </body>
 </html>
