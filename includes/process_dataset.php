@@ -1400,7 +1400,7 @@ else{
 		$output .= "prset applyto=(all) ratepr=variable brlensp=unconstrained:Exp(100.0) ";
 		$output .= "shapepr=exp(1.0)";
 		if ($part_list_sum['full_dna'][0] != "" && $part_list_sum['special_dna'] > 0){
-			$output .= "tratiopr=beta(2.0,1.0)";
+			$output .= " tratiopr=beta(2.0,1.0)";
 		}
 		$output .= ";\n";
 		if( in_array("yes", $aa_or_not) || in_array("aas", $positions) ) {
@@ -1429,7 +1429,8 @@ else{
 		
 		$output .= "unlink shape=(all) revmat=(all) tratio=(all) [pinvar=(all)];\n";
 		$output .= "mcmc ngen=10000000 printfreq=1000 samplefreq=1000 nchains=4 nruns=2 savebrlens=yes [temp=0.11];\n";	
-		$output .= " sump relburnin=no [yes] burnin[frac] = 2500 [0.25];\n sumt relburnin=no [yes] burnin[frac] = 2500 [0.25] contype = allcompat[halfcompat];\nend;" ;
+		$output .= " sump relburnin=yes [no] burninfrac=0.25 [2500];\n";
+		$output .= " sumt relburnin=yes [no] burninfrac=0.25 [2500] contype=halfcompat [allcompat];\nend;" ;
 	}
 
 	// #################################################################################
