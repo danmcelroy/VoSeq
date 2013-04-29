@@ -648,9 +648,8 @@ elseif (!$_POST['submitNewIntrons'] && !$_POST['submitNoNew'] && $_GET['geneCode
 
 <table width="800" border="0"> <!-- big parent table -->
 <?php 	// Delete button
-echo "<tr><td><button class='delete' style='background-color:red;color:white' ";
-echo "id='delete_gene' name='" . $geneCode;
-echo "' class='delete'>Delete me</button>";
+echo "<tr><td><button id='delete_gene' name='" . $geneCode;
+echo "'>Delete me</button>";
 echo "</td></tr>";
 ?>
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
@@ -1211,6 +1210,10 @@ else
 	}
 }
 	?>
+
+<script>
+	$('#delete_gene').button({icons:{primary: 'ui-icon-alert'}}).addClass('ui-state-error');
+</script>
 	
 </body>
 </html>
