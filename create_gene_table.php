@@ -76,7 +76,7 @@ echo "<div id=\"content\">";
 <b>You can create a MS Excel table of genes/alignments for a certain dataset or list of taxa. <br /> 
 Instead of typing your specimen codes in the text area below, you could select a Taxonset  
 (provided that it has been set <a href="admin/add_taxonset.php">here</a>).<br /></br>
-This can only be done for aligned genes/alignements!</br>
+This can only be done for aligned genes/alignments!</br>
 - Parsimony informative sites will only be calculated for datasets of more than 3 taxa!</br>
 - Variable and conservative sites will only be calculated for datasets of more than 1 taxa!</br></br>
 This table will be ready to attach to a manuscript for publication.</b>
@@ -93,7 +93,7 @@ This table will be ready to attach to a manuscript for publication.</b>
 					<td class="label">
 						Choose your field delimitor:
 					</td>
-					<td class="field">
+					<td class="field4">
 					<table border="0">
 						<tr>
 						<td>
@@ -105,7 +105,7 @@ This table will be ready to attach to a manuscript for publication.</b>
 					<td class="label">
 						Choose your decimal sign:
 					</td>
-					<td class="field">
+					<td class="field4">
 					<table border="0">
 						<tr>
 						<td>
