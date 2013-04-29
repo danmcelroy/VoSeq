@@ -160,6 +160,7 @@ gh-pages:
 	rm -rf ../static  ../_static
 	rm -rf build 
 	git checkout master source
+	git checkout Makefile
 	make html
 	mv -v build/html/* ../
 	mv ../_images ../images 
