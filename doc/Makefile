@@ -174,7 +174,7 @@ gh-pages:
 	sed -i 's/_images/images/g' ../news.html
 	sed -i 's/_sources/sources/g' ../news.html
 	sed -i 's/_sources/sources/g' ../news.html
-	sed -i 's/<\/head>/<!--[if lt IE 9]\n<script src="_static\/js\/html5shiv.js"><\/script>\n<![endif]-->\n<\/head>/g' ../*html
+	sed -i 's/<\/head>/<!--[if lt IE 9]\n<script src="static\/js\/html5shiv.js"><\/script>\n<![endif]-->\n<\/head>/g' ../*html
 	git add ../images/*
 	git add ../sources/*
 	git add ../static/*
