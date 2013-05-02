@@ -160,6 +160,7 @@ gh-pages:
 	rm -rf ../static  ../_static
 	rm -rf build 
 	git checkout master source
+	git checkout Makefile
 	make html
 	mv -v build/html/* ../
 	mv ../_images ../images 
@@ -173,10 +174,14 @@ gh-pages:
 	sed -i 's/_images/images/g' ../news.html
 	sed -i 's/_sources/sources/g' ../news.html
 	sed -i 's/_sources/sources/g' ../news.html
-	git add ../images
-	git add ../sources
-	git add ../static
+	sed -i 's/<\/head>/<!--[if lt IE 9]\n<script src="_static\/js\/html5shiv.js"><\/script>\n<![endif]-->\n<\/head>/g' ../*html
+	git add ../images/*
+	git add ../sources/*
+	git add ../static/*
 	git add ../index.html
 	git add ../news.html
+	git add ../*html
+	git add ../*js
+	git add ../*inv
 	git commit -am "Generated gh-pages for `git log master -1 --pretty=short --abbrev-commit`" && git push origin gh-pages
 	git checkout master
