@@ -382,7 +382,7 @@ echo "<div id=\"content\">";
 										while( $row1 = mysql_fetch_object($result1) ) {
 											$table .= "<td class='field2' align=\"center\"";
 											if ($i == 1){ $table .= "style=\"background-color: #FFF8C6;\"";}
-											$table .= ">" . strlen(str_replace("?" , "" , $row1->sequences)) . "</td>";
+											$table .= ">" . strlen(str_replace("?" , "" , morph_mult_count($row1->sequences,$gene,"X"))) . "</td>";
 										}
 									}
 									else { 

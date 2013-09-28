@@ -86,31 +86,59 @@ function nucfreqs($sequence) { // gives array with numbers for occurrences of ea
 	$freqvalues = array_count_values($sequence_array);
 	return $freqvalues;
 }
-function nuc_chars($nuc_count_array){ // calculates numbers for a nuc_count array
-	$nchars = $nuc_count_array['A'] + $nuc_count_array['C'] + $nuc_count_array['T'] + $nuc_count_array['G'];
+function nuc_chars($nuc_count_array, $ncgenetype){ // calculates numbers for a nuc_count array
 	$totalchars = array_sum($nuc_count_array);
+	if ($ncgenetype == 'morphology') {
+		$nchars = $nuc_count_array['?'] + $nuc_count_array['N'] + $nuc_count_array['-'] + $nuc_count_array['n'];
+		$nchars = $totalchars - $nchars;
+	}
+	else{
+		$nchars = $nuc_count_array['A'] + $nuc_count_array['C'] + $nuc_count_array['T'] + $nuc_count_array['G'] + $nuc_count_array['U'];
+	}
 	$dcomp = $nchars/$totalchars;
 	//$table1[$geneCode][] = $dcomp;
 	$missingchars = $totalchars - $nchars;
 	return array($totalchars, $nchars, $missingchars);
 }
-function PIchars ($sequence_arr) { // gives frequencies of variable, PI and conserved chars for a set of sequences
-	$length_seq = count(preg_split('#(?<=.)(?=.)#s', $sequence_arr[0]));
+function PIchars ($sequence_arr, $PIgene) { // gives frequencies of variable, PI and conserved chars for a set of sequences
+	//$length_seq = count(preg_split('#(?<=.)(?=.)#s', $sequence_arr[0]));
+	ob_start();//Hook output buffer - disallows web printing of file info...
+	include'../conf.php';
+	ob_end_clean();//Clear output buffer//includes
+	$length_seq = strlen($sequence_arr[0]);
 	$V = $C = $PI = 0;
 	for ($i=0;$i <= $length_seq; $i++){
 		$prfreqs = $cleaned_pfreqs = $cleaned_pfreqs2 = $posarr = array();
 		foreach ($sequence_arr as $ind_seq) {
-			$sarr = preg_split('#(?<=.)(?=.)#s', $ind_seq); // making sequence/nucleotide array
+			$ind_seq = str_replace("0","§",$ind_seq);
+			$sarr = preg_split('#(?<=.)(?=.)#s', $sarr0); // making character array
 			$posarr[] = $ind_seq[$i];
 		}
 		$pfreqs = array_count_values($posarr);
-		foreach (array('A', 'T', 'C', 'G') as $base){
-			if ($pfreqs[$base] > 0){ 
-				$cleaned_pfreqs[$base] = $pfreqs[$base];
+		$PIquery = "SELECT genetype FROM ". $p_ . "genes WHERE geneCode='$PIgene' AND genetype='morphology'";
+		$PIresult = mysql_query($PIquery) or die("Error in query: $PIquery. " . mysql_error());
+		// if records present
+		if( mysql_num_rows($PIresult) > 0 ) {
+			foreach ($pfreqs as $base => $value){
+				if ($base != "?" && $base != "-" && $base != "N" && $base != "n"){
+					if ($value > 0) {
+						$cleaned_pfreqs[$base] = $value;
+					}
+					if ($value > 1) {
+						$cleaned_pfreqs2[$base] = $value;
+					}
+				}
 			}
-			if ($pfreqs[$base] > 1){ 
-				$cleaned_pfreqs2[$base] = $pfreqs[$base];
-			}
+		}
+		else{
+			 foreach (array('A', 'T', 'C', 'G', 'U') as $base){
+				  if ($pfreqs[$base] > 0){ 
+					  $cleaned_pfreqs[$base] = $pfreqs[$base];
+				  }
+				  if ($pfreqs[$base] > 1){ 
+					  $cleaned_pfreqs2[$base] = $pfreqs[$base];
+				  }
+			 }
 		}
 		$cleaned_length = array_sum($cleaned_pfreqs);
 		if (count($cleaned_pfreqs) < 2) {$C = $C+1;}
@@ -119,6 +147,7 @@ function PIchars ($sequence_arr) { // gives frequencies of variable, PI and cons
 			else{ $V=$V+1;}
 		
 		}
+	unset($prfreqs,$cleaned_pfreqs,$cleaned_pfreqs2,$posarr,$cleaned_pfreqsold,$cleaned_pfreqs2old);
 	}
 	$V = $V/$length_seq;
 	$C = $C/$length_seq;
@@ -382,6 +411,7 @@ else{
 				if( mysql_num_rows($result_b) > 0 ) {
 					while( $row_b = mysql_fetch_object($result_b) ) {
 						$seq = $row_b->sequences;
+						$seq = morph_mult_count ($seq, $geneCode, "?");
 						if (strlen($charset_count[$geneCode] < strlen($seq))){ // checking for too long sequence
 							$errorList[] = "The $geneCode sequence of $item is longer (". strlen($seq) . ">" . $charset_count[$geneCode] .")that the specified gene length!
 							</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please edit gene length or check the sequence";
@@ -528,11 +558,19 @@ else{
 				$intrOn = "on";
 			}
 		}
+		// check if only morphology data
+		$gtypes = array("nuclear","mitochondrial","plastid","ribosomal");
+		$molOn = 'no';
+		foreach ($geneCodes as $gcpc){
+			if ($geneinfo_array[$gcpc]['genetype'] != 'morphology'){
+				$molOn = "on";
+			}
+		}
 		// headers
 		$table1 = array();
-		$table1['headers'][] = "Gene";
+		$table1['headers'][] = "Data set";
 		if ($cpon == "on") {$table1['headers'][] = "pos.";}
-		$table1['headers'][] = "Gene type";
+		$table1['headers'][] = "Data type";
 		$table1['headers'][] = "Length";
 		$table1['headers'][] = "Dataset completion (%)";
 		
@@ -541,10 +579,13 @@ else{
 			if (count($codes) > 3){$table1['headers'][] = "Pars. Inf.(%)";}
 			$table1['headers'][] = "Conserved (%)";
 		}
-		$table1['headers'][] = "Freq. A (%)";
-		$table1['headers'][] = "Freq. T (%)";
-		$table1['headers'][] = "Freq. C (%)";
-		$table1['headers'][] = "Freq. G (%)";
+		
+		if ($molOn == 'on'){
+			$table1['headers'][] = "Freq. A (%)";
+			$table1['headers'][] = "Freq. T/U (%)";
+			$table1['headers'][] = "Freq. C (%)";
+			$table1['headers'][] = "Freq. G (%)";
+		}
 		if($intrOn == 'on'){ 
 			$table1['headers'][] = "Introns (n)";
 			$table1['headers'][] = "Tot. intron length (bp)";
@@ -558,19 +599,26 @@ else{
 			if ($cpon == "on") {$table1[$geneCode][] = "";}
 			$table1[$geneCode][] = $geneinfo_array[$geneCode]['genetype'];
 			$table1[$geneCode][] = $geneinfo_array[$geneCode]['length'];
-			$capt_array = nuc_chars($geneinfo_array[$geneCode]['tot_count']);
+			$capt_array = nuc_chars($geneinfo_array[$geneCode]['tot_count'], $geneinfo_array[$geneCode]['genetype']);
 			$table1[$geneCode][] = number_format(round(($capt_array[1] / $capt_array[0])*100,1), 2, $decimal, '');
 			
 			if (count($codes) > 1){
-				$capt_array_PI = PIchars($geneinfo_array[$geneCode]['tot']);
+				$capt_array_PI = PIchars($geneinfo_array[$geneCode]['tot'],$geneCode);
 				$table1[$geneCode][] = number_format(round($capt_array_PI[0]*100, 2), 2, $decimal, '');
 				if (count($codes) > 3){$table1[$geneCode][] = number_format(($capt_array_PI[1]*100), 2, $decimal, '');}
 				$table1[$geneCode][] = number_format(100-round($capt_array_PI[0]*100, 2), 2, $decimal, '');
 			}
-			$table1[$geneCode][] = number_format(($geneinfo_array[$geneCode]['tot_count']['A'] / $capt_array[1])*100, 2, $decimal, '');
-			$table1[$geneCode][] = number_format(($geneinfo_array[$geneCode]['tot_count']['T'] / $capt_array[1])*100, 2, $decimal, '');
-			$table1[$geneCode][] = number_format(($geneinfo_array[$geneCode]['tot_count']['C'] / $capt_array[1])*100, 2, $decimal, '');
-			$table1[$geneCode][] = number_format(($geneinfo_array[$geneCode]['tot_count']['G'] / $capt_array[1])*100, 2, $decimal, '');
+			if ($geneinfo_array[$geneCode]['genetype'] != 'morphology'){
+				$table1[$geneCode][] = number_format(($geneinfo_array[$geneCode]['tot_count']['A'] / $capt_array[1])*100, 2, $decimal, '');
+				$table1[$geneCode][] = number_format((($geneinfo_array[$geneCode]['tot_count']['T'] + $geneinfo_array[$geneCode]['tot_count']['U']) / $capt_array[1])*100, 2, $decimal, '');
+				$table1[$geneCode][] = number_format(($geneinfo_array[$geneCode]['tot_count']['C'] / $capt_array[1])*100, 2, $decimal, '');
+				$table1[$geneCode][] = number_format(($geneinfo_array[$geneCode]['tot_count']['G'] / $capt_array[1])*100, 2, $decimal, '');
+			}
+			else {
+				if ($molOn == 'on'){
+					$table1[$geneCode][] = "";$table1[$geneCode][] = "";$table1[$geneCode][] = "";$table1[$geneCode][] = "";
+				}
+			}
 			if($intrOn == 'on'){ 
 				if (isset($geneinfo_array[$geneCode]['intron_info'])){
 					$table1[$geneCode][] = $geneinfo_array[$geneCode]['intron_info'][2];
@@ -594,17 +642,17 @@ else{
 					$table1[$i][] = $i;
 					$table1[$i][] = "";
 					$table1[$i][] = count($geneinfo_array[$geneCode][$codes[0]][$i]);
-					$capt_array = nuc_chars($geneinfo_array[$geneCode][$i."_count"]);
+					$capt_array = nuc_chars($geneinfo_array[$geneCode][$i."_count"],$geneinfo_array[$geneCode]['genetype']);
 					$table1[$i][] = number_format(($capt_array[1] / $capt_array[0])*100, 2, $decimal, '');
 					
 					if (count($codes) > 1){
-						$capt_array_PI = PIchars($geneinfo_array[$geneCode][$i]);
+						$capt_array_PI = PIchars($geneinfo_array[$geneCode][$i],$geneCode);
 						$table1[$i][] = number_format(round($capt_array_PI[0]*100,2), 2, $decimal, '');
 						if (count($codes) > 3){$table1[$i][] = number_format($capt_array_PI[1]*100, 2, $decimal, '');}
 						$table1[$i][] = number_format(100-round($capt_array_PI[0]*100, 2), 2, $decimal, '');
 					}
 					$table1[$i][] = number_format(($geneinfo_array[$geneCode][$i."_count"]['A'] / $capt_array[1])*100, 2, $decimal, '');
-					$table1[$i][] = number_format(($geneinfo_array[$geneCode][$i."_count"]['T'] / $capt_array[1])*100, 2, $decimal, '');
+					$table1[$i][] = number_format((($geneinfo_array[$geneCode][$i."_count"]['T'] + $geneinfo_array[$geneCode][$i."_count"]['U']) / $capt_array[1])*100, 2, $decimal, '');
 					$table1[$i][] = number_format(($geneinfo_array[$geneCode][$i."_count"]['C'] / $capt_array[1])*100, 2, $decimal, '');
 					$table1[$i][] = number_format(($geneinfo_array[$geneCode][$i."_count"]['G'] / $capt_array[1])*100, 2, $decimal, '');
 					if($intrOn == 'on'){ 

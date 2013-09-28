@@ -104,7 +104,10 @@ if ($_GET['new'] || $_POST['submitNewIntrons'])
 <tr><td valign="top">
 	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 
-<b>Create a definition for your alignment/gene. Specify "Reading frame" if you want to create datasets by codon positions.</b>
+<b>Create a definition for your alignment/gene.<br>
+You can specify the alignment to contain DNA/RNA from various sources or other types of data - e.g. morphology.<br>
+If you want to be able to create data sets from the alignment later you need to add aligned data and length.<br> 
+Specify "Reading frame" if you want to create datasets by codon positions.</b>
 
 <table width="800" border="0"> <!-- big parent table -->
 <tr><td valign="top">
@@ -141,12 +144,13 @@ if ($_GET['new'] || $_POST['submitNewIntrons'])
 			</td>
 		</tr>
 		<tr>
-			<td class="label">Gene type:</td>
+			<td class="label">Gene/Alignment type:</td>
 			<td class="field" colspan = "5">
 				<input type="radio" name="genetype" value="mitochondrial" <?php if ($genetype == "mitochondrial") { echo " checked "; }?> >mitochondrial 
 				<input type="radio" name="genetype" value="nuclear" <?php if ($genetype == "nuclear") { echo " checked "; }?> >nuclear 
 				<input type="radio" name="genetype" value="ribosomal" <?php if ($genetype == "ribosomal") { echo " checked "; }?> >ribosomal
 				<input type="radio" name="genetype" value="plastid" <?php if ($genetype == "plastid") { echo " checked "; }?> >plastid
+				<input type="radio" name="genetype" value="morphology" <?php if ($genetype == "morphology") { echo " checked "; }?> >morphology<br>
 				<input type="radio" name="genetype" value="other" <?php if ($genetype == "other") { echo " checked "; }?> >other:
 				<input size="16" maxlength="80" type="text" name="genetype_other_name" />
 				</select>
@@ -316,8 +320,13 @@ elseif ($_POST['submitNew']) {
 			$errorList[] = "Invalid entry: <b>Length = \"$length\"</b></br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Length needs to be an integer!";
 			}
 	}
-	else {$length = 'NULL'; $ltest = 'NULL';}
-
+	else {$lengthmorph = $length;$length = 'NULL'; $ltest = 'NULL';}
+	//check if morphology and if aligned with length
+	if ($genetype == "morphology"){
+		if ($aligned == 'no'){
+			$errorList[] = "Morphology is chosen, but <b>aligned</b> is set to 'no'!</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Morphology data needs to be aligned!";
+		}
+	}
 	// delete values if not prot coding or check values if it is
 	if ($protcoding == "no") {
 		$genetic_code = "NULL";
@@ -326,6 +335,10 @@ elseif ($_POST['submitNew']) {
 	else {
 		if ($genetype == 'ribosomal'){
 			$errorList[] = "Invalid entry: <b>Ribosomal genetype AND protein coding has been chosen</b></br>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It doesnt make sense!!";
+		}
+		if ($genetype == 'morphology'){
+			$errorList[] = "Invalid entry: <b>Morphology alignment type AND protein coding has been chosen</b></br>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It doesnt make sense!!";
 		}
 		if ($readingframe != '1' && $readingframe != '2' && $readingframe != '3'){
@@ -357,15 +370,15 @@ elseif ($_POST['submitNew']) {
 
 	// test introns
 	if ($length == 'NULL' && $numIntrons > 0) {
-		$errorList[] = "Invalid entry: <b>Introns have been speciefied but alignment length</br> (or 'aligned=yes') is not set</b></br>
+		$errorList[] = "Invalid entry: <b>Introns have been specified but alignment length</br> (or 'aligned=yes') is not set</b></br>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Go back and edit!!";
 	}
 	if ($numIntrons > 0 && !isset($intron_start)){
-					$errorList[] = "Invalid entry: <b>$numIntrons introns are speciefied</br>but starting nucleotide number(s) is not set</b></br>
+					$errorList[] = "Invalid entry: <b>$numIntrons introns are specified</br>but starting nucleotide number(s) is not set</b></br>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set introns to 0 or specify starting point(s)!";
 	}
 	if ($numIntrons > 0 && !isset($intron_start)){
-					$errorList[] = "Invalid entry: <b>$numIntrons introns are speciefied</br>but ending nucleotide number(s) is not set</b></br>
+					$errorList[] = "Invalid entry: <b>$numIntrons introns are specified</br>but ending nucleotide number(s) is not set</b></br>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set introns to 0 or specify ending point(s)!";
 	}
 	if (isset($intron_start) && isset($intron_end)){
@@ -696,6 +709,7 @@ echo "</td></tr>";
 				<input type="radio" name="genetype" value="nuclear" <?php if ($genetype == "nuclear") { echo " checked "; }?> >nuclear 
 				<input type="radio" name="genetype" value="ribosomal" <?php if ($genetype == "ribosomal") { echo " checked "; }?> >ribosomal
 				<input type="radio" name="genetype" value="plastid" <?php if ($genetype == "plastid") { echo " checked "; }?> >plastid
+				<input type="radio" name="genetype" value="morphology" <?php if ($genetype == "morphology") { echo " checked "; }?> >morphology<br>
 				<input type="radio" name="genetype" value="other" <?php if ($genetype == "other") { echo " checked "; }?> >other:
 				<input size="16" maxlength="80" type="text" name="genetype_other_name" />
 				</select>
@@ -869,7 +883,12 @@ elseif ($_POST['submitNoNew']) {
 			}
 	}
 	else {$length = 'NULL'; $ltest = 'NULL';}
-
+	//check if morphology and if aligned
+	if ($genetype == "morphology"){
+		if ($aligned == 'no'){
+			$errorList[] = "Morphology is chosen, but <b>aligned</b> is set to 'no'!</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Morphology data needs to be aligned!";
+		}
+	}
 	// delete values if not prot coding or check values if it is
 	if ($protcoding == "no") {
 		$genetic_code = "NULL";
@@ -878,6 +897,10 @@ elseif ($_POST['submitNoNew']) {
 	else {
 		if ($genetype == 'ribosomal'){
 			$errorList[] = "Invalid entry: <b>Ribosomal genetype AND protein coding has been chosen</b></br>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It doesnt make sense!!";
+		}
+		if ($genetype == 'morphology'){
+			$errorList[] = "Invalid entry: <b>Morphology alignment type AND protein coding has been chosen</b></br>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It doesnt make sense!!";
 		}
 		if ($readingframe != '1' && $readingframe != '2' && $readingframe != '3'){

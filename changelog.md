@@ -1,6 +1,29 @@
 #VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 ##Changelog:
+* Version 1.7.1
+	- [Tobias 2013-09-11] Included a merge databases option under admin, that let you
+							add values from a database backup to your existing database.
+							This will not overwrite anything in your old database and
+							will only add non-problematic information to your current db.
+							E.g. if a genecode or voucher already exist but is specified
+							differently between databases, these and their related values
+							(sequences/primers) will not be added. 
+							After the merge you will recieve an output stating what was 
+							and what was not added to the database (and why).
+						 Fixed a bug in the import database script that didnt check for 
+							prefix names, resulting in wrongly named new database tables.
+	- [Tobias 2013-08-30] Included functions to store aligned morphological data as a
+							gene/alignment (i.e. a string of numbers,e.g. 01100110) 
+							representing character states for a voucher. A morphology
+							alignment need to be aligned!! Multistate characters can be 
+							introduced within brackets, i.e. (),{},[] as well as with or 
+							without separating comma. E.g. [01] as in TNT or {0,1,2} as 
+							in MrBayes. These will be reformed when creating datasets.
+						 Datasets, gene/alignment tables and so on can now be made to
+							include morpholocical data.
+						 Fixed a bug in local blast for windows, that tried to read from
+							the wrong database file.
 * Version 1.7.0
 	- [Tobias 2013-04-24] Added a geneset creator in similar style as for taxonsets.
 							Genesets can be now used for creating tables and datasets.
@@ -12,7 +35,7 @@
 							a database manager to create temporal account names for new 
 							users, who themselves can change their info later.
 	- [Tobias 2013-04-24] Layout fixes. E.g. mainpage gene viewer.
-    - [Carlos 2013-04-11] Fixing installation script 4. No need to check for writtable 
+    - [Carlos 2013-04-11] Fixing installation script 4. No need to check for writeable 
                             dojo folder. Checking dojo_data instead.
 
 * Version 1.6.0

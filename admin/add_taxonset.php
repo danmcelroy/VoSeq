@@ -22,6 +22,7 @@ ob_start();//Hook output buffer - disallows web printing of file info...
 include'../conf.php';
 ob_end_clean();//Clear output buffer
 include 'adfunctions.php'; // administrator functions
+include '../functions.php'; // normal functions
 include 'admarkup-functions.php';
 include '../includes/validate_coords.php';
 // set increased time limit for larger calculations -> 1000 seconds
@@ -292,6 +293,7 @@ elseif ($_GET['new'] || $_POST['sort'] || $_POST['mark'] || $_POST['unmark']) {
 	$gCresult = mysql_query($gCquery) or die("Error in query: $query. " . mysql_error());
 	// if records present
 	$geneCodes_array = array();
+	$geneCodes_types_array = array();
 	if( mysql_num_rows($gCresult) > 0 ) {
 		while( $row = mysql_fetch_object($gCresult) ) {
 			$geneCodes_array[] = $row->geneCode;
@@ -376,7 +378,6 @@ elseif ($_GET['new'] || $_POST['sort'] || $_POST['mark'] || $_POST['unmark']) {
 			$code_info_array = array_merge($cia_yes, $cia_genesort, $cia_no);
 		}
 	}unset($line);
-
 	// begin HTML page content
 	echo "<div id=\"content_wide\">";
 	?>
@@ -607,7 +608,7 @@ elseif ($_GET['new'] || $_POST['sort'] || $_POST['mark'] || $_POST['unmark']) {
 										while( $row1 = mysql_fetch_object($result1) ) {
 											$table .= "<td class='field2' align=\"center\"";
 											if ($i == 1){ $table .= "style=\"background-color: #FFF8C6;\"";}
-											$table .= ">" . strlen(str_replace("?" , "" , $row1->sequences)) . "</td>";
+											$table .= ">" . strlen(str_replace("?" , "" , morph_mult_count($row1->sequences,$gene,"X"))) . "</td>";
 										}
 									}
 									else { 
@@ -1249,7 +1250,7 @@ elseif (!$_POST['submitNoNew'] && $_GET['taxonset_name'] || $_POST['sort2'] || $
 										while( $row1 = mysql_fetch_object($result1) ) {
 											$table .= "<td class=\"field2\" align=\"center\"";
 											if ($i == 1){ $table .= "style=\"background-color: #FFF8C6;\"";}
-											$table .= ">" . strlen(str_replace("?" , "" , $row1->sequences)) . "</td>";
+											$table .= ">" . strlen(str_replace("?" , "" , morph_mult_count($row1->sequences,$gene,"X"))) . "</td>";
 										}
 									}
 									else { 
