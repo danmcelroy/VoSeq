@@ -288,7 +288,7 @@ function getSeqs($code, $host, $user, $pass, $db, $p_) {
 		mysql_set_charset("utf8");
 	}
 	// generate and execute query
-	$query  = "SELECT geneCode, CHAR_LENGTH(sequences) AS mylen, (2*CHAR_LENGTH(sequences) - CHAR_LENGTH(REPLACE(sequences, '?', '')) - CHAR_LENGTH(REPLACE(sequences, '-', ''))) AS amb, LEFT((labPerson),8) AS labPerson, accession FROM " . $p_ . "sequences WHERE code='$code' ORDER BY geneCode";
+	$query  = "SELECT geneCode, sequences, LEFT((labPerson),8) AS labPerson, accession FROM " . $p_ . "sequences WHERE code='$code' ORDER BY geneCode";
 	
 	$result  = mysql_query($query)  or die("Error in query: $query.  " . mysql_error());
 	ob_start();//Hook output buffer - disallows web printing of file info...
@@ -308,8 +308,13 @@ function getSeqs($code, $host, $user, $pass, $db, $p_) {
 			else {
 				echo "<td class=\"field4\"><a href=\"sequences.php?code=". $code . "&amp;geneCode=" . $row->geneCode . "\">" . $row->geneCode . "</a></td>";
 			}
-			echo "<td class=\"field4\">" . $row->mylen . "</td>";
-			echo "<td class=\"field4\">" . $row->amb . "</td>";
+			//set seq length and amb
+			$mystr = morph_mult_count ($row->sequences, $row->geneCode, "?");
+			$mylen = strlen($mystr);
+			$amb = strlen(str_replace(array("?","-","N"),"",$mystr));
+			$amblen = $mylen - $amb;
+			echo "<td class=\"field4\">" . $mylen . "</td>";
+			echo "<td class=\"field4\">" . $amblen . "</td>";
 			echo "<td class=\"field4\">" . $labPerson . "</td>";
 			echo "<td class=\"field4\"><a href=\"http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Search&amp;db=nucleotide&amp;term=" . $row->accession . "[accn]&amp;doptcmdl=GenBank\" target=\"_blank\">" . $row->accession . "</a>&nbsp;</td>";
 
@@ -634,5 +639,44 @@ function remove_introns ($sequence, $intron_string){
 	foreach ($intron_array as $ia){$array_out[] = $ia;}
 	return $array_out;
 }
-
+// #################################################################################
+// Section: Morphology multistates count
+// If $sequence is of type morphology:
+// Finds morphology multistates in NEXUS and TNT formats (bracket-types= {},[],[]
+// and separated by comma or not), replaces them with $replace char
+// IF: $mmc_replace is = "TNT" or "NEXUS", it replaces the multistates with the proper pattern
+// @input: $sequence, and $gene
+// @output: the new sequence with multistate chars replaced by $mmc_replace
+// #################################################################################
+function morph_mult_count ($mmc_seq, $mmc_gene, $mmc_replace){
+	ob_start();//Hook output buffer - disallows web printing of file info...
+	include'conf.php';
+	ob_end_clean();//Clear output buffer//includes
+	$mmcquery = "SELECT genetype FROM ". $p_ . "genes WHERE geneCode='$mmc_gene' AND genetype='morphology'";
+	$mmcresult = mysql_query($mmcquery) or die("Error in query: $mmcquery. " . mysql_error());
+	// if records present
+	if( mysql_num_rows($mmcresult) > 0 ) {
+		$pattern = "/[\(\{\[][^\]\}\)]*[\]\)\}]/";
+		if ($mmc_replace == 'TNT' || $mmc_replace == 'NEXUS'){
+			preg_match_all($pattern,$mmc_seq, $finds);
+			$finds = array_unique($finds[0]);
+			$pattern2 = array("[","]","(",")","{","}",",");
+			$mod_mmc_seq = $mmc_seq;
+			foreach ($finds as $fnum => $fpatt) {
+				$fpatt2 = str_replace($pattern2,'',$fpatt);
+				if ($mmc_replace == 'TNT') { $freplace = implode("",array("[",$fpatt2,"]"));}
+				elseif ($mmc_replace == 'NEXUS') { 
+					$fpatt2 = preg_replace('#(?<=.)(?=.)#s',",", $fpatt2);
+					$freplace = implode(array("{",$fpatt2,"}"));
+				}
+				$mod_mmc_seq = str_replace($fpatt,$freplace,$mod_mmc_seq);
+			}
+		}
+		else {
+			$mod_mmc_seq = preg_replace($pattern,$mmc_replace,$mmc_seq);
+		}
+	}
+	else{$mod_mmc_seq = $mmc_seq;}
+	return $mod_mmc_seq;
+}
 ?>

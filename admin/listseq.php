@@ -338,11 +338,17 @@ elseif ($_GET['code'] && $_GET['geneCode'] && $_GET['id'])
 																	?></textarea>
 				 </td>
 			</tr>
-			<tr>
+			<tr><?php
+			//set seq length and amb
+			$mystr = morph_mult_count ($row['3'], $row['1'], "?");
+			$mylen = strlen($mystr);
+			$amb = strlen(str_replace(array("?","-","N"),"",$mystr));
+			$amblen = $mylen - $amb;
+			?>
 				<td class="label">No of bp</td>
-				<td class="field"><?php echo $row['0']; ?></td>
+				<td class="field"><?php echo $mylen; ?></td>
 				<td class="label3">Amb.</td>
-				<td class="field2"><?php echo $row['8']; ?></td>
+				<td class="field2"><?php echo $amblen; ?></td>
 			</tr>
 		<!--</form>-->
 		</table>
