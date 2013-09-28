@@ -27,6 +27,7 @@ $errorList = array();
 $geneCodes = array();
 $positions = array();
 $rfs = array();
+$genetypes = array();
 
 // open database connections
 @$connection = mysql_connect($host, $user, $pass) or die('Unable to connect');
@@ -130,7 +131,7 @@ if (isset($_POST['geneCodes2']) && isset($_POST['codes2']) && isset($_POST['gene
 			unset( $gene_positions[$genecode2] ); 
 			$gene_positions[$genecode2] = array('all');
 		}
-		if (!in_array("aas", $gene_positions[$genecode2]) && !in_array("all", $gene_positions[$genecode2])){
+		if ($gene_by_positions[$genecode2] == '123'&& !in_array("all", $gene_positions[$genecode2])){
 			$gene_by_positions[$genecode2] = 'asone';
 		}
 		//get partition-by-which-codon-position
@@ -160,7 +161,7 @@ if (isset($_POST['geneCodes2']) && isset($_POST['codes2']) && isset($_POST['gene
 		foreach ($geneCodes AS $item) { // building full dataset bp count, setting charset_count[] values, 
 									// reading frames and genetic_code
 		//$item = clean_item($item);
-		$gCquery = "SELECT geneCode, length, readingframe, prot_code, genetic_code, aligned FROM ". $p_ . "genes WHERE geneCode='$item'";
+		$gCquery = "SELECT geneCode, length, readingframe, prot_code, genetic_code, aligned, genetype FROM ". $p_ . "genes WHERE geneCode='$item'";
 		$gCresult = mysql_query($gCquery) or die("Error in query: $query. " . mysql_error());
 		// if records present
 		if( mysql_num_rows($gCresult) > 0 ) {
@@ -168,7 +169,8 @@ if (isset($_POST['geneCodes2']) && isset($_POST['codes2']) && isset($_POST['gene
 				$prot_code[$item] = $row->prot_code;
 				$genetic_codes[$item] = $row->genetic_code;
 				$aligned[$item] = $row->aligned;
-				if ($prot_code[$item] != 'yes' && $gene_by_positions[$genecode2] != 'asone'){
+				$genetypes[$item] = $row->genetype;
+				if ($prot_code[$item] != 'yes' && $gene_by_positions[$item] != 'asone'){
 					$errorList[] = "The gene <b>$item</b> has been specified</br> as NOT protein coding!
 									</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									Cannot do else than include all chars as DNA for this!";
@@ -277,7 +279,7 @@ if (isset($_POST['geneCodes2']) && isset($_POST['codes2']) && isset($_POST['gene
 // #################################################################################
 // Section: normal mode - set variables
 // #################################################################################
- else { //if special mode or Amino acid mode is not enabled, checking and building from the beginning
+ else { //if special mode is not enabled, checking and building from the beginning
 	if (isset($_POST['geneCodes'])){
 		foreach ( $_POST['geneCodes'] as $k1=> $c1){ //putting choosen genes into array
 			if ($c1 == 'on')	{
@@ -436,7 +438,7 @@ if (isset($_POST['geneCodes2']) && isset($_POST['codes2']) && isset($_POST['gene
 	foreach ($geneCodes AS $item) { // building full dataset bp count, setting charset_count[] values, 
 									// reading frames and genetic_code
 		//$item = clean_item($item);
-		$gCquery = "SELECT geneCode, length, readingframe, prot_code, genetic_code, aligned FROM ". $p_ . "genes WHERE geneCode='$item'";
+		$gCquery = "SELECT geneCode, length, readingframe, prot_code, genetic_code, aligned, genetype FROM ". $p_ . "genes WHERE geneCode='$item'";
 		$gCresult = mysql_query($gCquery) or die("Error in query: $query. " . mysql_error());
 		// if records present
 		if( mysql_num_rows($gCresult) > 0 ) {
@@ -444,6 +446,7 @@ if (isset($_POST['geneCodes2']) && isset($_POST['codes2']) && isset($_POST['gene
 				$prot_code[$item] = $row->prot_code;
 				$genetic_codes[$item] = $row->genetic_code;
 				$aligned[$item] = $row->aligned;
+				$genetypes[$item] = $row->genetype;
 				if ($format != 'FASTA'){
 					if ($aligned[$item] != 'yes') {
 						if ($aligned[$item] == 'no') { 
@@ -703,15 +706,17 @@ else{
 		echo "Choose wanted codon positions for the separate genes ('all' will override other choices):";
 		echo '<br><ul></td></tr>';
 		foreach ($geneCodes as $genes) {
+			if ($prot_code[$genes] == 'no'){ $disabled = " disabled";}
+						else {$disabled = ""; }
 			echo "<td>Gene $genes: </td><td>";
 			echo "<input type=\"checkbox\" name=\"gene_positions2[$genes][all]\" checked>all&nbsp;&nbsp;&nbsp;";
-			echo "<input type=\"checkbox\" name=\"gene_positions2[$genes][1st]\" >1st&nbsp;&nbsp;&nbsp;";
-			echo "<input type=\"checkbox\" name=\"gene_positions2[$genes][2nd]\" >2nd&nbsp;&nbsp;&nbsp;";
-			echo "<input type=\"checkbox\" name=\"gene_positions2[$genes][3rd]\" >3rd&nbsp;&nbsp;&nbsp;";
-			echo "<input type=\"checkbox\" name=\"gene_positions2[$genes][aas]\" >Amino acids&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;";
+			echo "<input type=\"checkbox\" name=\"gene_positions2[$genes][1st]\" $disabled>1st&nbsp;&nbsp;&nbsp;";
+			echo "<input type=\"checkbox\" name=\"gene_positions2[$genes][2nd]\" $disabled>2nd&nbsp;&nbsp;&nbsp;";
+			echo "<input type=\"checkbox\" name=\"gene_positions2[$genes][3rd]\" $disabled>3rd&nbsp;&nbsp;&nbsp;";
+			echo "<input type=\"checkbox\" name=\"gene_positions2[$genes][aas]\" $disabled>Amino acids&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;";
 			echo "<input type=\"radio\" name=\"gene_by_positions2[$genes]\" value=\"asone\" checked>as one&nbsp;&nbsp;&nbsp;";
-			echo "<input type=\"radio\" name=\"gene_by_positions2[$genes]\" value=\"each\">each&nbsp;&nbsp;&nbsp;";
-			echo "<input type=\"radio\" name=\"gene_by_positions2[$genes]\" value=\"123\">12+3&nbsp;&nbsp;&nbsp;";
+			echo "<input type=\"radio\" name=\"gene_by_positions2[$genes]\" value=\"each\"$disabled>each&nbsp;&nbsp;&nbsp;";
+			echo "<input type=\"radio\" name=\"gene_by_positions2[$genes]\" value=\"123\"$disabled>12+3&nbsp;&nbsp;&nbsp;";
 			echo "</td></tr>";
 		}
 		//keeping old values
@@ -845,12 +850,13 @@ else{
 			$aa_or_not[$geneCode] = 'no';
 			// check for introns
 			//if ($ignore_introns == 'yes'){
-				$query_i = "SELECT intron, genetic_code, prot_code FROM ". $p_ . "genes WHERE geneCode='$geneCode'";
+				$query_i = "SELECT intron, genetic_code, prot_code, genetype FROM ". $p_ . "genes WHERE geneCode='$geneCode'";
 				$result_i = mysql_query($query_i) or die("Error in query: $query. " . mysql_error());
 				// if records present
 				if( mysql_num_rows($result_i) > 0 ) {
 					while($row_i = mysql_fetch_object($result_i) ) {
 						$gene_int = $row_i->intron;
+						$genetypes[$geneCode] = $row_i->genetype;
 						if (isset($gene_int) && $gene_int != ''&& $gene_int != 'NULL'){
 							$intron = remove_introns(str_pad("A", $charset_count[$geneCode], "A"),$gene_int );
 							$new_length = $intron[1];
@@ -930,13 +936,19 @@ else{
 						if( mysql_num_rows($result_b) > 0 ) {
 							while( $row_b = mysql_fetch_object($result_b) ) {
 								$seq = $row_b->sequences;
+								// fixing morph multistate
+								if ($genetypes[$geneCode] == 'morphology') { 
+									if ($format == 'TNT' || $format == 'NEXUS'){ $replvar = $format;}
+									else {$replvar = '?';}
+									$seq  = morph_mult_count($seq,$geneCode,$replvar);
+								}
 								//if( $format == "FASTA" ) { // do nothing - just present raw sequences
 										//$seq = "\n" . $seq;
 								if ($ignore_introns == 'yes' && $new_length != 'no'){
 									$seq_i = remove_introns($seq, $gene_int);
 									$seq = $seq_i[0];
 								}
-								if ($ignore_introns == 'no' && $new_length != 'no' && $format != "FASTA" && $format != "TNT"){
+								if ($ignore_introns == 'no' && $new_length != 'no' && $format != "FASTA"){ // && $format != "TNT"){
 									$seq_i = remove_introns($seq, $gene_int);
 									$seq = $seq_i[0];
 									for ($i = 1; $i <= $seq_i[2]; $i++){
@@ -947,8 +959,8 @@ else{
 								// }
 								//else {						// do something
 								if ( isset($gene_positions)){ $positions = $gene_positions[$geneCode];} // if special mode
-								if ($format!="FASTA" && strlen($charset_count[$geneCode] < strlen($seq))){ // checking for too long sequence
-									$errorList[] = "The $geneCode sequence of $item is longer (". strlen($seq) . ">" . $charset_count[$geneCode] .")that the specified gene length!
+								if ($format!="FASTA" && strlen($charset_count[$geneCode] < strlen(morph_mult_count($seq, $geneCode, "?")))){ // checking for too long sequence
+									$errorList[] = "The $geneCode sequence of $item is longer (". strlen($seq) . ">" . $charset_count[$geneCode] .") than the specified gene length!
 									</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please edit gene length or check the sequence";
 								}
 								elseif (in_array("aas", $positions) &&  isset($genetic_codes) && $prot_code[$geneCode] == 'yes') {
@@ -1003,7 +1015,7 @@ else{
 								$seq = "\n";
 							}
 							else {
-								if ($ignore_introns == 'no' && $new_length != 'no' && $format != "FASTA" && $format != "TNT"){
+								if ($ignore_introns == 'no' && $new_length != 'no' && $format != "FASTA"){// && $format != "TNT"){
 									$seq_i = remove_introns($seq, $gene_int);
 									$seq = $seq_i[0];
 									for ($i = 1; $i <= $seq_i[2]; $i++){
@@ -1026,7 +1038,6 @@ else{
 			}
 		}
 		unset($item);
-	
 		// #################################################################################
 		// Section: setting bp numbers for partitions if needed
 		// #################################################################################
@@ -1039,12 +1050,15 @@ else{
 				foreach ($seqout_array as $g => $s) { 
 					if (in_array("aas", $positions) || $aa_or_not[$g] == 'yes') {$charset_count[$g] = 0; }
 					foreach ($s as $n) {
-						if (strlen($n) > $charset_count[$g] ) { $charset_count[$g] = strlen($n);}
+						if (strlen($n) > $charset_count[$g] ) { 
+							if (strlen(morph_mult_count($n,$g,"?")) > $charset_count[$g]) { $charset_count[$g] = strlen(morph_mult_count($n,$g,"?"));}
+						}
 					}
 					if ($aa_or_not[$g] == 'yes') { $datatype_mixed[] = "protein:$datatype_mixed_sum-". ($charset_count[$g]+$datatype_mixed_sum-1);}
+					elseif ($genetypes[$g] == 'morphology' && count(array_unique($genetypes)) > 1) {$datatype_mixed[] = "standard:$datatype_mixed_sum-". ($charset_count[$g]+$datatype_mixed_sum-1);}
 					else {$datatype_mixed[] = "dna:$datatype_mixed_sum-". ($charset_count[$g]+$datatype_mixed_sum-1);}
 					$datatype_mixed_sum = $charset_count[$g]+$datatype_mixed_sum;
-					if (count($intron_dataset[$g])>0 && $format != "FASTA" && $format != "TNT" && $ignore_introns == 'no') {
+					if (count($intron_dataset[$g])>0 && $format != "FASTA" && $ignore_introns == 'no') { //&& $format != "TNT" 
 							$i = 1;
 							foreach ($intron_lengths[$g] as $il) {
 								$charset_count[$g."_".$i] = $il;
@@ -1075,8 +1089,11 @@ else{
 			// Section: Build output - intro lines
 			// #################################################################################
 			if( $format == "TNT" ) {  // creating intro lines
-				if (in_array("aas", $positions)) {
+				if (in_array('yes',$aa_or_not)) {
 					$output = "nstates prot;\nxread\n$bp $number_of_taxa\n";
+				}
+				elseif (in_array('morphology',$genetypes) && count(array_unique($genetypes)) == 1){
+					$output = "nstates numeric;\nxread\n$bp $number_of_taxa\n";
 				}
 				else {
 					$output = "nstates dna;\nxread\n$bp $number_of_taxa\n";
@@ -1092,18 +1109,30 @@ else{
 			else {
 				$which_nex_partitions = array();
 				$nex_partitions = array();
-				if (in_array("aas", $positions) || in_array("yes", $aa_or_not)) {
-					if (!in_array("no", $aa_or_not) && $ignore_introns == 'yes'){
-						$output = "#NEXUS\n\nBEGIN DATA;\nDIMENSIONS NTAX=$number_of_taxa NCHAR=$bp;\nFORMAT INTERLEAVE DATATYPE=PROTEIN MISSING=? GAP=-;\nMATRIX\n";
+				if ( in_array('morphology',$genetypes) && count(array_unique($genetypes)) == 1) {
+					$output = "#NEXUS\n\nBEGIN DATA;\nDIMENSIONS NTAX=$number_of_taxa NCHAR=$bp;\nFORMAT INTERLEAVE DATATYPE=STANDARD MISSING=? GAP=-;\nMATRIX\n";
+				}
+				else{
+					if (in_array("aas", $positions) && in_array("yes", $aa_or_not)) {
+						if (!in_array("no", $aa_or_not) && $ignore_introns == 'yes'){
+							$output = "#NEXUS\n\nBEGIN DATA;\nDIMENSIONS NTAX=$number_of_taxa NCHAR=$bp;\nFORMAT INTERLEAVE DATATYPE=PROTEIN MISSING=? GAP=-;\nMATRIX\n";
+						}
+						else {
+							$output = "#NEXUS\n\nBEGIN DATA;\nDIMENSIONS NTAX=$number_of_taxa NCHAR=$bp;\nFORMAT INTERLEAVE DATATYPE=";
+							$output .= "mixed(". implode(",",$datatype_mixed) .") ";
+							$output .= "MISSING=? GAP=-;\nMATRIX\n";
+						}
 					}
 					else {
-						$output = "#NEXUS\n\nBEGIN DATA;\nDIMENSIONS NTAX=$number_of_taxa NCHAR=$bp;\nFORMAT INTERLEAVE DATATYPE=";
-						$output .= "mixed(". implode(",",$datatype_mixed) .") ";
-						$output .= "MISSING=? GAP=-;\nMATRIX\n";
+						if ( in_array('morphology',$genetypes)) {
+							$output = "#NEXUS\n\nBEGIN DATA;\nDIMENSIONS NTAX=$number_of_taxa NCHAR=$bp;\nFORMAT INTERLEAVE DATATYPE=";
+							$output .= "mixed(". implode(",",$datatype_mixed) .") ";
+							$output .= "MISSING=? GAP=-;\nMATRIX\n";
+						}
+						else{
+							$output = "#NEXUS\n\nBEGIN DATA;\nDIMENSIONS NTAX=$number_of_taxa NCHAR=$bp;\nFORMAT INTERLEAVE DATATYPE=DNA MISSING=? GAP=-;\nMATRIX\n";
+						}
 					}
-				}
-				else {
-					$output = "#NEXUS\n\nBEGIN DATA;\nDIMENSIONS NTAX=$number_of_taxa NCHAR=$bp;\nFORMAT INTERLEAVE DATATYPE=DNA MISSING=? GAP=-;\nMATRIX\n";
 				}
 			}
 			// #################################################################################
@@ -1131,7 +1160,11 @@ else{
 					}
 
 					if( $format == "TNT" ) {
-						if (in_array("aas", $positions)) {$output .= "\n&[PROTEIN]\n";}
+						if ($aa_or_not[$geCo] == 'yes') {
+							$output .= "\n&[protein]\n";
+						}
+						//elseif ($gene_positions[$geCo] == 'aas]'){$output .= "\n&[PROTEIN]\n";}
+						elseif ($genetypes[$geCo] == 'morphology'){$output .= "\n&[numeric]\n";}
 						else{ $output .= "\n&[dna]\n"; }
 					}
 					elseif( $format == "FASTA" && count($geneCodes) == 1) {	
@@ -1160,10 +1193,11 @@ else{
 							}
 						}
 					if ($format == 'PHYLIP') {$output .= "\n";}
-					if (count($intron_dataset[$geCo]) > 0 && $ignore_introns == 'no' && $format != "FASTA" && $format != "TNT") {
+					if (count($intron_dataset[$geCo]) > 0 && $ignore_introns == 'no' && $format != "FASTA"){// && $format != "TNT") {
 						$Intr = 1;
 						foreach ($intron_dataset[$geCo] as $geIn){
 							if ($format == "NEXUS") {$output .= "\n[". $geCo . "_intron$Intr" . "]\n";}
+							if ($format == "TNT") {$output .= "\n&[dna]\n";}
 							foreach ($codes AS $item) {
 								$output .= $taxout_array[$geCo][$item];
 								$output .= $geIn[$item] . "\n";
@@ -1190,7 +1224,7 @@ else{
 				$positions = $gene_positions[$gCPHY]; 
 				$by_positions = $gene_by_positions[$gCPHY];
 			}
-			if (count($positions) == '1' && !in_array("all", $positions)) {
+			if (count($positions) == 1 && !in_array("all", $positions)) {
 				$by_positions = "asone";
 			}
 			//setting frequency of codon positions
@@ -1258,7 +1292,8 @@ else{
 				// }
 			// }
 			if ($by_positions == "asone" ){ //for simple gene partitions
-				if (in_array("all", $positions)){
+				if ($genetypes[$gCPHY] == 'morphology'){$phy_partitions[] = "MULTI, $gCPHY". " = $phybp-$phybp_end";}
+				elseif (in_array("all", $positions)){
 					$phy_partitions[] = "DNA, $gCPHY = $phybp-$phybp_end";
 				}
 				elseif (in_array("aas", $positions)){
@@ -1333,11 +1368,13 @@ else{
 			$i = $i+1;
 			//echo "$gCPHY = ".$aa_or_not[$gCPHY]."</br>";
 			if ($aa_or_not[$gCPHY] == 'yes'){ $part_list_sum['full_aa'][] = $i;}
+			elseif ($genetypes[$gCPHY] == 'morphology'){$part_list_sum['full_m'][] = $i;}
 			else { $part_list_sum['full_dna'][] = $i;}
 			if (count($intron_dataset[$gCPHY]) > 0 && $ignore_introns == 'no'){
 				foreach ($intron_lengths[$gCPHY] as $ils) {
 					$i= $i+1;
-					$part_list_sum['full_dna'][] = $i;
+					if ($genetypes[$gCPHY] == 'morphology'){$part_list_sum['full_m'][] = $i;}
+					else {$part_list_sum['full_dna'][] = $i;}
 				}
 			}
 		}
@@ -1348,6 +1385,7 @@ else{
 				if ($aa_or_not[$wnp] == 'yes'){
 					$part_list_sum['special_aa'][] = $i;
 				}
+				elseif ($genetypes[$wnp] == 'morphology'){$part_list_sum['special_m'][] = $i;}
 				else { $part_list_sum['special_dna'][] = $i;}
 			}
 			else { $part_list_sum['special_dna'][] = $i;}
@@ -1403,28 +1441,58 @@ else{
 			$output .= " tratiopr=beta(2.0,1.0)";
 		}
 		$output .= ";\n";
-		if( in_array("yes", $aa_or_not) || in_array("aas", $positions) ) {
-		//print_r ($aa_or_not);
-			if( $which_nex_partitions != $nex_all_partitions ) {
-				$output .= "prset applyto=(". implode(',', $part_list_sum['special_aa'])  ." [". implode(',', $part_list_sum['full_aa'])  ."]) aamodelpr=mixed;\n";
-				$output .= "lset  applyto=(". implode(',', $part_list_sum['special_aa'])  ." [". implode(',', $part_list_sum['full_aa'])  ."]) rates=gamma [invgamma];\n";
-				if (in_array("no", $aa_or_not) || $ignore_introns == 'no' && count($intron_lengths) > 0){
-					$output .= "lset  applyto=(". implode(',', $part_list_sum['special_dna']) ." [". implode(',', $part_list_sum['full_dna']) ."]) nst=mixed rates=gamma [invgamma];\n";
-					$output .= "unlink statefreq=(". implode(',', $part_list_sum['special_dna']) ." [". implode(',', $part_list_sum['full_dna']) ."]);\n";
-					}
+		if (!in_array('morphology',$genetypes) && !in_array("yes", $aa_or_not)) {
+			$output .= "lset applyto=(all) nst=mixed rates=gamma [invgamma];\n";
+			$output .= "unlink statefreq=(all);\n";
+		}
+		else{
+			if (in_array('morphology',$genetypes)){
+				if( $which_nex_partitions != $nex_all_partitions && $part_list_sum['special_m'] > 0) {
+					$output .= "lset applyto=(". implode(',', $part_list_sum['special_m'])  ." [". implode(',', $part_list_sum['full_m'])  ."]) coding=variable rates=gamma;\n";
+				}
+				else{
+					$output .= "lset  applyto=(". implode(',', $part_list_sum['full_m'])  .") coding=variable rates=gamma;\n";
+				}
 			}
-			else { 
-				$output .= "prset applyto=(". implode(',', $part_list_sum['full_aa']) .") aamodelpr=mixed;\n";
-				$output .= "lset  applyto=(". implode(',', $part_list_sum['full_aa'])  .") rates=gamma [invgamma];\n";
-				if (in_array("no", $aa_or_not) || $ignore_introns == 'no' && count($intron_lengths) > 0 ){
+			if( in_array("yes", $aa_or_not) || in_array("aas", $positions) ) {
+			//print_r ($aa_or_not);
+				if( $which_nex_partitions != $nex_all_partitions ) {
+					$output .= "prset applyto=(". implode(',', $part_list_sum['special_aa'])  ." [". implode(',', $part_list_sum['full_aa'])  ."]) aamodelpr=mixed;\n";
+					$output .= "lset  applyto=(". implode(',', $part_list_sum['special_aa'])  ." [". implode(',', $part_list_sum['full_aa'])  ."]) rates=gamma [invgamma];\n";
+					if (in_array("no", $aa_or_not) || $ignore_introns == 'no' && count($intron_lengths) > 0){
+						$output .= "lset  applyto=(". implode(',', $part_list_sum['special_dna']) ." [". implode(',', $part_list_sum['full_dna']) ."]) nst=mixed rates=gamma [invgamma];\n";
+						$output .= "unlink statefreq=(". implode(',', $part_list_sum['special_dna']) ." [". implode(',', $part_list_sum['full_dna']) ."]);\n";
+					}
+				}
+				else { 
+					$output .= "prset applyto=(". implode(',', $part_list_sum['full_aa']) .") aamodelpr=mixed;\n";
+					$output .= "lset  applyto=(". implode(',', $part_list_sum['full_aa'])  .") rates=gamma [invgamma];\n";
+					if (in_array("no", $aa_or_not) || $ignore_introns == 'no' && count($intron_lengths) > 0 ){
+						if ($part_list_sum['full_dna'][0] != ""){
+							$output .= "lset  applyto=(". implode(',', $part_list_sum['full_dna']) .") nst=mixed rates=gamma [invgamma];\n";
+							$output .= "unlink statefreq=(". implode(',', $part_list_sum['full_dna']) .");\n";
+						}
+					}
+				}
+			}
+			else{
+				if ($part_list_sum['full_dna'][0] != "" && $part_list_sum['special_dna'] == 0){
 					$output .= "lset  applyto=(". implode(',', $part_list_sum['full_dna']) .") nst=mixed rates=gamma [invgamma];\n";
 					$output .= "unlink statefreq=(". implode(',', $part_list_sum['full_dna']) .");\n";
 				}
+				else{
+					if ($part_list_sum['full_dna'][0] != "" && isset($part_list_sum['special_dna'])){
+						if ($part_list_sum['full_dna'] != $part_list_sum['special_dna']){
+							$output .= "lset  applyto=(". implode(',', $part_list_sum['special_dna']) ." [". implode(',', $part_list_sum['full_dna']) ."]) nst=mixed rates=gamma [invgamma];\n";
+							$output .= "unlink statefreq=(". implode(',', $part_list_sum['special_dna']) ." [". implode(',', $part_list_sum['full_dna']) ."]);\n";
+						}
+						else{
+							$output .= "lset  applyto=(". implode(',', $part_list_sum['full_dna']) .") nst=mixed rates=gamma [invgamma];\n";
+							$output .= "unlink statefreq=(". implode(',', $part_list_sum['full_dna']) .");\n";
+						}
+					}
+				}
 			}
-		}
-		else {
-			$output .= "lset applyto=(all) nst=mixed rates=gamma [invgamma];\n";
-			$output .= "unlink statefreq=(all);\n";
 		}
 		
 		$output .= "unlink shape=(all) revmat=(all) tratio=(all) [pinvar=(all)];\n";

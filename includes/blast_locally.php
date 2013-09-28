@@ -215,11 +215,11 @@ if ( $system == "win" ) {
 	# for some reason it needs to be in the blasts/ folder! 
 	# So we do a "cd" to the folder
 	chdir('blasts');
-	$command = $blast_folder . "blastn.exe\" -query query.fa -db seqfasta_db_all_genes.fa -task blastn -evalue 0.03 -dust no -outfmt 7 -num_alignments 50 -num_descriptions 50 -index_name seqfasta_db_all_genes.00.idx";
+	$command = $blast_folder . "blastn.exe\" -query query.fa -db seqfasta_db_one_gene.fa -task blastn -evalue 0.03 -dust no -outfmt 7 -num_alignments 50 -num_descriptions 50 -index_name seqfasta_db_all_genes.00.idx";
 	exec($command, $output_win) or die("no working");
 
 	# get the alingment blast
-	$command_align = $blast_folder . "blastn.exe\" -query query.fa -db seqfasta_db_all_genes.fa -task blastn -evalue 0.03 -dust no -outfmt 0 -num_alignments 50 -num_descriptions 50 -index_name seqfasta_db_all_genes.00.idx" ; 
+	$command_align = $blast_folder . "blastn.exe\" -query query.fa -db seqfasta_db_one_gene.fa -task blastn -evalue 0.03 -dust no -outfmt 0 -num_alignments 50 -num_descriptions 50 -index_name seqfasta_db_all_genes.00.idx" ; 
 	exec($command_align, $output3);
 	# return to the working folder /includes
 	chdir('..');
