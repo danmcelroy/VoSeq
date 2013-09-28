@@ -136,8 +136,9 @@ else {
 // backup/import table
 echo "<td colspan=2><h2><u>Import/Backup database</u></h2></td></tr>";
 echo "<tr>";
-echo "<td><a id='mysqlimport' href='mysqlimport.php'>Import database</a></td>";
-echo "<td><button id='opener'>Backup database</button></td>";
+echo "<td> <a id='mysqlimport' href='mysqlimport.php'>Import database</a></td>";
+echo "<td><a id='mysqlmerge' href='mysqlmerge.php'>Merge databases</a></td></tr>";
+echo "<tr><td><button id='opener'>Backup database</button></td>";
 echo "</table>"; // end super table
 
 echo "<div id='backup_confirm' title='Backup your MySQL database?'>
@@ -148,7 +149,10 @@ echo "<div id='backup_confirm' title='Backup your MySQL database?'>
 echo "<script>
 		$('#opener').button();
 		$('#mysqlimport').button();
-
+		
+		$('#opener').button();
+		$('#mysqlmerge').button();
+		
 		$('#backup_confirm').dialog({
 			autoOpen: false
 		});

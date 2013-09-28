@@ -19,7 +19,7 @@ include'../login/auth.php';
 ob_start();//Hook output buffer - disallows web printing of file info...
 include'../conf.php';
 ob_end_clean();//Clear output buffer//includes
-
+include'../functions.php';
 // #################################################################################
 // Section: Functions - clean_item() and show_errors()
 // #################################################################################
@@ -257,7 +257,7 @@ foreach ( $lines as $line ) {
 					else {
 						if ( strlen($row1->sequences) > 10 ) {
 						//$geneCodes[$gene] = "X";
-						
+						$row1->sequences = morph_mult_count ($row1->sequences, $gene, "X");
 						 if ($_POST['star'] == 'star' ) {
 							unset($firstbase, $lastbase);
 							if ( $row1->sequences[0] == "?" || $row1->sequences[0] == "N" || $row1->sequences[0] == "n" || $row1->sequences[0] == "-") { $firstbase = "*";}
