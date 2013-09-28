@@ -40,11 +40,13 @@ include_once('../includes/header.php');
 admin_nav();
 
 // scan upload dir and remove files
-$scanfiles = scandir('uploads');
-foreach ($scanfiles as $num => $scanfile){
-	if ($scanfile !="." && $scanfile !=".."){
-		unlink("uploads/".$scanfile);
-	}
+if( is_dir("uploads") ) {
+    $scanfiles = scandir('uploads');
+    foreach ($scanfiles as $num => $scanfile){
+	    if ($scanfile !="." && $scanfile !=".."){
+		    unlink("uploads/".$scanfile);
+        }
+    }
 }
 
 
@@ -139,6 +141,7 @@ uploader.bind('UploadProgress', function(up, file) {
 // my code
 uploader.bind('FileUploaded', function(up, file, resp) {
     var my_json = jQuery.parseJSON(resp.response);
+    console.log(my_json);
     if( my_json.result == null ) {
 		$('filelist').innerHTML = "<div STYLE=\"font-size: 16px;\"><br><br><b>Wait for it... ... ...<b><br><br></div>";
         mysqlmerge(file.name);
