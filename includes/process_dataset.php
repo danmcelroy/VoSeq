@@ -1510,7 +1510,7 @@ else{
 	include_once 'header.php';
 	// print navigation bar
 	nav();
-	$output2 = $output;
+	$output2 = str_replace("\x1F","",$output);
 	if ( $format == "PHYLIP" && count($geneCodes) < 2 && $by_positions == "asone") { unset($phy_partitions); }
 
 

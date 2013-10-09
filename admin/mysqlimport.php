@@ -39,7 +39,13 @@ include_once('../includes/header.php');
 
 admin_nav();
 
-// scan upload dir and remove files
+// scan (and make if nexessary) uploads dir and remove files
+if (is_dir("uploads") == FALSE){
+	if (!mkdir("uploads", 0, true)) {
+		die('Failed to create folder "uploads"');
+	}
+}
+chmod("uploads", 0755);
 $scanfiles = scandir('uploads');
 foreach ($scanfiles as $num => $scanfile){
 	if ($scanfile !="." && $scanfile !=".."){
