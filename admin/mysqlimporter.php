@@ -1,4 +1,20 @@
 <?php
+// ############################################################################
+// ############################################################################
+// Voseq admin/mysqlimporter.php
+// author(s): Carlos Peña & Tobias Malm
+// license   GNU GPL v2
+// source code available at https://github.com/carlosp420/VoSeq
+//
+// Script overview: process import of database for overwriting of old one.
+// Connected to mysqlimport.php
+//
+// ############################################################################
+
+
+// #################################################################################
+// Section: Find uploaded file and start processing
+// #################################################################################
 
 // Name of the file
 $filename = "uploads/" . trim($_POST['name']);
