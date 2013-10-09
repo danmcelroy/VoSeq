@@ -87,16 +87,18 @@ make_footer($date_timezone, $config_sitename, $version, $base_url, $p_);
 
 <script type="text/javascript">
     function mysqlimport(filename) {
-	var r=confirm("File uploaded.\n\nThis WILL REPLACE your current database!\nAre you really sure?\n\nContinue processing?");
-	if (r==false){x="Aborted";}
-	else {
-        jQuery.noConflict();
-        jQuery.post('mysqlimporter.php', { name: filename }).
-            done(function(data) {
-                alert(data);
-            });
-	}
-}
+	    var r = confirm("File uploaded.\n\nThis WILL REPLACE your current database!\nAre you really sure?\n\nContinue processing?");
+        if ( r == false ) {
+            x="Aborted";
+        }
+	    else {
+            jQuery.noConflict();
+            jQuery.post('mysqlimporter.php', { name: filename }).
+                done(function(data) {
+                    alert(data);
+                });
+	    }
+    }
 // Custom example logic
 function $(id) {
 	return document.getElementById(id);	
