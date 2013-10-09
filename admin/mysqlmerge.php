@@ -39,14 +39,18 @@ include_once('../includes/header.php');
 
 admin_nav();
 
-// scan upload dir and remove files
-if( is_dir("uploads") ) {
-    $scanfiles = scandir('uploads');
-    foreach ($scanfiles as $num => $scanfile){
-	    if ($scanfile !="." && $scanfile !=".."){
-		    unlink("uploads/".$scanfile);
-        }
-    }
+// scan (and make if nexessary) uploads dir and remove files
+if (is_dir("uploads") == FALSE){
+	if (!mkdir("uploads", 0, true)) {
+		die('Failed to create folder "uploads"');
+	}
+}
+chmod("uploads", 0755);
+$scanfiles = scandir('uploads');
+foreach ($scanfiles as $num => $scanfile){
+	if ($scanfile !="." && $scanfile !=".."){
+		unlink("uploads/".$scanfile);
+	}
 }
 
 
@@ -141,7 +145,6 @@ uploader.bind('UploadProgress', function(up, file) {
 // my code
 uploader.bind('FileUploaded', function(up, file, resp) {
     var my_json = jQuery.parseJSON(resp.response);
-    console.log(my_json);
     if( my_json.result == null ) {
 		$('filelist').innerHTML = "<div STYLE=\"font-size: 16px;\"><br><br><b>Wait for it... ... ...<b><br><br></div>";
         mysqlmerge(file.name);
