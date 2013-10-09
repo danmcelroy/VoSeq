@@ -80,6 +80,9 @@ if( $mysql_dir == "" ) {
 }
 else {
 	$cmd = $mysql_dir . "/bin/mysqldump";
+    if( !file_exists($cmd) ) {
+        $cmd = str_replace("bin", "local/mysql/bin", $cmd);
+    }
 }
 
 if( strtoupper(substr(PHP_OS, 0, 3)) === "WIN" ) {
