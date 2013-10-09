@@ -2,6 +2,31 @@
 
 ##Changelog:
 * Version 1.7.1
+
+        2013-10-09  Carlos Peña  <mycalesis@gmail.com>
+
+                Scripts to MySQL import and merge
+                Do not remove the placeholder file index.html in uploads folder.
+
+                Tools to import and merge databases
+                It is possible to merge databases. All data that is not already in the current
+                database will be incorporated. If there are conflicts, the changes will not be
+                made, and warning messages will be issued.
+
+                MySQL dump was not working
+                It couldn't find the right path for ``mysqldump``. Fixed, works for now.
+
+                file was missing
+                
+                Adding more files from Tobias
+                MySQL database import, export, merge and new dataset tools creation.
+
+        2013-09-28  Carlos Peña  <mycalesis@gmail.com>
+
+                added Tobias's code
+
+	- [Tobias 2013-10-01] Fixed a small bug in data set creator apparently adding "unit 
+							separator" codes in taxon names under some circumstances.
 	- [Tobias 2013-09-11] Included a merge databases option under admin, that let you
 							add values from a database backup to your existing database.
 							This will not overwrite anything in your old database and
