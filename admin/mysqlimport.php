@@ -48,8 +48,10 @@ if (is_dir("uploads") == FALSE){
 chmod("uploads", 0755);
 $scanfiles = scandir('uploads');
 foreach ($scanfiles as $num => $scanfile){
-	if ($scanfile !="." && $scanfile !=".."){
-		unlink("uploads/".$scanfile);
+	if ($scanfile !="." && $scanfile !="..") {
+        if( !strstr($scanfile, ".html") ) {
+		    unlink("uploads/".$scanfile);
+        }
 	}
 }
 
