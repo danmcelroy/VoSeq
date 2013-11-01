@@ -59,19 +59,21 @@
 		After the merge you will recieve an output stating what was 
 		and what was not added to the database (and why).
 		Fixed a bug in the import database script that didnt check for 
-							prefix names, resulting in wrongly named new database tables.
+		prefix names, resulting in wrongly named new database tables.
 
-* Tobias 2013-08-30] Included functions to store aligned morphological data as a
-							gene/alignment (i.e. a string of numbers,e.g. 01100110) 
-							representing character states for a voucher. A morphology
-							alignment need to be aligned!! Multistate characters can be 
-							introduced within brackets, i.e. (),{},[] as well as with or 
-							without separating comma. E.g. [01] as in TNT or {0,1,2} as 
-							in MrBayes. These will be reformed when creating datasets.
-						 Datasets, gene/alignment tables and so on can now be made to
-							include morpholocical data.
-						 Fixed a bug in local blast for windows, that tried to read from
-							the wrong database file.
+* Tobias 2013-08-30
+		Included functions to store aligned morphological data as a
+		gene/alignment (i.e. a string of numbers,e.g. 01100110) 
+		representing character states for a voucher. A morphology
+		alignment need to be aligned!! Multistate characters can be 
+		introduced within brackets, i.e. (),{},[] as well as with or 
+		without separating comma. E.g. [01] as in TNT or {0,1,2} as 
+		in MrBayes. These will be reformed when creating datasets.
+		Datasets, gene/alignment tables and so on can now be made to
+		include morpholocical data.
+		Fixed a bug in local blast for windows, that tried to read from
+		the wrong database file.
+
 ### Version 1.7.0
 * Tobias 2013-04-24] Added a geneset creator in similar style as for taxonsets.
 							Genesets can be now used for creating tables and datasets.
