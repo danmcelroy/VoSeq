@@ -581,7 +581,7 @@ elseif ($_POST['submitNew'])
 			if (isset($raw_geneCodes)){
 				$raw_geneCodes = array_unique($raw_geneCodes); 
 				foreach($raw_geneCodes AS $item) {
-					if ($item != "") {
+					if (trim($item) != "") {
 						$item = clean_item($item);
 						$item = trim($item);
 							// open database connections for checking gene list
@@ -601,6 +601,9 @@ elseif ($_POST['submitNew'])
 					}
 				}unset($item);
 				$geneset_list = array_unique($geneCodes);
+				if (count($geneset_list)==0){ // if no fields are checked
+					$errorList[] = "No taxa are chosen</b></br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please choose some at least to make a taxon set!";
+				}
 			}
 		}
 	elseif ($geneset_list == ""){ // if no fields are checked
