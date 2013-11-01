@@ -1,6 +1,23 @@
 #VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 ##Changelog:
+* Version 1.7.2
+    
+        2013-10-10 Tobias Malm
+        
+                Implemented degenerate coding for retrieval of datasets and restructured
+                the dataset creator a bit. Degenerate (Degen) coding translates possible
+                synonymous change sites to IUPAC codes to minimize heterogeneity problems.
+                It is implemented in some different flavours (at least for standard genetic
+                code.) Read more in Zwick etal. (2012) and Regier et al. (2010).
+                - Thanks to Andreas Zwick for the translation code base
+            
+                Fixed a bug in taxon/gene set creator trying empty names when using
+                list mode. - Thanks to Rasa Bukontaite
+                
+                Some other small bugs and layout stuff.
+                
+                
 * Version 1.7.1
 
         2013-10-09  Carlos Peña  <mycalesis@gmail.com>

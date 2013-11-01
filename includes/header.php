@@ -80,7 +80,7 @@ header('Content-type: text/html; charset=utf8');
 <?php 
 if( isset($dojo) && $dojo == true ) {
 	echo "<script type=\"text/javascript\" src=\"";
-	if ($admin) {
+	if ($admin || $in_includes) {
 		echo "../";
 		}
 	echo "dojo/dojo.js\"></script>\n<script type=\"text/javascript\">\n";
