@@ -156,7 +156,7 @@ if ( isset($new_GET['search']) ) {
 // #################################################################################
 // process title
 if ( !isset($title) ) {
-	$title = "NSG's db-" . $row->code;
+	$title = "$config_sitename-" . $row->code;
 }
 	
 // print beginning of html page -- headers

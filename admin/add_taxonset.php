@@ -690,7 +690,7 @@ elseif ($_POST['submitNew'])
 			if (isset($raw_codes)){
 				$raw_codes = array_unique($raw_codes); 
 				foreach($raw_codes AS $item) {
-					if ($item != "") {
+					if (trim($item) != "") {
 						$item = clean_item($item);
 						$item = trim($item);
 							// open database connections for checking taxa list
@@ -710,6 +710,9 @@ elseif ($_POST['submitNew'])
 					}
 				}unset($item);
 				$taxonset_list = array_unique($codes);
+				if (count($taxonset_list)==0){ // if no fields are checked
+					$errorList[] = "No taxa are chosen</b></br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please choose some at least to make a taxon set!";
+				}
 			}
 		}
 	elseif ($taxonset_list == ""){ // if no fields are checked

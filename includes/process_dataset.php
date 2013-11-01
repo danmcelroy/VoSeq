@@ -100,6 +100,8 @@ if (isset($_POST['geneCodes2']) && isset($_POST['codes2']) && isset($_POST['gene
 	$by_positions = "special";
 	$number_of_taxa = $_POST['number_of_taxa'];
 	$gene_positions2 = $_POST['gene_positions2'];
+	$gene_degen2 = $_POST['gene_degen'];
+	$degSZ = $_POST['degSZ'];
 	$gene_by_positions = $_POST['gene_by_positions2'];
 	$ignore_introns = $_POST['ignore_introns'];
 	// $aligned = $_POST['aligned'];
@@ -111,7 +113,16 @@ if (isset($_POST['geneCodes2']) && isset($_POST['codes2']) && isset($_POST['gene
 		$charset_count[$genecode2] = $_POST[$genecode2];
 		$rfsgenename = $genecode2 . "_rfs";
 		$rfs[$genecode2] = $_POST[$rfsgenename];
-
+		//get degen
+		if (!empty($gene_degen2[$genecode2])) {
+			$current_degen = $gene_degen2[$genecode2];
+			foreach ( $current_degen as $k2=> $c2){ //putting choosen codon positions for genes into array in array
+				if ($c2 == 'on')	{
+					$gene_degen[$genecode2][] =  $k2;
+				}
+			}
+		}
+		else { $gene_degen[$genecode2] = array('no'); }
 		//get codon positions
 		if (!empty($gene_positions2[$genecode2])) {
 			$current_gpos = $gene_positions2[$genecode2];
@@ -126,6 +137,7 @@ if (isset($_POST['geneCodes2']) && isset($_POST['codes2']) && isset($_POST['gene
 			unset( $gene_positions[$genecode2] ); 
 			$gene_positions[$genecode2] = array('aas');
 			$gene_by_positions[$genecode2] = 'asone';
+			$gene_degen[$genecode2] = array('no');
 		}
 		elseif (in_array("all", $gene_positions[$genecode2]) || empty($gene_positions[$genecode2])|| in_array("1st", $gene_positions[$genecode2]) && in_array("2nd", $gene_positions[$genecode2]) && in_array("3rd", $gene_positions[$genecode2])) { 
 			unset( $gene_positions[$genecode2] ); 
@@ -134,6 +146,7 @@ if (isset($_POST['geneCodes2']) && isset($_POST['codes2']) && isset($_POST['gene
 		if ($gene_by_positions[$genecode2] == '123'&& !in_array("all", $gene_positions[$genecode2])){
 			$gene_by_positions[$genecode2] = 'asone';
 		}
+							//echo $genecode2 ." - ". $gene_by_positions[$genecode2]." - ". $degSZ[$genecode2] ." - ". $_POST['gene_by_positions2'][$genecode2]."<br>";
 		//get partition-by-which-codon-position
 		$current_gbypos = $gene_by_positions2[$genecode2];
 		// do some test for introns
@@ -173,7 +186,7 @@ if (isset($_POST['geneCodes2']) && isset($_POST['codes2']) && isset($_POST['gene
 				if ($prot_code[$item] != 'yes' && $gene_by_positions[$item] != 'asone'){
 					$errorList[] = "The gene <b>$item</b> has been specified</br> as NOT protein coding!
 									</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									Cannot do else than include all chars as DNA for this!";
+									Cannot do else than one partition with all chars as DNA for this!";
 				}
 				if ($format != 'FASTA'){
 					if ($aligned[$item] != 'yes') {
@@ -234,6 +247,7 @@ if (isset($_POST['geneCodes2']) && isset($_POST['codes2']) && isset($_POST['gene
 										</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 						if ($gene_by_positions[$item] =="123") { $errors .="Cannot use 12+3 partioning";}
 						elseif (in_array('aas', $gene_positions[$item])) { $errors .="Cannot translate to amino acids";}
+						elseif ($gene_degen[$item]='yes') { $errors .="Cannot translate to Degen(erated)";}
 						else  { $errors .="Cannot use individual position choices";}
 						$errorList[] = $errors;
 					}
@@ -360,13 +374,24 @@ if (isset($_POST['geneCodes2']) && isset($_POST['codes2']) && isset($_POST['gene
 			}
 		}
 	}else {$positions = array("all"); }
-
+	// get Degen
+	if ( isset($_POST['degen'])){
+		$degen = array();
+		foreach ( $_POST['degen'] as $k2=> $c2){ //putting choosen genes into array
+			if ($c2 == 'on'){
+				$degen[] =  $k2;
+			}
+		}
+	}else {$degen = array("no"); }
+	if ( isset($_POST['degenSZ'])){
+		$degenSZ = $_POST['degenSZ'];
+	}
 	// do some test for "position choices"
 	if (in_array('aas', $positions)){ // setting up for amino acid partition mode
 		unset( $positions ); 
 		$positions = array('aas') ;
 		$by_positions = "asone";
-		}
+	}
 	elseif (in_array('special', $positions)){ // setting up for special gene codon partition mode
 		unset( $positions ); 
 		$positions = array('special') ;
@@ -375,7 +400,6 @@ if (isset($_POST['geneCodes2']) && isset($_POST['codes2']) && isset($_POST['gene
 		unset( $positions ); 
 		$positions = array('all') ;
 	}
-
 	elseif ( ! in_array("all", $positions) && count($positions) < 2 && $by_positions !='special') { //if only one codon position choosen - force "asone"
 		$by_positions = "asone";
 	}
@@ -383,6 +407,9 @@ if (isset($_POST['geneCodes2']) && isset($_POST['codes2']) && isset($_POST['gene
 		if ($by_positions == "123") {
 			$errorList[] = "Cannot use the '12+3' partitioning without including all positions!";
 		}
+	}
+	if (in_array('aas', $positions) && in_array('yes',$degen)){
+		$degen = array('no');
 	}
 	// do some test for introns
 	// if ($ignore_introns == 'no'){
@@ -504,6 +531,7 @@ if (isset($_POST['geneCodes2']) && isset($_POST['codes2']) && isset($_POST['gene
 										</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 						if ($by_positions =="123") { $errors .="Cannot use 12+3 partioning";}
 						elseif (in_array('aas', $positions)) { $errors .="Cannot translate to amino acids";}
+						elseif (in_array('yes',$degen)) { $errors .="Cannot translate to degen";}
 						else  { $errors .="Cannot use individual position choices";}
 						$errorList[] = $errors;
 					}
@@ -677,7 +705,7 @@ if (sizeof($errorList) != 0 ){
 	$admin = false;
 	$in_includes = true;
 	include_once 'header.php';
-	//print errors
+	//print errors	
 	show_errors($errorList);
 }
 else{ 
@@ -689,35 +717,67 @@ else{
 // Section: Creating special mode choice output
 // #################################################################################
 	if ( in_array("special", $positions) && !isset($gene_positions2) && !isset($gene_by_positions2) ){
-			$title = "$config_sitename: Dataset Special";
-		// print html headers
+		$title = "$config_sitename: Dataset Special";
 		$admin = false;
 		$in_includes = true;
+		// need dojo?
+		$dojo = true;
+		// which dojo?
+		$whichDojo[] = 'Tooltip';
+		// print html headers
 		include_once 'header.php';
 		// print navegation bar
 		nav();
 		// begin HTML page content
-		echo "<div id=\"content_narrow\">";
-		echo "<table border=\"0\" width=\"850px\"> <!-- super table -->
-				<tr><td valign=\"top\" colspan=\"2\"><h1>Create special dataset</h1>
+		echo "<div id=\"content\">";
+		echo "<table border=\"0\" width=\"1000px\"> <!-- super table -->
+				<tr><td valign=\"top\" colspan=\"4\"><h1>Create special dataset</h1>
 				<p>Enter the required info to make yourself a ready-to-run dataset in $format format:<br />";
 		// print as list
 		echo '<form action="process_dataset.php" method="post">';
 		echo "Choose wanted codon positions for the separate genes ('all' will override other choices):";
 		echo '<br><ul></td></tr>';
+		echo "<tr><td><b>Genes/Alignments</b></td><td><b>Positions</b></td><td><b>Partition as</b></td><td><b>Translations</b></td></tr>";
 		foreach ($geneCodes as $genes) {
 			if ($prot_code[$genes] == 'no'){ $disabled = " disabled";}
-						else {$disabled = ""; }
-			echo "<td>Gene $genes: </td><td>";
+			else {$disabled = ""; }
+			if ($genetic_codes[$genes] !== '1' || $disabled == " disabled"){ $disabledSZ = " disabled";}
+			else {$disabledSZ = ""; }
+			echo "<td>$genes: </td><td>";
 			echo "<input type=\"checkbox\" name=\"gene_positions2[$genes][all]\" checked>all&nbsp;&nbsp;&nbsp;";
 			echo "<input type=\"checkbox\" name=\"gene_positions2[$genes][1st]\" $disabled>1st&nbsp;&nbsp;&nbsp;";
 			echo "<input type=\"checkbox\" name=\"gene_positions2[$genes][2nd]\" $disabled>2nd&nbsp;&nbsp;&nbsp;";
-			echo "<input type=\"checkbox\" name=\"gene_positions2[$genes][3rd]\" $disabled>3rd&nbsp;&nbsp;&nbsp;";
-			echo "<input type=\"checkbox\" name=\"gene_positions2[$genes][aas]\" $disabled>Amino acids&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;";
+			echo "<input type=\"checkbox\" name=\"gene_positions2[$genes][3rd]\" $disabled>3rd&nbsp;&nbsp;|";
+			echo "</td><td>";
 			echo "<input type=\"radio\" name=\"gene_by_positions2[$genes]\" value=\"asone\" checked>as one&nbsp;&nbsp;&nbsp;";
 			echo "<input type=\"radio\" name=\"gene_by_positions2[$genes]\" value=\"each\"$disabled>each&nbsp;&nbsp;&nbsp;";
-			echo "<input type=\"radio\" name=\"gene_by_positions2[$genes]\" value=\"123\"$disabled>12+3&nbsp;&nbsp;&nbsp;";
+			echo "<input type=\"radio\" name=\"gene_by_positions2[$genes]\" value=\"123\"$disabled>12+3&nbsp;|&nbsp;&nbsp;&nbsp;";
+			echo "</td><td>";
+			echo "<input type=\"checkbox\" name=\"gene_positions2[$genes][aas]\" $disabled>Amino acids&nbsp;&nbsp;&nbsp;&nbsp;";
+			echo "<input type=\"checkbox\" name=\"gene_degen[$genes][yes]\" $disabled>Degen"; ?>
+								<img width="15px" height="16px" src="../images/question.png" id="Degen" alt="" /> 
+								 <span dojoType="tooltip" connectId="Degen" delay="1" toggle="explode">Degenerating nucleotides to IUPAC ambiguity codes at all sites that can potentially undergo<br />
+											synonymous change in any and all pairwise comparisons of sequences in the data matrix,<br />
+											thereby making synonymous change largely invisible and reducing the effect of<br />
+											compositional heterogeneity but leaving the inference of non-synonymous change largely intact.<br /><br />
+										From: "degen_v1_4.pl"; author: A. Zwick & A. Hussey; www.phylotools.com)<br /><br />Cite:<br />
+										Zwick, A., Regier, J.C. & Zwickl, D.J. (2012). "Resolving Discrepancy between Nucleotides and<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											Amino Acids in Deep-Level Arthropod Phylogenomics:Differentiating Serine Codons in 21-<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											Amino-Acid Models". PLoS ONE 7(11): e47450.<br />
+										Regier, J.C., Shultz, J.W., Zwick, A., Hussey, A., Ball, B., Wetzer, R. Martin, J.W. &<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											Cunningham, C.W. (2010). "Arthropod relationships revealed by phylogenomic analysis of<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											nuclear protein-coding sequences". Nature 463: 1079-1083.
+								</span>, as:&nbsp;&nbsp;&nbsp;
+			<?php echo "<input type=\"radio\" name=\"degSZ[$genes]\" value=\"no\" checked $disabledSZ>no&nbsp;
+			<input type=\"radio\" name=\"degSZ[$genes]\" value=\"S\"$disabledSZ>S "; ?><img width="15px" height="16px" src="../images/question.png" id="Sd" alt="" /> 
+								 <span dojoType="tooltip" connectId="Sd" delay="1" toggle="explode">Degen Z: <br />alternative degen encoding of Serin 2 to Serin 1</span>&nbsp;
+			<?php echo "<input type=\"radio\" name=\"degSZ[$genes]\" value=\"Z\"$disabledSZ>Z "; ?><img width="15px" height="16px" src="../images/question.png" id="Zd" alt="" /> 
+								 <span dojoType="tooltip" connectId="Zd" delay="1" toggle="explode">Degen SZ: <br />alternative degen encoding of Serin 1 and Serin 2 to NNN</span>&nbsp;
+			<?php echo "<input type=\"radio\" name=\"degSZ[$genes]\" value=\"SZ\"$disabledSZ>SZ  "; ?><img width="15px" height="16px" src="../images/question.png" id="SZd" alt="" /> 
+								 <span dojoType="tooltip" connectId="SZd" delay="1" toggle="explode">Degen S: <br />alternative degen encoding of Serin 1 to Serin 2</span>
+			<?php
 			echo "</td></tr>";
+			if ($disabledSZ == "disabledSZ"){echo "<input type=\"hidden\" name=\"degSZ[$genes]\" value=\"no\" >";}
 		}
 		//keeping old values
 		$geneCodes2 = implode(",", $geneCodes);
@@ -743,11 +803,11 @@ else{
 				echo "<input type='hidden' name='$rfsgenename' value='$rfs2' >";
 			}unset($genes, $value); 
 			?>
-			</td></tr><tr><td><input type="submit" name="process_dataset" value="Continue dataset creation" /></td></tr>
+			</td></tr><tr><td colspan="2"><input type="submit" name="process_dataset" value="Continue dataset creation" /></td></tr>
 			</form>
 			</tr>
-				</table> <!-- end super table -->
-				</div> <!-- end content -->
+		</table> <!-- end super table -->
+		</div> <!-- end content -->
 		<?php
 		//make footer
 		make_footer($date_timezone, $config_sitename, $version, $base_url);
@@ -958,6 +1018,29 @@ else{
 								$seqout_array[$geneCode][$item] = $seq;
 								// }
 								//else {						// do something
+								//change to degen for those genes that can
+								if (!isset($degen)){$degen = array();}
+								if (!isset($gene_degen[$geneCode])){$gene_degen[$geneCode] = array("no");}
+								if (in_array('yes',$degen) || in_array('yes',$gene_degen[$geneCode])){
+									if ($prot_code[$geneCode] == 'yes' && $genetic_codes[$geneCode] != '' && $rfs[$geneCode] != '0'){
+										$allowed_genetic_codes = array("1","2","3","4","5","6","9","10","11","12","13","14");
+										if (in_array($genetic_codes[$geneCode],$allowed_genetic_codes)){
+											if (isset($degSZ[$geneCode])){$degSZX = $degSZ[$geneCode];}
+											elseif (isset($degenSZ)){$degSZX = $degenSZ;}
+											if ($genetic_codes[$geneCode] == 1 && $degSZX !== 'no'){
+												$seq = degen_coding($seq,$degSZX, $rfs[$geneCode]);
+												$seqout_array[$geneCode][$item] = $seq;
+											}
+											else{
+												$seq = degen_coding($seq,$genetic_codes[$geneCode], $rfs[$geneCode]);
+												$seqout_array[$geneCode][$item] = $seq;
+											}
+										}
+										else {
+											$warning2[$geneCode] = "Warning, $geneCode will not be translated to Degen since it doesnt meet the requirements. Check settings!";
+										}
+									}
+								}
 								if ( isset($gene_positions)){ $positions = $gene_positions[$geneCode];} // if special mode
 								if ($format!="FASTA" && strlen($charset_count[$geneCode] < strlen(morph_mult_count($seq, $geneCode, "?")))){ // checking for too long sequence
 									$errorList[] = "The $geneCode sequence of $item is longer (". strlen($seq) . ">" . $charset_count[$geneCode] .") than the specified gene length!
@@ -1113,11 +1196,11 @@ else{
 					$output = "#NEXUS\n\nBEGIN DATA;\nDIMENSIONS NTAX=$number_of_taxa NCHAR=$bp;\nFORMAT INTERLEAVE DATATYPE=STANDARD MISSING=? GAP=-;\nMATRIX\n";
 				}
 				else{
-					if (in_array("aas", $positions) && in_array("yes", $aa_or_not)) {
-						if (!in_array("no", $aa_or_not) && $ignore_introns == 'yes'){
+					if (in_array("aas", $positions) || in_array("yes", $aa_or_not)) {
+						if (!in_array("no", $aa_or_not) && $ignore_introns == 'yes'){ //only aa
 							$output = "#NEXUS\n\nBEGIN DATA;\nDIMENSIONS NTAX=$number_of_taxa NCHAR=$bp;\nFORMAT INTERLEAVE DATATYPE=PROTEIN MISSING=? GAP=-;\nMATRIX\n";
 						}
-						else {
+						else { // mixed
 							$output = "#NEXUS\n\nBEGIN DATA;\nDIMENSIONS NTAX=$number_of_taxa NCHAR=$bp;\nFORMAT INTERLEAVE DATATYPE=";
 							$output .= "mixed(". implode(",",$datatype_mixed) .") ";
 							$output .= "MISSING=? GAP=-;\nMATRIX\n";
@@ -1500,7 +1583,8 @@ else{
 		$output .= " sump relburnin=yes [no] burninfrac=0.25 [2500];\n";
 		$output .= " sumt relburnin=yes [no] burninfrac=0.25 [2500] contype=halfcompat [allcompat];\nend;" ;
 	}
-
+	
+if (isset($warning2)){$warning = array_merge($warning,$warning2);}
 	// #################################################################################
 	// Section: HTML output and download links
 	// #################################################################################
@@ -1513,10 +1597,8 @@ else{
 	$output2 = str_replace("\x1F","",$output);
 	if ( $format == "PHYLIP" && count($geneCodes) < 2 && $by_positions == "asone") { unset($phy_partitions); }
 
-
 	// begin HTML page content
 	echo "<div id=\"content\">";
-
 	if( count($warning) > 0 ) {
 		// issue warnings using javascript
 		echo "<script type=\"text/javascript\">\n";

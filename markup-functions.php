@@ -148,9 +148,25 @@ function make_footer($date_timezone, $config_sitename, $version, $base_url) {
 		// date_default_timezone_set($date_timezone); php5
 		date_default_timezone_set($date_timezone);
 	}
-	
+		// find version in changelog.md file
+	$this_version = "";
+	if( $mask_url == "true" ) {
+		if( file_exists("changelog.md") ) {
+			$changelog = file_get_contents("changelog.md");
+			preg_match_all("/Version\s+(\d*\.\d*\.\d*)/", $changelog, $matches);
+			$this_version = $matches[1][0];
+		}
+	}
+	else {
+		if( file_exists("changelog.md") ) {
+			$changelog = file_get_contents("changelog.md");
+			preg_match_all("/Version\s+(\d*\.\d*\.\d*)/", $changelog, $matches);
+			$this_version = $matches[1][0];
+		}
+	}
+	# print standard footer
 	echo "<!-- standard page footer begins -->\n<div id=\"footer\">" . date('Y') . ' ' . $config_sitename;
-	echo "\n <a href=\"" . $base_url . "/home.php\" onclick=\"return redirect('" . $base_url . "/changelog.txt');\" title='check verion history' >version " . $version . "</a>";
+	echo "\n <a href=\"" . $base_url . "/changelog.php\" title='check verion history' >version " . $this_version . "</a>";
 	echo " \n Logged in as: " . $_SESSION['SESS_FIRST_NAME'] ." ". $_SESSION['SESS_LAST_NAME'] . "\n <a href='
 	" . $base_url . "/home.php' onclick=\"return redirect('". $base_url . "/login/logout.php');\">logout </a>";
 	echo "<br />Now with <b>". $num_rows_vouchers['all'] ."</b> vouchers, over ".$num_rows_vouchers['orden']." orders, 
