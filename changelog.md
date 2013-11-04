@@ -2,9 +2,16 @@
 
 ##Changelog:
 ### Version 1.7.2
-    
+
+* 2013-11-01 Tobias Malm
+
+		Fixed the GenBank fasta file creator to work for introned genes. Now
+        creates an extra protein alingnment to upload together with the
+        nuclotde one. Also removes sequences that already are associated with
+        an accession number. 
+
 * 2013-10-10 Tobias Malm
-        
+
 		Implemented degenerate coding for retrieval of datasets and restructured
 		the dataset creator a bit. Degenerate (Degen) coding translates possible
 		synonymous change sites to IUPAC codes to minimize heterogeneity problems.
@@ -16,8 +23,8 @@
 		list mode. - Thanks to Rasa Bukontaite
 
 		Some other small bugs and layout stuff.
-                
-                
+
+
 ### Version 1.7.1
 
 * 2013-10-09  Carlos Peña  <mycalesis@gmail.com>
@@ -34,7 +41,7 @@
         It couldn't find the right path for ``mysqldump``. Fixed, works for now.
 
         file was missing
-        
+
         Adding more files from Tobias
         MySQL database import, export, merge and new dataset tools creation.
 
@@ -49,30 +56,30 @@
 
 * Tobias 2013-09-11 
 
-		Included a merge databases option under admin, that let you
-		add values from a database backup to your existing database.
-		This will not overwrite anything in your old database and
-		will only add non-problematic information to your current db.
-		E.g. if a genecode or voucher already exist but is specified
-		differently between databases, these and their related values
-		(sequences/primers) will not be added. 
-		After the merge you will recieve an output stating what was 
-		and what was not added to the database (and why).
-		Fixed a bug in the import database script that didnt check for 
-		prefix names, resulting in wrongly named new database tables.
+		Included a merge databases option under admin, that let you add values
+        from a database backup to your existing database. This will not
+        overwrite anything in your old database and will only add
+        non-problematic information to your current db. E.g. if a genecode or
+        voucher already exist but is specified differently between databases,
+        these and their related values (sequences/primers) will not be added.
+		After the merge you will recieve an output stating what was and what
+        was not added to the database (and why).
+		Fixed a bug in the import database script that didnt check for prefix
+        names, resulting in wrongly named new database tables.
 
 * Tobias 2013-08-30
+
 		Included functions to store aligned morphological data as a
-		gene/alignment (i.e. a string of numbers,e.g. 01100110) 
-		representing character states for a voucher. A morphology
-		alignment need to be aligned!! Multistate characters can be 
-		introduced within brackets, i.e. (),{},[] as well as with or 
-		without separating comma. E.g. [01] as in TNT or {0,1,2} as 
-		in MrBayes. These will be reformed when creating datasets.
-		Datasets, gene/alignment tables and so on can now be made to
-		include morpholocical data.
-		Fixed a bug in local blast for windows, that tried to read from
-		the wrong database file.
+        gene/alignment (i.e. a string of numbers,e.g. 01100110) representing
+        character states for a voucher. A morphology alignment need to be
+        aligned!! Multistate characters can be introduced within brackets, i.e.
+        (),{},[] as well as with or without separating comma. E.g. [01] as in
+        TNT or {0,1,2} as in MrBayes. These will be reformed when creating
+        datasets.
+		Datasets, gene/alignment tables and so on can now be made to include
+        morpholocical data.
+		Fixed a bug in local blast for windows, that tried to read from the
+        wrong database file.
 
 ### Version 1.7.0
 * Tobias 2013-04-24] Added a geneset creator in similar style as for taxonsets.
