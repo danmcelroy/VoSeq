@@ -46,6 +46,24 @@ if 	( $_POST['phy_parts'] ) {
 	$dataset = str_replace("\\\\","\\", $dataset);
 	echo $dataset;
 }
-
+// #################################################################################
+// Section: Checks for submitted datasets and partition sets and creates files
+// #################################################################################
+if (isset($_POST['submit_gB'])){
+	$outfile = "genBank_nuc_file_" . date('Ymd') .  ".fst";
+	header("Content-Type: application/vnd.ms-notepad");
+	header("Content-Disposition: attachment; filename=$outfile");
+	$dataset = $_POST['output'];
+	//$dataset = str_replace("\\\\","\\", $dataset);
+	echo $dataset;
+}
+if 	( $_POST['prot'] ) {
+	$outfile2 = "genBank_prot_file_" . date('Ymd') .  ".fst";
+	header("Content-Disposition: attachment; filename=\"$outfile2\"");
+	header("Content-Type: application/vnd.ms-notepad");
+	$dataset = $_POST['protout'];
+	//$dataset = str_replace("\\\\","\\", $dataset);
+	echo $dataset;
+}
 
 ?>
