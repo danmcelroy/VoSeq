@@ -154,7 +154,7 @@ function translate_DNA_to_protein($seq,$genetic_code){
         $peptide = preg_replace ($triplets[$genetic_code], $aminoacids, $temp);
 
         // return peptide sequence
-        return $peptide;
+        return trim($peptide);
 }
 
 // #################################################################################
@@ -805,6 +805,6 @@ $deg_code['Z'][]='???'; $deg_pat['Z'][]="(\S\S\S )"; # empty
 		//paste together resulting seq
 		$degen_seq = $degen_seq . $seq_rep . $deg_seq_end;
         // return peptide sequence
-        return $degen_seq;
+        return trim($degen_seq);
 }
 ?>
