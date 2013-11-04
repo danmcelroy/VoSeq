@@ -52,6 +52,18 @@ if( mysql_num_rows($gCresult) > 0 ) {
 	}
 }
 else {unset($taxonsets);}
+
+// create geneset list
+$Tsquery = "SELECT geneset_name FROM ". $p_ . "genesets ORDER BY geneset_name";
+$Tsresult = mysql_query($Tsquery) or die ("Error in query: $Tsquery. " . mysql_error());
+// if records present
+$genesets = array();
+if( mysql_num_rows($gCresult) > 0 ) {
+	while( $rowTs = mysql_fetch_object($Tsresult) ) {
+		$genesets[] = $rowTs->geneset_name;
+	}
+}
+else {unset($taxonsets);}
 // #################################################################################
 // Section: Output
 // #################################################################################
@@ -64,8 +76,8 @@ echo "<div id=\"content\">";
 <table border="0" width="800px" cellpadding="0px" cellspacing="5"> <!-- super table -->
 	<caption>Enter the required info to make yourself a FASTA file to be submitted to GenBank:</caption>
 	<tr>
-		<td align="left" class="label4">
-			Choose ready-made taxonset
+		<td class="label4">
+			Choose taxonset
 		</td>
 		<td class="field1">
 			<select name="taxonsets" size="1" style=" BORDER-BOTTOM: outset; BORDER-LEFT: 
@@ -78,52 +90,65 @@ echo "<div id=\"content\">";
 			}
 			?>
 			</select>
-		</td>
-	<tr>
+		</td><td></td>
 		<td class="label4">
-			...and/or a list of codes:
+			Choose geneset
 		</td>
 		<td class="field1">
-			For example:<br />
-			&nbsp;&nbsp;&nbsp;tA1<br />
-			&nbsp;&nbsp;&nbsp;S077<br />
-			&nbsp;&nbsp;&nbsp;and so on...
+			<select name="genesets" size="1" style=" BORDER-BOTTOM: outset; BORDER-LEFT: 
+			outset; BORDER-RIGHT: outset; BORDER-TOP: outset; FONT-FAMILY: 
+			Arial; FONT-SIZE: 12px"> 
+			<option selected value="Choose geneset">Choose geneset</option> 
+			<?php  // create a pulldown-list with all geneset names in the db
+			if (isset($genesets)){
+			foreach ($genesets as $geneset){ echo "<option value=\"$geneset\">$geneset</option> ";}
+			}
+			?>
+			</select>
 		</td>
+	</tr>
+	<tr>
+		<td class="label4" rowspan=2>
+			...and/or a <br />list of codes:
+		</td>
+		<td class="field1">
+			Enter one code per line</br>in the box below.</br>
+			(with a -- sign before taxon</br>
+			names to disable them from </br>the taxon set)</br>
+			For example:<br />
+			&nbsp;&nbsp;&nbsp;&nbsp;tA1<br />
+			&nbsp;&nbsp;&nbsp;&nbsp;S077<br />
+			&nbsp;&nbsp;&nbsp;&nbsp;--S078<br />
+			&nbsp;&nbsp;&nbsp;&nbsp;and so on...<br />
+		
+		<textarea name="codes" rows="10">
+			</textarea></td>
 		<td>
 		</td>
-		<td class="label4" align="left">
-			Check to select your Gene codes:<br />
-			<br />
-			<!-- COI<br />
-			EF1a<br />
-			and so on... -->
+		<td class="label4" rowspan=2>
+			Check to select</br> your alignment/gene:</br>
+			</br>(if geneset chosen,</br> add extra genes)
 		</td>
-		<td class="field1" align="left" valign="top">
+		<td class="field1" rowspan=2>
 			<?php $i = 0;
+					echo "<table>";
 					foreach ($geneCodes_array as $genes) {
 						$i = $i +1;
-						echo "<input type=\"checkbox\" name=\"geneCodes[$genes]\">$genes&nbsp;&nbsp;&nbsp;"; 
+						echo "<td><input type=\"checkbox\" name=\"geneCodes[$genes]\" />$genes</td>"; 
 						if ($i == 4) {
-							echo "</br>";
+							echo "</tr />";
 							$i = 0;
-							}
-					} ?>
-			<!-- <textarea name="geneCodes" rows="14"></textarea> -->
+						}
+					}
+					echo "</table>";
+			?>
 		</td>
 	</tr>
 	<tr>
 		<td>
-		</td>
-		<td align="center">
-			<textarea name="codes" rows="14"></textarea>
-		</td>
-	</tr>
-	<tr>
-		<td>
-		</td>
-		<td>
-			<input type="submit" name="make_table" value="Make genBank table" />
-		</td>
+		
+			
+		<input type="submit" name="make_table" value="Make genBank table" />
 	</tr>
 </table>
 
