@@ -130,7 +130,7 @@ echo "<div id=\"content\">";
 								 <span dojoType="tooltip" connectId="S" delay="1" toggle="explode">Degen S: <br />alternative degen encoding of Serin 1 to Serin 2</span>
 						&nbsp;&nbsp;&nbsp;<input type="radio" name="degenSZ" value="Z">Z <img width="15px" height="16px" src="images/question.png" id="Z" alt="" /> 
 								 <span dojoType="tooltip" connectId="Z" delay="1" toggle="explode">Degen Z: <br />alternative degen encoding of Serin 2 to Serin 1</span>
-						&nbsp;&nbsp;&nbsp;<input type="radio" name="degenSZ" value="Z">SZ <img width="15px" height="16px" src="images/question.png" id="SZ" alt="" /> 
+						&nbsp;&nbsp;&nbsp;<input type="radio" name="degenSZ" value="SZ">SZ <img width="15px" height="16px" src="images/question.png" id="SZ" alt="" /> 
 								 <span dojoType="tooltip" connectId="SZ" delay="1" toggle="explode">Degen SZ: <br />alternative degen encoding of Serin 1 and Serin 2 to NNN</span><br />
 						&nbsp;&nbsp;&nbsp;<input type="checkbox" name="positions[aas]">Amino acids<br />
 						Special<br />
