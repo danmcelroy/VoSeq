@@ -260,13 +260,18 @@ function degen_coding($seq,$genetic_code,$rframe){
         // $deg_pat is the array containning the pattern in genetic codes
 		// $deg_code is the output degenerated triplet code
         // Info has been extracted from http://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi?mode
+
+    // need to convert the input sequence to capital letters to avoid 
+    // encoding AAa to ???
+    $seq = strtoupper($seq);
+    
 // standard genetic code
 $deg_code[1][]="YTN"; $deg_pat[1][]="(TTM |TTK |TTS |TTW |TTH |TTB |TTV |TTD |TTN |TTA |TTG |TTR |CTA |CTC |CTG |CTT |CTR |CTY |CTM |CTK |CTS |CTW |CTH |CTB |CTV |CTD |CTN |YTC |YTA |YTT |YTG |YTR |YTY |YTM |YTK |YTS |YTW |YTH |YTB |YTV |YTD |YTN )"; # Leu, Phe & Leu
 $deg_code[1][]="TTY"; $deg_pat[1][]="(TTT |TTC |TTY )"; # Phe
 $deg_code[1][]="MGN"; $deg_pat[1][]="(CGT |CGA |CGC |CGG |CGR |CGY |CGM |CGK |CGS |CGW |CGH |CGB |CGV |CGD |CGN |AGA |AGG |AGR |AGM |AGK |AGS |AGW |AGH |AGB |AGV |AGD |AGN |MGC |MGA |MGT |MGG |MGR |MGY |MGM |MGK |MGS |MGW |MGH |MGB |MGV |MGD |MGN )"; # Arg, Arg & Ser2
 $deg_code[1][]="ATH"; $deg_pat[1][]="(ATT |ATC |ATA |ATH |ATY |ATM |ATW )"; # Ile
 $deg_code[1][]="ATN"; $deg_pat[1][]="(ATR |ATK |ATS |ATB |ATV |ATD |ATN )"; # Ile & Met
-$deg_code[1][]="ATG"; $deg_pat[1][]="(ATG  )"; # Met
+$deg_code[1][]="ATG"; $deg_pat[1][]="(ATG )"; # Met
 $deg_code[1][]="GTN"; $deg_pat[1][]="(GTT |GTA |GTC |GTG |GTR |GTY |GTM |GTK |GTS |GTW |GTH |GTB |GTV |GTD |GTN )"; # Val
 $deg_code[1][]="TCN"; $deg_pat[1][]="(TCT |TCA |TCC |TCG |TCR |TCY |TCM |TCK |TCS |TCW |TCH |TCB |TCV |TCD |TCN )"; # Ser1
 $deg_code[1][]="AGY"; $deg_pat[1][]="(AGT |AGC |AGY )"; # Ser2
