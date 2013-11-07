@@ -1019,20 +1019,28 @@ else{
 								// }
 								//else {						// do something
 								//change to degen for those genes that can
-								if (!isset($degen)){$degen = array();}
-								if (!isset($gene_degen[$geneCode])){$gene_degen[$geneCode] = array("no");}
-								if (in_array('yes',$degen) || in_array('yes',$gene_degen[$geneCode])){
-									if ($prot_code[$geneCode] == 'yes' && $genetic_codes[$geneCode] != '' && $rfs[$geneCode] != '0'){
+								if(!isset($degen)){$degen = array();}
+
+                                if( !isset($gene_degen[$geneCode]) ) {
+                                    $gene_degen[$geneCode] = array("no");
+                                }
+
+								if( in_array('yes', $degen) || in_array('yes', $gene_degen[$geneCode]) ) {
+									if( $prot_code[$geneCode] == 'yes' && $genetic_codes[$geneCode] != '' && $rfs[$geneCode] != '0' ) {
 										$allowed_genetic_codes = array("1","2","3","4","5","6","9","10","11","12","13","14");
-										if (in_array($genetic_codes[$geneCode],$allowed_genetic_codes)){
-											if (isset($degSZ[$geneCode])){$degSZX = $degSZ[$geneCode];}
-											elseif (isset($degenSZ)){$degSZX = $degenSZ;}
+										if( in_array($genetic_codes[$geneCode], $allowed_genetic_codes) ) {
+                                            if( isset($degSZ[$geneCode]) ) {
+                                                $degSZX = $degSZ[$geneCode];
+                                            }
+                                            elseif( isset($degenSZ) ) {
+                                                $degSZX = $degenSZ;
+                                            }
 											if ($genetic_codes[$geneCode] == 1 && $degSZX !== 'no'){
 												$seq = degen_coding($seq,$degSZX, $rfs[$geneCode]);
 												$seqout_array[$geneCode][$item] = $seq;
 											}
-											else{
-												$seq = degen_coding($seq,$genetic_codes[$geneCode], $rfs[$geneCode]);
+											else {
+												$seq = degen_coding($seq, $genetic_codes[$geneCode], $rfs[$geneCode]);
 												$seqout_array[$geneCode][$item] = $seq;
 											}
 										}
@@ -1062,7 +1070,7 @@ else{
 								else {
 									//if ( isset($gene_positions)){ $positions = $gene_positions[$geneCode];} // if special mode
 									// create choosen codon position sequences
-									if (! in_array("all", $positions) && $prot_code[$geneCode] == 'yes') {
+									if( !in_array("all", $positions) && $prot_code[$geneCode] == 'yes') {
 										if ($rfs[$geneCode] == "1") { $num_nuc = "1";}
 										elseif ($rfs[$geneCode] == "2") { $num_nuc = "3";}
 										elseif ($rfs[$geneCode] == "3") { $num_nuc = "2";}
@@ -1086,7 +1094,9 @@ else{
 										elseif (! in_array("1st", $positions) && in_array("2nd", $positions) &&  in_array("3rd", $positions)) { $seqout_array[$geneCode][$item] = implode($pos_array[23]);}
 										else { $seqout_array[$geneCode][$item] = $seq; }
 									}
-									else { $seqout_array[$geneCode][$item] = $seq; }
+                                    else { 
+                                        $seqout_array[$geneCode][$item] = $seq; 
+                                    }
 									// padding string for aligned datasets
 									//$seq = str_pad($seq, $charset_count[$geneCode], "?");
 								}

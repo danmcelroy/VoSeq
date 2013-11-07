@@ -791,8 +791,18 @@ $deg_code['Z'][]='???'; $deg_pat['Z'][]="(\S\S\S )"; # empty
 		$degen_seq = '';
 		$deg_seq_end = '';
 		//fix trimmings
-		if ($rframe == "2"){ $seqstr = substr($seq, 1);$degen_seq .= substr($seq, 0,1);}
-		if ($rframe == "3"){ $seqstr = substr($seq, 2);$degen_seq .= substr($seq, 0,2);}
+        if( $rframe == "1" ) { 
+            $seqstr = $seq;
+            $degen_seq .= substr($seq, 0, 0);
+        }
+        if( $rframe == "2" ) { 
+            $seqstr = substr($seq, 1);
+            $degen_seq .= substr($seq, 0, 1);
+        }
+        if( $rframe == "3" ) { 
+            $seqstr = substr($seq, 2);
+            $degen_seq .= substr($seq, 0, 2);
+        }
 		
 		// place a space after each triplete in the sequence
 		$temp = chunk_split($seqstr,3,' ');
