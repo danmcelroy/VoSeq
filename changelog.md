@@ -1,6 +1,16 @@
 #VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 ##Changelog:
+### Version 1.7.3
+
+* 2013-11-07 Carlos Peña
+
+        Fixing bugs when creating degenerated datasets
+        The codon ATG was converted to ??? due to a typo (an extra white
+        space). Codon with lower case letters in the sequences were converted
+        to ???. Fixed by converting the whole sequence to uppercase before
+        processing.
+
 ### Version 1.7.2
 
 * 2013-11-01 Tobias Malm
@@ -12,12 +22,13 @@
 
 * 2013-10-10 Tobias Malm
 
-		Implemented degenerate coding for retrieval of datasets and restructured
-		the dataset creator a bit. Degenerate (Degen) coding translates possible
-		synonymous change sites to IUPAC codes to minimize heterogeneity problems.
-		It is implemented in some different flavours (at least for standard genetic
-		code.) Read more in Zwick etal. (2012) and Regier et al. (2010).
-		- Thanks to Andreas Zwick for the translation code base
+		Implemented degenerate coding for retrieval of datasets and
+        restructured the dataset creator a bit. Degenerate (Degen) coding
+        translates possible synonymous change sites to IUPAC codes to minimize
+        heterogeneity problems. It is implemented in some different flavours
+        (at least for standard genetic code.) Read more in Zwick etal. (2012)
+        and Regier et al. (2010). - Thanks to Andreas Zwick for the translation
+        code base.
 
 		Fixed a bug in taxon/gene set creator trying empty names when using
 		list mode. - Thanks to Rasa Bukontaite
@@ -29,16 +40,17 @@
 
 * 2013-10-09  Carlos Peña  <mycalesis@gmail.com>
 
-        Scripts to MySQL import and merge
-        Do not remove the placeholder file index.html in uploads folder.
+        Scripts to MySQL import and merge Do not remove the placeholder file
+        index.html in uploads folder.
 
         Tools to import and merge databases
-        It is possible to merge databases. All data that is not already in the current
-        database will be incorporated. If there are conflicts, the changes will not be
-        made, and warning messages will be issued.
+        It is possible to merge databases. All data that is not already in the
+        current database will be incorporated. If there are conflicts, the
+        changes will not be made, and warning messages will be issued.
 
         MySQL dump was not working
-        It couldn't find the right path for ``mysqldump``. Fixed, works for now.
+        It couldn't find the right path for ``mysqldump``. Fixed, works for
+        now.
 
         file was missing
 
@@ -82,23 +94,43 @@
         wrong database file.
 
 ### Version 1.7.0
-* Tobias 2013-04-24] Added a geneset creator in similar style as for taxonsets.
-							Genesets can be now used for creating tables and datasets.
-* Tobias 2013-04-24] Fixed a bug in the taxonset creator that unchecked taxa
-							when filtering records with a text string.
-* Tobias 2013-04-24] Added an update account page where user information and
-							passwords may be changed. This may be used for the account
-							in use, but admin status can not be changed. This allows for 
-							a database manager to create temporal account names for new 
-							users, who themselves can change their info later.
-* Tobias 2013-04-24] Layout fixes. E.g. mainpage gene viewer.
-    - [Carlos 2013-04-11] Fixing installation script 4. No need to check for writeable 
-                            dojo folder. Checking dojo_data instead.
+* Tobias 2013-04-24
+
+        Added a geneset creator in similar style as for taxonsets. Genesets can
+        be now used for creating tables and datasets.
+
+* Tobias 2013-04-24
+
+        Fixed a bug in the taxonset creator that unchecked taxa when filtering
+        records with a text string.
+
+* Tobias 2013-04-24
+
+        Added an update account page where user information and passwords may
+        be changed. This may be used for the account in use, but admin status
+        can not be changed. This allows for a database manager to create
+        temporal account names for new users, who themselves can change their
+        info later.
+
+* Tobias 2013-04-24
+
+        Layout fixes. E.g. mainpage gene viewer.
+
+* Carlos 2013-04-11
+
+        Fixing installation script 4. No need to check for writeable dojo
+        folder. Checking dojo_data instead.
 
 ### Version 1.6.0
-    - [Carlos 2013-03-29] Added button to get a Backup file of the MySQL database.
-    - [Carlos 2013-03-31] Added button, page, js functions to upload big Backup files
-                            of the MySQL database (using plupload).
+
+* Carlos 2013-03-29
+
+        Added button to get a Backup file of the MySQL database.
+
+* Carlos 2013-03-31
+
+        Added button, page, js functions to upload big Backup files of the
+        MySQL database (using plupload).
 
 ### Version 1.5.0
 	- [Carlos 2013-03-18] Allowing several photos for each voucher.
