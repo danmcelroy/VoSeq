@@ -6,15 +6,15 @@
      * using phpFlickr::auth() from another page or if you set the remember_uri
      * argument to false.
      */
-    $api_key                 = "baa871241ca7257242779b5212d08f88";
-    $api_secret              = "50251182c2ad267e";
+    $api_key                 = "[your api key]";
+    $api_secret              = "[your api secret]";
     $default_redirect        = "/";
-    $permissions             = "write";
+    $permissions             = "read";
     $path_to_phpFlickr_class = "./";
 
     ob_start();
     require_once($path_to_phpFlickr_class . "phpFlickr.php");
-    @unset($_SESSION['phpFlickr_auth_token']);
+    unset($_SESSION['phpFlickr_auth_token']);
      
 	if ( isset($_SESSION['phpFlickr_auth_redirect']) && !empty($_SESSION['phpFlickr_auth_redirect']) ) {
 		$redirect = $_SESSION['phpFlickr_auth_redirect'];
