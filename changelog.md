@@ -1,6 +1,13 @@
 #VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 ##Changelog:
+### Version 1.7.4
+
+* 2014-08-01 Carlos Peña
+
+        Updating phpFlickr to deal with the change in Flickr's API (all
+        connections to Fclirk are now using https).
+
 ### Version 1.7.3
 
 * 2013-11-07 Carlos Peña
