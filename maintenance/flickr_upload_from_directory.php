@@ -91,8 +91,6 @@ else {
 
 require_once('../api/phpFlickr/phpFlickr.php');
 
-# define('PHOTO_EXTENSION', '.png');
-
 # create api
 $f = new phpFlickr($flickr_api_key, $flickr_api_secret);
 $f->setToken($flickr_api_token);
@@ -123,19 +121,22 @@ $mysqli->query("set names utf8") or die("Error in query: " . $mysqli->error());
 
 $photos = array();
 foreach($di as $file) {
-    preg_match("/^(.+)\.png\$/", $file, $matches);
+    preg_match("/^((.+)\.(png|jpg|jpeg|gif|bmp|tif))\$/i", $file, $matches);
     if( $matches ) {
-        $photos[] = $matches[1];
+        $obj = new stdClass();
+        $obj->filename = $matches[0];
+        $obj->basename = $matches[2];
+        $photos[] = $obj;
     }
 }
 
-$mysqli->close();
 // upload pictures in the directory
 foreach( $photos as $item ) {
-    $query = "SELECT id, code, genus, species, subspecies, family, subfamily, tribe, subtribe, country, specificLocality, publishedIn, notes, voucherImage, latitude, longitude FROM ". $p_ . "vouchers WHERE code = \"$item\"";
-    $result = mysql_query($query) or die("Error in query: $query. " . mysql_error());
+    $query = "SELECT id, code, genus, species, subspecies, family, subfamily, tribe, subtribe, country, specificLocality, publishedIn, notes, voucherImage, latitude, longitude FROM ". $p_ . "vouchers WHERE code = \"$item->basename\"";
+    $result = $mysqli->query($query) or die(
+                            "Error in query: $query. " . $mysqli->error());
 
-    while( $row = mysql_fetch_object($result) ) {
+    while( $row = $result->fetch_object() ) {
         $code = $row->code;
         $genus = $row->genus;
         $species = $row->species;
@@ -174,10 +175,12 @@ foreach( $photos as $item ) {
             $notes = "";
         }
     }
-        
-    $file = UPLOAD_DIRECTORY . "/" . $item . PHOTO_EXTENSION;
+
+    $file = UPLOAD_DIRECTORY . "/" . $item->filename;
 
     $photo_id = $f->sync_upload($file, "$code $genus $species $subspecies", "$country $specificLocality $publishedIn $notes", "$country,$family,$subfamily,$tribe,$subtribe,$genus,$species,$subspecies");
+
+    echo "\nUploading file " . $item->filename . " to Flickr\n";
 
     $info = $f->photos_getInfo($photo_id);
     $my_voucherImage = $info['photo']['urls']['url'][0]['_content'];
@@ -192,10 +195,12 @@ foreach( $photos as $item ) {
             }
         }
     }
-    $query = "UPDATE ". $p_ . "vouchers set timestamp=now(), thumbnail=\"$my_url\", flickr_id=\"$photo_id\", voucherImage=\"$my_voucherImage\" where code=\"$item\""; 
-    echo $query . ";\n";
-#mysql_query($query) or die("Error in query: $query. " . mysql_error());
+    $query = "UPDATE ". $p_ . "vouchers set timestamp=now(), thumbnail=\"$my_url\", flickr_id=\"$photo_id\", voucherImage=\"$my_voucherImage\" where code=\"$item->basename\""; 
+    echo "Updating photo details to MySQL database for voucher code ";
+    echo $item->basename . "\n";
+    $mysqli->query($query) or die("Error in query: $query. " . $mysql->error());
 }
 
 
+$mysqli->close();
 ?>
