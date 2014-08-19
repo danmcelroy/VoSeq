@@ -80,7 +80,8 @@ echo "\n===========================\n";
 
 define('UPLOAD_DIRECTORY', $argv[1]);
 if (file_exists(UPLOAD_DIRECTORY)) {
-    echo "\nI will upload the pictures from this folder: ". UPLOAD_DIRECTORY . "\n";
+    echo "\nI will upload the pictures from this folder: ";
+    echo UPLOAD_DIRECTORY . "\n";
 }
 else {
     echo "\nError, couldn't find the folder ``". UPLOAD_DIRECTORY . "``";
@@ -90,18 +91,35 @@ else {
 
 require_once('../api/phpFlickr/phpFlickr.php');
 
-define('PHOTO_EXTENSION', '.png');
+# define('PHOTO_EXTENSION', '.png');
 
-// create api
+# create api
 $f = new phpFlickr($flickr_api_key, $flickr_api_secret);
 $f->setToken($flickr_api_token);
 
-// create a DirectoryIterator (part of the Standard PHP Library)
+# create a DirectoryIterator (part of the Standard PHP Library)
 $di = new DirectoryIterator(UPLOAD_DIRECTORY);
-print_r($di);
 
-// open database connections
-@$connection = mysql_connect($host, $user, $pass) or die('Unable to connect');
+# open database connections
+$mysqli = mysqli_init();
+if (!$mysqli) {
+    die('mysqli_init failed');
+}
+if (!$mysqli->options(MYSQLI_INIT_COMMAND, 'SET AUTOCOMMIT = 0')) {
+    die('Setting MYSQLI_INIT_COMMAND failed');
+}
+
+if (!$mysqli->options(MYSQLI_OPT_CONNECT_TIMEOUT, 5)) {
+    die('Setting MYSQLI_OPT_CONNECT_TIMEOUT failed');
+}
+
+if (!$mysqli->real_connect($host, $user, $pass, $db)) {
+    die('Unable to connect to MySQL ('. mysqli_connect_errno() . ') '
+            . mysqli_connect_error());
+}
+
+echo "Success. Connected to MySQL... " . $mysqli->host_info . "\n";
+$mysqli->close();
 mysql_select_db($db) or die ('Unable to select database');
 mysql_query("set names utf8") or die("Error in query: " . mysql_error());
 
