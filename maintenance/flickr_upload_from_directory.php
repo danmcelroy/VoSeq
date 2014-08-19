@@ -11,10 +11,6 @@ if (count($argv) < 2) {
 }
 
 
-# To upload voucher pics from a directory
-# make sure that the file name is the same as the voucher code
-# make sure that the voucher info is already in the database
-
 # check if conf file is present
 if (file_exists('../conf.php')) {
     include_once('../conf.php');
@@ -25,6 +21,14 @@ else {
     echo "\nExiting. Nothing done.\n";
     exit(0);
 }
+
+
+echo "\n===========================\n";
+echo "\nTo upload voucher pics from a directory you need to make sure that the";
+echo "file name is the same as the voucher code.\n";
+echo "Also make sure that the voucher info is already in the database.\n";
+echo "\n===========================\n";
+
 echo "\nI will upload the pictures from this folder: " . $argv[1] . "\n";
 print_r($argv);
 exit(0);
