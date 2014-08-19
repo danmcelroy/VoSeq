@@ -427,7 +427,10 @@ if ( !class_exists('phpFlickr') ) {
 				}
 
 				$photo = realpath($photo);
-				$args['photo'] = '@' . $photo;
+
+                $cfile = new CURLFile($photo);
+
+				$args['photo'] = $cfile;
 
 
 				$curl = curl_init($this->upload_endpoint);
