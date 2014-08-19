@@ -22,35 +22,55 @@ else {
     exit(0);
 }
 
-$error = "";
-if (!isset($flickr_api_key)) {
-    $error = "true";
-}
-elseif (isset($flickr_api_key) and strlen($flickr_api_key) < 1) {
-    $error = "true";
-}
-elseif (!isset($flickr_api_secret)) {
-    $error = "true";
-}
-elseif (isset($flickr_api_secret) and strlen($flickr_api_secret) < 1) {
-    $error = "true";
-}
-elseif (!isset($flickr_api_token)) {
-    $error = "true";
-}
-elseif (isset($flickr_api_token) and strlen($flickr_api_token) < 1) {
-    $error = "true";
-}
 
-if ($error == "true") {
-    $error = "\nError, you need to get the Flickr API keys and include them";
-    $error .= " in the ``conf.php`` file\n";
-    $error .= "See here for more info: ";
-    $error .= "http://nymphalidae.utu.fi/cpena/VoSeq_docu.html#flickr-plugin\n";
+# check for Flickr API Keys
+$error = "";
+if ($photos_repository == "flickr") {
+    echo "\nI will upload all the fotos to Flickr, as stated in your";
+    echo " ``conf.php`` file.\n";
+    if (!isset($flickr_api_key)) {
+        $error = "true";
+    }
+    elseif (isset($flickr_api_key) and strlen($flickr_api_key) < 1) {
+        $error = "true";
+    }
+    elseif (!isset($flickr_api_secret)) {
+        $error = "true";
+    }
+    elseif (isset($flickr_api_secret) and strlen($flickr_api_secret) < 1) {
+        $error = "true";
+    }
+    elseif (!isset($flickr_api_token)) {
+        $error = "true";
+    }
+    elseif (isset($flickr_api_token) and strlen($flickr_api_token) < 1) {
+        $error = "true";
+    }
+
+    if ($error == "true") {
+        $error = "\nError, you need to get the Flickr API keys and include them";
+        $error .= " in the ``conf.php`` file\n";
+        $error .= "See here for more info: ";
+        $error .= "http://nymphalidae.utu.fi/cpena/VoSeq_docu.html#flickr-plugin\n";
+        $error .= "\nExiting. Nothing done.\n";
+        echo $error;
+        exit(0);
+    }
+}
+elseif ($photos_repository == "local") {
+    echo "\nI will upload all the fotos to the local instalation of VoSeq";
+    echo " and all the files will be kept into the local hardisk,";
+    echo " as stated in your ``conf.php`` file.\n";
+    echo "\nNoting will be sent to Flickr.\n";
+}
+else {
+    $error = "\nError, you need to specify in your ``conf.php`` file\n";
+    $error .= " whether the files will be sent to Flickr or kept only in";
+    $error .= " your harddrive.\n";
+    $error .= "\nExiting. Nothing done.\n";
     echo $error;
     exit(0);
 }
-exit(0);
 
 echo "\n===========================\n";
 echo "\nTo upload voucher pics from a directory you need to make sure that the";
