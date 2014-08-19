@@ -5,6 +5,9 @@
 
 * 2014-08-19 Carlos Peña
 
+        Upated flickr_upload_from_directory file to batch upload photos into
+        Flickr from local directory. One file at a time.
+
         Updated phpflickr api file to use CURLFile when uploading files using
         curl. @file in curl_set_opt is deprecated.
 
