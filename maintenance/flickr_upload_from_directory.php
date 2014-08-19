@@ -22,6 +22,35 @@ else {
     exit(0);
 }
 
+$error = "";
+if (!isset($flickr_api_key)) {
+    $error = "true";
+}
+elseif (isset($flickr_api_key) and strlen($flickr_api_key) < 1) {
+    $error = "true";
+}
+elseif (!isset($flickr_api_secret)) {
+    $error = "true";
+}
+elseif (isset($flickr_api_secret) and strlen($flickr_api_secret) < 1) {
+    $error = "true";
+}
+elseif (!isset($flickr_api_token)) {
+    $error = "true";
+}
+elseif (isset($flickr_api_token) and strlen($flickr_api_token) < 1) {
+    $error = "true";
+}
+
+if ($error == "true") {
+    $error = "\nError, you need to get the Flickr API keys and include them";
+    $error .= " in the ``conf.php`` file\n";
+    $error .= "See here for more info: ";
+    $error .= "http://nymphalidae.utu.fi/cpena/VoSeq_docu.html#flickr-plugin\n";
+    echo $error;
+    exit(0);
+}
+exit(0);
 
 echo "\n===========================\n";
 echo "\nTo upload voucher pics from a directory you need to make sure that the";
@@ -29,13 +58,18 @@ echo "file name is the same as the voucher code.\n";
 echo "Also make sure that the voucher info is already in the database.\n";
 echo "\n===========================\n";
 
-echo "\nI will upload the pictures from this folder: " . $argv[1] . "\n";
-print_r($argv);
-exit(0);
+define('UPLOAD_DIRECTORY', $argv[1]);
+if (file_exists(UPLOAD_DIRECTORY)) {
+    echo "\nI will upload the pictures from this folder: ". UPLOAD_DIRECTORY . "\n";
+}
+else {
+    echo "\nError, couldn't find the folder ``". UPLOAD_DIRECTORY . "``";
+    echo "\nExiting. Nothing done.\n";
+    exit(0);
+}
 
-require_once'../api/phpFlickr/phpFlickr.php';
+require_once('../api/phpFlickr/phpFlickr.php');
 
-define('UPLOAD_DIRECTORY', "$local_folder/pictures"); ## need to define it!!!
 define('PHOTO_EXTENSION', '.png');
 
 // create api
@@ -44,6 +78,7 @@ $f->setToken($flickr_api_token);
 
 // create a DirectoryIterator (part of the Standard PHP Library)
 $di = new DirectoryIterator(UPLOAD_DIRECTORY);
+print_r($di);
 
 // open database connections
 @$connection = mysql_connect($host, $user, $pass) or die('Unable to connect');
