@@ -1,15 +1,33 @@
 #!/usr/local/bin/php
 <?php
 error_reporting(0);
+
+if (count($argv) < 2) {
+    echo "\nError, please enter the folder containing the pictures to upload";
+    echo " as argument.\n\n";
+    echo "\t" . "php flickr_upload_from_directory.php /home/user/Desktop/photos\n";
+    echo "\nExiting. Nothing done.\n";
+    exit(0);
+}
+
+
 # To upload voucher pics from a directory
 # make sure that the file name is the same as the voucher code
 # make sure that the voucher info is already in the database
 
-#define your UPLOAD DIRECTORY
-
-ob_start();//Hook output buffer - disallows web printing of file info...
-include_once'../conf.php';
-ob_end_clean();//Clear output buffer//includes
+# check if conf file is present
+if (file_exists('../conf.php')) {
+    include_once('../conf.php');
+}
+else {
+    echo "\nError, couldn't find the configuration file ``conf.php`` in";
+    echo " VoSeq's main folder.";
+    echo "\nExiting. Nothing done.\n";
+    exit(0);
+}
+echo "\nI will upload the pictures from this folder: " . $argv[1] . "\n";
+print_r($argv);
+exit(0);
 
 require_once'../api/phpFlickr/phpFlickr.php';
 
