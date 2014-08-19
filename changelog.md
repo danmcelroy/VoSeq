@@ -1,6 +1,14 @@
 #VoSeq: a database to store voucher and DNA sequence data for phylogenetic analysis
 
 ##Changelog:
+### Version 1.7.X
+
+* 2014-08-19 Carlos Peña
+
+        Updated phpflickr api file to use CURLFile when uploading files using
+        curl. @file in curl_set_opt is deprecated.
+
+
 ### Version 1.7.4
 
 * 2014-08-01 Carlos Peña
