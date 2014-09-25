@@ -27,7 +27,9 @@ SECRET_KEY = get_secret("SECRET_KEY")
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'leyes_sqlite3.db'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'genomeseq',
+        'USER': get_secret('DB_USER'),
+        'PASSWORD': get_secret('DB_PASS'),
     }
 }
