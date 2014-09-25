@@ -1,0 +1,16 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway);
+
+.navbar {
+    margin-bottom: 0px;
+}
+.jumbotron {
+    background: #437487;
+    color: white;
+}
+.jumbotron h2 {
+    color: white;
+}
+body {
+    font-size: 16px;
+    font-family: 'Raleway', Verdana, Arial, sans-serif;
+}
