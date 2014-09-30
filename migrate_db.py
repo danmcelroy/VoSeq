@@ -118,7 +118,6 @@ def migrate_sequences_table(old_db, new_db):
         i['gene_code'] = i['geneCode']
         del i['geneCode']
         del i['timestamp']
-        append(i)
 
         i['time_created'] = i['dateCreation']
         del i['dateCreation']
@@ -130,9 +129,32 @@ def migrate_sequences_table(old_db, new_db):
             i['labPerson'] = i['labPerson'].decode('latin-1')
         except AttributeError:
             pass
+        append(i)
     table = new_db['public_interface_sequences']
     table.insert_many(fixed_items)
 
+
+def migrate_taxonsets_table(old_db, new_db):
+    fixed_items = []
+    append = fixed_items.append
+    res = old_db.query("select * from taxonsets")
+    for i in res:
+        try:
+            del i['id']
+        except:
+            pass
+        del i['taxonset_id']
+
+        try:
+            i['taxonset_creator'] = i['taxonset_creator'].decode('utf-8')
+        except UnicodeDecodeError:
+            i['taxonset_creator'] = i['taxonset_creator'].decode('latin-1')
+        except AttributeError:
+            pass
+        append(i)
+
+    table = new_db['public_interface_taxonsets']
+    table.insert_many(fixed_items)
 
 
 
