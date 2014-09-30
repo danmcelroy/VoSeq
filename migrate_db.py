@@ -108,4 +108,32 @@ def migrate_primers_table(old_db, new_db):
     table = new_db['public_interface_primers']
     table.insert_many(fixed_items)
 
-migrate_primers_table(old_db, new_db)
+
+def migrate_sequences_table(old_db, new_db):
+    fixed_items = []
+    append = fixed_items.append
+    res = old_db.query("select * from sequences")
+    for i in res:
+        del i['id']
+        i['gene_code'] = i['geneCode']
+        del i['geneCode']
+        del i['timestamp']
+        append(i)
+
+        i['time_created'] = i['dateCreation']
+        del i['dateCreation']
+        i['time_edited'] = i['dateModification']
+        del i['dateModification']
+        try:
+            i['labPerson'] = i['labPerson'].decode('utf-8')
+        except UnicodeDecodeError:
+            i['labPerson'] = i['labPerson'].decode('latin-1')
+        except AttributeError:
+            pass
+    table = new_db['public_interface_sequences']
+    table.insert_many(fixed_items)
+
+
+
+
+migrate_sequences_table(old_db, new_db)
