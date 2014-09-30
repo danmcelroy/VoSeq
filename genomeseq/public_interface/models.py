@@ -50,3 +50,18 @@ class Primers(models.Model):
     primer4 = models.CharField(max_length=100, blank=True)
     primer5 = models.CharField(max_length=100, blank=True)
     primer6 = models.CharField(max_length=100, blank=True)
+
+
+class Sequences(models.Model):
+    code = models.CharField(max_length=100)
+    gene_code = models.CharField(max_length=100)
+    sequences = models.TextField()
+    accession = models.CharField(max_length=100, blank=True)
+    labPerson = models.CharField(max_length=100, blank=True)
+    time_created = models.DateTimeField(auto_now_add=True)
+    time_edited = models.DateTimeField(auto_now=True)
+    notes = models.TextField(blank=True)
+    genbank = models.BooleanField(default=None, blank=True)
+
+
+
