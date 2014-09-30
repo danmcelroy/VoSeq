@@ -39,3 +39,14 @@ class Members(models.Model):
     login = models.CharField(max_length=100)
     passwd = models.CharField(max_length=100)
     admin = models.BinaryField(default=None)
+
+
+class Primers(models.Model):
+    code = models.CharField(max_length=100)
+    gene_code = models.CharField(max_length=100)
+    primer1 = models.CharField(max_length=100, blank=True)
+    primer2 = models.CharField(max_length=100, blank=True)
+    primer3 = models.CharField(max_length=100, blank=True)
+    primer4 = models.CharField(max_length=100, blank=True)
+    primer5 = models.CharField(max_length=100, blank=True)
+    primer6 = models.CharField(max_length=100, blank=True)
