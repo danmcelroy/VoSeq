@@ -28,8 +28,8 @@ SECRET_KEY = get_secret("SECRET_KEY")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'genomeseq',
-        'USER': get_secret('DB_USER'),
-        'PASSWORD': get_secret('DB_PASS'),
+        'NAME': get_secret('POSTGRES_DB_NAME'),
+        'USER': get_secret('POSTGRES_DB_USER'),
+        'PASSWORD': get_secret('POSTGRES_DB_PASS'),
     }
 }
