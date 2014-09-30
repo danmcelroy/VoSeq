@@ -27,7 +27,15 @@ class Genes(models.Model):
 
 
 class GeneSets(models.Model):
-    geneset_name = models.CharField(max_length=75),
-    geneset_creator = models.CharField(max_length=75),
-    geneset_description = models.CharField(max_length=100, blank=True),
-    geneset_list = models.TextField(),
+    geneset_name = models.CharField(max_length=75, default=None)
+    geneset_creator = models.CharField(max_length=75, default=None)
+    geneset_description = models.CharField(max_length=100, default=None, blank=True)
+    geneset_list = models.TextField(default=None)
+
+
+class Members(models.Model):
+    firstname = models.CharField(max_length=100)
+    lastname = models.CharField(max_length=100)
+    login = models.CharField(max_length=100)
+    passwd = models.CharField(max_length=100)
+    admin = models.BinaryField(default=None)
