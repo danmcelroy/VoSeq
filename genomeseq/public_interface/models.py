@@ -64,4 +64,11 @@ class Sequences(models.Model):
     genbank = models.BooleanField(default=None, blank=True)
 
 
+class TaxonSets(models.Model):
+    taxonset_name = models.CharField(max_length=50)
+    taxonset_creator = models.CharField(max_length=75)
+    taxonset_description = models.CharField(max_length=100)
+    taxonset_list = models.TextField()
+
+
 
