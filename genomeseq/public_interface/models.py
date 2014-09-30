@@ -24,3 +24,10 @@ class Genes(models.Model):
     gene_type = models.CharField(max_length=255, blank=True)
 
     time_created = models.DateTimeField(auto_now_add=True)
+
+
+class GeneSets(models.Model):
+    geneset_name = models.CharField(max_length=75),
+    geneset_creator = models.CharField(max_length=75),
+    geneset_description = models.CharField(max_length=100, blank=True),
+    geneset_list = models.TextField(),

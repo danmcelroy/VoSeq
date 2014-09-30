@@ -13,35 +13,45 @@ new_db_url = 'postgresql://' + settings['POSTGRES_DB_USER'] + ':' + settings['PO
 old_db = dataset.connect(old_db_url)
 new_db = dataset.connect(new_db_url)
 
-fixed_items = []
-append = fixed_items.append
 
-print(old_db['genes'].columns)
-res = old_db.query("select * from genes")
-for i in res:
-    i['gene_code'] = i['geneCode']
-    del i['geneCode']
-    if i['genetic_code'] is None:
-        i['genetic_code'] = 999
-    i['reading_frame'] = i['readingframe']
-    del i['readingframe']
-    if i['reading_frame'] is None:
-        i['reading_frame'] = 999
+def migrate_genes_table(old_db, new_db):
+    fixed_items = []
+    append = fixed_items.append
 
-    if i['notes'] is None:
-        i['notes'] = ''
-    if i['intron'] is None:
-        i['intron'] = ''
+    res = old_db.query("select * from genes")
+    for i in res:
+        i['gene_code'] = i['geneCode']
+        del i['geneCode']
+        if i['genetic_code'] is None:
+            i['genetic_code'] = 999
+        i['reading_frame'] = i['readingframe']
+        del i['readingframe']
+        if i['reading_frame'] is None:
+            i['reading_frame'] = 999
 
-    i['gene_type'] = i['genetype']
-    del i['genetype']
-    if i['gene_type'] is None:
-        i['gene_type'] = ''
+        if i['notes'] is None:
+            i['notes'] = ''
+        if i['intron'] is None:
+            i['intron'] = ''
 
-    i['time_created'] = datetime.date.today()
+        i['gene_type'] = i['genetype']
+        del i['genetype']
+        if i['gene_type'] is None:
+            i['gene_type'] = ''
 
-    append(i)
+        i['time_created'] = datetime.date.today()
+
+        append(i)
+
+    table = new_db['public_interface_genes']
+    table.insert_many(fixed_items)
 
 
-table = new_db['public_interface_genes']
-table.insert_many(fixed_items)
+def migrate_genesets_table(old_db, new_db):
+    print(old_db['genesets'].columns)
+    res = old_db.query("select * from genesets")
+
+    table = new_db['public_interface_genesets']
+    table.insert_many(res)
+
+migrate_genesets_table(old_db, new_db)
