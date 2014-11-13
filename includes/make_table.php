@@ -2,7 +2,7 @@
 // #################################################################################
 // #################################################################################
 // Voseq includes/make_table.php
-// author(s): Carlos Peña & Tobias Malm
+// author(s): Carlos PeÃ±a & Tobias Malm
 // license   GNU GPL v2
 // source code available at https://github.com/carlosp420/VoSeq
 //
@@ -12,7 +12,7 @@
 // #################################################################################
 // Section: Startup/includes
 // #################################################################################
-error_reporting (E_ALL); // ^ E_NOTICE);
+error_reporting(E_ALL); // ^ E_NOTICE);
 error_reporting(0); // ^ E_NOTICE);
 //check login session
 include'../login/auth.php';
@@ -123,7 +123,6 @@ if ($geneset != "Choose geneset"){
 if (isset($geneset_taxa) && isset($genes)){$genes = array_merge( $geneset_taxa, $genes) ;}
 elseif (isset($geneset_taxa) && ! isset($genes)){$genes = $geneset_taxa ;}
 elseif (! isset($geneset_taxa) && isset($genes)){$genes = $genes;}
-//else { $errorList[] = "No genes are chosen!</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pointless to make a table without genes..."; }
 
 // checking taxonset choice
 $taxonset = $_POST['taxonsets'];
@@ -210,6 +209,7 @@ else { //start building dataset
 			else {	$xls_file .= ucfirst($k) . $field_delimitor ;}
 	    }
     }
+
     if (isset($genes)) {
 	    foreach( $genes as $item ) {
 		    $xls_file .= strtoupper($item) . $field_delimitor;
@@ -232,6 +232,7 @@ else { //start building dataset
                 }
             }
         }
+
 	    if( isset($genes) ) {
 		    $geneCodes = array();
 		    foreach( $genes as $gene ) {
@@ -247,7 +248,7 @@ else { //start building dataset
 
 			    $query1 = "SELECT accession, sequences FROM ". $p_ . "sequences WHERE code='$code' AND geneCode='$gene'";
 			    $result1 = mysql_query($query1) or die("Error in query: $query1. " . mysql_error());
-		
+
 			    while( $row1 = mysql_fetch_object($result1) ) {
 				    # if accession yes, then print accession number
 				    if ( $_POST['geneinfo'] == 'accno') {
@@ -289,15 +290,14 @@ else { //start building dataset
                         }
                     }
 		        }
-		        //$xls_file .= "\"$species\",\"$code\",\"$coll_locality\",";
-		        foreach($geneCodes as $key => $val) {
-			        $xls_file .= $val . $field_delimitor ;
-		        }
+	        }
+            foreach($geneCodes as $key => $val) {
+                $xls_file .= $val . $field_delimitor ;
             }
 	        $xls_file .= "\n";
 	    }
     }
-	
+
     // #################################################################################
     // Section: Create downloadable file with table
     // #################################################################################

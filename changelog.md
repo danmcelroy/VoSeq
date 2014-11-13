@@ -3,6 +3,10 @@
 ##Changelog:
 ### Version 1.7.X
 
+* 2014-11-13 Carlos Peña
+
+        When making voucher tables there were many repetitive columns, fixed.
+
 * 2014-08-19 Carlos Peña
 
         Upated flickr_upload_from_directory file to batch upload photos into
