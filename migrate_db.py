@@ -7,15 +7,22 @@ Needs an XML file with the database dump from MySQL:
 import datetime
 import dataset
 import json
+import sys
+
+
+if len(sys.argv) < 2:
+    print("Enter name of database dump file as argument.")
+    print("This file can be obtained from your MySQL database using this command")
+    print("\t> mysqdump --xml database > dump.xml")
+    sys.exit(1)
 
 with open("config.json", "r") as f:
     settings = json.loads(f.read())
 
 
-new_db_url = 'postgresql://' + settings['POSTGRES_DB_USER'] + ':' + settings['POSTGRES_DB_PASS'] + '@' \
-             + 'localhost:5432/' + settings['POSTGRES_DB_NAME']
-old_db = dataset.connect(old_db_url)
-new_db = dataset.connect(new_db_url)
+db_url = 'postgresql://' + settings['DB_USER'] + ':' + settings['DB_PASS'] + '@' \
+             + settings['DB_HOST'] + ":" + settings['DB_PORT'] + "/" + settings['DB_NAME']
+db = dataset.connect(db_url)
 
 
 def migrate_genes_table(old_db, new_db):
@@ -161,4 +168,3 @@ def migrate_taxonsets_table(old_db, new_db):
 
 
 
-migrate_sequences_table(old_db, new_db)
