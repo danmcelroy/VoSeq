@@ -4,10 +4,12 @@ Needs an XML file with the database dump from MySQL:
 
 > mysqldump --xml database > dump.xml
 """
+import codecs
 import datetime
 import dataset
 import json
 import sys
+import xml.etree.ElementTree as ET
 
 
 if len(sys.argv) < 2:
@@ -167,4 +169,26 @@ def migrate_taxonsets_table(old_db, new_db):
     table.insert_many(fixed_items)
 
 
+class ParseXML(object):
+    """
+    Parses MySQL dump as XML file.
+    """
+    def __init__(self, xml_string, tables_prefix=None):
+        if tables_prefix is None:
+            self.tables_prefix = ''
+        else:
+            self.tables_prefix = tables_prefix
 
+        self.dump_string = xml_string
+
+
+
+
+dump_file = sys.argv[1].strip()
+with codecs.open(dump_file, "r") as handle:
+    dump = handle.read()
+
+tables_prefix = 'voseq_'
+parser = ParseXML(dump, tables_prefix)
+print(parser.dump_string[0:100])
+print(parser.tables_prefix)
