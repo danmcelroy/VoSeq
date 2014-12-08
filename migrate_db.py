@@ -1,5 +1,9 @@
 #!-*- encoding: utf-8 -*-
-# This needs python2.7
+"""
+Needs an XML file with the database dump from MySQL:
+
+> mysqldump --xml database > dump.xml
+"""
 import datetime
 import dataset
 import json
@@ -8,7 +12,6 @@ with open("config.json", "r") as f:
     settings = json.loads(f.read())
 
 
-old_db_url = 'mysql://' + settings['DB_USER'] + ':' + settings['DB_PASS'] + '@' + settings['DB_HOST'] + '/' + settings['DB_NAME']
 new_db_url = 'postgresql://' + settings['POSTGRES_DB_USER'] + ':' + settings['POSTGRES_DB_PASS'] + '@' \
              + 'localhost:5432/' + settings['POSTGRES_DB_NAME']
 old_db = dataset.connect(old_db_url)
