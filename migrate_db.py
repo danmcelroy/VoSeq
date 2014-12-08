@@ -180,6 +180,21 @@ class ParseXML(object):
             self.tables_prefix = tables_prefix
 
         self.dump_string = xml_string
+        self.table_genes = self.parse_table_genes(xml_string)
+
+    def parse_table_genes(self, xml_string):
+        this_table = self.tables_prefix + "genes"
+
+        root = ET.fromstring(xml_string)
+        for i in root.iter('table_data'):
+            if i.attrib['name'] == this_table:
+                our_data = i
+                break
+
+        for row in our_data.findall('row'):
+            id = row.find("./field/[@name='geneCode']")
+            print(id.text)
+
 
 
 
@@ -190,5 +205,4 @@ with codecs.open(dump_file, "r") as handle:
 
 tables_prefix = 'voseq_'
 parser = ParseXML(dump, tables_prefix)
-print(parser.dump_string[0:100])
-print(parser.tables_prefix)
+print(parser.table_genes)
