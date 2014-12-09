@@ -27,148 +27,6 @@ db_url = 'postgresql://' + settings['DB_USER'] + ':' + settings['DB_PASS'] + '@'
 db = dataset.connect(db_url)
 
 
-def migrate_genes_table(old_db, new_db):
-    fixed_items = []
-    append = fixed_items.append
-
-    res = old_db.query("select * from genes")
-    for i in res:
-        del i['id']
-        del i['timestamp']
-        i['gene_code'] = i['geneCode']
-        del i['geneCode']
-        if i['genetic_code'] is None:
-            i['genetic_code'] = 999
-        i['reading_frame'] = i['readingframe']
-        del i['readingframe']
-        if i['reading_frame'] is None:
-            i['reading_frame'] = 999
-
-        if i['notes'] is None:
-            i['notes'] = ''
-        if i['intron'] is None:
-            i['intron'] = ''
-
-        i['gene_type'] = i['genetype']
-        del i['genetype']
-        if i['gene_type'] is None:
-            i['gene_type'] = ''
-
-        i['time_created'] = datetime.date.today()
-
-        append(i)
-
-    table = new_db['public_interface_genes']
-    table.insert_many(fixed_items)
-
-
-def migrate_genesets_table(old_db, new_db):
-    print(old_db['genesets'].columns)
-    fixed_items = []
-    append = fixed_items.append
-    res = old_db.query("select * from genesets")
-    for i in res:
-        del i['id']
-        append(i)
-
-    table = new_db['public_interface_genesets']
-    table.insert_many(fixed_items)
-
-
-def migrate_members_table(old_db, new_db):
-    fixed_items = []
-    append = fixed_items.append
-    res = old_db.query("select * from members")
-    for i in res:
-        del i['id']
-        i['firstname'] = i['firstname'].decode('utf-8')
-        try:
-            i['lastname'] = i['lastname'].decode('utf-8')
-        except UnicodeDecodeError:
-            i['lastname'] = i['lastname'].decode('latin-1')
-        i['login'] = i['login'].decode('utf-8')
-        i['passwd'] = i['passwd'].decode('utf-8')
-        append(i)
-
-    table = new_db['public_interface_members']
-    table.insert_many(fixed_items)
-
-
-def migrate_primers_table(old_db, new_db):
-    fixed_items = []
-    append = fixed_items.append
-    res = old_db.query("select * from primers")
-    for i in res:
-        del i['id']
-        i['gene_code'] = i['geneCode']
-        del i['geneCode']
-        del i['timestamp']
-        if i['primer1'] is None:
-            i['primer1'] = ''
-        if i['primer2'] is None:
-            i['primer2'] = ''
-        if i['primer3'] is None:
-            i['primer3'] = ''
-        if i['primer4'] is None:
-            i['primer4'] = ''
-        if i['primer5'] is None:
-            i['primer5'] = ''
-        if i['primer6'] is None:
-            i['primer6'] = ''
-        append(i)
-
-    table = new_db['public_interface_primers']
-    table.insert_many(fixed_items)
-
-
-def migrate_sequences_table(old_db, new_db):
-    fixed_items = []
-    append = fixed_items.append
-    res = old_db.query("select * from sequences")
-    for i in res:
-        del i['id']
-        i['gene_code'] = i['geneCode']
-        del i['geneCode']
-        del i['timestamp']
-
-        i['time_created'] = i['dateCreation']
-        del i['dateCreation']
-        i['time_edited'] = i['dateModification']
-        del i['dateModification']
-        try:
-            i['labPerson'] = i['labPerson'].decode('utf-8')
-        except UnicodeDecodeError:
-            i['labPerson'] = i['labPerson'].decode('latin-1')
-        except AttributeError:
-            pass
-        append(i)
-    table = new_db['public_interface_sequences']
-    table.insert_many(fixed_items)
-
-
-def migrate_taxonsets_table(old_db, new_db):
-    fixed_items = []
-    append = fixed_items.append
-    res = old_db.query("select * from taxonsets")
-    for i in res:
-        try:
-            del i['id']
-        except:
-            pass
-        del i['taxonset_id']
-
-        try:
-            i['taxonset_creator'] = i['taxonset_creator'].decode('utf-8')
-        except UnicodeDecodeError:
-            i['taxonset_creator'] = i['taxonset_creator'].decode('latin-1')
-        except AttributeError:
-            pass
-        append(i)
-
-    table = new_db['public_interface_taxonsets']
-    table.insert_many(fixed_items)
-
-
 class ParseXML(object):
     """
     Parses MySQL dump as XML file.
@@ -181,6 +39,8 @@ class ParseXML(object):
 
         self.dump_string = xml_string
         self.table_genes = self.parse_table_genes(xml_string)
+        self.table_genesets = self.parse_table_genesets(xml_string)
+        self.table_members = self.parse_table_members(xml_string)
 
     def parse_table_genes(self, xml_string):
         our_data = False
@@ -211,12 +71,66 @@ class ParseXML(object):
             item['genetype'] = row.find("./field/[@name='genetype']").text
             self.table_genes_items.append(item)
 
+    def parse_table_genesets(self, xml_string):
+        our_data = False
+        this_table = self.tables_prefix + "genesets"
 
+        root = ET.fromstring(xml_string)
+        for i in root.iter('table_data'):
+            if i.attrib['name'] == this_table:
+                our_data = i
+                break
+
+        if our_data is False:
+            raise ValueError("Could not find table %s in database dump file." % this_table)
+
+        self.table_genesets_items = []
+        for row in our_data.findall('row'):
+            item = dict()
+            item['geneset_name'] = row.find("./field/[@name='geneset_name']").text
+            item['geneset_creator'] = row.find("./field/[@name='geneset_creator']").text
+            item['geneset_description'] = row.find("./field/[@name='geneset_description']").text
+            item['geneset_list'] = row.find("./field/[@name='geneset_list']").text
+            item['geneset_id'] = row.find("./field/[@name='geneset_id']").text
+            self.table_genesets_items.append(item)
+
+    def parse_table_members(self, xml_string):
+        our_data = False
+        this_table = self.tables_prefix + "members"
+
+        root = ET.fromstring(xml_string)
+        for i in root.iter('table_data'):
+            if i.attrib['name'] == this_table:
+                our_data = i
+                break
+
+        if our_data is False:
+            raise ValueError("Could not find table %s in database dump file." % this_table)
+
+        self.table_members_items = []
+        for row in our_data.findall('row'):
+            item = dict()
+            item['member_id'] = row.find("./field/[@name='member_id']").text
+            item['firstname'] = row.find("./field/[@name='firstname']").text
+            item['lastname'] = row.find("./field/[@name='lastname']").text
+            item['login'] = row.find("./field/[@name='login']").text
+            item['passwd'] = row.find("./field/[@name='passwd']").text
+            item['admin'] = row.find("./field/[@name='admin']").text
+            self.table_members_items.append(item)
 
 dump_file = sys.argv[1].strip()
 with codecs.open(dump_file, "r") as handle:
     dump = handle.read()
 
-tables_prefix = 'voseq_'
+# tables_prefix = 'voseq_'
+tables_prefix = ''
 parser = ParseXML(dump, tables_prefix)
-print(parser.table_genes_items)
+#print(parser.table_genes_items)
+#print(parser.table_genesets_items)
+print(parser.table_members_items)
+"""
+print(parser.table_primers_items)
+print(parser.table_sequences_items)
+print(parser.table_taxonsets_items)
+print(parser.table_vouchers_items)
+"""
