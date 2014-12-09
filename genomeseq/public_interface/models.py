@@ -71,4 +71,63 @@ class TaxonSets(models.Model):
     taxonset_list = models.TextField()
 
 
+class Vouchers(models.Model):
+    MALE = 'm'
+    FEMALE = 'f'
+    LARVA = 'l'
+    WORKER = 'w'
+    QUEEN = 'q'
+    SEX_CHOICES = (
+        (MALE, 'male'),
+        (FEMALE, 'female'),
+        (LARVA, 'larva'),
+        (WORKER, 'worker'),
+        (QUEEN, 'queen'),
+    )
 
+    SPREAD = 's'
+    ENVELOPE = 'e'
+    PHOTO = 'p'
+    NONE = 'n'
+    VOUCHER_CHOICES = (
+        (SPREAD, 'spread'),
+        (ENVELOPE, 'in envelope'),
+        (PHOTO, 'only photo'),
+        (NONE, 'no voucher'),
+    )
+    code = models.CharField(max_length=100, unique=True, help_text="Voucher code.")
+    orden = models.CharField(max_length=100)
+    family = models.CharField(max_length=100)
+    subfamily = models.CharField(max_length=100)
+    tribe = models.CharField(max_length=100)
+    subtribe = models.CharField(max_length=100)
+    genus = models.CharField(max_length=100)
+    species = models.CharField(max_length=100)
+    subspecies = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    specificLocality = models.CharField(max_length=100, help_text="Locality of origin for this specimen.")
+    typeSpecies = models.CharField(max_length=100, help_text="Is this a type species?")
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    altitude = models.IntegerField(help_text="Enter altitude in meters above sea level.")
+    collector = models.CharField(max_length=100)
+    dateCollection = models.DateField(null=True) # TODO check if better blank null rather than null true
+    voucherImage = models.URLField(help_text="URL of the Flickr page.")
+    thumbnail = models.URLField(help_text="URL for the small sized image from Flickr.")
+    extraction = models.CharField(max_length=50, help_text="Number of extraction event.")
+    extractionTube = models.CharField(max_length=50, help_text="Tube containing DNA extract.")
+    dateExtraction = models.DateField(null=True)
+    extractor = models.CharField(max_length=100)
+    voucherLocality = models.CharField(max_length=200)
+    publishedIn = models.TextField()
+    notes = models.TextField()
+    edits = models.TextField()
+    latesteditor = models.TextField()
+    hostorg = models.CharField(max_length=200, help_text="Hostplant or other host.")
+    sex = models.CharField(max_length=1, choices=SEX_CHOICES)
+    voucher = models.CharField(max_length=1, choices=VOUCHER_CHOICES)
+    voucherCode = models.CharField(max_length=100, help_text="Original code of voucher specimen.")
+    flickr_id = models.IntegerField(help_text="ID number from Flickr for our photo.")
+    determinedBy = models.CharField(max_length=100, help_text="Person that identified the taxon for this specimen.")
+    auctor = models.CharField(max_length=100, help_text="Person that described this taxon.")
+    timestamp = models.DateTimeField()
