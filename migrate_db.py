@@ -43,6 +43,7 @@ class ParseXML(object):
         self.table_members = self.parse_table_members(xml_string)
         self.table_primers = self.parse_table_primers(xml_string)
         self.table_sequences = self.parse_table_sequences(xml_string)
+        self.table_taxonsets = self.parse_table_taxonsets(xml_string)
 
     def parse_table_genes(self, xml_string):
         our_data = False
@@ -175,6 +176,30 @@ class ParseXML(object):
             item['timestamp'] = row.find("./field/[@name='timestamp']").text
             self.table_sequences_items.append(item)
 
+    def parse_table_taxonsets(self, xml_string):
+        our_data = False
+        this_table = self.tables_prefix + "taxonsets"
+
+        root = ET.fromstring(xml_string)
+        for i in root.iter('table_data'):
+            if i.attrib['name'] == this_table:
+                our_data = i
+                break
+
+        if our_data is False:
+            raise ValueError("Could not find table %s in database dump file." % this_table)
+
+        self.table_taxonsets_items = []
+        for row in our_data.findall('row'):
+            item = dict()
+            item['taxonset_name'] = row.find("./field/[@name='taxonset_name']").text
+            item['taxonset_creator'] = row.find("./field/[@name='taxonset_creator']").text
+            item['taxonset_description'] = row.find("./field/[@name='taxonset_description']").text
+            item['taxonset_list'] = row.find("./field/[@name='taxonset_list']").text
+            item['taxonset_id'] = row.find("./field/[@name='taxonset_id']").text
+            self.table_taxonsets_items.append(item)
+
+
 dump_file = sys.argv[1].strip()
 with codecs.open(dump_file, "r") as handle:
     dump = handle.read()
@@ -186,8 +211,8 @@ parser = ParseXML(dump, tables_prefix)
 #print(parser.table_genesets_items)
 #print(parser.table_members_items)
 #print(parser.table_primers_items)
-print(parser.table_sequences_items)
-"""
+#print(parser.table_sequences_items)
 print(parser.table_taxonsets_items)
+"""
 print(parser.table_vouchers_items)
 """
