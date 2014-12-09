@@ -42,6 +42,7 @@ class ParseXML(object):
         self.table_genesets = self.parse_table_genesets(xml_string)
         self.table_members = self.parse_table_members(xml_string)
         self.table_primers = self.parse_table_primers(xml_string)
+        self.table_sequences = self.parse_table_sequences(xml_string)
 
     def parse_table_genes(self, xml_string):
         our_data = False
@@ -146,6 +147,33 @@ class ParseXML(object):
             item['timestamp'] = row.find("./field/[@name='timestamp']").text
             self.table_primers_items.append(item)
 
+    def parse_table_sequences(self, xml_string):
+        our_data = False
+        this_table = self.tables_prefix + "sequences"
+
+        root = ET.fromstring(xml_string)
+        for i in root.iter('table_data'):
+            if i.attrib['name'] == this_table:
+                our_data = i
+                break
+
+        if our_data is False:
+            raise ValueError("Could not find table %s in database dump file." % this_table)
+
+        self.table_sequences_items = []
+        for row in our_data.findall('row'):
+            item = dict()
+            item['code'] = row.find("./field/[@name='code']").text
+            item['geneCode'] = row.find("./field/[@name='geneCode']").text
+            item['sequences'] = row.find("./field/[@name='sequences']").text
+            item['accession'] = row.find("./field/[@name='accession']").text
+            item['labPerson'] = row.find("./field/[@name='labPerson']").text
+            item['dateCreation'] = row.find("./field/[@name='dateCreation']").text
+            item['dateModification'] = row.find("./field/[@name='dateModification']").text
+            item['notes'] = row.find("./field/[@name='notes']").text
+            item['genbank'] = row.find("./field/[@name='genbank']").text
+            item['timestamp'] = row.find("./field/[@name='timestamp']").text
+            self.table_sequences_items.append(item)
 
 dump_file = sys.argv[1].strip()
 with codecs.open(dump_file, "r") as handle:
@@ -157,9 +185,9 @@ parser = ParseXML(dump, tables_prefix)
 #print(parser.table_genes_items)
 #print(parser.table_genesets_items)
 #print(parser.table_members_items)
-print(parser.table_primers_items)
-"""
+#print(parser.table_primers_items)
 print(parser.table_sequences_items)
+"""
 print(parser.table_taxonsets_items)
 print(parser.table_vouchers_items)
 """
