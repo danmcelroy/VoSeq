@@ -183,6 +183,7 @@ class ParseXML(object):
         self.table_genes = self.parse_table_genes(xml_string)
 
     def parse_table_genes(self, xml_string):
+        our_data = False
         this_table = self.tables_prefix + "genes"
 
         root = ET.fromstring(xml_string)
@@ -191,11 +192,24 @@ class ParseXML(object):
                 our_data = i
                 break
 
+        if our_data is False:
+            raise ValueError("Could not find table %s in database dump file." % this_table)
+
+        self.table_genes_items = []
         for row in our_data.findall('row'):
-            id = row.find("./field/[@name='geneCode']")
-            print(id.text)
-
-
+            item = dict()
+            item['geneCode'] = row.find("./field/[@name='geneCode']").text
+            item['length'] = row.find("./field/[@name='length']").text
+            item['description'] = row.find("./field/[@name='description']").text
+            item['readingframe'] = row.find("./field/[@name='readingframe']").text
+            item['notes'] = row.find("./field/[@name='notes']").text
+            item['timestamp'] = row.find("./field/[@name='timestamp']").text
+            item['genetic_code'] = row.find("./field/[@name='genetic_code']").text
+            item['aligned'] = row.find("./field/[@name='aligned']").text
+            item['intron'] = row.find("./field/[@name='intron']").text
+            item['prot_code'] = row.find("./field/[@name='prot_code']").text
+            item['genetype'] = row.find("./field/[@name='genetype']").text
+            self.table_genes_items.append(item)
 
 
 
@@ -205,4 +219,4 @@ with codecs.open(dump_file, "r") as handle:
 
 tables_prefix = 'voseq_'
 parser = ParseXML(dump, tables_prefix)
-print(parser.table_genes)
+print(parser.table_genes_items)
