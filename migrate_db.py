@@ -309,36 +309,53 @@ class ParseXML(object):
                     date_obj = None
                 item['timestamp'] = date_obj
 
+            # Deal with flickr images
             if item['voucherImage'] == '':
                 item['voucherImage'] = None
             elif item['voucherImage'] is not None:
-                item['voucherImage'] = self.get_as_set(item['voucherImage'])
+                item['voucherImage'] = self.get_as_tuple(item['voucherImage'])
 
             if item['thumbnail'] == '':
                 item['thumbnail'] = None
             elif item['thumbnail'] is not None:
-                item['thumbnail'] = self.get_as_set(item['thumbnail'])
+                item['thumbnail'] = self.get_as_tuple(item['thumbnail'])
 
             if item['flickr_id'] == '':
                 item['flickr_id'] = None
             elif item['flickr_id'] is not None:
-                item['flickr_id'] = self.get_as_set(item['flickr_id'])
+                item['flickr_id'] = self.get_as_tuple(item['flickr_id'])
+
+            items_to_flickr = None
+            if item['voucherImage'] is not None and item['thumbnail'] is not None \
+                    and item['flickr_id'] is not None:
+                items_to_flickr = []
+                for i in range(0, len(item['voucherImage']), 1):
+                    items_to_flickr.append({
+                        'voucher': item['code'],
+                        'voucherImage': item['voucherImage'][i],
+                        'thumbnail': item['thumbnail'][i],
+                        'flickr_id': item['flickr_id'][i],
+                    })
 
             if item['sex'] is not None:
                 item['sex'] = self.get_sex(item['sex'])
 
             if item['voucher'] is not None:
                 item['voucher'] = self.get_voucher(item['voucher'])
-            print(item['timestamp'])
 
-    def get_as_set(self, string):
-        as_set = set()
+            if items_to_flickr is not None:
+                print(items_to_flickr)
+
+    def get_as_tuple(self, string):
+        as_tupple = ()
+        if string == 'na.gif':
+            return None
         list1 = string.split("|")
         for item in list1:
             if item.strip() != '':
-                as_set.add(item)
+                as_tupple += (item,)
 
-        return as_set
+        return as_tupple
 
     def get_voucher(self, string):
         string = string.lower().strip()
