@@ -46,6 +46,7 @@ class ParseXML(object):
         self.table_sequences_items = None
         self.table_taxonsets_items = None
         self.table_vouchers_items = None
+        self.table_flickr_images_items = None
 
     def parse_table_genes(self, xml_string):
         our_data = False
@@ -268,6 +269,7 @@ class ParseXML(object):
         if self.table_vouchers_items is None:
             self.parse_table_vouchers(self.dump_string)
 
+        self.table_flickr_images_items = []
         for item in self.table_vouchers_items:
             if item['altitude'] is not None:
                 altitude = re.sub("\s+", "", item['altitude'])
@@ -293,8 +295,42 @@ class ParseXML(object):
             else:
                 item['max_altitude'] = None
                 item['min_altitude'] = None
+            del item['altitude']
 
-            print(item['max_altitude'], item['min_altitude'])
+            if item['dateCollection'] is not None:
+                try:
+                    dateCollection = datetime.datetime.strptime(item['dateCollection'], '%Y-%m-%d').date()
+                except ValueError:
+                    dateCollection = None
+                item['dateCollection'] = dateCollection
+
+            if item['voucherImage'] == '':
+                item['voucherImage'] = None
+            elif item['voucherImage'] is not None:
+                item['voucherImage'] = self.get_as_set(item['voucherImage'])
+
+            if item['thumbnail'] == '':
+                item['thumbnail'] = None
+            elif item['thumbnail'] is not None:
+                item['thumbnail'] = self.get_as_set(item['thumbnail'])
+
+            if item['flickr_id'] == '':
+                item['flickr_id'] = None
+            elif item['flickr_id'] is not None:
+                item['flickr_id'] = self.get_as_set(item['flickr_id'])
+
+            if item['flickr_id'] is not None and len(item['flickr_id']) > 1:
+                print(item['flickr_id'])
+
+    def get_as_set(self, string):
+        as_set = set()
+        list1 = string.split("|")
+        for item in list1:
+            if item.strip() != '':
+                as_set.add(item)
+
+        return as_set
+
 
 dump_file = sys.argv[1].strip()
 with codecs.open(dump_file, "r") as handle:
