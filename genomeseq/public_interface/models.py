@@ -95,7 +95,10 @@ class Vouchers(models.Model):
         (PHOTO, 'only photo'),
         (NONE, 'no voucher'),
     )
-    code = models.CharField(max_length=100, unique=True, help_text="Voucher code.")
+    code = models.CharField(max_length=100, unique=True,
+                            primary_key=True,
+                            help_text="Voucher code.",
+                            )
     orden = models.CharField(max_length=100)
     family = models.CharField(max_length=100)
     subfamily = models.CharField(max_length=100)
