@@ -256,15 +256,6 @@ class ParseXML(object):
             item['timestamp'] = row.find("./field/[@name='timestamp']").text
             self.table_vouchers_items.append(item)
 
-    def convert_to_int(self, string):
-        try:
-            string = int(string)
-        except TypeError:
-            string = None
-        except ValueError:
-            string = None
-        return string
-
     def import_table_vouchers(self):
         if self.table_vouchers_items is None:
             self.parse_table_vouchers(self.dump_string)
@@ -311,6 +302,13 @@ class ParseXML(object):
                     date_obj = None
                 item['dateExtraction'] = date_obj
 
+            if item['timestamp'] is not None:
+                try:
+                    date_obj = datetime.datetime.strptime(item['timestamp'], '%Y-%m-%d %H:%M:%S')
+                except ValueError:
+                    date_obj = None
+                item['timestamp'] = date_obj
+
             if item['voucherImage'] == '':
                 item['voucherImage'] = None
             elif item['voucherImage'] is not None:
@@ -329,7 +327,9 @@ class ParseXML(object):
             if item['sex'] is not None:
                 item['sex'] = self.get_sex(item['sex'])
 
-            print(item['sex'])
+            if item['voucher'] is not None:
+                item['voucher'] = self.get_voucher(item['voucher'])
+            print(item['timestamp'])
 
     def get_as_set(self, string):
         as_set = set()
@@ -340,6 +340,25 @@ class ParseXML(object):
 
         return as_set
 
+    def get_voucher(self, string):
+        string = string.lower().strip()
+        if string == 'no photo':
+            return 'e'
+        elif string == 'no voucher':
+            return 'n'
+        elif string == 'spread':
+            return 's'
+        elif string == 'unspread':
+            return 'e'
+        elif string == 'voucher destroyed':
+            return 'd'
+        elif string == 'voucher lost':
+            return 'l'
+        elif string == 'voucher photo':
+            return 'p'
+        else:
+            return 'n'
+
     def get_sex(self, string):
         string = string.lower().strip()
         if string == 'f' or string == 'female':
@@ -348,6 +367,15 @@ class ParseXML(object):
             return 'm'
         else:
             return None
+
+    def convert_to_int(self, string):
+        try:
+            string = int(string)
+        except TypeError:
+            string = None
+        except ValueError:
+            string = None
+        return string
 
 
 dump_file = sys.argv[1].strip()
