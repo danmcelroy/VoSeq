@@ -85,15 +85,28 @@ class Vouchers(models.Model):
         (QUEEN, 'queen'),
     )
 
+    DONT_KNOW = 'd'
+    YES = 'y'
+    NO = 'n'
+    TYPE_SPECIES_CHOICES = (
+        (DONT_KNOW, 'd'),
+        (YES, 'y'),
+        (NO, 'n'),
+    )
+
     SPREAD = 's'
     ENVELOPE = 'e'
     PHOTO = 'p'
     NONE = 'n'
+    DESTROYED = 'd'
+    LOST = 'l'
     VOUCHER_CHOICES = (
         (SPREAD, 'spread'),
         (ENVELOPE, 'in envelope'),
         (PHOTO, 'only photo'),
         (NONE, 'no voucher'),
+        (DESTROYED, 'destroyed'),
+        (LOST, 'lost'),
     )
     code = models.CharField(max_length=100, unique=True,
                             primary_key=True,
@@ -109,7 +122,7 @@ class Vouchers(models.Model):
     subspecies = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
     specificLocality = models.CharField(max_length=100, help_text="Locality of origin for this specimen.")
-    typeSpecies = models.CharField(max_length=100, help_text="Is this a type species?")
+    typeSpecies = models.CharField(max_length=1, choices=TYPE_SPECIES_CHOICES, help_text="Is this a type species?")
     latitude = models.FloatField()
     longitude = models.FloatField()
     max_altitude = models.IntegerField(help_text="Enter altitude in meters above sea level.")
