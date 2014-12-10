@@ -38,13 +38,15 @@ class ParseXML(object):
             self.tables_prefix = tables_prefix
 
         self.dump_string = xml_string
-        self.table_genes = self.parse_table_genes(xml_string)
-        self.table_genesets = self.parse_table_genesets(xml_string)
-        self.table_members = self.parse_table_members(xml_string)
-        self.table_primers = self.parse_table_primers(xml_string)
-        self.table_sequences = self.parse_table_sequences(xml_string)
-        self.table_taxonsets = self.parse_table_taxonsets(xml_string)
-        self.table_vouchers = self.parse_table_vouchers(xml_string)
+        self.table_genes = None
+        self.table_genesets = None
+        self.table_members = None
+        self.table_primers = None
+        self.table_sequences = None
+        self.table_taxonsets = None
+        self.table_vouchers = None
+        self.table_vouchers = None
+
 
     def parse_table_genes(self, xml_string):
         our_data = False
@@ -267,4 +269,5 @@ parser = ParseXML(dump, tables_prefix)
 #print(parser.table_primers_items)
 #print(parser.table_sequences_items)
 # print(parser.table_taxonsets_items)
-#print(parser.table_vouchers_items)
+parser.parse_table_vouchers(dump)
+print(parser.table_vouchers_items)
