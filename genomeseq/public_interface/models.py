@@ -109,7 +109,8 @@ class Vouchers(models.Model):
     typeSpecies = models.CharField(max_length=100, help_text="Is this a type species?")
     latitude = models.FloatField()
     longitude = models.FloatField()
-    altitude = models.IntegerField(help_text="Enter altitude in meters above sea level.")
+    max_altitude = models.IntegerField(help_text="Enter altitude in meters above sea level.")
+    min_altitude = models.IntegerField(help_text="Enter altitude in meters above sea level.")
     collector = models.CharField(max_length=100)
     dateCollection = models.DateField(null=True) # TODO check if better blank null rather than null true
     voucherImage = models.URLField(help_text="URL of the Flickr page.")
