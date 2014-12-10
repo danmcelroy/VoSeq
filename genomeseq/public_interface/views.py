@@ -1,8 +1,13 @@
 from django.shortcuts import render
 
-# Create your views here.
+from .models import Vouchers
+
+
 def index(request):
     return render(request, 'public_interface/index.html')
 
 def browse(request):
-    return render(request, 'public_interface/browse.html')
+    queryset = Vouchers.objects.all().order_by('-timestamp')[:10]
+    return render(request, 'public_interface/browse.html',
+                  {'results': queryset},
+    )
