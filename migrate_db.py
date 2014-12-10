@@ -299,10 +299,17 @@ class ParseXML(object):
 
             if item['dateCollection'] is not None:
                 try:
-                    dateCollection = datetime.datetime.strptime(item['dateCollection'], '%Y-%m-%d').date()
+                    date_obj = datetime.datetime.strptime(item['dateCollection'], '%Y-%m-%d').date()
                 except ValueError:
-                    dateCollection = None
-                item['dateCollection'] = dateCollection
+                    date_obj = None
+                item['dateCollection'] = date_obj
+
+            if item['dateExtraction'] is not None:
+                try:
+                    date_obj = datetime.datetime.strptime(item['dateExtraction'], '%Y-%m-%d').date()
+                except ValueError:
+                    date_obj = None
+                item['dateExtraction'] = date_obj
 
             if item['voucherImage'] == '':
                 item['voucherImage'] = None
@@ -319,8 +326,10 @@ class ParseXML(object):
             elif item['flickr_id'] is not None:
                 item['flickr_id'] = self.get_as_set(item['flickr_id'])
 
-            if item['flickr_id'] is not None and len(item['flickr_id']) > 1:
-                print(item['flickr_id'])
+            if item['sex'] is not None:
+                item['sex'] = self.get_sex(item['sex'])
+
+            print(item['sex'])
 
     def get_as_set(self, string):
         as_set = set()
@@ -330,6 +339,15 @@ class ParseXML(object):
                 as_set.add(item)
 
         return as_set
+
+    def get_sex(self, string):
+        string = string.lower().strip()
+        if string == 'f' or string == 'female':
+            return 'f'
+        elif string == 'm' or string == 'male' or string == 'mae':
+            return 'm'
+        else:
+            return None
 
 
 dump_file = sys.argv[1].strip()
