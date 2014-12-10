@@ -1,0 +1,115 @@
+{% extends 'public_interface/base.html' %}
+
+
+{% block content %}
+<div class="explorer-container">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-sm-6 col-md-5 col-lg-5">
+          <h3>{{ item.code }} {{ item.genus }} {{ item.species }}
+              {% if item.auctor != None %}
+                {{ item.auctor }}
+              {% endif %}
+          </h3>
+
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title"><b>Specimen name</b></h3>
+            </div>
+
+            <table class="table table-condensed table-striped">
+              <tr>
+                <td><b>Order:</b></td>
+                <td>{{ item.orden }}</td>
+
+                <td><b>Genus:</b></td>
+                <td>{{ item.genus }}</td>
+              </tr>
+              <tr>
+                <td><b>Family:</b></td>
+                <td>{{ item.family }}</td>
+
+                <td><b>Species:</b></td>
+                <td>{{ item.species }}</td>
+              </tr>
+              <tr>
+                <td><b>Subfamily:</b></td>
+                <td>{{ item.subfamily }}</td>
+
+                <td><b>Subspecies:</b></td>
+                <td>{{ item.subspecies }}</td>
+              </tr>
+              <tr>
+                <td><b>Tribe:</b></td>
+                <td>{{ item.tribe }}</td>
+
+                <td><b> org.:</b></td>
+                <td>{{ item.hostorg }}</td>
+              </tr>
+              <tr>
+                <td><b>Subtribe:</b></td>
+                <td>{{ item.subtribe }}</td>
+
+                <td><b>Author:</b></td>
+                <td>{{ item.auctor }}</td>
+              </tr>
+              <tr>
+                <td colspan="2"><b>Type species?</b></td>
+                <td colspan="2">
+                  {% if item.typeSpecies == 'd' %}
+                    don't know
+                  {% elif item.typeSpecies == 'y' %}
+                    yes
+                  {% elif item.typeSpecies == 'n' %}
+                    no
+                  {% endif %}
+                </td>
+              </tr>
+            </table>
+          </div><!-- panel -->
+
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Locality Information</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+                <td colspan="2"><b>Country:</b></td>
+                <td colspan="2">{{ item.country }}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><b>Specific Locality:</b></td>
+                <td colspan="2">{{ item.specificLocality }}</td>
+            </tr>
+
+            <tr>
+              <td><b>Latitude:</b></td>
+              <td>{{ item.latitude }}</td>
+              <td><b>Max. altitude:</b></td>
+              <td>{{ item.max_altitude }}</td>
+            </tr>
+            <tr>
+              <td><b>Longitude:</b></td>
+              <td>{{ item.longitude }}</td>
+              <td><b>Min. altitude:</b></td>
+              <td>{{ item.min_altitude }}</td>
+            <tr>
+          </table>
+        </div><!-- panel -->
+
+      </div><!-- col -->
+
+
+      <div class="col-sm-6 col-md-5 col-md-offset-1 col-lg-4 col-lg-offset-2">
+        {% block toolbox %}
+          {% include "public_interface/toolbox.html" %}
+        {% endblock toolbox %}
+      </div><!-- col -->
+
+    </div><!-- row -->
+  </div><!-- container -->
+</div>
+{% endblock content %}
