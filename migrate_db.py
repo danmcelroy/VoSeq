@@ -8,6 +8,7 @@ import codecs
 import datetime
 import dataset
 import json
+import re
 import sys
 import xml.etree.ElementTree as ET
 
@@ -38,15 +39,13 @@ class ParseXML(object):
             self.tables_prefix = tables_prefix
 
         self.dump_string = xml_string
-        self.table_genes = None
-        self.table_genesets = None
-        self.table_members = None
-        self.table_primers = None
-        self.table_sequences = None
-        self.table_taxonsets = None
-        self.table_vouchers = None
-        self.table_vouchers = None
-
+        self.table_genes_items = None
+        self.table_genesets_items = None
+        self.table_members_items = None
+        self.table_primers_items = None
+        self.table_sequences_items = None
+        self.table_taxonsets_items = None
+        self.table_vouchers_items = None
 
     def parse_table_genes(self, xml_string):
         our_data = False
@@ -256,6 +255,47 @@ class ParseXML(object):
             item['timestamp'] = row.find("./field/[@name='timestamp']").text
             self.table_vouchers_items.append(item)
 
+    def convert_to_int(self, string):
+        try:
+            string = int(string)
+        except TypeError:
+            string = None
+        except ValueError:
+            string = None
+        return string
+
+    def import_table_vouchers(self):
+        if self.table_vouchers_items is None:
+            self.parse_table_vouchers(self.dump_string)
+
+        for item in self.table_vouchers_items:
+            if item['altitude'] is not None:
+                altitude = re.sub("\s+", "", item['altitude'])
+                altitude = altitude.split("-")
+
+                if len(altitude) > 1:
+                    max_altitude = altitude[0].strip()
+                    max_altitude = re.sub("[a-zA-Z]", "", max_altitude)
+                    max_altitude = self.convert_to_int(max_altitude)
+
+                    min_altitude = altitude[1].strip()
+                    min_altitude = re.sub("[a-zA-Z]", "", min_altitude)
+                    min_altitude = self.convert_to_int(min_altitude)
+
+                    item['max_altitude'] = max_altitude
+                    item['min_altitude'] = min_altitude
+                else:
+                    max_altitude = re.sub("[a-zA-Z]", "", altitude[0])
+                    max_altitude = re.sub("[a-zA-Z]", "", max_altitude)
+                    max_altitude = self.convert_to_int(max_altitude)
+                    item['max_altitude'] = max_altitude
+                    item['min_altitude'] = None
+            else:
+                item['max_altitude'] = None
+                item['min_altitude'] = None
+
+            print(item['max_altitude'], item['min_altitude'])
+
 dump_file = sys.argv[1].strip()
 with codecs.open(dump_file, "r") as handle:
     dump = handle.read()
@@ -269,5 +309,4 @@ parser = ParseXML(dump, tables_prefix)
 #print(parser.table_primers_items)
 #print(parser.table_sequences_items)
 # print(parser.table_taxonsets_items)
-parser.parse_table_vouchers(dump)
-print(parser.table_vouchers_items)
+parser.import_table_vouchers()
