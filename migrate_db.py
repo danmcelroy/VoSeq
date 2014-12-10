@@ -46,7 +46,7 @@ class ParseXML(object):
         self.table_sequences_items = None
         self.table_taxonsets_items = None
         self.table_vouchers_items = None
-        self.table_flickr_images_items = None
+        self.table_flickr_images_items = []
 
     def parse_table_genes(self, xml_string):
         our_data = False
@@ -359,8 +359,22 @@ class ParseXML(object):
                 item['typeSpecies'] = 'n'
             else:
                 item['typeSpecies'] = 'd'
-            print(item)
-            break
+
+            if items_to_flickr is not None:
+                self.table_flickr_images_items += items_to_flickr
+
+    def save_table_vouchers_to_db(self):
+        if self.table_vouchers_items is None:
+            self.parse_table_vouchers(self.dump_string)
+
+        table = db['public_interface_vouchers']
+        table.insert_many(self.table_vouchers_items)
+        print("Uploading table `public_interface_vouchers`")
+
+        table = db['public_interface_flickrimages']
+        table.insert_many(self.table_flickr_images_items)
+        print("Uploading table `public_interface_flickrimages`")
+
 
     def get_as_tuple(self, string):
         as_tupple = ()
@@ -425,3 +439,4 @@ parser = ParseXML(dump, tables_prefix)
 #print(parser.table_sequences_items)
 # print(parser.table_taxonsets_items)
 parser.import_table_vouchers()
+parser.save_table_vouchers_to_db()
