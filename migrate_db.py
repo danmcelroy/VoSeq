@@ -288,6 +288,11 @@ class ParseXML(object):
                 item['min_altitude'] = None
             del item['altitude']
 
+            if item['latitude'] is not None:
+                item['latitude'] = float(item['latitude'])
+            if item['longitude'] is not None:
+                item['longitude'] = float(item['longitude'])
+
             if item['dateCollection'] is not None:
                 try:
                     date_obj = datetime.datetime.strptime(item['dateCollection'], '%Y-%m-%d').date()
@@ -336,6 +341,9 @@ class ParseXML(object):
                         'thumbnail': item['thumbnail'][i],
                         'flickr_id': item['flickr_id'][i],
                     })
+            del item['voucherImage']
+            del item['thumbnail']
+            del item['flickr_id']
 
             if item['sex'] is not None:
                 item['sex'] = self.get_sex(item['sex'])
@@ -343,8 +351,16 @@ class ParseXML(object):
             if item['voucher'] is not None:
                 item['voucher'] = self.get_voucher(item['voucher'])
 
-            if items_to_flickr is not None:
-                print(items_to_flickr)
+            if item['typeSpecies'] == '0':
+                item['typeSpecies'] = 'd'
+            elif item['typeSpecies'] == '1':
+                item['typeSpecies'] = 'y'
+            elif item['typeSpecies'] == '2':
+                item['typeSpecies'] = 'n'
+            else:
+                item['typeSpecies'] = 'd'
+            print(item)
+            break
 
     def get_as_tuple(self, string):
         as_tupple = ()
