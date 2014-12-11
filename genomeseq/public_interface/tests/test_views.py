@@ -5,6 +5,7 @@ from django.test import Client
 from django.test import TestCase
 
 from public_interface.models import Vouchers
+from public_interface.models import FlickrImages
 
 
 class TestViews(TestCase):
@@ -16,6 +17,9 @@ class TestViews(TestCase):
             item['min_altitude'] = None
         b = Vouchers.objects.create(**item)
         b.save()
+
+        f = FlickrImages.objects.create(voucher=b)
+        f.save()
 
     def test_index(self):
         c = Client()
