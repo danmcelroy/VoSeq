@@ -26,6 +26,11 @@ being deposited in GenBank (hence public).
                 {% if i.auctor != None %}
                   {{ auctor }}
                 {% endif %}
+
+                {% load staticfiles %}
+                {% if i.code in vouchers_with_images %}
+                  <a href="/p/{{ i.code }}"><img src="{% static 'img/icon_image.png' %}" title="See photos"/></a>
+                {% endif %}
                 <br />
                 By {{ i.extractor }} on {{ i.timestamp|date }}
               </li>

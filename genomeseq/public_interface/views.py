@@ -1,4 +1,7 @@
+import itertools
+
 from django.shortcuts import render
+from django.db.models import Prefetch
 
 from .models import Vouchers
 from .models import FlickrImages
@@ -9,9 +12,20 @@ def index(request):
 
 
 def browse(request):
-    queryset = Vouchers.objects.all().order_by('-timestamp')[:10]
+    queryset = Vouchers.objects.order_by('-timestamp')[:10]
+
+    # TODO improve this ugly hack. Use select_related or prefetch_related
+    vouchers_with_images = []
+    for i in queryset:
+        q = FlickrImages.objects.filter(voucher=i.code)
+        if q.count() > 0:
+            vouchers_with_images.append(i.code)
+
     return render(request, 'public_interface/browse.html',
-                  {'results': queryset},
+                  {
+                      'results': queryset,
+                      'vouchers_with_images': vouchers_with_images,
+                  },
                   )
 
 
