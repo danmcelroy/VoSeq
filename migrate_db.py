@@ -24,7 +24,7 @@ with open("config.json", "r") as f:
 
 
 db_url = 'postgresql://' + settings['DB_USER'] + ':' + settings['DB_PASS'] + '@' \
-             + settings['DB_HOST'] + ":" + settings['DB_PORT'] + "/" + settings['DB_NAME']
+         + settings['DB_HOST'] + ":" + settings['DB_PORT'] + "/" + settings['DB_NAME']
 db = dataset.connect(db_url)
 
 
@@ -336,7 +336,7 @@ class ParseXML(object):
                 items_to_flickr = []
                 for i in range(0, len(item['voucherImage']), 1):
                     items_to_flickr.append({
-                        'voucher': item['code'],
+                        'voucher_id': item['code'],
                         'voucherImage': item['voucherImage'][i],
                         'thumbnail': item['thumbnail'][i],
                         'flickr_id': item['flickr_id'][i],
@@ -374,7 +374,6 @@ class ParseXML(object):
         table = db['public_interface_flickrimages']
         table.insert_many(self.table_flickr_images_items)
         print("Uploading table `public_interface_flickrimages`")
-
 
     def get_as_tuple(self, string):
         as_tupple = ()
@@ -432,11 +431,11 @@ with codecs.open(dump_file, "r") as handle:
 # tables_prefix = 'voseq_'
 tables_prefix = ''
 parser = ParseXML(dump, tables_prefix)
-#print(parser.table_genes_items)
-#print(parser.table_genesets_items)
-#print(parser.table_members_items)
-#print(parser.table_primers_items)
-#print(parser.table_sequences_items)
+# print(parser.table_genes_items)
+# print(parser.table_genesets_items)
+# print(parser.table_members_items)
+# print(parser.table_primers_items)
+# print(parser.table_sequences_items)
 # print(parser.table_taxonsets_items)
 parser.import_table_vouchers()
 parser.save_table_vouchers_to_db()
