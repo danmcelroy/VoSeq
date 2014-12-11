@@ -4,3 +4,4 @@ serve:
 migrations:
 	cd genomeseq; python manage.py makemigrations --settings=genomeseq.settings.local
 	cd genomeseq; python manage.py migrate --settings=genomeseq.settings.local
+
