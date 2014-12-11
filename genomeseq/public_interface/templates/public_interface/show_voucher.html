@@ -171,6 +171,35 @@
       <div class="col-sm-6 col-md-5 col-lg-5">
         <div class="panel panel-primary">
           <div class="panel-heading">
+            <h3 class="panel-title"><b>DNA</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Extraction:</b></td>
+              <td><b>Tube:</b></td>
+            </tr>
+            <tr>
+              <td>{{ item.extraction }}</td>
+              <td>{{ item.extractionTube }}</td>
+            </tr>
+            <tr>
+              <td colspan="2"><b>Extractor:</b></td>
+            </tr>
+            <tr>
+              <td colspan="2">{{ item.extractor }}</td>
+            </tr>
+            <tr>
+              <td colspan="2"><b>Date:</b></td>
+            </tr>
+            <tr>
+              <td colspan="2">{{ item.dateExtraction }}</td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
             <h3 class="panel-title"><b>Sequence Information</b></h3>
           </div>
 
@@ -191,6 +220,9 @@
         </div><!-- panel -->
 
 
+      </div><!-- col -->
+
+      <div class="col-lg-2">
         {% block toolbox %}
           {% include "public_interface/toolbox.html" %}
         {% endblock toolbox %}
