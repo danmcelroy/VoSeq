@@ -8,19 +8,23 @@ class Genes(models.Model):
     description = models.CharField(max_length=255, blank=True)
     reading_frame = models.PositiveSmallIntegerField()
     notes = models.TextField(blank=True)
-    aligned = models.CharField(max_length=6, choices=(
-        ('yes', 'yes'),
-        ('no', 'no'),
-        ('notset', 'notset'),
-    ),
-                               default='notset')
+    aligned = models.CharField(
+        max_length=6, choices=(
+            ('yes', 'yes'),
+            ('no', 'no'),
+            ('notset', 'notset'),
+        ),
+        default='notset',
+    )
     intron = models.CharField(max_length=255, blank=True)
-    prot_code = models.CharField(max_length=6, choices=(
-        ('yes', 'yes'),
-        ('no', 'no'),
-        ('notset', 'notset'),
-    ),
-                               default='notset')
+    prot_code = models.CharField(
+        max_length=6, choices=(
+            ('yes', 'yes'),
+            ('no', 'no'),
+            ('notset', 'notset'),
+        ),
+        default='notset',
+    )
     gene_type = models.CharField(max_length=255, blank=True)
 
     time_created = models.DateTimeField(auto_now_add=True)
@@ -128,7 +132,7 @@ class Vouchers(models.Model):
     max_altitude = models.IntegerField(blank=True, null=True, help_text="Enter altitude in meters above sea level.")
     min_altitude = models.IntegerField(blank=True, null=True, help_text="Enter altitude in meters above sea level.")
     collector = models.CharField(max_length=100, blank=True, null=True)
-    dateCollection = models.DateField(null=True) # TODO check if better blank null rather than null true
+    dateCollection = models.DateField(null=True)  # TODO check if better blank null rather than null true
     extraction = models.CharField(max_length=50, help_text="Number of extraction event.", blank=True, null=True)
     extractionTube = models.CharField(max_length=50, help_text="Tube containing DNA extract.", blank=True, null=True)
     dateExtraction = models.DateField(null=True)
@@ -146,8 +150,9 @@ class Vouchers(models.Model):
     auctor = models.CharField(max_length=100, help_text="Person that described this taxon.", blank=True, null=True)
     timestamp = models.DateTimeField(null=True)
 
+
 class FlickrImages(models.Model):
-    voucher = models.ForeignKey('Vouchers', help_text='Relation with id of voucher', blank=True, null=True)
+    voucher = models.ForeignKey(Vouchers, help_text='Relation with id of voucher', blank=True, null=True)
     voucherImage = models.URLField(help_text="URLs of the Flickr page.")
     thumbnail = models.URLField(help_text="URLs for the small sized image from Flickr.")
     flickr_id = models.CharField(max_length=100, help_text="ID numbers from Flickr for our photo.")
