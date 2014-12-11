@@ -168,7 +168,29 @@
       </div><!-- col -->
 
 
-      <div class="col-sm-6 col-md-5 col-md-offset-1 col-lg-4 col-lg-offset-2">
+      <div class="col-sm-6 col-md-5 col-lg-5">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Sequence Information</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Region</b></td>
+              <td><b>bp</b></td>
+              <td><b>amb.</b></td>
+              <td><b>Lab.</b></td>
+              <td><b>Accession</b></td>
+              <td><b>local Blast</b></td>
+              <td><b>ncbi Blast</b></td>
+            </tr>
+            <tr>
+              <td colspan="6">TODO: Here go gene sequences</td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+
+
         {% block toolbox %}
           {% include "public_interface/toolbox.html" %}
         {% endblock toolbox %}
