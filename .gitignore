@@ -5,3 +5,10 @@ config.json
 *db
 *sql
 *xml
+
+# coverage
+.coverage
+*html
+genomeseq/htmlcov
+genomeseq/.coverage
+htmlcov

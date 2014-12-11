@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 from .models import Vouchers
+from .models import FlickrImages
 
 
 def index(request):
@@ -15,7 +16,11 @@ def browse(request):
 
 
 def show_voucher(request, voucher_code):
+    images_queryset = FlickrImages.objects.filter(voucher=voucher_code)
+
     queryset = Vouchers.objects.get(code=voucher_code)
     return render(request, 'public_interface/show_voucher.html',
-                  {'item': queryset},
+                  {'item': queryset,
+                   'images': images_queryset,
+                   },
                   )

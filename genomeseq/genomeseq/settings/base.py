@@ -54,6 +54,12 @@ ROOT_URLCONF = 'genomeseq.urls'
 
 WSGI_APPLICATION = 'genomeseq.wsgi.application'
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'genomeseq',
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
