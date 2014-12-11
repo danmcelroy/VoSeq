@@ -8,7 +8,6 @@ config.json
 
 # coverage
 .coverage
-*html
 genomeseq/htmlcov
 genomeseq/.coverage
 htmlcov
