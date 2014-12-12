@@ -56,18 +56,6 @@ class Primers(models.Model):
     primer6 = models.CharField(max_length=100, blank=True)
 
 
-class Sequences(models.Model):
-    code = models.CharField(max_length=100)
-    gene_code = models.CharField(max_length=100)
-    sequences = models.TextField()
-    accession = models.CharField(max_length=100, blank=True)
-    labPerson = models.CharField(max_length=100, blank=True)
-    time_created = models.DateTimeField(auto_now_add=True)
-    time_edited = models.DateTimeField(auto_now=True)
-    notes = models.TextField(blank=True)
-    genbank = models.BooleanField(default=None, blank=True)
-
-
 class TaxonSets(models.Model):
     taxonset_name = models.CharField(max_length=50)
     taxonset_creator = models.CharField(max_length=75)
@@ -148,7 +136,19 @@ class Vouchers(models.Model):
     voucherCode = models.CharField(max_length=100, help_text="Original code of voucher specimen.", blank=True, null=True)
     determinedBy = models.CharField(max_length=100, help_text="Person that identified the taxon for this specimen.", blank=True, null=True)
     auctor = models.CharField(max_length=100, help_text="Person that described this taxon.", blank=True, null=True)
-    timestamp = models.DateTimeField(null=True)
+    timestamp = models.DateTimeField(null=True)  # TODO change this to date_created = models.DateField(auto_now_add=True)
+
+
+class Sequences(models.Model):
+    code = models.ForeignKey(Vouchers)
+    gene_code = models.CharField(max_length=100)
+    sequences = models.TextField(blank=True)
+    accession = models.CharField(max_length=100, blank=True)
+    labPerson = models.CharField(max_length=100, blank=True)
+    time_created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    time_edited = models.DateTimeField(auto_now=True, null=True, blank=True)
+    notes = models.TextField(blank=True)
+    genbank = models.NullBooleanField()
 
 
 class FlickrImages(models.Model):
