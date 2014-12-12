@@ -165,6 +165,25 @@
             </tr>
           </table>
         </div><!-- panel -->
+
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Publication and Notes</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Published in:</b></td>
+              <td><b>Notes:</b></td>
+            </tr>
+            <tr>
+              <td>{{ item.publishedIn }}</td>
+              <td>{{ item.notes }}</td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+
       </div><!-- col -->
 
 
@@ -218,9 +237,15 @@
               <td><b>local Blast</b></td>
               <td><b>ncbi Blast</b></td>
             </tr>
+            {% for item in sequences %}
             <tr>
-              <td colspan="6">TODO: Here go gene sequences</td>
+              <td>{{ item.gene_code }}</td>
+              <td>{{ item.sequence_length }}</td>
+              <td>{{ item.ambiguous_seq_length }}</td>
+              <td>{{ item.labPerson }}</td>
+              <td>{{ item.accession }}</td>
             </tr>
+            {% endfor %}
           </table>
         </div><!-- panel -->
 

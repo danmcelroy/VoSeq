@@ -2,10 +2,10 @@ import itertools
 
 from django.http import Http404
 from django.shortcuts import render
-from django.db.models import Prefetch
 
 from .models import Vouchers
 from .models import FlickrImages
+from .models import Sequences
 
 
 def index(request):
@@ -38,8 +38,17 @@ def show_voucher(request, voucher_code):
 
     images_queryset = FlickrImages.objects.filter(voucher=voucher_code)
 
+    seqs_queryset = Sequences.objects.filter(code=voucher_code).order_by('gene_code')
+    for item in seqs_queryset:
+        seq = item.sequences
+        item.sequence_length = len(seq)
+        item.ambiguous_seq_length = seq.count('?') + seq.count('-') + seq.count('N') + seq.count('n')
+        if item.labPerson is not None:
+            item.labPerson = item.labPerson.split(" ")[0]
+
     return render(request, 'public_interface/show_voucher.html',
                   {'item': queryset,
                    'images': images_queryset,
+                   'sequences': seqs_queryset,
                    },
                   )
