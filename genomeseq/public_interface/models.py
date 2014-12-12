@@ -105,6 +105,7 @@ class Vouchers(models.Model):
                             help_text="Voucher code.",
                             )
     orden = models.CharField(max_length=100, blank=True, null=True)
+    superfamily = models.CharField(max_length=100, blank=True, null=True)
     family = models.CharField(max_length=100, blank=True, null=True)
     subfamily = models.CharField(max_length=100, blank=True, null=True)
     tribe = models.CharField(max_length=100, blank=True, null=True)
