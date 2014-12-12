@@ -1,5 +1,6 @@
 import itertools
 
+from django.http import Http404
 from django.shortcuts import render
 from django.db.models import Prefetch
 
@@ -30,9 +31,13 @@ def browse(request):
 
 
 def show_voucher(request, voucher_code):
+    try:
+        queryset = Vouchers.objects.get(code__iexact=voucher_code)
+    except Vouchers.DoesNotExist:
+        raise Http404
+
     images_queryset = FlickrImages.objects.filter(voucher=voucher_code)
 
-    queryset = Vouchers.objects.get(code=voucher_code)
     return render(request, 'public_interface/show_voucher.html',
                   {'item': queryset,
                    'images': images_queryset,
