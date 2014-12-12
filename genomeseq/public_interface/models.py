@@ -140,7 +140,7 @@ class Vouchers(models.Model):
 
 
 class Sequences(models.Model):
-    code = models.ForeignKey(Vouchers)
+    code = models.ForeignKey(Vouchers, help_text='Save as lower case.')
     gene_code = models.CharField(max_length=100)
     sequences = models.TextField(blank=True)
     accession = models.CharField(max_length=100, blank=True)
@@ -152,7 +152,12 @@ class Sequences(models.Model):
 
 
 class FlickrImages(models.Model):
-    voucher = models.ForeignKey(Vouchers, help_text='Relation with id of voucher', blank=True, null=True)
+    voucher = models.ForeignKey(
+        Vouchers,
+        help_text='Relation with id of voucher. Save as lower case.',
+        blank=True,
+        null=True,
+    )
     voucherImage = models.URLField(help_text="URLs of the Flickr page.")
     thumbnail = models.URLField(help_text="URLs for the small sized image from Flickr.")
     flickr_id = models.CharField(max_length=100, help_text="ID numbers from Flickr for our photo.")
