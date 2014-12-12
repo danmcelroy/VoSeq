@@ -363,6 +363,59 @@ class ParseXML(object):
             if items_to_flickr is not None:
                 self.table_flickr_images_items += items_to_flickr
 
+    def import_table_sequences(self):
+        if self.table_sequences_items is None:
+            self.parse_table_sequences(self.dump_string)
+
+        for item in self.table_sequences_items:
+            item['code_id'] = item['code']
+            del item['code']
+
+            item['time_created'] = item['dateCreation']
+            del item['dateCreation']
+
+            item['time_edited'] = item['dateModification']
+            del item['dateModification']
+            del item['timestamp']
+
+            item['gene_code'] = item['geneCode']
+            del item['geneCode']
+
+            if item['notes'] is None:
+                item['notes'] = ''
+            if item['accession'] is None:
+                item['accession'] = ''
+            if item['labPerson'] is None:
+                item['labPerson'] = ''
+            if item['sequences'] is None:
+                item['sequences'] = ''
+
+            try:
+                date_obj = datetime.datetime.strptime(item['time_created'], '%Y-%m-%d')
+            except ValueError:
+                date_obj = None
+                print("WARNING:: Could not parse dateCreation properly.")
+                print("WARNING:: Using empty date for `time_created` for code %s." % item['code_id'])
+            except TypeError:
+                date_obj = None
+                print("WARNING:: Could not parse dateCreation properly.")
+                print("WARNING:: Using empty date for `time_created` for code %s." % item['code_id'])
+
+            item['time_created'] = date_obj
+
+            try:
+                date_obj = datetime.datetime.strptime(item['time_edited'], '%Y-%m-%d')
+            except ValueError:
+                date_obj = None
+                print("WARNING:: Could not parse dateModification properly.")
+                print("WARNING:: Using empty date for `time_edited` for code %s." % item['code_id'])
+            except TypeError:
+                date_obj = None
+                print("WARNING:: Could not parse dateCreation properly.")
+                print("WARNING:: Using empty as date for `time_edited` for code %s." % item['code_id'])
+
+            item['time_edited'] = date_obj
+
     def save_table_vouchers_to_db(self):
         if self.table_vouchers_items is None:
             self.parse_table_vouchers(self.dump_string)
@@ -374,6 +427,14 @@ class ParseXML(object):
         table = db['public_interface_flickrimages']
         table.insert_many(self.table_flickr_images_items)
         print("Uploading table `public_interface_flickrimages`")
+
+    def save_table_sequences_to_db(self):
+        if self.table_sequences_items is None:
+            self.import_table_sequences()
+
+        table = db['public_interface_sequences']
+        table.insert_many(self.table_sequences_items)
+        print("Uploading table `public_interface_sequences`")
 
     def get_as_tuple(self, string):
         as_tupple = ()
@@ -431,11 +492,9 @@ with codecs.open(dump_file, "r") as handle:
 # tables_prefix = 'voseq_'
 tables_prefix = ''
 parser = ParseXML(dump, tables_prefix)
-# print(parser.table_genes_items)
-# print(parser.table_genesets_items)
-# print(parser.table_members_items)
-# print(parser.table_primers_items)
-# print(parser.table_sequences_items)
-# print(parser.table_taxonsets_items)
-parser.import_table_vouchers()
-parser.save_table_vouchers_to_db()
+
+# parser.import_table_sequences()
+parser.save_table_sequences_to_db()
+
+# parser.import_table_vouchers()
+# parser.save_table_vouchers_to_db()
