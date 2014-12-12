@@ -239,11 +239,11 @@
             </tr>
             {% for item in sequences %}
             <tr>
-              <td>{{ item.gene_code }}</td>
+              <td><a href="/s/{{ item.code.code }}/{{ item.gene_code }}/">{{ item.gene_code }}</a></td>
               <td>{{ item.sequence_length }}</td>
               <td>{{ item.ambiguous_seq_length }}</td>
               <td>{{ item.labPerson }}</td>
-              <td>{{ item.accession }}</td>
+              <td><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Search&db=nucleotide&term={{ item.accession }}[accn]&doptcmdl=GenBank">{{ item.accession }}</a></td>
             </tr>
             {% endfor %}
           </table>
