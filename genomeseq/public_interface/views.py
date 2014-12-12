@@ -47,8 +47,25 @@ def show_voucher(request, voucher_code):
             item.labPerson = item.labPerson.split(" ")[0]
 
     return render(request, 'public_interface/show_voucher.html',
-                  {'item': queryset,
+                  {'item': queryset,  # TODO change item to voucher
                    'images': images_queryset,
                    'sequences': seqs_queryset,
                    },
                   )
+
+
+def show_sequence(request, voucher_code, gene_code):
+    try:
+        queryset = Vouchers.objects.get(code__iexact=voucher_code)
+    except Vouchers.DoesNotExist:
+        raise Http404
+
+    seqs_queryset = Sequences.objects.get(code=voucher_code, gene_code=gene_code)
+    images_queryset = FlickrImages.objects.filter(voucher=voucher_code)
+
+    return render(request, 'public_interface/show_sequence.html',
+                  {
+                      'voucher': queryset,
+                      'sequence': seqs_queryset,
+                      'images': images_queryset,
+                  },)
