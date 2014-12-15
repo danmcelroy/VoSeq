@@ -14,12 +14,18 @@
 
 <script type="text/javascript">
   function initialize() {
+    var myLatlng = new google.maps.LatLng({{ voucher.latitude }}, {{ voucher.longitude }});
     var mapOptions = {
-      center: { lat: {{ voucher.latitude }}, lng: {{ voucher.longitude }} },
+      center: myLatlng,
       zoom: 8
     };
     var map = new google.maps.Map(document.getElementById('map-canvas'),
         mapOptions);
+    var marker = new google.maps.Marker({
+        position: myLatlng,
+        map: map,
+        title: "{{ voucher.specificLocality }}"
+    });
   }
   google.maps.event.addDomListener(window, 'load', initialize);
 </script>
