@@ -16,6 +16,7 @@ SECRETS_FILE = os.path.join(BASE_DIR.ancestor(1), 'config.json')
 with open(SECRETS_FILE) as f:
     secrets = json.loads(f.read())
 
+
 def get_secret(setting, secrets=secrets):
     try:
         return secrets[setting]
@@ -24,6 +25,8 @@ def get_secret(setting, secrets=secrets):
         raise ImproperlyConfigured(error_msg)
 
 SECRET_KEY = get_secret("SECRET_KEY")
+
+GOOGLE_MAPS_API_KEY = get_secret("GOOGLE_MAPS_API_KEY")
 
 DATABASES = {
     'default': {

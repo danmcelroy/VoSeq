@@ -10,18 +10,26 @@ email: mycalesis@gmail.com
 rss icon by: http://glyphicons.com/
 -->
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Proyectos de ley emitidos por el Congreso de la República del Perú">
+    <meta name="description" content="GenomeSeq">
     <meta name="author" content="Carlos Pena">
 
     <title>{% block title %}{% endblock %}</title>
 
-    <link rel="alternate" type="application/rss+xml"
-          title="Proyectos de Ley &raquo; RSS feed" href="/rss.xml" />
+  {% block additional_css %}{% endblock additional_css %}
+
+  <style type="text/css">
+    .navbar .divider-vertical {
+    min-height: 50px;
+    margin: 0 9px;
+    border-right: 1px solid #ffffff;
+    border-left: 1px solid #f2f2f2;
+    }
+  </style>
 
     <!-- Custom styles for this template -->
 
@@ -31,6 +39,7 @@ rss icon by: http://glyphicons.com/
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
 
+  {% block additional_javascript_header %}{% endblock additional_javascript_header %}
 
   <!-- Bootstrap core CSS -->
   <link href="http://netdna.bootstrapcdn.com/bootswatch/3.2.0/lumen/bootstrap.min.css" rel="stylesheet">
@@ -39,15 +48,6 @@ rss icon by: http://glyphicons.com/
   <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
 
 
-  <style type="text/css">
-    .highlight { background-color: yellow }
-    .navbar .divider-vertical {
-    min-height: 50px;
-    margin: 0 9px;
-    border-right: 1px solid #ffffff;
-    border-left: 1px solid #f2f2f2;
-    }
-  </style>
 
 </head>
 <body>
@@ -130,9 +130,6 @@ rss icon by: http://glyphicons.com/
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="{% static 'js/jquery-1.10.2.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/highlighter.js' %}"></script>
-    <script src="{% static 'js/pagination.js' %}"></script>
-    {% block highlight_keyword %}{% endblock %}
 
 </body>
 </html>
