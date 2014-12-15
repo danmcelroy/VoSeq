@@ -38,7 +38,7 @@
     <div class="row">
 
       <div class="col-sm-6 col-md-5 col-lg-6">
-        <h3>{{ voucher.code }} {{ voucher.genus }} {{ voucher.species }}
+        <h3>{{ voucher.code }} <i>{{ voucher.genus }} {{ voucher.species }}</i>
             {% if voucher.auctor != None %}
               {{ voucher.auctor }}
             {% endif %}
