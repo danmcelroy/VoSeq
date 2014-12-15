@@ -3,10 +3,13 @@ import itertools
 from django.http import Http404
 from django.shortcuts import render
 from django.conf import settings
+from django.db.models import Q
 
 from .models import Vouchers
 from .models import FlickrImages
 from .models import Sequences
+from .forms import SearchForm
+from .searcher import IssueSearch
 
 
 def index(request):
@@ -29,6 +32,38 @@ def browse(request):
                       'vouchers_with_images': vouchers_with_images,
                   },
                   )
+
+
+def search(request):
+    if request.method == 'GET' and bool(request.GET) is not False:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            # do search
+            results = find_in_db(form.cleaned_data)
+            if results:
+                return render(request, 'public_interface/search_results.html',
+                              {'form': form, 'results': results})
+    else:
+        form = SearchForm()
+
+    return render(request, 'public_interface/search.html', {'form': form})
+
+
+def find_in_db(search_data):
+    q = Q()
+    print(search_data)
+    results = None
+    searcher = IssueSearch(search_data)
+
+    for key in search_data.iterkeys():
+        dispatch = getattr(searcher, 'search_%s' % key)
+        q = dispatch(q)
+
+    if q and len(q):
+        results = Vouchers.objects.filter(q).select_related()
+    else:
+        results = []
+    return results
 
 
 def show_voucher(request, voucher_code):
