@@ -81,9 +81,9 @@ class Vouchers(models.Model):
     YES = 'y'
     NO = 'n'
     TYPE_SPECIES_CHOICES = (
-        (DONT_KNOW, 'd'),
-        (YES, 'y'),
-        (NO, 'n'),
+        (DONT_KNOW, 'don\'t know'),
+        (YES, 'yes'),
+        (NO, 'no'),
     )
 
     SPREAD = 's'
