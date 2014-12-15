@@ -33,7 +33,7 @@ def browse(request):
 
 def show_voucher(request, voucher_code):
     try:
-        queryset = Vouchers.objects.get(code__iexact=voucher_code)
+        voucher_queryset = Vouchers.objects.get(code__iexact=voucher_code)
     except Vouchers.DoesNotExist:
         raise Http404
 
@@ -48,7 +48,7 @@ def show_voucher(request, voucher_code):
             item.labPerson = item.labPerson.split(" ")[0]
 
     return render(request, 'public_interface/show_voucher.html',
-                  {'item': queryset,  # TODO change item to voucher
+                  {'voucher': voucher_queryset,
                    'images': images_queryset,
                    'sequences': seqs_queryset,
                    'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
