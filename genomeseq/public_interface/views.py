@@ -2,6 +2,7 @@ import itertools
 
 from django.http import Http404
 from django.shortcuts import render
+from django.conf import settings
 
 from .models import Vouchers
 from .models import FlickrImages
@@ -50,6 +51,7 @@ def show_voucher(request, voucher_code):
                   {'item': queryset,  # TODO change item to voucher
                    'images': images_queryset,
                    'sequences': seqs_queryset,
+                   'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
                    },
                   )
 
