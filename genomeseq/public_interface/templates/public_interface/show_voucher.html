@@ -15,7 +15,7 @@
 <script type="text/javascript">
   function initialize() {
     var mapOptions = {
-      center: { lat: -34.397, lng: 150.644},
+      center: { lat: {{ voucher.latitude }}, lng: {{ voucher.longitude }} },
       zoom: 8
     };
     var map = new google.maps.Map(document.getElementById('map-canvas'),
@@ -32,9 +32,9 @@
     <div class="row">
 
       <div class="col-sm-6 col-md-5 col-lg-6">
-        <h3>{{ item.code }} {{ item.genus }} {{ item.species }}
-            {% if item.auctor != None %}
-              {{ item.auctor }}
+        <h3>{{ voucher.code }} {{ voucher.genus }} {{ voucher.species }}
+            {% if voucher.auctor != None %}
+              {{ voucher.auctor }}
             {% endif %}
         </h3>
 
@@ -46,50 +46,50 @@
           <table class="table table-condensed table-striped">
             <tr>
               <td><b>Order:</b></td>
-              <td>{{ item.orden }}</td>
+              <td>{{ voucher.orden }}</td>
 
               <td><b>Genus:</b></td>
-              <td>{{ item.genus }}</td>
+              <td>{{ voucher.genus }}</td>
             </tr>
             <tr>
               <td><b>Superfamily:</b></td>
-              <td>{{ item.superfamily }}</td>
+              <td>{{ voucher.superfamily }}</td>
 
               <td><b>Species:</b></td>
-              <td>{{ item.species }}</td>
+              <td>{{ voucher.species }}</td>
             </tr>
             <tr>
               <td><b>Family:</b></td>
-              <td>{{ item.family }}</td>
+              <td>{{ voucher.family }}</td>
 
               <td><b>Subspecies:</b></td>
-              <td>{{ item.subspecies }}</td>
+              <td>{{ voucher.subspecies }}</td>
             </tr>
             <tr>
               <td><b>Subfamily:</b></td>
-              <td>{{ item.subfamily }}</td>
+              <td>{{ voucher.subfamily }}</td>
 
               <td><b>Host org.:</b></td>
-              <td>{{ item.hostorg }}</td>
+              <td>{{ voucher.hostorg }}</td>
             </tr>
             <tr>
               <td><b>Tribe:</b></td>
-              <td>{{ item.tribe }}</td>
+              <td>{{ voucher.tribe }}</td>
 
               <td><b>Author:</b></td>
-              <td>{{ item.auctor }}</td>
+              <td>{{ voucher.auctor }}</td>
             </tr>
             <tr>
               <td><b>Subtribe:</b></td>
-              <td>{{ item.subtribe }}</td>
+              <td>{{ voucher.subtribe }}</td>
 
               <td><b>Type species?</b></td>
               <td>
-                {% if item.typeSpecies == 'd' %}
+                {% if voucher.typeSpecies == 'd' %}
                 don't know
-                {% elif item.typeSpecies == 'y' %}
+                {% elif voucher.typeSpecies == 'y' %}
                 yes
-                {% elif item.typeSpecies == 'n' %}
+                {% elif voucher.typeSpecies == 'n' %}
                 no
                 {% endif %}
               </td>
@@ -106,24 +106,24 @@
           <table class="table table-condensed table-striped">
             <tr>
                 <td colspan="2"><b>Country:</b></td>
-                <td colspan="2">{{ item.country }}</td>
+                <td colspan="2">{{ voucher.country }}</td>
             </tr>
             <tr>
                 <td colspan="2"><b>Specific Locality:</b></td>
-                <td colspan="2">{{ item.specificLocality }}</td>
+                <td colspan="2">{{ voucher.specificLocality }}</td>
             </tr>
 
             <tr>
               <td><b>Latitude:</b></td>
-              <td>{{ item.latitude }}</td>
+              <td>{{ voucher.latitude }}</td>
               <td><b>Max. altitude:</b></td>
-              <td>{{ item.max_altitude }}</td>
+              <td>{{ voucher.max_altitude }}</td>
             </tr>
             <tr>
               <td><b>Longitude:</b></td>
-              <td>{{ item.longitude }}</td>
+              <td>{{ voucher.longitude }}</td>
               <td><b>Min. altitude:</b></td>
-              <td>{{ item.min_altitude }}</td>
+              <td>{{ voucher.min_altitude }}</td>
             <tr>
           </table>
         </div><!-- panel -->
@@ -141,9 +141,9 @@
               <td><b>Collection date:</b></td>
             </tr>
             <tr>
-              <td>{{ item.code }}</td>
-              <td>{{ item.collector }}</td>
-              <td>{{ item.dateCollection }}</td>
+              <td>{{ voucher.code }}</td>
+              <td>{{ voucher.collector }}</td>
+              <td>{{ voucher.dateCollection }}</td>
             </tr>
             <tr>
               <td><b>Voucher locality:</b></td>
@@ -151,32 +151,32 @@
               <td><b>Sex:</b></td>
             </tr>
             <tr>
-              <td>{{ item.voucherLocality }}</td>
-              {% if item.voucher == 's' %}
+              <td>{{ voucher.voucherLocality }}</td>
+              {% if voucher.voucher == 's' %}
                 <td>Spread</td>
-              {% elif item.voucher == 'e' %}
+              {% elif voucher.voucher == 'e' %}
                 <td>In envelope</td>
-              {% elif item.voucher == 'p' %}
+              {% elif voucher.voucher == 'p' %}
                 <td>Only photo</td>
-              {% elif item.voucher == 'n' %}
+              {% elif voucher.voucher == 'n' %}
                 <td>No voucher</td>
-              {% elif item.voucher == 'd' %}
+              {% elif voucher.voucher == 'd' %}
                 <td>Destroyed</td>
-              {% elif item.voucher == 'l' %}
+              {% elif voucher.voucher == 'l' %}
                 <td>Lost</td>
               {% else %}
                 <td></td>
               {% endif %}
 
-              {% if item.sex == 'm' %}
+              {% if voucher.sex == 'm' %}
                 <td>Male</td>
-              {% elif item.sex == 'f' %}
+              {% elif voucher.sex == 'f' %}
                 <td>Female</td>
-              {% elif item.sex == 'l' %}
+              {% elif voucher.sex == 'l' %}
                 <td>Larva</td>
-              {% elif item.sex == 'w' %}
+              {% elif voucher.sex == 'w' %}
                 <td>Worker</td>
-              {% elif item.sex == 'q' %}
+              {% elif voucher.sex == 'q' %}
                 <td>Queen</td>
               {% else %}
                 <td></td>
@@ -188,8 +188,8 @@
               <td></td>
             </tr>
             <tr>
-              <td>{{ item.voucherCode }}</td>
-              <td>{{ item.determinedBy }}</td>
+              <td>{{ voucher.voucherCode }}</td>
+              <td>{{ voucher.determinedBy }}</td>
             </tr>
           </table>
         </div><!-- panel -->
@@ -206,8 +206,8 @@
               <td><b>Notes:</b></td>
             </tr>
             <tr>
-              <td>{{ item.publishedIn }}</td>
-              <td>{{ item.notes }}</td>
+              <td>{{ voucher.publishedIn }}</td>
+              <td>{{ voucher.notes }}</td>
             </tr>
           </table>
         </div><!-- panel -->
@@ -239,16 +239,16 @@
               <td><b>Tube:</b></td>
             </tr>
             <tr>
-              <td>{{ item.extraction }}</td>
-              <td>{{ item.extractionTube }}</td>
+              <td>{{ voucher.extraction }}</td>
+              <td>{{ voucher.extractionTube }}</td>
             </tr>
             <tr>
               <td><b>Extractor:</b></td>
               <td><b>Date:</b></td>
             </tr>
             <tr>
-              <td>{{ item.extractor }}</td>
-              <td>{{ item.dateExtraction }}</td>
+              <td>{{ voucher.extractor }}</td>
+              <td>{{ voucher.dateExtraction }}</td>
             </tr>
           </table>
         </div><!-- panel -->
