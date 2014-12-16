@@ -8,6 +8,9 @@ config.json
 
 # coverage
 .coverage
-genomeseq/htmlcov
-genomeseq/.coverage
+voseq/htmlcov
+voseq/.coverage
 htmlcov
+
+# old VoSeq files to ignore
+conf.php
