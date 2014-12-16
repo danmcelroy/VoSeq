@@ -38,7 +38,7 @@ class SearchForm(forms.Form):
         (DESTROYED, 'destroyed'),
         (LOST, 'lost'),
     )
-    code = forms.CharField(label="Code in genomeseq", max_length=100, required=False)
+    code = forms.CharField(label="Code in voseq", max_length=100, required=False)
     orden = forms.CharField(label="Order", max_length=100, required=False)
     superfamily = forms.CharField(label="Superfamily", max_length=100, required=False)
     family = forms.CharField(label="Family", max_length=100, required=False)

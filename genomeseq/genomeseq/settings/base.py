@@ -1,5 +1,5 @@
 """
-Django settings for genomeseq project.
+Django settings for voseq project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.7/topics/settings/
@@ -50,14 +50,14 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
 )
 
-ROOT_URLCONF = 'genomeseq.urls'
+ROOT_URLCONF = 'voseq.urls'
 
-WSGI_APPLICATION = 'genomeseq.wsgi.application'
+WSGI_APPLICATION = 'voseq.wsgi.application'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'genomeseq',
+        'NAME': 'voseq',
     }
 }
 
