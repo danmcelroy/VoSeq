@@ -1,0 +1,305 @@
+{% extends 'public_interface/base.html' %}
+
+
+{% block additional_css %}
+<style type="text/css">
+  #map-canvas { height: 200px; margin: 0px 0px 20px 0px; padding: 0px;}
+</style>
+{% endblock additional_css %}
+
+
+{% block additional_javascript_header %}
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}">
+</script>
+
+<script type="text/javascript">
+  function initialize() {
+    var myLatlng = new google.maps.LatLng({{ voucher.latitude }}, {{ voucher.longitude }});
+    var mapOptions = {
+      center: myLatlng,
+      zoom: 8
+    };
+    var map = new google.maps.Map(document.getElementById('map-canvas'),
+        mapOptions);
+    var marker = new google.maps.Marker({
+        position: myLatlng,
+        map: map,
+        title: "{{ voucher.specificLocality }}"
+    });
+  }
+  google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+{% endblock additional_javascript_header %}
+
+
+{% block content %}
+<div class="explorer-container">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-sm-6 col-md-5 col-lg-6">
+        <h3>{{ voucher.code }} <i>{{ voucher.genus }} {{ voucher.species }}</i>
+            {% if voucher.auctor != None %}
+              {{ voucher.auctor }}
+            {% endif %}
+        </h3>
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Specimen name</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Order:</b></td>
+              <td>{{ voucher.orden }}</td>
+
+              <td><b>Genus:</b></td>
+              <td>{{ voucher.genus }}</td>
+            </tr>
+            <tr>
+              <td><b>Superfamily:</b></td>
+              <td>{{ voucher.superfamily }}</td>
+
+              <td><b>Species:</b></td>
+              <td>{{ voucher.species }}</td>
+            </tr>
+            <tr>
+              <td><b>Family:</b></td>
+              <td>{{ voucher.family }}</td>
+
+              <td><b>Subspecies:</b></td>
+              <td>{{ voucher.subspecies }}</td>
+            </tr>
+            <tr>
+              <td><b>Subfamily:</b></td>
+              <td>{{ voucher.subfamily }}</td>
+
+              <td><b>Host org.:</b></td>
+              <td>{{ voucher.hostorg }}</td>
+            </tr>
+            <tr>
+              <td><b>Tribe:</b></td>
+              <td>{{ voucher.tribe }}</td>
+
+              <td><b>Author:</b></td>
+              <td>{{ voucher.auctor }}</td>
+            </tr>
+            <tr>
+              <td><b>Subtribe:</b></td>
+              <td>{{ voucher.subtribe }}</td>
+
+              <td><b>Type species?</b></td>
+              <td>
+                {% if voucher.typeSpecies == 'd' %}
+                don't know
+                {% elif voucher.typeSpecies == 'y' %}
+                yes
+                {% elif voucher.typeSpecies == 'n' %}
+                no
+                {% endif %}
+              </td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Locality Information</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+                <td colspan="2"><b>Country:</b></td>
+                <td colspan="2">{{ voucher.country }}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><b>Specific Locality:</b></td>
+                <td colspan="2">{{ voucher.specificLocality }}</td>
+            </tr>
+
+            <tr>
+              <td><b>Latitude:</b></td>
+              <td>{{ voucher.latitude }}</td>
+              <td><b>Max. altitude:</b></td>
+              <td>{{ voucher.max_altitude }}</td>
+            </tr>
+            <tr>
+              <td><b>Longitude:</b></td>
+              <td>{{ voucher.longitude }}</td>
+              <td><b>Min. altitude:</b></td>
+              <td>{{ voucher.min_altitude }}</td>
+            <tr>
+          </table>
+        </div><!-- panel -->
+
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Collector Information</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Code in VoSeq:</b></td>
+              <td><b>Collector:</b></td>
+              <td><b>Collection date:</b></td>
+            </tr>
+            <tr>
+              <td>{{ voucher.code }}</td>
+              <td>{{ voucher.collector }}</td>
+              <td>{{ voucher.dateCollection }}</td>
+            </tr>
+            <tr>
+              <td><b>Voucher locality:</b></td>
+              <td><b>Voucher status:</b></td>
+              <td><b>Sex:</b></td>
+            </tr>
+            <tr>
+              <td>{{ voucher.voucherLocality }}</td>
+              {% if voucher.voucher == 's' %}
+                <td>Spread</td>
+              {% elif voucher.voucher == 'e' %}
+                <td>In envelope</td>
+              {% elif voucher.voucher == 'p' %}
+                <td>Only photo</td>
+              {% elif voucher.voucher == 'n' %}
+                <td>No voucher</td>
+              {% elif voucher.voucher == 'd' %}
+                <td>Destroyed</td>
+              {% elif voucher.voucher == 'l' %}
+                <td>Lost</td>
+              {% else %}
+                <td></td>
+              {% endif %}
+
+              {% if voucher.sex == 'm' %}
+                <td>Male</td>
+              {% elif voucher.sex == 'f' %}
+                <td>Female</td>
+              {% elif voucher.sex == 'l' %}
+                <td>Larva</td>
+              {% elif voucher.sex == 'w' %}
+                <td>Worker</td>
+              {% elif voucher.sex == 'q' %}
+                <td>Queen</td>
+              {% else %}
+                <td></td>
+              {% endif %}
+            </tr>
+            <tr>
+              <td><b>Alternative voucher code:</b></td>
+              <td><b>Determined by:</b></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>{{ voucher.voucherCode }}</td>
+              <td>{{ voucher.determinedBy }}</td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Publication and Notes</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Published in:</b></td>
+              <td><b>Notes:</b></td>
+            </tr>
+            <tr>
+              <td>{{ voucher.publishedIn }}</td>
+              <td>{{ voucher.notes }}</td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+
+      </div><!-- col -->
+
+
+      <div class="col-sm-6 col-md-5 col-lg-6">
+        <h3>Voucher Images</h3>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            {% for image in images %}
+              <a href="{{ image.voucherImage }}"><img class="img-thumbnail" src="{{ image.thumbnail }}" /></a>
+            {% endfor %}
+          </div>
+        </div><!-- panel -->
+
+      {% if voucher.latitude != None %}
+        <div id="map-canvas">
+        </div>
+      {% endif %}
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>DNA</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Extraction:</b></td>
+              <td><b>Tube:</b></td>
+            </tr>
+            <tr>
+              <td>{{ voucher.extraction }}</td>
+              <td>{{ voucher.extractionTube }}</td>
+            </tr>
+            <tr>
+              <td><b>Extractor:</b></td>
+              <td><b>Date:</b></td>
+            </tr>
+            <tr>
+              <td>{{ voucher.extractor }}</td>
+              <td>{{ voucher.dateExtraction }}</td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Sequence Information</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Region</b></td>
+              <td><b>bp</b></td>
+              <td><b>amb.</b></td>
+              <td><b>Lab.</b></td>
+              <td><b>Accession</b></td>
+              <td><b>local Blast</b></td>
+              <td><b>ncbi Blast</b></td>
+            </tr>
+            {% for item in sequences %}
+            <tr>
+              <td><a href="/s/{{ item.code.code }}/{{ item.gene_code }}/">{{ item.gene_code }}</a></td>
+              <td>{{ item.sequence_length }}</td>
+              <td>{{ item.ambiguous_seq_length }}</td>
+              <td>{{ item.labPerson }}</td>
+              <td><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Search&db=nucleotide&term={{ item.accession }}[accn]&doptcmdl=GenBank">{{ item.accession }}</a></td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div><!-- panel -->
+
+
+      </div><!-- col -->
+
+      <div class="col-lg-1">
+        {% block toolbox %}
+          {% include "public_interface/toolbox.html" %}
+        {% endblock toolbox %}
+      </div><!-- col -->
+
+    </div><!-- row -->
+  </div><!-- container -->
+</div>
+{% endblock content %}
+
+
