@@ -346,7 +346,19 @@ class ParseXML(object):
             del item['flickr_id']
 
             if item['sex'] is not None:
-                item['sex'] = self.get_sex(item['sex'])
+                sex = self.get_sex(item['sex'])
+                if sex.lower() == 'male':
+                    item['sex'] = 'm'
+                elif sex.lower() == 'm':
+                    item['sex'] = 'm'
+                elif sex.lower() == 'mae':
+                    item['sex'] = 'm'
+                elif sex.lower() == 'female':
+                    item['sex'] = 'f'
+                elif sex.lower() == 'f':
+                    item['sex'] = 'f'
+                else:
+                    item['sex'] = None
 
             if item['voucher'] is not None:
                 item['voucher'] = self.get_voucher(item['voucher'])
@@ -497,4 +509,4 @@ parser = ParseXML(dump, tables_prefix)
 parser.save_table_sequences_to_db()
 
 # parser.import_table_vouchers()
-# parser.save_table_vouchers_to_db()
+parser.save_table_vouchers_to_db()
