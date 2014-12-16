@@ -1,0 +1,13 @@
+config.json
+.git
+.idea
+*pyc
+*db
+*sql
+*xml
+
+# coverage
+.coverage
+genomeseq/htmlcov
+genomeseq/.coverage
+htmlcov
