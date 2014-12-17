@@ -6,3 +6,4 @@ pep8==1.5.7
 psycopg2==2.5.4
 dataset==0.5.5
 django-haystack==2.3.1
+elasticsearch==1.2.0
