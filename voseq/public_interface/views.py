@@ -39,7 +39,6 @@ def search(request):
         if form.is_valid():
             # do search
             results = form.search()
-            print(results)
             if results:
                 return render(request, 'public_interface/search_results.html',
                               {'form': form, 'results': results})
