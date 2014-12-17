@@ -1,35 +1,77 @@
-    <h2>Search</h2>
+{% extends 'public_interface/base.html' %}
 
-    <form method="get" action=".">
-        <table>
-            {{ form.as_table }}
+{% block content %}
+<div class="explorer-container">
+  <div class="container">
+    <div class="row">
+      <h3>Search</h3>
+      <small>Query by single field for any combination of fields</small>
+    </div><!-- row -->
+
+    <div class="row">
+      <div class="col-lg-6">
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Search by taxonomy</b></h3>
+          </div>
+
+        <form method="get" action=".">
+          <table class="table table-condensed table-striped">
             <tr>
-                <td>&nbsp;</td>
-                <td>
-                    <input type="submit" value="Search">
-                </td>
+              <td><label for="id_orden"><b>Order:</b></label></td>
+              <td>{{ form.orden }}</td>
+
+              <td><b>Genus:</b></td>
+              <td>{{ form.genus }}</td>
             </tr>
-        </table>
+            <tr>
+              <td><b>Superfamily:</b></td>
+              <td>{{ form.superfamily }}</td>
 
-        {% if query %}
-            <h3>Results</h3>
+              <td><b>Species:</b></td>
+              <td>{{ form.species }}</td>
+            </tr>
+            <tr>
+              <td><b>Family:</b></td>
+              <td>{{ form.family }}</td>
 
-            {% for result in page.object_list %}
-                <p>
-                    <a href="{{ result.object.get_absolute_url }}">{{ result.object.code }}</a>
-                </p>
-            {% empty %}
-                <p>No results found.</p>
-            {% endfor %}
+              <td><b>Subspecies:</b></td>
+              <td>{{ form.subspecies }}</td>
+            </tr>
+            <tr>
+              <td><b>Subfamily:</b></td>
+              <td>{{ form.subfamily }}</td>
 
-            {% if page.has_previous or page.has_next %}
-                <div>
-                    {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
-                    |
-                    {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
-                </div>
-            {% endif %}
-        {% else %}
-            {# Show some example queries to run, maybe query syntax, something else? #}
-        {% endif %}
-    </form>
+              <td><b>Host org.:</b></td>
+              <td>{{ form.hostorg }}</td>
+            </tr>
+            <tr>
+              <td><b>Tribe:</b></td>
+              <td>{{ form.tribe }}</td>
+
+              <td><b>Author:</b></td>
+              <td>{{ form.auctor }}</td>
+            </tr>
+            <tr>
+              <td><b>Subtribe:</b></td>
+              <td>{{ form.subtribe }}</td>
+
+              <td><b>Type species?</b></td>
+              <td>{{ form.typeSpecies }}</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>
+                <input type="submit" value="Search">
+              </td>
+            </tr>
+          </table>
+        </form>
+        </div>
+      </div><!-- col -->
+    </div><!-- row -->
+  </div>
+</div>
+
+{% endblock content %}

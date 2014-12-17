@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/carlosp420/VoSeq.svg)](https://travis-ci.org/carlosp420/VoSeq)
-[![Coverage Status](https://coveralls.io/repos/carlosp420/VoSeq/badge.png?branch=master)](https://coveralls.io/r/carlosp420/VoSeq?branch=master)
+[![Coverage Status](https://img.shields.io/coveralls/carlosp420/VoSeq.svg)](https://coveralls.io/r/carlosp420/VoSeq?branch=master)
 
 # VoSeq is being rewritten
 We are rebuilding VoSeq from scratch. We decided to migrate from PHP to Python
