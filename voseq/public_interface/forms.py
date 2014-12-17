@@ -1,7 +1,9 @@
 from django import forms
+from haystack.forms import SearchForm
+from haystack.query import SearchQuerySet
 
 
-class SearchForm(forms.Form):
+class AdvancedSearchForm(SearchForm):
     MALE = 'm'
     FEMALE = 'f'
     LARVA = 'l'
@@ -71,3 +73,18 @@ class SearchForm(forms.Form):
     voucherCode = forms.CharField(label="Alternative voucher code", max_length=100, help_text="Original code of voucher specimen.", required=False)
     determinedBy = forms.CharField(label="Determined by", max_length=100, help_text="Person that identified the taxon for this specimen.", required=False)
     auctor = forms.CharField(label="Author", max_length=100, help_text="Person that described this taxon.", required=False)
+
+    def no_query_found(self):
+        return self.searchqueryset.all()
+
+    def search(self):
+        sqs = super(AdvancedSearchForm, self).search()
+
+        print(self.cleaned_data)
+        if not self.is_valid():
+            return self.no_query_found()
+
+        if self.cleaned_data['code']:
+            sqs = sqs.filter(code=self.cleaned_data['code'])
+
+        return sqs
