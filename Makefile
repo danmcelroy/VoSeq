@@ -9,6 +9,7 @@ index:
 	cd voseq; python manage.py rebuild_index --settings=voseq.settings.local
 
 coverage:
+	rm -rf htmlcov .coverage
 	coverage run --source voseq voseq/manage.py test -v 2 public_interface --settings=voseq.settings.local
 	coverage report -m
 	coverage html
