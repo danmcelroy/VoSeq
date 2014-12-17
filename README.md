@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/carlosp420/VoSeq.svg)](https://travis-ci.org/carlosp420/VoSeq)
+[![Coverage Status](https://coveralls.io/repos/carlosp420/VoSeq/badge.png?branch=voseq_reloaded)](https://coveralls.io/r/carlosp420/VoSeq?branch=voseq_reloaded)
 
 # Migrate VoSeq database
 You need to dump your MySQL database into a XML file:
