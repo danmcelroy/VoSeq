@@ -1,5 +1,16 @@
 [![Build Status](https://travis-ci.org/carlosp420/VoSeq.svg)](https://travis-ci.org/carlosp420/VoSeq)
-[![Coverage Status](https://coveralls.io/repos/carlosp420/VoSeq/badge.png?branch=voseq_reloaded)](https://coveralls.io/r/carlosp420/VoSeq?branch=voseq_reloaded)
+[![Coverage Status](https://coveralls.io/repos/carlosp420/VoSeq/badge.png?branch=master)](https://coveralls.io/r/carlosp420/VoSeq?branch=master)
+
+# VoSeq is being rewritten
+We are rebuilding VoSeq from scratch. We decided to migrate from PHP to Python
+by using the framework Django. We also moved from MySQL to PostgreSQL.
+
+You can still download the old VoSeq v1.7.4 from [here](https://github.com/carlosp420/VoSeq/releases/tag/v1.7.4).
+But be aware that we will not be doing major maintenance of that code.
+
+More details about the migration can be found in our [discussion list](https://groups.google.com/forum/#!topic/voseq-discussion-list/wQ-E0Xcimgw).
+
+VoSeq 2.0.0 is the future!
 
 # Migrate VoSeq database
 You need to dump your MySQL database into a XML file:
