@@ -8,6 +8,7 @@ from .models import Vouchers
 class VouchersIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     code = indexes.EdgeNgramField(model_attr='code')
+    orden = indexes.EdgeNgramField(model_attr='orden', null=True)
 
     def get_model(self):
         return Vouchers
