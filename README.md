@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/carlosp420/VoSeq.svg)](https://travis-ci.org/carlosp420/VoSeq)
+
 # Migrate VoSeq database
 You need to dump your MySQL database into a XML file:
 
