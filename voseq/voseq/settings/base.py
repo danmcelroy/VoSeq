@@ -66,6 +66,7 @@ HAYSTACK_CONNECTIONS = {
         'INDEX_NAME': 'haystack',
     }
 }
+HAYSTACK_DEFAULT_OPERATOR = 'AND'
 
 DATABASES = {
     'default': {

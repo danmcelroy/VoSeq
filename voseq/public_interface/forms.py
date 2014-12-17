@@ -1,5 +1,6 @@
 from django import forms
 from haystack.forms import ModelSearchForm
+from haystack.query import SearchQuerySet
 
 
 class AdvancedSearchForm(ModelSearchForm):
@@ -82,6 +83,18 @@ class AdvancedSearchForm(ModelSearchForm):
         if not self.is_valid():
             return self.no_query_found()
 
-        sqs = sqs.filter(code=self.cleaned_data['code'], orden=self.cleaned_data['orden'])
+        keywords = {}
+        for k, v in self.cleaned_data.items():
+            if v != '' and v is not None:
+                # remove after adding this to index
+                if k == 'sex' or k == 'typeSpecies' or k == 'voucher' or k == 'models':
+                    continue
+                keywords[k] = v
 
-        return sqs
+        print(keywords)
+
+        # Check if we got any input value to search from
+        if bool(keywords) is True:
+            sqs = sqs.filter(**keywords)
+
+            return sqs
