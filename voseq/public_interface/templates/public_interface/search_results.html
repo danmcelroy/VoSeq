@@ -1,1 +1,6 @@
-search results
+{% for item in results %}
+<h1>{{ item.code }}</h1>
+<p>
+    {{ item.genus }}
+</p>
+{% endfor %}

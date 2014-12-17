@@ -5,6 +5,7 @@ config.json
 *db
 *sql
 *xml
+*pdf
 
 # coverage
 .coverage
