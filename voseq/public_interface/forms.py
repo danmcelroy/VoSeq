@@ -1,6 +1,5 @@
 from django import forms
 from haystack.forms import SearchForm
-from haystack.query import SearchQuerySet
 
 
 class AdvancedSearchForm(SearchForm):

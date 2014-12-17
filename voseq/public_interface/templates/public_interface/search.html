@@ -1,11 +1,11 @@
 {% extends 'public_interface/base.html' %}
 
 {% block content %}
+<form method="get" action=".">
 <div class="explorer-container">
   <div class="container">
     <div class="row">
-      <h3>Search</h3>
-      <small>Query by single field for any combination of fields</small>
+      <h3>Search by querying a single field for any combination of fields</h3>
     </div><!-- row -->
 
     <div class="row">
@@ -16,7 +16,6 @@
             <h3 class="panel-title"><b>Search by taxonomy</b></h3>
           </div>
 
-        <form method="get" action=".">
           <table class="table table-condensed table-striped">
             <tr>
               <td><label for="id_orden"><b>Order:</b></label></td>
@@ -60,18 +59,148 @@
               <td><b>Type species?</b></td>
               <td>{{ form.typeSpecies }}</td>
             </tr>
+          </table>
+        </div><!-- panel -->
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Search by locality</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+             <tr>
+                <td colspan="2"><b>Country:</b></td>
+                <td colspan="2">{{ form.country }}</td>
+            </tr>
             <tr>
-              <td>&nbsp;</td>
-              <td>
-                <input type="submit" value="Search">
-              </td>
+                <td colspan="2"><b>Specific Locality:</b></td>
+                <td colspan="2">{{ form.specificLocality }}</td>
+            </tr>
+
+            <tr>
+              <td><b>Latitude:</b></td>
+              <td>{{ form.latitude }}</td>
+              <td><b>Max. altitude:</b></td>
+              <td>{{ form.max_altitude }}</td>
+            </tr>
+            <tr>
+              <td><b>Longitude:</b></td>
+              <td>{{ form.longitude }}</td>
+              <td><b>Min. altitude:</b></td>
+              <td>{{ form.min_altitude }}</td>
+            <tr>
+          </table>
+        </div><!-- panel -->
+
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Search by collection data</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Code in VoSeq:</b></td>
+              <td><b>Collector:</b></td>
+              <td><b>Collection date:</b></td>
+            </tr>
+            <tr>
+              <td>{{ form.code }}</td>
+              <td>{{ form.collector }}</td>
+              <td>{{ form.dateCollection }}</td>
+            </tr>
+            <tr>
+              <td><b>Voucher locality:</b></td>
+              <td><b>Voucher status:</b></td>
+              <td><b>Sex:</b></td>
+            </tr>
+            <tr>
+              <td>{{ form.voucherLocality }}</td>
+              <td>{{ form.voucher }}</td>
+              <td>{{ form.sex }}</td>
+            </tr>
+            <tr>
+              <td><b>Alternative voucher code:</b></td>
+              <td><b>Determined by:</b></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>{{ form.voucherCode }}</td>
+              <td>{{ form.determinedBy }}</td>
             </tr>
           </table>
-        </form>
-        </div>
+          </div><!-- panel -->
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Search by publication and notes</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Published in:</b></td>
+              <td><b>Notes:</b></td>
+            </tr>
+            <tr>
+              <td>{{ form.publishedIn }}</td>
+              <td>{{ form.notes }}</td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+
       </div><!-- col -->
+
+
+      <div class="col-sm-6 col-md-5 col-lg-6">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Search by extraction data. DNA</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Extraction:</b></td>
+              <td><b>Tube:</b></td>
+            </tr>
+            <tr>
+              <td>{{ form.extraction }}</td>
+              <td>{{ form.extractionTube }}</td>
+            </tr>
+            <tr>
+              <td><b>Extractor:</b></td>
+              <td><b>Date:</b></td>
+            </tr>
+            <tr>
+              <td>{{ form.extractor }}</td>
+              <td>{{ form.dateExtraction }}</td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Search by sequence information</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Gene region</b></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><b>In Genbank?</b></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td><b>Accession number</b></td>
+              <td></td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+        <input type="submit" value="Search">
     </div><!-- row -->
   </div>
 </div>
+</form>
 
 {% endblock content %}
