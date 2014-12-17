@@ -5,9 +5,9 @@ from haystack import indexes
 from .models import Vouchers
 
 
-class VoucherIndex(indexes.SearchIndex, indexes.Indexable):
+class VouchersIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    code = indexes.CharField(model_attr='voucherCode')
+    code = indexes.EdgeNgramField(model_attr='code')
 
     def get_model(self):
         return Vouchers
