@@ -36,7 +36,7 @@ class TestViews(TestCase):
 
     def test_browse(self):
         c = Client()
-        response = c.get('/browse')
+        response = c.get('/browse/')
         self.assertEqual(200, response.status_code)
 
     def test_show_voucher(self):
