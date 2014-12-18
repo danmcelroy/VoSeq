@@ -17,6 +17,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('code', models.CharField(unique=True, primary_key=True, max_length=100, help_text='Voucher code.')),
                 ('orden', models.CharField(max_length=100)),
+                ('superfamily', models.CharField(max_length=100, blank=True)),
                 ('family', models.CharField(max_length=100)),
                 ('subfamily', models.CharField(max_length=100)),
                 ('tribe', models.CharField(max_length=100)),
@@ -351,12 +352,6 @@ class Migration(migrations.Migration):
             model_name='Vouchers',
             name='timestamp',
             field=models.DateTimeField(null=True),
-        ),
-        migrations.AddField(
-            model_name='Vouchers',
-            name='superfamily',
-            field=models.CharField(null=True, blank=True, max_length=100),
-            preserve_default=True,
         ),
         migrations.AlterField(
             model_name='Vouchers',
