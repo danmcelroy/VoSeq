@@ -4,12 +4,14 @@ from haystack.query import SearchQuerySet
 
 
 class AdvancedSearchForm(ModelSearchForm):
+    NULL = 'Select'
     MALE = 'm'
     FEMALE = 'f'
     LARVA = 'l'
     WORKER = 'w'
     QUEEN = 'q'
     SEX_CHOICES = (
+        (NULL, 'Select'),
         (MALE, 'male'),
         (FEMALE, 'female'),
         (LARVA, 'larva'),
@@ -17,15 +19,18 @@ class AdvancedSearchForm(ModelSearchForm):
         (QUEEN, 'queen'),
     )
 
+    NULL = 'Select'
     DONT_KNOW = 'd'
     YES = 'y'
     NO = 'n'
     TYPE_SPECIES_CHOICES = (
+        (NULL, 'Select'),
         (DONT_KNOW, 'don\'t know'),
         (YES, 'yes'),
         (NO, 'no'),
     )
 
+    NULL = 'Select'
     SPREAD = 's'
     ENVELOPE = 'e'
     PHOTO = 'p'
@@ -33,6 +38,7 @@ class AdvancedSearchForm(ModelSearchForm):
     DESTROYED = 'd'
     LOST = 'l'
     VOUCHER_CHOICES = (
+        (NULL, 'Select'),
         (SPREAD, 'spread'),
         (ENVELOPE, 'in envelope'),
         (PHOTO, 'only photo'),
@@ -52,7 +58,7 @@ class AdvancedSearchForm(ModelSearchForm):
     subspecies = forms.CharField(label="Subspecies", max_length=100, required=False)
     country = forms.CharField(label="Country", max_length=100, required=False)
     specificLocality = forms.CharField(label="Specific Locality", max_length=250, required=False)
-    typeSpecies = forms.ChoiceField(label="Type species", choices=TYPE_SPECIES_CHOICES, required=False)
+    typeSpecies = forms.ChoiceField(label="Type species", choices=TYPE_SPECIES_CHOICES, widget=forms.Select, required=False)
     latitude = forms.FloatField(label="Latitude", required=False)
     longitude = forms.FloatField(label="Longitude", required=False)
     max_altitude = forms.IntegerField(label="Maximum altitude", required=False)
