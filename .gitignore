@@ -6,6 +6,7 @@ config.json
 *sql
 *xml
 *pdf
+*bak
 
 # coverage
 .coverage
