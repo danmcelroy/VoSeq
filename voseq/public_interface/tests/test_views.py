@@ -72,7 +72,8 @@ class TestViews(TestCase):
 
     def test_search_hymenoptera(self):
         response = self.client.get('/search/?orden=Hymenoptera')
-        if 'NN1-2' in str(response.content):
+        content = str(response.content)
+        if 'NN1-2' in content and 'NN1-1' not in content:
             found_item = True
         else:
             found_item = False
