@@ -47,6 +47,7 @@ class ParseXML(object):
         self.table_taxonsets_items = None
         self.table_vouchers_items = None
         self.table_flickr_images_items = []
+        self.list_of_voucher_codes = []
 
     def parse_table_genes(self, xml_string):
         our_data = False
@@ -363,6 +364,8 @@ class ParseXML(object):
             if items_to_flickr is not None:
                 self.table_flickr_images_items += items_to_flickr
 
+            self.list_of_voucher_codes.append(item['code'])
+
     def import_table_sequences(self):
         if self.table_sequences_items is None:
             self.parse_table_sequences(self.dump_string)
@@ -432,9 +435,21 @@ class ParseXML(object):
         if self.table_sequences_items is None:
             self.import_table_sequences()
 
+        seqs_to_insert = []
+        seqs_not_to_insert = []
+        for i in self.table_sequences_items:
+            if i['code_id'] in self.list_of_voucher_codes:
+                seqs_to_insert.append(i)
+            else:
+                seqs_not_to_insert.append(i)
         table = db['public_interface_sequences']
-        table.insert_many(self.table_sequences_items)
+        table.insert_many(seqs_to_insert)
         print("Uploading table `public_interface_sequences`")
+
+        if len(seqs_not_to_insert) > 0:
+            print("Couldn't insert %i sequences due to lack of reference vouchers" % len(seqs_not_to_insert))
+            for i in seqs_not_to_insert:
+                print(i['code_id'], i['gene_code'])
 
     def get_as_tuple(self, string):
         as_tupple = ()
@@ -493,8 +508,8 @@ with codecs.open(dump_file, "r") as handle:
 tables_prefix = ''
 parser = ParseXML(dump, tables_prefix)
 
-parser.import_table_sequences()
-parser.save_table_sequences_to_db()
-
 parser.import_table_vouchers()
 parser.save_table_vouchers_to_db()
+
+parser.import_table_sequences()
+parser.save_table_sequences_to_db()
