@@ -80,6 +80,12 @@ class AdvancedSearchForm(ModelSearchForm):
     determinedBy = forms.CharField(label="Determined by", max_length=100, help_text="Person that identified the taxon for this specimen.", required=False)
     auctor = forms.CharField(label="Author", max_length=100, help_text="Person that described this taxon.", required=False)
 
+    # Sequences model
+    gene_code = forms.CharField(max_length=100, required=False)
+    genbank = forms.NullBooleanField(widget=forms.CheckboxInput, required=False)
+    accession = forms.CharField(max_length=100, required=False)
+    labPerson = forms.CharField(max_length=100, required=False)
+
     def no_query_found(self):
         return self.searchqueryset.all()
 
@@ -93,7 +99,7 @@ class AdvancedSearchForm(ModelSearchForm):
         for k, v in self.cleaned_data.items():
             if v != '' and v is not None:
                 # remove after adding this to index
-                if k == 'sex' or k == 'typeSpecies' or k == 'voucher' or k == 'models':
+                if k == 'sex' or k == 'typeSpecies' or k == 'voucher' or k == 'models' or k == 'genbank':
                     continue
                 keywords[k] = v
 
