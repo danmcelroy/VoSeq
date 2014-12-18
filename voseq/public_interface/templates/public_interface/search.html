@@ -131,23 +131,6 @@
           </table>
           </div><!-- panel -->
 
-        <div class="panel panel-primary">
-          <div class="panel-heading">
-            <h3 class="panel-title"><b>Search by publication and notes</b></h3>
-          </div>
-
-          <table class="table table-condensed table-striped">
-            <tr>
-              <td><b>Published in:</b></td>
-              <td><b>Notes:</b></td>
-            </tr>
-            <tr>
-              <td>{{ form.publishedIn }}</td>
-              <td>{{ form.notes }}</td>
-            </tr>
-          </table>
-        </div><!-- panel -->
-
       </div><!-- col -->
 
 
@@ -189,7 +172,11 @@
             </tr>
             <tr>
               <td><b>In Genbank?</b></td>
-              <td>{{ form.genbank }}</td>
+              <td>
+                {% for radio in form.genbank %}
+                  {{ radio }}
+                {% endfor %}
+              </td>
             </tr>
             <tr>
               <td><b>Accession number</b></td>
@@ -198,6 +185,23 @@
             <tr>
               <td><b>Lab. person</b></td>
               <td>{{ form.labPerson }}</td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Search by publication and notes</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Published in:</b></td>
+              <td><b>Notes:</b></td>
+            </tr>
+            <tr>
+              <td>{{ form.publishedIn }}</td>
+              <td>{{ form.notes }}</td>
             </tr>
           </table>
         </div><!-- panel -->
