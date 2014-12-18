@@ -81,8 +81,14 @@ class AdvancedSearchForm(ModelSearchForm):
     auctor = forms.CharField(label="Author", max_length=100, help_text="Person that described this taxon.", required=False)
 
     # Sequences model
+    YES = 'y'
+    NO = 'n'
+    GENBANK_CHOICES = (
+        (YES, 'Yes'),
+        (NO, 'No'),
+    )
     gene_code = forms.CharField(max_length=100, required=False)
-    genbank = forms.NullBooleanField(widget=forms.CheckboxInput, required=False)
+    genbank = forms.ChoiceField(widget=forms.RadioSelect, choices=GENBANK_CHOICES, required=False)
     accession = forms.CharField(max_length=100, required=False)
     labPerson = forms.CharField(max_length=100, required=False)
 
