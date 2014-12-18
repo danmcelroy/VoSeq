@@ -11,8 +11,8 @@ from public_interface.models import Sequences
 
 class TestViews(TestCase):
     def setUp(self):
-        json_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "NW1-1.json")
-        json_file_seqs = os.path.join(os.path.dirname(os.path.abspath(__file__)), "NW1-1_seqs.json")
+        json_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public_interface", "vouchers.json")
+        json_file_seqs = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public_interface", "NW1-1_seqs.json")
         with open(json_file_seqs, "r") as handle:
             seqs = json.loads(handle.read())
 
