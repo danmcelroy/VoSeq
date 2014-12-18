@@ -3,6 +3,9 @@ language: python
 python:
     - "3.3"
 
+services:
+    - elasticsearch
+
 install: pip install -r requirements/dev.txt
 
 script: coverage run --source voseq voseq/manage.py test -v 2 public_interface --settings=voseq.settings.base
