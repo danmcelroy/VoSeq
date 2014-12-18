@@ -17,17 +17,18 @@ class TestViews(TestCase):
             seqs = json.loads(handle.read())
 
         with open(json_file, "r") as handle:
-            item = json.loads(handle.read())
-            item['max_altitude'] = None
-            item['min_altitude'] = None
-        b = Vouchers.objects.create(**item)
-        b.save()
+            items = json.loads(handle.read())
+            for item in items:
+                item['max_altitude'] = None
+                item['min_altitude'] = None
+                b = Vouchers.objects.create(**item)
+                b.save()
 
-        f = FlickrImages.objects.create(voucher=b)
-        f.save()
+                f = FlickrImages.objects.create(voucher=b)
+                f.save()
 
-        s = Sequences.objects.create(code=b, sequences=seqs['sequences'])
-        s.save()
+                s = Sequences.objects.create(code=b, sequences=seqs['sequences'])
+                s.save()
 
     def test_index(self):
         c = Client()
