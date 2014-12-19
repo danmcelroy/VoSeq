@@ -12,6 +12,41 @@ More details about the migration can be found in our [discussion list](https://g
 
 VoSeq 2.0.0 is the future!
 
+# Configuration
+You need to install the dependencies:
+
+```shell
+pip install requirements/dev.txt
+```
+
+Download and install `elasticsearch` from here: http://www.elasticsearch.org/overview/elkdownloads/
+You can install the `.deb` file. Start the service with the following command:
+
+```shell
+sudo service elasticsearch start
+```
+
+Create a `config.json` file to keep the database variables:
+```javascript
+{
+    "SECRET_KEY": "create_a_secret_key",
+    "DB_USER": "postgres",
+    "DB_PASS": "database_password",
+    "DB_NAME": "voseq",
+    "DB_PORT": "5432",
+    "DB_HOST": "localhost",
+    "GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key"
+}
+```
+
+Create a PostgreSQL database:
+
+```shell
+sudo su postgres
+psql
+postgres=# create database voseq;
+```
+
 # Migrate VoSeq database
 You need to dump your MySQL database into a XML file:
 
@@ -36,3 +71,18 @@ It means that the creation time for your voucher was probably empty or similar
 to `0000-00-00`. In that case the date of creation for your voucher will be
 empty. This will not cause any trouble when running VoSeq. You can safely
 ignore this message.
+
+Create an index for all the data in your database:
+
+```shell
+make index
+```
+
+Start the development server:
+
+```shell
+make serve
+```
+
+Open this URL in your web browser and you are ready to start using VoSeq:
+`http://127.0.0.1:8000/`
