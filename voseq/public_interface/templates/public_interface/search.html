@@ -1,6 +1,8 @@
 {% extends 'public_interface/base.html' %}
 
 {% block content %}
+
+
 <form method="get" action=".">
 <div class="explorer-container">
   <div class="container">
@@ -9,8 +11,12 @@
     </div><!-- row -->
 
     <div class="row">
-      <div class="col-lg-6">
 
+    {% if results == 'No results' %}
+       <div class="alert alert-warning"><b>No results were found</b></div>
+    {% endif %}
+
+      <div class="col-lg-6">
         <div class="panel panel-primary">
           <div class="panel-heading">
             <h3 class="panel-title"><b>Search by taxonomy</b></h3>
