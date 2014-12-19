@@ -1,6 +1,7 @@
 from django import forms
 from haystack.forms import ModelSearchForm
 from haystack.query import SearchQuerySet
+from haystack.query import EmptySearchQuerySet
 
 
 class AdvancedSearchForm(ModelSearchForm):
@@ -93,7 +94,8 @@ class AdvancedSearchForm(ModelSearchForm):
     labPerson = forms.CharField(max_length=100, required=False)
 
     def no_query_found(self):
-        return SearchQuerySet().none()
+        sqs = SearchQuerySet.none
+        return sqs
 
     def search(self):
         if not self.is_valid():
