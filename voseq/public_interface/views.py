@@ -42,6 +42,9 @@ def search(request):
             if results:
                 return render(request, 'public_interface/search_results.html',
                               {'form': form, 'results': results})
+            else:
+                return render(request, 'public_interface/search.html',
+                              {'form': form, 'results': 'No results'})
     else:
         form = AdvancedSearchForm()
 
