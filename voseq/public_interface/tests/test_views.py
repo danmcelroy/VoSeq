@@ -44,7 +44,8 @@ class TestViews(TestCase):
                 f = FlickrImages.objects.create(voucher=b)
                 f.save()
 
-                s = Sequences.objects.create(code=b, sequences=seqs['sequences'])
+                s = Sequences.objects.create(code=b, gene_code=seqs['gene_code'],
+                                             sequences=seqs['sequences'])
                 s.save()
 
         # build index with our test data
@@ -68,6 +69,14 @@ class TestViews(TestCase):
 
     def test_show_voucher_doesnt_exist(self):
         response = self.client.get('/p/NN1-1aaaaaaa', follow=True)
+        self.assertEqual(404, response.status_code)
+
+    def test_show_sequence(self):
+        response = self.client.get('/s/NN1-1/EF1a/')
+        self.assertEqual(200, response.status_code)
+
+    def test_show_sequence_doesnt_exist(self):
+        response = self.client.get('/s/NN1-1aaaaa/EF1a/')
         self.assertEqual(404, response.status_code)
 
     def test_search_hymenoptera(self):
