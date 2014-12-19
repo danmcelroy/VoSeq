@@ -93,11 +93,9 @@ class AdvancedSearchForm(ModelSearchForm):
     labPerson = forms.CharField(max_length=100, required=False)
 
     def no_query_found(self):
-        return self.searchqueryset.all()
+        return SearchQuerySet().none()
 
     def search(self):
-        sqs = super(AdvancedSearchForm, self).search()
-
         if not self.is_valid():
             return self.no_query_found()
 
@@ -113,6 +111,9 @@ class AdvancedSearchForm(ModelSearchForm):
 
         # Check if we got any input value to search from
         if bool(keywords) is True:
-            sqs = sqs.filter(**keywords)
+            sqs = SearchQuerySet().filter(**keywords)
 
-            return sqs
+            if len(sqs) > 0:
+                return sqs
+            else:
+                self.no_query_found()
