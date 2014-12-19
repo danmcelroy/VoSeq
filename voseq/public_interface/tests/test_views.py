@@ -79,5 +79,17 @@ class TestViews(TestCase):
             found_item = False
         self.assertTrue(found_item)
 
+    def test_search_returns_empty(self):
+        """
+        Querying for several data fields should be equivalent of using AND."
+        """
+        response = self.client.get('/search/?orden=Coleoptera&code=NN1-1')
+        content = str(response.content)
+        if 'NN1-2' in content and 'NN1-1' in content:
+            found_item = True
+        else:
+            found_item = False
+        self.assertFalse(found_item)
+
     def tearDown(self):
         call_command('clear_index', interactive=False, verbosity=0)
