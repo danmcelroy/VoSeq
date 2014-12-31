@@ -132,7 +132,7 @@ class Vouchers(models.Model):
     notes = models.TextField(blank=True, null=True)
     edits = models.TextField(blank=True, null=True)
     latesteditor = models.TextField(blank=True, null=True)
-    hostorg = models.CharField(max_length=200, help_text="Hostplant or other host.", blank=True, null=True)
+    hostorg = models.CharField(max_length=200, help_text="Hostplant or other host.", blank=True)
     sex = models.CharField(max_length=1, choices=SEX_CHOICES, blank=True, null=True)
     voucher = models.CharField(max_length=1, choices=VOUCHER_CHOICES, blank=True, null=True)
     voucherCode = models.CharField(max_length=100, help_text="Original code of voucher specimen.", blank=True, null=True)
