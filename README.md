@@ -57,6 +57,7 @@ mysqldump --xml voseq_database > dump.xml
 Then use our script to migrate all your VoSeq data into a PostGreSQL database.
 
 ```shell
+make migrations
 python migrate_db.py dump.xml
 ```
 
@@ -86,3 +87,34 @@ make serve
 
 Open this URL in your web browser and you are ready to start using VoSeq:
 `http://127.0.0.1:8000/`
+
+# Test database for development
+You can use test data to populate your PostgreSQL database, useful for 
+development.
+
+Create a PostgreSQL database:
+
+```shell
+sudo su postgres
+psql
+postgres=# create database voseq;
+```
+
+Create tables for the database:
+
+```shell
+make migrations
+```
+
+Import test data for your database:
+
+```shell
+python migrate_db.py test_db_dump.xml
+```
+
+Start the server:
+```shell
+make serve
+```
+
+And point your web browser to:  `http://127.0.0.1:8000/`
