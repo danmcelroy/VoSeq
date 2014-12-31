@@ -112,7 +112,7 @@ class Vouchers(models.Model):
     subtribe = models.CharField(max_length=100, blank=True, null=True)
     genus = models.CharField(max_length=100, blank=True, null=True)
     species = models.CharField(max_length=100, blank=True, null=True)
-    subspecies = models.CharField(max_length=100, blank=True, null=True)
+    subspecies = models.CharField(max_length=100, blank=True)
     country = models.CharField(max_length=100, blank=True, null=True)
     specificLocality = models.CharField(max_length=250, help_text="Locality of origin for this specimen.", blank=True, null=True)
     typeSpecies = models.CharField(max_length=1, choices=TYPE_SPECIES_CHOICES,
