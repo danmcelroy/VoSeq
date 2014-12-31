@@ -363,6 +363,8 @@ class ParseXML(object):
 
             if item['subspecies'] is None:
                 item['subspecies'] = ''
+            if item['hostorg'] is None:
+                item['hostorg'] = ''
 
             if items_to_flickr is not None:
                 self.table_flickr_images_items += items_to_flickr
