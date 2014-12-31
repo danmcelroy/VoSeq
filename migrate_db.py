@@ -361,6 +361,9 @@ class ParseXML(object):
             else:
                 item['typeSpecies'] = 'd'
 
+            if item['subspecies'] is None:
+                item['subspecies'] = ''
+
             if items_to_flickr is not None:
                 self.table_flickr_images_items += items_to_flickr
 
