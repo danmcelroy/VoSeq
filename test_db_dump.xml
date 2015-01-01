@@ -401,7 +401,7 @@
 		<field name="code">CP100-10</field>
 		<field name="orden">NULL</field>
 		<field name="family"></field>
-		<field name="subfamily">Nymphalinae</field>
+		<field name="subfamily"></field>
 		<field name="tribe">Melitaeini</field>
 		<field name="subtribe">Melitaeina</field>
 		<field name="genus">Melitaea</field>
@@ -440,7 +440,7 @@
 		<field name="code">CP100-11</field>
 		<field name="orden">Lepidoptera</field>
 		<field name="family"> </field>
-		<field name="subfamily">Nymphalinae</field>
+		<field name="subfamily"> </field>
 		<field name="tribe">Melitaeini</field>
 		<field name="subtribe">Melitaeina</field>
 		<field name="genus">Melitaea</field>
@@ -479,7 +479,7 @@
         <field name="code">CP100-12</field>
         <field name="orden"> </field>
         <field name="family">Nymphalidae</field>
-        <field name="subfamily">Nymphalinae</field>
+        <field name="subfamily">NULL</field>
         <field name="tribe">Melitaeini</field>
         <field name="subtribe">Melitaeina</field>
         <field name="genus">Melitaea</field>
