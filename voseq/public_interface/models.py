@@ -114,9 +114,9 @@ class Vouchers(models.Model):
     species = models.CharField(max_length=100, blank=True)
     subspecies = models.CharField(max_length=100, blank=True)
     country = models.CharField(max_length=100, blank=True)
-    specificLocality = models.CharField(max_length=250, help_text="Locality of origin for this specimen.", blank=True, null=True)
+    specificLocality = models.CharField(max_length=250, help_text="Locality of origin for this specimen.", blank=True)
     typeSpecies = models.CharField(max_length=1, choices=TYPE_SPECIES_CHOICES,
-                                   help_text="Is this a type species?", blank=True, null=True)
+                                   help_text="Is this a type species?")
     latitude = models.FloatField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     max_altitude = models.IntegerField(blank=True, null=True, help_text="Enter altitude in meters above sea level.")
