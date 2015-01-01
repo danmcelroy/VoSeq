@@ -358,49 +358,49 @@
 		<options Name="vouchers" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="11103" Avg_row_length="335" Data_length="3729664" Max_data_length="281474976710655" Index_length="288768" Data_free="0" Auto_increment="11492" Create_time="2014-12-09 13:27:10" Update_time="2014-12-09 13:27:10" Collation="utf8_general_ci" Create_options="" Comment="" />
 	</table_structure>
 	<table_data name="vouchers">
-	   	    	<row>
+        <row>
+            <field name="code">CP100-09</field>
+            <field name="orden"></field>
+            <field name="family">Nymphalidae</field>
+            <field name="subfamily">Nymphalinae</field>
+            <field name="tribe">Melitaeini</field>
+            <field name="subtribe">Melitaeina</field>
+            <field name="genus">Melitaea</field>
+            <field name="species">diamina</field>
+            <field name="subspecies"></field>
+            <field name="country">FINLAND</field>
+            <field name="specificLocality">Orivesi, HämeenLääni</field>
+            <field name="typeSpecies">2</field>
+            <field name="latitude">61.664300</field>
+            <field name="longitude">24.293600</field>
+            <field name="altitude" xsi:nil="true" />
+            <field name="collector">Niklas Wahlberg</field>
+            <field name="dateCollection">1996-03-25</field>
+            <field name="voucherImage">na.gif</field>
+            <field name="thumbnail">na.gif</field>
+            <field name="extraction">1</field>
+            <field name="dateExtraction">2008-07-17</field>
+            <field name="extractor">Niklas Wahlberg</field>
+            <field name="voucherLocality"></field>
+            <field name="publishedIn"></field>
+            <field name="notes"></field>
+            <field name="edits" xsi:nil="true" />
+            <field name="latesteditor" xsi:nil="true" />
+            <field name="hostorg" xsi:nil="true" />
+            <field name="sex"></field>
+            <field name="extractionTube">1</field>
+            <field name="voucher">No voucher</field>
+            <field name="voucherCode"></field>
+            <field name="flickr_id" xsi:nil="true" />
+            <field name="determinedBy" xsi:nil="true" />
+            <field name="auctor" xsi:nil="true" />
+            <field name="timestamp">2007-08-27 07:51:24</field>
+            <field name="id">1</field>
+        </row>
+   	<row>
 		<field name="code">CP100-10</field>
-		<field name="orden">Lepidoptera</field>
-		<field name="family">Nymphalidae</field>
-		<field name="subfamily">Nymphalinae</field>
-		<field name="tribe">Melitaeini</field>
-		<field name="subtribe">Melitaeina</field>
-		<field name="genus">Melitaea</field>
-		<field name="species">diamina</field>
-		<field name="subspecies"></field>
-		<field name="country">FINLAND</field>
-		<field name="specificLocality">Orivesi, HämeenLääni</field>
-		<field name="typeSpecies">2</field>
-		<field name="latitude">61.664300</field>
-		<field name="longitude">24.293600</field>
-		<field name="altitude" xsi:nil="true" />
-		<field name="collector">Niklas Wahlberg</field>
-		<field name="dateCollection">1996-03-25</field>
-		<field name="voucherImage">na.gif</field>
-		<field name="thumbnail">na.gif</field>
-		<field name="extraction">1</field>
-		<field name="dateExtraction">2008-07-17</field>
-		<field name="extractor">Niklas Wahlberg</field>
-		<field name="voucherLocality"></field>
-		<field name="publishedIn"></field>
-		<field name="notes"></field>
-		<field name="edits" xsi:nil="true" />
-		<field name="latesteditor" xsi:nil="true" />
-		<field name="hostorg" xsi:nil="true" />
-		<field name="sex"></field>
-		<field name="extractionTube">1</field>
-		<field name="voucher">No voucher</field>
-		<field name="voucherCode"></field>
-		<field name="flickr_id" xsi:nil="true" />
-		<field name="determinedBy" xsi:nil="true" />
-		<field name="auctor" xsi:nil="true" />
-		<field name="timestamp">2007-08-27 07:51:24</field>
-		<field name="id">1</field>
-	</row>
-	  	    	<row>
-		<field name="code">CP100-11</field>
-		<field name="orden">Lepidoptera</field>
-		<field name="family">Nymphalidae</field>
+		<field name="orden">NULL</field>
+		<field name="family"></field>
 		<field name="subfamily">Nymphalinae</field>
 		<field name="tribe">Melitaeini</field>
 		<field name="subtribe">Melitaeina</field>
@@ -436,6 +436,84 @@
 		<field name="timestamp">2007-08-27 07:51:24</field>
 		<field name="id">2</field>
 	</row>
+  	<row>
+		<field name="code">CP100-11</field>
+		<field name="orden">Lepidoptera</field>
+		<field name="family"> </field>
+		<field name="subfamily">Nymphalinae</field>
+		<field name="tribe">Melitaeini</field>
+		<field name="subtribe">Melitaeina</field>
+		<field name="genus">Melitaea</field>
+		<field name="species">diamina</field>
+		<field name="subspecies"></field>
+		<field name="country">FINLAND</field>
+		<field name="specificLocality">Orivesi, HämeenLääni</field>
+		<field name="typeSpecies">2</field>
+		<field name="latitude">61.664300</field>
+		<field name="longitude">24.293600</field>
+		<field name="altitude" xsi:nil="true" />
+		<field name="collector">Niklas Wahlberg</field>
+		<field name="dateCollection">1996-03-25</field>
+		<field name="voucherImage">na.gif</field>
+		<field name="thumbnail">na.gif</field>
+		<field name="extraction">1</field>
+		<field name="dateExtraction">2008-07-17</field>
+		<field name="extractor">Niklas Wahlberg</field>
+		<field name="voucherLocality"></field>
+		<field name="publishedIn"></field>
+		<field name="notes"></field>
+		<field name="edits" xsi:nil="true" />
+		<field name="latesteditor" xsi:nil="true" />
+		<field name="hostorg" xsi:nil="true" />
+		<field name="sex"></field>
+		<field name="extractionTube">1</field>
+		<field name="voucher">No voucher</field>
+		<field name="voucherCode"></field>
+		<field name="flickr_id" xsi:nil="true" />
+		<field name="determinedBy" xsi:nil="true" />
+		<field name="auctor" xsi:nil="true" />
+		<field name="timestamp">2007-08-27 07:51:24</field>
+		<field name="id">3</field>
+	</row>
+    <row>
+        <field name="code">CP100-12</field>
+        <field name="orden"> </field>
+        <field name="family">Nymphalidae</field>
+        <field name="subfamily">Nymphalinae</field>
+        <field name="tribe">Melitaeini</field>
+        <field name="subtribe">Melitaeina</field>
+        <field name="genus">Melitaea</field>
+        <field name="species">diamina</field>
+        <field name="subspecies"></field>
+        <field name="country">FINLAND</field>
+        <field name="specificLocality">Orivesi, HämeenLääni</field>
+        <field name="typeSpecies">2</field>
+        <field name="latitude">61.664300</field>
+        <field name="longitude">24.293600</field>
+        <field name="altitude" xsi:nil="true" />
+        <field name="collector">Niklas Wahlberg</field>
+        <field name="dateCollection">1996-03-25</field>
+        <field name="voucherImage">na.gif</field>
+        <field name="thumbnail">na.gif</field>
+        <field name="extraction">1</field>
+        <field name="dateExtraction">2008-07-17</field>
+        <field name="extractor">Niklas Wahlberg</field>
+        <field name="voucherLocality"></field>
+        <field name="publishedIn"></field>
+        <field name="notes"></field>
+        <field name="edits" xsi:nil="true" />
+        <field name="latesteditor" xsi:nil="true" />
+        <field name="hostorg" xsi:nil="true" />
+        <field name="sex"></field>
+        <field name="extractionTube">1</field>
+        <field name="voucher">No voucher</field>
+        <field name="voucherCode"></field>
+        <field name="flickr_id" xsi:nil="true" />
+        <field name="determinedBy" xsi:nil="true" />
+        <field name="auctor" xsi:nil="true" />
+        <field name="timestamp">2007-08-27 07:51:24</field>
+        <field name="id">4</field>
+    </row>
 	</table_data>
 </database>
 </mysqldump>
