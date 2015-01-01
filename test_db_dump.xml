@@ -363,9 +363,9 @@
             <field name="orden"></field>
             <field name="family">Nymphalidae</field>
             <field name="subfamily">Nymphalinae</field>
-            <field name="tribe">Melitaeini</field>
+            <field name="tribe">NULL </field>
             <field name="subtribe">Melitaeina</field>
-            <field name="genus">Melitaea</field>
+            <field name="genus">Melitaea?</field>
             <field name="species">diamina</field>
             <field name="subspecies"></field>
             <field name="country">FINLAND</field>
