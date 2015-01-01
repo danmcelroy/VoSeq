@@ -421,9 +421,8 @@ class ParseXML(object):
             item = self.clean_value(item, 'orden')
             item = self.clean_value(item, 'superfamily')
             item = self.clean_value(item, 'family')
+            item = self.clean_value(item, 'subfamily')
 
-            if item['subfamily'] is None:
-                item['subfamily'] = ''
             if item['tribe'] is None:
                 item['tribe'] = ''
             if item['subtribe'] is None:
