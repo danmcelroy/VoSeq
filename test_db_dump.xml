@@ -373,7 +373,7 @@
             <field name="typeSpecies">2</field>
             <field name="latitude">61.664300</field>
             <field name="longitude">24.293600</field>
-            <field name="altitude" xsi:nil="true" />
+            <field name="altitude">NULL</field>
             <field name="collector">Niklas Wahlberg</field>
             <field name="dateCollection">1996-03-25</field>
             <field name="voucherImage">na.gif</field>
@@ -412,7 +412,7 @@
 		<field name="typeSpecies">2</field>
 		<field name="latitude">61.664300</field>
 		<field name="longitude">24.293600</field>
-		<field name="altitude" xsi:nil="true" />
+        <field name="altitude"> </field>
 		<field name="collector">Niklas Wahlberg</field>
 		<field name="dateCollection">1996-03-25</field>
 		<field name="voucherImage">na.gif</field>
@@ -490,7 +490,7 @@
         <field name="typeSpecies">2</field>
         <field name="latitude">61.664300</field>
         <field name="longitude">24.293600</field>
-        <field name="altitude" xsi:nil="true" />
+        <field name="altitude"> 600m</field>
         <field name="collector">Niklas Wahlberg</field>
         <field name="dateCollection">1996-03-25</field>
         <field name="voucherImage">na.gif</field>
@@ -514,6 +514,84 @@
         <field name="timestamp">2007-08-27 07:51:24</field>
         <field name="id">4</field>
     </row>
+        <row>
+            <field name="code">CP100-13</field>
+            <field name="orden"> </field>
+            <field name="family">Nymphalidae</field>
+            <field name="subfamily">NULL</field>
+            <field name="tribe">Melitaeini</field>
+            <field name="subtribe">Melitaeina</field>
+            <field name="genus">Melitaea</field>
+            <field name="species">diamina</field>
+            <field name="subspecies"></field>
+            <field name="country">FINLAND</field>
+            <field name="specificLocality">Orivesi, HämeenLääni</field>
+            <field name="typeSpecies">2</field>
+            <field name="latitude">61.664300</field>
+            <field name="longitude">24.293600</field>
+            <field name="altitude">2500 m</field>
+            <field name="collector">Niklas Wahlberg</field>
+            <field name="dateCollection">1996-03-25</field>
+            <field name="voucherImage">na.gif</field>
+            <field name="thumbnail">na.gif</field>
+            <field name="extraction">1</field>
+            <field name="dateExtraction">2008-07-17</field>
+            <field name="extractor">Niklas Wahlberg</field>
+            <field name="voucherLocality"></field>
+            <field name="publishedIn"></field>
+            <field name="notes"></field>
+            <field name="edits" xsi:nil="true" />
+            <field name="latesteditor" xsi:nil="true" />
+            <field name="hostorg" xsi:nil="true" />
+            <field name="sex"></field>
+            <field name="extractionTube">1</field>
+            <field name="voucher">No voucher</field>
+            <field name="voucherCode"></field>
+            <field name="flickr_id" xsi:nil="true" />
+            <field name="determinedBy" xsi:nil="true" />
+            <field name="auctor" xsi:nil="true" />
+            <field name="timestamp">2007-08-27 07:51:24</field>
+            <field name="id">5</field>
+        </row>
+        <row>
+            <field name="code">CP100-14</field>
+            <field name="orden"> </field>
+            <field name="family">Nymphalidae</field>
+            <field name="subfamily">NULL</field>
+            <field name="tribe">Melitaeini</field>
+            <field name="subtribe">Melitaeina</field>
+            <field name="genus">Melitaea</field>
+            <field name="species">diamina</field>
+            <field name="subspecies"></field>
+            <field name="country">FINLAND</field>
+            <field name="specificLocality">Orivesi, HämeenLääni</field>
+            <field name="typeSpecies">2</field>
+            <field name="latitude">61.664300</field>
+            <field name="longitude">24.293600</field>
+            <field name="altitude">1800-2000m</field>
+            <field name="collector">Niklas Wahlberg</field>
+            <field name="dateCollection">1996-03-25</field>
+            <field name="voucherImage">na.gif</field>
+            <field name="thumbnail">na.gif</field>
+            <field name="extraction">1</field>
+            <field name="dateExtraction">2008-07-17</field>
+            <field name="extractor">Niklas Wahlberg</field>
+            <field name="voucherLocality"></field>
+            <field name="publishedIn"></field>
+            <field name="notes"></field>
+            <field name="edits" xsi:nil="true" />
+            <field name="latesteditor" xsi:nil="true" />
+            <field name="hostorg" xsi:nil="true" />
+            <field name="sex"></field>
+            <field name="extractionTube">1</field>
+            <field name="voucher">No voucher</field>
+            <field name="voucherCode"></field>
+            <field name="flickr_id" xsi:nil="true" />
+            <field name="determinedBy" xsi:nil="true" />
+            <field name="auctor" xsi:nil="true" />
+            <field name="timestamp">2007-08-27 07:51:24</field>
+            <field name="id">6</field>
+        </row>
 	</table_data>
 </database>
 </mysqldump>
