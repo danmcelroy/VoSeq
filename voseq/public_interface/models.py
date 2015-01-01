@@ -104,16 +104,16 @@ class Vouchers(models.Model):
                             primary_key=True,
                             help_text="Voucher code.",
                             )
-    orden = models.CharField(max_length=100, blank=True, null=True)
-    superfamily = models.CharField(max_length=100, null=True)
-    family = models.CharField(max_length=100, blank=True, null=True)
-    subfamily = models.CharField(max_length=100, blank=True, null=True)
-    tribe = models.CharField(max_length=100, blank=True, null=True)
-    subtribe = models.CharField(max_length=100, blank=True, null=True)
-    genus = models.CharField(max_length=100, blank=True, null=True)
-    species = models.CharField(max_length=100, blank=True, null=True)
+    orden = models.CharField(max_length=100, blank=True)
+    superfamily = models.CharField(max_length=100, blank=True)
+    family = models.CharField(max_length=100, blank=True)
+    subfamily = models.CharField(max_length=100, blank=True)
+    tribe = models.CharField(max_length=100, blank=True)
+    subtribe = models.CharField(max_length=100, blank=True)
+    genus = models.CharField(max_length=100, blank=True)
+    species = models.CharField(max_length=100, blank=True)
     subspecies = models.CharField(max_length=100, blank=True)
-    country = models.CharField(max_length=100, blank=True, null=True)
+    country = models.CharField(max_length=100, blank=True)
     specificLocality = models.CharField(max_length=250, help_text="Locality of origin for this specimen.", blank=True, null=True)
     typeSpecies = models.CharField(max_length=1, choices=TYPE_SPECIES_CHOICES,
                                    help_text="Is this a type species?", blank=True, null=True)
@@ -121,10 +121,10 @@ class Vouchers(models.Model):
     longitude = models.FloatField(blank=True, null=True)
     max_altitude = models.IntegerField(blank=True, null=True, help_text="Enter altitude in meters above sea level.")
     min_altitude = models.IntegerField(blank=True, null=True, help_text="Enter altitude in meters above sea level.")
-    collector = models.CharField(max_length=100, blank=True, null=True)
+    collector = models.CharField(max_length=100, blank=True)
     dateCollection = models.DateField(null=True)  # TODO check if better blank null rather than null true
     extraction = models.CharField(max_length=50, help_text="Number of extraction event.", blank=True, null=True)
-    extractionTube = models.CharField(max_length=50, help_text="Tube containing DNA extract.", blank=True, null=True)
+    extractionTube = models.CharField(max_length=50, help_text="Tube containing DNA extract.", blank=True)
     dateExtraction = models.DateField(null=True)
     extractor = models.CharField(max_length=100, blank=True, null=True)
     voucherLocality = models.CharField(max_length=200, blank=True, null=True)
@@ -137,7 +137,7 @@ class Vouchers(models.Model):
     voucher = models.CharField(max_length=1, choices=VOUCHER_CHOICES, blank=True, null=True)
     voucherCode = models.CharField(max_length=100, help_text="Original code of voucher specimen.", blank=True, null=True)
     determinedBy = models.CharField(max_length=100, help_text="Person that identified the taxon for this specimen.", blank=True, null=True)
-    auctor = models.CharField(max_length=100, help_text="Person that described this taxon.", blank=True, null=True)
+    auctor = models.CharField(max_length=100, help_text="Person that described this taxon.", blank=True)
     timestamp = models.DateTimeField(null=True)  # TODO change this to date_created = models.DateField(auto_now_add=True)
 
 
