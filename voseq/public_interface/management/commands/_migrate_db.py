@@ -350,40 +350,6 @@ class ParseXML(object):
             else:
                 item['typeSpecies'] = 'd'
 
-            if item['orden'] is None:
-                item['orden'] = ''
-            if 'superfamily' in item:
-                if item['superfamily'] is None:
-                    item['superfamily'] = ''
-            else:
-                item['superfamily'] = ''
-            if item['family'] is None:
-                item['family'] = ''
-            if item['subfamily'] is None:
-                item['subfamily'] = ''
-            if item['tribe'] is None:
-                item['tribe'] = ''
-            if item['subtribe'] is None:
-                item['subtribe'] = ''
-            if item['genus'] is None:
-                item['genus'] = ''
-            if item['species'] is None:
-                item['species'] = ''
-            if item['subspecies'] is None:
-                item['subspecies'] = ''
-            if item['hostorg'] is None:
-                item['hostorg'] = ''
-            if item['country'] is None:
-                item['country'] = ''
-            if item['auctor'] is None:
-                item['auctor'] = ''
-            if item['collector'] is None:
-                item['collector'] = ''
-            if item['extractionTube'] is None:
-                item['extractionTube'] = ''
-            if item['specificLocality'] is None:
-                item['specificLocality'] = ''
-
             if items_to_flickr is not None:
                 self.table_flickr_images_items += items_to_flickr
 
@@ -406,15 +372,6 @@ class ParseXML(object):
 
             item['gene_code'] = item['geneCode']
             del item['geneCode']
-
-            if item['notes'] is None:
-                item['notes'] = ''
-            if item['accession'] is None:
-                item['accession'] = ''
-            if item['labPerson'] is None:
-                item['labPerson'] = ''
-            if item['sequences'] is None:
-                item['sequences'] = ''
 
             try:
                 date_obj = datetime.datetime.strptime(item['time_created'], '%Y-%m-%d')
@@ -442,11 +399,54 @@ class ParseXML(object):
 
             item['time_edited'] = date_obj
 
+    def clean_value(self, item, key):
+        if key in item:
+            if item[key] is None:
+                item[key] = ''
+            elif item[key].lower() == 'null':
+                item[key] = ''
+            elif item[key].strip() == '':
+                item[key] = ''
+            else:
+                item[key] = item[key].strip()
+        else:
+            item[key] = ''
+        return item
+
     def save_table_vouchers_to_db(self):
         if self.table_vouchers_items is None:
             self.parse_table_vouchers(self.dump_string)
 
         for item in self.table_vouchers_items:
+            item = self.clean_value(item, 'orden')
+            item = self.clean_value(item, 'superfamily')
+            item = self.clean_value(item, 'family')
+
+            if item['subfamily'] is None:
+                item['subfamily'] = ''
+            if item['tribe'] is None:
+                item['tribe'] = ''
+            if item['subtribe'] is None:
+                item['subtribe'] = ''
+            if item['genus'] is None:
+                item['genus'] = ''
+            if item['species'] is None:
+                item['species'] = ''
+            if item['subspecies'] is None:
+                item['subspecies'] = ''
+            if item['hostorg'] is None:
+                item['hostorg'] = ''
+            if item['country'] is None:
+                item['country'] = ''
+            if item['auctor'] is None:
+                item['auctor'] = ''
+            if item['collector'] is None:
+                item['collector'] = ''
+            if item['extractionTube'] is None:
+                item['extractionTube'] = ''
+            if item['specificLocality'] is None:
+                item['specificLocality'] = ''
+
             Vouchers.objects.create(**item)
         print("Uploading table `public_interface_vouchers`")
 
@@ -466,6 +466,14 @@ class ParseXML(object):
             else:
                 seqs_not_to_insert.append(i)
         for item in seqs_to_insert:
+            if item['notes'] is None:
+                item['notes'] = ''
+            if item['accession'] is None:
+                item['accession'] = ''
+            if item['labPerson'] is None:
+                item['labPerson'] = ''
+            if item['sequences'] is None:
+                item['sequences'] = ''
             Sequences.objects.create(**item)
 
         print("Uploading table `public_interface_sequences`")
