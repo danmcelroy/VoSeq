@@ -109,7 +109,7 @@ make migrations
 Import test data for your database:
 
 ```shell
-python migrate_db.py test_db_dump.xml
+make import
 ```
 
 Start the server:

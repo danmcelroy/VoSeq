@@ -5,6 +5,9 @@ migrations:
 	cd voseq; python manage.py makemigrations --settings=voseq.settings.local
 	cd voseq; python manage.py migrate --settings=voseq.settings.local
 
+import:
+	python voseq/manage.py migrate_db --dumpfile=test_db_dump.xml --settings=voseq.settings.local
+
 index:
 	cd voseq; python manage.py rebuild_index --settings=voseq.settings.local
 
