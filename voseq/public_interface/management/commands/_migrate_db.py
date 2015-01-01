@@ -13,21 +13,6 @@ import sys
 import xml.etree.ElementTree as ET
 
 
-if len(sys.argv) < 2:
-    print("Enter name of database dump file as argument.")
-    print("This file can be obtained from your MySQL database using this command")
-    print("\t> mysqdump --xml database > dump.xml")
-    sys.exit(1)
-
-with open("config.json", "r") as f:
-    settings = json.loads(f.read())
-
-
-db_url = 'postgresql://' + settings['DB_USER'] + ':' + settings['DB_PASS'] + '@' \
-         + settings['DB_HOST'] + ":" + settings['DB_PORT'] + "/" + settings['DB_NAME']
-db = dataset.connect(db_url)
-
-
 class ParseXML(object):
     """
     Parses MySQL dump as XML file.
@@ -48,6 +33,7 @@ class ParseXML(object):
         self.table_vouchers_items = None
         self.table_flickr_images_items = []
         self.list_of_voucher_codes = []
+        self.db = connect_to_database()
 
     def parse_table_genes(self, xml_string):
         our_data = False
@@ -457,11 +443,11 @@ class ParseXML(object):
         if self.table_vouchers_items is None:
             self.parse_table_vouchers(self.dump_string)
 
-        table = db['public_interface_vouchers']
+        table = self.db['public_interface_vouchers']
         table.insert_many(self.table_vouchers_items)
         print("Uploading table `public_interface_vouchers`")
 
-        table = db['public_interface_flickrimages']
+        table = self.db['public_interface_flickrimages']
         table.insert_many(self.table_flickr_images_items)
         print("Uploading table `public_interface_flickrimages`")
 
@@ -476,7 +462,7 @@ class ParseXML(object):
                 seqs_to_insert.append(i)
             else:
                 seqs_not_to_insert.append(i)
-        table = db['public_interface_sequences']
+        table = self.db['public_interface_sequences']
         table.insert_many(seqs_to_insert)
         print("Uploading table `public_interface_sequences`")
 
@@ -534,16 +520,33 @@ class ParseXML(object):
         return string
 
 
-dump_file = sys.argv[1].strip()
-with codecs.open(dump_file, "r") as handle:
-    dump = handle.read()
+def connect_to_database():
+    with open("config.json", "r") as f:
+        settings = json.loads(f.read())
 
-# tables_prefix = 'voseq_'
-tables_prefix = ''
-parser = ParseXML(dump, tables_prefix)
+    db_url = 'postgresql://' + settings['DB_USER'] + ':' + settings['DB_PASS'] + '@' \
+             + settings['DB_HOST'] + ":" + settings['DB_PORT'] + "/" + settings['DB_NAME']
+    db = dataset.connect(db_url)
+    return db
 
-parser.import_table_vouchers()
-parser.save_table_vouchers_to_db()
 
-parser.import_table_sequences()
-parser.save_table_sequences_to_db()
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Enter name of database dump file as argument.")
+        print("This file can be obtained from your MySQL database using this command")
+        print("\t> mysqdump --xml database > dump.xml")
+        sys.exit(1)
+
+    dump_file = sys.argv[1].strip()
+    with codecs.open(dump_file, "r") as handle:
+        dump = handle.read()
+
+    # tables_prefix = 'voseq_'
+    tables_prefix = ''
+    parser = ParseXML(dump, tables_prefix)
+
+    parser.import_table_vouchers()
+    parser.save_table_vouchers_to_db()
+
+    parser.import_table_sequences()
+    parser.save_table_sequences_to_db()
