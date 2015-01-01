@@ -38,3 +38,19 @@ class TestCustomCommand(TestCase):
     def test_family_space(self):
         b = Vouchers.objects.get(code='CP100-11')
         self.assertEqual('', b.family)
+
+    def test_subfamily(self):
+        b = Vouchers.objects.get(code='CP100-09')
+        self.assertEqual('Nymphalinae', b.subfamily)
+
+    def test_subfamily_empty(self):
+        b = Vouchers.objects.get(code='CP100-10')
+        self.assertEqual('', b.subfamily)
+
+    def test_subfamily_space(self):
+        b = Vouchers.objects.get(code='CP100-11')
+        self.assertEqual('', b.subfamily)
+
+    def test_subfamily_null(self):
+        b = Vouchers.objects.get(code='CP100-12')
+        self.assertEqual('', b.subfamily)
