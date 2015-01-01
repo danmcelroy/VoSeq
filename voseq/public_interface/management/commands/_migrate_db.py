@@ -341,6 +341,8 @@ class ParseXML(object):
 
             if item['voucher'] is not None:
                 item['voucher'] = self.get_voucher(item['voucher'])
+            else:
+                item['voucher'] = 'n'
 
             if item['typeSpecies'] == '0':
                 item['typeSpecies'] = 'd'
@@ -376,14 +378,16 @@ class ParseXML(object):
 
             try:
                 date_obj = datetime.datetime.strptime(item['time_created'], '%Y-%m-%d')
-            except ValueError:
+            except ValueError as e:
                 date_obj = None
+                print(e)
                 print("WARNING:: Could not parse dateCreation properly.")
-                print("WARNING:: Using empty date for `time_created` for code %s." % item['code_id'])
-            except TypeError:
+                print("WARNING:: Using empty date for `time_created` for code %s and gene_code %s." % (item['code_id'], item['gene_code']))
+            except TypeError as e:
                 date_obj = None
+                print(e)
                 print("WARNING:: Could not parse dateCreation properly.")
-                print("WARNING:: Using empty date for `time_created` for code %s." % item['code_id'])
+                print("WARNING:: Using empty date for `time_created` for code %s and gene_code %s." % (item['code_id'], item['gene_code']))
 
             item['time_created'] = date_obj
 

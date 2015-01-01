@@ -275,7 +275,7 @@
 		<field name="sequences">???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????CGTGGTATCACTATTGATATTGCTSTATGGAAGTTCGAAACGAGCAGATACTATGTCACCATCATTGATGCTCCCGGACACAGAGATTTCATCAAGGACATGATTACTGGGACATCACAAGCCGATTGCGCCGTGCTTATCGTCGCAGCCGGTACTGGTGAGTTCGAAGCTGGTATCTCGGAGGACGGACAAACCCGTGAGCATGCTCTTCTCGCATTCACACTCGGTGTAAAGCAGCTGATAGTGGGTGTCAACAAAATGGACTCTACTGAGCCCCCATACAGCGAGCCACGTTTTGAGGAAATCAAAAAAGAAGTGTCCTCATACATTAAGAAAATTGGTTACAACCCAGCTGCCGTCGCGTTCGTGCCCATTTCTGGCTGGCATGGAGACAACATGCTGGAGCCATCTACCAAGATGCCCTGGTTCAAGGGATGGCAAGTGGATCGCAAAGAAGGCAAGGGTGAAGGTAAATGCCTTATTGAAGCCCTGGACGCCATTCTGCCTCC??????????????????????????????????????????????????????????????????????GTGCCAGTAGGTAGAGTAGAAACTGGTATCCTCAAACCAGGTACCATTGTTGTATTCGCCCCCGCTAWCATCACCACTGAAGTCAAATCTGTGGAGATGCACCACGAAGCTCTCCAAGAGGCTGTACCTGGAGACAATGTAGGTTTCAACGTTAAGAACGTTTCTGTTAAGGAATTGCGTCTAGGTTATGTTGCTGGTGACTCAAAGAACAACCCACCCAKGGGAGCTGCTGACTTCACTGCAYAAGTTATTGTGCTCAACCACCCTGGTCAAATTTCCAATGGTTACACACCTRTGCTTGATTGCCACACGGCTCACATTGCCTGCAAATTYGCCGAAATWAAWGAAAAGGTYGACCGTCGTACTGGTAAATCTACTGAGGAAAATCCCAAATCTATCAAATCGGGTGATGCTGCTATCGTGAACCTTGTTCCTTCCAAACCCCTTTGTGTGGAGGCCTTCCAAGAATTCCCTCCACTTGGTCGTTTTGCCGTGCGT</field>
 		<field name="accession">AY218254</field>
 		<field name="labPerson">Niklas Wahlberg</field>
-		<field name="dateCreation">2005-10-17</field>
+		<field name="dateCreation">NULL</field>
 		<field name="dateModification" xsi:nil="true" />
 		<field name="notes" xsi:nil="true" />
 		<field name="timestamp">2008-07-17 17:24:20</field>
@@ -288,13 +288,26 @@
 		<field name="sequences">???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????CGCTCTATGGAAGTTCGAAACCGCCAAGTACTACGTCACCATCATCGACGCTCCTGGTCACAGAGATTTCATCAAGAACATGATCACTGGAACCTCTCAGGCCGATTGCGCCGTGCTCATCGTCGCTGCCGGTACTGGTGAGTTCGAAGCCGGTATCTCAAAGAACGGCCAGACCCGTGAGCACGCCCTGCTCGCTTTCACCCTCGGTGTCAAACAACTGATCGTTGGTGTCAACAAAATGGACTCCACTGAACCACCATACAGCGAATCCCGTTTCGAGGAAATCAAGAAGGAAGTCTCTTCCTACATCAAGAAGATCGGTTATAACCCAGCTGCCGTTGCTTTCGTACCCATTTCTGGCTGGCACGGAGACAACATGTTRGAGGCATCCACCAAAATGCCCTGGTTCAAGGGATGGCAAGTGGAGCGCAAAGAAGGCAAGGCTGACGGTAAGTGCCTTATTGAGGCTTTGGATGCTATCCTTCCCCCCGCGCGTCCCACAGACAAGGCCCTGCGTCTTCCCCTACAGGACGTCTACAAAATCGGTGGTATTGGTACAGTGCCAGTAGGCAGAGTTGAAACTGGTGTCCTCAAGCCTGGTACCATTGTCGTCTTCGCTCCCGCCAACATCACCACTGAAGTCAAGTCTGTGGAGATGCACCACGAAGCTCTCCAAGAGGCTGTGCCCGGAGACAATGTTGGTTTCAACGTAAAGAACGTATCCGTCAAGGAATTGCGTCGTGGTTACGTCGCTGGCGACTCAAAGAACAACCCTCCCAAGGGAGCCGCCGACTTCACCGCACAAGTCATTGTGCTCAACCACCCCGGTCAAATCTCCAAYGGTTACACACCCGTTCTCGATTGYCACACAGCTCACATTGCTTGCAAGTTTGCTGAAATCAAAGAGAAGGTTGACCGTCGTTCAGGAAAATCGACTGAGGAAAATCCCAAATCCATCAAATCTGGTGATGCTGCCATCGTAAACCTAGTACCTTCTAAGCCCCTGTGTGTGGAGTCCTTCCAGGAGTTCCCACCTCTCGGTCGTTTCGCCGTGCGT</field>
 		<field name="accession">AY788717</field>
 		<field name="labPerson">Niklas Wahlberg</field>
-		<field name="dateCreation">2005-10-17</field>
+		<field name="dateCreation">0000-00-00</field>
 		<field name="dateModification" xsi:nil="true" />
 		<field name="notes" xsi:nil="true" />
 		<field name="timestamp">2008-07-17 17:24:20</field>
 		<field name="id">4</field>
 		<field name="genbank">1</field>
 	</row>
+        <row>
+            <field name="code">CP100-11</field>
+            <field name="geneCode">COI</field>
+            <field name="sequences">???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????CGCTCTATGGAAGTTCGAAACCGCCAAGTACTACGTCACCATCATCGACGCTCCTGGTCACAGAGATTTCATCAAGAACATGATCACTGGAACCTCTCAGGCCGATTGCGCCGTGCTCATCGTCGCTGCCGGTACTGGTGAGTTCGAAGCCGGTATCTCAAAGAACGGCCAGACCCGTGAGCACGCCCTGCTCGCTTTCACCCTCGGTGTCAAACAACTGATCGTTGGTGTCAACAAAATGGACTCCACTGAACCACCATACAGCGAATCCCGTTTCGAGGAAATCAAGAAGGAAGTCTCTTCCTACATCAAGAAGATCGGTTATAACCCAGCTGCCGTTGCTTTCGTACCCATTTCTGGCTGGCACGGAGACAACATGTTRGAGGCATCCACCAAAATGCCCTGGTTCAAGGGATGGCAAGTGGAGCGCAAAGAAGGCAAGGCTGACGGTAAGTGCCTTATTGAGGCTTTGGATGCTATCCTTCCCCCCGCGCGTCCCACAGACAAGGCCCTGCGTCTTCCCCTACAGGACGTCTACAAAATCGGTGGTATTGGTACAGTGCCAGTAGGCAGAGTTGAAACTGGTGTCCTCAAGCCTGGTACCATTGTCGTCTTCGCTCCCGCCAACATCACCACTGAAGTCAAGTCTGTGGAGATGCACCACGAAGCTCTCCAAGAGGCTGTGCCCGGAGACAATGTTGGTTTCAACGTAAAGAACGTATCCGTCAAGGAATTGCGTCGTGGTTACGTCGCTGGCGACTCAAAGAACAACCCTCCCAAGGGAGCCGCCGACTTCACCGCACAAGTCATTGTGCTCAACCACCCCGGTCAAATCTCCAAYGGTTACACACCCGTTCTCGATTGYCACACAGCTCACATTGCTTGCAAGTTTGCTGAAATCAAAGAGAAGGTTGACCGTCGTTCAGGAAAATCGACTGAGGAAAATCCCAAATCCATCAAATCTGGTGATGCTGCCATCGTAAACCTAGTACCTTCTAAGCCCCTGTGTGTGGAGTCCTTCCAGGAGTTCCCACCTCTCGGTCGTTTCGCCGTGCGT</field>
+            <field name="accession">AY788717</field>
+            <field name="labPerson">Niklas Wahlberg</field>
+            <field name="dateCreation" xsi:nil="true" />
+            <field name="dateModification" xsi:nil="true" />
+            <field name="notes" xsi:nil="true" />
+            <field name="timestamp">2008-07-17 17:24:20</field>
+            <field name="id">4</field>
+            <field name="genbank">1</field>
+        </row>
 	</table_data>
 	<table_structure name="taxonsets">
 		<field Field="taxonset_name" Type="varchar(45)" Null="YES" Key="" Extra="" Comment="" />
@@ -428,7 +441,7 @@
 		<field name="hostorg" xsi:nil="true" />
 		<field name="sex"></field>
 		<field name="extractionTube">1</field>
-		<field name="voucher">No voucher</field>
+		<field name="voucher">Spread</field>
 		<field name="voucherCode"></field>
 		<field name="flickr_id" xsi:nil="true" />
 		<field name="determinedBy" xsi:nil="true" />
@@ -467,7 +480,7 @@
 		<field name="hostorg" xsi:nil="true" />
 		<field name="sex"></field>
 		<field name="extractionTube">1</field>
-		<field name="voucher">No voucher</field>
+		<field name="voucher">Unspread</field>
 		<field name="voucherCode"></field>
 		<field name="flickr_id" xsi:nil="true" />
 		<field name="determinedBy" xsi:nil="true" />
@@ -506,7 +519,7 @@
         <field name="hostorg" xsi:nil="true" />
         <field name="sex"></field>
         <field name="extractionTube">1</field>
-        <field name="voucher">No voucher</field>
+        <field name="voucher" xsi:nil="true" />
         <field name="voucherCode"></field>
         <field name="flickr_id" xsi:nil="true" />
         <field name="determinedBy" xsi:nil="true" />
@@ -545,7 +558,7 @@
             <field name="hostorg" xsi:nil="true" />
             <field name="sex"></field>
             <field name="extractionTube">1</field>
-            <field name="voucher">No voucher</field>
+            <field name="voucher"></field>
             <field name="voucherCode"></field>
             <field name="flickr_id" xsi:nil="true" />
             <field name="determinedBy" xsi:nil="true" />
@@ -584,13 +597,169 @@
             <field name="hostorg" xsi:nil="true" />
             <field name="sex"></field>
             <field name="extractionTube">1</field>
-            <field name="voucher">No voucher</field>
+            <field name="voucher">Voucher photo</field>
             <field name="voucherCode"></field>
             <field name="flickr_id" xsi:nil="true" />
             <field name="determinedBy" xsi:nil="true" />
             <field name="auctor" xsi:nil="true" />
             <field name="timestamp">2007-08-27 07:51:24</field>
             <field name="id">6</field>
+        </row>
+        <row>
+            <field name="code">CP100-15</field>
+            <field name="orden"> </field>
+            <field name="family">Nymphalidae</field>
+            <field name="subfamily">NULL</field>
+            <field name="tribe">Melitaeini</field>
+            <field name="subtribe">Melitaeina</field>
+            <field name="genus">Melitaea</field>
+            <field name="species">diamina</field>
+            <field name="subspecies"></field>
+            <field name="country">FINLAND</field>
+            <field name="specificLocality">Orivesi, HämeenLääni</field>
+            <field name="typeSpecies">2</field>
+            <field name="latitude">61.664300</field>
+            <field name="longitude">24.293600</field>
+            <field name="altitude">1800-2000m</field>
+            <field name="collector">Niklas Wahlberg</field>
+            <field name="dateCollection">1996-03-25</field>
+            <field name="voucherImage">na.gif</field>
+            <field name="thumbnail">na.gif</field>
+            <field name="extraction">1</field>
+            <field name="dateExtraction">2008-07-17</field>
+            <field name="extractor">Niklas Wahlberg</field>
+            <field name="voucherLocality"></field>
+            <field name="publishedIn"></field>
+            <field name="notes"></field>
+            <field name="edits" xsi:nil="true" />
+            <field name="latesteditor" xsi:nil="true" />
+            <field name="hostorg" xsi:nil="true" />
+            <field name="sex"></field>
+            <field name="extractionTube">1</field>
+            <field name="voucher">Voucher lost</field>
+            <field name="voucherCode"></field>
+            <field name="flickr_id" xsi:nil="true" />
+            <field name="determinedBy" xsi:nil="true" />
+            <field name="auctor" xsi:nil="true" />
+            <field name="timestamp">2007-08-27 07:51:24</field>
+            <field name="id">7</field>
+        </row>
+        <row>
+            <field name="code">CP100-16</field>
+            <field name="orden"> </field>
+            <field name="family">Nymphalidae</field>
+            <field name="subfamily">NULL</field>
+            <field name="tribe">Melitaeini</field>
+            <field name="subtribe">Melitaeina</field>
+            <field name="genus">Melitaea</field>
+            <field name="species">diamina</field>
+            <field name="subspecies"></field>
+            <field name="country">FINLAND</field>
+            <field name="specificLocality">Orivesi, HämeenLääni</field>
+            <field name="typeSpecies">2</field>
+            <field name="latitude">61.664300</field>
+            <field name="longitude">24.293600</field>
+            <field name="altitude">1800-2000m</field>
+            <field name="collector">Niklas Wahlberg</field>
+            <field name="dateCollection">1996-03-25</field>
+            <field name="voucherImage">na.gif</field>
+            <field name="thumbnail">na.gif</field>
+            <field name="extraction">1</field>
+            <field name="dateExtraction">2008-07-17</field>
+            <field name="extractor">Niklas Wahlberg</field>
+            <field name="voucherLocality"></field>
+            <field name="publishedIn"></field>
+            <field name="notes"></field>
+            <field name="edits" xsi:nil="true" />
+            <field name="latesteditor" xsi:nil="true" />
+            <field name="hostorg" xsi:nil="true" />
+            <field name="sex"></field>
+            <field name="extractionTube">1</field>
+            <field name="voucher">Voucher destroyed</field>
+            <field name="voucherCode"></field>
+            <field name="flickr_id" xsi:nil="true" />
+            <field name="determinedBy" xsi:nil="true" />
+            <field name="auctor" xsi:nil="true" />
+            <field name="timestamp">2007-08-27 07:51:24</field>
+            <field name="id">8</field>
+        </row>
+        <row>
+            <field name="code">CP100-17</field>
+            <field name="orden"> </field>
+            <field name="family">Nymphalidae</field>
+            <field name="subfamily">NULL</field>
+            <field name="tribe">Melitaeini</field>
+            <field name="subtribe">Melitaeina</field>
+            <field name="genus">Melitaea</field>
+            <field name="species">diamina</field>
+            <field name="subspecies"></field>
+            <field name="country">FINLAND</field>
+            <field name="specificLocality">Orivesi, HämeenLääni</field>
+            <field name="typeSpecies">2</field>
+            <field name="latitude">61.664300</field>
+            <field name="longitude">24.293600</field>
+            <field name="altitude">1800-2000m</field>
+            <field name="collector">Niklas Wahlberg</field>
+            <field name="dateCollection">1996-03-25</field>
+            <field name="voucherImage">na.gif</field>
+            <field name="thumbnail">na.gif</field>
+            <field name="extraction">1</field>
+            <field name="dateExtraction">2008-07-17</field>
+            <field name="extractor">Niklas Wahlberg</field>
+            <field name="voucherLocality"></field>
+            <field name="publishedIn"></field>
+            <field name="notes"></field>
+            <field name="edits" xsi:nil="true" />
+            <field name="latesteditor" xsi:nil="true" />
+            <field name="hostorg" xsi:nil="true" />
+            <field name="sex"></field>
+            <field name="extractionTube">1</field>
+            <field name="voucher">no photo</field>
+            <field name="voucherCode"></field>
+            <field name="flickr_id" xsi:nil="true" />
+            <field name="determinedBy" xsi:nil="true" />
+            <field name="auctor" xsi:nil="true" />
+            <field name="timestamp">2007-08-27 07:51:24</field>
+            <field name="id">9</field>
+        </row>
+        <row>
+            <field name="code">CP100-18</field>
+            <field name="orden"> </field>
+            <field name="family">Nymphalidae</field>
+            <field name="subfamily">NULL</field>
+            <field name="tribe">Melitaeini</field>
+            <field name="subtribe">Melitaeina</field>
+            <field name="genus">Melitaea</field>
+            <field name="species">diamina</field>
+            <field name="subspecies"></field>
+            <field name="country">FINLAND</field>
+            <field name="specificLocality">Orivesi, HämeenLääni</field>
+            <field name="typeSpecies">2</field>
+            <field name="latitude">61.664300</field>
+            <field name="longitude">24.293600</field>
+            <field name="altitude">1800-2000m</field>
+            <field name="collector">Niklas Wahlberg</field>
+            <field name="dateCollection">1996-03-25</field>
+            <field name="voucherImage">na.gif</field>
+            <field name="thumbnail">na.gif</field>
+            <field name="extraction">1</field>
+            <field name="dateExtraction">2008-07-17</field>
+            <field name="extractor">Niklas Wahlberg</field>
+            <field name="voucherLocality"></field>
+            <field name="publishedIn"></field>
+            <field name="notes"></field>
+            <field name="edits" xsi:nil="true" />
+            <field name="latesteditor" xsi:nil="true" />
+            <field name="hostorg" xsi:nil="true" />
+            <field name="sex"></field>
+            <field name="extractionTube">1</field>
+            <field name="voucher">M-105</field>
+            <field name="voucherCode"></field>
+            <field name="flickr_id" xsi:nil="true" />
+            <field name="determinedBy" xsi:nil="true" />
+            <field name="auctor" xsi:nil="true" />
+            <field name="timestamp">2007-08-27 07:51:24</field>
+            <field name="id">10</field>
         </row>
 	</table_data>
 </database>
