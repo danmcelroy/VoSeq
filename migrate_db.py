@@ -392,6 +392,8 @@ class ParseXML(object):
                 item['collector'] = ''
             if item['extractionTube'] is None:
                 item['extractionTube'] = ''
+            if item['specificLocality'] is None:
+                item['specificLocality'] = ''
 
             if items_to_flickr is not None:
                 self.table_flickr_images_items += items_to_flickr
