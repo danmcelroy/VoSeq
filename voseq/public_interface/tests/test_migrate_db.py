@@ -54,3 +54,11 @@ class TestCustomCommand(TestCase):
     def test_subfamily_null(self):
         b = Vouchers.objects.get(code='CP100-12')
         self.assertEqual('', b.subfamily)
+
+    def test_tribe_null_with_space(self):
+        b = Vouchers.objects.get(code='CP100-09')
+        self.assertEqual('', b.tribe)
+
+    def test_genus(self):
+        b = Vouchers.objects.get(code='CP100-09')
+        self.assertEqual('Melitaea?', b.genus)
