@@ -12,6 +12,10 @@ import re
 import sys
 import xml.etree.ElementTree as ET
 
+from public_interface.models import Vouchers
+from public_interface.models import FlickrImages
+from public_interface.models import Sequences
+
 
 class ParseXML(object):
     """
@@ -33,7 +37,6 @@ class ParseXML(object):
         self.table_vouchers_items = None
         self.table_flickr_images_items = []
         self.list_of_voucher_codes = []
-        self.db = connect_to_database()
 
     def parse_table_genes(self, xml_string):
         our_data = False
@@ -443,12 +446,12 @@ class ParseXML(object):
         if self.table_vouchers_items is None:
             self.parse_table_vouchers(self.dump_string)
 
-        table = self.db['public_interface_vouchers']
-        table.insert_many(self.table_vouchers_items)
+        for item in self.table_vouchers_items:
+            Vouchers.objects.create(**item)
         print("Uploading table `public_interface_vouchers`")
 
-        table = self.db['public_interface_flickrimages']
-        table.insert_many(self.table_flickr_images_items)
+        for item in self.table_flickr_images_items:
+            FlickrImages.objects.create(**item)
         print("Uploading table `public_interface_flickrimages`")
 
     def save_table_sequences_to_db(self):
@@ -462,8 +465,9 @@ class ParseXML(object):
                 seqs_to_insert.append(i)
             else:
                 seqs_not_to_insert.append(i)
-        table = self.db['public_interface_sequences']
-        table.insert_many(seqs_to_insert)
+        for item in seqs_to_insert:
+            Sequences.objects.create(**item)
+
         print("Uploading table `public_interface_sequences`")
 
         if len(seqs_not_to_insert) > 0:
@@ -518,16 +522,6 @@ class ParseXML(object):
         except ValueError:
             string = None
         return string
-
-
-def connect_to_database():
-    with open("config.json", "r") as f:
-        settings = json.loads(f.read())
-
-    db_url = 'postgresql://' + settings['DB_USER'] + ':' + settings['DB_PASS'] + '@' \
-             + settings['DB_HOST'] + ":" + settings['DB_PORT'] + "/" + settings['DB_NAME']
-    db = dataset.connect(db_url)
-    return db
 
 
 if __name__ == "__main__":
