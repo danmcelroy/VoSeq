@@ -255,24 +255,25 @@ class ParseXML(object):
             if item['altitude'] is not None:
                 altitude = re.sub("\s+", "", item['altitude'])
                 altitude = altitude.split("-")
+                altitude_int = []
+                for i in altitude:
+                    i = re.sub("[a-zA-Z]", "", i)
+                    try:
+                        i = int(i)
+                    except ValueError:
+                        continue
+                    altitude_int.append(i)
+                altitude_int.sort()
 
-                if len(altitude) > 1:
-                    max_altitude = altitude[0].strip()
-                    max_altitude = re.sub("[a-zA-Z]", "", max_altitude)
-                    max_altitude = self.convert_to_int(max_altitude)
-
-                    min_altitude = altitude[1].strip()
-                    min_altitude = re.sub("[a-zA-Z]", "", min_altitude)
-                    min_altitude = self.convert_to_int(min_altitude)
-
-                    item['max_altitude'] = max_altitude
-                    item['min_altitude'] = min_altitude
+                if len(altitude_int) > 0:
+                    max_altitude = altitude_int[-1]
+                    min_altitude = altitude_int[0]
                 else:
-                    max_altitude = re.sub("[a-zA-Z]", "", altitude[0])
-                    max_altitude = re.sub("[a-zA-Z]", "", max_altitude)
-                    max_altitude = self.convert_to_int(max_altitude)
-                    item['max_altitude'] = max_altitude
-                    item['min_altitude'] = None
+                    max_altitude = None
+                    min_altitude = None
+
+                item['max_altitude'] = max_altitude
+                item['min_altitude'] = min_altitude
             else:
                 item['max_altitude'] = None
                 item['min_altitude'] = None
@@ -433,11 +434,16 @@ class ParseXML(object):
             item = self.clean_value(item, 'country')
             item = self.clean_value(item, 'specificLocality')
             item = self.clean_value(item, 'voucherLocality')
+            item = self.clean_value(item, 'collector')
+            item = self.clean_value(item, 'voucherCode')
+            item = self.clean_value(item, 'determinedBy')
 
-            if item['collector'] is None:
-                item['collector'] = ''
-            if item['extractionTube'] is None:
-                item['extractionTube'] = ''
+            item = self.clean_value(item, 'publishedIn')
+            item = self.clean_value(item, 'notes')
+
+            item = self.clean_value(item, 'extractionTube')
+            item = self.clean_value(item, 'extractionTube')
+            item = self.clean_value(item, 'extractor')
 
             Vouchers.objects.create(**item)
         print("Uploading table `public_interface_vouchers`")
@@ -458,14 +464,10 @@ class ParseXML(object):
             else:
                 seqs_not_to_insert.append(i)
         for item in seqs_to_insert:
-            if item['notes'] is None:
-                item['notes'] = ''
-            if item['accession'] is None:
-                item['accession'] = ''
-            if item['labPerson'] is None:
-                item['labPerson'] = ''
-            if item['sequences'] is None:
-                item['sequences'] = ''
+            item = self.clean_value(item, 'labPerson')
+            item = self.clean_value(item, 'notes')
+            item = self.clean_value(item, 'sequences')
+            item = self.clean_value(item, 'accession')
             Sequences.objects.create(**item)
 
         print("Uploading table `public_interface_sequences`")
