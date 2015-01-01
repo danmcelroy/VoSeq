@@ -361,10 +361,37 @@ class ParseXML(object):
             else:
                 item['typeSpecies'] = 'd'
 
+            if item['orden'] is None:
+                item['orden'] = ''
+            if 'superfamily' in item:
+                if item['superfamily'] is None:
+                    item['superfamily'] = ''
+            else:
+                item['superfamily'] = ''
+            if item['family'] is None:
+                item['family'] = ''
+            if item['subfamily'] is None:
+                item['subfamily'] = ''
+            if item['tribe'] is None:
+                item['tribe'] = ''
+            if item['subtribe'] is None:
+                item['subtribe'] = ''
+            if item['genus'] is None:
+                item['genus'] = ''
+            if item['species'] is None:
+                item['species'] = ''
             if item['subspecies'] is None:
                 item['subspecies'] = ''
             if item['hostorg'] is None:
                 item['hostorg'] = ''
+            if item['country'] is None:
+                item['country'] = ''
+            if item['auctor'] is None:
+                item['auctor'] = ''
+            if item['collector'] is None:
+                item['collector'] = ''
+            if item['extractionTube'] is None:
+                item['extractionTube'] = ''
 
             if items_to_flickr is not None:
                 self.table_flickr_images_items += items_to_flickr
