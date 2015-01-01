@@ -71,7 +71,7 @@ HAYSTACK_DEFAULT_OPERATOR = 'AND'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'voseq',
+        'NAME': 'test_voseq',
     }
 }
 
