@@ -403,7 +403,7 @@ class ParseXML(object):
         if key in item:
             if item[key] is None:
                 item[key] = ''
-            elif item[key].lower() == 'null':
+            elif item[key].lower().strip() == 'null':
                 item[key] = ''
             elif item[key].strip() == '':
                 item[key] = ''
@@ -422,29 +422,22 @@ class ParseXML(object):
             item = self.clean_value(item, 'superfamily')
             item = self.clean_value(item, 'family')
             item = self.clean_value(item, 'subfamily')
+            item = self.clean_value(item, 'tribe')
+            item = self.clean_value(item, 'subtribe')
+            item = self.clean_value(item, 'genus')
+            item = self.clean_value(item, 'species')
+            item = self.clean_value(item, 'subspecies')
+            item = self.clean_value(item, 'hostorg')
+            item = self.clean_value(item, 'auctor')
 
-            if item['tribe'] is None:
-                item['tribe'] = ''
-            if item['subtribe'] is None:
-                item['subtribe'] = ''
-            if item['genus'] is None:
-                item['genus'] = ''
-            if item['species'] is None:
-                item['species'] = ''
-            if item['subspecies'] is None:
-                item['subspecies'] = ''
-            if item['hostorg'] is None:
-                item['hostorg'] = ''
-            if item['country'] is None:
-                item['country'] = ''
-            if item['auctor'] is None:
-                item['auctor'] = ''
+            item = self.clean_value(item, 'country')
+            item = self.clean_value(item, 'specificLocality')
+            item = self.clean_value(item, 'voucherLocality')
+
             if item['collector'] is None:
                 item['collector'] = ''
             if item['extractionTube'] is None:
                 item['extractionTube'] = ''
-            if item['specificLocality'] is None:
-                item['specificLocality'] = ''
 
             Vouchers.objects.create(**item)
         print("Uploading table `public_interface_vouchers`")
