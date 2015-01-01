@@ -91,3 +91,43 @@ class TestCustomCommand(TestCase):
     def test_max_altitude3(self):
         b = Vouchers.objects.get(code='CP100-14')
         self.assertEqual(2000, b.max_altitude)
+
+    def test_voucher_none(self):
+        b = Vouchers.objects.get(code='CP100-09')
+        self.assertEqual('n', b.voucher)
+
+    def test_voucher_spread(self):
+        b = Vouchers.objects.get(code='CP100-10')
+        self.assertEqual('s', b.voucher)
+
+    def test_voucher_unspread(self):
+        b = Vouchers.objects.get(code='CP100-11')
+        self.assertEqual('e', b.voucher)
+
+    def test_voucher_null(self):
+        b = Vouchers.objects.get(code='CP100-12')
+        self.assertEqual('n', b.voucher)
+
+    def test_voucher_empty(self):
+        b = Vouchers.objects.get(code='CP100-13')
+        self.assertEqual('n', b.voucher)
+
+    def test_voucher_photo(self):
+        b = Vouchers.objects.get(code='CP100-14')
+        self.assertEqual('p', b.voucher)
+
+    def test_voucher_lost(self):
+        b = Vouchers.objects.get(code='CP100-15')
+        self.assertEqual('l', b.voucher)
+
+    def test_voucher_destroyed(self):
+        b = Vouchers.objects.get(code='CP100-16')
+        self.assertEqual('d', b.voucher)
+
+    def test_voucher_no_photo(self):
+        b = Vouchers.objects.get(code='CP100-17')
+        self.assertEqual('e', b.voucher)
+
+    def test_voucher_other(self):
+        b = Vouchers.objects.get(code='CP100-17')
+        self.assertEqual('e', b.voucher)
