@@ -3,7 +3,6 @@ import itertools
 from django.http import Http404
 from django.shortcuts import render
 from django.conf import settings
-from django.db.models import Q
 
 from .models import Vouchers
 from .models import FlickrImages
@@ -12,8 +11,14 @@ from .models import Primers
 from .forms import AdvancedSearchForm
 
 
+VERSION = settings.VERSION
+
+
 def index(request):
-    return render(request, 'public_interface/index.html')
+    return render(request,
+                  'public_interface/index.html',
+                  {'version': VERSION},
+                  )
 
 
 def browse(request):
