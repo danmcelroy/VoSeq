@@ -3,6 +3,7 @@ from django.test import TestCase
 
 from public_interface.models import Vouchers
 from public_interface.models import Sequences
+from public_interface.models import FlickrImages
 
 
 class TestCustomCommand(TestCase):
@@ -131,3 +132,9 @@ class TestCustomCommand(TestCase):
     def test_voucher_other(self):
         b = Vouchers.objects.get(code='CP100-17')
         self.assertEqual('e', b.voucher)
+
+    def test_voucher_image(self):
+        b = Vouchers.objects.get(code='CP100-09')
+        c = FlickrImages.objects.all().filter(voucher=b)
+        results = [i.voucherImage for i in c]
+        self.assertTrue('https://www.flickr.com/photos/nsg_db/15728978251/' in results)
