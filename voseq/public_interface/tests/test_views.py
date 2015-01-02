@@ -100,5 +100,9 @@ class TestViews(TestCase):
             found_item = False
         self.assertFalse(found_item)
 
+    def test_advanced_search(self):
+        response = self.client.get('/search/')
+        self.assertEqual(200, response.status_code)
+
     def tearDown(self):
         call_command('clear_index', interactive=False, verbosity=0)
