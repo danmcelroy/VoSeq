@@ -17,7 +17,9 @@ VERSION = settings.VERSION
 def index(request):
     return render(request,
                   'public_interface/index.html',
-                  {'version': VERSION},
+                  {
+                      'version': VERSION,
+                  },
                   )
 
 
@@ -35,6 +37,7 @@ def browse(request):
                   {
                       'results': queryset,
                       'vouchers_with_images': vouchers_with_images,
+                      'version': VERSION,
                   },
                   )
 
@@ -47,14 +50,26 @@ def search(request):
             results = form.search()
             if results:
                 return render(request, 'public_interface/search_results.html',
-                              {'form': form, 'results': results})
+                              {
+                                  'form': form,
+                                  'results': results,
+                                  'version': VERSION,
+                              })
             else:
                 return render(request, 'public_interface/search.html',
-                              {'form': form, 'results': 'No results'})
+                              {
+                                  'form': form,
+                                  'results': 'No results',
+                                  'version': VERSION,
+                              })
     else:
         form = AdvancedSearchForm()
 
-    return render(request, 'public_interface/search.html', {'form': form})
+    return render(request, 'public_interface/search.html',
+                  {
+                      'form': form,
+                      'version': VERSION,
+                  })
 
 
 def show_voucher(request, voucher_code):
@@ -78,6 +93,7 @@ def show_voucher(request, voucher_code):
                    'images': images_queryset,
                    'sequences': seqs_queryset,
                    'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
+                   'version': VERSION,
                    },
                   )
 
@@ -98,4 +114,5 @@ def show_sequence(request, voucher_code, gene_code):
                       'sequence': seqs_queryset,
                       'images': images_queryset,
                       'primers': primers_queryset,
+                      'version': VERSION,
                   },)
