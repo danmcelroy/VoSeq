@@ -38,3 +38,5 @@ DATABASES = {
         'PORT': get_secret('DB_PORT'),
     }
 }
+
+INSTALLED_APPS += ('debug_toolbar',)
