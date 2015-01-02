@@ -46,14 +46,10 @@ class Members(models.Model):
 
 
 class Primers(models.Model):
-    code = models.CharField(max_length=100)
-    gene_code = models.CharField(max_length=100)
-    primer1 = models.CharField(max_length=100, blank=True)
-    primer2 = models.CharField(max_length=100, blank=True)
-    primer3 = models.CharField(max_length=100, blank=True)
-    primer4 = models.CharField(max_length=100, blank=True)
-    primer5 = models.CharField(max_length=100, blank=True)
-    primer6 = models.CharField(max_length=100, blank=True)
+    for_sequence = models.ForeignKey(Sequences, help_text='relation to Sequences table with reference '
+                                                          'for code and gene_code.')
+    primer_f = models.CharField(max_length=100, blank=True)
+    primer_r = models.CharField(max_length=100, blank=True)
 
 
 class TaxonSets(models.Model):
