@@ -8,6 +8,7 @@ from django.db.models import Q
 from .models import Vouchers
 from .models import FlickrImages
 from .models import Sequences
+from .models import Primers
 from .forms import AdvancedSearchForm
 
 
@@ -84,10 +85,12 @@ def show_sequence(request, voucher_code, gene_code):
 
     seqs_queryset = Sequences.objects.get(code=voucher_code, gene_code=gene_code)
     images_queryset = FlickrImages.objects.filter(voucher=voucher_code)
+    primers_queryset = Primers.objects.filter(for_sequence=seqs_queryset)
 
     return render(request, 'public_interface/show_sequence.html',
                   {
                       'voucher': queryset,
                       'sequence': seqs_queryset,
                       'images': images_queryset,
+                      'primers': primers_queryset,
                   },)
