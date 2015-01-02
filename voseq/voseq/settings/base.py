@@ -105,3 +105,6 @@ STATICFILES_DIRS = (
 # https://developers.google.com/maps/documentation/javascript/tutorial#api_key
 # so that you can show Google Maps in your voucher pages.
 GOOGLE_MAPS_API_KEY = 'fake api key'
+
+# This VoSeq version
+VERSION = '2.0.0'
