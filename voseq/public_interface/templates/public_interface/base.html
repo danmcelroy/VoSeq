@@ -26,10 +26,13 @@ rss icon by: http://glyphicons.com/
 
   <style type="text/css">
     .navbar .divider-vertical {
-    min-height: 50px;
-    margin: 0 9px;
-    border-right: 1px solid #ffffff;
-    border-left: 1px solid #f2f2f2;
+      min-height: 50px;
+      margin: 0 9px;
+      border-right: 1px solid #ffffff;
+      border-left: 1px solid #f2f2f2;
+    }
+    #toolbox {
+      padding-top: 8px;
     }
   </style>
 
@@ -89,18 +92,31 @@ rss icon by: http://glyphicons.com/
                 </div>
               </form>
             </li>
-            <li>
+          </ul>
 
-              <form action="#" class="navbar-form navbar-right form-inline">
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <div class="btn-group" id="toolbox">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                        id="tools">
+                  Tools <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">Action1</a></li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <form action="#" class="navbar-form form-inline">
                 <div class="form-group">
                   <a href="#">
-                    <button  class="btn btn-success" > Sign in </button>
+                    <button class="btn btn-success">Sign in</button>
                   </a>
                 </div>
               </form>
-
             </li>
           </ul>
+
 
         </div><!--/.nav-collapse -->
       </div>
