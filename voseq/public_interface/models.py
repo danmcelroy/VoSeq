@@ -157,8 +157,6 @@ class FlickrImages(models.Model):
     voucher = models.ForeignKey(
         Vouchers,
         help_text='Relation with id of voucher. Save as lower case.',
-        blank=True,
-        null=True,
     )
     voucherImage = models.URLField(help_text="URLs of the Flickr page.")
     thumbnail = models.URLField(help_text="URLs for the small sized image from Flickr.")
