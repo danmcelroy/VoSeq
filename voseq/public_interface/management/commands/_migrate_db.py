@@ -441,6 +441,7 @@ class ParseXML(object):
             item = self.clean_value(item, 'collector')
             item = self.clean_value(item, 'voucherCode')
             item = self.clean_value(item, 'determinedBy')
+            item = self.clean_value(item, 'sex')
 
             item = self.clean_value(item, 'publishedIn')
             item = self.clean_value(item, 'notes')
