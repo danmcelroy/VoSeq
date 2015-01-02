@@ -4,6 +4,7 @@ from django.test import TestCase
 from public_interface.models import Vouchers
 from public_interface.models import Sequences
 from public_interface.models import FlickrImages
+from public_interface.models import Primers
 
 
 class TestCustomCommand(TestCase):
@@ -138,3 +139,17 @@ class TestCustomCommand(TestCase):
         c = FlickrImages.objects.all().filter(voucher=b)
         results = [i.voucherImage for i in c]
         self.assertTrue('https://www.flickr.com/photos/nsg_db/15728978251/' in results)
+
+    def test_primers(self):
+        b = Sequences.objects.get(code='CP100-10', gene_code='EF1a')
+        c = Primers.objects.filter(for_sequence=b)
+
+        primers_f = [i.primer_f for i in c]
+        self.assertTrue('Cho', primers_f)
+
+    def test_primers_some_none(self):
+        b = Sequences.objects.get(code='CP100-10', gene_code='wingless')
+        c = Primers.objects.filter(for_sequence=b)
+
+        primers_f = [i.primer_f for i in c]
+        self.assertEqual(['lep1'], primers_f)
