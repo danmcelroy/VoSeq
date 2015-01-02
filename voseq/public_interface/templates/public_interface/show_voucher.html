@@ -274,7 +274,7 @@
               <td><b>Lab.</b></td>
               <td><b>Accession</b></td>
               <td><b>local Blast</b></td>
-              <td><b>ncbi Blast</b></td>
+              <td><b>NCBI Blast</b></td>
             </tr>
             {% for item in sequences %}
             <tr>
@@ -283,6 +283,12 @@
               <td>{{ item.ambiguous_seq_length }}</td>
               <td>{{ item.labPerson }}</td>
               <td><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Search&db=nucleotide&term={{ item.accession }}[accn]&doptcmdl=GenBank">{{ item.accession }}</a></td>
+              <td class="text-center">
+                <a href="/blast_local/{{ voucher.code }}/{{ item.gene_code }}/"><i class="fa fa-bomb"></i></a>
+                &nbsp;&nbsp;
+                <i class="fa fa-database"></i>
+              </td>
+              <td class="text-center"><i class="fa fa-bomb"></i></td>
             </tr>
             {% endfor %}
           </table>
