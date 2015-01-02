@@ -45,13 +45,6 @@ class Members(models.Model):
     admin = models.BinaryField(default=None)
 
 
-class Primers(models.Model):
-    for_sequence = models.ForeignKey(Sequences, help_text='relation to Sequences table with reference '
-                                                          'for code and gene_code.')
-    primer_f = models.CharField(max_length=100, blank=True)
-    primer_r = models.CharField(max_length=100, blank=True)
-
-
 class TaxonSets(models.Model):
     taxonset_name = models.CharField(max_length=50)
     taxonset_creator = models.CharField(max_length=75)
@@ -147,6 +140,13 @@ class Sequences(models.Model):
     time_edited = models.DateTimeField(auto_now=True, null=True, blank=True)
     notes = models.TextField(blank=True)
     genbank = models.NullBooleanField()
+
+
+class Primers(models.Model):
+    for_sequence = models.ForeignKey(Sequences, help_text='relation to Sequences table with reference '
+                                                          'for code and gene_code.')
+    primer_f = models.CharField(max_length=100, blank=True)
+    primer_r = models.CharField(max_length=100, blank=True)
 
 
 class FlickrImages(models.Model):

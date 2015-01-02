@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ET
 from public_interface.models import Vouchers
 from public_interface.models import FlickrImages
 from public_interface.models import Sequences
+from public_interface.models import Primers
 
 
 class ParseXML(object):
@@ -131,14 +132,21 @@ class ParseXML(object):
         for row in our_data.findall('row'):
             item = dict()
             item['code'] = row.find("./field/[@name='code']").text
-            item['geneCode'] = row.find("./field/[@name='geneCode']").text
-            item['primer1'] = row.find("./field/[@name='primer1']").text
-            item['primer2'] = row.find("./field/[@name='primer2']").text
-            item['primer3'] = row.find("./field/[@name='primer3']").text
-            item['primer4'] = row.find("./field/[@name='primer4']").text
-            item['primer5'] = row.find("./field/[@name='primer5']").text
-            item['primer6'] = row.find("./field/[@name='primer6']").text
-            item['timestamp'] = row.find("./field/[@name='timestamp']").text
+            item['gene_code'] = row.find("./field/[@name='geneCode']").text
+
+            item['primers'] = []
+            append = item['primers'].append
+            primer1 = row.find("./field/[@name='primer1']").text
+            primer2 = row.find("./field/[@name='primer2']").text
+            primer3 = row.find("./field/[@name='primer3']").text
+            primer4 = row.find("./field/[@name='primer4']").text
+            primer5 = row.find("./field/[@name='primer5']").text
+            primer6 = row.find("./field/[@name='primer6']").text
+
+            append((primer1, primer2))
+            append((primer3, primer4))
+            append((primer5, primer6))
+
             self.table_primers_items.append(item)
 
     def parse_table_sequences(self, xml_string):
@@ -403,6 +411,32 @@ class ParseXML(object):
                 print("WARNING:: Using empty as date for `time_edited` for code %s." % item['code_id'])
 
             item['time_edited'] = date_obj
+
+    def import_table_primers(self):
+        if self.table_primers_items is None:
+            self.parse_table_primers(self.dump_string)
+
+        for item in self.table_primers_items:
+            item['primers'] = [(i[0], i[1]) for i in item['primers'] if i[0] is not None and i[1] is not None]
+
+    def save_table_primers_to_db(self):
+        if self.table_primers_items is None:
+            self.import_table_primers()
+
+        for item in self.table_primers_items:
+            b = Sequences.objects.get(code=item['code'], gene_code=item['gene_code'])
+            item['for_sequence'] = b
+
+            primers = item['primers']
+            del item['primers']
+            del item['code']
+            del item['gene_code']
+            for i in primers:
+                item['primer_f'] = i[0]
+                item['primer_r'] = i[1]
+                Primers.objects.create(**item)
+
+        print("Uploading table `public_interface_primers`")
 
     def clean_value(self, item, key):
         if key in item:

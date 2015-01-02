@@ -42,3 +42,6 @@ class Command(BaseCommand):
 
         parser.import_table_sequences()
         parser.save_table_sequences_to_db()
+
+        parser.import_table_primers()
+        parser.save_table_primers_to_db()
