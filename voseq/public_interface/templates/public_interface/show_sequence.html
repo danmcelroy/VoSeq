@@ -119,9 +119,18 @@
           <div class="panel-heading">
             <h3 class="panel-title"><b>Primers used</b></h3>
           </div>
-          <div class="panel-body">
-            # TODO
-          </div>
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Forward Primers:</b></td>
+              <td><b>Reverse Primers:</b></td>
+            </tr>
+            {% for i in primers %}
+            <tr>
+              <td>{{ i.primer_f }}</td>
+              <td>{{ i.primer_r }}</td>
+            </tr>
+            {% endfor %}
+          </table>
         </div><!-- panel -->
 
         <div class="panel panel-primary">
