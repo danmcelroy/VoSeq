@@ -1,7 +1,5 @@
 import json
-import os
 
-from unipath import Path
 from django.core.exceptions import ImproperlyConfigured
 
 from .base import *
@@ -10,8 +8,7 @@ from .base import *
 DEBUG = True
 TEMPLATE_DEBUG = True
 
-BASE_DIR = Path(__file__).absolute().ancestor(3)
-SECRETS_FILE = os.path.join(BASE_DIR.ancestor(1), 'config.json')
+SECRETS_FILE = os.path.join(BASE_DIR, '..', '..', 'config.json')
 
 with open(SECRETS_FILE) as f:
     secrets = json.loads(f.read())
