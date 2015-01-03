@@ -25,11 +25,17 @@ class BlastLocalTest(TestCase):
 
     def test_save_seqs_to_file(self):
         self.blast.save_seqs_to_file()
-        expected_file = os.path.join(settings.BASE_DIR,
+        self.seq_file = os.path.join(settings.BASE_DIR,
                                      '..',
                                      'blast_local',
                                      'db',
                                      'COI_seqs.fas',
                                      )
-        result = os.path.isfile(expected_file)
+        result = os.path.isfile(self.seq_file)
         self.assertTrue(result)
+
+    def test_create_blast_db(self):
+        self.blast.create_blast_db()
+
+    def tearDown(self):
+        os.remove(self.seq_file)
