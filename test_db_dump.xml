@@ -305,7 +305,7 @@
             <field name="dateModification" xsi:nil="true" />
             <field name="notes" xsi:nil="true" />
             <field name="timestamp">2008-07-17 17:24:20</field>
-            <field name="id">4</field>
+            <field name="id">5</field>
             <field name="genbank">1</field>
         </row>
 	</table_data>
