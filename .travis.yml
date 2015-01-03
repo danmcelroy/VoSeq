@@ -8,6 +8,12 @@ services:
 
 install: pip install -r requirements/dev.txt
 
+before_install:
+    - echo "Fetching and installing BLAST"
+    - wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.2.30/ncbi-blast-2.2.30+-x64-linux.tar.gz
+    - tar -zxvf ncbi-blast-2.2.30+-x64-linux.tar.gz | tail
+    - export PATH="${TRAVIS_BUILD_DIR}/ncbi-blast-2.2.30+/bin:$PATH"
+
 script: coverage run --source voseq voseq/manage.py test -v 2 public_interface blast_local --settings=voseq.settings.base
 
 after_success: coveralls
