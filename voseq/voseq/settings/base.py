@@ -38,6 +38,7 @@ INSTALLED_APPS = (
 
     # my apps
     'public_interface',
+    'blast_local',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -98,7 +99,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    BASE_DIR,
 )
 
 # Get your API key from here:
