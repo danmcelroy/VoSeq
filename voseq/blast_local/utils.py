@@ -1,8 +1,11 @@
 import os
+import re
 import subprocess
 
-from django.conf import settings
 from Bio.Blast.Applications import NcbiblastnCommandline
+from Bio.Seq import Seq
+from Bio import SeqIO
+from Bio.SeqRecord import SeqRecord
 
 from public_interface.models import Sequences
 
@@ -24,6 +27,7 @@ class BLAST(object):
         self.voucher_code = voucher_code
         self.gene_code = gene_code
         self.mask = True
+        self.cwd = os.path.dirname(__file__)
 
     def have_blast_db(self):
         """
@@ -52,18 +56,25 @@ class BLAST(object):
         database.
         """
         if self.blast_type == 'local':
-            self.seq_file = os.path.join(settings.BASE_DIR,
-                                         '..',
-                                         'blast_local',
+            self.seq_file = os.path.join(self.cwd,
                                          'db',
                                          self.gene_code + "_seqs.fas",
                                          )
             queryset = Sequences.objects.all().filter(gene_code=self.gene_code)
 
-            with open(self.seq_file, 'w') as handle:
-                for i in queryset:
-                    handle.write('>' + i.code_id + ' ' + i.gene_code)
-                    handle.write('\n' + i.sequences + '\n')
+            my_records = []
+            for i in queryset:
+                id = i.code_id + '|' + i.gene_code
+                seq = self.strip_question_marks(i.sequences)
+                seq_record = SeqRecord(Seq(seq),
+                                       id=id)
+                my_records.append(seq_record)
+            SeqIO.write(my_records, self.seq_file, "fasta")
+
+    def strip_question_marks(self, seq):
+        seq = re.sub('^\?+', '', seq)
+        seq = re.sub('\?+$', '', seq)
+        return seq
 
     def create_blast_db(self):
         """
