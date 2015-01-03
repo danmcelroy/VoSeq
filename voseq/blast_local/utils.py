@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 from django.conf import settings
 from Bio.Blast.Applications import NcbiblastnCommandline
@@ -22,6 +23,7 @@ class BLAST(object):
         self.blast_type = blast_type
         self.voucher_code = voucher_code
         self.gene_code = gene_code
+        self.mask = True
 
     def have_blast_db(self):
         """
@@ -46,29 +48,45 @@ class BLAST(object):
         Query sequences for each gene from our database and save them to local
         disk.
 
-        :return:
+        Sets attribute `self.seq_file` containing necessary sequences from our
+        database.
         """
         if self.blast_type == 'local':
-            output_file = os.path.join(settings.BASE_DIR,
-                                       '..',
-                                       'blast_local',
-                                       'db',
-                                       self.gene_code + "_seqs.fas",
-                                       )
+            self.seq_file = os.path.join(settings.BASE_DIR,
+                                         '..',
+                                         'blast_local',
+                                         'db',
+                                         self.gene_code + "_seqs.fas",
+                                         )
             queryset = Sequences.objects.all().filter(gene_code=self.gene_code)
 
-            with open(output_file, 'w') as handle:
+            with open(self.seq_file, 'w') as handle:
                 for i in queryset:
                     handle.write('>' + i.code_id + ' ' + i.gene_code)
                     handle.write('\n' + i.sequences + '\n')
 
     def create_blast_db(self):
         """
-        Create a blast db for blasts required by users.
+        Creates a BLAST database from our sequences file in FASTA format.
+        Optionally eliminates low-complexity regions from the sequences.
 
         :return:
         """
-        pass
+        if self.mask is True:
+            command = 'dustmasker -in ' + self.seq_file + ' -infmt fasta '
+            command += '-outfmt maskinfo_asn1_bin -out ' + self.seq_file + '_dust.asnb'
+            subprocess.check_output(command, shell=True)  # identifying low-complexity regions.
+
+            command = 'makeblastdb -in ' + self.seq_file + ' -input_type fasta -dbtype nucl '
+            command += '-mask_data ' + self.seq_file + '_dust.asnb '
+            command += '-out ' + self.seq_file + ' -title "Whole Genome without low-complexity regions"'
+            print("creating database...")
+            subprocess.check_output(command, shell=True)  # Overwriting the genome file.
+        else:
+            command = 'makeblastdb -in ' + self.seq_file + ' -input_type fasta -dbtype nucl '
+            command += '-out ' + self.seq_file + ' -title "Whole Genome unmasked"'
+            print("creating database...")
+            subprocess.check_output(command, shell=True)
 
     def do_blast(self):
         blastn_cline = NcbiblastnCommandline(query=self.query, db=self.db,
