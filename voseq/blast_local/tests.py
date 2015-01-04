@@ -57,8 +57,12 @@ class BlastLocalTest(TestCase):
         self.assertTrue(result)
 
     def test_create_blast_db(self):
-        self.blast.save_seqs_to_file()
-        self.blast.create_blast_db()
+        blast_type = 'local'
+        voucher_code = 'CP100-10'
+        gene_code = 'COI'
+        blast = BLAST(blast_type, voucher_code, gene_code, test=True, mask=True)
+        blast.save_seqs_to_file()
+        blast.create_blast_db()
         files = glob.glob(
             os.path.join(settings.BASE_DIR,
                          '..',
@@ -67,3 +71,21 @@ class BlastLocalTest(TestCase):
                          'COI_seqs.fas.n*')
         )
         self.assertTrue(len(files) > 0)
+        self.remove_blast_data_files()
+
+    def test_create_blast_db_unmasked(self):
+        blast_type = 'local'
+        voucher_code = 'CP100-10'
+        gene_code = 'COI'
+        blast = BLAST(blast_type, voucher_code, gene_code, test=True, mask=False)
+        blast.save_seqs_to_file()
+        blast.create_blast_db()
+        files = glob.glob(
+            os.path.join(settings.BASE_DIR,
+                         '..',
+                         'blast_local',
+                         'db',
+                         'COI_seqs.fas.n*')
+        )
+        self.assertTrue(len(files) > 0)
+        self.remove_blast_data_files()
