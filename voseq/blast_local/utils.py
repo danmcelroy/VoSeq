@@ -1,3 +1,4 @@
+import glob
 import os
 import re
 import subprocess
@@ -15,7 +16,7 @@ class BLAST(object):
     Class to handle duties related to local blast against sequences of one gene,
     and full blast against all sequences in our database.
     """
-    def __init__(self, blast_type, voucher_code, gene_code):
+    def __init__(self, blast_type, voucher_code, gene_code, test=None):
         """
         Type of blast to do: local, full, remote
 
@@ -28,6 +29,7 @@ class BLAST(object):
         self.gene_code = gene_code
         self.mask = True
         self.cwd = os.path.dirname(__file__)
+        self.test = test
 
     def have_blast_db(self):
         """
@@ -35,7 +37,23 @@ class BLAST(object):
 
         :return: True or False
         """
-        pass
+        if self.test is True:
+            path = os.path.join(self.cwd,
+                             'db',
+                             self.gene_code + '_seqs.fas.n*',
+                             )
+        else:
+            path = os.path.join(self.cwd,
+                                'blast_local',
+                                'db',
+                                self.gene_code + '_seqs.fas.n*',
+                                )
+        print(path)
+        files = glob.glob(path)
+        if len(files) > 0:
+            return True
+        else:
+            return False
 
     def is_blast_db_up_to_date(self):
         """
@@ -71,11 +89,6 @@ class BLAST(object):
                 my_records.append(seq_record)
             SeqIO.write(my_records, self.seq_file, "fasta")
 
-    def strip_question_marks(self, seq):
-        seq = re.sub('^\?+', '', seq)
-        seq = re.sub('\?+$', '', seq)
-        return seq
-
     def create_blast_db(self):
         """
         Creates a BLAST database from our sequences file in FASTA format.
@@ -103,3 +116,9 @@ class BLAST(object):
         blastn_cline = NcbiblastnCommandline(query=self.query, db=self.db,
                                              evalue=0.001, outfmt=5, out="opuntia.xml")
         blastn_cline()
+
+    def strip_question_marks(self, seq):
+        seq = re.sub('^\?+', '', seq)
+        seq = re.sub('\?+$', '', seq)
+        return seq
+
