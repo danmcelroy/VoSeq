@@ -21,17 +21,19 @@ class BlastLocalTest(TestCase):
         self.blast = BLAST(blast_type, voucher_code, gene_code, test=True)
         self.seq_file = ''
 
-    def test_have_blast_db(self):
+    def remove_blast_data_files(self):
         path = os.path.join(settings.BASE_DIR,
-                                     '..',
-                                     'blast_local',
-                                     'db',
-                                     '*',
-                                     )
-        for file in path:
+                            '..',
+                            'blast_local',
+                            'db',
+                            '*',
+                            )
+        for file in glob.glob(path):
             if not file.endswith('py') and os.path.isfile(file):
-                print(file)
                 os.remove(file)
+
+    def test_have_blast_db(self):
+        self.remove_blast_data_files()
         result = self.blast.have_blast_db()
         self.assertEqual(False, result)
 
@@ -41,6 +43,7 @@ class BlastLocalTest(TestCase):
 
         result = self.blast.have_blast_db()
         self.assertEqual(True, result)
+        self.remove_blast_data_files()
 
     def test_save_seqs_to_file(self):
         self.blast.save_seqs_to_file()
