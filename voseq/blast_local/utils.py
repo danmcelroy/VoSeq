@@ -15,8 +15,13 @@ class BLAST(object):
     """
     Class to handle duties related to local blast against sequences of one gene,
     and full blast against all sequences in our database.
+
+    The database is `masked` by default, to eliminate low-complexity regions
+    from the sequences.
+
+    Use `mask=False` to create unmasked blast databases.
     """
-    def __init__(self, blast_type, voucher_code, gene_code, test=None):
+    def __init__(self, blast_type, voucher_code, gene_code, mask=None, test=None):
         """
         Type of blast to do: local, full, remote
 
@@ -27,9 +32,12 @@ class BLAST(object):
         self.blast_type = blast_type
         self.voucher_code = voucher_code
         self.gene_code = gene_code
-        self.mask = True
         self.cwd = os.path.dirname(__file__)
         self.test = test
+        if mask is not False:
+            self.mask = True
+        else:
+            self.mask = False
 
     def have_blast_db(self):
         """
