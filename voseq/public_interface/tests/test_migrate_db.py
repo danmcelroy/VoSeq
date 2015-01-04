@@ -10,7 +10,7 @@ from public_interface.models import Primers
 class TestCustomCommand(TestCase):
     def setUp(self):
         args = []
-        opts = {'dumpfile': 'test_db_dump.xml'}
+        opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 

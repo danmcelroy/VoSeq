@@ -17,6 +17,9 @@ class Command(BaseCommand):
                          'This file can be obtained from your MySQL database using this command:'
                          '\t"mysqdump --xml database > dump.xml"',
                     ),
+        make_option('--verbosity',
+                    dest='verbosity',
+                    ),
     )
 
     def handle(self, *args, **options):
@@ -25,17 +28,20 @@ class Command(BaseCommand):
                         'This file can be obtained from your MySQL database using this command:' \
                         ' "mysqdump --xml database > dump.xml"',
             raise CommandError(error_msg)
-        print(args)
-        print(options)
 
         dump_file = options['dumpfile']
+        verbosity = options['verbosity']
+
+        if verbosity != 0:
+            print(args)
+            print(options)
 
         with codecs.open(dump_file, "r") as handle:
             dump = handle.read()
 
         # tables_prefix = 'voseq_'
         tables_prefix = ''
-        parser = ParseXML(dump, tables_prefix)
+        parser = ParseXML(dump, tables_prefix, verbosity)
 
         parser.import_table_vouchers()
         parser.save_table_vouchers_to_db()
