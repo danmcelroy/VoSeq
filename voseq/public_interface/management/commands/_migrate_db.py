@@ -22,7 +22,7 @@ class ParseXML(object):
     """
     Parses MySQL dump as XML file.
     """
-    def __init__(self, xml_string, tables_prefix=None):
+    def __init__(self, xml_string, tables_prefix=None, verbosity=None):
         if tables_prefix is None:
             self.tables_prefix = ''
         else:
@@ -38,6 +38,7 @@ class ParseXML(object):
         self.table_vouchers_items = None
         self.table_flickr_images_items = []
         self.list_of_voucher_codes = []
+        self.verbosity = verbosity
 
     def parse_table_genes(self, xml_string):
         our_data = False
@@ -388,14 +389,16 @@ class ParseXML(object):
                 date_obj = datetime.datetime.strptime(item['time_created'], '%Y-%m-%d')
             except ValueError as e:
                 date_obj = None
-                print(e)
-                print("WARNING:: Could not parse dateCreation properly.")
-                print("WARNING:: Using empty date for `time_created` for code %s and gene_code %s." % (item['code_id'], item['gene_code']))
+                if self.verbosity != 0:
+                    print(e)
+                    print("WARNING:: Could not parse dateCreation properly.")
+                    print("WARNING:: Using empty date for `time_created` for code %s and gene_code %s." % (item['code_id'], item['gene_code']))
             except TypeError as e:
                 date_obj = None
-                print(e)
-                print("WARNING:: Could not parse dateCreation properly.")
-                print("WARNING:: Using empty date for `time_created` for code %s and gene_code %s." % (item['code_id'], item['gene_code']))
+                if self.verbosity != 0:
+                    print(e)
+                    print("WARNING:: Could not parse dateCreation properly.")
+                    print("WARNING:: Using empty date for `time_created` for code %s and gene_code %s." % (item['code_id'], item['gene_code']))
 
             item['time_created'] = date_obj
 
@@ -403,12 +406,14 @@ class ParseXML(object):
                 date_obj = datetime.datetime.strptime(item['time_edited'], '%Y-%m-%d')
             except ValueError:
                 date_obj = None
-                print("WARNING:: Could not parse dateModification properly.")
-                print("WARNING:: Using empty date for `time_edited` for code %s." % item['code_id'])
+                if self.verbosity != 0:
+                    print("WARNING:: Could not parse dateModification properly.")
+                    print("WARNING:: Using empty date for `time_edited` for code %s." % item['code_id'])
             except TypeError:
                 date_obj = None
-                print("WARNING:: Could not parse dateCreation properly.")
-                print("WARNING:: Using empty as date for `time_edited` for code %s." % item['code_id'])
+                if self.verbosity != 0:
+                    print("WARNING:: Could not parse dateCreation properly.")
+                    print("WARNING:: Using empty as date for `time_edited` for code %s." % item['code_id'])
 
             item['time_edited'] = date_obj
 
@@ -436,7 +441,8 @@ class ParseXML(object):
                 item['primer_r'] = i[1]
                 Primers.objects.create(**item)
 
-        print("Uploading table `public_interface_primers`")
+        if self.verbosity != 0:
+            print("Uploading table `public_interface_primers`")
 
     def clean_value(self, item, key):
         if key in item:
@@ -485,11 +491,13 @@ class ParseXML(object):
             item = self.clean_value(item, 'extractor')
 
             Vouchers.objects.create(**item)
-        print("Uploading table `public_interface_vouchers`")
+        if self.verbosity != 0:
+            print("Uploading table `public_interface_vouchers`")
 
         for item in self.table_flickr_images_items:
             FlickrImages.objects.create(**item)
-        print("Uploading table `public_interface_flickrimages`")
+        if self.verbosity != 0:
+            print("Uploading table `public_interface_flickrimages`")
 
     def save_table_sequences_to_db(self):
         if self.table_sequences_items is None:
@@ -509,12 +517,15 @@ class ParseXML(object):
             item = self.clean_value(item, 'accession')
             Sequences.objects.create(**item)
 
-        print("Uploading table `public_interface_sequences`")
+        if self.verbosity != 0:
+            print("Uploading table `public_interface_sequences`")
 
         if len(seqs_not_to_insert) > 0:
-            print("Couldn't insert %i sequences due to lack of reference vouchers" % len(seqs_not_to_insert))
+            if self.verbosity != 0:
+                print("Couldn't insert %i sequences due to lack of reference vouchers" % len(seqs_not_to_insert))
             for i in seqs_not_to_insert:
-                print(i['code_id'], i['gene_code'])
+                if self.verbosity != 0:
+                    print(i['code_id'], i['gene_code'])
 
     def get_as_tuple(self, string):
         as_tupple = ()
