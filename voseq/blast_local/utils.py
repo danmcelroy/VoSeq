@@ -39,9 +39,9 @@ class BLAST(object):
         """
         if self.test is True:
             path = os.path.join(self.cwd,
-                             'db',
-                             self.gene_code + '_seqs.fas.n*',
-                             )
+                                'db',
+                                self.gene_code + '_seqs.fas.n*',
+                                )
         else:
             path = os.path.join(self.cwd,
                                 'blast_local',
@@ -121,4 +121,3 @@ class BLAST(object):
         seq = re.sub('^\?+', '', seq)
         seq = re.sub('\?+$', '', seq)
         return seq
-
