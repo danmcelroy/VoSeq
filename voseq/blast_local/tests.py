@@ -1,11 +1,14 @@
 import glob
 import os
+import time
 
 from django.core.management import call_command
 from django.test import TestCase
 from django.conf import settings
 
 from .utils import BLAST
+from public_interface.models import Vouchers
+from public_interface.models import Sequences
 
 
 class BlastLocalTest(TestCase):
@@ -89,3 +92,28 @@ class BlastLocalTest(TestCase):
         )
         self.assertTrue(len(files) > 0)
         self.remove_blast_data_files()
+
+    def test_is_blast_db_up_to_date(self):
+        self.blast.save_seqs_to_file()
+        self.blast.create_blast_db()
+        result = self.blast.is_blast_db_up_to_date()
+        self.assertTrue(result)
+
+    """
+    def test_is_blast_db_up_to_date_false(self):
+        self.blast.save_seqs_to_file()
+        self.blast.create_blast_db()
+
+        time.sleep(5)
+        b = Vouchers.objects.get(code='CP100-10')
+        c = Sequences.objects.get(code=b, gene_code='COI')
+        print(">>>>c.time_edited", c.time_edited)
+
+        Sequences.objects.filter(code=b, gene_code='COI').update(
+            notes="a random update for this record."
+        )
+        c = Sequences.objects.get(code=b, gene_code='COI')
+        print(">>>>c.time_edited", c.time_edited)
+        result = self.blast.is_blast_db_up_to_date()
+        self.assertFalse(result)
+    """

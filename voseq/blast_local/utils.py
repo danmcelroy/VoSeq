@@ -1,3 +1,4 @@
+import datetime
 import glob
 import os
 import re
@@ -7,6 +8,7 @@ from Bio.Blast.Applications import NcbiblastnCommandline
 from Bio.Seq import Seq
 from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord
+import pytz
 
 from public_interface.models import Sequences
 
@@ -34,10 +36,23 @@ class BLAST(object):
         self.gene_code = gene_code
         self.cwd = os.path.dirname(__file__)
         self.test = test
+
         if mask is not False:
             self.mask = True
         else:
             self.mask = False
+
+        if self.test is True:
+            self.path = os.path.join(self.cwd,
+                                     'db',
+                                     self.gene_code + '_seqs.fas.n*',
+                                     )
+        else:
+            self.path = os.path.join(self.cwd,
+                                     'blast_local',
+                                     'db',
+                                     self.gene_code + '_seqs.fas.n*',
+                                     )
 
     def have_blast_db(self):
         """
@@ -45,19 +60,7 @@ class BLAST(object):
 
         :return: True or False
         """
-        if self.test is True:
-            path = os.path.join(self.cwd,
-                                'db',
-                                self.gene_code + '_seqs.fas.n*',
-                                )
-        else:
-            path = os.path.join(self.cwd,
-                                'blast_local',
-                                'db',
-                                self.gene_code + '_seqs.fas.n*',
-                                )
-        print(path)
-        files = glob.glob(path)
+        files = glob.glob(self.path)
         if len(files) > 0:
             return True
         else:
@@ -69,9 +72,34 @@ class BLAST(object):
         words, it finds out whether there are sequences in our postgres db with
         time_created or time_edited more recent than our blast db files.
 
-        :return:
+        :return: True or False
         """
-        pass
+        if self.have_blast_db() is False:
+            return False
+
+        # get time creation blast database files
+        modification_times = []
+        files = glob.glob(self.path)
+        for i in files:
+            mod_time_in_secs = os.stat(i).st_ctime
+            modification_times.append(datetime.datetime.fromtimestamp(mod_time_in_secs))
+        modification_times.sort(reverse=True)
+        time_creation_blast = modification_times[0].replace(tzinfo=pytz.utc)
+        print(">>>", time_creation_blast)
+
+        # get time creation time edited sequences in our database
+        time_created_queryset = Sequences.objects.all().order_by('-time_created')[:1]
+        time_created = time_created_queryset[0].time_created
+        print(">>>", time_created)
+
+        time_edited_queryset = Sequences.objects.all().order_by('-time_edited')[:1]
+        time_edited = time_edited_queryset[0].time_edited
+        print(">>>", time_edited)
+
+        if time_created > time_creation_blast or time_edited > time_creation_blast:
+            return False
+        else:
+            return True
 
     def save_seqs_to_file(self):
         """
