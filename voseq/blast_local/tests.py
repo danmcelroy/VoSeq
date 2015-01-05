@@ -117,3 +117,10 @@ class BlastLocalTest(TestCase):
         result = self.blast.is_blast_db_up_to_date()
         self.assertFalse(result)
     """
+
+    def test_do_blast(self):
+        self.blast.save_seqs_to_file()
+        self.blast.create_blast_db()
+        self.blast.save_query_to_file()
+        result = self.blast.do_blast()
+        self.assertTrue(os.path.isfile(result))
