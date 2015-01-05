@@ -3,6 +3,7 @@ import glob
 import os
 import re
 import subprocess
+import uuid
 
 from Bio.Blast.Applications import NcbiblastnCommandline
 from Bio.Seq import Seq
@@ -47,12 +48,39 @@ class BLAST(object):
                                      'db',
                                      self.gene_code + '_seqs.fas.n*',
                                      )
+            self.db = os.path.join(self.cwd,
+                                   'db',
+                                   self.gene_code + '_seqs.fas',
+                                   )
+            self.query_file = os.path.join(self.cwd,
+                                           'db',
+                                           'query_' + uuid.uuid4().hex + '.fas',
+                                           )
+            self.output_file = os.path.join(self.cwd,
+                                            'db',
+                                            'output_' + uuid.uuid4().hex + '.xml',
+                                            )
         else:
             self.path = os.path.join(self.cwd,
                                      'blast_local',
                                      'db',
                                      self.gene_code + '_seqs.fas.n*',
                                      )
+            self.db = os.path.join(self.cwd,
+                                   'blast_local',
+                                   'db',
+                                   self.gene_code + '_seqs.fas',
+                                   )
+            self.query_file = os.path.join(self.cwd,
+                                           'blast_local',
+                                           'db',
+                                           'query_' + uuid.uuid4().hex + '.fas',
+                                           )
+            self.output_file = os.path.join(self.cwd,
+                                            'blast_local',
+                                            'db',
+                                            'output_' + uuid.uuid4().hex + '.xml',
+                                            )
 
     def have_blast_db(self):
         """
@@ -85,16 +113,13 @@ class BLAST(object):
             modification_times.append(datetime.datetime.fromtimestamp(mod_time_in_secs))
         modification_times.sort(reverse=True)
         time_creation_blast = modification_times[0].replace(tzinfo=pytz.utc)
-        print(">>>", time_creation_blast)
 
         # get time creation time edited sequences in our database
         time_created_queryset = Sequences.objects.all().order_by('-time_created')[:1]
         time_created = time_created_queryset[0].time_created
-        print(">>>", time_created)
 
         time_edited_queryset = Sequences.objects.all().order_by('-time_edited')[:1]
         time_edited = time_edited_queryset[0].time_edited
-        print(">>>", time_edited)
 
         if time_created > time_creation_blast or time_edited > time_creation_blast:
             return False
@@ -148,10 +173,28 @@ class BLAST(object):
             print("creating database...")
             subprocess.check_output(command, shell=True)
 
+    def save_query_to_file(self):
+        b = Sequences.objects.get(code_id=self.voucher_code, gene_code=self.gene_code)
+        id = b.code_id + '|' + b.gene_code
+        seq = self.strip_question_marks(b.sequences)
+
+        seq_record = SeqRecord(Seq(seq),
+                               id=id)
+        SeqIO.write(seq_record, self.query_file, "fasta")
+
     def do_blast(self):
-        blastn_cline = NcbiblastnCommandline(query=self.query, db=self.db,
-                                             evalue=0.001, outfmt=5, out="opuntia.xml")
+        blastn_cline = NcbiblastnCommandline(query=self.query_file, db=self.db,
+                                             evalue=0.001, outfmt=5, out=self.output_file)
         blastn_cline()
+        return self.output_file
+
+    def parse_blast_output(self):
+        """
+        Returns list of dictionaries with data:
+
+        match_description, max_score, total_score, query_cover, e_value, % ident, accession number
+        """
+        pass
 
     def strip_question_marks(self, seq):
         seq = re.sub('^\?+', '', seq)
