@@ -58,6 +58,7 @@ class BlastLocalTest(TestCase):
                                      )
         result = os.path.isfile(self.seq_file)
         self.assertTrue(result)
+        self.remove_blast_data_files()
 
     def test_create_blast_db(self):
         blast_type = 'local'
@@ -98,6 +99,7 @@ class BlastLocalTest(TestCase):
         self.blast.create_blast_db()
         result = self.blast.is_blast_db_up_to_date()
         self.assertTrue(result)
+        self.remove_blast_data_files()
 
     """
     def test_is_blast_db_up_to_date_false(self):
@@ -124,6 +126,7 @@ class BlastLocalTest(TestCase):
         self.blast.save_query_to_file()
         result = self.blast.do_blast()
         self.assertTrue(os.path.isfile(result))
+        self.remove_blast_data_files()
 
     def test_parse_blast_output(self):
         self.blast.save_seqs_to_file()
@@ -132,3 +135,4 @@ class BlastLocalTest(TestCase):
         self.blast.do_blast()
         result = self.blast.parse_blast_output()
         self.assertTrue(1057 in [i['length'] for i in result])
+        self.remove_blast_data_files()
