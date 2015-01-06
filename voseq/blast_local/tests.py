@@ -124,3 +124,11 @@ class BlastLocalTest(TestCase):
         self.blast.save_query_to_file()
         result = self.blast.do_blast()
         self.assertTrue(os.path.isfile(result))
+
+    def test_parse_blast_output(self):
+        self.blast.save_seqs_to_file()
+        self.blast.create_blast_db()
+        self.blast.save_query_to_file()
+        self.blast.do_blast()
+        result = self.blast.parse_blast_output()
+        self.assertTrue(1057 in [i['length'] for i in result])
