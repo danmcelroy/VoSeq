@@ -5,9 +5,10 @@ import re
 import subprocess
 import uuid
 
-from Bio.Blast.Applications import NcbiblastnCommandline
-from Bio.Seq import Seq
 from Bio import SeqIO
+from Bio.Blast.Applications import NcbiblastnCommandline
+from Bio.Blast import NCBIXML
+from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 import pytz
 
@@ -32,6 +33,7 @@ class BLAST(object):
         :param voucher_code:
         :param gene_code:
         """
+        self.e_value = 0.001
         self.blast_type = blast_type
         self.voucher_code = voucher_code
         self.gene_code = gene_code
@@ -184,7 +186,7 @@ class BLAST(object):
 
     def do_blast(self):
         blastn_cline = NcbiblastnCommandline(query=self.query_file, db=self.db,
-                                             evalue=0.001, outfmt=5, out=self.output_file)
+                                             evalue=self.e_value, outfmt=5, out=self.output_file)
         blastn_cline()
         return self.output_file
 
@@ -194,7 +196,20 @@ class BLAST(object):
 
         match_description, max_score, total_score, query_cover, e_value, % ident, accession number
         """
-        pass
+        handle = open(self.output_file, 'r')
+        blast_record = NCBIXML.read(handle)
+        hits = []
+        append = hits.append
+
+        for alignment in blast_record.alignments:
+            for hsp in alignment.hsps:
+                if hsp.expect < self.e_value:
+                    obj = {}
+                    obj['sequence'] = alignment.title
+                    obj['length'] = alignment.length
+                    obj['e_value'] = hsp.expect
+                    append(obj)
+        return hits
 
     def strip_question_marks(self, seq):
         seq = re.sub('^\?+', '', seq)
