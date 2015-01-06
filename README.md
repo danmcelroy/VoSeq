@@ -16,7 +16,7 @@ VoSeq 2.0.0 is the future!
 You need to install the dependencies:
 
 ```shell
-pip install requirements/dev.txt
+pip install -r requirements/dev.txt
 ```
 
 Download and install `elasticsearch` from here: http://www.elasticsearch.org/overview/elkdownloads/
