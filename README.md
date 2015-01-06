@@ -8,6 +8,8 @@ by using the framework Django. We also moved from MySQL to PostgreSQL.
 You can still download the old VoSeq v1.7.4 from [here](https://github.com/carlosp420/VoSeq/releases/tag/v1.7.4).
 But be aware that we will not be doing major maintenance of that code.
 
+Here is a test installation of the old VoSeq (v1.7.0) <http://www.nymphalidae.net/VoSeq/>
+
 More details about the migration can be found in our [discussion list](https://groups.google.com/forum/#!topic/voseq-discussion-list/wQ-E0Xcimgw).
 
 VoSeq 2.0.0 is the future!
