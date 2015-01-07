@@ -31,6 +31,13 @@
    334-348.
    [doi: 10.1111/syen.12006](http://dx.doi.org/10.1111/syen.12006)
    
+2. Kristensen, N. P., Hilton, D. J., Kallies, A., Milla, L., Rota, J., Wahlberg, N.,
+   Wilcox, S. A., Glatz, R. V., Young, D. A., Cocking, G., Edwards, T.,
+   Gibbs, G. W. & Halsey, M. (**2015**). A new extant family of primitive moths
+   from Kangaroo Island, Australia, and its significance for understanding
+   early Lepidoptera evolution. *Systematic Entomology*, 40: 5–16. 
+   [doi: 10.1111/syen.12115](http://dx.doi.org/10.1111/syen.12115)
+   
 2. Malm, T., Johanson, K. A., & Wahlberg, N. (**2013**). The evolutionary 
    history of Trichoptera (Insecta): A case of successful adaptation to life in 
    freshwater. *Systematic Entomology*, 38(3), 459-473. 
