@@ -6,7 +6,7 @@ from django.core.management import call_command
 from django.test import TestCase
 from django.conf import settings
 
-from .utils import BLAST
+from blast_local.utils import BLAST
 from public_interface.models import Vouchers
 from public_interface.models import Sequences
 
