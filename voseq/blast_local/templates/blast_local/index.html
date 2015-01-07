@@ -1,0 +1,37 @@
+{% extends 'public_interface/base.html' %}
+
+
+{% block content %}
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <div class="panel-title">
+     <h3 class="panel-title">Blast results:</h3>
+    </div>
+  </div>
+
+    <table class="table table-condensed table-striped">
+      <tr>
+        <td><b>Description</b></td>
+        <td><b>Ident</b></td>
+        <td><b>Query cover</b></td>
+        <td><b>Max score</b></td>
+        <td><b>Bit score</b></td>
+        <td><b>E value</b></td>
+        <td><b>Accession</b></td>
+      </tr>
+    {% for item in result %}
+      <tr>
+        <td>{{ item.description }}</td>
+        <td>{{ item.ident }}%</td>
+        <td>{{ item.query_cover }}%</td>
+        <td>{{ item.score }}</td>
+        <td>{{ item.bits }}</td>
+        <td>{{ item.e_value }}</td>
+        <td></td>
+      </tr>
+    {% endfor %}
+    </table>
+</div>
+
+{% endblock content %}

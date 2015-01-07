@@ -205,9 +205,17 @@ class BLAST(object):
             for hsp in alignment.hsps:
                 if hsp.expect < self.e_value:
                     obj = {}
-                    obj['sequence'] = alignment.title
-                    obj['length'] = alignment.length
+                    obj['description'] = alignment.title.split(' ')[1]
+                    obj['score'] = hsp.score
+                    obj['bits'] = hsp.bits
                     obj['e_value'] = hsp.expect
+
+                    obj['query_length'] = blast_record.query_length
+                    obj['alignment_length'] = alignment.length
+                    obj['identities'] = hsp.identities
+
+                    obj['query_cover'] = round((obj['alignment_length'] * 100) / obj['query_length'], 1)
+                    obj['ident'] = round((obj['identities'] * 100) / obj['alignment_length'], 1)
                     append(obj)
         return hits
 
