@@ -38,7 +38,7 @@ class ParseXML(object):
         self.table_vouchers_items = None
         self.table_flickr_images_items = []
         self.list_of_voucher_codes = []
-        self.verbosity = verbosity
+        self.verbosity = int(verbosity)
 
     def parse_table_genes(self, xml_string):
         our_data = False
