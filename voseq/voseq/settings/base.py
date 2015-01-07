@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     # my apps
     'public_interface',
     'blast_local',
+    'blast_local_full',
 )
 
 MIDDLEWARE_CLASSES = (
