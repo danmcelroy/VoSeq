@@ -206,6 +206,8 @@ class BLAST(object):
                 if hsp.expect < self.e_value:
                     obj = {}
                     obj['description'] = alignment.title.split(' ')[1]
+                    obj['voucher_code'] = obj['description'].split('|')[0]
+                    obj['gene_code'] = obj['description'].split('|')[1]
                     obj['score'] = hsp.score
                     obj['bits'] = hsp.bits
                     obj['e_value'] = hsp.expect
