@@ -18,7 +18,7 @@
    classification for Gelechioidea (Lepidoptera). *Cladistics*, 30(6), 563–589.
    [doi: 10.1111/cla.12064](http://dx.doi.org/10.1111/cla.12064)
 
-1. Hoyt, C. A. (**2014**). The Spotless Comma (Polygonia haroldii): a new species 
+1. Hoyt, C. A. (**2014**). The Spotless Comma (*Polygonia haroldii*): a new species 
    for the United States.  *News of the Lepidopterists' Society*, 56(1): 14-15, 33.
    
 1. Kaila, L., Epstein, M. E., Heikkilä, M., & Mutanen, M. (**2013**). The
