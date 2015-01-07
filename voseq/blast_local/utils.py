@@ -190,11 +190,11 @@ class BLAST(object):
                     obj['e_value'] = hsp.expect
 
                     obj['query_length'] = blast_record.query_length
-                    obj['alignment_length'] = alignment.length
+                    obj['align_length'] = hsp.align_length
                     obj['identities'] = hsp.identities
 
-                    obj['query_cover'] = round((obj['alignment_length'] * 100) / obj['query_length'], 1)
-                    obj['ident'] = round((obj['identities'] * 100) / obj['alignment_length'], 1)
+                    obj['query_cover'] = round((obj['align_length'] * 100) / obj['query_length'], 1)
+                    obj['ident'] = round((obj['identities'] * 100) / obj['align_length'], 1)
                     append(obj)
         return hits
 
