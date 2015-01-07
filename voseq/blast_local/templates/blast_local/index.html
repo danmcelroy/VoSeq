@@ -22,7 +22,10 @@
       </tr>
     {% for item in result %}
       <tr>
-        <td>{{ item.description }}</td>
+        <td>
+          <a href="/p/{{ item.voucher_code }}">{{ item.voucher_code }}</a>
+          <a href="/s/{{ item.voucher_code }}/{{ item.gene_code }}">{{ item.gene_code }}</a>
+        </td>
         <td>{{ item.ident }}%</td>
         <td>{{ item.query_cover }}%</td>
         <td>{{ item.score }}</td>
