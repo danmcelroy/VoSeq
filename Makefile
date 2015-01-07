@@ -13,9 +13,9 @@ index:
 
 coverage:
 	rm -rf htmlcov .coverage
-	coverage run --source voseq voseq/manage.py test -v 2 public_interface blast_local --settings=voseq.settings.base
+	coverage run --source voseq voseq/manage.py test -v 2 public_interface blast_local blast_local_full --settings=voseq.settings.base
 	coverage report -m
 	coverage html
 
 test:
-	coverage run --source voseq voseq/manage.py test -v 2 public_interface blast_local --settings=voseq.settings.base
+	coverage run --source voseq voseq/manage.py test -v 2 public_interface blast_local blast_local_full --settings=voseq.settings.base
