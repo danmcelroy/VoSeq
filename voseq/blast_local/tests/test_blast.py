@@ -21,7 +21,7 @@ class BlastLocalTest(TestCase):
         blast_type = 'local'
         voucher_code = 'CP100-10'
         gene_code = 'COI'
-        self.blast = BLAST(blast_type, voucher_code, gene_code, test=True)
+        self.blast = BLAST(blast_type, voucher_code, gene_code)
         self.seq_file = ''
 
     def remove_blast_data_files(self):
@@ -64,7 +64,7 @@ class BlastLocalTest(TestCase):
         blast_type = 'local'
         voucher_code = 'CP100-10'
         gene_code = 'COI'
-        blast = BLAST(blast_type, voucher_code, gene_code, test=True, mask=True)
+        blast = BLAST(blast_type, voucher_code, gene_code, mask=True)
         blast.save_seqs_to_file()
         blast.create_blast_db()
         files = glob.glob(
@@ -81,7 +81,7 @@ class BlastLocalTest(TestCase):
         blast_type = 'local'
         voucher_code = 'CP100-10'
         gene_code = 'COI'
-        blast = BLAST(blast_type, voucher_code, gene_code, test=True, mask=False)
+        blast = BLAST(blast_type, voucher_code, gene_code, mask=False)
         blast.save_seqs_to_file()
         blast.create_blast_db()
         files = glob.glob(
