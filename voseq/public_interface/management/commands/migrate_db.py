@@ -17,9 +17,6 @@ class Command(BaseCommand):
                          'This file can be obtained from your MySQL database using this command:'
                          '\t"mysqdump --xml database > dump.xml"',
                     ),
-        make_option('--verbose',
-                    dest='verbosity',
-                    ),
     )
 
     def handle(self, *args, **options):
@@ -31,10 +28,6 @@ class Command(BaseCommand):
 
         dump_file = options['dumpfile']
         verbosity = options['verbosity']
-
-        if verbosity != 0:
-            print(args)
-            print(options)
 
         with codecs.open(dump_file, "r") as handle:
             dump = handle.read()
