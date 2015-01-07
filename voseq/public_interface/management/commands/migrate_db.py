@@ -17,7 +17,7 @@ class Command(BaseCommand):
                          'This file can be obtained from your MySQL database using this command:'
                          '\t"mysqdump --xml database > dump.xml"',
                     ),
-        make_option('--verbosity',
+        make_option('--verbose',
                     dest='verbosity',
                     ),
     )
