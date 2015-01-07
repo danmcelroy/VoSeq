@@ -25,7 +25,7 @@ class BLAST(object):
 
     Use `mask=False` to create unmasked blast databases.
     """
-    def __init__(self, blast_type, voucher_code, gene_code, mask=None, test=None):
+    def __init__(self, blast_type, voucher_code, gene_code, mask=None):
         """
         Type of blast to do: local, full, remote
 
@@ -38,51 +38,28 @@ class BLAST(object):
         self.voucher_code = voucher_code
         self.gene_code = gene_code
         self.cwd = os.path.dirname(__file__)
-        self.test = test
 
         if mask is not False:
             self.mask = True
         else:
             self.mask = False
 
-        if self.test is True:
-            self.path = os.path.join(self.cwd,
-                                     'db',
-                                     self.gene_code + '_seqs.fas.n*',
-                                     )
-            self.db = os.path.join(self.cwd,
-                                   'db',
-                                   self.gene_code + '_seqs.fas',
-                                   )
-            self.query_file = os.path.join(self.cwd,
-                                           'db',
-                                           'query_' + uuid.uuid4().hex + '.fas',
-                                           )
-            self.output_file = os.path.join(self.cwd,
-                                            'db',
-                                            'output_' + uuid.uuid4().hex + '.xml',
-                                            )
-        else:
-            self.path = os.path.join(self.cwd,
-                                     'blast_local',
-                                     'db',
-                                     self.gene_code + '_seqs.fas.n*',
-                                     )
-            self.db = os.path.join(self.cwd,
-                                   'blast_local',
-                                   'db',
-                                   self.gene_code + '_seqs.fas',
-                                   )
-            self.query_file = os.path.join(self.cwd,
-                                           'blast_local',
-                                           'db',
-                                           'query_' + uuid.uuid4().hex + '.fas',
-                                           )
-            self.output_file = os.path.join(self.cwd,
-                                            'blast_local',
-                                            'db',
-                                            'output_' + uuid.uuid4().hex + '.xml',
-                                            )
+        self.path = os.path.join(self.cwd,
+                                 'db',
+                                 self.gene_code + '_seqs.fas.n*',
+                                 )
+        self.db = os.path.join(self.cwd,
+                               'db',
+                               self.gene_code + '_seqs.fas',
+                               )
+        self.query_file = os.path.join(self.cwd,
+                                       'db',
+                                       'query_' + uuid.uuid4().hex + '.fas',
+                                       )
+        self.output_file = os.path.join(self.cwd,
+                                        'db',
+                                        'output_' + uuid.uuid4().hex + '.xml',
+                                        )
 
     def have_blast_db(self):
         """
