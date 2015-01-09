@@ -3,6 +3,7 @@
 1. Bukontaite, R., Miller, K. B., & Bergsten, J. (**2014**). The utility of 
    CAD in recovering Gondwanan vicariance events and the evolutionary history of 
    Aciliini (Coleoptera: Dytiscidae). *BMC Evolutionary Biology*, 14(1), 5.
+   [doi: 10.1186/1471-2148-14-5](http://dx.doi.org/10.1186/1471-2148-14-5)
    
 1. Cally S, Solbès P, Grosso B, Murienne J (**2014**) An occurence records 
    database of French Guiana harvestmen (Arachnida, Opiliones). *Biodiversity 
