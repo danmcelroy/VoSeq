@@ -136,6 +136,7 @@ class BLAST(object):
 
         :return:
         """
+        print("Creating blast db")
         if self.mask is True:
             command = 'dustmasker -in ' + self.seq_file + ' -infmt fasta '
             command += '-outfmt maskinfo_asn1_bin -out ' + self.seq_file + '_dust.asnb'
@@ -144,12 +145,10 @@ class BLAST(object):
             command = 'makeblastdb -in ' + self.seq_file + ' -input_type fasta -dbtype nucl '
             command += '-mask_data ' + self.seq_file + '_dust.asnb '
             command += '-out ' + self.seq_file + ' -title "Whole Genome without low-complexity regions"'
-            print("creating database...")
             subprocess.check_output(command, shell=True)  # Overwriting the genome file.
         else:
             command = 'makeblastdb -in ' + self.seq_file + ' -input_type fasta -dbtype nucl '
             command += '-out ' + self.seq_file + ' -title "Whole Genome unmasked"'
-            print("creating database...")
             subprocess.check_output(command, shell=True)
 
     def save_query_to_file(self):

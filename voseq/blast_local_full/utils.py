@@ -40,7 +40,7 @@ class BLASTFull(BLAST):
 
         self.path = os.path.join(self.cwd,
                                  'db',
-                                 self.gene_code + '_seqs.fas.n*',
+                                 'full_db_seqs.fas.n*',
                                  )
         self.db = os.path.join(self.cwd,
                                'db',
