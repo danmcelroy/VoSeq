@@ -1,6 +1,6 @@
+import datetime
 import glob
 import os
-import time
 
 from django.core.management import call_command
 from django.test import TestCase
@@ -101,24 +101,18 @@ class BlastLocalTest(TestCase):
         self.assertTrue(result)
         self.remove_blast_data_files()
 
-    """
     def test_is_blast_db_up_to_date_false(self):
         self.blast.save_seqs_to_file()
         self.blast.create_blast_db()
 
-        time.sleep(5)
         b = Vouchers.objects.get(code='CP100-10')
-        c = Sequences.objects.get(code=b, gene_code='COI')
-        print(">>>>c.time_edited", c.time_edited)
 
+        tomorrow = datetime.datetime.now() + datetime.timedelta(days=1)
         Sequences.objects.filter(code=b, gene_code='COI').update(
-            notes="a random update for this record."
+            time_edited=tomorrow
         )
-        c = Sequences.objects.get(code=b, gene_code='COI')
-        print(">>>>c.time_edited", c.time_edited)
         result = self.blast.is_blast_db_up_to_date()
         self.assertFalse(result)
-    """
 
     def test_do_blast(self):
         self.blast.save_seqs_to_file()
