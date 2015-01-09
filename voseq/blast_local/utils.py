@@ -197,6 +197,13 @@ class BLAST(object):
                     append(obj)
         return hits
 
+    def delete_query_output_files(self):
+        if os.path.isfile(self.query_file):
+            os.remove(self.query_file)
+
+        if os.path.isfile(self.output_file):
+            os.remove(self.output_file)
+
     def strip_question_marks(self, seq):
         seq = re.sub('^\?+', '', seq)
         seq = re.sub('\?+$', '', seq)
