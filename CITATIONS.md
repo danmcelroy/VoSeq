@@ -42,11 +42,12 @@
 2. Malm, T., Johanson, K. A., & Wahlberg, N. (**2013**). The evolutionary 
    history of Trichoptera (Insecta): A case of successful adaptation to life in 
    freshwater. *Systematic Entomology*, 38(3), 459-473. 
-   [doi: 10.1016/j.ympev.2012.09.005](http://dx.doi.org/10.1016/j.ympev.2012
-   .09.005)
+   [doi: 10.1016/j.ympev.2012.09.005](http://dx.doi.org/10.1016/j.ympev.2012.09.005)
    
-3. Malm, T., & Nyman, T. (**2014**). Phylogeny of the symphytan grade of 
-   Hymenoptera: new pieces into the old jigsaw (fly) puzzle. *Cladistics*. 
+3. Malm, T., & Nyman, T. (**2015**). Phylogeny of the symphytan grade of 
+   Hymenoptera: new pieces into the old jigsaw (fly) puzzle. *Cladistics*,
+   31(1), 1–17.
+   [doi: 10.1111/cla.12069](http://dx.doi.org/10.1111/cla.12069)
    
 3. Matos-Maraví, P., Águila, R. N., Peña, C., Miller, J. Y., Sourakov, A., 
    & Wahlberg, N. (**2014**). Causes of endemic radiation in the Caribbean: 
