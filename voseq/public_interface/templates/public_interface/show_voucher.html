@@ -143,59 +143,67 @@
           <table class="table table-condensed table-striped">
             <tr>
               <td><b>Code in VoSeq:</b></td>
+              <td><b>Voucher locality:</b></td>
               <td><b>Collector:</b></td>
-              <td><b>Collection date:</b></td>
             </tr>
             <tr>
               <td>{{ voucher.code }}</td>
-              <td>{{ voucher.collector }}</td>
-              <td>{{ voucher.dateCollection }}</td>
-            </tr>
-            <tr>
-              <td><b>Voucher locality:</b></td>
-              <td><b>Voucher status:</b></td>
-              <td><b>Sex:</b></td>
-            </tr>
-            <tr>
               <td>{{ voucher.voucherLocality }}</td>
+              <td>{{ voucher.collector }}</td>
+            </tr>
+            <tr>
+              <td><b>Code in BOLD:</b></td>
+              <td><b>Voucher status:</b></td>
+              <td><b>Collection date:</b></td>
+            </tr>
+            <tr>
+              <td>
+                {% if voucher.code_bold %}
+                  <a href="http://boldsystems.org/index.php/Public_RecordView?processid={{ voucher.code_bold }}">{{ voucher.code_bold }}</a>
+                {% endif %}
+              </td>
+
               {% if voucher.voucher == 's' %}
-                <td>Spread</td>
+              <td>Spread</td>
               {% elif voucher.voucher == 'e' %}
-                <td>In envelope</td>
+              <td>In envelope</td>
               {% elif voucher.voucher == 'p' %}
-                <td>Only photo</td>
+              <td>Only photo</td>
               {% elif voucher.voucher == 'n' %}
-                <td>No voucher</td>
+              <td>No voucher</td>
               {% elif voucher.voucher == 'd' %}
-                <td>Destroyed</td>
+              <td>Destroyed</td>
               {% elif voucher.voucher == 'l' %}
-                <td>Lost</td>
+              <td>Lost</td>
               {% else %}
-                <td></td>
+              <td></td>
               {% endif %}
 
-              {% if voucher.sex == 'm' %}
-                <td>Male</td>
-              {% elif voucher.sex == 'f' %}
-                <td>Female</td>
-              {% elif voucher.sex == 'l' %}
-                <td>Larva</td>
-              {% elif voucher.sex == 'w' %}
-                <td>Worker</td>
-              {% elif voucher.sex == 'q' %}
-                <td>Queen</td>
-              {% else %}
-                <td></td>
-              {% endif %}
+              <td>{{ voucher.dateCollection }}</td>
             </tr>
             <tr>
               <td><b>Alternative voucher code:</b></td>
               <td><b>Determined by:</b></td>
-              <td></td>
+              <td><b>Sex:</b></td>
             </tr>
             <tr>
               <td>{{ voucher.voucherCode }}</td>
               <td>{{ voucher.determinedBy }}</td>
+
+              {% if voucher.sex == 'm' %}
+              <td>Male</td>
+              {% elif voucher.sex == 'f' %}
+              <td>Female</td>
+              {% elif voucher.sex == 'l' %}
+              <td>Larva</td>
+              {% elif voucher.sex == 'w' %}
+              <td>Worker</td>
+              {% elif voucher.sex == 'q' %}
+              <td>Queen</td>
+              {% else %}
+              <td></td>
+              {% endif %}
+
             </tr>
           </table>
         </div><!-- panel -->
