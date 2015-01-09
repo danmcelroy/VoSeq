@@ -1,4 +1,4 @@
-serve:
+serve: index
 	cd voseq; python manage.py runserver --settings=voseq.settings.local
 
 migrations:
