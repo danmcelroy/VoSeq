@@ -67,7 +67,7 @@ class BLAST(object):
 
         :return: True or False
         """
-        files = glob.glob(self.path)
+        files = glob.glob(self.db + '.*')
         if len(files) > 0:
             return True
         else:
