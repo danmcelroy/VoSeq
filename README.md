@@ -122,7 +122,7 @@ make import
  sudo service elasticsearch start
  ```
  
- In MacOSX:
+ In macOSX if you do not have the `service` command, run elasticsearch in the background with:
  
  ```shell
  elasticsearch -d
