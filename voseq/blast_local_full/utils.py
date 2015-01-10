@@ -1,16 +1,9 @@
-import datetime
-import glob
 import os
-import re
-import subprocess
 import uuid
 
 from Bio import SeqIO
-from Bio.Blast.Applications import NcbiblastnCommandline
-from Bio.Blast import NCBIXML
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
-import pytz
 
 from blast_local.utils import BLAST
 from public_interface.models import Sequences
