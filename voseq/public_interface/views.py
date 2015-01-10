@@ -11,7 +11,10 @@ from stats.models import Stats
 
 
 VERSION = settings.VERSION
-STATS = Stats.objects.get(pk=1)
+try:
+    STATS = Stats.objects.get(pk=1)
+except Stats.DoesNotExist:
+    STATS = ''
 
 
 def index(request):
