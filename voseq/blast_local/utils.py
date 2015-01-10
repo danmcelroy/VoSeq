@@ -181,9 +181,21 @@ class BLAST(object):
             for hsp in alignment.hsps:
                 if hsp.expect < self.e_value:
                     obj = {}
+
+                    # This is for our local blasts
                     obj['description'] = alignment.title.split(' ')[1]
-                    obj['voucher_code'] = obj['description'].split('|')[0]
-                    obj['gene_code'] = obj['description'].split('|')[1]
+                    if '|' in obj['description']:
+                        obj['voucher_code'] = obj['description'].split('|')[0]
+                        obj['gene_code'] = obj['description'].split('|')[1]
+                    # This is for the NCBI blasts that need parsing of alignment.title
+                    else:
+                        description = alignment.title
+                        res = re.search('gi\|.+\|.+\|([A-Z]+[0-9]+)\.[0-9]+\|\s*(.+)', description)
+                        if res:
+                            obj['accession'], obj['description'] = res.groups()
+                        else:
+                            obj['description'] = alignment.title
+
                     obj['score'] = hsp.score
                     obj['bits'] = hsp.bits
                     obj['e_value'] = hsp.expect
