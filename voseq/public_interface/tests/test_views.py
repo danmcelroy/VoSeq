@@ -10,7 +10,6 @@ import haystack
 from public_interface.models import Vouchers
 from public_interface.models import FlickrImages
 from public_interface.models import Sequences
-from public_interface import views
 
 
 # Need to use a clean index for our tests
