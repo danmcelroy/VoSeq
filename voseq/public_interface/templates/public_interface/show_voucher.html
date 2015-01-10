@@ -296,7 +296,9 @@
                 &nbsp;&nbsp;
                 <a href="/blast_local_full/{{ voucher.code }}/{{ item.gene_code }}"><i class="fa fa-database"></i></a>
               </td>
-              <td class="text-center"><i class="fa fa-bomb"></i></td>
+              <td class="text-center">
+                <a href="/blast_ncbi/{{ voucher.code }}/{{ item.gene_code }}"><i class="fa fa-bomb"></i></a>
+              </td>
             </tr>
             {% endfor %}
           </table>

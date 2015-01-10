@@ -3,6 +3,12 @@
 ## 2.0.0 (2015-01-xx)
 * rewrite project in Python using Django, PostgreSQL and elasticsearch.
 
+### Progress
+* Browse page.
+* Voucher page.
+* Sequences page.
+* Local BLAST and against NCBI Genbank.
+
 ## Version 1.7.X
 
 * 2014-11-13 Carlos Peña

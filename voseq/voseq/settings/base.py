@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'public_interface',
     'blast_local',
     'blast_local_full',
+    'blast_ncbi',
 )
 
 MIDDLEWARE_CLASSES = (
