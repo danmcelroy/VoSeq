@@ -28,7 +28,7 @@ You need to install some Python packages as dependencies:
 cd /path/to/VoSeq
 pip install -r requirements/dev.txt
 ```
-
+ 
 Download and install PostgreSQL. For macOSX users we recommend to do it by downloading the Postgres.app from http://postgresapp.com
 
 Download and install `elasticsearch` from here: http://www.elasticsearch.org/overview/elkdownloads/
