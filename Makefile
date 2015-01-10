@@ -1,4 +1,4 @@
-serve: index
+serve: index stats
 	cd voseq; python manage.py runserver --settings=voseq.settings.local
 
 migrations:
@@ -10,6 +10,9 @@ import:
 
 index:
 	cd voseq; python manage.py rebuild_index --settings=voseq.settings.local
+
+stats:
+	cd voseq; python manage.py create_stats --settings=voseq.settings.local
 
 coverage:
 	rm -rf htmlcov .coverage

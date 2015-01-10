@@ -6,8 +6,10 @@ from stats.models import Stats
 
 
 VERSION = settings.VERSION
-STATS = Stats.objects.get(pk=1)
-print("AAA", STATS)
+try:
+    STATS = Stats.objects.get(pk=1)
+except Stats.DoesNotExist:
+    STATS = ''
 
 
 def index(request, voucher_code, gene_code):
