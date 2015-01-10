@@ -15,31 +15,25 @@ More details about the migration can be found in our [discussion list](https://g
 VoSeq 2.0.0 is the future!
 
 # Configuration
-You need to install the dependencies:
+ 
+Clone/download Voseq to your prefer directory.
+
+You need to install some Python packages as dependencies:
 
 ```shell
+cd /path/to/VoSeq
 pip install -r requirements/dev.txt
 ```
+ 
+Download and install Postgresql. For macOSX users we recommend to do it by downloading the Postgres.app from http://postgresapp.com
 
 Download and install `elasticsearch` from here: http://www.elasticsearch.org/overview/elkdownloads/
-You can install the `.deb` file. Start the service with the following command:
+You can install the `.deb` file. The bin directory of elasticsearch should be added to your PATH, so add the following line to your .profile (Linux) or .bash_profile (macOSX) file:
 
 ```shell
-sudo service elasticsearch start
+export PATH="$PATH:/path/to/elasticsearch/bin/"
 ```
-
-Create a `config.json` file to keep the database variables:
-```javascript
-{
-    "SECRET_KEY": "create_a_secret_key",
-    "DB_USER": "postgres",
-    "DB_PASS": "database_password",
-    "DB_NAME": "voseq",
-    "DB_PORT": "5432",
-    "DB_HOST": "localhost",
-    "GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key"
-}
-```
+ 
 
 Create a PostgreSQL database:
 
@@ -48,11 +42,32 @@ sudo su postgres
 psql
 postgres=# create database voseq;
 ```
+ 
+ In macOSX if you are using the Postgres.app, it my be enough to run:
+ 
+ ```shell
+ psql
+ user.name=# CREATE DATABASE voseq;
+ ```
+ 
+Create a `config.json` file to keep the database variables:
+```javascript
+ {
+ "SECRET_KEY": "create_a_secret_key",
+ "DB_USER": "user.name", // e.g., postgres or user.name
+ "DB_PASS": "create_a_database_password",
+ "DB_NAME": "voseq",
+ "DB_PORT": "5432",
+ "DB_HOST": "localhost",
+ "GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key"
+ }
+```
 
 # Migrate VoSeq database
-You need to dump your MySQL database into a XML file:
+If you have a previous version of Voseq as server and want to migrate, you need to dump your MySQL database into a XML file:
 
 ```shell
+cd /path/to/Voseq/
 mysqldump --xml voseq_database > dump.xml
 ```
 
@@ -81,30 +96,15 @@ Create an index for all the data in your database:
 make index
 ```
 
-Start the development server:
-
-```shell
-make serve
-```
-
-Open this URL in your web browser and you are ready to start using VoSeq:
-`http://127.0.0.1:8000/`
-
 # Test database for development
 You can use test data to populate your PostgreSQL database, useful for 
 development.
 
-Create a PostgreSQL database:
-
-```shell
-sudo su postgres
-psql
-postgres=# create database voseq;
-```
 
 Create tables for the database:
 
 ```shell
+cd /path/to/Voseq/
 make migrations
 ```
 
@@ -114,9 +114,27 @@ Import test data for your database:
 make import
 ```
 
-Start the server:
+# Start the server
+ 
+ In Linux start elasticsearch as a service with the following command:
+ 
+ ```shell
+ sudo service elasticsearch start
+ ```
+ 
+ In MacOSX:
+ 
+ ```shell
+ elasticsearch start
+ ```
+
+ Then start the server in another shell:
+ 
 ```shell
+cd /path/to/Voseq
 make serve
 ```
 
-And point your web browser to:  `http://127.0.0.1:8000/`
+Open this URL in your web browser and you are ready to start using VoSeq:  `http://127.0.0.1:8000/`
+
+
