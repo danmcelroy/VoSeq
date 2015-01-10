@@ -1,5 +1,3 @@
-import itertools
-
 from django.http import Http404
 from django.shortcuts import render
 from django.conf import settings
@@ -9,9 +7,11 @@ from .models import FlickrImages
 from .models import Sequences
 from .models import Primers
 from .forms import AdvancedSearchForm
+from stats.models import Stats
 
 
 VERSION = settings.VERSION
+STATS = Stats.objects.get(pk=1)
 
 
 def index(request):
@@ -19,6 +19,7 @@ def index(request):
                   'public_interface/index.html',
                   {
                       'version': VERSION,
+                      'stats': STATS,
                   },
                   )
 
@@ -38,6 +39,7 @@ def browse(request):
                       'results': queryset,
                       'vouchers_with_images': vouchers_with_images,
                       'version': VERSION,
+                      'stats': STATS,
                   },
                   )
 
@@ -54,6 +56,7 @@ def search(request):
                                   'form': form,
                                   'results': results,
                                   'version': VERSION,
+                                  'stats': STATS,
                               })
             else:
                 return render(request, 'public_interface/search.html',
@@ -61,6 +64,7 @@ def search(request):
                                   'form': form,
                                   'results': 'No results',
                                   'version': VERSION,
+                                  'stats': STATS,
                               })
     else:
         form = AdvancedSearchForm()
@@ -69,6 +73,7 @@ def search(request):
                   {
                       'form': form,
                       'version': VERSION,
+                      'stats': STATS,
                   })
 
 
@@ -94,6 +99,7 @@ def show_voucher(request, voucher_code):
                    'sequences': seqs_queryset,
                    'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
                    'version': VERSION,
+                   'stats': STATS,
                    },
                   )
 
@@ -115,4 +121,5 @@ def show_sequence(request, voucher_code, gene_code):
                       'images': images_queryset,
                       'primers': primers_queryset,
                       'version': VERSION,
+                      'stats': STATS,
                   },)

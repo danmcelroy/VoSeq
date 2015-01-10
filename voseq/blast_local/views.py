@@ -1,6 +1,13 @@
+from django.conf import settings
 from django.shortcuts import render
 
 from .utils import BLAST
+from stats.models import Stats
+
+
+VERSION = settings.VERSION
+STATS = Stats.objects.get(pk=1)
+print("AAA", STATS)
 
 
 def index(request, voucher_code, gene_code):
@@ -15,4 +22,9 @@ def index(request, voucher_code, gene_code):
     result = blast.parse_blast_output()
     blast.delete_query_output_files()
     return render(request, 'blast_local/index.html',
-                  {'result': result})
+                  {
+                      'result': result,
+                      'version': VERSION,
+                      'stats': STATS,
+                  },
+                  )
