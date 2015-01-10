@@ -1,6 +1,15 @@
 from django.shortcuts import render
+from django.conf import settings
 
 from .utils import BLASTNcbi
+from stats.models import Stats
+
+
+VERSION = settings.VERSION
+try:
+    STATS = Stats.objects.get(pk=1)
+except Stats.DoesNotExist:
+    STATS = ''
 
 
 def index(request, voucher_code, gene_code):
@@ -11,4 +20,9 @@ def index(request, voucher_code, gene_code):
     result = blast.parse_blast_output()
     blast.delete_query_output_files()
     return render(request, 'blast_local/index.html',
-                  {'result': result})
+                  {
+                      'result': result,
+                      'version': VERSION,
+                      'stats': STATS,
+                  }
+    )
