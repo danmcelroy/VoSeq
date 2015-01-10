@@ -125,7 +125,7 @@ make import
  In MacOSX:
  
  ```shell
- elasticsearch start
+ elasticsearch -d
  ```
 
  Then start the server in another shell:
