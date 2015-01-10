@@ -25,7 +25,7 @@ cd /path/to/VoSeq
 pip install -r requirements/dev.txt
 ```
  
-Download and install Postgresql. For macOSX users we recommend to do it by downloading the Postgres.app from http://postgresapp.com
+Download and install PostgreSQL. For macOSX users we recommend to do it by downloading the Postgres.app from http://postgresapp.com
 
 Download and install `elasticsearch` from here: http://www.elasticsearch.org/overview/elkdownloads/
 You can install the `.deb` file. The bin directory of elasticsearch should be added to your PATH, so add the following line to your .profile (Linux) or .bash_profile (macOSX) file:
