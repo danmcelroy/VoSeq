@@ -55,7 +55,7 @@ Create a `config.json` file to keep the database variables:
 ```javascript
  {
  "SECRET_KEY": "create_a_secret_key",
- "DB_USER": "user.name",
+ "DB_USER": "role_name",
  "DB_PASS": "create_a_database_password",
  "DB_NAME": "voseq",
  "DB_PORT": "5432",
