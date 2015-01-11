@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'blast_local',
     'blast_local_full',
     'blast_ncbi',
+    'blast_new',
     'stats',
 )
 
