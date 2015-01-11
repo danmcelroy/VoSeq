@@ -132,7 +132,7 @@ make import
  cd /path/to/Voseq
  make serve
  ```
-\* *Note that if you did not check to Start Postgres automatically after login, you first have to go to Applications and start it manually from there by clicking on the app.*
+\* *Note that if you did not check to Start Postgres automatically after login, you first have to go to Applications and start it manually from there by clicking on the Postgres.app*
 
 
 Finally, open this URL in your web browser and you are ready to start using VoSeq:  `http://127.0.0.1:8000/`
