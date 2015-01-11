@@ -21,3 +21,7 @@ class TestNcbiBlast(TestCase):
         result = self.blast.parse_blast_output()
         self.blast.delete_query_output_files()
         self.assertTrue(len(result) > 0)
+
+    def test_index(self):
+        response = self.client.get('/blast_ncbi/CP100-10/COI/')
+        self.assertEqual(200, response.status_code)
