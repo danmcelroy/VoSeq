@@ -5,14 +5,13 @@ from .utils import BLASTNcbi
 from stats.models import Stats
 
 
-VERSION = settings.VERSION
-try:
-    STATS = Stats.objects.get(pk=1)
-except Stats.DoesNotExist:
-    STATS = ''
-
-
 def index(request, voucher_code, gene_code):
+    VERSION = settings.VERSION
+    try:
+        STATS = Stats.objects.get(pk=1)
+    except Stats.DoesNotExist:
+        STATS = ''
+
     blast = BLASTNcbi(voucher_code, gene_code)
     blast.save_query_to_file()
 
@@ -24,5 +23,5 @@ def index(request, voucher_code, gene_code):
                       'result': result,
                       'version': VERSION,
                       'stats': STATS,
-                  }
-    )
+                  },
+                  )
