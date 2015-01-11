@@ -28,7 +28,7 @@ pip install -r requirements/dev.txt
 Download and install PostgreSQL. For macOSX users we recommend to do it by downloading the Postgres.app from http://postgresapp.com
 
 Download and install `elasticsearch` from here: http://www.elasticsearch.org/overview/elkdownloads/
-(In Linux, you can install the `.deb` file directly by running: ```shell apt-get install elasticsearch```). The bin directory of elasticsearch should be added automatically to your PATH. If not, add the following line to your `.profile` (Linux) or `.bash_profile` (macOSX) file:
+(In Linux, you can install the `.deb` file directly by running: ```~$ apt-get install elasticsearch```). The bin directory of elasticsearch should be added automatically to your PATH. If not, add the following line to your `.profile` (Linux) or `.bash_profile` (macOSX) file:
 
 ```shell
 export PATH="$PATH:/path/to/elasticsearch/bin/"
