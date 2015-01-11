@@ -120,21 +120,18 @@ make import
  
  ```shell
  sudo service elasticsearch start
+ cd /path/to/Voseq
+ make serve
  ```
  
- In macOSX if you do not have the `service` command, run elasticsearch in the background with:
+ In macOSX if you do not have the `service` command, run elasticsearch in the background and then start the server:
  
  ```shell
  elasticsearch -d
+ cd /path/to/Voseq
+ make serve
  ```
+Note that if you did not check to Start Postgres automatically after login, you first have to go to Applications and start it manually from there by clicking on the app.
 
- Then start the server in another shell:
- 
-```shell
-cd /path/to/Voseq
-make serve
-```
-
-Open this URL in your web browser and you are ready to start using VoSeq:  `http://127.0.0.1:8000/`
-
+Finally, open this URL in your web browser and you are ready to start using VoSeq:  `http://127.0.0.1:8000/`
 
