@@ -125,7 +125,7 @@ make import
  make serve
  ```
  
- In macOSX if you do not have the `service` command, run elasticsearch in the background and then start the server:
+ In macOSX if you do not have the `service` command, run elasticsearch in the background and then start the server (\*):
  
  ```shell
  elasticsearch -d
