@@ -568,7 +568,7 @@
         </row>
         <row>
             <field name="code">CP100-14</field>
-            <field name="orden"> </field>
+            <field name="orden">Hymenoptera</field>
             <field name="family">Nymphalidae</field>
             <field name="subfamily">NULL</field>
             <field name="tribe">Melitaeini</field>

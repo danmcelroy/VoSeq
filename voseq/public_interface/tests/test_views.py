@@ -26,26 +26,10 @@ TEST_INDEX = {
 @override_settings(HAYSTACK_CONNECTIONS=TEST_INDEX)
 class TestViews(TestCase):
     def setUp(self):
-        json_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public_interface", "vouchers.json")
-        json_file_seqs = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public_interface", "NN1-1_seqs.json")
-        with open(json_file_seqs, "r") as handle:
-            seqs = json.loads(handle.read())
-
-        with open(json_file, "r") as handle:
-            items = json.loads(handle.read())
-
-            for item in items:
-                item['max_altitude'] = None
-                item['min_altitude'] = None
-                b = Vouchers.objects.create(**item)
-                b.save()
-
-                f = FlickrImages.objects.create(voucher=b)
-                f.save()
-
-                s = Sequences.objects.create(code=b, gene_code=seqs['gene_code'],
-                                             sequences=seqs['sequences'])
-                s.save()
+        args = []
+        opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
+        cmd = 'migrate_db'
+        call_command(cmd, *args, **opts)
 
         # build index with our test data
         haystack.connections.reload('default')
@@ -63,7 +47,7 @@ class TestViews(TestCase):
         self.assertEqual(200, response.status_code)
 
     def test_show_voucher(self):
-        response = self.client.get('/p/NN1-1', follow=True)
+        response = self.client.get('/p/CP100-10', follow=True)
         self.assertEqual(200, response.status_code)
 
     def test_show_voucher_doesnt_exist(self):
@@ -71,7 +55,7 @@ class TestViews(TestCase):
         self.assertEqual(404, response.status_code)
 
     def test_show_sequence(self):
-        response = self.client.get('/s/NN1-1/EF1a/')
+        response = self.client.get('/s/CP100-10/COI/')
         self.assertEqual(200, response.status_code)
 
     def test_show_sequence_doesnt_exist(self):
@@ -81,11 +65,7 @@ class TestViews(TestCase):
     def test_search_hymenoptera(self):
         response = self.client.get('/search/?orden=Hymenoptera')
         content = str(response.content)
-        if 'NN1-2' in content and 'NN1-1' not in content:
-            found_item = True
-        else:
-            found_item = False
-        self.assertTrue(found_item)
+        self.assertTrue('CP100-14' in content)
 
     def test_search_returns_empty(self):
         """
@@ -93,11 +73,7 @@ class TestViews(TestCase):
         """
         response = self.client.get('/search/?orden=Coleoptera&code=NN1-1')
         content = str(response.content)
-        if 'NN1-2' in content and 'NN1-1' in content:
-            found_item = True
-        else:
-            found_item = False
-        self.assertFalse(found_item)
+        self.assertFalse('NN1-2' in content and 'NN1-1' in content)
 
     def test_advanced_search(self):
         response = self.client.get('/search/')
