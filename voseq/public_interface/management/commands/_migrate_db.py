@@ -429,8 +429,12 @@ class ParseXML(object):
             self.import_table_primers()
 
         for item in self.table_primers_items:
-            b = Sequences.objects.get(code=item['code'], gene_code=item['gene_code'])
-            item['for_sequence'] = b
+            try:
+                b = Sequences.objects.get(code=item['code'], gene_code=item['gene_code'])
+                item['for_sequence'] = b
+            except Sequences.DoesNotExist:
+                print("Could not save primers for sequence: %s %s" % (item['code'], item['gene_code']))
+                continue
 
             primers = item['primers']
             del item['primers']
@@ -486,7 +490,7 @@ class ParseXML(object):
             item = self.clean_value(item, 'publishedIn')
             item = self.clean_value(item, 'notes')
 
-            item = self.clean_value(item, 'extractionTube')
+            item = self.clean_value(item, 'extraction')
             item = self.clean_value(item, 'extractionTube')
             item = self.clean_value(item, 'extractor')
 
