@@ -1,4 +1,5 @@
 from django.core.management import call_command
+from django.core.management import CommandError
 from django.test import TestCase
 
 from public_interface.models import Vouchers
@@ -13,6 +14,12 @@ class TestCustomCommand(TestCase):
         opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
+
+    def test_no_input_file(self):
+        args = []
+        opts = {'verbosity': 0}
+        cmd = 'migrate_db'
+        self.assertRaises(CommandError, call_command, cmd, *args, **opts)
 
     def test_orden_none(self):
         b = Vouchers.objects.get(code='CP100-09')
