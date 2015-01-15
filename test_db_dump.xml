@@ -54,7 +54,7 @@
 		<field name="description">wingless (wgl)</field>
 		<field name="readingframe">2</field>
 		<field name="notes"></field>
-		<field name="timestamp">2013-04-23 18:38:49</field>
+		<field name="timestamp">2013-04-23</field>
 		<field name="genetic_code">1</field>
 		<field name="aligned">yes</field>
 		<field name="intron">101-103;125-127;131-133;146-148</field>
