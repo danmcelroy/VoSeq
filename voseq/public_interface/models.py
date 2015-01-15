@@ -2,11 +2,11 @@ from django.db import models
 
 
 class Genes(models.Model):
-    gene_code = models.CharField(max_length=255)
-    genetic_code = models.PositiveSmallIntegerField(blank=True)
-    length = models.PositiveSmallIntegerField()
+    gene_code = models.CharField(max_length=100)
+    genetic_code = models.PositiveSmallIntegerField(blank=True, null=True)
+    length = models.PositiveSmallIntegerField(blank=True, null=True)
     description = models.CharField(max_length=255, blank=True)
-    reading_frame = models.PositiveSmallIntegerField()
+    reading_frame = models.PositiveSmallIntegerField(blank=True, null=True)
     notes = models.TextField(blank=True)
     aligned = models.CharField(
         max_length=6, choices=(
@@ -26,7 +26,6 @@ class Genes(models.Model):
         default='notset',
     )
     gene_type = models.CharField(max_length=255, blank=True)
-
     time_created = models.DateTimeField(auto_now_add=True)
 
 
