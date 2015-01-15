@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'blast_local_full',
     'blast_ncbi',
     'stats',
+    'view_genes',
 )
 
 MIDDLEWARE_CLASSES = (
