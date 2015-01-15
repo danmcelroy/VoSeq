@@ -67,7 +67,8 @@ class BLASTFull(BLAST):
             for i in queryset:
                 id = i.code_id + '|' + i.gene_code
                 seq = self.strip_question_marks(i.sequences)
-                seq_record = SeqRecord(Seq(seq),
-                                       id=id)
-                my_records.append(seq_record)
+                if seq != '':
+                    seq_record = SeqRecord(Seq(seq),
+                                           id=id)
+                    my_records.append(seq_record)
             SeqIO.write(my_records, self.seq_file, "fasta")
