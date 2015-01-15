@@ -38,6 +38,7 @@ class BLAST(object):
         self.voucher_code = voucher_code
         self.gene_code = gene_code
         self.cwd = os.path.dirname(__file__)
+        self.seq_file = ""
 
         if mask is not False:
             self.mask = True
@@ -124,9 +125,10 @@ class BLAST(object):
             for i in queryset:
                 id = i.code_id + '|' + i.gene_code
                 seq = self.strip_question_marks(i.sequences)
-                seq_record = SeqRecord(Seq(seq),
-                                       id=id)
-                my_records.append(seq_record)
+                if seq != '':
+                    seq_record = SeqRecord(Seq(seq),
+                                           id=id)
+                    my_records.append(seq_record)
             SeqIO.write(my_records, self.seq_file, "fasta")
 
     def create_blast_db(self):
@@ -153,12 +155,13 @@ class BLAST(object):
 
     def save_query_to_file(self):
         b = Sequences.objects.get(code_id=self.voucher_code, gene_code=self.gene_code)
-        id = b.code_id + '|' + b.gene_code
+        this_id = b.code_id + '|' + b.gene_code
         seq = self.strip_question_marks(b.sequences)
 
-        seq_record = SeqRecord(Seq(seq),
-                               id=id)
-        SeqIO.write(seq_record, self.query_file, "fasta")
+        if seq != '':
+            seq_record = SeqRecord(Seq(seq),
+                                   id=this_id)
+            SeqIO.write(seq_record, self.query_file, "fasta")
 
     def do_blast(self):
         blastn_cline = NcbiblastnCommandline(query=self.query_file, db=self.db,
@@ -219,4 +222,11 @@ class BLAST(object):
     def strip_question_marks(self, seq):
         seq = re.sub('^\?+', '', seq)
         seq = re.sub('\?+$', '', seq)
-        return seq
+
+        seq = re.sub('^N+', '', seq)
+        seq = re.sub('N+$', '', seq)
+        if '?' in seq or 'N' in seq.upper():
+            # having ambiguous characters will mess up the creation of blast database
+            return ''
+        else:
+            return seq
