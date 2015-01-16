@@ -6,6 +6,7 @@ urlpatterns = patterns(
     url(r'^blast_local', include('blast_local.urls', namespace='blast_local')),
     url(r'^blast_local_full', include('blast_local_full.urls', namespace='blast_local_full')),
     url(r'^blast_ncbi', include('blast_ncbi.urls', namespace='blast_ncbi')),
+    url(r'^blast_new', include('blast_new.urls', namespace='blast_new')),
     url(r'^genes', include('view_genes.urls', namespace='view_genes')),
     url(r'^', include('public_interface.urls', namespace='public_interace')),
 

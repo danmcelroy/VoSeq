@@ -1,0 +1,99 @@
+{% extends 'public_interface/base.html' %}
+
+
+{% block content %}
+<div class="explorer-container">
+  <div class="container">
+    <h3>Enter query sequence for local blast:</h3>
+
+    <form action="/blast_new/results/" method="post">
+
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xs-12 col-sm-10  col-md-8 col-md-offset-1 col-lg-8 ">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title"><b>Enter name and sequence to blast, as well as gene code if you like</b></h3>
+            </div>
+
+            <table class="table table-condensed table-striped">
+              <tr>
+                <td><b>Name:</b></td>
+                <td>{{ item.gene_code }}</td>
+              </tr>
+
+              <tr>
+                <td><b>Sequence:</b></td>
+                <td>{{ item.description }}</td>
+              </tr>
+              <tr>
+                <td><b>Notes:</b></td>
+                <td colspan="5">{{ item.notes }}</td>
+              <tr>
+              <tr>
+                <td><b>Gene type:</b></td>
+                <td colspan="5">{{ item.gene_type }}</td>
+              <tr>
+            </table>
+          </div><!-- panel -->
+
+
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title"><b>Protein coding genes</b></h3>
+            </div>
+
+            <table class="table table-condensed table-striped">
+              <tr>
+                <td colspan="6" class="info"><b>This section is only applicable for protein
+                                 coding genes/alignments</b>
+                </td>
+              </tr>
+              <tr>
+                <td><b>Gene code:</b></td>
+                <td>{{ item.gene_code }}</td>
+                <td><b>Aligned or not?:</b></td>
+                <td>{{ item.aligned }}</td>
+                <td><b>Length (if aligned):</b></td>
+                <td>{{ item.length }} bp</td>
+              </tr>
+
+              <tr>
+                <td><b>Description:</b></td>
+                <td colspan="5">{{ item.description }}</td>
+              </tr>
+              <tr>
+                <td><b>Notes:</b></td>
+                <td colspan="5">{{ item.notes }}</td>
+              <tr>
+              <tr>
+                <td><b>Gene type:</b></td>
+                <td colspan="5">{{ item.gene_type }}</td>
+              <tr>
+            </table>
+          </div><!-- panel -->
+
+
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title"><b>Introns</b></h3>
+            </div>
+
+            <table class="table table-condensed table-striped">
+              <tr>
+                <td><b>Introns:</b></td>
+                <td>{{ item.intron|safe }}</td>
+              </tr>
+            </table>
+          </div><!-- panel -->
+        </div><!-- col -->
+
+      </div><!-- row -->
+    </div><!-- container -->
+
+    </form>
+
+  </div>
+</div>
+{% endblock content %}
