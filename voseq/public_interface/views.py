@@ -10,14 +10,13 @@ from .forms import AdvancedSearchForm
 from stats.models import Stats
 
 
-VERSION = settings.VERSION
-try:
-    STATS = Stats.objects.get(pk=1)
-except Stats.DoesNotExist:
-    STATS = ''
-
-
 def index(request):
+    VERSION = settings.VERSION
+    try:
+        STATS = Stats.objects.get(pk=1)
+    except Stats.DoesNotExist:
+        STATS = ''
+
     return render(request,
                   'public_interface/index.html',
                   {
@@ -28,6 +27,12 @@ def index(request):
 
 
 def browse(request):
+    VERSION = settings.VERSION
+    try:
+        STATS = Stats.objects.get(pk=1)
+    except Stats.DoesNotExist:
+        STATS = ''
+
     queryset = Vouchers.objects.order_by('-timestamp')[:10]
 
     # TODO improve this ugly hack. Use select_related or prefetch_related
@@ -48,6 +53,12 @@ def browse(request):
 
 
 def search(request):
+    VERSION = settings.VERSION
+    try:
+        STATS = Stats.objects.get(pk=1)
+    except Stats.DoesNotExist:
+        STATS = ''
+
     if request.method == 'GET' and bool(request.GET) is not False:
         form = AdvancedSearchForm(request.GET)
         if form.is_valid():
@@ -81,6 +92,12 @@ def search(request):
 
 
 def show_voucher(request, voucher_code):
+    VERSION = settings.VERSION
+    try:
+        STATS = Stats.objects.get(pk=1)
+    except Stats.DoesNotExist:
+        STATS = ''
+
     try:
         voucher_queryset = Vouchers.objects.get(code__iexact=voucher_code)
     except Vouchers.DoesNotExist:
@@ -108,6 +125,12 @@ def show_voucher(request, voucher_code):
 
 
 def show_sequence(request, voucher_code, gene_code):
+    VERSION = settings.VERSION
+    try:
+        STATS = Stats.objects.get(pk=1)
+    except Stats.DoesNotExist:
+        STATS = ''
+
     try:
         queryset = Vouchers.objects.get(code__iexact=voucher_code)
     except Vouchers.DoesNotExist:

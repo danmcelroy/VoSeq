@@ -41,11 +41,26 @@ Create a `config.json` file to keep the database variables:
 }
 ```
 
-Create a PostgreSQL database:
+Create a PostgreSQL database (replace x.x for 9.3 or 9.4):
 
 ```shell
+sudo apt-get install postgresql postgresql-contrib postgresql-server-dev-x.x
 sudo su postgres
+```
+
+Create new role by typing:
+```shell
+createuser --interactive
+```
+
+Create a password for this user:
+```shell
 psql
+postgres=# ALTER ROLE postgres WITH PASSWORD 'hu8jmn3';
+```
+
+Create a database for Voseq:
+```shell
 postgres=# create database voseq;
 ```
 

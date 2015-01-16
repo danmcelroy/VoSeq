@@ -16,6 +16,7 @@ from public_interface.models import Vouchers
 from public_interface.models import FlickrImages
 from public_interface.models import Sequences
 from public_interface.models import Primers
+from public_interface.models import Genes
 
 
 class ParseXML(object):
@@ -68,6 +69,53 @@ class ParseXML(object):
             item['prot_code'] = row.find("./field/[@name='prot_code']").text
             item['genetype'] = row.find("./field/[@name='genetype']").text
             self.table_genes_items.append(item)
+
+    def import_table_genes(self):
+        if self.table_genes_items is None:
+            self.parse_table_genes(self.dump_string)
+
+        for item in self.table_genes_items:
+            try:
+                date_obj = datetime.datetime.strptime(item['timestamp'], '%Y-%m-%d %H:%M:%S')
+            except ValueError as e:
+                date_obj = None
+                if self.verbosity != 0:
+                    print(e)
+                    print("WARNING:: Could not parse dateCreation properly.")
+            except TypeError as e:
+                date_obj = None
+                if self.verbosity != 0:
+                    print(e)
+                    print("WARNING:: Could not parse dateCreation properly.")
+
+            item['time_created'] = date_obj
+            del item['timestamp']
+            item['gene_code'] = item['geneCode']
+            del item['geneCode']
+
+            if item['length'] is not None:
+                item['length'] = int(item['length'])
+
+            if item['readingframe'] is not None:
+                item['reading_frame'] = int(item['readingframe'])
+            del item['readingframe']
+
+            item['gene_type'] = item['genetype']
+            del item['genetype']
+
+    def save_table_genes_to_db(self):
+        if self.table_genes_items is None:
+            self.import_table_genes()
+
+        for item in self.table_genes_items:
+            item = self.clean_value(item, 'notes')
+            item = self.clean_value(item, 'intron')
+            item = self.clean_value(item, 'gene_type')
+            item = self.clean_value(item, 'genetic_code')
+            if item['genetic_code'] == '':
+                item['genetic_code'] = None
+            item = self.clean_value(item, 'description')
+            Genes.objects.create(**item)
 
     def parse_table_genesets(self, xml_string):
         our_data = False
@@ -150,6 +198,37 @@ class ParseXML(object):
 
             self.table_primers_items.append(item)
 
+    def import_table_primers(self):
+        if self.table_primers_items is None:
+            self.parse_table_primers(self.dump_string)
+
+        for item in self.table_primers_items:
+            item['primers'] = [(i[0], i[1]) for i in item['primers'] if i[0] is not None and i[1] is not None]
+
+    def save_table_primers_to_db(self):
+        if self.table_primers_items is None:
+            self.import_table_primers()
+
+        for item in self.table_primers_items:
+            try:
+                b = Sequences.objects.get(code=item['code'], gene_code=item['gene_code'])
+                item['for_sequence'] = b
+            except Sequences.DoesNotExist:
+                print("Could not save primers for sequence: %s %s" % (item['code'], item['gene_code']))
+                continue
+
+            primers = item['primers']
+            del item['primers']
+            del item['code']
+            del item['gene_code']
+            for i in primers:
+                item['primer_f'] = i[0]
+                item['primer_r'] = i[1]
+                Primers.objects.create(**item)
+
+        if self.verbosity != 0:
+            print("Uploading table `public_interface_primers`")
+
     def parse_table_sequences(self, xml_string):
         our_data = False
         this_table = self.tables_prefix + "sequences"
@@ -177,6 +256,84 @@ class ParseXML(object):
             item['genbank'] = row.find("./field/[@name='genbank']").text
             item['timestamp'] = row.find("./field/[@name='timestamp']").text
             self.table_sequences_items.append(item)
+
+    def import_table_sequences(self):
+        if self.table_sequences_items is None:
+            self.parse_table_sequences(self.dump_string)
+
+        for item in self.table_sequences_items:
+            item['code_id'] = item['code']
+            del item['code']
+
+            item['time_created'] = item['dateCreation']
+            del item['dateCreation']
+
+            item['time_edited'] = item['dateModification']
+            del item['dateModification']
+            del item['timestamp']
+
+            item['gene_code'] = item['geneCode']
+            del item['geneCode']
+
+            try:
+                date_obj = datetime.datetime.strptime(item['time_created'], '%Y-%m-%d')
+            except ValueError as e:
+                date_obj = None
+                if self.verbosity != 0:
+                    print(e)
+                    print("WARNING:: Could not parse dateCreation properly.")
+                    print("WARNING:: Using empty date for `time_created` for code %s and gene_code %s." % (item['code_id'], item['gene_code']))
+            except TypeError as e:
+                date_obj = None
+                if self.verbosity != 0:
+                    print(e)
+                    print("WARNING:: Could not parse dateCreation properly.")
+                    print("WARNING:: Using empty date for `time_created` for code %s and gene_code %s." % (item['code_id'], item['gene_code']))
+
+            item['time_created'] = date_obj
+
+            try:
+                date_obj = datetime.datetime.strptime(item['time_edited'], '%Y-%m-%d')
+            except ValueError:
+                date_obj = None
+                if self.verbosity != 0:
+                    print("WARNING:: Could not parse dateModification properly.")
+                    print("WARNING:: Using empty date for `time_edited` for code %s." % item['code_id'])
+            except TypeError:
+                date_obj = None
+                if self.verbosity != 0:
+                    print("WARNING:: Could not parse dateCreation properly.")
+                    print("WARNING:: Using empty as date for `time_edited` for code %s." % item['code_id'])
+
+            item['time_edited'] = date_obj
+
+    def save_table_sequences_to_db(self):
+        if self.table_sequences_items is None:
+            self.import_table_sequences()
+
+        seqs_to_insert = []
+        seqs_not_to_insert = []
+        for i in self.table_sequences_items:
+            if i['code_id'] in self.list_of_voucher_codes:
+                seqs_to_insert.append(i)
+            else:
+                seqs_not_to_insert.append(i)
+        for item in seqs_to_insert:
+            item = self.clean_value(item, 'labPerson')
+            item = self.clean_value(item, 'notes')
+            item = self.clean_value(item, 'sequences')
+            item = self.clean_value(item, 'accession')
+            Sequences.objects.create(**item)
+
+        if self.verbosity != 0:
+            print("Uploading table `public_interface_sequences`")
+
+        if len(seqs_not_to_insert) > 0:
+            if self.verbosity != 0:
+                print("Couldn't insert %i sequences due to lack of reference vouchers" % len(seqs_not_to_insert))
+            for i in seqs_not_to_insert:
+                if self.verbosity != 0:
+                    print(i['code_id'], i['gene_code'])
 
     def parse_table_taxonsets(self, xml_string):
         our_data = False
@@ -367,97 +524,6 @@ class ParseXML(object):
 
             self.list_of_voucher_codes.append(item['code'])
 
-    def import_table_sequences(self):
-        if self.table_sequences_items is None:
-            self.parse_table_sequences(self.dump_string)
-
-        for item in self.table_sequences_items:
-            item['code_id'] = item['code']
-            del item['code']
-
-            item['time_created'] = item['dateCreation']
-            del item['dateCreation']
-
-            item['time_edited'] = item['dateModification']
-            del item['dateModification']
-            del item['timestamp']
-
-            item['gene_code'] = item['geneCode']
-            del item['geneCode']
-
-            try:
-                date_obj = datetime.datetime.strptime(item['time_created'], '%Y-%m-%d')
-            except ValueError as e:
-                date_obj = None
-                if self.verbosity != 0:
-                    print(e)
-                    print("WARNING:: Could not parse dateCreation properly.")
-                    print("WARNING:: Using empty date for `time_created` for code %s and gene_code %s." % (item['code_id'], item['gene_code']))
-            except TypeError as e:
-                date_obj = None
-                if self.verbosity != 0:
-                    print(e)
-                    print("WARNING:: Could not parse dateCreation properly.")
-                    print("WARNING:: Using empty date for `time_created` for code %s and gene_code %s." % (item['code_id'], item['gene_code']))
-
-            item['time_created'] = date_obj
-
-            try:
-                date_obj = datetime.datetime.strptime(item['time_edited'], '%Y-%m-%d')
-            except ValueError:
-                date_obj = None
-                if self.verbosity != 0:
-                    print("WARNING:: Could not parse dateModification properly.")
-                    print("WARNING:: Using empty date for `time_edited` for code %s." % item['code_id'])
-            except TypeError:
-                date_obj = None
-                if self.verbosity != 0:
-                    print("WARNING:: Could not parse dateCreation properly.")
-                    print("WARNING:: Using empty as date for `time_edited` for code %s." % item['code_id'])
-
-            item['time_edited'] = date_obj
-
-    def import_table_primers(self):
-        if self.table_primers_items is None:
-            self.parse_table_primers(self.dump_string)
-
-        for item in self.table_primers_items:
-            item['primers'] = [(i[0], i[1]) for i in item['primers'] if i[0] is not None and i[1] is not None]
-
-    def save_table_primers_to_db(self):
-        if self.table_primers_items is None:
-            self.import_table_primers()
-
-        for item in self.table_primers_items:
-            b = Sequences.objects.get(code=item['code'], gene_code=item['gene_code'])
-            item['for_sequence'] = b
-
-            primers = item['primers']
-            del item['primers']
-            del item['code']
-            del item['gene_code']
-            for i in primers:
-                item['primer_f'] = i[0]
-                item['primer_r'] = i[1]
-                Primers.objects.create(**item)
-
-        if self.verbosity != 0:
-            print("Uploading table `public_interface_primers`")
-
-    def clean_value(self, item, key):
-        if key in item:
-            if item[key] is None:
-                item[key] = ''
-            elif item[key].lower().strip() == 'null':
-                item[key] = ''
-            elif item[key].strip() == '':
-                item[key] = ''
-            else:
-                item[key] = item[key].strip()
-        else:
-            item[key] = ''
-        return item
-
     def save_table_vouchers_to_db(self):
         if self.table_vouchers_items is None:
             self.parse_table_vouchers(self.dump_string)
@@ -486,7 +552,7 @@ class ParseXML(object):
             item = self.clean_value(item, 'publishedIn')
             item = self.clean_value(item, 'notes')
 
-            item = self.clean_value(item, 'extractionTube')
+            item = self.clean_value(item, 'extraction')
             item = self.clean_value(item, 'extractionTube')
             item = self.clean_value(item, 'extractor')
 
@@ -499,33 +565,19 @@ class ParseXML(object):
         if self.verbosity != 0:
             print("Uploading table `public_interface_flickrimages`")
 
-    def save_table_sequences_to_db(self):
-        if self.table_sequences_items is None:
-            self.import_table_sequences()
-
-        seqs_to_insert = []
-        seqs_not_to_insert = []
-        for i in self.table_sequences_items:
-            if i['code_id'] in self.list_of_voucher_codes:
-                seqs_to_insert.append(i)
+    def clean_value(self, item, key):
+        if key in item:
+            if item[key] is None:
+                item[key] = ''
+            elif item[key].lower().strip() == 'null':
+                item[key] = ''
+            elif item[key].strip() == '':
+                item[key] = ''
             else:
-                seqs_not_to_insert.append(i)
-        for item in seqs_to_insert:
-            item = self.clean_value(item, 'labPerson')
-            item = self.clean_value(item, 'notes')
-            item = self.clean_value(item, 'sequences')
-            item = self.clean_value(item, 'accession')
-            Sequences.objects.create(**item)
-
-        if self.verbosity != 0:
-            print("Uploading table `public_interface_sequences`")
-
-        if len(seqs_not_to_insert) > 0:
-            if self.verbosity != 0:
-                print("Couldn't insert %i sequences due to lack of reference vouchers" % len(seqs_not_to_insert))
-            for i in seqs_not_to_insert:
-                if self.verbosity != 0:
-                    print(i['code_id'], i['gene_code'])
+                item[key] = item[key].strip()
+        else:
+            item[key] = ''
+        return item
 
     def get_as_tuple(self, string):
         as_tupple = ()
