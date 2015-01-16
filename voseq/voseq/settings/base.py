@@ -32,6 +32,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 
     # added
     'haystack',
@@ -43,6 +44,7 @@ INSTALLED_APPS = (
     'blast_ncbi',
     'blast_new',
     'stats',
+    'view_genes',
 )
 
 MIDDLEWARE_CLASSES = (

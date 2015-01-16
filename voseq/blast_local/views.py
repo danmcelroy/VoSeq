@@ -5,14 +5,13 @@ from .utils import BLAST
 from stats.models import Stats
 
 
-VERSION = settings.VERSION
-try:
-    STATS = Stats.objects.get(pk=1)
-except Stats.DoesNotExist:
-    STATS = ''
-
-
 def index(request, voucher_code, gene_code):
+    VERSION = settings.VERSION
+    try:
+        STATS = Stats.objects.get(pk=1)
+    except Stats.DoesNotExist:
+        STATS = ''
+
     blast = BLAST('local', voucher_code, gene_code)
     blast.save_seqs_to_file()
 
