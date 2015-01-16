@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.conf import settings
 from django.http import HttpResponseRedirect
 
+from .utils import BLASTNew
 from stats.models import Stats
 from .forms import BLASTNewForm
 
@@ -24,11 +25,37 @@ def index(request):
 
 
 def results(request):
+    VERSION = settings.VERSION
+    try:
+        STATS = Stats.objects.get(pk=1)
+    except Stats.DoesNotExist:
+        STATS = ''
+
     if request.method == 'POST':
         form = BLASTNewForm(request.POST)
+
         if form.is_valid():
-            print(request.POST)
-            return render(request,
-                          'blast_new/results.html')
+            cleaned_data = form.cleaned_data
+
+            # tmp, remove after fixing form
+            cleaned_data['gene_codes'] = ''
+            blast = BLASTNew('new', cleaned_data['name'], cleaned_data['sequence'],
+                             cleaned_data['gene_codes'])
+            blast.save_seqs_to_file()
+
+            if blast.is_blast_db_up_to_date() is False:
+                blast.create_blast_db()
+
+            blast.save_query_to_file()
+            blast.do_blast()
+            result = blast.parse_blast_output()
+            blast.delete_query_output_files()
+            return render(request, 'blast_new/results.html',
+                          {
+                              'result': result,
+                              'version': VERSION,
+                              'stats': STATS,
+                          },
+                          )
 
     return HttpResponseRedirect('/blast_new/')
