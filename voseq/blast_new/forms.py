@@ -6,3 +6,8 @@ class BLASTNewForm(forms.Form):
         label='name',
         max_length=100,
     )
+    sequence = forms.CharField(
+        label='sequence',
+        required=True,
+        widget=forms.Textarea,
+    )

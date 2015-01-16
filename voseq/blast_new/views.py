@@ -27,7 +27,8 @@ def results(request):
     if request.method == 'POST':
         form = BLASTNewForm(request.POST)
         if form.is_valid():
+            print(request.POST)
             return render(request,
-                          'blast_new/results/')
+                          'blast_new/results.html')
 
     return HttpResponseRedirect('/blast_new/')
