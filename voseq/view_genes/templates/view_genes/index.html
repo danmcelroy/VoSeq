@@ -15,9 +15,9 @@
 
               {% for i in result %}
               <li>
-                <b><a href="/genes/{{ i.gene_code }}">{{ i.gene_code }}</a></b>
+                <b><a href="/genes/{{ i.gene_code }}/">{{ i.gene_code }}</a></b>
                 <i>{{ i.description }}</i>
-                &mdash; {{ i.length|intcomma }}bp
+                &mdash; {{ i.length|intcomma }} bp
               </li>
               {% endfor %}
 
