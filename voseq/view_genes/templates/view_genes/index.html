@@ -1,5 +1,5 @@
 {% extends 'public_interface/base.html' %}
-
+{% load humanize %}
 
 {% block content %}
 <div class="explorer-container">
@@ -9,35 +9,22 @@
     <div class="container">
       <div class="row">
 
-        <div class="col-sm-6 col-md-5 col-md-offset-1 col-lg-4 col-lg-offset-2">
-          {% if results|length > 1 %}
+        <div class="col-xs-12 col-sm-7  col-md-6 col-md-offset-2 col-lg-6 ">
+          {% if result|length > 1 %}
             <ul>
 
-              {% for i in results %}
+              {% for i in result %}
               <li>
-                <b><a href="/p/{{ i.code }}">{{ i.code }}</a></b>
-                <i>{{ i.gene_code }} {{ i.description }}</i>
-                {% if i.auctor != None %}
-                  {{ auctor }}
-                {% endif %}
-
-                {% load staticfiles %}
-                {% if i.code in vouchers_with_images %}
-                  <a href="/p/{{ i.code }}"><img src="{% static 'img/icon_image.png' %}" title="See photos"/></a>
-                {% endif %}
-                <br />
-                By {{ i.extractor }} on {{ i.timestamp|date }}
+                <b><a href="/genes/{{ i.gene_code }}">{{ i.gene_code }}</a></b>
+                <i>{{ i.description }}</i>
+                &mdash; {{ i.length|intcomma }}bp
               </li>
               {% endfor %}
 
             </ul>
+          {% else %}
+            <h4>There are no genes to show.</h4>
           {% endif %}
-        </div><!-- col -->
-
-        <div class="col-sm-6 col-md-5 col-md-offset-1 col-lg-4 col-lg-offset-2">
-          {% block toolbox %}
-            {% include "public_interface/toolbox.html" %}
-          {% endblock toolbox %}
         </div><!-- col -->
 
       </div><!-- row -->
