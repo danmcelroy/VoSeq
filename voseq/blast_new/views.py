@@ -12,8 +12,11 @@ def index(request):
         STATS = Stats.objects.get(pk=1)
     except Stats.DoesNotExist:
         STATS = ''
+
+    form = BLASTNewForm()
     return render(request, 'blast_new/index.html',
                   {
+                      'form': form,
                       'version': VERSION,
                       'stats': STATS,
                   },
