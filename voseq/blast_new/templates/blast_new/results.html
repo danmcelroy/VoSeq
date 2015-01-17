@@ -3,6 +3,7 @@
 
 {% block content %}
 
+{% if result %}
 <div class="panel panel-primary">
   <div class="panel-heading">
     <div class="panel-title">
@@ -44,5 +45,10 @@
     {% endfor %}
     </table>
 </div>
+{% else %}
+<div class="container">
+    <h3>Blasting that sequence could retrieve any close match.</h3>
+</div>
+{% endif %}
 
 {% endblock content %}
