@@ -52,6 +52,10 @@ postgres=# create database voseq;
  ```
  
 Create a `config.json` file to keep the database variables:
+```shell
+cd /path/to/Voseq/voseq
+nano config.json
+```
 ```javascript
  {
  "SECRET_KEY": "create_a_secret_key",
