@@ -23,3 +23,11 @@ class BLASTNewForm(forms.Form):
         widget=forms.CheckboxSelectMultiple(),
         required=False,
     )
+
+    def clean_sequence(self):
+        data = self.cleaned_data['sequence']
+        invalid_characters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+        for i in invalid_characters:
+            if i in data:
+                raise forms.ValidationError('Sequence contains invalid characters: %s' % i)
+        return data
