@@ -56,5 +56,13 @@ def results(request):
                               'stats': STATS,
                           },
                           )
+        else:
+            return render(request, 'blast_new/index.html',
+                          {
+                              'version': VERSION,
+                              'stats': STATS,
+                              'form': form,
+                          },
+                          )
 
     return HttpResponseRedirect('/blast_new/')
