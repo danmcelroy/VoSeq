@@ -48,6 +48,8 @@ def results(request):
             blast.save_query_to_file()
             blast.do_blast()
             result = blast.parse_blast_output()
+            if len(result) < 1:
+                result = None
             blast.delete_query_output_files()
             return render(request, 'blast_new/results.html',
                           {
