@@ -16,8 +16,9 @@ class BLASTNewForm(forms.Form):
 
     queryset = Genes.objects.all()
     CHOICES = [(i.gene_code, i.gene_code) for i in queryset]
-    gene_codes = forms.ChoiceField(
+    gene_codes = forms.MultipleChoiceField(
         choices=CHOICES,
         label='Genes',
         widget=forms.CheckboxSelectMultiple(),
+        required=False,
     )
