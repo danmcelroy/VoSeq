@@ -6,6 +6,7 @@ from public_interface.models import Genes
 class BLASTNewForm(forms.Form):
     name = forms.CharField(
         label='Name',
+        required=True,
         max_length=100,
     )
     sequence = forms.CharField(
