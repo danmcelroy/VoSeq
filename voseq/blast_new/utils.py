@@ -23,7 +23,6 @@ class BLASTNew(BLAST):
         self.blast_type = blast_type
         self.name = name
         self.sequence = sequence
-        self.gene_codes = gene_codes
         self.cwd = os.path.dirname(__file__)
         self.seq_file = ""
 
@@ -31,6 +30,12 @@ class BLASTNew(BLAST):
             self.mask = True
         else:
             self.mask = False
+
+        if len(gene_codes) > 0:
+            gene_codes.sort()
+            self.gene_codes = gene_codes
+        else:
+            self.gene_codes = []
 
         self.path = os.path.join(self.cwd,
                                  'db',
@@ -62,7 +67,7 @@ class BLASTNew(BLAST):
                                          'db',
                                          '_'.join(self.gene_codes) + "_seqs.fas",
                                          )
-            if self.gene_codes != '':
+            if len(self.gene_codes) > 0:
                 # Taken from http://stackoverflow.com/a/1239602
                 Qr = None
                 for gene_code in self.gene_codes:
