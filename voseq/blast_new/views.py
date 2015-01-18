@@ -1,35 +1,26 @@
 from django.shortcuts import render
-from django.conf import settings
 from django.http import HttpResponseRedirect
 
+from core.utils import get_version_stats
 from .utils import BLASTNew
-from stats.models import Stats
 from .forms import BLASTNewForm
 
 
 def index(request):
-    VERSION = settings.VERSION
-    try:
-        STATS = Stats.objects.get(pk=1)
-    except Stats.DoesNotExist:
-        STATS = ''
+    version, stats = get_version_stats()
 
     form = BLASTNewForm()
     return render(request, 'blast_new/index.html',
                   {
                       'form': form,
-                      'version': VERSION,
-                      'stats': STATS,
+                      'version': version,
+                      'stats': stats,
                   },
                   )
 
 
 def results(request):
-    VERSION = settings.VERSION
-    try:
-        STATS = Stats.objects.get(pk=1)
-    except Stats.DoesNotExist:
-        STATS = ''
+    version, stats = get_version_stats()
 
     if request.method == 'POST':
         form = BLASTNewForm(request.POST)
@@ -53,16 +44,16 @@ def results(request):
             return render(request, 'blast_new/results.html',
                           {
                               'result': result,
-                              'version': VERSION,
-                              'stats': STATS,
+                              'version': version,
+                              'stats': stats,
                           },
                           )
         else:
             return render(request, 'blast_new/index.html',
                           {
-                              'version': VERSION,
-                              'stats': STATS,
                               'form': form,
+                              'version': version,
+                              'stats': stats,
                           },
                           )
 

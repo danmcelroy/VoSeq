@@ -38,13 +38,15 @@ INSTALLED_APPS = (
     'haystack',
 
     # my apps
+    'core',
     'public_interface',
     'blast_local',
     'blast_local_full',
     'blast_ncbi',
+    'blast_new',
     'stats',
     'view_genes',
-    'blast_new',
+    'genbank_fasta',
 )
 
 MIDDLEWARE_CLASSES = (
