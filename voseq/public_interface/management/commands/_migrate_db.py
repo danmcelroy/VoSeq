@@ -17,6 +17,7 @@ from public_interface.models import FlickrImages
 from public_interface.models import Sequences
 from public_interface.models import Primers
 from public_interface.models import Genes
+from public_interface.models import GeneSets
 
 
 class ParseXML(object):
@@ -137,8 +138,21 @@ class ParseXML(object):
             item['geneset_creator'] = row.find("./field/[@name='geneset_creator']").text
             item['geneset_description'] = row.find("./field/[@name='geneset_description']").text
             item['geneset_list'] = row.find("./field/[@name='geneset_list']").text
-            item['geneset_id'] = row.find("./field/[@name='geneset_id']").text
             self.table_genesets_items.append(item)
+
+    def import_table_genesets(self):
+        if self.table_genesets_items is None:
+            self.parse_table_genesets(self.dump_string)
+
+    def save_table_genesets_to_db(self):
+        if self.table_genesets_items is None:
+            self.import_table_genesets()
+
+        for item in self.table_genesets_items:
+            if item['geneset_description'] is None:
+                item['geneset_description'] = ''
+            item['geneset_list'] = item['geneset_list'].split(',')
+            GeneSets.objects.create(**item)
 
     def parse_table_members(self, xml_string):
         our_data = False

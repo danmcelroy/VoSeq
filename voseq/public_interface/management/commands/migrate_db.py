@@ -47,3 +47,5 @@ class Command(BaseCommand):
         parser.save_table_primers_to_db()
 
         parser.save_table_genes_to_db()
+
+        parser.save_table_genesets_to_db()
