@@ -24,6 +24,9 @@
             <tr>
                 <td>
                   <table class="table table-bordered">
+                    {% for i in form.non_field_errors %}
+                      <div class="alert alert-warning">{{ i }}</div>
+                    {% endfor %}
                     <tr>
                       <td>
                         <label for="id_taxonset">Choose taxonset: </label>
@@ -40,7 +43,7 @@
                         <label for="id_voucher_codes">... and/or a list of voucher codes: </label>
                       </td>
                       <td>
-                        {% for i in form.voucher_coddes.errors %}
+                        {% for i in form.voucher_codes.errors %}
                         <div class="alert alert-warning">{{ i }}</div>
                         {% endfor %}
                         {{ form.voucher_codes }}
