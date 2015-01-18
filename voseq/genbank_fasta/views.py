@@ -28,6 +28,7 @@ def results(request):
         if form.is_valid():
             cleaned_data = form.cleaned_data
             print(cleaned_data)
+
             result = ''
 
             return render(request, 'genbank_fasta/results.html',
@@ -38,6 +39,7 @@ def results(request):
                           },
                           )
         else:
+            print(form)
             return render(request, 'genbank_fasta/index.html',
                           {
                               'form': form,
