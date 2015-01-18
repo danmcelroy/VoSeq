@@ -3,6 +3,7 @@ from django.contrib import admin
 
 urlpatterns = patterns(
     '',
+    url(r'^genbank_fasta', include('genbank_fasta.urls', namespace='genbank_fasta')),
     url(r'^blast_local', include('blast_local.urls', namespace='blast_local')),
     url(r'^blast_local_full', include('blast_local_full.urls', namespace='blast_local_full')),
     url(r'^blast_ncbi', include('blast_ncbi.urls', namespace='blast_ncbi')),
