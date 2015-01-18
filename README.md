@@ -53,7 +53,7 @@ postgres=# create database voseq;
  
 Create a `config.json` file to keep the database variables:
 ```shell
-cd /path/to/Voseq/voseq
+cd /path/to/Voseq
 touch config.json
 ```
 and write in the following content:
