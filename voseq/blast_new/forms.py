@@ -15,13 +15,12 @@ class BLASTNewForm(forms.Form):
         widget=forms.Textarea,
     )
 
-    queryset = Genes.objects.all()
-    CHOICES = [(i.gene_code, i.gene_code) for i in queryset]
-    gene_codes = forms.MultipleChoiceField(
-        choices=CHOICES,
+    gene_codes = forms.ModelMultipleChoiceField(
+        Genes.objects.all(),
         label='Genes',
         widget=forms.CheckboxSelectMultiple(),
         required=False,
+        to_field_name='gene_code',
     )
 
     def clean_sequence(self):

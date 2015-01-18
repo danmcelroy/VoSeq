@@ -15,7 +15,6 @@ stats:
 	cd voseq; python manage.py create_stats --settings=voseq.settings.local
 
 coverage: test
-	coverage run --source voseq voseq/manage.py test -v 2 public_interface blast_local blast_local_full blast_ncbi blast_new stats view_genes --settings=voseq.settings.base
 	coverage report -m
 	coverage html
 

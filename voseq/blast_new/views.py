@@ -36,7 +36,6 @@ def results(request):
 
         if form.is_valid():
             cleaned_data = form.cleaned_data
-            print(cleaned_data)
 
             blast = BLASTNew('new', cleaned_data['name'], cleaned_data['sequence'],
                              cleaned_data['gene_codes'])
