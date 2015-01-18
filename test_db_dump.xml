@@ -331,7 +331,7 @@
 		<field name="taxonset_name">Erebia</field>
 		<field name="taxonset_creator">Carlos Peña</field>
 		<field name="taxonset_description"></field>
-		<field name="taxonset_list">CP100-10</field>
+		<field name="taxonset_list">CP100-10,CP100-11</field>
 		<field name="taxonset_id">1</field>
 	</row>
 	</table_data>
