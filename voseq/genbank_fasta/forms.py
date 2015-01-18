@@ -10,11 +10,13 @@ class GenBankFastaForm(forms.Form):
         TaxonSets.objects.all(),
         label='Choose taxonset',
         required=False,
+        empty_label='Choose taxonset',
     )
     geneset = forms.ModelChoiceField(
         GeneSets.objects.all(),
         label='Choose geneset',
         required=False,
+        empty_label='Choose geneset',
     )
     gene_codes = forms.ModelMultipleChoiceField(
         Genes.objects.all(),
@@ -22,8 +24,8 @@ class GenBankFastaForm(forms.Form):
         required=False,
         widget=forms.CheckboxSelectMultiple(),
     )
-    gene_code_list = forms.CharField(
+    voucher_codes = forms.CharField(
         widget=forms.Textarea,
-        label='... and/or a list of codes',
+        label='... and/or a list of voucher codes',
         required=False,
     )

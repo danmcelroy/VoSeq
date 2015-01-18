@@ -44,6 +44,9 @@ class GeneSets(models.Model):
         self.geneset_list = json.dumps(self.geneset_list)
         super(GeneSets, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return self.geneset_name
+
 
 class Members(models.Model):
     firstname = models.CharField(max_length=100)
@@ -62,6 +65,9 @@ class TaxonSets(models.Model):
     def save(self, *args, **kwargs):
         self.taxonset_list = json.dumps(self.taxonset_list)
         super(TaxonSets, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.taxonset_name
 
 
 class Vouchers(models.Model):
