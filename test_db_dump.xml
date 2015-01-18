@@ -94,6 +94,13 @@
 		<field name="geneset_list">COI,EF1a,wingless,16S</field>
 		<field name="geneset_id">1</field>
 	</row>
+        <row>
+            <field name="geneset_name">2genes</field>
+            <field name="geneset_creator">Niklas</field>
+            <field name="geneset_description"></field>
+            <field name="geneset_list">COI,EF1a</field>
+            <field name="geneset_id">2</field>
+        </row>
 	</table_data>
 	<table_structure name="members">
 		<field Field="member_id" Type="int(11) unsigned" Null="NO" Key="PRI" Extra="auto_increment" Comment="" />
