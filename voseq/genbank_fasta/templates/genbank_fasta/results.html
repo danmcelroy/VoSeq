@@ -37,13 +37,13 @@
                     </tr>
                     <tr>
                       <td>
-                        <label for="id_voucher_codes">... and/or a list of voucher codes: </label>
+                        <label for="id_gene_code_list">... and/or a list of codes: </label>
                       </td>
                       <td>
-                        {% for i in form.voucher_coddes.errors %}
+                        {% for i in form.gene_code_list.errors %}
                         <div class="alert alert-warning">{{ i }}</div>
                         {% endfor %}
-                        {{ form.voucher_codes }}
+                        {{ form.gene_code_list }}
                       </td>
                     </tr>
                   </table>
