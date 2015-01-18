@@ -1,34 +1,110 @@
 {% extends 'public_interface/base.html' %}
-{% load humanize %}
+
 
 {% block content %}
 <div class="explorer-container">
   <div class="container">
-    <h3>Existing genes:</h3>
+    <h3>Create GenBank FASTA file:</h3>
+
 
     <div class="container">
       <div class="row">
 
-        <div class="col-xs-12 col-sm-7  col-md-6 col-md-offset-2 col-lg-6 ">
-          {% if result|length > 1 %}
-            <ul>
+        <div class="col-xs-12 col-sm-12  col-md-11 col-lg-9 col-lg-offset-1">
 
-              {% for i in result %}
-              <li>
-                <b><a href="/genes/{{ i.gene_code }}/">{{ i.gene_code }}</a></b>
-                <i>{{ i.description }}</i>
-                &mdash; {{ i.length|intcomma }} bp
-              </li>
-              {% endfor %}
+        <form action="/genbank_fasta/results/" method="post">
+        <div class="panel panel-primary" style="min-width: 790px;">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Enter the required info to make yourself a FASTA file to be submitted to GenBank</b></h3>
+          </div>
 
-            </ul>
-          {% else %}
-            <h4>There are no genes to show.</h4>
-          {% endif %}
+              {% csrf_token %}
+
+        <table class="table table-bordered"><!-- big -->
+            <tr>
+                <td>
+                  <table class="table table-bordered">
+                    <tr>
+                      <td>
+                        <label for="id_taxonset">Choose taxonset: </label>
+                      </td>
+                      <td>
+                        {% for i in form.taxonset.errors %}
+                        <div class="alert alert-warning">{{ i }}</div>
+                        {% endfor %}
+                        {{ form.taxonset }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label for="id_gene_code_list">... and/or a list of codes: </label>
+                      </td>
+                      <td>
+                        {% for i in form.gene_code_list.errors %}
+                        <div class="alert alert-warning">{{ i }}</div>
+                        {% endfor %}
+                        {{ form.gene_code_list }}
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+
+                <td>
+                  <table class="table table-bordered">
+                    <tr>
+                      <td>
+                        <label for="id_geneset">Choose geneset: </label>
+                      </td>
+                      <td>
+                        {% for i in form.geneset.errors %}
+                        <div class="alert alert-warning">{{ i }}</div>
+                        {% endfor %}
+                        {{ form.geneset }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Check to select your alignment/gene:<br />
+                        <br />
+                        (if geneset chosen, adds extra genes)
+                      </td>
+                      <td>
+                        <table class="table table-condensed table-striped">
+                          <tr>
+                            {% for i in form.gene_codes %}
+                            <td>
+                              {{ i }}
+                            </td>
+                            {% endfor %}
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+
+            </tr>
+        </table><!-- big -->
+
+        </div><!-- panel -->
+
+            <button type="submit" class="btn btn-info" id="submit_button">
+                Make GenBank FASTA
+            </button>
+        </form>
+
+
+
+
+
+
+
         </div><!-- col -->
 
       </div><!-- row -->
     </div><!-- container -->
+
+
   </div>
 </div>
 {% endblock content %}
