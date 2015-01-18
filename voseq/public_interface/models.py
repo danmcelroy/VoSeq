@@ -37,7 +37,7 @@ class Genes(models.Model):
 class GeneSets(models.Model):
     geneset_name = models.CharField(max_length=75, blank=False)
     geneset_creator = models.CharField(max_length=75, blank=False)
-    geneset_description = models.CharField(max_length=100, blank=True)
+    geneset_description = models.CharField(max_length=140, blank=True)
     geneset_list = models.TextField(blank=False)
 
     def save(self, *args, **kwargs):
@@ -54,10 +54,14 @@ class Members(models.Model):
 
 
 class TaxonSets(models.Model):
-    taxonset_name = models.CharField(max_length=50)
-    taxonset_creator = models.CharField(max_length=75)
-    taxonset_description = models.CharField(max_length=100)
+    taxonset_name = models.CharField(max_length=75, blank=False)
+    taxonset_creator = models.CharField(max_length=75, blank=False)
+    taxonset_description = models.CharField(max_length=140, blank=True)
     taxonset_list = models.TextField()
+
+    def save(self, *args, **kwargs):
+        self.taxonset_list = json.dumps(self.taxonset_list)
+        super(TaxonSets, self).save(*args, **kwargs)
 
 
 class Vouchers(models.Model):
