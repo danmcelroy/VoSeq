@@ -1,3 +1,5 @@
+import json
+
 from django.db import models
 
 
@@ -28,12 +30,19 @@ class Genes(models.Model):
     gene_type = models.CharField(max_length=255, blank=True)
     time_created = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.gene_code
+
 
 class GeneSets(models.Model):
-    geneset_name = models.CharField(max_length=75, default=None)
-    geneset_creator = models.CharField(max_length=75, default=None)
-    geneset_description = models.CharField(max_length=100, default=None, blank=True)
-    geneset_list = models.TextField(default=None)
+    geneset_name = models.CharField(max_length=75, blank=False)
+    geneset_creator = models.CharField(max_length=75, blank=False)
+    geneset_description = models.CharField(max_length=100, blank=True)
+    geneset_list = models.TextField(blank=False)
+
+    def save(self, *args, **kwargs):
+        self.geneset_list = json.dumps(self.geneset_list)
+        super(GeneSets, self).save(*args, **kwargs)
 
 
 class Members(models.Model):

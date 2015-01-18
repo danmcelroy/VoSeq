@@ -32,6 +32,7 @@ class BLASTNew(BLAST):
             self.mask = False
 
         if len(gene_codes) > 0:
+            gene_codes = [i.gene_code for i in gene_codes]
             gene_codes.sort()
             self.gene_codes = gene_codes
         else:
