@@ -9,6 +9,7 @@ from public_interface.models import Sequences
 from public_interface.models import FlickrImages
 from public_interface.models import Primers
 from public_interface.models import GeneSets
+from public_interface.models import TaxonSets
 
 
 class TestCustomCommand(TestCase):
@@ -184,3 +185,12 @@ class TestCustomCommand(TestCase):
         b = GeneSets.objects.get(geneset_name='4genes')
         expected = ['COI', 'EF1a', 'wingless', '16S']
         self.assertEqual(expected, json.loads(b.geneset_list))
+
+    def test_taxonset_name(self):
+        b = TaxonSets.objects.get(taxonset_name='Erebia')
+        self.assertEqual(b.taxonset_name, 'Erebia')
+
+    def test_taxonset_list(self):
+        b = TaxonSets.objects.get(taxonset_name='Erebia')
+        expected = ['CP100-10', 'CP100-11']
+        self.assertEqual(expected, json.loads(b.taxonset_list))
