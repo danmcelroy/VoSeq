@@ -1,3 +1,5 @@
+import json
+
 from django.core.management import call_command
 from django.core.management import CommandError
 from django.test import TestCase
@@ -6,6 +8,7 @@ from public_interface.models import Vouchers
 from public_interface.models import Sequences
 from public_interface.models import FlickrImages
 from public_interface.models import Primers
+from public_interface.models import GeneSets
 
 
 class TestCustomCommand(TestCase):
@@ -160,3 +163,24 @@ class TestCustomCommand(TestCase):
 
         primers_f = [i.primer_f for i in c]
         self.assertEqual(['lep1'], primers_f)
+
+    def test_geneset_name(self):
+        b = GeneSets.objects.get(geneset_name='4genes')
+        self.assertEqual(b.geneset_name, '4genes')
+
+    def test_geneset_creator(self):
+        b = GeneSets.objects.get(geneset_name='4genes')
+        self.assertEqual(b.geneset_creator, 'Niklas')
+
+    def test_geneset_description(self):
+        b = GeneSets.objects.get(geneset_name='4genes')
+        self.assertEqual(b.geneset_description, '4 standard genes')
+
+    def test_geneset_description_empty(self):
+        b = GeneSets.objects.get(geneset_name='2genes')
+        self.assertEqual(b.geneset_description, '')
+
+    def test_geneset_list(self):
+        b = GeneSets.objects.get(geneset_name='4genes')
+        expected = ['COI', 'EF1a', 'wingless', '16S']
+        self.assertEqual(expected, json.loads(b.geneset_list))
