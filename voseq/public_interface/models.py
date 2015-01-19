@@ -5,7 +5,11 @@ from django.db import models
 
 class Genes(models.Model):
     gene_code = models.CharField(max_length=100)
-    genetic_code = models.PositiveSmallIntegerField(blank=True, null=True)
+    genetic_code = models.PositiveSmallIntegerField(
+        blank=True,
+        null=True,
+        help_text='Translation table',
+    )
     length = models.PositiveSmallIntegerField(blank=True, null=True)
     description = models.CharField(max_length=255, blank=True)
     reading_frame = models.PositiveSmallIntegerField(blank=True, null=True)
