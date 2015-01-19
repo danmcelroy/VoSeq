@@ -33,7 +33,6 @@ class GenBankFastaForm(forms.Form):
     def clean(self):
         """Overwriting validator method of class form."""
         cleaned_data = super(GenBankFastaForm, self).clean()
-        print(cleaned_data)
         taxonset = cleaned_data.get("taxonset")
         voucher_codes = cleaned_data.get("voucher_codes")
 
