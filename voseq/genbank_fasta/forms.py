@@ -37,6 +37,13 @@ class GenBankFastaForm(forms.Form):
         taxonset = cleaned_data.get("taxonset")
         voucher_codes = cleaned_data.get("voucher_codes")
 
+        geneset = cleaned_data.get("geneset")
+        gene_codes = cleaned_data.get("gene_codes")
+
         if taxonset is None and voucher_codes.strip() == '':
             raise forms.ValidationError("You need to enter at least some "
                                         "voucher codes or select a taxonset.")
+
+        if geneset is None and len(gene_codes) < 1:
+            raise forms.ValidationError("You need to enter at least some "
+                                        "gene codes or select a geneset.")
