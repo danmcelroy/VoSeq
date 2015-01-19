@@ -36,6 +36,7 @@ def results(request):
             gene_codes = utils.get_gene_codes(cleaned_data)
 
             print(voucher_codes, gene_codes)
+            items_with_accession, fasta, proteins = utils.get_results(voucher_codes, gene_codes)
             result = ''
 
             return render(request, 'genbank_fasta/results.html',
