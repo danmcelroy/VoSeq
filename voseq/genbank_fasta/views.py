@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 
 from core.utils import get_version_stats
 from .forms import GenBankFastaForm
+from . import utils
 
 
 def index(request):
@@ -31,20 +32,10 @@ def results(request):
             cleaned_data = form.cleaned_data
             print(cleaned_data)
 
-            voucher_codes = []
-            if cleaned_data['taxonset'] is not None:
-                voucher_codes = json.loads(cleaned_data['taxonset'].taxonset_list)
-            if cleaned_data['voucher_codes'] != '':
-                voucher_codes += cleaned_data['voucher_codes'].splitlines()
-            voucher_codes = set(voucher_codes)
+            voucher_codes = utils.get_voucher_codes(cleaned_data)
+            gene_codes = utils.get_gene_codes(cleaned_data)
 
-            gene_codes = []
-            if cleaned_data['geneset'] is not None:
-                gene_codes = json.loads(cleaned_data['geneset'].geneset_list)
-            if len(cleaned_data['gene_codes']) > 0:
-                gene_codes += [i.gene_code for i in cleaned_data['gene_codes']]
-            gene_codes = set(gene_codes)
-
+            print(voucher_codes, gene_codes)
             result = ''
 
             return render(request, 'genbank_fasta/results.html',
