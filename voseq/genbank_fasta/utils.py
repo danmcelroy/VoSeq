@@ -1,8 +1,12 @@
 import json
 
+from Bio.Seq import Seq
+from Bio.Alphabet import IUPAC
+
 from public_interface.models import Vouchers
 from public_interface.models import Sequences
 from public_interface.models import Genes
+from core import utils
 
 
 def get_voucher_codes(cleaned_data):
@@ -23,41 +27,75 @@ def get_gene_codes(cleaned_data):
     return set(gene_codes)
 
 
-def get_results(voucher_codes, gene_codes):
+class Results(object):
     """Returns:
     * List of items with accession numbers that will not be included in
       FASTA or protein files (code, gene_code, accession).
     * FASTA dataset as string.
     * Protein dataset as string.
+
+    Usage:
+        res = Results(voucher_codes, gene_codes)
+        res.get_datasets()
+        fasta_dataset = res.fasta
+        protein_dataset = res.protein
+        items_with_accession = res.items_with_accession
     """
-    items_with_accession = []
-    fasta = ''
-    for code in voucher_codes:
-        v = None
-        try:
-            v = Vouchers.objects.get(code=code)
-        except Vouchers.DoesNotExist:
-            continue
+    def __init__(self, voucher_codes, gene_codes):
+        self.voucher_codes = voucher_codes
+        self.gene_codes = gene_codes
+        self.items_with_accession = []
+        self.fasta = ''
+        self.protein = ''
 
-        for gene_code in gene_codes:
-            s = None
-            if v:
-                try:
-                    s = Sequences.objects.get(code=v, gene_code=gene_code)
-                except Sequences.DoesNotExist:
-                    continue
+    def get_datasets(self):
+        """Queries sequences and creates FASTA, protein strings and list of
+        items with accession number (code, gene_code, accession).
+        """
+        for code in self.voucher_codes:
+            try:
+                v = Vouchers.objects.get(code=code)
+            except Vouchers.DoesNotExist:
+                continue
 
-                try:
-                    g = Genes.objects.get(gene_code=gene_code)
-                except Genes.DoesNotExist:
-                    continue
+            for gene_code in self.gene_codes:
+                if v:
+                    try:
+                        s = Sequences.objects.get(code=v, gene_code=gene_code)
+                    except Sequences.DoesNotExist:
+                        continue
 
-                if s.accession.strip() != '':
-                    items_with_accession.append((code, gene_code, s.accession))
-                else:
-                    fasta += '>' + v.genus + '_' + v.species + '_' + code
-                    fasta += ' [org=' + v.genus + ' ' + v.species + ']'
-                    fasta += ' [Specimen-voucher=' + v.code + ']'
-                    fasta += ' [note=' + g.description + ']'
-                    fasta += ' [Lineage=]\n'
-                    fasta += s.sequences + '\n'
+                    try:
+                        g = Genes.objects.get(gene_code=gene_code)
+                    except Genes.DoesNotExist:
+                        continue
+
+                    if s.accession.strip() != '':
+                        self.items_with_accession.append((code, gene_code, s.accession))
+                    else:
+                        seq_id = v.genus + '_' + v.species + '_' + code
+                        seq_description = '[org=' + v.genus + ' ' + v.species + ']'
+                        seq_description += ' [Specimen-voucher=' + v.code + ']'
+                        seq_description += ' [note=' + g.description + ' gene, partial cds.]'
+                        seq_description += ' [Lineage=]'
+
+                        # DNA sequences
+                        s.sequences = utils.strip_question_marks(s.sequences)
+                        if '?' in s.sequences or 'N' in s.sequences.upper():
+                            seq_sequence = Seq(s.sequences, IUPAC.ambiguous_dna)
+                        else:
+                            seq_sequence = Seq(s.sequences, IUPAC.unambiguous_dna)
+
+                        self.fasta += '>' + seq_id + ' ' + seq_description + '\n'
+                        self.fasta += str(seq_sequence) + '\n'
+
+                        # Protein sequences
+                        start_translation = int(g.reading_frame) - 1
+                        if '?' in s.sequences or 'N' in s.sequences.upper():
+                            seq_sequence = Seq(s.sequences[start_translation:], IUPAC.ambiguous_dna)
+                        else:
+                            seq_sequence = Seq(s.sequences[start_translation:], IUPAC.unambiguous_dna)
+                        prot_sequence = seq_sequence.translate(table=g.genetic_code)
+
+                        self.protein += '>' + seq_id + ' ' + seq_description + '\n'
+                        self.protein += str(prot_sequence) + '\n'
