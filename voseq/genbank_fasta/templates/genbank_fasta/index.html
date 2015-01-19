@@ -20,13 +20,13 @@
 
               {% csrf_token %}
 
+          {% for i in form.non_field_errors %}
+          <div class="alert alert-warning">{{ i }}</div>
+          {% endfor %}
         <table class="table table-bordered"><!-- big -->
             <tr>
                 <td>
                   <table class="table table-bordered">
-                    {% for i in form.non_field_errors %}
-                      <div class="alert alert-warning">{{ i }}</div>
-                    {% endfor %}
                     <tr>
                       <td>
                         <label for="id_taxonset">Choose taxonset: </label>
