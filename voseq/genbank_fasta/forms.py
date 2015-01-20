@@ -20,7 +20,7 @@ class GenBankFastaForm(forms.Form):
     )
     gene_codes = forms.ModelMultipleChoiceField(
         Genes.objects.all(),
-        label='Check yo select your alignment/gene',
+        label='Check to select your alignment/gene',
         required=False,
         widget=forms.CheckboxSelectMultiple(),
     )
@@ -38,6 +38,7 @@ class GenBankFastaForm(forms.Form):
 
         geneset = cleaned_data.get("geneset")
         gene_codes = cleaned_data.get("gene_codes")
+        print(gene_codes)
 
         if taxonset is None and voucher_codes.strip() == '':
             raise forms.ValidationError("You need to enter at least some "
