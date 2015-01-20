@@ -1,4 +1,6 @@
+import os
 import json
+import re
 
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
@@ -40,14 +42,16 @@ def results(request):
             items_with_accession = res.items_with_accession
             fasta = res.fasta
             protein = res.protein
+            fasta_file = re.search('(fasta_[a-z0-9]+\.fasta)', res.fasta_file).groups()[0]
+            protein_file = re.search('(prot_[a-z0-9]+\.fasta)', res.protein_file).groups()[0]
 
             return render(request, 'genbank_fasta/results.html',
                           {
                               'items_with_accession': items_with_accession,
                               'fasta': fasta,
-                              'fasta_file': res.fasta_file,
+                              'fasta_file': fasta_file,
                               'protein': protein,
-                              'protein_file': res.protein_file,
+                              'protein_file': protein_file,
                               'version': version,
                               'stats': stats,
                           },
@@ -65,6 +69,14 @@ def results(request):
 
 
 def serve_file(request, file_name):
-    response = HttpResponse(open(file_name, 'r').read(), content_type='application/text')
+    cwd = os.path.dirname(__file__)
+    fasta_file = os.path.join(cwd,
+                              'fasta_files',
+                              file_name,
+                              )
+    response = HttpResponse(open(fasta_file, 'r').read(), content_type='application/text')
     response['Content-Disposition'] = 'attachment; filename=voseq_genbank.fasta'
+
+    if os.path.isfile(fasta_file):
+        os.remove(fasta_file)
     return response
