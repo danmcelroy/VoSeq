@@ -24,5 +24,5 @@ class ResultTest(TestCase):
         res = Results(['CP100-10', 'CP100-11'], ['COI'])
         res.get_datasets()
 
-        expected = '>Melitaea_diamina_CP100-10 [org=Melitaea diamina] [Specimen-voucher=CP100-10] [note=cytochrome oxidase c subunit I gene, partial cds.] [Lineage=]\nWAGMIGTSLSLIIRTELGNPSFLI\n'
+        expected = '>Melitaea_diamina_CP100-10 [org=Melitaea diamina] [Specimen-voucher=CP100-10] [note=cytochrome oxidase c subunit I gene, partial cds.] [Lineage=]\nWAGMIGTSLSLIIRTELGNPSFLIGDDQIYNTIVTAHAFIMIFFMVMPIMIGGFGNWLVPLMLGAPDMAFPRMNYMSFWLLPPSLILLISSSIVENGAGTGWTVYPPLSSNIAHSGASVDLAIFSLHLAGISSILGAINFITTIINMRINNMSYDQMPLFVWAVGITALLLLLSLPVLAGAITMLLTDRNLNTSFFDSCGGGD\n'
         self.assertEqual(expected, res.protein)
