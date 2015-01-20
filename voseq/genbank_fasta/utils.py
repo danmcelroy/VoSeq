@@ -75,7 +75,13 @@ class Results(object):
                         continue
 
                     if s.accession.strip() != '':
-                        self.items_with_accession.append((code, gene_code, s.accession))
+                        self.items_with_accession.append(
+                            {
+                                'voucher_code': code,
+                                'gene_code': gene_code,
+                                'accession': s.accession,
+                            },
+                        )
                     else:
                         seq_id = v.genus + '_' + v.species + '_' + code
                         seq_description = '[org=' + v.genus + ' ' + v.species + ']'
