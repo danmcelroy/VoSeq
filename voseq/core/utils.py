@@ -20,10 +20,22 @@ def get_version_stats():
 
 def strip_question_marks(seq):
     """Having too many ambiguous characters will mess up DNA translation.
-    """
-    seq = re.sub('^\?+', '', seq)
-    seq = re.sub('\?+$', '', seq)
 
+    :returns sequence and number of ambiguous bases removed at start.
+    """
+    removed = 0
+    seq = seq.upper()
+
+    res = re.search('^(\?+)', seq)
+    if res:
+        removed += len(res.groups()[0])
+    seq = re.sub('^\?+', '', seq)
+
+    res = re.search('^(N+)', seq)
+    if res:
+        removed += len(res.groups()[0])
     seq = re.sub('^N+', '', seq)
+
+    seq = re.sub('\?+$', '', seq)
     seq = re.sub('N+$', '', seq)
-    return seq
+    return seq, removed
