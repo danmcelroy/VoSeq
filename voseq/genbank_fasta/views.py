@@ -31,12 +31,10 @@ def results(request):
 
         if form.is_valid():
             cleaned_data = form.cleaned_data
-            print(cleaned_data)
 
             voucher_codes = utils.get_voucher_codes(cleaned_data)
             gene_codes = utils.get_gene_codes(cleaned_data)
 
-            print(voucher_codes, gene_codes)
             res = utils.Results(voucher_codes, gene_codes)
             res.get_datasets()
             items_with_accession = res.items_with_accession
