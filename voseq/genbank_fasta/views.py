@@ -2,6 +2,7 @@ import json
 
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 
 from core.utils import get_version_stats
 from .forms import GenBankFastaForm
@@ -46,7 +47,9 @@ def results(request):
                           {
                               'items_with_accession': items_with_accession,
                               'fasta': fasta,
+                              'fasta_file': res.fasta_file,
                               'protein': protein,
+                              'protein_file': res.protein_file,
                               'version': version,
                               'stats': stats,
                           },
@@ -61,3 +64,9 @@ def results(request):
                           )
 
     return HttpResponseRedirect('/genbank_fasta/')
+
+
+def serve_file(request, file_name):
+    response = HttpResponse(open(file_name, 'r').read(), content_type='application/text')
+    response['Content-Disposition'] = 'attachment; filename=voseq_genbank.fasta'
+    return response
