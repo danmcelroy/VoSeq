@@ -80,7 +80,7 @@ class Results(object):
                         seq_description += ' [Lineage=]'
                         seq_seq = s.sequences
 
-                        # DNA sequences
+                        # # DNA sequences
                         seq_seq = utils.strip_question_marks(seq_seq)[0]
                         if '?' in seq_seq or 'N' in seq_seq.upper():
                             seq_obj = Seq(seq_seq, IUPAC.ambiguous_dna)
@@ -90,9 +90,33 @@ class Results(object):
                         self.fasta += '>' + seq_id + ' ' + seq_description + '\n'
                         self.fasta += str(seq_obj) + '\n'
 
-                        # Protein sequences
-                        start_translation = int(g.reading_frame) - 1
-                        seq_seq = utils.strip_question_marks(s.sequences)[0]
+                        # # Protein sequences
+                        seq_seq, removed = utils.strip_question_marks(s.sequences)
+
+                        if int(g.reading_frame) == 1:
+                            if removed % 3 == 0:
+                                start_translation = 0
+                            if removed % 3 == 1:
+                                start_translation = 2
+                            if removed % 3 == 2:
+                                start_translation = 1
+
+                        if int(g.reading_frame) == 2:
+                            if removed % 3 == 0:
+                                start_translation = 1
+                            if removed % 3 == 1:
+                                start_translation = 0
+                            if removed % 3 == 2:
+                                start_translation = 2
+
+                        if int(g.reading_frame) == 3:
+                            if removed % 3 == 0:
+                                start_translation = 2
+                            if removed % 3 == 1:
+                                start_translation = 1
+                            if removed % 3 == 2:
+                                start_translation = 0
+
                         if '?' in seq_seq or 'N' in seq_seq.upper():
                             seq_obj = Seq(seq_seq[start_translation:], IUPAC.ambiguous_dna)
                         else:
