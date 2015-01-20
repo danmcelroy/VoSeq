@@ -1,4 +1,5 @@
 import json
+import uuid
 
 from Bio.Seq import Seq
 from Bio.Alphabet import IUPAC
@@ -45,8 +46,11 @@ class Results(object):
         self.voucher_codes = voucher_codes
         self.gene_codes = gene_codes
         self.items_with_accession = []
+        self.guid = self.make_guid()
         self.fasta = ''
         self.protein = ''
+        self.fasta_file = 'fasta_' + self.guid + '.fasta'
+        self.protein_file = 'prot_' + self.guid + '.fasta'
 
     def get_datasets(self):
         """Queries sequences and creates FASTA, protein strings and list of
@@ -125,3 +129,6 @@ class Results(object):
 
                         self.protein += '>' + seq_id + ' ' + seq_description + '\n'
                         self.protein += str(prot_sequence) + '\n'
+
+    def make_guid(self):
+        return uuid.uuid4().hex
