@@ -78,24 +78,26 @@ class Results(object):
                         seq_description += ' [Specimen-voucher=' + v.code + ']'
                         seq_description += ' [note=' + g.description + ' gene, partial cds.]'
                         seq_description += ' [Lineage=]'
+                        seq_seq = s.sequences
 
                         # DNA sequences
-                        s.sequences = utils.strip_question_marks(s.sequences)
-                        if '?' in s.sequences or 'N' in s.sequences.upper():
-                            seq_sequence = Seq(s.sequences, IUPAC.ambiguous_dna)
+                        seq_seq = utils.strip_question_marks(seq_seq)[0]
+                        if '?' in seq_seq or 'N' in seq_seq.upper():
+                            seq_obj = Seq(seq_seq, IUPAC.ambiguous_dna)
                         else:
-                            seq_sequence = Seq(s.sequences, IUPAC.unambiguous_dna)
+                            seq_obj = Seq(seq_seq, IUPAC.unambiguous_dna)
 
                         self.fasta += '>' + seq_id + ' ' + seq_description + '\n'
-                        self.fasta += str(seq_sequence) + '\n'
+                        self.fasta += str(seq_obj) + '\n'
 
                         # Protein sequences
                         start_translation = int(g.reading_frame) - 1
-                        if '?' in s.sequences or 'N' in s.sequences.upper():
-                            seq_sequence = Seq(s.sequences[start_translation:], IUPAC.ambiguous_dna)
+                        seq_seq = utils.strip_question_marks(s.sequences)[0]
+                        if '?' in seq_seq or 'N' in seq_seq.upper():
+                            seq_obj = Seq(seq_seq[start_translation:], IUPAC.ambiguous_dna)
                         else:
-                            seq_sequence = Seq(s.sequences[start_translation:], IUPAC.unambiguous_dna)
-                        prot_sequence = seq_sequence.translate(table=g.genetic_code)
+                            seq_obj = Seq(seq_seq[start_translation:], IUPAC.unambiguous_dna)
+                        prot_sequence = seq_obj.translate(table=g.genetic_code)
 
                         self.protein += '>' + seq_id + ' ' + seq_description + '\n'
                         self.protein += str(prot_sequence) + '\n'
