@@ -60,10 +60,10 @@ class TestGenBankFasta(TestCase):
                                  'taxonset': 1,
                              }
                              )
-        res = re.search('fasta_.+\.fasta', c.content)
+        res = re.search('(fasta_[0-9a-z]+\.fasta)', str(c.content))
         fasta_filename = res.groups()[0]
-        d = self.client.get('/genbank_fasta/results/')
-        self.assertEqual(200, 'fasta_asfsfdfdf.fasta', res.groups()[0])
+        d = self.client.get('/genbank_fasta/results/' + fasta_filename + '/')
+        self.assertEqual(200, d.status_code)
 
     def test_results_get(self):
         c = self.client.get('/genbank_fasta/results/')
