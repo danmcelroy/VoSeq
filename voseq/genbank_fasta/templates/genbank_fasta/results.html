@@ -33,10 +33,11 @@
           (<a href="http://www.ncbi.nlm.nih.gov/Sequin/">http://www.ncbi.nlm.nih.gov/Sequin/</a>)
         </h3>
 
-        <button type="submit" class="btn btn-info" id="submit_button">
-          <i class="fa fa-download"></i>
-          Download nucleotide file
-        </button>
+        <a href="/genbank_fasta/results/{{ fasta_file }}">
+          <button class="btn btn-info">
+            <i class="fa fa-download"></i>
+            Download nucleotide file
+           </button></a>
         <br />
         <br />
         <div class="panel panel-primary" style="min-width: 790px;">
@@ -62,10 +63,11 @@
           protein and identify the introns.
         </h3>
 
-        <button type="submit" class="btn btn-info" id="submit_button">
+        <a href="/genbank_fasta/results/{{ protein_file }}">
+        <button class="btn btn-info">
           <i class="fa fa-download"></i>
           Download protein file
-        </button>
+        </button></a>
         <br />
         <br />
         <div class="panel panel-primary" style="min-width: 790px;">
