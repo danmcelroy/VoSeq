@@ -1,4 +1,5 @@
 import json
+import os
 import uuid
 
 from Bio.Seq import Seq
@@ -49,8 +50,15 @@ class Results(object):
         self.guid = self.make_guid()
         self.fasta = ''
         self.protein = ''
-        self.fasta_file = 'fasta_' + self.guid + '.fasta'
-        self.protein_file = 'prot_' + self.guid + '.fasta'
+        self.cwd = os.path.dirname(__file__)
+        self.fasta_file = os.path.join(self.cwd,
+                                       'fasta_files',
+                                       'fasta_' + self.guid + '.fasta',
+                                       )
+        self.protein_file = os.path.join(self.cwd,
+                                         'fasta_files',
+                                         'prot_' + self.guid + '.fasta',
+                                         )
 
     def get_datasets(self):
         """Queries sequences and creates FASTA, protein strings and list of
@@ -135,6 +143,12 @@ class Results(object):
 
                         self.protein += '>' + seq_id + ' ' + seq_description + '\n'
                         self.protein += str(prot_sequence) + '\n'
+
+        with open(self.fasta_file, 'w') as handle:
+            handle.write(self.fasta)
+
+        with open(self.protein_file, 'w') as handle:
+            handle.write(self.protein)
 
     def make_guid(self):
         return uuid.uuid4().hex
