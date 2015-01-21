@@ -1,0 +1,48 @@
+# appveyor file:
+# http://www.appveyor.com/docs/appvevor-yml
+
+# version: {branch}
+
+# branches to build
+branches:
+  # whitelist
+  only:
+    - master
+
+  except:
+    - gh-pages
+
+# Do not build on tags (GitHub only)
+skip_tags: true
+
+build: false
+
+# environment variables
+environment:
+  matrix:
+    - PYTHON: "C:/Python34"
+
+# enable service required for build/tests
+services:
+  - postgresql          # start PostgreSQL 9.3 service
+  - elasticsearch
+
+init:
+  - "ECHO %PYTHON%"
+  - ps: "ls C:/Python*"
+
+# scripts that run after cloning repository
+install:
+  - pip install -r requirements/dev.txt
+
+# scripts to run before build
+before_build:
+  - echo "Fetching and installing BLAST"
+  - wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.2.30/ncbi-blast-2.2.30+-x64-linux.tar.gz
+  - tar -zxvf ncbi-blast-2.2.30+-x64-linux.tar.gz | tail
+  - export PATH="${TRAVIS_BUILD_DIR}/ncbi-blast-2.2.30+/bin:$PATH"
+
+# to run your custom scripts instead of automatic tests
+test_script:
+  - coverage run --source voseq voseq/manage.py test -v 2 core public_interface blast_local blast_local_full blast_ncbi blast_new stats view_genes genbank_fasta --settings=voseq.settings.base
+
