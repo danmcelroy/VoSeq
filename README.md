@@ -1,5 +1,8 @@
-[![Build Status](https://travis-ci.org/carlosp420/VoSeq.svg)](https://travis-ci.org/carlosp420/VoSeq)
 [![Coverage Status](https://img.shields.io/coveralls/carlosp420/VoSeq.svg)](https://coveralls.io/r/carlosp420/VoSeq?branch=master)
+
+Windows    | Linux
+---------- | --------
+[![Build status](https://ci.appveyor.com/api/projects/status/0ba440vjw8811845/branch/master?svg=true)](https://ci.appveyor.com/project/carlosp420/voseq/branch/master) | [![Build Status](https://travis-ci.org/carlosp420/VoSeq.svg)](https://travis-ci.org/carlosp420/VoSeq)
 
 # VoSeq is being rewritten
 We are rebuilding VoSeq from scratch. We decided to migrate from PHP to Python
