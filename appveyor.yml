@@ -33,7 +33,10 @@ init:
 
 # scripts that run after cloning repository
 install:
-  - pip install -r requirements/dev.txt
+  - ps: (new-object net.webclient).DownloadFile('https://raw.github.com/pypa/pip/master/contrib/get-pip.py', 'C:/get-pip.py')
+  - "%PYTHON%/python.exe C:/get-pip.py"
+  - "%PYTHON%/Scripts/pip.exe install -e ."
+  - "%PYTHON%/Scripts/pip.exe install -r requirements/dev.txt"
 
 # scripts to run before build
 before_build:
