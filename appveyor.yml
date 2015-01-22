@@ -37,8 +37,8 @@ install:
   - "%PYTHON%/python.exe C:/get-pip.py"
   - "%PYTHON%/Scripts/pip.exe install -r requirements/dev-win.txt"
   - echo "Fetching psycopg2-win"
-  - ps: (new-object net.webclient).DownloadFile('http://www.stickpeople.com/projects/python/win-psycopg/2.5.4/psycopg2-2.5.4.win32-py3.4-pg9.3.5-release.exe')
-  - "%PYTHON%/Scripts/easy_install.exe psycopg2-2.5.4.win32-py3.4-pg9.3.5-release.exe"
+  - ps: (new-object net.webclient).DownloadFile('http://www.stickpeople.com/projects/python/win-psycopg/2.5.4/psycopg2-2.5.4.win32-py3.4-pg9.3.5-release.exe', 'C:/get-psycopg2.py')
+  - "%PYTHON%/python.exe C:/get-psycopg2.py"
 
 # scripts to run before build
 before_build:
