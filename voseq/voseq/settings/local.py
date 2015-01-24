@@ -8,7 +8,7 @@ from .base import *
 DEBUG = True
 TEMPLATE_DEBUG = True
 
-SECRETS_FILE = os.path.join(BASE_DIR, '..', '..', 'config.json')
+SECRETS_FILE = os.path.join(BASE_DIR, '..', '..', '..', 'config.json')
 
 with open(SECRETS_FILE) as f:
     secrets = json.loads(f.read())
