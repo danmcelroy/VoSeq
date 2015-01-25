@@ -589,12 +589,12 @@ class ParseXML(object):
             item = self.clean_value(item, 'extractionTube')
             item = self.clean_value(item, 'extractor')
 
-            Voucher.objects.create(**item)
+            Vouchers.objects.create(**item)
         if self.verbosity != 0:
             print("Uploading table `public_interface_vouchers`")
 
         for item in self.table_flickr_images_items:
-            FlickrImage.objects.create(**item)
+            FlickrImages.objects.create(**item)
         if self.verbosity != 0:
             print("Uploading table `public_interface_flickrimages`")
 
