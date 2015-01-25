@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/carlosp420/VoSeq.svg)](https://travis-ci.org/carlosp420/VoSeq)
 [![Coverage Status](https://img.shields.io/coveralls/carlosp420/VoSeq.svg)](https://coveralls.io/r/carlosp420/VoSeq?branch=master)
 
 Windows    | Linux
@@ -29,11 +28,13 @@ cd /path/to/VoSeq
 pip install -r requirements/dev.txt
 ```
  
-Download and install PostgreSQL. For macOSX users we recommend to do it by downloading the Postgres.app from http://postgresapp.com
+Download and install PostgreSQL. For macOSX users we recommend to do it by
+downloading the Postgres.app from http://postgresapp.com
 
 Download and install `elasticsearch` from here: http://www.elasticsearch.org/overview/elkdownloads/
 (In Linux, you can install the `.deb` file directly by running: ```~$ apt-get install elasticsearch```).
-The bin directory of elasticsearch should be added automatically to your PATH. If not, add the following line to your `.profile` (Linux) or `.bash_profile` (macOSX) file:
+The bin directory of elasticsearch should be added automatically to your PATH.
+If not, add the following line to your `.profile` (Linux) or `.bash_profile` (macOSX) file:
 
 ```shell
 export PATH="$PATH:/path/to/elasticsearch/bin/"
@@ -90,7 +91,8 @@ and write in the following content:
 ```
 
 # Migrate VoSeq database
-If you have a previous version of Voseq as server and want to migrate, you need to dump your MySQL database into a XML file:
+If you have a previous version of Voseq as server and want to migrate, you need
+to dump your MySQL database into a XML file:
 
 ```shell
 cd /path/to/Voseq/
@@ -150,9 +152,12 @@ cd /path/to/Voseq
 make serve
 ```
 
-In macOSX if you do not have the `service` command, run elasticsearch in the background and then start the server (\*):
+In macOSX if you do not have the `service` command, run `elasticsearch` in the 
+background and then start the server (\*):
 
-\* *Note that if you did not check to Start Postgres automatically after login, you first have to go to Applications and start it manually from there by clicking on the Postgres.app. Do this before running the server.*
+\* *Note that if you did not check to Start Postgres automatically after login,
+you first have to go to Applications and start it manually from there by clicking
+on the Postgres.app. Do this before running the server.*
 
 ```shell
 elasticsearch -d
@@ -162,10 +167,13 @@ make serve
 
 
 
-Finally, open this URL in your web browser and you are ready to start using VoSeq:  `http://127.0.0.1:8000/`
+Finally, open this URL in your web browser and you are ready to start using 
+VoSeq:  `http://127.0.0.1:8000/`
 
 # Administrate the server
-Optionally if you want to add items/vouchers to your database interactively, you need to create an administration account. Run the following command and provide the requested information:
+Optionally if you want to add items/vouchers to your database interactively,
+you need to create an administration account. Run the following command and
+provide the requested information:
 
 ```shell
 make admin
