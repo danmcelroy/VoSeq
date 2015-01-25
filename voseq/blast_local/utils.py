@@ -12,7 +12,7 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 import pytz
 
-from public_interface.models import Sequence
+from public_interface.models import Sequences
 
 
 class BLAST(object):
@@ -95,10 +95,10 @@ class BLAST(object):
         time_creation_blast = modification_times[0].replace(tzinfo=pytz.utc)
 
         # get time creation time edited sequences in our database
-        time_created_queryset = Sequence.objects.all().order_by('-time_created')[:1]
+        time_created_queryset = Sequences.objects.all().order_by('-time_created')[:1]
         time_created = time_created_queryset[0].time_created
 
-        time_edited_queryset = Sequence.objects.all().order_by('-time_edited')[:1]
+        time_edited_queryset = Sequences.objects.all().order_by('-time_edited')[:1]
         time_edited = time_edited_queryset[0].time_edited
 
         if time_created > time_creation_blast or time_edited > time_creation_blast:
@@ -119,7 +119,7 @@ class BLAST(object):
                                          'db',
                                          self.gene_code + "_seqs.fas",
                                          )
-            queryset = Sequence.objects.all().filter(gene_code=self.gene_code)
+            queryset = Sequences.objects.all().filter(gene_code=self.gene_code)
 
             my_records = []
             for i in queryset:
