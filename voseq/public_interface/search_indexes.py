@@ -1,6 +1,6 @@
 from haystack import indexes
 
-from .models import Vouchers
+from .models import Voucher
 
 
 class VouchersIndex(indexes.SearchIndex, indexes.Indexable):
@@ -39,7 +39,7 @@ class VouchersIndex(indexes.SearchIndex, indexes.Indexable):
     notes = indexes.EdgeNgramField(model_attr='notes', null=True)
 
     def get_model(self):
-        return Vouchers
+        return Voucher
 
     # TODO change to time_edited, time_created with auto in tables and migrate_db script
     """
