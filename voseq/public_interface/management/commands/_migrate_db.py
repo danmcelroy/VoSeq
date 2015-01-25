@@ -139,6 +139,7 @@ class ParseXML(object):
             item['geneset_creator'] = row.find("./field/[@name='geneset_creator']").text
             item['geneset_description'] = row.find("./field/[@name='geneset_description']").text
             item['geneset_list'] = row.find("./field/[@name='geneset_list']").text
+            # item['geneset_id'] = row.find("./field/[@name='geneset_id']").text
             self.table_genesets_items.append(item)
 
     def import_table_genesets(self):
@@ -370,6 +371,7 @@ class ParseXML(object):
             item['taxonset_creator'] = row.find("./field/[@name='taxonset_creator']").text
             item['taxonset_description'] = row.find("./field/[@name='taxonset_description']").text
             item['taxonset_list'] = row.find("./field/[@name='taxonset_list']").text
+            # item['taxonset_id'] = row.find("./field/[@name='taxonset_id']").text
             self.table_taxonsets_items.append(item)
 
     def import_table_taxonsets(self):
@@ -587,12 +589,12 @@ class ParseXML(object):
             item = self.clean_value(item, 'extractionTube')
             item = self.clean_value(item, 'extractor')
 
-            Vouchers.objects.create(**item)
+            Voucher.objects.create(**item)
         if self.verbosity != 0:
             print("Uploading table `public_interface_vouchers`")
 
         for item in self.table_flickr_images_items:
-            FlickrImages.objects.create(**item)
+            FlickrImage.objects.create(**item)
         if self.verbosity != 0:
             print("Uploading table `public_interface_flickrimages`")
 

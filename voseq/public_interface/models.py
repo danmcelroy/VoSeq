@@ -65,6 +65,13 @@ class TaxonSets(models.Model):
     taxonset_creator = models.CharField(max_length=75, blank=False)
     taxonset_description = models.CharField(max_length=140, blank=True)
     taxonset_list = models.TextField()
+    
+    def save(self, *args, **kwargs):
+        self.taxonset_list = json.dumps(self.taxonset_list)
+        super(TaxonSet, self).save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.taxonset_name
 
     def save(self, *args, **kwargs):
         self.taxonset_list = json.dumps(self.taxonset_list)
@@ -74,7 +81,7 @@ class TaxonSets(models.Model):
         return self.taxonset_name
 
 
-class Vouchers(models.Model):
+class Voucher(models.Model):
     MALE = 'm'
     FEMALE = 'f'
     LARVA = 'l'
@@ -153,8 +160,8 @@ class Vouchers(models.Model):
     timestamp = models.DateTimeField(null=True)  # TODO change this to date_created = models.DateField(auto_now_add=True)
 
 
-class Sequences(models.Model):
-    code = models.ForeignKey(Vouchers, help_text='Save as lower case.')
+class Sequence(models.Model):
+    code = models.ForeignKey(Voucher, help_text='Save as lower case.')
     gene_code = models.CharField(max_length=100)
     sequences = models.TextField(blank=True)
     accession = models.CharField(max_length=100, blank=True)
@@ -165,16 +172,16 @@ class Sequences(models.Model):
     genbank = models.NullBooleanField()
 
 
-class Primers(models.Model):
-    for_sequence = models.ForeignKey(Sequences, help_text='relation to Sequences table with reference '
+class Primer(models.Model):
+    for_sequence = models.ForeignKey(Sequence, help_text='relation to Sequence table with reference '
                                                           'for code and gene_code.')
     primer_f = models.CharField(max_length=100, blank=True)
     primer_r = models.CharField(max_length=100, blank=True)
 
 
-class FlickrImages(models.Model):
+class FlickrImage(models.Model):
     voucher = models.ForeignKey(
-        Vouchers,
+        Voucher,
         help_text='Relation with id of voucher. Save as lower case.',
     )
     voucherImage = models.URLField(help_text="URLs of the Flickr page.")
