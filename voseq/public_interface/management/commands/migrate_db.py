@@ -22,6 +22,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if options['dumpfile'] is None:
             error_msg = 'Enter name of database dump file as argument.' \
+                        ' "python manage.py migrate_db --dumpfile=dump.xml --settings=voseq.settings.local' \
                         'This file can be obtained from your MySQL database using this command:' \
                         ' "mysqdump --xml database > dump.xml"',
             raise CommandError(error_msg)
@@ -44,3 +45,9 @@ class Command(BaseCommand):
 
         parser.import_table_primers()
         parser.save_table_primers_to_db()
+
+        parser.save_table_genes_to_db()
+
+        parser.save_table_genesets_to_db()
+
+        parser.save_table_taxonsets_to_db()
