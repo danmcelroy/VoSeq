@@ -1,12 +1,17 @@
+import json
 from django.db import models
 
 
-class Genes(models.Model):
-    gene_code = models.CharField(max_length=255)
-    genetic_code = models.PositiveSmallIntegerField(blank=True)
-    length = models.PositiveSmallIntegerField()
+class Gene(models.Model):
+    gene_code = models.CharField(max_length=100)
+    genetic_code = models.PositiveSmallIntegerField(
+        blank=True,
+        null=True,
+        help_text='Translation table',
+    )
+    length = models.PositiveSmallIntegerField(blank=True, null=True)
     description = models.CharField(max_length=255, blank=True)
-    reading_frame = models.PositiveSmallIntegerField()
+    reading_frame = models.PositiveSmallIntegerField(blank=True, null=True)
     notes = models.TextField(blank=True)
     aligned = models.CharField(
         max_length=6, choices=(
@@ -26,18 +31,27 @@ class Genes(models.Model):
         default='notset',
     )
     gene_type = models.CharField(max_length=255, blank=True)
-
     time_created = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.gene_code
 
 
-class GeneSets(models.Model):
-    geneset_name = models.CharField(max_length=75, default=None)
-    geneset_creator = models.CharField(max_length=75, default=None)
-    geneset_description = models.CharField(max_length=100, default=None, blank=True)
-    geneset_list = models.TextField(default=None)
+class GeneSet(models.Model):
+    geneset_name = models.CharField(max_length=75, blank=False)
+    geneset_creator = models.CharField(max_length=75, blank=False)
+    geneset_description = models.CharField(max_length=140, blank=True)
+    geneset_list = models.TextField(blank=False)
+    
+    def save(self, *args, **kwargs):
+        self.geneset_list = json.dumps(self.geneset_list)
+        super(GeneSet, self).save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.geneset_name
 
 
-class Members(models.Model):
+class Member(models.Model):
     firstname = models.CharField(max_length=100)
     lastname = models.CharField(max_length=100)
     login = models.CharField(max_length=100)
@@ -45,14 +59,21 @@ class Members(models.Model):
     admin = models.BinaryField(default=None)
 
 
-class TaxonSets(models.Model):
-    taxonset_name = models.CharField(max_length=50)
-    taxonset_creator = models.CharField(max_length=75)
-    taxonset_description = models.CharField(max_length=100)
+class TaxonSet(models.Model):
+    taxonset_name = models.CharField(max_length=75, blank=False)
+    taxonset_creator = models.CharField(max_length=75, blank=False)
+    taxonset_description = models.CharField(max_length=140, blank=True)
     taxonset_list = models.TextField()
+    
+    def save(self, *args, **kwargs):
+        self.taxonset_list = json.dumps(self.taxonset_list)
+        super(TaxonSet, self).save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.taxonset_name
 
 
-class Vouchers(models.Model):
+class Voucher(models.Model):
     MALE = 'm'
     FEMALE = 'f'
     LARVA = 'l'
@@ -131,8 +152,8 @@ class Vouchers(models.Model):
     timestamp = models.DateTimeField(null=True)  # TODO change this to date_created = models.DateField(auto_now_add=True)
 
 
-class Sequences(models.Model):
-    code = models.ForeignKey(Vouchers, help_text='Save as lower case.')
+class Sequence(models.Model):
+    code = models.ForeignKey(Voucher, help_text='Save as lower case.')
     gene_code = models.CharField(max_length=100)
     sequences = models.TextField(blank=True)
     accession = models.CharField(max_length=100, blank=True)
@@ -143,16 +164,16 @@ class Sequences(models.Model):
     genbank = models.NullBooleanField()
 
 
-class Primers(models.Model):
-    for_sequence = models.ForeignKey(Sequences, help_text='relation to Sequences table with reference '
+class Primer(models.Model):
+    for_sequence = models.ForeignKey(Sequence, help_text='relation to Sequence table with reference '
                                                           'for code and gene_code.')
     primer_f = models.CharField(max_length=100, blank=True)
     primer_r = models.CharField(max_length=100, blank=True)
 
 
-class FlickrImages(models.Model):
+class FlickrImage(models.Model):
     voucher = models.ForeignKey(
-        Vouchers,
+        Voucher,
         help_text='Relation with id of voucher. Save as lower case.',
     )
     voucherImage = models.URLField(help_text="URLs of the Flickr page.")
