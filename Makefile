@@ -1,21 +1,26 @@
-serve: index
-	cd voseq; python manage.py runserver --settings=voseq.settings.local
+admin:
+	python voseq/manage.py createsuperuser
+
+serve:  index stats
+	python voseq/manage.py runserver
 
 migrations:
-	cd voseq; python manage.py makemigrations --settings=voseq.settings.local
-	cd voseq; python manage.py migrate --settings=voseq.settings.local
+	python voseq/manage.py makemigrations
+	python voseq/manage.py migrate
 
 import:
-	python voseq/manage.py migrate_db --dumpfile=test_db_dump.xml --settings=voseq.settings.local
+	python voseq/manage.py migrate_db --dumpfile=test_db_dump.xml
 
 index:
-	cd voseq; python manage.py rebuild_index --settings=voseq.settings.local
+	python voseq/manage.py rebuild_index
 
-coverage:
-	rm -rf htmlcov .coverage
-	coverage run --source voseq voseq/manage.py test -v 2 public_interface blast_local blast_local_full blast_ncbi --settings=voseq.settings.base
+stats:
+	python voseq/manage.py create_stats
+
+coverage: test
 	coverage report -m
 	coverage html
 
 test:
-	coverage run --source voseq voseq/manage.py test -v 2 public_interface blast_local blast_local_full blast_ncbi --settings=voseq.settings.base
+	rm -rf htmlcov .coverage
+	coverage run --source voseq voseq/manage.py test -v 2 core public_interface blast_local blast_local_full blast_ncbi blast_new stats view_genes genbank_fasta

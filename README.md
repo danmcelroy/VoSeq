@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/carlosp420/VoSeq.svg)](https://travis-ci.org/carlosp420/VoSeq)
+ [![Build Status](https://travis-ci.org/carlosp420/VoSeq.svg)](https://travis-ci.org/carlosp420/VoSeq)
 [![Coverage Status](https://img.shields.io/coveralls/carlosp420/VoSeq.svg)](https://coveralls.io/r/carlosp420/VoSeq?branch=master)
 
 # VoSeq is being rewritten
@@ -15,7 +15,7 @@ More details about the migration can be found in our [discussion list](https://g
 VoSeq 2.0.0 is the future!
 
 # Configuration
- 
+
 Clone/download Voseq to your prefer directory.
 
 You need to install some Python packages as dependencies:
@@ -24,7 +24,7 @@ You need to install some Python packages as dependencies:
 cd /path/to/VoSeq
 pip install -r requirements/dev.txt
 ```
- 
+
 Download and install PostgreSQL. For macOSX users we recommend to do it by downloading the Postgres.app from http://postgresapp.com
 
 Download and install `elasticsearch` from here: http://www.elasticsearch.org/overview/elkdownloads/
@@ -34,7 +34,7 @@ The bin directory of elasticsearch should be added automatically to your PATH. I
 ```shell
 export PATH="$PATH:/path/to/elasticsearch/bin/"
 ```
- 
+
 
 Create a PostgreSQL database:
 
@@ -43,14 +43,14 @@ sudo su postgres
 psql
 postgres=# create database voseq;
 ```
- 
- In macOSX if you are using the Postgres.app, it my be enough to run:
- 
- ```shell
- psql
- user.name=# CREATE DATABASE voseq;
- ```
- 
+
+In macOSX if you are using the Postgres.app, it my be enough to run:
+
+```shell
+psql
+user.name=# CREATE DATABASE voseq;
+```
+
 Create a `config.json` file to keep the database variables:
 ```shell
 cd /path/to/Voseq
@@ -59,15 +59,15 @@ touch config.json
 and write in the following content:
 
 ```javascript
- {
- "SECRET_KEY": "create_a_secret_key",
- "DB_USER": "role_name",
- "DB_PASS": "create_a_database_password",
- "DB_NAME": "voseq",
- "DB_PORT": "5432",
- "DB_HOST": "localhost",
- "GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key"
- }
+{
+"SECRET_KEY": "create_a_secret_key",
+"DB_USER": "role_name",
+"DB_PASS": "create_a_database_password",
+"DB_NAME": "voseq",
+"DB_PORT": "5432",
+"DB_HOST": "localhost",
+"GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key"
+}
 ```
 
 # Migrate VoSeq database
@@ -122,24 +122,33 @@ make import
 ```
 
 # Start the server
- 
- In Linux start elasticsearch as a service and then start the server:
- 
- ```shell
- sudo service elasticsearch start
- cd /path/to/Voseq
- make serve
- ```
- 
- In macOSX if you do not have the `service` command, run elasticsearch in the background and then start the server (\*):
- 
- ```shell
- elasticsearch -d
- cd /path/to/Voseq
- make serve
- ```
-\* *Note that if you did not check to Start Postgres automatically after login, you first have to go to Applications and start it manually from there by clicking on the Postgres.app*
+
+In Linux start elasticsearch as a service and then start the server:
+
+```shell
+sudo service elasticsearch start
+cd /path/to/Voseq
+make serve
+```
+
+In macOSX if you do not have the `service` command, run elasticsearch in the background and then start the server (\*):
+
+\* *Note that if you did not check to Start Postgres automatically after login, you first have to go to Applications and start it manually from there by clicking on the Postgres.app. Do this before running the server.*
+
+```shell
+elasticsearch -d
+cd /path/to/Voseq
+make serve
+```
+
 
 
 Finally, open this URL in your web browser and you are ready to start using VoSeq:  `http://127.0.0.1:8000/`
+
+# Administrate the server
+For easynes while adding items/vouchers to your database you need to create a administration account
+
+```shell
+make administrator
+```
 
