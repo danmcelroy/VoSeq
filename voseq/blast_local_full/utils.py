@@ -6,7 +6,7 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
 from blast_local.utils import BLAST
-from public_interface.models import Sequences
+from public_interface.models import Sequence
 
 
 class BLASTFull(BLAST):
@@ -61,13 +61,14 @@ class BLASTFull(BLAST):
                                          'db',
                                          'full_db_seqs.fas',
                                          )
-            queryset = Sequences.objects.all()
+            queryset = Sequence.objects.all()
 
             my_records = []
             for i in queryset:
                 id = i.code_id + '|' + i.gene_code
                 seq = self.strip_question_marks(i.sequences)
-                seq_record = SeqRecord(Seq(seq),
-                                       id=id)
-                my_records.append(seq_record)
+                if seq != '':
+                    seq_record = SeqRecord(Seq(seq),
+                                           id=id)
+                    my_records.append(seq_record)
             SeqIO.write(my_records, self.seq_file, "fasta")
