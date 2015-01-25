@@ -7,8 +7,8 @@ from django.test import TestCase
 from django.conf import settings
 
 from blast_local.utils import BLAST
-from public_interface.models import Vouchers
-from public_interface.models import Sequences
+from public_interface.models import Voucher
+from public_interface.models import Sequence
 
 
 class BlastLocalTest(TestCase):
@@ -105,10 +105,10 @@ class BlastLocalTest(TestCase):
         self.blast.save_seqs_to_file()
         self.blast.create_blast_db()
 
-        b = Vouchers.objects.get(code='CP100-10')
+        b = Voucher.objects.get(code='CP100-10')
 
         tomorrow = datetime.datetime.now() + datetime.timedelta(days=1)
-        Sequences.objects.filter(code=b, gene_code='COI').update(
+        Sequence.objects.filter(code=b, gene_code='COI').update(
             time_edited=tomorrow
         )
         result = self.blast.is_blast_db_up_to_date()

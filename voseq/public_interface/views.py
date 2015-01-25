@@ -30,7 +30,7 @@ def browse(request):
     # TODO improve this ugly hack. Use select_related or prefetch_related
     vouchers_with_images = []
     for i in queryset:
-        q = FlickrImages.objects.filter(voucher=i.code)
+        q = FlickrImage.objects.filter(voucher=i.code)
         if q.count() > 0:
             vouchers_with_images.append(i.code)
 
@@ -83,13 +83,13 @@ def show_voucher(request, voucher_code):
     version, stats = get_version_stats()
 
     try:
-        voucher_queryset = Vouchers.objects.get(code__iexact=voucher_code)
-    except Vouchers.DoesNotExist:
+        voucher_queryset = Voucher.objects.get(code__iexact=voucher_code)
+    except Voucher.DoesNotExist:
         raise Http404
 
-    images_queryset = FlickrImages.objects.filter(voucher=voucher_code)
+    images_queryset = FlickrImage.objects.filter(voucher=voucher_code)
 
-    seqs_queryset = Sequences.objects.filter(code=voucher_code).order_by('gene_code')
+    seqs_queryset = Sequence.objects.filter(code=voucher_code).order_by('gene_code')
     for item in seqs_queryset:
         seq = item.sequences
         item.sequence_length = len(seq)
@@ -112,13 +112,13 @@ def show_sequence(request, voucher_code, gene_code):
     version, stats = get_version_stats()
 
     try:
-        queryset = Vouchers.objects.get(code__iexact=voucher_code)
-    except Vouchers.DoesNotExist:
+        queryset = Voucher.objects.get(code__iexact=voucher_code)
+    except Voucher.DoesNotExist:
         raise Http404
 
-    seqs_queryset = Sequences.objects.get(code=voucher_code, gene_code=gene_code)
-    images_queryset = FlickrImages.objects.filter(voucher=voucher_code)
-    primers_queryset = Primers.objects.filter(for_sequence=seqs_queryset)
+    seqs_queryset = Sequence.objects.get(code=voucher_code, gene_code=gene_code)
+    images_queryset = FlickrImage.objects.filter(voucher=voucher_code)
+    primers_queryset = Primer.objects.filter(for_sequence=seqs_queryset)
 
     return render(request, 'public_interface/show_sequence.html',
                   {
