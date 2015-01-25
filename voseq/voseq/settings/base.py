@@ -16,40 +16,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
-
-
-###################### FOR LOCAL DB CUSTOMIZATION #####################
-
-import json
-from django.core.exceptions import ImproperlyConfigured
-
-SECRET_FILE = os.path.join(BASE_DIR, '..', 'config.json')
-
-with open(SECRET_FILE) as f:
-    secrets = json.loads(f.read())
-
-
-def get_secret(setting, secrets=secrets):
-    try:
-        return secrets[setting]
-    except KeyError:
-        error_msg = "Set the {0} environment variable".format(setting)
-        raise ImproperlyConfigured(error_msg)
-
-#######################################################################
-
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_secret("SECRET_KEY")
+SECRET_KEY = 'hola'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-TEMPLATE_DEBUG = True
-
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates'),
-)
 
 ALLOWED_HOSTS = []
 
@@ -67,13 +36,10 @@ INSTALLED_APPS = (
 
     # added
     'haystack',
-    'debug_toolbar',
 
     # my apps
     'core',
     'public_interface',
-    'core',
-    'stats',
     'blast_local',
     'blast_local_full',
     'blast_ncbi',
@@ -109,23 +75,18 @@ HAYSTACK_CONNECTIONS = {
         'INDEX_NAME': 'haystack',
     }
 }
-
 HAYSTACK_DEFAULT_OPERATOR = 'AND'
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'test_voseq',
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': get_secret('DB_NAME'),
-        'USER': get_secret('DB_USER'),
-        'PASSWORD': get_secret('DB_PASS'),
-        'HOST': get_secret('DB_HOST'),
-        'PORT': get_secret('DB_PORT'),
-    }
-}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
@@ -149,15 +110,10 @@ STATICFILES_DIRS = (
     BASE_DIR,
 )
 
-# Get your Google API key so that you can show Google Maps in your voucher pages
+# Get your API key from here:
 # https://developers.google.com/maps/documentation/javascript/tutorial#api_key
-
-GOOGLE_MAPS_API_KEY = get_secret("GOOGLE_MAPS_API_KEY")
-
+# so that you can show Google Maps in your voucher pages.
+GOOGLE_MAPS_API_KEY = 'fake api key'
 
 # This VoSeq version
 VERSION = '2.0.0'
-
-
-
-
