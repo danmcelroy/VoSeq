@@ -146,9 +146,9 @@ make serve
 Finally, open this URL in your web browser and you are ready to start using VoSeq:  `http://127.0.0.1:8000/`
 
 # Administrate the server
-For easynes while adding items/vouchers to your database you need to create a administration account
+Optionally if you want to add items/vouchers to your database interactively, you need to create an administration account. Run the following command and provide the requested information:
 
 ```shell
-make administrator
+make admin
 ```
 
