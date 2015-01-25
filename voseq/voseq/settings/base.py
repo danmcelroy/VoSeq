@@ -77,12 +77,6 @@ HAYSTACK_CONNECTIONS = {
 }
 HAYSTACK_DEFAULT_OPERATOR = 'AND'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'test_voseq',
-    }
-}
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
