@@ -23,4 +23,6 @@ coverage: test
 
 test:
 	rm -rf htmlcov .coverage
-	coverage run --source voseq voseq/manage.py test -v 2 core public_interface blast_local blast_local_full blast_ncbi blast_new stats view_genes genbank_fasta --settings=voseq.settings.testing
+	coverage run --source voseq voseq/manage.py test -v 2 core public_interface \
+	    blast_local blast_local_full blast_ncbi blast_new stats view_genes      \
+	    genbank_fasta --settings=voseq.settings.testing
