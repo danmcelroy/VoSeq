@@ -6,7 +6,7 @@ python:
 services:
     - elasticsearch
 
-install: pip install -r requirements/dev.txt
+install: pip install -r requirements/testing.txt
 
 before_install:
     - echo "Fetching and installing BLAST"
