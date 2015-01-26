@@ -1,4 +1,4 @@
-[![Coverage Status](https://img.shields.io/coveralls/carlosp420/VoSeq.svg)](https://coveralls.io/r/carlosp420/VoSeq?branch=master)
+[![Dependency Status](https://gemnasium.com/carlosp420/VoSeq.svg)](https://gemnasium.com/carlosp420/VoSeq) [![Coverage Status](https://img.shields.io/coveralls/carlosp420/VoSeq.svg)](https://coveralls.io/r/carlosp420/VoSeq?branch=master)
 
 Windows    | Linux
 ---------- | --------
