@@ -22,3 +22,38 @@ body {
     margin-right: auto;
     clear: both;
 }
+
+#id_file_format {
+    list-style-type: none;
+}
+
+#id_positions li {
+    display: inline-block;
+    padding-right: 15px;
+}
+
+#id_partition_by_positions li {
+    display: inline-block;
+    padding-right: 15px;
+}
+
+#id_degen_translations li {
+    display: inline-block;
+    padding-right: 15px;
+}
+
+#id_taxon_names li {
+    display: inline-block;
+    padding-right: 15px;
+}
+
+#id_exclude li {
+    display: inline-block;
+    padding-right: 15px;
+}
+
+#id_introns li {
+    display: inline-block;
+    padding-right: 15px;
+}
+
