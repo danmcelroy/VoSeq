@@ -31,17 +31,20 @@ def get_gene_codes(cleaned_data):
 
 class Results(object):
     """Returns:
-    * List of items with accession numbers that will not be included in
-      FASTA or protein files (code, gene_code, accession).
-    * FASTA dataset as string.
-    * Protein dataset as string.
+
+    Attributes:
+        * List of items with accession numbers that will not be included in FASTA or protein files (code, gene_code, accession).
+        * FASTA dataset as string.
+        * Protein dataset as string.
 
     Usage:
-        res = Results(voucher_codes, gene_codes)
-        res.get_datasets()
-        fasta_dataset = res.fasta
-        protein_dataset = res.protein
-        items_with_accession = res.items_with_accession
+
+        >>> res = Results(voucher_codes, gene_codes)
+        >>> res.get_datasets()
+        >>> fasta_dataset = res.fasta
+        >>> protein_dataset = res.protein
+        >>> items_with_accession = res.items_with_accession
+
     """
     def __init__(self, voucher_codes, gene_codes):
         self.voucher_codes = voucher_codes

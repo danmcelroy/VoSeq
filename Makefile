@@ -1,6 +1,29 @@
+.PHONY: clean-pyc clean-build docs
+
 help:
+	@echo "docs - build documentation in HTML format"
 	@echo "serve - runserver for development"
 	@echo "test - use testing settings and SQlite3 database"
+
+clean: clean-build clean-pyc
+
+clean-build:
+	rm -fr build/
+	rm -fr dist/
+	rm -fr *.egg-info
+
+clean-pyc:
+	find . -name '*.pyc' -exec rm -f {} +
+	find . -name '*.pyo' -exec rm -f {} +
+	find . -name '*~' -exec rm -f {} +
+
+docs:
+	rm -f docs/voseq.*
+	rm -rf docs/_build
+	rm -f docs/modules.rst
+	sphinx-apidoc -o docs/ voseq
+	$(MAKE) -C docs clean
+	$(MAKE) -C docs html
 
 serve: index stats
 	python voseq/manage.py runserver --settings=voseq.settings.local

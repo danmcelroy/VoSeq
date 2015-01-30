@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 
 from core.utils import get_version_stats
 from .forms import CreateDatasetForm
+from .utils import CreateDataset
 
 
 def index(request):
@@ -23,10 +24,12 @@ def results(request):
         print(request.POST)
         form = CreateDatasetForm(request.POST)
 
+        dataset_creator = CreateDataset()
+
         if form.is_valid():
-            print(form)
             return render(request, 'create_dataset/results.html',
                           {
+                              'dataset': dataset,
                               'version': version,
                               'stats': stats,
                           },
