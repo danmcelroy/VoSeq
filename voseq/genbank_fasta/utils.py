@@ -11,37 +11,22 @@ from public_interface.models import Genes
 from core import utils
 
 
-def get_voucher_codes(cleaned_data):
-    voucher_codes = []
-    if cleaned_data['taxonset'] is not None:
-        voucher_codes = json.loads(cleaned_data['taxonset'].taxonset_list)
-    if cleaned_data['voucher_codes'] != '':
-        voucher_codes += cleaned_data['voucher_codes'].splitlines()
-    return set(voucher_codes)
-
-
-def get_gene_codes(cleaned_data):
-    gene_codes = []
-    if cleaned_data['geneset'] is not None:
-        gene_codes = json.loads(cleaned_data['geneset'].geneset_list)
-    if len(cleaned_data['gene_codes']) > 0:
-        gene_codes += [i.gene_code for i in cleaned_data['gene_codes']]
-    return set(gene_codes)
-
-
 class Results(object):
     """Returns:
-    * List of items with accession numbers that will not be included in
-      FASTA or protein files (code, gene_code, accession).
-    * FASTA dataset as string.
-    * Protein dataset as string.
+
+    Attributes:
+        * List of items with accession numbers that will not be included in FASTA or protein files (code, gene_code, accession).
+        * FASTA dataset as string.
+        * Protein dataset as string.
 
     Usage:
-        res = Results(voucher_codes, gene_codes)
-        res.get_datasets()
-        fasta_dataset = res.fasta
-        protein_dataset = res.protein
-        items_with_accession = res.items_with_accession
+
+        >>> res = Results(voucher_codes, gene_codes)
+        >>> res.get_datasets()
+        >>> fasta_dataset = res.fasta
+        >>> protein_dataset = res.protein
+        >>> items_with_accession = res.items_with_accession
+
     """
     def __init__(self, voucher_codes, gene_codes):
         self.voucher_codes = voucher_codes
