@@ -2,36 +2,26 @@ HISTORY
 =======
 
 2.0.0 (2015-01-xx)
-------------------
+~~~~~~~~~~~~~~~~~~
 
--  rewrite project in Python using Django, PostgreSQL and elasticsearch.
-
-Progress
-~~~~~~~~
-
--  Browse page.
--  Voucher page.
--  Sequences page.
--  Local BLAST and against NCBI Genbank.
+- rewrite project in Python using Django, PostgreSQL and elasticsearch.
+- Browse page.
+- Voucher page.
+- Sequences page.
+- Local BLAST and against NCBI Genbank.
+- Create GenBank fasta.
+- View genes.
 
 Version 1.7.X
 -------------
 
--  2014-11-13 Carlos Peña
-
-   ::
-
-       When making voucher tables there were many repetitive columns, fixed.
-
--  2014-08-19 Carlos Peña
-
-   ::
-
-       Upated flickr_upload_from_directory file to batch upload photos into
-       Flickr from local directory. One file at a time.
-
-       Updated phpflickr api file to use CURLFile when uploading files using
-       curl. @file in curl_set_opt is deprecated.
+-  2014-11-13 Carlos Peña:
+    * When making voucher tables there were many repetitive columns, fixed.
+-  2014-08-19 Carlos Peña:
+    * Upated flickr_upload_from_directory file to batch upload photos into
+      Flickr from local directory. One file at a time.
+    * Updated phpflickr api file to use CURLFile when uploading files using
+      curl. @file in curl_set_opt is deprecated.
 
 Version 1.7.4
 -------------
