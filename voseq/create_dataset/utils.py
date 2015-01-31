@@ -30,7 +30,7 @@ class CreateDataset(object):
         self.voucher_codes = get_voucher_codes(self.cleaned_data)
         self.gene_codes = get_gene_codes(self.cleaned_data)
         self.create_seq_objs()
-        return self.seq_objs
+        return self.from_seq_objs_to_fasta()
 
     def create_seq_objs(self):
         """Generate a list of sequence objects. Also takes into account the
@@ -63,4 +63,31 @@ class CreateDataset(object):
                 seq = Seq(s.sequences)
                 seq_obj = SeqRecord(seq)
                 seq_obj.id = code
+                seq_obj.name = gene_code
                 self.seq_objs.append(seq_obj)
+
+    def from_seq_objs_to_fasta(self):
+        """Take a list of BioPython's sequence objects and return a FASTA string
+
+        Returns:
+            The FASTA string will contain the gene_code at the top as if it were
+            another FASTA gene sequence.
+
+        """
+        fasta_str = []
+        append = fasta_str.append
+
+        this_gene = None
+        for seq_record in self.seq_objs:
+            if this_gene is None:
+                this_gene = seq_record.name
+                seq_str = '>' + this_gene + '\n' + '--------------------'
+                append(seq_str)
+            if this_gene != seq_record.name:
+                this_gene = seq_record.name
+                seq_str = '>' + this_gene + '\n' + '--------------------'
+                append(seq_str)
+            seq_str = '>' + seq_record.id + '\n' + str(seq_record.seq)
+            append(seq_str)
+
+        return '\n'.join(fasta_str)
