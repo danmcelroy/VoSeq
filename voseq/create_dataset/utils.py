@@ -4,7 +4,8 @@ class CreateDataset(object):
     for list of codes and genes.
 
     Attributes:
-        dataset_str: output dataset to pass to users.
+        ``dataset_str``: output dataset to pass to users.
+
     """
     def __init__(self):
         self.dataset_str = self.create_dataset()
