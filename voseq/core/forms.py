@@ -1,5 +1,7 @@
 from django import forms
 
+from core.utils import get_voucher_codes
+from core.utils import get_gene_codes
 from public_interface.models import Genes
 from public_interface.models import GeneSets
 from public_interface.models import TaxonSets
@@ -54,7 +56,6 @@ class BaseDatasetForm(forms.Form):
 
         geneset = cleaned_data.get("geneset")
         gene_codes = cleaned_data.get("gene_codes")
-        print(gene_codes)
 
         if taxonset is None and voucher_codes.strip() == '':
             raise forms.ValidationError("You need to enter at least some "
