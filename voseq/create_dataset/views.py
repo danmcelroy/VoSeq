@@ -29,7 +29,7 @@ def results(request):
         if form.is_valid():
             return render(request, 'create_dataset/results.html',
                           {
-                              'dataset': dataset,
+                              'dataset': dataset_creator.dataset_str,
                               'version': version,
                               'stats': stats,
                           },
