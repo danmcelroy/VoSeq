@@ -21,10 +21,12 @@ def get_voucher_codes(cleaned_data):
         set of voucher codes, no dupes, dropped unwanted.
     """
     voucher_codes = []
+    print(">>json loaded")
     if cleaned_data['taxonset'] is not None:
         voucher_codes = json.loads(cleaned_data['taxonset'].taxonset_list)
     if cleaned_data['voucher_codes'] != '':
         voucher_codes += cleaned_data['voucher_codes'].splitlines()
+    print(voucher_codes)
 
     voucher_codes_clean = []
     for i in voucher_codes:
