@@ -106,6 +106,29 @@ and write in the following content:
     "GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key"
     }
 
+On Windows
+----------
+* Download and install PostgreSQL from here http://www.enterprisedb.com/products-services-training/pgdownload.
+* Instalar psycopg2 psycopg2-2.5.4.win-amd64-py3.4-pg9.3.5-release.exe
+* Download and install Python3.4 (Windows x86-64 MSI installer) from here: https://www.python.org/downloads/windows/ 
+* It is recommended to create a virtualenvironment. Open a Command Prompt and
+  use the command `pip install virtualenvwrapper`
+* Create the environment with the command: `c:\Python34\Scripts\virtualenv.exe
+  .`
+* Download and install git: http://git-scm.com/download/win
+* Get a copy of VoSeq from GitHub. You will need to open a Git Bash console
+  which behaves similarly to a Linux console.
+  
+    * First, go to your home folder: `cd /c/Users/Your Name/`
+    * Clone the VoSeq repository: where you will keep and type `git clone https://github.com/carlosp420/VoSeq.git`
+
+* Enter to the VoSeq folder and install the requirements:
+
+.. code:: shell
+
+    cd VoSeq
+    pip install -r requirements/testing.txt
+
 Migrate VoSeq database
 ======================
 
