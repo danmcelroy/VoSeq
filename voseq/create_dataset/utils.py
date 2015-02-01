@@ -20,7 +20,7 @@ class CreateDataset(object):
     def __init__(self, cleaned_data):
         print(">>>>>>_init", cleaned_data)
         self.errors = []
-        self.seq_objs = []
+        self.seq_objs = dict()
         self.cleaned_data = cleaned_data
         self.dataset_str = self.create_dataset()
         self.voucher_codes = None
@@ -46,13 +46,18 @@ class CreateDataset(object):
         """
         all_seqs = Sequences.objects.all().values('code_id', 'gene_code', 'sequences').order_by('code_id')
         for s in all_seqs:
-            if s['code_id'].lower() in self.voucher_codes and \
-                    s['gene_code'].lower() in self.gene_codes:
+            code = s['code_id'].lower()
+            gene_code = s['gene_code'].lower()
+            if code in self.voucher_codes and gene_code in self.gene_codes:
                 seq = Seq(s['sequences'])
                 seq_obj = SeqRecord(seq)
-                seq_obj.id = s['code_id']
-                seq_obj.name = s['gene_code']
-                self.seq_objs.append(seq_obj)
+                seq_obj.id = code
+                seq_obj.name = gene_code
+
+                if gene_code not in self.seq_objs:
+                    self.seq_objs[gene_code] = []
+                else:
+                    self.seq_objs[gene_code].append(seq_obj)
 
     def from_seq_objs_to_fasta(self):
         """Take a list of BioPython's sequence objects and return a FASTA string
@@ -62,20 +67,22 @@ class CreateDataset(object):
             another FASTA gene sequence.
 
         """
+        print(self.seq_objs)
         fasta_str = []
         append = fasta_str.append
 
-        this_gene = None
-        for seq_record in self.seq_objs:
-            if this_gene is None:
-                this_gene = seq_record.name
-                seq_str = '>' + this_gene + '\n' + '--------------------'
+        for gene_code in self.seq_objs:
+            this_gene = None
+            for seq_record in self.seq_objs[gene_code]:
+                if this_gene is None:
+                    this_gene = seq_record.name
+                    seq_str = '>' + this_gene + '\n' + '--------------------'
+                    append(seq_str)
+                if this_gene != seq_record.name:
+                    this_gene = seq_record.name
+                    seq_str = '>' + this_gene + '\n' + '--------------------'
+                    append(seq_str)
+                seq_str = '>' + seq_record.id.upper() + '\n' + str(seq_record.seq)
                 append(seq_str)
-            if this_gene != seq_record.name:
-                this_gene = seq_record.name
-                seq_str = '>' + this_gene + '\n' + '--------------------'
-                append(seq_str)
-            seq_str = '>' + seq_record.id + '\n' + str(seq_record.seq)
-            append(seq_str)
 
         return '\n'.join(fasta_str)
