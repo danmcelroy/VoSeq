@@ -67,7 +67,6 @@ class CreateDataset(object):
             another FASTA gene sequence.
 
         """
-        print(self.seq_objs)
         fasta_str = []
         append = fasta_str.append
 
