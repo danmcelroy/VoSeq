@@ -44,25 +44,27 @@ class CreateDataset(object):
             list of sequence objects as produced by BioPython.
 
         """
-        for gene_code in self.gene_codes:
-            for code in self.voucher_codes:
+        all_seqs = Sequences.objects.all().values('code_id', 'gene_code', 'sequences')
+        for s in all_seqs:
+            if s['code_id'] in self.voucher_codes and \
+                    s['gene_code'] in self.gene_codes:
+                """
                 try:
                     c = Vouchers.objects.get(code=code)
                 except Vouchers.DoesNotExist:
                     msg = 'Could not find voucher %s' % code
                     self.errors.append(msg)
                     continue
-
-                s = Sequences.objects.filter(code=c, gene_code=gene_code).values('sequences')
                 if len(s) < 1:
                     msg = 'Could not find sequence %s of code %s' % (gene_code, code)
                     self.errors.append(msg)
                     continue
+                """
 
-                seq = Seq(s[0]['sequences'])
+                seq = Seq(s['sequences'])
                 seq_obj = SeqRecord(seq)
-                seq_obj.id = code
-                seq_obj.name = gene_code
+                seq_obj.id = s['code_id']
+                seq_obj.name = s['gene_code']
                 self.seq_objs.append(seq_obj)
 
     def from_seq_objs_to_fasta(self):
