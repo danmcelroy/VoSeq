@@ -381,6 +381,8 @@ class ParseXML(object):
         for item in self.table_taxonsets_items:
             if item['taxonset_description'] is None:
                 item['taxonset_description'] = ''
+            if item['taxonset_creator'] is None:
+                item['taxonset_creator'] = ''
             if item['taxonset_list'] is not None:
                 item['taxonset_list'] = item['taxonset_list'].split(',')
 
