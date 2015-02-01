@@ -129,6 +129,10 @@ On Windows
     cd VoSeq
     pip install -r requirements/testing.txt
 
+* If you get the message `error: Unable to find vcvarsall.bat` you will need to install
+  a recent version of Visual Studio http://www.visualstudio.com/. Warning, you will need
+  up to 10GB of space in your disk!
+
 Migrate VoSeq database
 ======================
 
