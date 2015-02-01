@@ -53,14 +53,13 @@ class CreateDataset(object):
                     self.errors.append(msg)
                     continue
 
-                try:
-                    s = Sequences.objects.get(code=c, gene_code=gene_code)
-                except Sequences.DoesNotExist:
+                s = Sequences.objects.filter(code=c, gene_code=gene_code).values('sequences')
+                if len(s) < 1:
                     msg = 'Could not find sequence %s of code %s' % (gene_code, code)
                     self.errors.append(msg)
                     continue
 
-                seq = Seq(s.sequences)
+                seq = Seq(s[0]['sequences'])
                 seq_obj = SeqRecord(seq)
                 seq_obj.id = code
                 seq_obj.name = gene_code
