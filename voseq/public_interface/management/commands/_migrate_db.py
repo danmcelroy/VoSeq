@@ -25,7 +25,7 @@ from public_interface.models import TaxonSets
 
 TZINFO = pytz.utc
 
-if settings.TESTING:
+if settings.TESTING is True:
     TESTING = True
 else:
     TESTING = False
@@ -429,6 +429,10 @@ class ParseXML(object):
             item = dict()
             item['code'] = row.find("./field/[@name='code']").text
             item['orden'] = row.find("./field/[@name='orden']").text
+            try:
+                item['superfamily'] = row.find("./field/[@name='superfamily']").text
+            except AttributeError:
+                item['superfamily'] = ''
             item['family'] = row.find("./field/[@name='family']").text
             item['subfamily'] = row.find("./field/[@name='subfamily']").text
             item['tribe'] = row.find("./field/[@name='tribe']").text
