@@ -6,8 +6,7 @@ Needs an XML file with the database dump from MySQL:
 """
 import codecs
 import datetime
-import dataset
-import json
+import pytz
 import re
 import sys
 import xml.etree.ElementTree as ET
@@ -19,6 +18,9 @@ from public_interface.models import Primers
 from public_interface.models import Genes
 from public_interface.models import GeneSets
 from public_interface.models import TaxonSets
+
+
+TZINFO = pytz.utc
 
 
 class ParseXML(object):
@@ -78,7 +80,7 @@ class ParseXML(object):
 
         for item in self.table_genes_items:
             try:
-                date_obj = datetime.datetime.strptime(item['timestamp'], '%Y-%m-%d %H:%M:%S')
+                date_obj = datetime.datetime.strptime(item['timestamp'], '%Y-%m-%d %H:%M:%S').replace(tzinfo=TZINFO)
             except ValueError as e:
                 date_obj = None
                 if self.verbosity != 0:
@@ -292,7 +294,7 @@ class ParseXML(object):
             del item['geneCode']
 
             try:
-                date_obj = datetime.datetime.strptime(item['time_created'], '%Y-%m-%d')
+                date_obj = datetime.datetime.strptime(item['time_created'], '%Y-%m-%d').replace(tzinfo=TZINFO)
             except ValueError as e:
                 date_obj = None
                 if self.verbosity != 0:
@@ -309,7 +311,7 @@ class ParseXML(object):
             item['time_created'] = date_obj
 
             try:
-                date_obj = datetime.datetime.strptime(item['time_edited'], '%Y-%m-%d')
+                date_obj = datetime.datetime.strptime(item['time_edited'], '%Y-%m-%d').replace(tzinfo=TZINFO)
             except ValueError:
                 date_obj = None
                 if self.verbosity != 0:
@@ -501,7 +503,7 @@ class ParseXML(object):
 
             if item['timestamp'] is not None:
                 try:
-                    date_obj = datetime.datetime.strptime(item['timestamp'], '%Y-%m-%d %H:%M:%S')
+                    date_obj = datetime.datetime.strptime(item['timestamp'], '%Y-%m-%d %H:%M:%S').replace(tzinfo=TZINFO)
                 except ValueError:
                     date_obj = None
                 item['timestamp'] = date_obj
