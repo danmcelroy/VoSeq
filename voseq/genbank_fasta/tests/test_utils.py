@@ -44,6 +44,6 @@ class TestGenBankFastaUtils(TestCase):
 
     def test_get_voucher_codes_dropped(self):
         self.cleaned_data['voucher_codes'] = 'CP100-10\r\n--CP100-11\r\nCP100-12'
-        expected = 2
+        expected = 3
         result = get_voucher_codes(self.cleaned_data)
         self.assertEqual(expected, len(result))
