@@ -33,6 +33,8 @@ class CreateDataset(object):
         return self.from_seq_objs_to_fasta()
 
     def create_seq_objs(self):
+        print('>>>>>>>>>gene_codes', self.gene_codes)
+        print('>>>>>>>>>voucher_codes', self.voucher_codes)
         """Generate a list of sequence objects. Also takes into account the
         genes passed as geneset.
 
@@ -47,6 +49,8 @@ class CreateDataset(object):
         all_seqs = Sequences.objects.all().values('code_id', 'gene_code', 'sequences').order_by('code_id')
         for s in all_seqs:
             code = s['code_id'].lower()
+            if 'ab' in code:
+                print(code)
             gene_code = s['gene_code'].lower()
             if code in self.voucher_codes and gene_code in self.gene_codes:
                 seq = Seq(s['sequences'])
@@ -56,8 +60,7 @@ class CreateDataset(object):
 
                 if gene_code not in self.seq_objs:
                     self.seq_objs[gene_code] = []
-                else:
-                    self.seq_objs[gene_code].append(seq_obj)
+                self.seq_objs[gene_code].append(seq_obj)
 
     def from_seq_objs_to_fasta(self):
         """Take a list of BioPython's sequence objects and return a FASTA string
