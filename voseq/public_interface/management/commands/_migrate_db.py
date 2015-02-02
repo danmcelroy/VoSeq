@@ -338,12 +338,18 @@ class ParseXML(object):
                 seqs_to_insert.append(i)
             else:
                 seqs_not_to_insert.append(i)
-        for item in seqs_to_insert:
+
+        print("Uploading table `public_interface_sequences`")
+        n = len(seqs_to_insert)
+        bar = pyprind.ProgBar(n, width=70)
+        for i in range(n):
+            item = seqs_to_insert[i]
             item = self.clean_value(item, 'labPerson')
             item = self.clean_value(item, 'notes')
             item = self.clean_value(item, 'sequences')
             item = self.clean_value(item, 'accession')
             Sequences.objects.create(**item)
+            bar.update()
 
         if self.verbosity != 0:
             print("Uploading table `public_interface_sequences`")
