@@ -86,6 +86,7 @@ class CreateDatasetForm(BaseDatasetForm):
         choices=[
             ('CODE', 'Code'),
             ('ORDER', 'Order'),
+            ('SUPERFAMILY', 'Superfamily'),
             ('FAMILY', 'Family'),
             ('SUBFAMILY', 'Subfamily'),
             ('TRIBE', 'Tribe'),
