@@ -2,11 +2,10 @@ from django.test import TestCase
 from django.test.client import Client
 from django.core.management import call_command
 
-from create_dataset.utils import CreateDataset
 from public_interface.models import Genes
 
 
-class CreateDatasetTest(TestCase):
+class CreateDatasetViewsTest(TestCase):
     def setUp(self):
         args = []
         opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
@@ -23,12 +22,6 @@ class CreateDatasetTest(TestCase):
         }
 
         self.c = Client()
-
-    def test_create_dataset(self):
-        dataset_creator = CreateDataset(self.cleaned_data)
-        expected = '>CP100-11\n??TGAGCCGGTATAATTGGTACATCCCTAAGTCTTATTATTC'
-        result = dataset_creator.dataset_str
-        self.assertTrue(expected in result)
 
     def test_view_index(self):
         res = self.c.get('/create_dataset/')
