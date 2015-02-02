@@ -11,6 +11,8 @@ import re
 import sys
 import xml.etree.ElementTree as ET
 
+import pyprind
+
 from public_interface.models import Vouchers
 from public_interface.models import FlickrImages
 from public_interface.models import Sequences
@@ -565,7 +567,11 @@ class ParseXML(object):
         if self.table_vouchers_items is None:
             self.parse_table_vouchers(self.dump_string)
 
-        for item in self.table_vouchers_items:
+        print("Uploading table `public_interface_vouchers`")
+        n = len(self.table_vouchers_items)
+        bar = pyprind.ProgBar(n, width=70)
+        for i in range(n):
+            item = self.table_vouchers_items[i]
             item = self.clean_value(item, 'orden')
             item = self.clean_value(item, 'superfamily')
             item = self.clean_value(item, 'family')
@@ -594,8 +600,8 @@ class ParseXML(object):
             item = self.clean_value(item, 'extractor')
 
             Vouchers.objects.create(**item)
-        if self.verbosity != 0:
-            print("Uploading table `public_interface_vouchers`")
+
+            bar.update()
 
         for item in self.table_flickr_images_items:
             FlickrImages.objects.create(**item)
