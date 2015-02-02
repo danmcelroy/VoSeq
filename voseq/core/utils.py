@@ -30,9 +30,9 @@ def get_voucher_codes(cleaned_data):
     for i in voucher_codes:
         if re.search('^--', i):
             i_clean = re.sub('^--', '', i)
-            voucher_codes_clean.append(i_clean)
+            voucher_codes_clean.append(i_clean.lower())
         else:
-            voucher_codes_clean.append(i)
+            voucher_codes_clean.append(i.lower())
     voucher_codes_set = set(voucher_codes_clean)
 
     vouchers_to_drop = []
@@ -43,7 +43,7 @@ def get_voucher_codes(cleaned_data):
     voucher_codes_filtered = []
     for i in voucher_codes_set:
         if i not in vouchers_to_drop:
-            voucher_codes_filtered.append(i.lower())
+            voucher_codes_filtered.append(i)
     return voucher_codes_filtered
 
 
