@@ -12,6 +12,7 @@ import sys
 import xml.etree.ElementTree as ET
 
 import pyprind
+from django.conf import settings
 
 from public_interface.models import Vouchers
 from public_interface.models import FlickrImages
@@ -23,6 +24,11 @@ from public_interface.models import TaxonSets
 
 
 TZINFO = pytz.utc
+
+if settings.TESTING:
+    TESTING = True
+else:
+    TESTING = False
 
 
 class ParseXML(object):
@@ -341,7 +347,8 @@ class ParseXML(object):
 
         print("Uploading table `public_interface_sequences`")
         n = len(seqs_to_insert)
-        bar = pyprind.ProgBar(n, width=70)
+        if TESTING is False:
+            bar = pyprind.ProgBar(n, width=70)
         for i in range(n):
             item = seqs_to_insert[i]
             item = self.clean_value(item, 'labPerson')
@@ -349,7 +356,8 @@ class ParseXML(object):
             item = self.clean_value(item, 'sequences')
             item = self.clean_value(item, 'accession')
             Sequences.objects.create(**item)
-            bar.update()
+            if TESTING is False:
+                bar.update()
 
         if self.verbosity != 0:
             print("Uploading table `public_interface_sequences`")
@@ -575,7 +583,8 @@ class ParseXML(object):
 
         print("Uploading table `public_interface_vouchers`")
         n = len(self.table_vouchers_items)
-        bar = pyprind.ProgBar(n, width=70)
+        if TESTING is False:
+            bar = pyprind.ProgBar(n, width=70)
         for i in range(n):
             item = self.table_vouchers_items[i]
             item = self.clean_value(item, 'orden')
@@ -607,7 +616,8 @@ class ParseXML(object):
 
             Vouchers.objects.create(**item)
 
-            bar.update()
+            if TESTING is False:
+                bar.update()
 
         for item in self.table_flickr_images_items:
             FlickrImages.objects.create(**item)
