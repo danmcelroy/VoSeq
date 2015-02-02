@@ -23,8 +23,9 @@ class CreateDataset(object):
         self.seq_objs = dict()
         self.cleaned_data = cleaned_data
         self.dataset_str = self.create_dataset()
-        self.voucher_codes = None
-        self.gene_codes = None
+        self.voucher_codes = get_voucher_codes(cleaned_data)
+        self.gene_codes = get_gene_codes(cleaned_data)
+        self.taxon_names = cleaned_data['taxon_names']
 
     def create_dataset(self):
         self.voucher_codes = get_voucher_codes(self.cleaned_data)
@@ -33,8 +34,6 @@ class CreateDataset(object):
         return self.from_seq_objs_to_fasta()
 
     def create_seq_objs(self):
-        print('>>>>>>>>>gene_codes', self.gene_codes)
-        print('>>>>>>>>>voucher_codes', self.voucher_codes)
         """Generate a list of sequence objects. Also takes into account the
         genes passed as geneset.
 
@@ -49,8 +48,6 @@ class CreateDataset(object):
         all_seqs = Sequences.objects.all().values('code_id', 'gene_code', 'sequences').order_by('code_id')
         for s in all_seqs:
             code = s['code_id'].lower()
-            if 'ab' in code:
-                print(code)
             gene_code = s['gene_code'].lower()
             if code in self.voucher_codes and gene_code in self.gene_codes:
                 seq = Seq(s['sequences'])
@@ -88,3 +85,31 @@ class CreateDataset(object):
                 append(seq_str)
 
         return '\n'.join(fasta_str)
+
+    def get_taxon_names_for_taxa(self):
+        """Returns list of dicts: {'taxon': 'name'}
+
+        Takes list of voucher_codes and list of taxon_names from cleaned form.
+
+        Args:
+            * ``voucher_codes``
+            * ``taxon_names``
+
+        Returns:
+            List of dictionaries with data.
+
+        """
+        vouchers_with_taxon_names = []
+        append = vouchers_with_taxon_names.append
+
+        all_vouchers = Vouchers.objects.all().order_by('code').values()
+        for voucher in all_vouchers:
+            code = voucher['code'].lower()
+            if code in self.voucher_codes:
+                obj = dict()
+                for taxon_name in self.taxon_names:
+                    taxon_name = taxon_name.lower()
+                    obj[taxon_name] = voucher[taxon_name]
+                append(obj)
+
+        return vouchers_with_taxon_names
