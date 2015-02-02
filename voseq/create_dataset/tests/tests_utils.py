@@ -20,7 +20,7 @@ class CreateDatasetUtilsTest(TestCase):
             'taxonset': None,
             'voucher_codes': 'CP100-10\r\nCP100-11',
             'geneset': None,
-            'taxon_names': ['CODE', 'GENUS', 'SPECIES']
+            'taxon_names': ['CODE', 'SUPERFAMILY', 'GENUS', 'SPECIES']
         }
 
         self.c = Client()
@@ -33,8 +33,8 @@ class CreateDatasetUtilsTest(TestCase):
 
     def test_get_taxon_names_for_taxa(self):
         expected = [
-            {'code': 'CP100-10', 'genus': 'Melitaea', 'species': 'diamina'},
-            {'code': 'CP100-11', 'genus': 'Melitaea', 'species': 'diamina'},
+            {'code': 'CP100-10', 'genus': 'Melitaea', 'species': 'diamina', 'superfamily': 'Papilionoidea'},
+            {'code': 'CP100-11', 'genus': 'Melitaea', 'species': 'diamina', 'superfamily': ''},
         ]
         result = self.dataset_creator.get_taxon_names_for_taxa()
 
