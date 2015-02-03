@@ -85,7 +85,7 @@ class CreateDatasetForm(BaseDatasetForm):
         label='What info do you want in the taxon names?',
         choices=[
             ('CODE', 'Code'),
-            ('ORDER', 'Order'),
+            ('ORDEN', 'Order'),
             ('SUPERFAMILY', 'Superfamily'),
             ('FAMILY', 'Family'),
             ('SUBFAMILY', 'Subfamily'),

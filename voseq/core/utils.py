@@ -103,3 +103,79 @@ def strip_question_marks(seq):
     seq = re.sub('\?+$', '', seq)
     seq = re.sub('N+$', '', seq)
     return seq, removed
+
+
+def flatten_taxon_names_dict(dictionary):
+    """Converts a dict to string suitable for FASTA object id
+
+    Args:
+        ``dictionary``: {'code': 'CP100-10', 'orden': 'Lepidoptera'. 'genus': 'Danaus'}
+
+    Returns:
+        Flattened as string: 'CP100-10_Lepidoptera_Danaus'
+
+    """
+    out = ''
+    try:
+        out += dictionary['code'] + "_"
+    except KeyError:
+        pass
+
+    try:
+        out += dictionary['orden'] + "_"
+    except KeyError:
+        pass
+
+    try:
+        out += dictionary['superfamily'] + "_"
+    except KeyError:
+        pass
+
+    try:
+        out += dictionary['family'] + "_"
+    except KeyError:
+        pass
+
+    try:
+        out += dictionary['subfamily'] + "_"
+    except KeyError:
+        pass
+
+    try:
+        out += dictionary['tribe'] + "_"
+    except KeyError:
+        pass
+
+    try:
+        out += dictionary['subtribe'] + "_"
+    except KeyError:
+        pass
+
+    try:
+        out += dictionary['genus'] + "_"
+    except KeyError:
+        pass
+
+    try:
+        out += dictionary['species'] + "_"
+    except KeyError:
+        pass
+
+    try:
+        out += dictionary['subspecies'] + "_"
+    except KeyError:
+        pass
+
+    try:
+        out += dictionary['auctor'] + "_"
+    except KeyError:
+        pass
+
+    try:
+        out += dictionary['hostorg'] + "_"
+    except KeyError:
+        pass
+
+    out_striped = re.sub('_+', '_', out)
+    out_clean = re.sub('_$', '', out_striped)
+    return out_clean
