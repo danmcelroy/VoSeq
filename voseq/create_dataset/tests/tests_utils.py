@@ -27,15 +27,15 @@ class CreateDatasetUtilsTest(TestCase):
         self.dataset_creator = CreateDataset(cleaned_data)
 
     def test_create_dataset(self):
-        expected = '>CP100-11\n??TGAGCCGGTATAATTGGTACATCCCTAAGTCTTATTATTC'
+        expected = '>CP100-11_Lepidoptera\n??TGAGCCGGTATAATTGGTACATCCCTAAGTCTTATTATTC'
         result = self.dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
     def test_get_taxon_names_for_taxa(self):
-        expected = [
-            {'code': 'CP100-10', 'genus': 'Melitaea', 'species': 'diamina', 'superfamily': 'Papilionoidea'},
-            {'code': 'CP100-11', 'genus': 'Melitaea', 'species': 'diamina', 'superfamily': ''},
-        ]
+        expected = {
+            'cp100-10': {'code': 'CP100-10', 'genus': 'Melitaea', 'species': 'diamina', 'superfamily': 'Papilionoidea'},
+            'cp100-11': {'code': 'CP100-11', 'genus': 'Melitaea', 'species': 'diamina', 'superfamily': ''},
+        }
         result = self.dataset_creator.get_taxon_names_for_taxa()
 
         self.assertEqual(expected, result)
