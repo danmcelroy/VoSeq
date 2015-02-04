@@ -1,7 +1,10 @@
+import itertools
 import json
 import re
 
 from django.conf import settings
+
+from Bio.Seq import Seq
 
 from stats.models import Stats
 
@@ -179,3 +182,20 @@ def flatten_taxon_names_dict(dictionary):
     out_striped = re.sub('_+', '_', out)
     out_clean = re.sub('_$', '', out_striped)
     return out_clean
+
+
+def chain_and_flatten(seq1, seq2):
+    """Takes seq objects which only contain certain codon positions.
+
+    Combines the two seq objects and returns another seq object.
+
+    """
+    out = []
+    append = out.append
+
+    my_chain = itertools.zip_longest(seq1, seq2)
+    for i in itertools.chain.from_iterable(my_chain):
+        if i is not None:
+            append(i)
+
+    return Seq(''.join(out))
