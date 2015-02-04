@@ -6,6 +6,7 @@ from django.core.management import call_command
 
 from create_dataset.utils import CreateDataset
 from public_interface.models import Genes
+from public_interface.models import TaxonSets
 
 
 class CreateDatasetUtilsTest(TestCase):
@@ -49,6 +50,14 @@ class CreateDatasetUtilsTest(TestCase):
         }
         result = self.dataset_creator.get_taxon_names_for_taxa()
         self.assertEqual(expected, result)
+
+    def test_create_dataset_drop_voucher(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['voucher_codes'] = 'CP100-10\r\n--CP100-11'
+        cleaned_data['taxonset'] = TaxonSets.objects.get(taxonset_name='Erebia')
+        dataset_creator = CreateDataset(cleaned_data)
+        result = dataset_creator.dataset_str
+        self.assertTrue('CP100-11' not in result)
 
     def test_from_seq_objs_to_fasta(self):
         expected = 2706
