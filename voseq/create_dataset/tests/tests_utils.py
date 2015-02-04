@@ -1,3 +1,5 @@
+from Bio.Seq import Seq
+
 from django.test import TestCase
 from django.test.client import Client
 from django.core.management import call_command
@@ -20,7 +22,8 @@ class CreateDatasetUtilsTest(TestCase):
             'taxonset': None,
             'voucher_codes': 'CP100-10\r\nCP100-11',
             'geneset': None,
-            'taxon_names': ['CODE', 'SUPERFAMILY', 'GENUS', 'SPECIES']
+            'taxon_names': ['CODE', 'SUPERFAMILY', 'GENUS', 'SPECIES'],
+            'positions': ['ALL'],
         }
 
         self.c = Client()
@@ -49,4 +52,13 @@ class CreateDatasetUtilsTest(TestCase):
         }
         result = dataset_creator.get_taxon_names_for_taxa()
 
+        self.assertEqual(expected, result)
+
+    def test_get_sequence_based_on_codon_positions(self):
+        self.cleaned_data['positions'] = ['1st']
+        self.cleaned_data['gene_codes'] = [Genes.objects.get(gene_code='wingless')]
+        dataset_creator = CreateDataset(self.cleaned_data)
+        expected = Seq("CGGTGATAAAGCTATATGGAGACAAGATGAG")
+        sequence = Seq("ACACGTCGACTCCGGCAAGTCCACCACCACCGGTCACTTGATTTACAAATGTGGTGGTATCGACAaACGTACCATCGAGAAGTTCGAGAAGGA")
+        result = dataset_creator.get_sequence_based_on_codon_positions('wingless', sequence)
         self.assertEqual(expected, result)
