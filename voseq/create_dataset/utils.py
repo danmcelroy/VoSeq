@@ -24,13 +24,13 @@ class CreateDataset(object):
         print(">>>>>>_init", cleaned_data)
         self.errors = []
         self.seq_objs = dict()
+        self.codon_positions = cleaned_data['positions']
         self.cleaned_data = cleaned_data
         self.voucher_codes = get_voucher_codes(cleaned_data)
         self.gene_codes = get_gene_codes(cleaned_data)
+        self.reading_frames = self.get_reading_frames()
         self.taxon_names = cleaned_data['taxon_names']
         self.dataset_str = self.create_dataset()
-        self.codon_positions = cleaned_data['positions']
-        self.reading_frames = self.get_reading_frames()
 
     def create_dataset(self):
         self.voucher_codes = get_voucher_codes(self.cleaned_data)
@@ -86,7 +86,8 @@ class CreateDataset(object):
                     this_gene = seq_record.name
                     seq_str = '>' + this_gene + '\n' + '--------------------'
                     append(seq_str)
-                seq_str = '>' + seq_record.id + '\n' + str(seq_record.seq)
+                seq_record_seq_str = str(self.get_sequence_based_on_codon_positions(this_gene, seq_record.seq))
+                seq_str = '>' + seq_record.id + '\n' + seq_record_seq_str
                 append(seq_str)
 
         return '\n'.join(fasta_str)
@@ -137,7 +138,7 @@ class CreateDataset(object):
 
         :param gene_code: as lower case
         :param seq: as BioPython seq object.
-        :return: sequence as string with codon positions removed, if needed.
+        :return: sequence as Seq object with codon positions requested by user.
 
         Example:
             If reading frame is 2: ATGGGG becomes TGGGG. Then the sequence is
