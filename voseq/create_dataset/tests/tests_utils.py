@@ -28,9 +28,10 @@ class CreateDatasetUtilsTest(TestCase):
 
         self.c = Client()
         self.dataset_creator = CreateDataset(self.cleaned_data)
+        self.maxDiff = None
 
     def test_create_dataset(self):
-        expected = '>CP100-10_Papilionoidea_Melitaea_diamina'
+        expected = '>coi\n--------------------\n>CP100-10_Papilionoidea_Melitaea_diamina'
         result = self.dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
@@ -47,8 +48,12 @@ class CreateDatasetUtilsTest(TestCase):
             'cp100-11': {'code': 'CP100-11', 'genus': 'Melitaea', 'species': 'diamina', 'superfamily': ''},
         }
         result = self.dataset_creator.get_taxon_names_for_taxa()
-
         self.assertEqual(expected, result)
+
+    def test_from_seq_objs_to_fasta(self):
+        expected = 2706
+        result = self.dataset_creator.from_seq_objs_to_fasta()
+        self.assertEqual(expected, len(result))
 
     def test_get_taxon_names_for_taxa_additional_fields(self):
         self.cleaned_data['taxon_names'] = ['SUPERFAMILY']

@@ -82,10 +82,6 @@ class CreateDataset(object):
                     this_gene = seq_record.name
                     seq_str = '>' + this_gene + '\n' + '--------------------'
                     append(seq_str)
-                if this_gene != seq_record.name:
-                    this_gene = seq_record.name
-                    seq_str = '>' + this_gene + '\n' + '--------------------'
-                    append(seq_str)
                 seq_record_seq_str = str(self.get_sequence_based_on_codon_positions(this_gene, seq_record.seq))
                 seq_str = '>' + seq_record.id + '\n' + seq_record_seq_str
                 append(seq_str)
