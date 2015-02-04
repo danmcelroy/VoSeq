@@ -4,6 +4,8 @@ from Bio.SeqRecord import SeqRecord
 from core.utils import get_voucher_codes
 from core.utils import get_gene_codes
 from core.utils import flatten_taxon_names_dict
+from core.utils import chain_and_flatten
+from public_interface.models import Genes
 from public_interface.models import Sequences
 from public_interface.models import Vouchers
 
@@ -22,9 +24,11 @@ class CreateDataset(object):
         print(">>>>>>_init", cleaned_data)
         self.errors = []
         self.seq_objs = dict()
+        self.codon_positions = cleaned_data['positions']
         self.cleaned_data = cleaned_data
         self.voucher_codes = get_voucher_codes(cleaned_data)
         self.gene_codes = get_gene_codes(cleaned_data)
+        self.reading_frames = self.get_reading_frames()
         self.taxon_names = cleaned_data['taxon_names']
         self.dataset_str = self.create_dataset()
 
@@ -78,11 +82,8 @@ class CreateDataset(object):
                     this_gene = seq_record.name
                     seq_str = '>' + this_gene + '\n' + '--------------------'
                     append(seq_str)
-                if this_gene != seq_record.name:
-                    this_gene = seq_record.name
-                    seq_str = '>' + this_gene + '\n' + '--------------------'
-                    append(seq_str)
-                seq_str = '>' + seq_record.id + '\n' + str(seq_record.seq)
+                seq_record_seq_str = str(self.get_sequence_based_on_codon_positions(this_gene, seq_record.seq))
+                seq_str = '>' + seq_record.id + '\n' + seq_record_seq_str
                 append(seq_str)
 
         return '\n'.join(fasta_str)
@@ -113,3 +114,68 @@ class CreateDataset(object):
                 vouchers_with_taxon_names[code] = obj
 
         return vouchers_with_taxon_names
+
+    def get_reading_frames(self):
+        """
+
+        :return: dict of gene_code: reading_frame. If not found, flag warning.
+        """
+        reading_frames = dict()
+        genes = Genes.objects.all().values('gene_code', 'reading_frame')
+        for gene in genes:
+            gene_code = gene['gene_code'].lower()
+            if gene_code in self.gene_codes:
+                reading_frames[gene_code] = gene['reading_frame']
+        return reading_frames
+
+    def get_sequence_based_on_codon_positions(self, gene_code, seq):
+        """Puts the sequence in frame, by deleting base pairs at the begining
+        of the sequence if the reading frame is not 1:
+
+        :param gene_code: as lower case
+        :param seq: as BioPython seq object.
+        :return: sequence as Seq object with codon positions requested by user.
+
+        Example:
+            If reading frame is 2: ATGGGG becomes TGGGG. Then the sequence is
+            processed to extract the codon positions requested by the user.
+
+        """
+        if 'ALL' in self.codon_positions:
+            return seq
+
+        reading_frame = int(self.reading_frames[gene_code.lower()]) - 1
+        seq = seq[reading_frame:]
+
+        # This is the BioPython way to get codon positions
+        # http://biopython.org/DIST/docs/tutorial/Tutorial.html#htoc19
+        first_position = seq[0::3]
+        second_position = seq[1::3]
+        third_position = seq[2::3]
+
+        if '1st' in self.codon_positions \
+                and '2nd' not in self.codon_positions \
+                and '3rd' not in self.codon_positions:
+            return first_position
+
+        if '2nd' in self.codon_positions \
+                and '1st' not in self.codon_positions \
+                and '3rd' not in self.codon_positions:
+            return second_position
+
+        if '3rd' in self.codon_positions \
+                and '1st' not in self.codon_positions \
+                and '2nd' not in self.codon_positions:
+            return third_position
+
+        if '1st' in self.codon_positions and '2nd' in self.codon_positions \
+                and '3rd' not in self.codon_positions:
+            return chain_and_flatten(first_position, second_position)
+
+        if '1st' in self.codon_positions and '3rd' in self.codon_positions \
+                and '2nd' not in self.codon_positions:
+            return chain_and_flatten(first_position, third_position)
+
+        if '2nd' in self.codon_positions and '3rd' in self.codon_positions \
+                and '1st' not in self.codon_positions:
+            return chain_and_flatten(second_position, third_position)
