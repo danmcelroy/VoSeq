@@ -24,16 +24,16 @@ class CreateDatasetForm(BaseDatasetForm):
         required=False,
     )
 
-    positions = forms.ChoiceField(
+    positions = forms.MultipleChoiceField(
         label='Positions',
-        help_text='codon positions',
+        help_text='Codon positions to keep and write into datasets',
         choices=[
             ('ALL', 'all'),
             ('1st', '1st'),
             ('2nd', '2nd'),
             ('3rd', '3rd'),
         ],
-        widget=forms.RadioSelect(),
+        widget=forms.CheckboxSelectMultiple(),
         initial='ALL',
         required=True,
     )
