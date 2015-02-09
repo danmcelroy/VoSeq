@@ -465,7 +465,7 @@ class ParseXML(object):
             item['voucherCode'] = row.find("./field/[@name='voucherCode']").text
             item['flickr_id'] = row.find("./field/[@name='flickr_id']").text
             item['determinedBy'] = row.find("./field/[@name='determinedBy']").text
-            item['author'] = row.find("./field/[@name='author']").text
+            item['author'] = row.find("./field/[@name='auctor']").text
             item['timestamp'] = row.find("./field/[@name='timestamp']").text
             self.table_vouchers_items.append(item)
 
