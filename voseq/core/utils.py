@@ -170,7 +170,7 @@ def flatten_taxon_names_dict(dictionary):
         pass
 
     try:
-        out += dictionary['auctor'] + "_"
+        out += dictionary['author'] + "_"
     except KeyError:
         pass
 
