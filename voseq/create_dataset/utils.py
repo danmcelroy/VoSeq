@@ -102,7 +102,7 @@ class CreateDataset(object):
         all_vouchers = Vouchers.objects.all().order_by('code').values('code', 'orden', 'superfamily',
                                                                       'family', 'subfamily', 'tribe',
                                                                       'subtribe', 'genus', 'species',
-                                                                      'subspecies', 'auctor', 'hostorg',)
+                                                                      'subspecies', 'author', 'hostorg',)
         for voucher in all_vouchers:
             code = voucher['code'].lower()
             if code in self.voucher_codes:
