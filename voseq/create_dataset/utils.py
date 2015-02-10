@@ -25,6 +25,7 @@ class CreateDataset(object):
         self.errors = []
         self.seq_objs = dict()
         self.codon_positions = cleaned_data['positions']
+        self.partition_by_positions = cleaned_data['partition_by_positions']
         self.cleaned_data = cleaned_data
         self.voucher_codes = get_voucher_codes(cleaned_data)
         self.gene_codes = get_gene_codes(cleaned_data)
@@ -72,6 +73,14 @@ class CreateDataset(object):
             another FASTA gene sequence.
 
         """
+        if self.partition_by_positions != 'ONE':
+            # This codons might not correspond to first, second and third codon positions
+            partitions = {
+                'codon1': [],
+                'codon2': [],
+                'codon3': [],
+            }
+
         fasta_str = []
         append = fasta_str.append
 
@@ -82,11 +91,46 @@ class CreateDataset(object):
                     this_gene = seq_record.name
                     seq_str = '>' + this_gene + '\n' + '--------------------'
                     append(seq_str)
-                seq_record_seq_str = str(self.get_sequence_based_on_codon_positions(this_gene, seq_record.seq))
-                seq_str = '>' + seq_record.id + '\n' + seq_record_seq_str
-                append(seq_str)
+                seq_record_seqs = self.get_sequence_based_on_codon_positions(this_gene, seq_record.seq)
 
-        return '\n'.join(fasta_str)
+                # We have only one codon position
+                if len(seq_record_seqs) == 1:
+                    seq_record_seq_str = seq_record_seqs[0]
+                    seq_str = '>' + seq_record.id + '\n' + seq_record_seq_str
+                    append(seq_str)
+
+                # We have two codon positions because they should go to different partitions
+                if len(seq_record_seqs) == 2:
+                    seq_str = '>' + seq_record.id + '\n' + seq_record_seqs[0]
+                    partitions['codon1'].append(seq_str)
+
+                    seq_str = '>' + seq_record.id + '\n' + seq_record_seqs[1]
+                    partitions['codon2'].append(seq_str)
+
+                # We have three codon positions because they should go to different partitions
+                if len(seq_record_seqs) == 3:
+                    seq_str = '>' + seq_record.id + '\n' + seq_record_seqs[0]
+                    partitions['codon1'].append(seq_str)
+
+                    seq_str = '>' + seq_record.id + '\n' + seq_record_seqs[1]
+                    partitions['codon2'].append(seq_str)
+
+                    seq_str = '>' + seq_record.id + '\n' + seq_record_seqs[2]
+                    partitions['codon3'].append(seq_str)
+
+        # We return only one partition
+        if len(fasta_str) > 0:
+            return '\n'.join(fasta_str)
+
+        out = ''
+        if len(partitions['codon1']) > 0:
+            out += '\n'.join(partitions['codon1'])
+        if len(partitions['codon2']) > 0:
+            out += '\n'.join(partitions['codon2'])
+        if len(partitions['codon3']) > 0:
+            out += '\n'.join(partitions['codon3'])
+
+        return out
 
     def get_taxon_names_for_taxa(self):
         """Returns dict: {'CP100-10': {'taxon': 'name'}}
@@ -130,11 +174,15 @@ class CreateDataset(object):
 
     def get_sequence_based_on_codon_positions(self, gene_code, seq):
         """Puts the sequence in frame, by deleting base pairs at the begining
-        of the sequence if the reading frame is not 1:
+        of the sequence if the reading frame is not 1.
+
+        Takes into account whether the codon positions should go in different
+        partitions.
 
         :param gene_code: as lower case
         :param seq: as BioPython seq object.
-        :return: sequence as Seq object with codon positions requested by user.
+        :return: tuples of Seq objects depending of number of paritions_by_condons.
+                 and codon positions as requested by user.
 
         Example:
             If reading frame is 2: ATGGGG becomes TGGGG. Then the sequence is
@@ -142,7 +190,7 @@ class CreateDataset(object):
 
         """
         if 'ALL' in self.codon_positions:
-            return seq
+            return (seq,)
 
         reading_frame = int(self.reading_frames[gene_code.lower()]) - 1
         seq = seq[reading_frame:]
@@ -170,7 +218,10 @@ class CreateDataset(object):
 
         if '1st' in self.codon_positions and '2nd' in self.codon_positions \
                 and '3rd' not in self.codon_positions:
-            return chain_and_flatten(first_position, second_position)
+            if self.partition_by_positions == 'ONE':
+                return (chain_and_flatten(first_position, second_position))
+            else:
+                return (first_position, second_position)
 
         if '1st' in self.codon_positions and '3rd' in self.codon_positions \
                 and '2nd' not in self.codon_positions:
