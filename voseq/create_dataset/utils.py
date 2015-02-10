@@ -95,7 +95,7 @@ class CreateDataset(object):
 
                 # We have only one codon position
                 if len(seq_record_seqs) == 1:
-                    seq_record_seq_str = seq_record_seqs[0]
+                    seq_record_seq_str = str(seq_record_seqs[0])
                     seq_str = '>' + seq_record.id + '\n' + seq_record_seq_str
                     append(seq_str)
 
@@ -190,7 +190,7 @@ class CreateDataset(object):
 
         """
         if 'ALL' in self.codon_positions:
-            return (seq,)
+            return seq,
 
         reading_frame = int(self.reading_frames[gene_code.lower()]) - 1
         seq = seq[reading_frame:]
