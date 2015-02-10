@@ -25,6 +25,7 @@ class CreateDatasetUtilsTest(TestCase):
             'geneset': None,
             'taxon_names': ['CODE', 'SUPERFAMILY', 'GENUS', 'SPECIES'],
             'positions': ['ALL'],
+            'partition_by_positions': 'ONE',
         }
 
         self.c = Client()
@@ -127,4 +128,14 @@ class CreateDatasetUtilsTest(TestCase):
         expected = Seq("ACTCACCCGCAGCCCCCCCCGTACTGTTACAAGTGTGTTCACaAGTCCTCAGAGTCAGAGA")
         sequence = Seq("ACACGTCGACTCCGGCAAGTCCACCACCACCGGTCACTTGATTTACAAATGTGGTGGTATCGACAaACGTACCATCGAGAAGTTCGAGAAGGA")
         result = dataset_creator.get_sequence_based_on_codon_positions('wingless', sequence)
+        self.assertEqual(expected, result)
+
+    def test_create_dataset_two_partitions_first_and_second_codon_position(self):
+        self.cleaned_data['positions'] = ['1st', '2nd']
+        self.cleaned_data['partition_by_positions'] = 'EACH'
+        self.cleaned_data['gene_codes'] = [Genes.objects.get(gene_code='wingless')]
+        dataset_creator = CreateDataset(self.cleaned_data)
+
+        expected = '>wingless\n-------------------\n>CAGTGATCGGAATCACACACGGCATTATTAAATGGGGGATGAAaCGACATGAAATTGAAAGA'
+        result = dataset_creator.dataset_str
         self.assertEqual(expected, result)
