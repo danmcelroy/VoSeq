@@ -101,7 +101,7 @@ class CreateDatasetUtilsTest(TestCase):
         expected = Seq("CCCCCGCCCCTCGTCATTTCCATCCGGCGG")
         sequence = Seq("ACACGTCGACTCCGGCAAGTCCACCACCACCGGTCACTTGATTTACAAATGTGGTGGTATCGACAaACGTACCATCGAGAAGTTCGAGAAGGA")
         result = dataset_creator.get_sequence_based_on_codon_positions('wingless', sequence)
-        self.assertEqual(expected, result)
+        self.assertEqual(expected, result[0])
 
     def test_get_sequence_first_and_second_codon_position(self):
         self.cleaned_data['positions'] = ['1st', '2nd']
@@ -359,6 +359,25 @@ GCGTTGCCTGTTTGCATGACGTTTGAAATAACTTCCACTTTTTTTTTCTTTGGTGAGTTCTTTGCCATCTCGTAATGTGT
 ????????GCGTTGCCTGTTTGCATGACGTTTGAAATAACTTCCACTTTTTTTTTCTTTGGTGAGTTCTTTGCCATCTCGTAATGTGTTCCCTTTTTCGGTTAAGCGCGGCTACCTCCATCAGGCCTATCTTCTATCGTCCTTGCTATTCCTTATGTAATCAAATCTTTGCTGTCCTTTTTCTCTTCGCTCTTTCAGATACCTTACGGGGAC???????????
 >CP100-11_Melitaea_diamina
 TGGAAGATCACAACAGTGACATTAGGGCATAAAGAGCGTAAATTAGACAAAGGTGATCGCTATGGCGAGTCCAATAATTTTCCTTACTATAAAGGAGGGAGTAGTCCCTTAAGCAGGTGGTGATTTCTGGATTATGGAATAAAAAAACAAAATTGCACTTGTGGGAAGTCCTTTTCGTGGGAAACTAGCACAATTTGTTGGGGC???????????
+"""
+        result = dataset_creator.dataset_str
+        self.assertEqual(expected.strip(), result)
+
+    def test_dataset_3rd_codon_one_partition(self):
+        g1 = Genes.objects.get(gene_code='COI')
+        cleaned_data = self.cleaned_data
+        cleaned_data['gene_codes'] = [g1]
+        del cleaned_data['positions']
+        cleaned_data['positions'] = ['3rd']
+
+        dataset_creator = CreateDataset(cleaned_data)
+        expected = """
+>coi
+--------------------
+>CP100-10_Papilionoidea_Melitaea_diamina
+????????ACTATTACATTTTACAAATTTTATATTATTTCTAATTTTTATTTATGATATAATTTATAAAAGACATATCCAATTAATAAGTACATTATATATAATGAATAAATCCATATTTCTAATAGTATTTTATATGTCTCAATTTTTTATTTAATTTATTTAATATAAAAATAAATCAATAATATATTTATAGTATTTCATTTCCAAAT???????????
+>CP100-11_Melitaea_diamina
+GCGTTGCCTGTTTGCATGACGTTTGAAATAACTTCCACTTTTTTTTTCTTTGGTGAGTTCTTTGCCATCTCGTAATGTGTTCCCTTTTTCGGTTAAGCGCGGCTACCTCCATCAGGCCTATCTTCTATCGTCCTTGCTATTCCTTATGTAATCAAATCTTTGCTGTCCTTTTTCTCTTCGCTCTTTCAGATACCTTACGGGGAC???????????
 """
         result = dataset_creator.dataset_str
         self.assertEqual(expected.strip(), result)
