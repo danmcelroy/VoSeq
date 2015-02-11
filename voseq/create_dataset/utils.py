@@ -241,4 +241,4 @@ class CreateDataset(object):
 
         if '2nd' in self.codon_positions and '3rd' in self.codon_positions \
                 and '1st' not in self.codon_positions:
-            return chain_and_flatten(second_position, third_position)
+            return chain_and_flatten(second_position, third_position),
