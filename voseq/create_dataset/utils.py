@@ -98,7 +98,7 @@ class CreateDataset(object):
 
                 seq_record_seqs = self.get_sequence_based_on_codon_positions(this_gene, seq_record.seq)
 
-                # We have only one codon position
+                # We have codon positions that go to one partition
                 if len(seq_record_seqs) == 1:
                     seq_str = '>' + seq_record.id + '\n' + str(seq_record_seqs[0])
                     partitions['all_codons'].append(seq_str)
@@ -231,7 +231,7 @@ class CreateDataset(object):
         if '1st' in self.codon_positions and '2nd' in self.codon_positions \
                 and '3rd' not in self.codon_positions:
             if self.partition_by_positions == 'ONE':
-                return (chain_and_flatten(first_position, second_position))
+                return chain_and_flatten(first_position, second_position),
             else:
                 return (first_position, second_position)
 
