@@ -221,7 +221,7 @@ class CreateDataset(object):
         if '2nd' in self.codon_positions \
                 and '1st' not in self.codon_positions \
                 and '3rd' not in self.codon_positions:
-            return second_position
+            return second_position,
 
         if '3rd' in self.codon_positions \
                 and '1st' not in self.codon_positions \
