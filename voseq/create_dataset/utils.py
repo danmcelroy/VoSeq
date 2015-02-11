@@ -237,8 +237,14 @@ class CreateDataset(object):
 
         if '1st' in self.codon_positions and '3rd' in self.codon_positions \
                 and '2nd' not in self.codon_positions:
-            return chain_and_flatten(first_position, third_position)
+            if self.partition_by_positions == 'ONE':
+                return chain_and_flatten(first_position, third_position),
+            else:
+                return first_position, third_position
 
         if '2nd' in self.codon_positions and '3rd' in self.codon_positions \
                 and '1st' not in self.codon_positions:
-            return chain_and_flatten(second_position, third_position),
+            if self.partition_by_positions == 'ONE':
+                return chain_and_flatten(second_position, third_position),
+            else:
+                return (second_position, third_position)
