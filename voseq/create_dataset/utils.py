@@ -124,6 +124,14 @@ class CreateDataset(object):
                         partitions['codon3'].append(seq_str)
                         length_partitions = 2
 
+                    if self.codon_positions == ['2nd', '3rd']:
+                        seq_str = '>' + seq_record.id + '\n' + str(seq_record_seqs[0])
+                        partitions['codon2'].append(seq_str)
+
+                        seq_str = '>' + seq_record.id + '\n' + str(seq_record_seqs[1])
+                        partitions['codon3'].append(seq_str)
+                        length_partitions = 2
+
                 # We have three codon positions because they should go to different partitions
                 if len(seq_record_seqs) == 3:
                     seq_str = '>' + seq_record.id + '\n' + str(seq_record_seqs[0])
