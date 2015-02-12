@@ -81,6 +81,8 @@ class CreateDataset(object):
             'codon3': [],
         }
 
+        length_partitions = None
+
         for gene_code in self.seq_objs:
             this_gene = None
             for seq_record in self.seq_objs[gene_code]:
@@ -102,6 +104,7 @@ class CreateDataset(object):
                 if len(seq_record_seqs) == 1:
                     seq_str = '>' + seq_record.id + '\n' + str(seq_record_seqs[0])
                     partitions['all_codons'].append(seq_str)
+                    length_partitions = 1
 
                 # We have two codon positions because they should go to different partitions
                 if len(seq_record_seqs) == 2:
@@ -110,6 +113,7 @@ class CreateDataset(object):
 
                     seq_str = '>' + seq_record.id + '\n' + seq_record_seqs[1]
                     partitions['codon2'].append(seq_str)
+                    length_partitions = 2
 
                 # We have three codon positions because they should go to different partitions
                 if len(seq_record_seqs) == 3:
@@ -121,9 +125,15 @@ class CreateDataset(object):
 
                     seq_str = '>' + seq_record.id + '\n' + str(seq_record_seqs[2])
                     partitions['codon3'].append(seq_str)
+                    length_partitions = 3
 
         out = ''
         if self.partition_by_positions == 'ONE':
+            out += '\n'.join(partitions['all_codons'])
+            return out
+
+        # We have codon positions that go to one partition
+        if length_partitions == 1:
             out += '\n'.join(partitions['all_codons'])
             return out
 
