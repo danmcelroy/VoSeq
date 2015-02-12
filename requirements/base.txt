@@ -1,7 +1,7 @@
 biopython==1.65
 Django==1.7.4
 pyprind==2.9.1
-elasticsearch==1.3.0
+elasticsearch==1.4
 Unipath==1.0
 psycopg2==2.6
 dataset==0.5.5
