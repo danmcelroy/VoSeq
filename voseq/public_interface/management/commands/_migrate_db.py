@@ -349,18 +349,21 @@ class ParseXML(object):
         n = len(seqs_to_insert)
         if TESTING is False:
             bar = pyprind.ProgBar(n, width=70)
+
+        seqs_objects = []
         for i in range(n):
             item = seqs_to_insert[i]
             item = self.clean_value(item, 'labPerson')
             item = self.clean_value(item, 'notes')
             item = self.clean_value(item, 'sequences')
             item = self.clean_value(item, 'accession')
-            Sequences.objects.create(**item)
+            seqs_objects.append(Sequences(**item))
             if TESTING is False:
                 bar.update()
 
         if self.verbosity != 0:
             print("Uploading table `public_interface_sequences`")
+        Sequences.objects.bulk_create(seqs_objects)
 
         if len(seqs_not_to_insert) > 0:
             if self.verbosity != 0:
@@ -689,25 +692,3 @@ class ParseXML(object):
         except ValueError:
             string = None
         return string
-
-
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Enter name of database dump file as argument.")
-        print("This file can be obtained from your MySQL database using this command")
-        print("\t> mysqdump --xml database > dump.xml")
-        sys.exit(1)
-
-    dump_file = sys.argv[1].strip()
-    with codecs.open(dump_file, "r") as handle:
-        dump = handle.read()
-
-    # tables_prefix = 'voseq_'
-    tables_prefix = ''
-    parser = ParseXML(dump, tables_prefix)
-
-    parser.import_table_vouchers()
-    parser.save_table_vouchers_to_db()
-
-    parser.import_table_sequences()
-    parser.save_table_sequences_to_db()
