@@ -235,11 +235,12 @@ class ParseXML(object):
         if self.table_primers_items is None:
             self.import_table_primers()
 
+        primers_queryset = Sequences.objects.all().values('code', 'gene_code')
+        primers_objs = []
         for item in self.table_primers_items:
-            try:
-                b = Sequences.objects.get(code=item['code'], gene_code=item['gene_code'])
-                item['for_sequence'] = b
-            except Sequences.DoesNotExist:
+            if {'gene_code': item['gene_code'], 'code': item['code']} in primers_queryset:
+                item['for_sequence'] = Sequences.objects.get(code=item['code'], gene_code=item['gene_code'])
+            else:
                 print("Could not save primers for sequence: %s %s" % (item['code'], item['gene_code']))
                 continue
 
@@ -250,7 +251,8 @@ class ParseXML(object):
             for i in primers:
                 item['primer_f'] = i[0]
                 item['primer_r'] = i[1]
-                Primers.objects.create(**item)
+                primers_objs.append(Primers(**item))
+        Primers.objects.bulk_create(primers_objs)
 
         if self.verbosity != 0:
             print("Uploading table `public_interface_primers`")
