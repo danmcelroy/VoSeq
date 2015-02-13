@@ -589,6 +589,8 @@ class ParseXML(object):
             self.parse_table_vouchers(self.dump_string)
 
         print("Uploading table `public_interface_vouchers`")
+
+        voucher_objs = []
         n = len(self.table_vouchers_items)
         if TESTING is False:
             bar = pyprind.ProgBar(n, width=70)
@@ -621,10 +623,11 @@ class ParseXML(object):
             item = self.clean_value(item, 'extractionTube')
             item = self.clean_value(item, 'extractor')
 
-            Vouchers.objects.create(**item)
+            voucher_objs.append(Vouchers(**item))
 
             if TESTING is False:
                 bar.update()
+        Vouchers.objects.bulk_create(voucher_objs)
 
         for item in self.table_flickr_images_items:
             FlickrImages.objects.create(**item)
