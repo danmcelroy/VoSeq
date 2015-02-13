@@ -221,8 +221,12 @@ class CreateDataset(object):
             processed to extract the codon positions requested by the user.
 
         """
-        if 'ALL' in self.codon_positions and self.partition_by_positions == 'ONE':
-            return seq,
+        if self.partition_by_positions == 'ONE':
+            if 'ALL' in self.codon_positions:
+                return seq,
+            if '1st' in self.codon_positions and '2nd' in self.codon_positions \
+                    and '3rd' in self.codon_positions:
+                return seq,
 
         reading_frame = int(self.reading_frames[gene_code.lower()]) - 1
         seq = seq[reading_frame:]
@@ -235,10 +239,7 @@ class CreateDataset(object):
 
         # ALL overrides 1st, 2nd, 3rd codon positions. We should return all codons
         if 'ALL' in self.codon_positions:
-            if self.partition_by_positions == 'ONE':
-                return (chain_and_flatten(first_position, second_position, third_position))
-            else:
-                return (first_position, second_position, third_position)
+            return (first_position, second_position, third_position)
 
         if '1st' in self.codon_positions \
                 and '2nd' not in self.codon_positions \
@@ -278,7 +279,4 @@ class CreateDataset(object):
 
         if '1st' in self.codon_positions and '2nd' in self.codon_positions \
                 and '3rd' in self.codon_positions:
-            if self.partition_by_positions == 'ONE':
-                return (chain_and_flatten(first_position, second_position, third_position))
-            else:
-                return (first_position, second_position, third_position)
+            return (first_position, second_position, third_position)
