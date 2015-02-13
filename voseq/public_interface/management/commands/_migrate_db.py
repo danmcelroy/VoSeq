@@ -4,11 +4,9 @@ Needs an XML file with the database dump from MySQL:
 
 > mysqldump --xml database > dump.xml
 """
-import codecs
 import datetime
 import pytz
 import re
-import sys
 import xml.etree.ElementTree as ET
 
 import pyprind
