@@ -629,8 +629,11 @@ class ParseXML(object):
                 bar.update()
         Vouchers.objects.bulk_create(voucher_objs)
 
+        flickr_objs = []
         for item in self.table_flickr_images_items:
-            FlickrImages.objects.create(**item)
+            flickr_objs.append(FlickrImages(**item))
+        FlickrImages.objects.bulk_create(flickr_objs)
+
         if self.verbosity != 0:
             print("Uploading table `public_interface_flickrimages`")
 
