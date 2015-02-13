@@ -239,10 +239,7 @@ class CreateDataset(object):
 
         # ALL overrides 1st, 2nd, 3rd codon positions. We should return all codons
         if 'ALL' in self.codon_positions:
-            if self.partition_by_positions == 'ONE':
-                return (chain_and_flatten(first_position, second_position, third_position))
-            else:
-                return (first_position, second_position, third_position)
+            return (first_position, second_position, third_position)
 
         if '1st' in self.codon_positions \
                 and '2nd' not in self.codon_positions \
