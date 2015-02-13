@@ -4,11 +4,9 @@ Needs an XML file with the database dump from MySQL:
 
 > mysqldump --xml database > dump.xml
 """
-import codecs
 import datetime
 import pytz
 import re
-import sys
 import xml.etree.ElementTree as ET
 
 import pyprind
@@ -235,11 +233,12 @@ class ParseXML(object):
         if self.table_primers_items is None:
             self.import_table_primers()
 
+        primers_queryset = Sequences.objects.all().values('code', 'gene_code')
+        primers_objs = []
         for item in self.table_primers_items:
-            try:
-                b = Sequences.objects.get(code=item['code'], gene_code=item['gene_code'])
-                item['for_sequence'] = b
-            except Sequences.DoesNotExist:
+            if {'gene_code': item['gene_code'], 'code': item['code']} in primers_queryset:
+                item['for_sequence'] = Sequences.objects.get(code=item['code'], gene_code=item['gene_code'])
+            else:
                 print("Could not save primers for sequence: %s %s" % (item['code'], item['gene_code']))
                 continue
 
@@ -250,7 +249,8 @@ class ParseXML(object):
             for i in primers:
                 item['primer_f'] = i[0]
                 item['primer_r'] = i[1]
-                Primers.objects.create(**item)
+                primers_objs.append(Primers(**item))
+        Primers.objects.bulk_create(primers_objs)
 
         if self.verbosity != 0:
             print("Uploading table `public_interface_primers`")
@@ -349,18 +349,21 @@ class ParseXML(object):
         n = len(seqs_to_insert)
         if TESTING is False:
             bar = pyprind.ProgBar(n, width=70)
+
+        seqs_objects = []
         for i in range(n):
             item = seqs_to_insert[i]
             item = self.clean_value(item, 'labPerson')
             item = self.clean_value(item, 'notes')
             item = self.clean_value(item, 'sequences')
             item = self.clean_value(item, 'accession')
-            Sequences.objects.create(**item)
+            seqs_objects.append(Sequences(**item))
             if TESTING is False:
                 bar.update()
 
         if self.verbosity != 0:
             print("Uploading table `public_interface_sequences`")
+        Sequences.objects.bulk_create(seqs_objects)
 
         if len(seqs_not_to_insert) > 0:
             if self.verbosity != 0:
@@ -586,6 +589,8 @@ class ParseXML(object):
             self.parse_table_vouchers(self.dump_string)
 
         print("Uploading table `public_interface_vouchers`")
+
+        voucher_objs = []
         n = len(self.table_vouchers_items)
         if TESTING is False:
             bar = pyprind.ProgBar(n, width=70)
@@ -618,13 +623,17 @@ class ParseXML(object):
             item = self.clean_value(item, 'extractionTube')
             item = self.clean_value(item, 'extractor')
 
-            Vouchers.objects.create(**item)
+            voucher_objs.append(Vouchers(**item))
 
             if TESTING is False:
                 bar.update()
+        Vouchers.objects.bulk_create(voucher_objs)
 
+        flickr_objs = []
         for item in self.table_flickr_images_items:
-            FlickrImages.objects.create(**item)
+            flickr_objs.append(FlickrImages(**item))
+        FlickrImages.objects.bulk_create(flickr_objs)
+
         if self.verbosity != 0:
             print("Uploading table `public_interface_flickrimages`")
 
@@ -689,25 +698,3 @@ class ParseXML(object):
         except ValueError:
             string = None
         return string
-
-
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Enter name of database dump file as argument.")
-        print("This file can be obtained from your MySQL database using this command")
-        print("\t> mysqdump --xml database > dump.xml")
-        sys.exit(1)
-
-    dump_file = sys.argv[1].strip()
-    with codecs.open(dump_file, "r") as handle:
-        dump = handle.read()
-
-    # tables_prefix = 'voseq_'
-    tables_prefix = ''
-    parser = ParseXML(dump, tables_prefix)
-
-    parser.import_table_vouchers()
-    parser.save_table_vouchers_to_db()
-
-    parser.import_table_sequences()
-    parser.save_table_sequences_to_db()
