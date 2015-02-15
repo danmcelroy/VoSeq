@@ -649,3 +649,23 @@ GCGTTGCCTGTTTGCATGACGTTTGAAATAACTTCCACTTTTTTTTTCTTTGGTGAGTTCTTTGCCATCTCGTAATGTGT
 """
         result = dataset_creator.dataset_str
         self.assertEqual(expected.strip(), result)
+
+    def test_dataset_2nd_codon_1st2nd_3rd(self):
+        g1 = Genes.objects.get(gene_code='COI')
+        cleaned_data = self.cleaned_data
+        cleaned_data['gene_codes'] = [g1]
+        del cleaned_data['positions']
+        cleaned_data['positions'] = ['2nd']
+        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+
+        dataset_creator = CreateDataset(cleaned_data)
+        expected = """
+>coi_2nd_codon
+--------------------
+>CP100-10_Papilionoidea_Melitaea_diamina
+????????GCGTTGCCTGTTTGCATGACGTTTGAAATAACTTCCACTTTTTTTTTCTTTGGTGAGTTCTTTGCCATCTCGTAATGTGTTCCCTTTTTCGGTTAAGCGCGGCTACCTCCATCAGGCCTATCTTCTATCGTCCTTGCTATTCCTTATGTAATCAAATCTTTGCTGTCCTTTTTCTCTTCGCTCTTTCAGATACCTTACGGGGAC???????????
+>CP100-11_Melitaea_diamina
+TGGAAGATCACAACAGTGACATTAGGGCATAAAGAGCGTAAATTAGACAAAGGTGATCGCTATGGCGAGTCCAATAATTTTCCTTACTATAAAGGAGGGAGTAGTCCCTTAAGCAGGTGGTGATTTCTGGATTATGGAATAAAAAAACAAAATTGCACTTGTGGGAAGTCCTTTTCGTGGGAAACTAGCACAATTTGTTGGGGC???????????
+"""
+        result = dataset_creator.dataset_str
+        self.assertEqual(expected.strip(), result)
