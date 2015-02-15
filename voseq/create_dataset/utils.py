@@ -73,12 +73,37 @@ class CreateDataset(object):
             another FASTA gene sequence.
 
         """
+        partitions = {
+            'all_codons': [],
+            'codon1': [],
+            'codon2': [],
+            'codon3': [],
+        }
+
+        if '3rd' in self.codon_positions and \
+                '1st' not in self.codon_positions and \
+                '2nd' not in self.codon_positions and \
+                'EACH' in self.partition_by_positions:
+            for gene_code in self.seq_objs:
+                this_gene = None
+                for seq_record in self.seq_objs[gene_code]:
+
+                    if this_gene is None:
+                        this_gene = seq_record.name
+
+                        seq_str = '>' + this_gene + '_3rd_codon\n' + '--------------------'
+                        partitions['codon3'].append(seq_str)
+
+                    seq_record_seqs = self.get_sequence_based_on_codon_positions(this_gene, seq_record.seq)
+
+                    seq_str = '>' + seq_record.id + '\n' + str(seq_record_seqs[2])
+                    partitions['codon3'].append(seq_str)
+
+            out = ''
+            out += '\n'.join(partitions['codon3'])
+            return out
+
         if 'ALL' in self.codon_positions and 'EACH' in self.partition_by_positions:
-            partitions = {
-                'codon1': [],
-                'codon2': [],
-                'codon3': [],
-            }
             for gene_code in self.seq_objs:
                 this_gene = None
                 for seq_record in self.seq_objs[gene_code]:
@@ -115,9 +140,6 @@ class CreateDataset(object):
             return out
 
         if 'ALL' in self.codon_positions and 'ONE' in self.partition_by_positions:
-            partitions = {
-                'all_codons': [],
-            }
             for gene_code in self.seq_objs:
                 this_gene = None
                 for seq_record in self.seq_objs[gene_code]:
