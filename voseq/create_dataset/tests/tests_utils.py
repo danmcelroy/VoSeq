@@ -73,62 +73,7 @@ class CreateDatasetUtilsTest(TestCase):
             'cp100-11': {'superfamily': ''},
         }
         result = dataset_creator.get_taxon_names_for_taxa()
-
         self.assertEqual(expected, result)
-
-    def test_get_sequence_first_codon_position(self):
-        self.cleaned_data['positions'] = ['1st']
-        self.cleaned_data['gene_codes'] = [Genes.objects.get(gene_code='wingless')]
-        dataset_creator = CreateDataset(self.cleaned_data)
-        expected = Seq("CGGTGATAAAGCTATATGGAGACAAGATGAG")
-        sequence = Seq("ACACGTCGACTCCGGCAAGTCCACCACCACCGGTCACTTGATTTACAAATGTGGTGGTATCGACAaACGTACCATCGAGAAGTTCGAGAAGGA")
-        result = dataset_creator.get_sequence_based_on_codon_positions('wingless', sequence)
-        self.assertEqual(expected, result[0])
-
-    def test_get_sequence_second_codon_position(self):
-        self.cleaned_data['positions'] = ['2nd']
-        self.cleaned_data['gene_codes'] = [Genes.objects.get(gene_code='wingless')]
-        dataset_creator = CreateDataset(self.cleaned_data)
-        expected = Seq("ATACGACCCCGATTAAGGGTAaGCTAATAAA")
-        sequence = Seq("ACACGTCGACTCCGGCAAGTCCACCACCACCGGTCACTTGATTTACAAATGTGGTGGTATCGACAaACGTACCATCGAGAAGTTCGAGAAGGA")
-        result = dataset_creator.get_sequence_based_on_codon_positions('wingless', sequence)
-        self.assertEqual(expected, result[0])
-
-    def test_get_sequence_third_codon_position(self):
-        self.cleaned_data['positions'] = ['3rd']
-        self.cleaned_data['gene_codes'] = [Genes.objects.get(gene_code='wingless')]
-        dataset_creator = CreateDataset(self.cleaned_data)
-        expected = Seq("CCCCCGCCCCTCGTCATTTCCATCCGGCGG")
-        sequence = Seq("ACACGTCGACTCCGGCAAGTCCACCACCACCGGTCACTTGATTTACAAATGTGGTGGTATCGACAaACGTACCATCGAGAAGTTCGAGAAGGA")
-        result = dataset_creator.get_sequence_based_on_codon_positions('wingless', sequence)
-        self.assertEqual(expected, result[0])
-
-    def test_get_sequence_first_and_second_codon_position(self):
-        self.cleaned_data['positions'] = ['1st', '2nd']
-        self.cleaned_data['gene_codes'] = [Genes.objects.get(gene_code='wingless')]
-        dataset_creator = CreateDataset(self.cleaned_data)
-        expected = Seq("CAGTGATCGGAATCACACACGGCATTATTAAATGGGGGATGAAaCGACATGAAATTGAAAGA")
-        sequence = Seq("ACACGTCGACTCCGGCAAGTCCACCACCACCGGTCACTTGATTTACAAATGTGGTGGTATCGACAaACGTACCATCGAGAAGTTCGAGAAGGA")
-        result = dataset_creator.get_sequence_based_on_codon_positions('wingless', sequence)
-        self.assertEqual(expected, result[0])
-
-    def test_get_sequence_first_and_third_codon_position(self):
-        self.cleaned_data['positions'] = ['1st', '3rd']
-        self.cleaned_data['gene_codes'] = [Genes.objects.get(gene_code='wingless')]
-        dataset_creator = CreateDataset(self.cleaned_data)
-        expected = Seq("CCGCGCTCGCAGTCACACACGTCCTGATTCAATTGTGTACGCAACTACACGGAGTCGGAGG")
-        sequence = Seq("ACACGTCGACTCCGGCAAGTCCACCACCACCGGTCACTTGATTTACAAATGTGGTGGTATCGACAaACGTACCATCGAGAAGTTCGAGAAGGA")
-        result = dataset_creator.get_sequence_based_on_codon_positions('wingless', sequence)
-        self.assertEqual(expected, result[0])
-
-    def test_get_sequence_second_and_third_codon_position(self):
-        self.cleaned_data['positions'] = ['2nd', '3rd']
-        self.cleaned_data['gene_codes'] = [Genes.objects.get(gene_code='wingless')]
-        dataset_creator = CreateDataset(self.cleaned_data)
-        expected = Seq("ACTCACCCGCAGCCCCCCCCGTACTGTTACAAGTGTGTTCACaAGTCCTCAGAGTCAGAGA")
-        sequence = Seq("ACACGTCGACTCCGGCAAGTCCACCACCACCGGTCACTTGATTTACAAATGTGGTGGTATCGACAaACGTACCATCGAGAAGTTCGAGAAGGA")
-        result = dataset_creator.get_sequence_based_on_codon_positions('wingless', sequence)
-        self.assertEqual(expected, result[0])
 
     def test_dataset_all_codons_as_one(self):
         g1 = Genes.objects.get(gene_code='COI')

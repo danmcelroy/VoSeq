@@ -73,7 +73,7 @@ class CreateDataset(object):
             another FASTA gene sequence.
 
         """
-        if 'ALL' in self.codon_positions and self.partition_by_positions == 'EACH':
+        if 'ALL' in self.codon_positions and 'EACH' in self.partition_by_positions:
             partitions = {
                 'codon1': [],
                 'codon2': [],
@@ -103,7 +103,7 @@ class CreateDataset(object):
                     seq_str = '>' + seq_record.id + '\n' + str(seq_record_seqs[1])
                     partitions['codon2'].append(seq_str)
 
-                    seq_str = '>' + seq_record.id + '\n' + str(seq_record_seqs[1])
+                    seq_str = '>' + seq_record.id + '\n' + str(seq_record_seqs[2])
                     partitions['codon3'].append(seq_str)
 
             out = ''
