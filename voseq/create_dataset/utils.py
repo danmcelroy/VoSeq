@@ -372,7 +372,9 @@ class CreateDataset(object):
             out += '\n'.join(partitions['all_codons'])
             return out
 
-        if 'ALL' in self.codon_positions and 'EACH' in self.partition_by_positions:
+        if ('ALL' in self.codon_positions or
+                ('1st' in self.codon_positions and '2nd' in self.codon_positions and '3rd' in self.codon_positions)) \
+                and 'EACH' in self.partition_by_positions:
             for gene_code in self.seq_objs:
                 this_gene = None
                 for seq_record in self.seq_objs[gene_code]:
