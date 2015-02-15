@@ -43,7 +43,7 @@ class CreateDatasetForm(BaseDatasetForm):
         choices=[
             ('ONE', 'as one'),
             ('EACH', 'each'),
-            ('1st-3rd', '1st-2nd, 3rd'),
+            ('1st2nd_3rd', '1st-2nd, 3rd'),
         ],
         widget=forms.RadioSelect(),
         initial='ONE',
