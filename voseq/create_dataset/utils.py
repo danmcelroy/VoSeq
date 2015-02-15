@@ -114,6 +114,27 @@ class CreateDataset(object):
             out += '\n'.join(partitions['codon3'])
             return out
 
+        if 'ALL' in self.codon_positions and 'ONE' in self.partition_by_positions:
+            partitions = {
+                'all_codons': [],
+            }
+            for gene_code in self.seq_objs:
+                this_gene = None
+                for seq_record in self.seq_objs[gene_code]:
+
+                    if this_gene is None:
+                        this_gene = seq_record.name
+
+                        seq_str = '>' + this_gene + '\n' + '--------------------'
+                        partitions['all_codons'].append(seq_str)
+
+                    seq_str = '>' + seq_record.id + '\n' + str(seq_record.seq)
+                    partitions['all_codons'].append(seq_str)
+
+            out = ''
+            out += '\n'.join(partitions['all_codons'])
+            return out
+
     def get_taxon_names_for_taxa(self):
         """Returns dict: {'CP100-10': {'taxon': 'name'}}
 
