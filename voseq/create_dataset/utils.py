@@ -551,6 +551,36 @@ class CreateDataset(object):
             out += '\n'.join(partitions['codons1_2'])
             return out
 
+        if '1st' in self.codon_positions and '2nd' in self.codon_positions and \
+                '3rd' in self.codon_positions and \
+                '1st2nd_3rd' in self.partition_by_positions:
+            for gene_code in self.seq_objs:
+                this_gene = None
+                for seq_record in self.seq_objs[gene_code]:
+
+                    if this_gene is None:
+                        this_gene = seq_record.name
+
+                        seq_str = '>' + this_gene + '_1st_2nd_codons\n' + '--------------------'
+                        partitions['codons1_2'].append(seq_str)
+
+                        seq_str = '>' + this_gene + '_3rd_codon\n' + '--------------------'
+                        partitions['codon3'].append(seq_str)
+
+                    codons = self.get_sequence_based_on_codon_positions(this_gene, seq_record.seq)
+
+                    seq_str = '>' + seq_record.id + '\n' + str(chain_and_flatten(codons[0], codons[1]))
+                    partitions['codons1_2'].append(seq_str)
+
+                    seq_str = '>' + seq_record.id + '\n' + str(codons[2])
+                    partitions['codon3'].append(seq_str)
+
+            out = ''
+            out += '\n'.join(partitions['codons1_2'])
+            out += '\n'
+            out += '\n'.join(partitions['codon3'])
+            return out
+
     def get_taxon_names_for_taxa(self):
         """Returns dict: {'CP100-10': {'taxon': 'name'}}
 
