@@ -172,6 +172,35 @@ class CreateDataset(object):
             out += '\n'.join(partitions['codon3'])
             return out
 
+        if '2nd' in self.codon_positions and \
+                '3rd' in self.codon_positions and \
+                '1st' not in self.codon_positions and \
+                'EACH' in self.partition_by_positions:
+            for gene_code in self.seq_objs:
+                this_gene = None
+                for seq_record in self.seq_objs[gene_code]:
+
+                    if this_gene is None:
+                        this_gene = seq_record.name
+
+                        seq_str = '>' + this_gene + '_2nd_codon\n' + '--------------------'
+                        partitions['codon2'].append(seq_str)
+                        seq_str = '>' + this_gene + '_3rd_codon\n' + '--------------------'
+                        partitions['codon3'].append(seq_str)
+
+                    seq_record_seqs = self.get_sequence_based_on_codon_positions(this_gene, seq_record.seq)
+
+                    seq_str = '>' + seq_record.id + '\n' + str(seq_record_seqs[1])
+                    partitions['codon2'].append(seq_str)
+                    seq_str = '>' + seq_record.id + '\n' + str(seq_record_seqs[2])
+                    partitions['codon3'].append(seq_str)
+
+            out = ''
+            out += '\n'.join(partitions['codon2'])
+            out += '\n'
+            out += '\n'.join(partitions['codon3'])
+            return out
+
         if 'ALL' in self.codon_positions and 'EACH' in self.partition_by_positions:
             for gene_code in self.seq_objs:
                 this_gene = None
