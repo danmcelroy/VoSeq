@@ -83,7 +83,8 @@ class CreateDataset(object):
         if '3rd' in self.codon_positions and \
                 '1st' not in self.codon_positions and \
                 '2nd' not in self.codon_positions and \
-                'EACH' in self.partition_by_positions:
+                'EACH' in self.partition_by_positions or \
+                'ONE' in self.partition_by_positions:
             for gene_code in self.seq_objs:
                 this_gene = None
                 for seq_record in self.seq_objs[gene_code]:
