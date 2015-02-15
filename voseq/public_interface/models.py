@@ -152,6 +152,9 @@ class Vouchers(models.Model):
     author = models.CharField(max_length=100, help_text="Person that described this taxon.", blank=True)
     timestamp = models.DateTimeField(null=True)  # TODO change this to date_created = models.DateField(auto_now_add=True)
 
+    class Meta:
+        verbose_name_plural = "Vouchers"
+
 
 class Sequences(models.Model):
     code = models.ForeignKey(Vouchers, help_text='Save as lower case.')
