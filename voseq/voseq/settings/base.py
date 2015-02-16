@@ -26,6 +26,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    # added
+    'suit',
+    'haystack',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -33,9 +37,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-
-    # added
-    'haystack',
 
     # my apps
     'core',
@@ -63,6 +64,7 @@ MIDDLEWARE_CLASSES = (
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.request',
 )
 
 ROOT_URLCONF = 'voseq.urls'
