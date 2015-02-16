@@ -80,6 +80,23 @@ class CreateFasta(object):
                 partitions[0].append(seq_str)
         return partitions
 
+    def get_2nd_codon_one_partition(self):
+        partition_list = ([],)
+        for gene_code in self.seq_objs:
+            this_gene = None
+            for seq_record in self.seq_objs[gene_code]:
+                if this_gene is None:
+                    this_gene = seq_record.name
+
+                    seq_str = '>' + this_gene + '_2nd_codon\n' + '--------------------'
+                    partition_list[0].append(seq_str)
+
+                codons = self.split_sequence_in_codon_positions(this_gene,
+                                                                seq_record.seq)
+                seq_str = '>' + seq_record.id + '\n' + str(codons[1])
+                partition_list[0].append(seq_str)
+        return partition_list
+
     def from_seq_objs_to_fasta(self):
         """Take a list of BioPython's sequence objects and return a FASTA string
 
@@ -108,42 +125,14 @@ class CreateFasta(object):
                 '1st' not in self.codon_positions and \
                 '3rd' not in self.codon_positions and \
                 'EACH' in self.partition_by_positions:
-            partition_list = ([],)
-            for gene_code in self.seq_objs:
-                this_gene = None
-                for seq_record in self.seq_objs[gene_code]:
-
-                    if this_gene is None:
-                        this_gene = seq_record.name
-
-                        seq_str = '>' + this_gene + '_2nd_codon\n' + '--------------------'
-                        partition_list[0].append(seq_str)
-
-                    codons = self.split_sequence_in_codon_positions(this_gene, seq_record.seq)
-
-                    seq_str = '>' + seq_record.id + '\n' + str(codons[1])
-                    partition_list[0].append(seq_str)
+            partition_list = self.get_2nd_codon_one_partition()
             return self.convert_lists_to_dataset(partition_list)
 
         if '2nd' in self.codon_positions and \
                 '1st' not in self.codon_positions and \
                 '3rd' not in self.codon_positions and \
                 'ONE' in self.partition_by_positions:
-            partition_list = ([],)
-            for gene_code in self.seq_objs:
-                this_gene = None
-                for seq_record in self.seq_objs[gene_code]:
-
-                    if this_gene is None:
-                        this_gene = seq_record.name
-
-                        seq_str = '>' + this_gene + '_2nd_codon\n' + '--------------------'
-                        partition_list[0].append(seq_str)
-
-                    codons = self.split_sequence_in_codon_positions(this_gene, seq_record.seq)
-
-                    seq_str = '>' + seq_record.id + '\n' + str(codons[1])
-                    partition_list[0].append(seq_str)
+            partition_list = self.get_2nd_codon_one_partition()
             return self.convert_lists_to_dataset(partition_list)
 
         if '3rd' in self.codon_positions and \
@@ -408,19 +397,7 @@ class CreateFasta(object):
                 '1st' not in self.codon_positions and \
                 '3rd' not in self.codon_positions and \
                 '1st2nd_3rd' in self.partition_by_positions:
-            partition_list = ([],)
-            for gene_code in self.seq_objs:
-                this_gene = None
-                for seq_record in self.seq_objs[gene_code]:
-                    if this_gene is None:
-                        this_gene = seq_record.name
-
-                        seq_str = '>' + this_gene + '_2nd_codon\n' + '--------------------'
-                        partition_list[0].append(seq_str)
-
-                    codons = self.split_sequence_in_codon_positions(this_gene, seq_record.seq)
-                    seq_str = '>' + seq_record.id + '\n' + str(codons[1])
-                    partition_list[0].append(seq_str)
+            partition_list = self.get_2nd_codon_one_partition()
             return self.convert_lists_to_dataset(partition_list)
 
         if '3rd' in self.codon_positions and \
