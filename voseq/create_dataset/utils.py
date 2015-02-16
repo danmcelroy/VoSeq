@@ -89,6 +89,39 @@ class CreateFasta(object):
                 partitions[0].append(seq_str)
         return partitions
 
+    def get_codons_in_each_partition(self, codons):
+        partition_list = ()
+        codon_descriptions = []
+        codon_pos = []
+        for i in codons:
+            partition_list += ([],)
+            if i == '1st':
+                codon_descriptions.append('_1st_codon')
+                codon_pos.append(0)
+            if i == '2nd':
+                codon_descriptions.append('_2nd_codon')
+                codon_pos.append(1)
+            if i == '3rd':
+                codon_descriptions.append('_3rd_codon')
+                codon_pos.append(2)
+        for gene_code in self.seq_objs:
+            this_gene = None
+            for seq_record in self.seq_objs[gene_code]:
+
+                if this_gene is None:
+                    this_gene = seq_record.name
+
+                    for i in range(len(codon_descriptions)):
+                        seq_str = '>' + this_gene + codon_descriptions[i] + '\n--------------------'
+                        partition_list[i].append(seq_str)
+
+                codons = self.split_sequence_in_codon_positions(this_gene,
+                                                                seq_record.seq)
+                for i in range(len(codon_pos)):
+                    seq_str = '>' + seq_record.id + '\n' + str(codons[codon_pos[i]])
+                    partition_list[i].append(seq_str)
+        return partition_list
+
     def from_seq_objs_to_fasta(self):
         """Take a list of BioPython's sequence objects and return a FASTA string
 
@@ -102,7 +135,7 @@ class CreateFasta(object):
                 '3rd' not in self.codon_positions and \
                 'ALL' not in self.codon_positions and \
                 'EACH' in self.partition_by_positions:
-            partition_list = self.get_one_codon_one_partition('1st')
+            partition_list = self.get_codons_in_each_partition(['1st'])
             return self.convert_lists_to_dataset(partition_list)
 
         if '1st' in self.codon_positions and \
@@ -110,14 +143,14 @@ class CreateFasta(object):
                 '3rd' not in self.codon_positions and \
                 'ALL' not in self.codon_positions and \
                 'ONE' in self.partition_by_positions:
-            partition_list = self.get_one_codon_one_partition('1st')
+            partition_list = self.get_codons_in_each_partition(['1st'])
             return self.convert_lists_to_dataset(partition_list)
 
         if '2nd' in self.codon_positions and \
                 '1st' not in self.codon_positions and \
                 '3rd' not in self.codon_positions and \
                 'EACH' in self.partition_by_positions:
-            partition_list = self.get_one_codon_one_partition('2nd')
+            partition_list = self.get_codons_in_each_partition(['2nd'])
             return self.convert_lists_to_dataset(partition_list)
 
         if '2nd' in self.codon_positions and \
@@ -145,25 +178,7 @@ class CreateFasta(object):
                 '3rd' not in self.codon_positions and \
                 'ALL' not in self.codon_positions and \
                 'EACH' in self.partition_by_positions:
-            partition_list = ([], [],)
-            for gene_code in self.seq_objs:
-                this_gene = None
-                for seq_record in self.seq_objs[gene_code]:
-
-                    if this_gene is None:
-                        this_gene = seq_record.name
-
-                        seq_str = '>' + this_gene + '_1st_codon\n' + '--------------------'
-                        partition_list[0].append(seq_str)
-                        seq_str = '>' + this_gene + '_2nd_codon\n' + '--------------------'
-                        partition_list[1].append(seq_str)
-
-                    codons = self.split_sequence_in_codon_positions(this_gene, seq_record.seq)
-
-                    seq_str = '>' + seq_record.id + '\n' + str(codons[0])
-                    partition_list[0].append(seq_str)
-                    seq_str = '>' + seq_record.id + '\n' + str(codons[1])
-                    partition_list[1].append(seq_str)
+            partition_list = self.get_codons_in_each_partition(['1st', '2nd'])
             return self.convert_lists_to_dataset(partition_list)
 
         if '1st' in self.codon_positions and '2nd' in self.codon_positions and \
