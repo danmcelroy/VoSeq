@@ -60,11 +60,6 @@ class CreateDatasetUtilsTest(TestCase):
         result = dataset_creator.dataset_str
         self.assertTrue('CP100-11' not in result)
 
-    def test_from_seq_objs_to_fasta(self):
-        expected = 2706
-        result = self.dataset_creator.from_seq_objs_to_fasta()
-        self.assertEqual(expected, len(result))
-
     def test_get_taxon_names_for_taxa_additional_fields(self):
         self.cleaned_data['taxon_names'] = ['SUPERFAMILY']
         dataset_creator = CreateDataset(self.cleaned_data)
