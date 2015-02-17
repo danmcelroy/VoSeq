@@ -184,7 +184,7 @@ def flatten_taxon_names_dict(dictionary):
     return out_clean
 
 
-def chain_and_flatten(seq1, seq2):
+def chain_and_flatten(seqs):
     """Takes seq objects which only contain certain codon positions.
 
     Combines the two seq objects and returns another seq object.
@@ -193,7 +193,7 @@ def chain_and_flatten(seq1, seq2):
     out = []
     append = out.append
 
-    my_chain = itertools.zip_longest(seq1, seq2)
+    my_chain = itertools.zip_longest(seqs[0], seqs[1])
     for i in itertools.chain.from_iterable(my_chain):
         if i is not None:
             append(i)
