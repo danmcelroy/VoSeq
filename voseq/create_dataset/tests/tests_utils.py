@@ -88,6 +88,16 @@ class CreateDatasetUtilsTest(TestCase):
         result = dataset_creator.dataset_str
         self.assertEqual(expected.strip(), result)
 
+    def test_dataset_all_codons_as_one_with_no_reading_frame(self):
+        g1 = Genes.objects.get(gene_code='16S')
+        cleaned_data = self.cleaned_data
+        cleaned_data['gene_codes'] = [g1]
+
+        dataset_creator = CreateDataset(cleaned_data)
+        expected = ""
+        result = dataset_creator.dataset_str
+        self.assertEqual(expected.strip(), result)
+
     def test_dataset_all_codons_1st_as_one(self):
         g1 = Genes.objects.get(gene_code='COI')
         cleaned_data = self.cleaned_data
