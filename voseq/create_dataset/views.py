@@ -27,10 +27,12 @@ def results(request):
             dataset_creator = CreateDataset(form.cleaned_data)
             dataset = dataset_creator.dataset_str
             errors = dataset_creator.errors
+            warnings = dataset_creator.warnings
             return render(request, 'create_dataset/results.html',
                           {
                               'dataset': dataset,
                               'errors': errors,
+                              'warnings': warnings,
                               'version': version,
                               'stats': stats,
                           },
