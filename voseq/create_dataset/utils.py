@@ -114,7 +114,12 @@ class CreateFasta(object):
                 codon_pos.append(2)
         for gene_code in self.seq_objs:
             this_gene = None
+
             for seq_record in self.seq_objs[gene_code]:
+                if self.reading_frames[gene_code] is None:
+                    self.warnings.append("Reading frame for gene %s hasn't been specified so "
+                                         "it cannot be included in your dataset." % gene_code)
+                    continue
 
                 if this_gene is None:
                     this_gene = seq_record.name
@@ -234,6 +239,10 @@ class CreateFasta(object):
             for gene_code in self.seq_objs:
                 this_gene = None
                 for seq_record in self.seq_objs[gene_code]:
+                    if self.reading_frames[gene_code] is None:
+                        self.warnings.append("Reading frame for gene %s hasn't been specified so "
+                                             "it cannot be included in your dataset." % gene_code)
+                        continue
 
                     if this_gene is None:
                         this_gene = seq_record.name
@@ -257,6 +266,10 @@ class CreateFasta(object):
 
                 this_gene = None
                 for seq_record in self.seq_objs[gene_code]:
+                    if self.reading_frames[gene_code] is None:
+                        self.warnings.append("Reading frame for gene %s hasn't been specified so "
+                                             "it cannot be included in your dataset." % gene_code)
+                        continue
 
                     if this_gene is None:
                         this_gene = seq_record.name
@@ -304,6 +317,10 @@ class CreateFasta(object):
             for gene_code in self.seq_objs:
                 this_gene = None
                 for seq_record in self.seq_objs[gene_code]:
+                    if self.reading_frames[gene_code] is None:
+                        self.warnings.append("Reading frame for gene %s hasn't been specified so "
+                                             "it cannot be included in your dataset." % gene_code)
+                        continue
 
                     if this_gene is None:
                         this_gene = seq_record.name
@@ -324,6 +341,10 @@ class CreateFasta(object):
             for gene_code in self.seq_objs:
                 this_gene = None
                 for seq_record in self.seq_objs[gene_code]:
+                    if self.reading_frames[gene_code] is None:
+                        self.warnings.append("Reading frame for gene %s hasn't been specified so "
+                                             "it cannot be included in your dataset." % gene_code)
+                        continue
 
                     if this_gene is None:
                         this_gene = seq_record.name
