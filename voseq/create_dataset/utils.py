@@ -226,6 +226,12 @@ class CreateFasta(object):
             partition_list = self.get_codons_in_one_partition(['2nd', '3rd'])
             return self.convert_lists_to_dataset(partition_list)
 
+        if '2nd' in self.codon_positions and '3rd' in self.codon_positions and \
+                '1st' not in self.codon_positions and \
+                '1st2nd_3rd' in self.partition_by_positions:
+            partition_list = self.get_codons_in_each_partition(['2nd', '3rd'])
+            return self.convert_lists_to_dataset(partition_list)
+
         if ('ALL' in self.codon_positions or
                 ('1st' in self.codon_positions and '2nd' in self.codon_positions and '3rd' in self.codon_positions)) \
                 and 'EACH' in self.partition_by_positions:
