@@ -6,6 +6,7 @@ from django.core.management import call_command
 
 from create_dataset.utils import CreateDataset
 from public_interface.models import Genes
+from public_interface.models import GeneSets
 from public_interface.models import TaxonSets
 
 
@@ -599,7 +600,7 @@ GCGTTGCCTGTTTGCATGACGTTTGAAATAACTTCCACTTTTTTTTTCTTTGGTGAGTTCTTTGCCATCTCGTAATGTGT
         result = dataset_creator.dataset_str
         self.assertEqual(expected.strip(), result)
 
-    def test_dataset_ALL_1st2nd_3rd(self):
+    def test_dataset_all_1st2nd_3rd(self):
         g1 = Genes.objects.get(gene_code='COI')
         cleaned_data = self.cleaned_data
         cleaned_data['gene_codes'] = [g1]
@@ -624,6 +625,33 @@ GCGTTGCCTGTTTGCATGACGTTTGAAATAACTTCCACTTTTTTTTTCTTTGGTGAGTTCTTTGCCATCTCGTAATGTGT
 """
         result = dataset_creator.dataset_str
         self.assertEqual(expected.strip(), result)
+
+    def test_dataset_ALL_1st2nd_3rd_using_genesets(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['gene_codes'] = []
+        cleaned_data['positions'] = ['ALL']
+        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['taxonset'] = TaxonSets.objects.get(taxonset_name='Erebia')
+        cleaned_data['geneset'] = GeneSets.objects.get(geneset_name='4genes')
+        cleaned_data['voucher_codes'] = ''
+
+        dataset_creator = CreateDataset(cleaned_data)
+        expected = """
+>coi_1st_2nd_codons
+--------------------
+>CP100-10_Papilionoidea_Melitaea_diaminaa
+????????????????TGGCGGATATGGACTCCTAGCTATATCGACGATTGGAACCAGTTTTATGGGAGACAATTAAAACATGTACGCCAGCTTATATATTTTTATGTATCCATATATGGGGTTGGAATGCTGTCCTTATTTGGGCCCGAATGCTTCCCGATAATAATAGTTTGTTTTCCCCTCTTATCTTTATTCAGAGATGTGAAAGGGCGGACGGTGACGTTACCCCCTTCTCAAATGCCAAGGGGCTCGTGATTGCATTTTCTTCATTGCGGATTCTCATTTGGGCATAATTATACACATATAAATCGATAAAAATTCTAGACAATCCTTTTGTTGGCGTGGATACGCTTCTCTTTTTTCTTCCGTTTGCGGGCATACATCTTTACGACGAACTAAACTCTTTTGATCTGGGGGGGGACC??????????????????????
+>CP100-11_Melitaea_diamina
+?TAGCGTAAATGTAATCCAATCTATATCAACGATAGAATCTATTTTAATGAGTGTCAATTTATACATGAAAGTCTGTTTATAAATTTTTAAGTAGCAATAAATGAGATTGTATTACTGACATAAATGGAGCCAGTAAGTTCCCCAAAATTTAAAATTTATATGCTCATCTAATCTTAATTAATAAATGAGAATGGGAGAATGATAAAGTTCCCCACTTATTATATGCCTAAGAGTTAGGGTTAGTATTTTTTACTTAGTGGATTCTTACTAGAGTATATTTATATAAATATATAACAATATATAATTTTGTCAAACTTATTGATAGAGAGAATAAGATACTCCTATATTTACAGTTAGTGAGTATATAACTTAAGGTCAATCTATACTATTTTGTTCTCGAGAGAGTC??????????????????????
+>coi_3rd_codon
+--------------------
+>CP100-10_Papilionoidea_Melitaea_diamina
+????????ACTATTACATTTTACAAATTTTATATTATTTCTAATTTTTATTTATGATATAATTTATAAAAGACATATCCAATTAATAAGTACATTATATATAATGAATAAATCCATATTTCTAATAGTATTTTATATGTCTCAATTTTTTATTTAATTTATTTAATATAAAAATAAATCAATAATATATTTATAGTATTTCATTTCCAAAT???????????
+>CP100-11_Melitaea_diamina
+GCGTTGCCTGTTTGCATGACGTTTGAAATAACTTCCACTTTTTTTTTCTTTGGTGAGTTCTTTGCCATCTCGTAATGTGTTCCCTTTTTCGGTTAAGCGCGGCTACCTCCATCAGGCCTATCTTCTATCGTCCTTGCTATTCCTTATGTAATCAAATCTTTGCTGTCCTTTTTCTCTTCGCTCTTTCAGATACCTTACGGGGAC???????????
+"""
+        result = dataset_creator.dataset_str
+        self.assertequal(expected.strip(), result)
 
     def test_dataset_1st_codon_1st2nd_3rd(self):
         g1 = Genes.objects.get(gene_code='COI')
