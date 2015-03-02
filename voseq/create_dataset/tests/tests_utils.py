@@ -694,6 +694,19 @@ GCGTTGCCTGTTTGCATGACGTTTGAAATAACTTCCACTTTTTTTTTCTTTGGTGAGTTCTTTGCCATCTCGTAATGTGT
         result = dataset_creator.dataset_str
         self.assertEqual(expected.strip(), result)
 
+    def test_dataset_1st_codon_1st2nd_3rd_gene_has_no_reading_frame(self):
+        g1 = Genes.objects.get(gene_code='16S')
+        cleaned_data = self.cleaned_data
+        cleaned_data['gene_codes'] = [g1]
+        del cleaned_data['positions']
+        cleaned_data['positions'] = ['1st']
+        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+
+        dataset_creator = CreateDataset(cleaned_data)
+        expected = ""
+        result = dataset_creator.dataset_str
+        self.assertEqual(expected.strip(), result)
+
     def test_dataset_2nd_codon_1st2nd_3rd(self):
         g1 = Genes.objects.get(gene_code='COI')
         cleaned_data = self.cleaned_data
