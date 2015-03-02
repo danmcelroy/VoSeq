@@ -170,6 +170,18 @@ class CreateDatasetUtilsTest(TestCase):
         result = dataset_creator.dataset_str
         self.assertEqual(expected.strip(), result)
 
+    def test_dataset_1st_2nd_3rd_codons_as_1st2nd_3rd_gene_with_no_reading_frame(self):
+        g1 = Genes.objects.get(gene_code='16S')
+        cleaned_data = self.cleaned_data
+        cleaned_data['gene_codes'] = [g1]
+        cleaned_data['positions'] = list(['1st', '2nd', '3rd'],)
+        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+
+        dataset_creator = CreateDataset(cleaned_data)
+        expected = ""
+        result = dataset_creator.dataset_str
+        self.assertEqual(expected.strip(), result)
+
     def test_dataset_1st_2nd_codons_as_one_gene_with_no_reading_frame(self):
         g1 = Genes.objects.get(gene_code='16S')
         cleaned_data = self.cleaned_data
