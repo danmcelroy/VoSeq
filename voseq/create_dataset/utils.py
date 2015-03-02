@@ -17,6 +17,7 @@ class CreateFasta(object):
         self.seq_objs = seq_objs
         self.gene_codes = gene_codes
         self.reading_frames = self.get_reading_frames()
+        self.warnings = []
 
     def get_reading_frames(self):
         """
@@ -80,7 +81,12 @@ class CreateFasta(object):
                 codon_pos.append(2)
         for gene_code in self.seq_objs:
             this_gene = None
+
             for seq_record in self.seq_objs[gene_code]:
+                if self.reading_frames[gene_code] is None:
+                    self.warnings.append("Reading frame for gene %s hasn't been specified so "
+                                         "it cannot be included in your dataset." % gene_code)
+                    continue
 
                 if this_gene is None:
                     this_gene = seq_record.name
@@ -108,7 +114,12 @@ class CreateFasta(object):
                 codon_pos.append(2)
         for gene_code in self.seq_objs:
             this_gene = None
+
             for seq_record in self.seq_objs[gene_code]:
+                if self.reading_frames[gene_code] is None:
+                    self.warnings.append("Reading frame for gene %s hasn't been specified so "
+                                         "it cannot be included in your dataset." % gene_code)
+                    continue
 
                 if this_gene is None:
                     this_gene = seq_record.name
@@ -199,6 +210,12 @@ class CreateFasta(object):
 
         if '1st' in self.codon_positions and '3rd' in self.codon_positions and \
                 '2nd' not in self.codon_positions and \
+                '1st2nd_3rd' in self.partition_by_positions:
+            partition_list = self.get_codons_in_each_partition(['1st', '3rd'])
+            return self.convert_lists_to_dataset(partition_list)
+
+        if '1st' in self.codon_positions and '3rd' in self.codon_positions and \
+                '2nd' not in self.codon_positions and \
                 'ONE' in self.partition_by_positions:
             partition_list = self.get_codons_in_one_partition(['1st', '3rd'])
             return self.convert_lists_to_dataset(partition_list)
@@ -215,6 +232,12 @@ class CreateFasta(object):
             partition_list = self.get_codons_in_one_partition(['2nd', '3rd'])
             return self.convert_lists_to_dataset(partition_list)
 
+        if '2nd' in self.codon_positions and '3rd' in self.codon_positions and \
+                '1st' not in self.codon_positions and \
+                '1st2nd_3rd' in self.partition_by_positions:
+            partition_list = self.get_codons_in_each_partition(['2nd', '3rd'])
+            return self.convert_lists_to_dataset(partition_list)
+
         if ('ALL' in self.codon_positions or
                 ('1st' in self.codon_positions and '2nd' in self.codon_positions and '3rd' in self.codon_positions)) \
                 and 'EACH' in self.partition_by_positions:
@@ -228,6 +251,10 @@ class CreateFasta(object):
             for gene_code in self.seq_objs:
                 this_gene = None
                 for seq_record in self.seq_objs[gene_code]:
+                    if self.reading_frames[gene_code] is None:
+                        self.warnings.append("Reading frame for gene %s hasn't been specified so "
+                                             "it cannot be included in your dataset." % gene_code)
+                        continue
 
                     if this_gene is None:
                         this_gene = seq_record.name
@@ -242,10 +269,15 @@ class CreateFasta(object):
         if 'ALL' in self.codon_positions and \
                 '1st2nd_3rd' in self.partition_by_positions:
             partition_list = ([], [],)
+
             for gene_code in self.seq_objs:
+                if self.reading_frames[gene_code] is None:
+                    self.warnings.append("Reading frame for gene %s hasn't been specified so "
+                                         "it cannot be included in your dataset." % gene_code)
+                    continue
+
                 this_gene = None
                 for seq_record in self.seq_objs[gene_code]:
-
                     if this_gene is None:
                         this_gene = seq_record.name
 
@@ -292,6 +324,10 @@ class CreateFasta(object):
             for gene_code in self.seq_objs:
                 this_gene = None
                 for seq_record in self.seq_objs[gene_code]:
+                    if self.reading_frames[gene_code] is None:
+                        self.warnings.append("Reading frame for gene %s hasn't been specified so "
+                                             "it cannot be included in your dataset." % gene_code)
+                        continue
 
                     if this_gene is None:
                         this_gene = seq_record.name
@@ -312,6 +348,10 @@ class CreateFasta(object):
             for gene_code in self.seq_objs:
                 this_gene = None
                 for seq_record in self.seq_objs[gene_code]:
+                    if self.reading_frames[gene_code] is None:
+                        self.warnings.append("Reading frame for gene %s hasn't been specified so "
+                                             "it cannot be included in your dataset." % gene_code)
+                        continue
 
                     if this_gene is None:
                         this_gene = seq_record.name
@@ -352,14 +392,18 @@ class CreateDataset(object):
         self.voucher_codes = get_voucher_codes(cleaned_data)
         self.gene_codes = get_gene_codes(cleaned_data)
         self.taxon_names = cleaned_data['taxon_names']
+        self.warnings = []
         self.dataset_str = self.create_dataset()
 
     def create_dataset(self):
         self.voucher_codes = get_voucher_codes(self.cleaned_data)
         self.gene_codes = get_gene_codes(self.cleaned_data)
         self.create_seq_objs()
+
         fasta = CreateFasta(self.codon_positions, self.partition_by_positions, self.seq_objs, self.gene_codes)
-        return fasta.from_seq_objs_to_fasta()
+        fasta_dataset = fasta.from_seq_objs_to_fasta()
+        self.warnings += fasta.warnings
+        return fasta_dataset
 
     def create_seq_objs(self):
         """Generate a list of sequence objects. Also takes into account the
