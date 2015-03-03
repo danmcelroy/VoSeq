@@ -367,6 +367,10 @@ class CreateFasta(object):
             return self.convert_lists_to_dataset(partition_list)
 
 
+class CreateTNT(CreateFasta):
+    pass
+
+
 class CreateDataset(object):
     """
     Accept form input to create a dataset in several formats, codon positions,
@@ -382,6 +386,7 @@ class CreateDataset(object):
         self.errors = []
         self.seq_objs = dict()
         self.codon_positions = cleaned_data['positions']
+        self.file_format = cleaned_data['file_format']
         self.partition_by_positions = cleaned_data['partition_by_positions']
         self.cleaned_data = cleaned_data
         self.voucher_codes = get_voucher_codes(cleaned_data)
@@ -395,10 +400,17 @@ class CreateDataset(object):
         self.gene_codes = get_gene_codes(self.cleaned_data)
         self.create_seq_objs()
 
-        fasta = CreateFasta(self.codon_positions, self.partition_by_positions, self.seq_objs, self.gene_codes)
-        fasta_dataset = fasta.from_seq_objs_to_fasta()
-        self.warnings += fasta.warnings
-        return fasta_dataset
+        if self.file_format == 'FASTA':
+            fasta = CreateFasta(self.codon_positions, self.partition_by_positions, self.seq_objs, self.gene_codes)
+            fasta_dataset = fasta.from_seq_objs_to_fasta()
+            self.warnings += fasta.warnings
+            return fasta_dataset
+
+        if self.file_format == 'TNT':
+            tnt = CreateTNT(self.codon_positions, self.partition_by_positions, self.seq_objs, self.gene_codes)
+            tnt_dataset = tnt.from_seq_objs_to_fasta()
+            self.warnings += tnt.warnings
+            return tnt_dataset
 
     def create_seq_objs(self):
         """Generate a list of sequence objects. Also takes into account the
