@@ -136,7 +136,7 @@ class CreateFasta(object):
                 partition_list[0].append(seq_str)
         return partition_list
 
-    def from_seq_objs_to_fasta(self):
+    def from_seq_objs_to_dataset(self):
         """Take a list of BioPython's sequence objects and return a FASTA string
 
         Returns:
@@ -402,13 +402,13 @@ class CreateDataset(object):
 
         if self.file_format == 'FASTA':
             fasta = CreateFasta(self.codon_positions, self.partition_by_positions, self.seq_objs, self.gene_codes)
-            fasta_dataset = fasta.from_seq_objs_to_fasta()
+            fasta_dataset = fasta.from_seq_objs_to_dataset()
             self.warnings += fasta.warnings
             return fasta_dataset
 
         if self.file_format == 'TNT':
             tnt = CreateTNT(self.codon_positions, self.partition_by_positions, self.seq_objs, self.gene_codes)
-            tnt_dataset = tnt.from_seq_objs_to_fasta()
+            tnt_dataset = tnt.from_seq_objs_to_dataset()
             self.warnings += tnt.warnings
             return tnt_dataset
 
