@@ -27,6 +27,7 @@ class CreateDatasetUtilsTest(TestCase):
             'taxon_names': ['CODE', 'SUPERFAMILY', 'GENUS', 'SPECIES'],
             'positions': ['ALL'],
             'partition_by_positions': 'ONE',
+            'file_format': 'FASTA',
         }
 
         self.c = Client()
