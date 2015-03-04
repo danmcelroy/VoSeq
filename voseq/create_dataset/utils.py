@@ -10,7 +10,10 @@ from public_interface.models import Sequences
 from public_interface.models import Vouchers
 
 
-class CreateFasta(object):
+class Dataset(object):
+    """
+    Base class to create datasets.
+    """
     def __init__(self, codon_positions, partition_by_positions, seq_objs, gene_codes, file_format):
         self.file_format = file_format
         self.codon_positions = codon_positions
@@ -373,7 +376,11 @@ class CreateFasta(object):
             return self.convert_lists_to_dataset(partition_list)
 
 
-class CreateTNT(CreateFasta):
+class CreateFasta(Dataset):
+    pass
+
+
+class CreateTNT(Dataset):
     def __init__(self, *args, **kwargs):
         super(CreateTNT, self).__init__(*args, **kwargs)
         self.number_taxa = None
