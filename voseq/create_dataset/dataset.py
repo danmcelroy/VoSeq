@@ -54,6 +54,10 @@ class Dataset(object):
         return first_position, second_position, third_position
 
     def convert_lists_to_dataset(self, partitions):
+        """
+        Method to override in order to add headers and footers depending
+        on needed dataset.
+        """
         out = ''
         for i in partitions:
             out += '\n'
