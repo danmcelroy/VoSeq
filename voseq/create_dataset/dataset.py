@@ -1,18 +1,10 @@
-from Bio.Seq import Seq
-from Bio.SeqRecord import SeqRecord
-
-from core.utils import get_voucher_codes
-from core.utils import get_gene_codes
-from core.utils import flatten_taxon_names_dict
 from core.utils import chain_and_flatten
 from public_interface.models import Genes
-from public_interface.models import Sequences
-from public_interface.models import Vouchers
 
 
 class Dataset(object):
     """
-    Base class to create datasets.
+    Base class to create datasets from Seq objects into FASTA, TNT formats.
     """
     def __init__(self, codon_positions, partition_by_positions, seq_objs, gene_codes, file_format):
         self.file_format = file_format
@@ -110,6 +102,13 @@ class Dataset(object):
         seq_str = '>' + this_gene + '\n' + '--------------------'
         return seq_str
 
+    def format_seqrecord_id_for_dataset(self, seq_record):
+        if self.file_format == 'FASTA':
+            seq_str = '>' + seq_record.id + '\n'
+        if self.file_format == 'TNT':
+            seq_str = str(seq_record.id).ljust(55)
+        return seq_str
+
     def get_codons_in_one_partition(self, codons):
         partition_list = ([],)
         codon_pos = []
@@ -139,7 +138,7 @@ class Dataset(object):
                 codons = self.split_sequence_in_codon_positions(this_gene,
                                                                 seq_record.seq)
 
-                seq_str = '>' + seq_record.id + '\n'
+                seq_str = self.format_seqrecord_id_for_dataset(seq_record)
                 seq_str += str(chain_and_flatten([codons[i] for i in codon_pos]))
 
                 partition_list[0].append(seq_str)
