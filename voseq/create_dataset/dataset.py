@@ -99,7 +99,10 @@ class Dataset(object):
         return partition_list
 
     def get_gene_divisor(self, this_gene):
-        seq_str = '>' + this_gene + '\n' + '--------------------'
+        if self.file_format == 'FASTA':
+            seq_str = '>' + this_gene + '\n' + '--------------------'
+        if self.file_format == 'TNT':
+            seq_str = '\n[&dna]'
         return seq_str
 
     def format_seqrecord_id_for_dataset(self, seq_record):
@@ -131,9 +134,8 @@ class Dataset(object):
                 if this_gene is None:
                     this_gene = seq_record.name
 
-                    if self.file_format == 'FASTA':
-                        gene_divisor = self.get_gene_divisor(this_gene)
-                        partition_list[0].append(gene_divisor)
+                    gene_divisor = self.get_gene_divisor(this_gene)
+                    partition_list[0].append(gene_divisor)
 
                 codons = self.split_sequence_in_codon_positions(this_gene,
                                                                 seq_record.seq)
