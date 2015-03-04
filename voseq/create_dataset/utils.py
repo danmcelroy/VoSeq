@@ -4,6 +4,7 @@ from Bio.SeqRecord import SeqRecord
 from core.utils import get_voucher_codes
 from core.utils import get_gene_codes
 from core.utils import flatten_taxon_names_dict
+from public_interface.models import Genes
 from public_interface.models import Sequences
 from public_interface.models import Vouchers
 from .dataset import Dataset
@@ -16,16 +17,16 @@ class CreateFasta(Dataset):
 class CreateTNT(Dataset):
     def __init__(self, *args, **kwargs):
         super(CreateTNT, self).__init__(*args, **kwargs)
-        self.number_taxa = ''
-        self.number_chars = ''
+        self.number_taxa = len(self.voucher_codes)
+        self.number_chars = self.get_number_chars_from_gene_codes()
 
     def convert_lists_to_dataset(self, partitions):
         """
-        Method overriden from base clase in order to add headers and footers depending
+        Overriden method from base clase in order to add headers and footers depending
         on needed dataset.
         """
         out = 'nstates dna;\nxread\n'
-        out += self.number_chars + ' ' + self.number_taxa
+        out += str(self.number_chars) + ' ' + str(self.number_taxa)
 
         for i in partitions:
             out += '\n'
@@ -33,6 +34,16 @@ class CreateTNT(Dataset):
 
         out += '\n;\nproc/;'
         return out.strip()
+
+    def get_number_chars_from_gene_codes(self):
+        chars = 0
+
+        res = Genes.objects.all().values('gene_code', 'length')
+        gene_lengths = {i['gene_code'].lower(): i['length'] for i in res}
+
+        for gene in self.gene_codes:
+            chars += gene_lengths[gene]
+        return chars
 
 
 class CreateDataset(object):
@@ -65,13 +76,13 @@ class CreateDataset(object):
         self.create_seq_objs()
 
         if self.file_format == 'FASTA':
-            fasta = CreateFasta(self.codon_positions, self.partition_by_positions, self.seq_objs, self.gene_codes, self.file_format)
+            fasta = CreateFasta(self.codon_positions, self.partition_by_positions, self.seq_objs, self.gene_codes, self.voucher_codes, self.file_format)
             fasta_dataset = fasta.from_seq_objs_to_dataset()
             self.warnings += fasta.warnings
             return fasta_dataset
 
         if self.file_format == 'TNT':
-            tnt = CreateTNT(self.codon_positions, self.partition_by_positions, self.seq_objs, self.gene_codes, self.file_format)
+            tnt = CreateTNT(self.codon_positions, self.partition_by_positions, self.seq_objs, self.gene_codes, self.voucher_codes, self.file_format)
             tnt_dataset = tnt.from_seq_objs_to_dataset()
             self.warnings += tnt.warnings
             return tnt_dataset
@@ -84,6 +95,10 @@ class CreateDataset(object):
             list of sequence objects as produced by BioPython.
 
         """
+        # We might need to update our list of vouches and genes
+        vouchers = set()
+        gene_codes = set()
+
         our_taxon_names = self.get_taxon_names_for_taxa()
 
         all_seqs = Sequences.objects.all().values('code_id', 'gene_code', 'sequences').order_by('code_id')
@@ -91,6 +106,9 @@ class CreateDataset(object):
             code = s['code_id'].lower()
             gene_code = s['gene_code'].lower()
             if code in self.voucher_codes and gene_code in self.gene_codes:
+                vouchers.add(code)
+                gene_codes.add(gene_code)
+
                 seq = Seq(s['sequences'])
                 seq_obj = SeqRecord(seq)
                 seq_obj.id = flatten_taxon_names_dict(our_taxon_names[code])
@@ -101,6 +119,9 @@ class CreateDataset(object):
                 if gene_code not in self.seq_objs:
                     self.seq_objs[gene_code] = []
                 self.seq_objs[gene_code].append(seq_obj)
+
+        self.voucher_codes = list(vouchers)
+        self.gene_codes = list(gene_codes)
 
     def get_taxon_names_for_taxa(self):
         """Returns dict: {'CP100-10': {'taxon': 'name'}}
