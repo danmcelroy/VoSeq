@@ -11,7 +11,8 @@ from public_interface.models import Vouchers
 
 
 class CreateFasta(object):
-    def __init__(self, codon_positions, partition_by_positions, seq_objs, gene_codes):
+    def __init__(self, codon_positions, partition_by_positions, seq_objs, gene_codes, file_format):
+        self.file_format = file_format
         self.codon_positions = codon_positions
         self.partition_by_positions = partition_by_positions
         self.seq_objs = seq_objs
@@ -102,6 +103,10 @@ class CreateFasta(object):
                     partition_list[i].append(seq_str)
         return partition_list
 
+    def get_gene_divisor(self, this_gene):
+        seq_str = '>' + this_gene + '\n' + '--------------------'
+        return seq_str
+
     def get_codons_in_one_partition(self, codons):
         partition_list = ([],)
         codon_pos = []
@@ -124,8 +129,9 @@ class CreateFasta(object):
                 if this_gene is None:
                     this_gene = seq_record.name
 
-                    seq_str = '>' + this_gene + '\n' + '--------------------'
-                    partition_list[0].append(seq_str)
+                    if self.file_format == 'FASTA':
+                        gene_divisor = self.get_gene_divisor(this_gene)
+                        partition_list[0].append(gene_divisor)
 
                 codons = self.split_sequence_in_codon_positions(this_gene,
                                                                 seq_record.seq)
@@ -254,7 +260,7 @@ class CreateFasta(object):
                     if this_gene is None:
                         this_gene = seq_record.name
 
-                        seq_str = '>' + this_gene + '\n' + '--------------------'
+                        seq_str = self.get_gene_divisor(this_gene)
                         partition_list[0].append(seq_str)
 
                     seq_str = '>' + seq_record.id + '\n' + str(seq_record.seq)
@@ -368,7 +374,11 @@ class CreateFasta(object):
 
 
 class CreateTNT(CreateFasta):
-    pass
+    def __init__(self, *args, **kwargs):
+        super(CreateTNT, self).__init__(*args, **kwargs)
+        self.number_taxa = None
+        self.number_chars = None
+        print(self.seq_objs)
 
 
 class CreateDataset(object):
@@ -401,13 +411,13 @@ class CreateDataset(object):
         self.create_seq_objs()
 
         if self.file_format == 'FASTA':
-            fasta = CreateFasta(self.codon_positions, self.partition_by_positions, self.seq_objs, self.gene_codes)
+            fasta = CreateFasta(self.codon_positions, self.partition_by_positions, self.seq_objs, self.gene_codes, self.file_format)
             fasta_dataset = fasta.from_seq_objs_to_dataset()
             self.warnings += fasta.warnings
             return fasta_dataset
 
         if self.file_format == 'TNT':
-            tnt = CreateTNT(self.codon_positions, self.partition_by_positions, self.seq_objs, self.gene_codes)
+            tnt = CreateTNT(self.codon_positions, self.partition_by_positions, self.seq_objs, self.gene_codes, self.file_format)
             tnt_dataset = tnt.from_seq_objs_to_dataset()
             self.warnings += tnt.warnings
             return tnt_dataset
