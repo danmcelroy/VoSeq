@@ -93,21 +93,32 @@ class Dataset(object):
                     this_gene = seq_record.name
 
                     for i in range(len(codon_descriptions)):
-                        seq_str = '>' + this_gene + codon_descriptions[i] + '\n--------------------'
+                        seq_str = self.get_gene_divisor(this_gene, codon_descriptions[i])
                         partition_list[i].append(seq_str)
 
                 codons = self.split_sequence_in_codon_positions(this_gene,
                                                                 seq_record.seq)
                 for i in range(len(codon_pos)):
-                    seq_str = '>' + seq_record.id + '\n' + str(codons[codon_pos[i]])
+                    seq_str = self.format_seqrecord_and_codon_for_dataset(seq_record, codons[codon_pos[i]])
                     partition_list[i].append(seq_str)
         return partition_list
 
-    def get_gene_divisor(self, this_gene):
+    def get_gene_divisor(self, this_gene, codon_description=None):
         if self.file_format == 'FASTA':
-            seq_str = '>' + this_gene + '\n' + '--------------------'
+            seq_str = '>' + this_gene
+            if codon_description is not None:
+                seq_str += codon_description
+            seq_str += '\n' + '--------------------'
+
         if self.file_format == 'TNT':
             seq_str = '\n[&dna]'
+        return seq_str
+
+    def format_seqrecord_and_codon_for_dataset(self, seq_record, codon):
+        if self.file_format == 'FASTA':
+            seq_str = '>' + seq_record.id + '\n' + str(codon)
+        if self.file_format == 'TNT':
+            seq_str = str(seq_record.id).ljust(55) + str(codon)
         return seq_str
 
     def format_seqrecord_id_for_dataset(self, seq_record):
