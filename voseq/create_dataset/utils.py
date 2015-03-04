@@ -16,9 +16,23 @@ class CreateFasta(Dataset):
 class CreateTNT(Dataset):
     def __init__(self, *args, **kwargs):
         super(CreateTNT, self).__init__(*args, **kwargs)
-        self.number_taxa = None
-        self.number_chars = None
-        print(self.seq_objs)
+        self.number_taxa = ''
+        self.number_chars = ''
+
+    def convert_lists_to_dataset(self, partitions):
+        """
+        Method overriden from base clase in order to add headers and footers depending
+        on needed dataset.
+        """
+        out = 'nstates dna;\nxread\n'
+        out += self.number_chars + ' ' + self.number_taxa
+
+        for i in partitions:
+            out += '\n'
+            out += '\n'.join(i)
+
+        out += '\n;\nproc/;'
+        return out.strip()
 
 
 class CreateDataset(object):
