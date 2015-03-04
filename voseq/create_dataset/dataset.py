@@ -99,7 +99,7 @@ class Dataset(object):
                 codons = self.split_sequence_in_codon_positions(this_gene,
                                                                 seq_record.seq)
                 for i in range(len(codon_pos)):
-                    seq_str = self.format_seqrecord_and_codon_for_dataset(seq_record, codons[codon_pos[i]])
+                    seq_str = self.format_record_id_and_seq_for_dataset(seq_record.id, codons[codon_pos[i]])
                     partition_list[i].append(seq_str)
         return partition_list
 
@@ -114,25 +114,11 @@ class Dataset(object):
             seq_str = '\n[&dna]'
         return seq_str
 
-    def format_seqrecord_and_codon_for_dataset(self, seq_record, codon):
+    def format_record_id_and_seq_for_dataset(self, seq_record_id, seq_record_seq):
         if self.file_format == 'FASTA':
-            seq_str = '>' + seq_record.id + '\n' + str(codon)
+            seq_str = '>' + seq_record_id + '\n' + str(seq_record_seq)
         if self.file_format == 'TNT':
-            seq_str = str(seq_record.id).ljust(55) + str(codon)
-        return seq_str
-
-    def format_seqrecord_id_for_dataset(self, seq_record):
-        if self.file_format == 'FASTA':
-            seq_str = '>' + seq_record.id + '\n'
-        if self.file_format == 'TNT':
-            seq_str = str(seq_record.id).ljust(55)
-        return seq_str
-
-    def format_seqrecord_for_dataset(self, seq_record):
-        if self.file_format == 'FASTA':
-            seq_str = '>' + seq_record.id + '\n' + str(seq_record.seq)
-        if self.file_format == 'TNT':
-            seq_str = str(seq_record.id).ljust(55) + str(seq_record.seq)
+            seq_str = str(seq_record_id).ljust(55) + str(seq_record_seq)
         return seq_str
 
     def get_codons_in_one_partition(self, codons):
@@ -163,8 +149,8 @@ class Dataset(object):
                 codons = self.split_sequence_in_codon_positions(this_gene,
                                                                 seq_record.seq)
 
-                seq_str = self.format_seqrecord_id_for_dataset(seq_record)
-                seq_str += str(chain_and_flatten([codons[i] for i in codon_pos]))
+                codon_seqs = str(chain_and_flatten([codons[i] for i in codon_pos]))
+                seq_str = self.format_record_id_and_seq_for_dataset(seq_record.id, codon_seqs)
 
                 partition_list[0].append(seq_str)
         return partition_list
@@ -290,7 +276,7 @@ class Dataset(object):
                         seq_str = self.get_gene_divisor(this_gene)
                         partition_list[0].append(seq_str)
 
-                    seq_str = self.format_seqrecord_for_dataset(seq_record)
+                    seq_str = self.format_record_id_and_seq_for_dataset(seq_record.id, seq_record.seq)
                     partition_list[0].append(seq_str)
             return self.convert_lists_to_dataset(partition_list)
 
