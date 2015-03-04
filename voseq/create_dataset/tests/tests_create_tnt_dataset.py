@@ -38,3 +38,14 @@ class CreateTNTDatasetTest(TestCase):
         expected = 'nstates dna;\nxread\n2287 2\n\n[&dna]\nCP100-10_Melitaea_diamina'
         result = self.dataset_creator.dataset_str
         self.assertTrue(expected in result)
+
+    def test_create_dataset_1st_codon(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['positions'] = ['1st']
+        dataset_creator = CreateDataset(cleaned_data)
+        expected = 'nstates dna;\nxread\n2287 2\n\n[&dna]\nCP100-10_Melitaea_diamina'
+        result = dataset_creator.dataset_str
+        self.assertTrue(expected in result)
+
+        expected = '????????TGGAAGATCACAACAGTGACATTAGGGCATAAAGAGCGTAAATTAGACAAAGGTGATCGCTATGGCGAGTCCAATAATTTTCCTTACTATAAAGGAGGGAGTAGTCCCTTAAGCAGGTGGTGATTTCTGGATTATGGAATAAAAAAACAAAATTGCACTTGTGGGAAGTCCTTTTCGTGGGAAACTAGCACAATTTGTTGGGGC???????????'
+        self.assertTrue(expected in result)
