@@ -1,0 +1,65 @@
+from Bio.Seq import Seq
+
+from django.test import TestCase
+from django.test.client import Client
+from django.core.management import call_command
+
+from create_dataset.utils import CreateDataset
+from public_interface.models import Genes
+from public_interface.models import GeneSets
+from public_interface.models import TaxonSets
+
+
+class CreateTNTDatasetTest(TestCase):
+    def setUp(self):
+        args = []
+        opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
+        cmd = 'migrate_db'
+        call_command(cmd, *args, **opts)
+
+        g1 = Genes.objects.get(gene_code='COI')
+        g2 = Genes.objects.get(gene_code='EF1a')
+        self.cleaned_data = {
+            'gene_codes': [g1, g2],
+            'taxonset': None,
+            'voucher_codes': 'CP100-10\r\nCP100-11',
+            'geneset': None,
+            'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
+            'positions': ['2nd', '3rd'],
+            'partition_by_positions': 'ONE',
+            'file_format': 'TNT',
+        }
+
+        self.c = Client()
+        self.dataset_creator = CreateDataset(self.cleaned_data)
+        self.maxDiff = None
+
+    def test_create_dataset(self):
+        expected = 'nstates dna;\nxread\n2287 2\n\n[&dna]\nCP100-10_Melitaea_diamina'
+        result = self.dataset_creator.dataset_str
+        self.assertTrue(expected in result)
+
+    def test_create_dataset_ALL_codons(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['positions'] = ['ALL']
+        dataset_creator = CreateDataset(cleaned_data)
+        expected = 'nstates dna;\nxread\n2287 2\n\n[&dna]\nCP100-10_Melitaea_diamina'
+        result = dataset_creator.dataset_str
+        self.assertTrue(expected in result)
+
+        expected = '?????????????????????????TGAGCCGGTATAATTGGTACATCCCTAAGTCTTATTATTCGAACCGAATTAGGAAATCCTAGTTTTTTAATTGGAGATGATCAAATTTATAATACCATTGTAACAGCTCATGCTTTTATTATAATTTTTTTTATAGTTATGCCAATTATAATTGGAGGATTTGGTAATTGACTTGTACCATTAATATTGGGAGCCCCAGATATAGCTTTCCCCCGAATAAATTATATAAGATTTTGATTATTGCCTCCATCCTTAATTCTTTTAATTTCAAGTAGAATTGTAGAAAATGGGGCAGGAACTGGATGAACAGTTTACCCCCCACTTTCATCTAATATTGCCCATAGAGGAGCTTCAGTGGATTTAGCTATTTTTTCTTTACATTTAGCTGGGATTTCCTCTATCTTAGGAGCTATTAATTTTATTACTACAATTATTAATATACGAATTAATAATATATCTTATGATCAAATACCTTTATTTGTATGAGCAGTAGGAATTACAGCATTACTTCTCTTATTATCTTTACCAGTTTTAGCTGGAGCTATTACTATACTTTTAACGGATCGAAATCTTAATACCTCATTTTTTGATTCCTGCGGAGGAGGAGATCC?????????????????????????????????'
+        self.assertTrue(expected in result)
+
+        expected = 'CP100-11_Melitaea_diamina                              ????????????????????????'
+        self.assertTrue(expected in result)
+
+    def test_create_dataset_1st_codon(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['positions'] = ['1st']
+        dataset_creator = CreateDataset(cleaned_data)
+        expected = 'nstates dna;\nxread\n2287 2\n\n[&dna]\nCP100-10_Melitaea_diamina'
+        result = dataset_creator.dataset_str
+        self.assertTrue(expected in result)
+
+        expected = '????????TGGAAGATCACAACAGTGACATTAGGGCATAAAGAGCGTAAATTAGACAAAGGTGATCGCTATGGCGAGTCCAATAATTTTCCTTACTATAAAGGAGGGAGTAGTCCCTTAAGCAGGTGGTGATTTCTGGATTATGGAATAAAAAAACAAAATTGCACTTGTGGGAAGTCCTTTTCGTGGGAAACTAGCACAATTTGTTGGGGC???????????'
+        self.assertTrue(expected in result)
