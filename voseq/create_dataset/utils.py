@@ -68,7 +68,7 @@ class CreateDataset(object):
         self.gene_codes = get_gene_codes(cleaned_data)
         self.taxon_names = cleaned_data['taxon_names']
         self.voucher_codes_metadata = dict()
-        self.gene_codes_metadata = dict()
+        self.gene_codes_metadata = self.get_gene_codes_metadata()
         self.warnings = []
         self.dataset_str = self.create_dataset()
 
@@ -88,6 +88,22 @@ class CreateDataset(object):
             tnt_dataset = tnt.from_seq_objs_to_dataset()
             self.warnings += tnt.warnings
             return tnt_dataset
+
+    def create_seq_record(self, s):
+        """
+        Adds ? if the sequence is not long enough
+        :param s:
+        :return:
+        """
+        gene_code = s['gene_code'].lower()
+        length = self.gene_codes_metadata[gene_code]
+        sequence = s['sequences']
+        length_difference = length - len(sequence)
+
+        sequence += '?' * length_difference
+        seq = Seq(sequence)
+        seq_obj = SeqRecord(seq)
+        return seq_obj
 
     def create_seq_objs(self):
         """Generate a list of sequence objects. Also takes into account the
@@ -111,8 +127,7 @@ class CreateDataset(object):
                 vouchers.add(code)
                 gene_codes.add(gene_code)
 
-                seq = Seq(s['sequences'])
-                seq_obj = SeqRecord(seq)
+                seq_obj = self.create_seq_record(s)
                 seq_obj.id = flatten_taxon_names_dict(our_taxon_names[code])
                 if 'GENECODE' in self.taxon_names:
                     seq_obj.id += '_' + gene_code
@@ -128,6 +143,17 @@ class CreateDataset(object):
         self.gene_codes = list(gene_codes)
         self.add_missing_seqs()
 
+    def get_gene_codes_metadata(self):
+        """
+        :return: dictionary with genecode and base pair number.
+        """
+        queryset = Genes.objects.all().values('gene_code', 'length')
+        gene_codes_metadata = dict()
+        for i in queryset:
+            gene_code = i['gene_code'].lower()
+            gene_codes_metadata[gene_code] = i['length']
+        return gene_codes_metadata
+
     def add_missing_seqs(self):
         """
         Loops over the created seq_objects and adds sequences full of ? if
@@ -135,12 +161,6 @@ class CreateDataset(object):
 
         Uses the updated lists of voucher_codes and gene_codes
         """
-        queryset = Genes.objects.all().values('gene_code', 'length')
-        self.gene_codes_metadata = dict()
-        for i in queryset:
-            gene_code = i['gene_code'].lower()
-            self.gene_codes_metadata[gene_code] = i['length']
-
         for gene_code in self.seq_objs:
             for code in self.voucher_codes:
                 found = False
