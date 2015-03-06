@@ -67,6 +67,8 @@ class CreateDataset(object):
         self.voucher_codes = get_voucher_codes(cleaned_data)
         self.gene_codes = get_gene_codes(cleaned_data)
         self.taxon_names = cleaned_data['taxon_names']
+        self.voucher_codes_metadata = dict()
+        self.gene_codes_metadata = dict()
         self.warnings = []
         self.dataset_str = self.create_dataset()
 
@@ -115,6 +117,8 @@ class CreateDataset(object):
                 if 'GENECODE' in self.taxon_names:
                     seq_obj.id += '_' + gene_code
                 seq_obj.name = gene_code
+                seq_obj.description = code
+                self.voucher_codes_metadata[code] = seq_obj.id
 
                 if gene_code not in self.seq_objs:
                     self.seq_objs[gene_code] = []
@@ -122,6 +126,35 @@ class CreateDataset(object):
 
         self.voucher_codes = list(vouchers)
         self.gene_codes = list(gene_codes)
+        self.add_missing_seqs()
+
+    def add_missing_seqs(self):
+        """
+        Loops over the created seq_objects and adds sequences full of ? if
+        those where not found in our database.
+
+        Uses the updated lists of voucher_codes and gene_codes
+        """
+        queryset = Genes.objects.all().values('gene_code', 'length')
+        self.gene_codes_metadata = dict()
+        for i in queryset:
+            gene_code = i['gene_code'].lower()
+            self.gene_codes_metadata[gene_code] = i['length']
+
+        for gene_code in self.seq_objs:
+            for code in self.voucher_codes:
+                found = False
+                for seq_obj in self.seq_objs[gene_code]:
+                    if code == seq_obj.description:
+                        found = True
+
+                if found is False:
+                    seq = Seq('?' * self.gene_codes_metadata[gene_code])
+                    empty_seq_obj = SeqRecord(seq)
+                    empty_seq_obj.id = self.voucher_codes_metadata[code]
+                    empty_seq_obj.name = gene_code
+                    empty_seq_obj.description = code
+                    self.seq_objs[gene_code].append(empty_seq_obj)
 
     def get_taxon_names_for_taxa(self):
         """Returns dict: {'CP100-10': {'taxon': 'name'}}
