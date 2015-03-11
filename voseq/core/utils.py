@@ -70,7 +70,7 @@ def get_gene_codes(cleaned_data):
 
     gene_codes_lower_case = [i.lower() for i in gene_codes]
     gene_codes_lower_case.sort()
-    return tuple(gene_codes_lower_case)
+    return set(gene_codes_lower_case)
 
 
 def get_version_stats():
