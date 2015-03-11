@@ -112,12 +112,17 @@ class Dataset(object):
 
         if self.file_format == 'TNT':
             seq_str = '\n[&dna]'
+
+        if self.file_format == 'NEXUS':
+            seq_str = '\n[&dna]'
         return seq_str
 
     def format_record_id_and_seq_for_dataset(self, seq_record_id, seq_record_seq):
         if self.file_format == 'FASTA':
             seq_str = '>' + seq_record_id + '\n' + str(seq_record_seq)
         if self.file_format == 'TNT':
+            seq_str = str(seq_record_id).ljust(55) + str(seq_record_seq)
+        if self.file_format == 'NEXUS':
             seq_str = str(seq_record_id).ljust(55) + str(seq_record_seq)
         return seq_str
 
