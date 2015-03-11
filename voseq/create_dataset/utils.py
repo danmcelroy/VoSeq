@@ -49,6 +49,7 @@ class CreateTNT(Dataset):
 class CreateNEXUS(Dataset):
     def __init__(self, *args, **kwargs):
         super(CreateNEXUS, self).__init__(*args, **kwargs)
+        self.gene_codes_and_lengths = None
         self.number_taxa = len(self.voucher_codes)
         self.number_chars = self.get_number_chars_from_gene_codes()
 
@@ -69,17 +70,25 @@ class CreateNEXUS(Dataset):
             out += i
 
         out += [';\nEND;']
-        print(out)
+        out += ['\nbegin mrbayes;']
+
+        bp_count_start = 0
+        bp_count_end = 0
+        for gene in self.gene_codes:
+            bp_count_end += self.gene_codes_and_lengths[gene]
+            line = '    charset ' + gene + ' = ' + str(bp_count_start + 1) + '-' + str(bp_count_end) + ';'
+            bp_count_start += bp_count_end
+            out.append(line)
         return '\n'.join(out)
 
     def get_number_chars_from_gene_codes(self):
         chars = 0
 
         res = Genes.objects.all().values('gene_code', 'length')
-        gene_lengths = {i['gene_code'].lower(): i['length'] for i in res}
+        self.gene_codes_and_lengths = {i['gene_code'].lower(): i['length'] for i in res}
 
         for gene in self.gene_codes:
-            chars += gene_lengths[gene]
+            chars += self.gene_codes_and_lengths[gene]
         return chars
 
 
