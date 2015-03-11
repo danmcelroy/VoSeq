@@ -114,7 +114,7 @@ class Dataset(object):
             seq_str = '\n[&dna]'
 
         if self.file_format == 'NEXUS':
-            seq_str = '\n[&dna]'
+            seq_str = '\n[%s]' % this_gene
         return seq_str
 
     def format_record_id_and_seq_for_dataset(self, seq_record_id, seq_record_seq):
