@@ -46,6 +46,43 @@ class CreateTNT(Dataset):
         return chars
 
 
+class CreateNEXUS(Dataset):
+    def __init__(self, *args, **kwargs):
+        super(CreateNEXUS, self).__init__(*args, **kwargs)
+        self.number_taxa = len(self.voucher_codes)
+        self.number_chars = self.get_number_chars_from_gene_codes()
+
+    def convert_lists_to_dataset(self, partitions):
+        """
+        Overriden method from base clase in order to add headers and footers depending
+        on needed dataset.
+        """
+        out = [
+            '#NEXUS\n',
+            'BEGIN DATA;',
+            'DIMENSIONS NTAX=' + str(self.number_taxa) + ' NCHAR=' + str(self.number_chars) + ';',
+            'FORMAT INTERLEAVE DATATYPE=DNA MISSING=? GAP=-;',
+            'MATRIX',
+        ]
+
+        for i in partitions:
+            out += i
+
+        out += [';\nEND;']
+        print(out)
+        return '\n'.join(out)
+
+    def get_number_chars_from_gene_codes(self):
+        chars = 0
+
+        res = Genes.objects.all().values('gene_code', 'length')
+        gene_lengths = {i['gene_code'].lower(): i['length'] for i in res}
+
+        for gene in self.gene_codes:
+            chars += gene_lengths[gene]
+        return chars
+
+
 class CreateDataset(object):
     """
     Accept form input to create a dataset in several formats, codon positions,
@@ -88,6 +125,12 @@ class CreateDataset(object):
             tnt_dataset = tnt.from_seq_objs_to_dataset()
             self.warnings += tnt.warnings
             return tnt_dataset
+
+        if self.file_format == 'NEXUS':
+            nexus = CreateNEXUS(self.codon_positions, self.partition_by_positions, self.seq_objs, self.gene_codes, self.voucher_codes, self.file_format)
+            nexus_dataset = nexus.from_seq_objs_to_dataset()
+            self.warnings += nexus.warnings
+            return nexus_dataset
 
     def create_seq_record(self, s):
         """
