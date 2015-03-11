@@ -69,7 +69,8 @@ def get_gene_codes(cleaned_data):
         gene_codes += [i.gene_code for i in cleaned_data['gene_codes']]
 
     gene_codes_lower_case = [i.lower() for i in gene_codes]
-    return set(gene_codes_lower_case)
+    gene_codes_lower_case.sort()
+    return tuple(gene_codes_lower_case)
 
 
 def get_version_stats():
