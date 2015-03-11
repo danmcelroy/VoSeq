@@ -36,6 +36,9 @@ migrations:
 	python voseq/manage.py migrate --settings=voseq.settings.local
 
 import:
+	python voseq/manage.py migrate_db --dumpfile=dump.xml --settings=voseq.settings.local
+
+test_import:
 	python voseq/manage.py migrate_db --dumpfile=test_db_dump.xml --settings=voseq.settings.local
 
 index:
