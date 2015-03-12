@@ -18,7 +18,6 @@
             <h3 class="panel-title"><b>Enter the required info to make yourself a FASTA file to be submitted to GenBank</b></h3>
           </div>
 
-              {% csrf_token %}
 
           {% for i in form.non_field_errors %}
           <div class="alert alert-warning">{{ i }}</div>

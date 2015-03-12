@@ -132,7 +132,6 @@ class CreateDataset(object):
 
     """
     def __init__(self, cleaned_data):
-        print(">>>>>>_init", cleaned_data)
         self.errors = []
         self.seq_objs = dict()
         self.codon_positions = cleaned_data['positions']
