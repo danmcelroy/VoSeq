@@ -35,7 +35,7 @@ class CreateDatasetUtilsTest(TestCase):
         self.maxDiff = None
 
     def test_create_dataset(self):
-        expected = '>coi\n--------------------\n>CP100-10_Papilionoidea_Melitaea_diamina'
+        expected = '>COI\n--------------------\n>CP100-10_Papilionoidea_Melitaea_diamina'
         result = self.dataset_creator.dataset_str
         self.assertTrue(expected in result)
 

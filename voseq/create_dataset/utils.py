@@ -175,7 +175,7 @@ class CreateDataset(object):
         :param s:
         :return:
         """
-        gene_code = s['gene_code'].lower()
+        gene_code = s['gene_code']
         length = self.gene_codes_metadata[gene_code]
         sequence = s['sequences']
         length_difference = length - len(sequence)
@@ -201,8 +201,8 @@ class CreateDataset(object):
 
         all_seqs = Sequences.objects.all().values('code_id', 'gene_code', 'sequences').order_by('code_id')
         for s in all_seqs:
-            code = s['code_id'].lower()
-            gene_code = s['gene_code'].lower()
+            code = s['code_id']
+            gene_code = s['gene_code']
             if code in self.voucher_codes and gene_code in self.gene_codes:
                 vouchers.add(code)
                 gene_codes.add(gene_code)
@@ -230,7 +230,7 @@ class CreateDataset(object):
         queryset = Genes.objects.all().values('gene_code', 'length')
         gene_codes_metadata = dict()
         for i in queryset:
-            gene_code = i['gene_code'].lower()
+            gene_code = i['gene_code']
             gene_codes_metadata[gene_code] = i['length']
         return gene_codes_metadata
 
@@ -272,7 +272,7 @@ class CreateDataset(object):
                                                                       'subtribe', 'genus', 'species',
                                                                       'subspecies', 'author', 'hostorg',)
         for voucher in all_vouchers:
-            code = voucher['code'].lower()
+            code = voucher['code']
             if code in self.voucher_codes:
                 obj = dict()
                 for taxon_name in self.taxon_names:
