@@ -27,7 +27,7 @@ class Dataset(object):
         reading_frames = dict()
         genes = Genes.objects.all().values('gene_code', 'reading_frame')
         for gene in genes:
-            gene_code = gene['gene_code'].lower()
+            gene_code = gene['gene_code']
             if gene_code in self.gene_codes:
                 reading_frames[gene_code] = gene['reading_frame']
         return reading_frames
@@ -47,7 +47,7 @@ class Dataset(object):
             processed to extract the codon positions requested by the user.
 
         """
-        reading_frame = int(self.reading_frames[gene_code.lower()]) - 1
+        reading_frame = int(self.reading_frames[gene_code]) - 1
         seq = seq[reading_frame:]
 
         # This is the BioPython way to get codon positions
