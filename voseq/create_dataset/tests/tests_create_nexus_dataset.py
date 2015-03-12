@@ -56,6 +56,19 @@ END;
 begin mrbayes;
     charset coi = 1-1047;
     charset ef1a = 1048-2287;
+partition GENES = 2: coi, ef1a;
+
+set partition = GENES;
+
+set autoclose=yes;
+prset applyto=(all) ratepr=variable brlensp=unconstrained:Exp(100.0) shapepr=exp(1.0) tratiopr=beta(2.0,1.0);
+lset applyto=(all) nst=mixed rates=gamma [invgamma];
+unlink statefreq=(all);
+unlink shape=(all) revmat=(all) tratio=(all) [pinvar=(all)];
+mcmc ngen=10000000 printfreq=1000 samplefreq=1000 nchains=4 nruns=2 savebrlens=yes [temp=0.11];
+ sump relburnin=yes [no] burninfrac=0.25 [2500];
+ sumt relburnin=yes [no] burninfrac=0.25 [2500] contype=halfcompat [allcompat];
+END;
 """
         result = self.dataset_creator.dataset_str
         self.assertEqual(expected.strip(), result)
