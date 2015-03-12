@@ -39,7 +39,7 @@ class CreateTNT(Dataset):
         chars = 0
 
         res = Genes.objects.all().values('gene_code', 'length')
-        gene_lengths = {i['gene_code'].lower(): i['length'] for i in res}
+        gene_lengths = {i['gene_code']: i['length'] for i in res}
 
         for gene in self.gene_codes:
             chars += gene_lengths[gene]
@@ -114,7 +114,7 @@ END;
         chars = 0
 
         res = Genes.objects.all().values('gene_code', 'length')
-        self.gene_codes_and_lengths = {i['gene_code'].lower(): i['length'] for i in res}
+        self.gene_codes_and_lengths = {i['gene_code']: i['length'] for i in res}
 
         for gene in self.gene_codes:
             chars += self.gene_codes_and_lengths[gene]
