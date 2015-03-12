@@ -46,6 +46,81 @@ class CreateTNT(Dataset):
         return chars
 
 
+class CreateNEXUS(Dataset):
+    def __init__(self, *args, **kwargs):
+        super(CreateNEXUS, self).__init__(*args, **kwargs)
+        self.gene_codes_and_lengths = None
+        self.number_taxa = len(self.voucher_codes)
+        self.number_chars = self.get_number_chars_from_gene_codes()
+
+    def get_charset_block(self):
+        charset_block = []
+
+        bp_count_start = 0
+        bp_count_end = 0
+        self.gene_codes.sort()
+        for gene in self.gene_codes:
+            bp_count_end += self.gene_codes_and_lengths[gene]
+            line = '    charset ' + gene + ' = ' + str(
+                bp_count_start + 1) + '-' + str(bp_count_end) + ';'
+            bp_count_start += bp_count_end
+            charset_block.append(line)
+        return charset_block
+
+    def get_partitions_block(self):
+        line = 'partition GENES = ' + str(len(self.gene_codes))
+        line += ': ' + ', '.join(self.gene_codes) + ';\n'
+        line += '\nset partition = GENES;\n'
+        return [line]
+
+    def get_final_block(self):
+        block = """
+set autoclose=yes;
+prset applyto=(all) ratepr=variable brlensp=unconstrained:Exp(100.0) shapepr=exp(1.0) tratiopr=beta(2.0,1.0);
+lset applyto=(all) nst=mixed rates=gamma [invgamma];
+unlink statefreq=(all);
+unlink shape=(all) revmat=(all) tratio=(all) [pinvar=(all)];
+mcmc ngen=10000000 printfreq=1000 samplefreq=1000 nchains=4 nruns=2 savebrlens=yes [temp=0.11];
+ sump relburnin=yes [no] burninfrac=0.25 [2500];
+ sumt relburnin=yes [no] burninfrac=0.25 [2500] contype=halfcompat [allcompat];
+END;
+"""
+        return [block.strip()]
+
+    def convert_lists_to_dataset(self, partitions):
+        """
+        Overriden method from base clase in order to add headers and footers depending
+        on needed dataset.
+        """
+        out = [
+            '#NEXUS\n',
+            'BEGIN DATA;',
+            'DIMENSIONS NTAX=' + str(self.number_taxa) + ' NCHAR=' + str(self.number_chars) + ';',
+            'FORMAT INTERLEAVE DATATYPE=DNA MISSING=? GAP=-;',
+            'MATRIX',
+        ]
+
+        for i in partitions:
+            out += i
+
+        out += [';\nEND;']
+        out += ['\nbegin mrbayes;']
+        out += self.get_charset_block()
+        out += self.get_partitions_block()
+        out += self.get_final_block()
+        return '\n'.join(out)
+
+    def get_number_chars_from_gene_codes(self):
+        chars = 0
+
+        res = Genes.objects.all().values('gene_code', 'length')
+        self.gene_codes_and_lengths = {i['gene_code'].lower(): i['length'] for i in res}
+
+        for gene in self.gene_codes:
+            chars += self.gene_codes_and_lengths[gene]
+        return chars
+
+
 class CreateDataset(object):
     """
     Accept form input to create a dataset in several formats, codon positions,
@@ -88,6 +163,12 @@ class CreateDataset(object):
             tnt_dataset = tnt.from_seq_objs_to_dataset()
             self.warnings += tnt.warnings
             return tnt_dataset
+
+        if self.file_format == 'NEXUS':
+            nexus = CreateNEXUS(self.codon_positions, self.partition_by_positions, self.seq_objs, self.gene_codes, self.voucher_codes, self.file_format)
+            nexus_dataset = nexus.from_seq_objs_to_dataset()
+            self.warnings += nexus.warnings
+            return nexus_dataset
 
     def create_seq_record(self, s):
         """
