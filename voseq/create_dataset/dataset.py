@@ -1,3 +1,5 @@
+import collections
+
 from core.utils import chain_and_flatten
 from public_interface.models import Genes
 
@@ -10,7 +12,8 @@ class Dataset(object):
         self.file_format = file_format
         self.codon_positions = codon_positions
         self.partition_by_positions = partition_by_positions
-        self.seq_objs = seq_objs
+        # need to sort our seq_objs dictionary by gene_code
+        self.seq_objs = collections.OrderedDict(sorted(seq_objs.items(), key=lambda t: t[0]))
         self.gene_codes = gene_codes
         self.voucher_codes = voucher_codes
         self.reading_frames = self.get_reading_frames()
@@ -112,12 +115,17 @@ class Dataset(object):
 
         if self.file_format == 'TNT':
             seq_str = '\n[&dna]'
+
+        if self.file_format == 'NEXUS':
+            seq_str = '\n[%s]' % this_gene
         return seq_str
 
     def format_record_id_and_seq_for_dataset(self, seq_record_id, seq_record_seq):
         if self.file_format == 'FASTA':
             seq_str = '>' + seq_record_id + '\n' + str(seq_record_seq)
         if self.file_format == 'TNT':
+            seq_str = str(seq_record_id).ljust(55) + str(seq_record_seq)
+        if self.file_format == 'NEXUS':
             seq_str = str(seq_record_id).ljust(55) + str(seq_record_seq)
         return seq_str
 
