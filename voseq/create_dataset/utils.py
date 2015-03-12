@@ -53,6 +53,20 @@ class CreateNEXUS(Dataset):
         self.number_taxa = len(self.voucher_codes)
         self.number_chars = self.get_number_chars_from_gene_codes()
 
+    def get_charset_block(self):
+        charset_block = []
+
+        bp_count_start = 0
+        bp_count_end = 0
+        self.gene_codes.sort()
+        for gene in self.gene_codes:
+            bp_count_end += self.gene_codes_and_lengths[gene]
+            line = '    charset ' + gene + ' = ' + str(
+                bp_count_start + 1) + '-' + str(bp_count_end) + ';'
+            bp_count_start += bp_count_end
+            charset_block.append(line)
+        return charset_block
+
     def convert_lists_to_dataset(self, partitions):
         """
         Overriden method from base clase in order to add headers and footers depending
@@ -71,15 +85,8 @@ class CreateNEXUS(Dataset):
 
         out += [';\nEND;']
         out += ['\nbegin mrbayes;']
+        out += self.get_charset_block()
 
-        bp_count_start = 0
-        bp_count_end = 0
-        self.gene_codes.sort()
-        for gene in self.gene_codes:
-            bp_count_end += self.gene_codes_and_lengths[gene]
-            line = '    charset ' + gene + ' = ' + str(bp_count_start + 1) + '-' + str(bp_count_end) + ';'
-            bp_count_start += bp_count_end
-            out.append(line)
         return '\n'.join(out)
 
     def get_number_chars_from_gene_codes(self):
