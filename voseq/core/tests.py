@@ -21,7 +21,7 @@ class TestCore(TestCase):
 
     def test_translation_to_protein(self):
         """Catch exceptions when input has invalid codons due to ?"""
-        gene_model = Genes.objects.get(gene_code='COI')
+        gene_model = Genes.objects.filter(gene_code='COI').values()[0]
         sequence_model = Sequences.objects.get(gene_code='COI', code='CP100-10')
         seq_description = 'seq_description'
         seq_id = 'seq_id'
@@ -34,7 +34,7 @@ WAGMIGTSLSLIIRTELGNPSFLIGDDQIYNTIVTAHAFIMIFFMVMPIMIGGFGNWLVPLMLGAPDMAFPRMNYMSFWL
 
     def test_translation_to_protein_invalid_codons(self):
         """Catch exceptions when input has invalid codons due to ?"""
-        gene_model = Genes.objects.get(gene_code='COI')
+        gene_model = Genes.objects.filter(gene_code='COI').values()[0]
         sequence_model = Sequences.objects.get(gene_code='COI', code='CP100-10')
         seq = sequence_model.sequences
         new_seq = []
