@@ -31,3 +31,21 @@ WAGMIGTSLSLIIRTELGNPSFLIGDDQIYNTIVTAHAFIMIFFMVMPIMIGGFGNWLVPLMLGAPDMAFPRMNYMSFWL
 """
         results = utils.translate_to_protein(gene_model, sequence_model, seq_description, seq_id)
         self.assertEqual(expected.lstrip(), results)
+
+    def test_translation_to_protein_invalid_codons(self):
+        """Catch exceptions when input has invalid codons due to ?"""
+        gene_model = Genes.objects.get(gene_code='COI')
+        sequence_model = Sequences.objects.get(gene_code='COI', code='CP100-10')
+        seq = sequence_model.sequences
+        new_seq = []
+        count = 1
+        for i in seq:
+            if count % 10 == 0:
+                i = '?'
+            new_seq.append(i)
+            count += 1
+        sequence_model.sequences = ''.join(new_seq)
+        seq_description = 'seq_description'
+        seq_id = 'seq_id'
+        results = utils.translate_to_protein(gene_model, sequence_model, seq_description, seq_id)
+        self.assertFalse(results)
