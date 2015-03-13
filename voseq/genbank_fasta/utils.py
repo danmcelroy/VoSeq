@@ -28,6 +28,7 @@ class Results(object):
 
     """
     def __init__(self, voucher_codes, gene_codes):
+        self.warnings = []
         self.voucher_codes = voucher_codes
         self.gene_codes = gene_codes
         self.items_with_accession = []
@@ -92,12 +93,16 @@ class Results(object):
                         self.fasta += '>' + seq_id + ' ' + seq_description + '\n'
                         self.fasta += str(seq_obj) + '\n'
 
-                        self.protein += utils.translate_to_protein(
+                        protein = utils.translate_to_protein(
                             gene_model,
                             sequence_model,
                             seq_description,
                             seq_id,
                         )
+                        if not protein.startswith('Error'):
+                            self.protein += protein
+                        else:
+                            self.warnings.append("Could not translate %s: %s" % (seq_id, protein))
 
         with open(self.fasta_file, 'w') as handle:
             handle.write(self.fasta)
