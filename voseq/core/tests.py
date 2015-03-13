@@ -47,5 +47,6 @@ WAGMIGTSLSLIIRTELGNPSFLIGDDQIYNTIVTAHAFIMIFFMVMPIMIGGFGNWLVPLMLGAPDMAFPRMNYMSFWL
         sequence_model.sequences = ''.join(new_seq)
         seq_description = 'seq_description'
         seq_id = 'seq_id'
+        expected = "Error Codon 'G?C' is invalid"
         results = utils.translate_to_protein(gene_model, sequence_model, seq_description, seq_id)
-        self.assertFalse(results)
+        self.assertEqual(expected, results)
