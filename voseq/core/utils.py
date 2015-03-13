@@ -33,15 +33,15 @@ def get_voucher_codes(cleaned_data):
     for i in voucher_codes:
         if re.search('^--', i):
             i_clean = re.sub('^--', '', i)
-            voucher_codes_clean.append(i_clean.lower())
+            voucher_codes_clean.append(i_clean)
         else:
-            voucher_codes_clean.append(i.lower())
+            voucher_codes_clean.append(i)
     voucher_codes_set = set(voucher_codes_clean)
 
     vouchers_to_drop = []
     for i in voucher_codes:
         if re.search('^--', i):
-            vouchers_to_drop.append(re.sub('^--', '', i).lower())
+            vouchers_to_drop.append(re.sub('^--', '', i))
 
     voucher_codes_filtered = []
     for i in voucher_codes_set:
@@ -68,9 +68,8 @@ def get_gene_codes(cleaned_data):
     if len(cleaned_data['gene_codes']) > 0:
         gene_codes += [i.gene_code for i in cleaned_data['gene_codes']]
 
-    gene_codes_lower_case = [i.lower() for i in gene_codes]
-    gene_codes_lower_case.sort()
-    return set(gene_codes_lower_case)
+    gene_codes.sort()
+    return set(gene_codes)
 
 
 def get_version_stats():
