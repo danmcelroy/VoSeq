@@ -6,6 +6,7 @@ from django.conf import settings
 
 from Bio.Seq import Seq
 from Bio.Alphabet import IUPAC
+from Bio.Data.CodonTable import TranslationError
 
 from stats.models import Stats
 
@@ -230,7 +231,13 @@ def translate_to_protein(gene_model, sequence_model, seq_description, seq_id):
         seq_obj = Seq(seq_seq[start_translation:], IUPAC.ambiguous_dna)
     else:
         seq_obj = Seq(seq_seq[start_translation:], IUPAC.unambiguous_dna)
-    prot_sequence = seq_obj.translate(table=gene_model.genetic_code)
+
+    try:
+        prot_sequence = seq_obj.translate(table=gene_model.genetic_code)
+    except TranslationError as e:
+        print("Error %s" % e)
+        return False
+
     out = '>' + seq_id + ' ' + seq_description + '\n'
     out += str(prot_sequence) + '\n'
     return out
