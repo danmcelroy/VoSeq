@@ -29,7 +29,7 @@ class BaseDatasetForm(forms.Form):
         empty_label='Choose geneset',
     )
     gene_codes = forms.ModelMultipleChoiceField(
-        Genes.objects.all(),
+        Genes.objects.all().order_by('gene_code'),
         label='Check to select your alignment/gene',
         required=False,
         widget=forms.CheckboxSelectMultiple(),
