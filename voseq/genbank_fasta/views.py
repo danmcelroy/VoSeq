@@ -1,10 +1,10 @@
 import os
-import json
 import re
 
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from core.utils import get_version_stats
 from core.utils import get_gene_codes
@@ -27,6 +27,7 @@ def index(request):
                   )
 
 
+@csrf_exempt
 def results(request):
     version, stats = get_version_stats()
 
