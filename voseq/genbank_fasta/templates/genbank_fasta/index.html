@@ -73,11 +73,11 @@
                       <td>
                         <table class="table table-condensed table-striped">
                           <tr>
-                            {% for i in form.gene_codes %}
                             <td>
-                              {{ i }}
+                              {% for i in form.gene_codes %}
+                                {{ i }}&nbsp;&nbsp;&nbsp;&nbsp;
+                              {% endfor %}
                             </td>
-                            {% endfor %}
                           </tr>
                         </table>
                       </td>
