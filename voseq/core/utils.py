@@ -236,7 +236,7 @@ def translate_to_protein(gene_model, sequence_model, seq_description, seq_id):
         prot_sequence = seq_obj.translate(table=gene_model.genetic_code)
     except TranslationError as e:
         print("Error %s" % e)
-        return False
+        return "Error %s" % e
 
     out = '>' + seq_id + ' ' + seq_description + '\n'
     out += str(prot_sequence) + '\n'
