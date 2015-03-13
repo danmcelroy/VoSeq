@@ -44,6 +44,39 @@ class Results(object):
                                          'prot_' + self.guid + '.fasta',
                                          )
 
+    def translate_to_protein(self, g, s, seq_description, seq_id):
+        # # Protein sequences
+        seq_seq, removed = utils.strip_question_marks(s.sequences)
+        if int(g.reading_frame) == 1:
+            if removed % 3 == 0:
+                start_translation = 0
+            if removed % 3 == 1:
+                start_translation = 2
+            if removed % 3 == 2:
+                start_translation = 1
+        if int(g.reading_frame) == 2:
+            if removed % 3 == 0:
+                start_translation = 1
+            if removed % 3 == 1:
+                start_translation = 0
+            if removed % 3 == 2:
+                start_translation = 2
+        if int(g.reading_frame) == 3:
+            if removed % 3 == 0:
+                start_translation = 2
+            if removed % 3 == 1:
+                start_translation = 1
+            if removed % 3 == 2:
+                start_translation = 0
+        if '?' in seq_seq or 'N' in seq_seq.upper():
+            seq_obj = Seq(seq_seq[start_translation:], IUPAC.ambiguous_dna)
+        else:
+            seq_obj = Seq(seq_seq[start_translation:], IUPAC.unambiguous_dna)
+        prot_sequence = seq_obj.translate(table=g.genetic_code)
+        out = '>' + seq_id + ' ' + seq_description + '\n'
+        out += str(prot_sequence) + '\n'
+        return out
+
     def get_datasets(self):
         """Queries sequences and creates FASTA, protein strings and list of
         items with accession number (code, gene_code, accession).
@@ -57,30 +90,30 @@ class Results(object):
             for gene_code in self.gene_codes:
                 if v:
                     try:
-                        s = Sequences.objects.get(code=v, gene_code=gene_code)
+                        sequence_model = Sequences.objects.get(code=v, gene_code=gene_code)
                     except Sequences.DoesNotExist:
                         continue
 
                     try:
-                        g = Genes.objects.get(gene_code=gene_code)
+                        gene_model = Genes.objects.get(gene_code=gene_code)
                     except Genes.DoesNotExist:
                         continue
 
-                    if s.accession.strip() != '':
+                    if sequence_model.accession.strip() != '':
                         self.items_with_accession.append(
                             {
                                 'voucher_code': code,
                                 'gene_code': gene_code,
-                                'accession': s.accession,
+                                'accession': sequence_model.accession,
                             },
                         )
                     else:
                         seq_id = v.genus + '_' + v.species + '_' + code
                         seq_description = '[org=' + v.genus + ' ' + v.species + ']'
                         seq_description += ' [Specimen-voucher=' + v.code + ']'
-                        seq_description += ' [note=' + g.description + ' gene, partial cds.]'
+                        seq_description += ' [note=' + gene_model.description + ' gene, partial cds.]'
                         seq_description += ' [Lineage=]'
-                        seq_seq = s.sequences
+                        seq_seq = sequence_model.sequences
 
                         # # DNA sequences
                         seq_seq = utils.strip_question_marks(seq_seq)[0]
@@ -92,41 +125,12 @@ class Results(object):
                         self.fasta += '>' + seq_id + ' ' + seq_description + '\n'
                         self.fasta += str(seq_obj) + '\n'
 
-                        # # Protein sequences
-                        seq_seq, removed = utils.strip_question_marks(s.sequences)
-
-                        if int(g.reading_frame) == 1:
-                            if removed % 3 == 0:
-                                start_translation = 0
-                            if removed % 3 == 1:
-                                start_translation = 2
-                            if removed % 3 == 2:
-                                start_translation = 1
-
-                        if int(g.reading_frame) == 2:
-                            if removed % 3 == 0:
-                                start_translation = 1
-                            if removed % 3 == 1:
-                                start_translation = 0
-                            if removed % 3 == 2:
-                                start_translation = 2
-
-                        if int(g.reading_frame) == 3:
-                            if removed % 3 == 0:
-                                start_translation = 2
-                            if removed % 3 == 1:
-                                start_translation = 1
-                            if removed % 3 == 2:
-                                start_translation = 0
-
-                        if '?' in seq_seq or 'N' in seq_seq.upper():
-                            seq_obj = Seq(seq_seq[start_translation:], IUPAC.ambiguous_dna)
-                        else:
-                            seq_obj = Seq(seq_seq[start_translation:], IUPAC.unambiguous_dna)
-                        prot_sequence = seq_obj.translate(table=g.genetic_code)
-
-                        self.protein += '>' + seq_id + ' ' + seq_description + '\n'
-                        self.protein += str(prot_sequence) + '\n'
+                        self.protein += self.translate_to_protein(
+                            gene_model,
+                            sequence_model,
+                            seq_description,
+                            seq_id,
+                        )
 
         with open(self.fasta_file, 'w') as handle:
             handle.write(self.fasta)
