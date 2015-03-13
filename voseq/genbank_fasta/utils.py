@@ -44,24 +44,24 @@ class Results(object):
                                          'prot_' + self.guid + '.fasta',
                                          )
 
-    def translate_to_protein(self, g, s, seq_description, seq_id):
+    def translate_to_protein(self, gene_model, sequence_model, seq_description, seq_id):
         # # Protein sequences
-        seq_seq, removed = utils.strip_question_marks(s.sequences)
-        if int(g.reading_frame) == 1:
+        seq_seq, removed = utils.strip_question_marks(sequence_model.sequences)
+        if int(gene_model.reading_frame) == 1:
             if removed % 3 == 0:
                 start_translation = 0
             if removed % 3 == 1:
                 start_translation = 2
             if removed % 3 == 2:
                 start_translation = 1
-        if int(g.reading_frame) == 2:
+        if int(gene_model.reading_frame) == 2:
             if removed % 3 == 0:
                 start_translation = 1
             if removed % 3 == 1:
                 start_translation = 0
             if removed % 3 == 2:
                 start_translation = 2
-        if int(g.reading_frame) == 3:
+        if int(gene_model.reading_frame) == 3:
             if removed % 3 == 0:
                 start_translation = 2
             if removed % 3 == 1:
@@ -72,7 +72,7 @@ class Results(object):
             seq_obj = Seq(seq_seq[start_translation:], IUPAC.ambiguous_dna)
         else:
             seq_obj = Seq(seq_seq[start_translation:], IUPAC.unambiguous_dna)
-        prot_sequence = seq_obj.translate(table=g.genetic_code)
+        prot_sequence = seq_obj.translate(table=gene_model.genetic_code)
         out = '>' + seq_id + ' ' + seq_description + '\n'
         out += str(prot_sequence) + '\n'
         return out
