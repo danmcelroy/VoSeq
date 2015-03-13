@@ -47,6 +47,7 @@ def results(request):
             protein = res.protein
             fasta_file = re.search('(fasta_[a-z0-9]+\.fasta)', res.fasta_file).groups()[0]
             protein_file = re.search('(prot_[a-z0-9]+\.fasta)', res.protein_file).groups()[0]
+            warnings = res.warnings
 
             return render(request, 'genbank_fasta/results.html',
                           {
@@ -55,6 +56,7 @@ def results(request):
                               'fasta_file': fasta_file,
                               'protein': protein,
                               'protein_file': protein_file,
+                              'warnings': warnings,
                               'version': version,
                               'stats': stats,
                           },
