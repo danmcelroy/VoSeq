@@ -29,6 +29,20 @@ class TestGenBankFasta(TestCase):
                              )
         self.assertEqual(200, c.status_code)
 
+    def test_results_dataset(self):
+        c = self.client.post('/genbank_fasta/results/',
+                             {
+                                 'voucher_codes': 'CP100-10',
+                                 'gene_codes': 4,  # COI is in 4th position in our GUI gene list
+                                 'geneset': '',
+                                 'taxonset': '',
+                             }
+                             )
+        expected = "Melitaea_diamina_CP100-10"
+        self.assertTrue(expected.strip() in str(c.content))
+        expected = "TGAGCCGGTATAATTGGTACATCCCTAAGTCTTATTATTCGAACCGAATTAGGAAATCCTAGTTTTTTAATTGGAGATGATCAAATTTATAATACCATTGTAACAGCTCATGCTTTTATTATAATTTTTTTTATAGTTATGCCAATTATAATTGGAGGATTTGGTAATTGACTTGTACCATTAATATTGGGAGCCCCAGATATAGCTTTCCCCCGAATAAATTATATAAGATTTTGATTATTGCCTCCATCCTTAATTCTTTTAATTTCAAGTAGAATTGTAGAAAATGGGGCAGGAACTGGATGAACAGTTTACCCCCCACTTTCATCTAATATTGCCCATAGAGGAGCTTCAGTGGATTTAGCTATTTTTTCTTTACATTTAGCTGGGATTTCCTCTATCTTAGGAGCTATTAATTTTATTACTACAATTATTAATATACGAATTAATAATATATCTTATGATCAAATACCTTTATTTGTATGAGCAGTAGGAATTACAGCATTACTTCTCTTATTATCTTTACCAGTTTTAGCTGGAGCTATTACTATACTTTTAACGGATCGAAATCTTAATACCTCATTTTTTGATTCCTGCGGAGGAGGAGATCC"
+        self.assertTrue(expected.strip() in str(c.content))
+
     def test_results_valid_form(self):
         c = self.client.post('/genbank_fasta/results/',
                              {
