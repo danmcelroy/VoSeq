@@ -30,7 +30,6 @@ class TestGenBankFastaUtils(TestCase):
     def test_get_gene_codes(self):
         expected = 3
         result = get_gene_codes(self.cleaned_data)
-        print(result)
         self.assertEqual(expected, len(result))
 
     def test_dataset_reading_frame_2(self):
