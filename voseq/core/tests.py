@@ -1,7 +1,9 @@
 from django.test import TestCase
 from django.core.management import call_command
 
-from core.utils import strip_question_marks
+from core import utils
+from public_interface.models import Genes
+from public_interface.models import Sequences
 
 
 class TestCore(TestCase):
@@ -13,6 +15,19 @@ class TestCore(TestCase):
 
     def test_strip_question_marks_n(self):
         seq = '?NNNNNACTACGATGCRGCAST'
-        result = strip_question_marks(seq)
+        result = utils.strip_question_marks(seq)
         expected = ('ACTACGATGCRGCAST', 6)
         self.assertEqual(expected, result)
+
+    def test_translation_to_protein(self):
+        """Catch exceptions when input has invalid codons due to ?"""
+        gene_model = Genes.objects.get(gene_code='COI')
+        sequence_model = Sequences.objects.get(gene_code='COI', code='CP100-10')
+        seq_description = 'seq_description'
+        seq_id = 'seq_id'
+        expected = """
+>seq_id seq_description
+WAGMIGTSLSLIIRTELGNPSFLIGDDQIYNTIVTAHAFIMIFFMVMPIMIGGFGNWLVPLMLGAPDMAFPRMNYMSFWLLPPSLILLISSSIVENGAGTGWTVYPPLSSNIAHSGASVDLAIFSLHLAGISSILGAINFITTIINMRINNMSYDQMPLFVWAVGITALLLLLSLPVLAGAITMLLTDRNLNTSFFDSCGGGD
+"""
+        results = utils.translate_to_protein(gene_model, sequence_model, seq_description, seq_id)
+        self.assertEqual(expected.lstrip(), results)
