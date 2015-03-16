@@ -28,6 +28,7 @@ class CreateDatasetUtilsTest(TestCase):
             'positions': ['ALL'],
             'partition_by_positions': 'ONE',
             'file_format': 'FASTA',
+            'outgroup': '',
         }
 
         self.c = Client()

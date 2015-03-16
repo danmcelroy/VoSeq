@@ -19,6 +19,7 @@ class CreateDatasetViewsTest(TestCase):
             'taxonset': None,
             'voucher_codes': 'CP100-10\r\nCP100-11',
             'geneset': None,
+            'outgroup': '',
         }
 
         self.c = Client()
@@ -43,8 +44,8 @@ class CreateDatasetViewsTest(TestCase):
                               'degen_translations': 'NORMAL',
                               'exclude': 'YES',
                               'aminoacids': False,
-                              'outgroup': '',
                               'special': False,
+                              'outgroup': '',
                           }
                           )
         self.assertEqual(200, res.status_code)
