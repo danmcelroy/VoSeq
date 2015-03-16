@@ -8,7 +8,9 @@ class Dataset(object):
     """
     Base class to create datasets from Seq objects into FASTA, TNT formats.
     """
-    def __init__(self, codon_positions, partition_by_positions, seq_objs, gene_codes, voucher_codes, file_format):
+    def __init__(self, codon_positions, partition_by_positions, seq_objs, gene_codes,
+                 voucher_codes, file_format, outgroup=None, voucher_codes_metadata=None):
+        self.outgroup = outgroup
         self.file_format = file_format
         self.codon_positions = codon_positions
         self.partition_by_positions = partition_by_positions
@@ -17,6 +19,7 @@ class Dataset(object):
         self.gene_codes = gene_codes
         self.voucher_codes = voucher_codes
         self.reading_frames = self.get_reading_frames()
+        self.voucher_codes_metadata = voucher_codes_metadata
         self.warnings = []
 
     def get_reading_frames(self):
