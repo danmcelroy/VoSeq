@@ -59,6 +59,8 @@ class CreateNEXUS(Dataset):
         bp_count_start = 0
         bp_count_end = 0
         self.gene_codes.sort()
+        print(self.gene_codes)
+        print(self.gene_codes_and_lengths)
         for gene in self.gene_codes:
             bp_count_end += self.gene_codes_and_lengths[gene]
             line = '    charset ' + gene + ' = ' + str(
