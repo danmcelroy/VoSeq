@@ -155,7 +155,9 @@ class CreateDataset(object):
         self.create_seq_objs()
 
         if self.file_format == 'FASTA':
-            fasta = CreateFasta(self.codon_positions, self.partition_by_positions, self.seq_objs, self.gene_codes, self.voucher_codes, self.file_format)
+            fasta = CreateFasta(self.codon_positions, self.partition_by_positions,
+                                self.seq_objs, self.gene_codes, self.voucher_codes,
+                                self.file_format)
             fasta_dataset = fasta.from_seq_objs_to_dataset()
             self.warnings += fasta.warnings
             return fasta_dataset
