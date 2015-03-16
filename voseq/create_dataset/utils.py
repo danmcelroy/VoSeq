@@ -65,7 +65,7 @@ class CreateNEXUS(Dataset):
             bp_count_end += self.gene_codes_and_lengths[gene]
             line = '    charset ' + gene + ' = ' + str(
                 bp_count_start + 1) + '-' + str(bp_count_end) + ';'
-            bp_count_start += bp_count_end
+            bp_count_start += self.gene_codes_and_lengths[gene]
             charset_block.append(line)
         return charset_block
 
