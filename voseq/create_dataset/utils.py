@@ -171,7 +171,8 @@ class CreateDataset(object):
 
         if self.file_format == 'NEXUS':
             nexus = CreateNEXUS(self.codon_positions, self.partition_by_positions,
-                                self.seq_objs, self.gene_codes, self.voucher_codes, self.file_format, self.outgroup)
+                                self.seq_objs, self.gene_codes, self.voucher_codes,
+                                self.file_format, self.outgroup)
             nexus_dataset = nexus.from_seq_objs_to_dataset()
             self.warnings += nexus.warnings
             return nexus_dataset
