@@ -28,6 +28,7 @@ class CreateTNTDatasetTest(TestCase):
             'positions': ['ALL'],
             'partition_by_positions': 'ONE',
             'file_format': 'NEXUS',
+            'outgroup': '',
         }
 
         self.c = Client()
