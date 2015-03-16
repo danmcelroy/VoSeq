@@ -24,6 +24,7 @@ def results(request):
         form = CreateDatasetForm(request.POST)
 
         if form.is_valid():
+            print(">>>>", form.cleaned_data)
             dataset_creator = CreateDataset(form.cleaned_data)
             dataset = dataset_creator.dataset_str
             errors = dataset_creator.errors
