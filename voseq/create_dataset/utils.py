@@ -63,7 +63,7 @@ class CreateNEXUS(Dataset):
             bp_count_end += self.gene_codes_and_lengths[gene]
             line = '    charset ' + gene + ' = ' + str(
                 bp_count_start + 1) + '-' + str(bp_count_end) + ';'
-            bp_count_start += bp_count_end
+            bp_count_start += self.gene_codes_and_lengths[gene]
             charset_block.append(line)
         return charset_block
 
@@ -74,8 +74,10 @@ class CreateNEXUS(Dataset):
         return [line]
 
     def get_final_block(self):
-        block = """
-set autoclose=yes;
+        block = "set autoclose=yes;"
+        if self.outgroup != '':
+            block += '\noutgroup ' + self.voucher_codes_metadata[self.outgroup] + ";"
+        block += """
 prset applyto=(all) ratepr=variable brlensp=unconstrained:Exp(100.0) shapepr=exp(1.0) tratiopr=beta(2.0,1.0);
 lset applyto=(all) nst=mixed rates=gamma [invgamma];
 unlink statefreq=(all);
@@ -144,6 +146,7 @@ class CreateDataset(object):
         self.voucher_codes_metadata = dict()
         self.gene_codes_metadata = self.get_gene_codes_metadata()
         self.warnings = []
+        self.outgroup = cleaned_data['outgroup']
         self.dataset_str = self.create_dataset()
 
     def create_dataset(self):
@@ -152,19 +155,24 @@ class CreateDataset(object):
         self.create_seq_objs()
 
         if self.file_format == 'FASTA':
-            fasta = CreateFasta(self.codon_positions, self.partition_by_positions, self.seq_objs, self.gene_codes, self.voucher_codes, self.file_format)
+            fasta = CreateFasta(self.codon_positions, self.partition_by_positions,
+                                self.seq_objs, self.gene_codes, self.voucher_codes,
+                                self.file_format)
             fasta_dataset = fasta.from_seq_objs_to_dataset()
             self.warnings += fasta.warnings
             return fasta_dataset
 
         if self.file_format == 'TNT':
-            tnt = CreateTNT(self.codon_positions, self.partition_by_positions, self.seq_objs, self.gene_codes, self.voucher_codes, self.file_format)
+            tnt = CreateTNT(self.codon_positions, self.partition_by_positions,
+                            self.seq_objs, self.gene_codes, self.voucher_codes, self.file_format, self.outgroup)
             tnt_dataset = tnt.from_seq_objs_to_dataset()
             self.warnings += tnt.warnings
             return tnt_dataset
 
         if self.file_format == 'NEXUS':
-            nexus = CreateNEXUS(self.codon_positions, self.partition_by_positions, self.seq_objs, self.gene_codes, self.voucher_codes, self.file_format)
+            nexus = CreateNEXUS(self.codon_positions, self.partition_by_positions,
+                                self.seq_objs, self.gene_codes, self.voucher_codes,
+                                self.file_format, self.outgroup, self.voucher_codes_metadata)
             nexus_dataset = nexus.from_seq_objs_to_dataset()
             self.warnings += nexus.warnings
             return nexus_dataset
