@@ -1,3 +1,5 @@
+import re
+
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
@@ -51,7 +53,7 @@ class CreateNEXUS(Dataset):
         super(CreateNEXUS, self).__init__(*args, **kwargs)
         self.gene_codes_and_lengths = None
         self.number_taxa = len(self.voucher_codes)
-        self.number_chars = self.get_number_chars_from_gene_codes()
+        self.number_chars = None
 
     def get_charset_block(self):
         charset_block = []
@@ -94,6 +96,8 @@ END;
         Overriden method from base clase in order to add headers and footers depending
         on needed dataset.
         """
+        self.get_number_chars_from_partition_list(partitions)
+
         out = [
             '#NEXUS\n',
             'BEGIN DATA;',
@@ -112,15 +116,25 @@ END;
         out += self.get_final_block()
         return '\n'.join(out)
 
-    def get_number_chars_from_gene_codes(self):
+    def get_number_chars_from_partition_list(self, partitions):
         chars = 0
 
         res = Genes.objects.all().values('gene_code', 'length')
         self.gene_codes_and_lengths = {i['gene_code']: i['length'] for i in res}
 
-        for gene in self.gene_codes:
-            chars += self.gene_codes_and_lengths[gene]
-        return chars
+        gene_code = ''
+        for item in partitions[0]:
+            if item.startswith('\n'):
+                gene_code = item.strip().replace('[', '').replace(']', '')
+                print(gene_code)
+                continue
+            if gene_code != '':
+                print(item)
+                first_entry = re.sub('\s+', ' ', item)
+                voucher, sequence = first_entry.split(' ')
+                chars += len(sequence)
+                gene_code = ''
+        self.number_chars = chars
 
 
 class CreateDataset(object):
