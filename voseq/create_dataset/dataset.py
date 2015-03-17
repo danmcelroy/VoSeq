@@ -165,6 +165,7 @@ class Dataset(object):
                 seq_str = self.format_record_id_and_seq_for_dataset(seq_record.id, codon_seqs)
 
                 partition_list[0].append(seq_str)
+        self.partition_list = partition_list
         return partition_list
 
     def from_seq_objs_to_dataset(self):
