@@ -1,3 +1,4 @@
+import collections
 import re
 
 from Bio.Seq import Seq
@@ -61,7 +62,9 @@ class CreateNEXUS(Dataset):
         bp_count_start = 0
         bp_count_end = 0
         self.gene_codes.sort()
-        for gene in self.gene_codes:
+        print(">>>>>>>sel.gene_codes", self.gene_codes)
+        print(">>>>>>>sel.gene_codes_and_lengths", self.gene_codes_and_lengths)
+        for gene in self.gene_codes_and_lengths:
             bp_count_end += self.gene_codes_and_lengths[gene]
             line = '    charset ' + gene + ' = ' + str(
                 bp_count_start + 1) + '-' + str(bp_count_end) + ';'
@@ -119,21 +122,20 @@ END;
     def get_number_chars_from_partition_list(self, partitions):
         chars = 0
 
-        res = Genes.objects.all().values('gene_code', 'length')
-        self.gene_codes_and_lengths = {i['gene_code']: i['length'] for i in res}
+        gene_codes_and_lengths = collections.OrderedDict()
 
         gene_code = ''
         for item in partitions[0]:
             if item.startswith('\n'):
                 gene_code = item.strip().replace('[', '').replace(']', '')
-                print(gene_code)
                 continue
             if gene_code != '':
-                print(item)
                 first_entry = re.sub('\s+', ' ', item)
                 voucher, sequence = first_entry.split(' ')
                 chars += len(sequence)
+                gene_codes_and_lengths[gene_code] = len(sequence)
                 gene_code = ''
+        self.gene_codes_and_lengths = gene_codes_and_lengths
         self.number_chars = chars
 
 
