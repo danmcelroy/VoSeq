@@ -62,8 +62,6 @@ class CreateNEXUS(Dataset):
         bp_count_start = 0
         bp_count_end = 0
         self.gene_codes.sort()
-        print(">>>>>>>sel.gene_codes", self.gene_codes)
-        print(">>>>>>>sel.gene_codes_and_lengths", self.gene_codes_and_lengths)
         for gene in self.gene_codes_and_lengths:
             bp_count_end += self.gene_codes_and_lengths[gene]
             line = '    charset ' + gene + ' = ' + str(
@@ -73,8 +71,8 @@ class CreateNEXUS(Dataset):
         return charset_block
 
     def get_partitions_block(self):
-        line = 'partition GENES = ' + str(len(self.gene_codes))
-        line += ': ' + ', '.join(self.gene_codes) + ';\n'
+        line = 'partition GENES = ' + str(len(self.gene_codes_and_lengths))
+        line += ': ' + ', '.join([i for i in self.gene_codes_and_lengths]) + ';\n'
         line += '\nset partition = GENES;\n'
         return [line]
 
