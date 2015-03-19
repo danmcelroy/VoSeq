@@ -104,18 +104,6 @@ class CreateDatasetForm(BaseDatasetForm):
         help_text='If taxon_names is None, use standart code_genus_species',
     )
 
-    exclude = forms.ChoiceField(
-        help_text='If dataset is for single gene, exclude taxa missing this gene? '
-                  'Otherwise include taxon with ? as sequences.',
-        choices=[
-            ('YES', 'yes'),
-            ('NO', 'no'),
-        ],
-        widget=forms.RadioSelect(),
-        initial='YES',
-        required=True,
-    )
-
     number_genes = forms.IntegerField(
         label='Minimum number of genes',
         required=False,
