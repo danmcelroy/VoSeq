@@ -21,6 +21,7 @@ class Dataset(object):
         self.reading_frames = self.get_reading_frames()
         self.voucher_codes_metadata = voucher_codes_metadata
         self.warnings = []
+        self.partition_list = None
 
     def get_reading_frames(self):
         """
@@ -164,6 +165,7 @@ class Dataset(object):
                 seq_str = self.format_record_id_and_seq_for_dataset(seq_record.id, codon_seqs)
 
                 partition_list[0].append(seq_str)
+        self.partition_list = partition_list
         return partition_list
 
     def from_seq_objs_to_dataset(self):
@@ -179,105 +181,105 @@ class Dataset(object):
                 '3rd' not in self.codon_positions and \
                 'ALL' not in self.codon_positions and \
                 'EACH' in self.partition_by_positions:
-            partition_list = self.get_codons_in_each_partition(['1st'])
-            return self.convert_lists_to_dataset(partition_list)
+            self.partition_list = self.get_codons_in_each_partition(['1st'])
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if '1st' in self.codon_positions and \
                 '2nd' not in self.codon_positions and \
                 '3rd' not in self.codon_positions and \
                 'ALL' not in self.codon_positions and \
                 'ONE' in self.partition_by_positions:
-            partition_list = self.get_codons_in_each_partition(['1st'])
-            return self.convert_lists_to_dataset(partition_list)
+            self.partition_list = self.get_codons_in_each_partition(['1st'])
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if '2nd' in self.codon_positions and \
                 '1st' not in self.codon_positions and \
                 '3rd' not in self.codon_positions and \
                 'EACH' in self.partition_by_positions:
-            partition_list = self.get_codons_in_each_partition(['2nd'])
-            return self.convert_lists_to_dataset(partition_list)
+            self.partition_list = self.get_codons_in_each_partition(['2nd'])
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if '2nd' in self.codon_positions and \
                 '1st' not in self.codon_positions and \
                 '3rd' not in self.codon_positions and \
                 'ONE' in self.partition_by_positions:
-            partition_list = self.get_codons_in_each_partition(['2nd'])
-            return self.convert_lists_to_dataset(partition_list)
+            self.partition_list = self.get_codons_in_each_partition(['2nd'])
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if '3rd' in self.codon_positions and \
                 '1st' not in self.codon_positions and \
                 '2nd' not in self.codon_positions and \
                 'ONE' in self.partition_by_positions:
-            partition_list = self.get_codons_in_each_partition(['3rd'])
-            return self.convert_lists_to_dataset(partition_list)
+            self.partition_list = self.get_codons_in_each_partition(['3rd'])
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if '3rd' in self.codon_positions and \
                 '1st' not in self.codon_positions and \
                 '2nd' not in self.codon_positions and \
                 'EACH' in self.partition_by_positions:
-            partition_list = self.get_codons_in_each_partition(['3rd'])
-            return self.convert_lists_to_dataset(partition_list)
+            self.partition_list = self.get_codons_in_each_partition(['3rd'])
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if '1st' in self.codon_positions and '2nd' in self.codon_positions and \
                 '3rd' not in self.codon_positions and \
                 'ALL' not in self.codon_positions and \
                 'EACH' in self.partition_by_positions:
-            partition_list = self.get_codons_in_each_partition(['1st', '2nd'])
-            return self.convert_lists_to_dataset(partition_list)
+            self.partition_list = self.get_codons_in_each_partition(['1st', '2nd'])
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if '1st' in self.codon_positions and '2nd' in self.codon_positions and \
                 '3rd' not in self.codon_positions and \
                 'ALL' not in self.codon_positions and \
                 'ONE' in self.partition_by_positions:
-            partition_list = self.get_codons_in_one_partition(['1st', '2nd'])
-            return self.convert_lists_to_dataset(partition_list)
+            self.partition_list = self.get_codons_in_one_partition(['1st', '2nd'])
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if '1st' in self.codon_positions and '3rd' in self.codon_positions and \
                 '2nd' not in self.codon_positions and \
                 'EACH' in self.partition_by_positions:
-            partition_list = self.get_codons_in_each_partition(['1st', '3rd'])
-            return self.convert_lists_to_dataset(partition_list)
+            self.partition_list = self.get_codons_in_each_partition(['1st', '3rd'])
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if '1st' in self.codon_positions and '3rd' in self.codon_positions and \
                 '2nd' not in self.codon_positions and \
                 '1st2nd_3rd' in self.partition_by_positions:
-            partition_list = self.get_codons_in_each_partition(['1st', '3rd'])
-            return self.convert_lists_to_dataset(partition_list)
+            self.partition_list = self.get_codons_in_each_partition(['1st', '3rd'])
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if '1st' in self.codon_positions and '3rd' in self.codon_positions and \
                 '2nd' not in self.codon_positions and \
                 'ONE' in self.partition_by_positions:
-            partition_list = self.get_codons_in_one_partition(['1st', '3rd'])
-            return self.convert_lists_to_dataset(partition_list)
+            self.partition_list = self.get_codons_in_one_partition(['1st', '3rd'])
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if '2nd' in self.codon_positions and '3rd' in self.codon_positions and \
                 '1st' not in self.codon_positions and \
                 'EACH' in self.partition_by_positions:
-            partition_list = self.get_codons_in_each_partition(['2nd', '3rd'])
-            return self.convert_lists_to_dataset(partition_list)
+            self.partition_list = self.get_codons_in_each_partition(['2nd', '3rd'])
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if '2nd' in self.codon_positions and '3rd' in self.codon_positions and \
                 '1st' not in self.codon_positions and \
                 'ONE' in self.partition_by_positions:
-            partition_list = self.get_codons_in_one_partition(['2nd', '3rd'])
-            return self.convert_lists_to_dataset(partition_list)
+            self.partition_list = self.get_codons_in_one_partition(['2nd', '3rd'])
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if '2nd' in self.codon_positions and '3rd' in self.codon_positions and \
                 '1st' not in self.codon_positions and \
                 '1st2nd_3rd' in self.partition_by_positions:
-            partition_list = self.get_codons_in_each_partition(['2nd', '3rd'])
-            return self.convert_lists_to_dataset(partition_list)
+            self.partition_list = self.get_codons_in_each_partition(['2nd', '3rd'])
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if ('ALL' in self.codon_positions or
                 ('1st' in self.codon_positions and '2nd' in self.codon_positions and '3rd' in self.codon_positions)) \
                 and 'EACH' in self.partition_by_positions:
-            partition_list = self.get_codons_in_each_partition(['1st', '2nd', '3rd'])
-            return self.convert_lists_to_dataset(partition_list)
+            self.partition_list = self.get_codons_in_each_partition(['1st', '2nd', '3rd'])
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if ('ALL' in self.codon_positions or
                 ('1st' in self.codon_positions and '2nd' in self.codon_positions and '3rd' in self.codon_positions)) \
                 and 'ONE' in self.partition_by_positions:
-            partition_list = ([],)
+            self.partition_list = ([],)
             for gene_code in self.seq_objs:
                 this_gene = None
                 for seq_record in self.seq_objs[gene_code]:
@@ -285,15 +287,15 @@ class Dataset(object):
                         this_gene = seq_record.name
 
                         seq_str = self.get_gene_divisor(this_gene)
-                        partition_list[0].append(seq_str)
+                        self.partition_list[0].append(seq_str)
 
                     seq_str = self.format_record_id_and_seq_for_dataset(seq_record.id, seq_record.seq)
-                    partition_list[0].append(seq_str)
-            return self.convert_lists_to_dataset(partition_list)
+                    self.partition_list[0].append(seq_str)
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if 'ALL' in self.codon_positions and \
                 '1st2nd_3rd' in self.partition_by_positions:
-            partition_list = ([], [],)
+            self.partition_list = ([], [],)
 
             for gene_code in self.seq_objs:
                 if self.reading_frames[gene_code] is None:
@@ -307,45 +309,45 @@ class Dataset(object):
                         this_gene = seq_record.name
 
                         seq_str = '>' + this_gene + '_1st_2nd_codons\n' + '--------------------'
-                        partition_list[0].append(seq_str)
+                        self.partition_list[0].append(seq_str)
 
                         seq_str = '>' + this_gene + '_3rd_codon\n' + '--------------------'
-                        partition_list[1].append(seq_str)
+                        self.partition_list[1].append(seq_str)
 
                     codons = self.split_sequence_in_codon_positions(this_gene, seq_record.seq)
 
                     seq_str = '>' + seq_record.id + '\n' + str(chain_and_flatten([codons[0], codons[1]]))
-                    partition_list[0].append(seq_str)
+                    self.partition_list[0].append(seq_str)
 
                     seq_str = '>' + seq_record.id + '\n' + str(codons[2])
-                    partition_list[1].append(seq_str)
-            return self.convert_lists_to_dataset(partition_list)
+                    self.partition_list[1].append(seq_str)
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if '1st' in self.codon_positions and \
                 '2nd' not in self.codon_positions and \
                 '3rd' not in self.codon_positions and \
                 '1st2nd_3rd' in self.partition_by_positions:
-            partition_list = self.get_codons_in_each_partition(['1st'])
-            return self.convert_lists_to_dataset(partition_list)
+            self.partition_list = self.get_codons_in_each_partition(['1st'])
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if '2nd' in self.codon_positions and \
                 '1st' not in self.codon_positions and \
                 '3rd' not in self.codon_positions and \
                 '1st2nd_3rd' in self.partition_by_positions:
-            partition_list = self.get_codons_in_each_partition(['2nd'])
-            return self.convert_lists_to_dataset(partition_list)
+            self.partition_list = self.get_codons_in_each_partition(['2nd'])
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if '3rd' in self.codon_positions and \
                 '1st' not in self.codon_positions and \
                 '2nd' not in self.codon_positions and \
                 '1st2nd_3rd' in self.partition_by_positions:
-            partition_list = self.get_codons_in_each_partition(['3rd'])
-            return self.convert_lists_to_dataset(partition_list)
+            self.partition_list = self.get_codons_in_each_partition(['3rd'])
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if '1st' in self.codon_positions and '2nd' in self.codon_positions and \
                 '3rd' not in self.codon_positions and \
                 '1st2nd_3rd' in self.partition_by_positions:
-            partition_list = ([],)
+            self.partition_list = ([],)
             for gene_code in self.seq_objs:
                 this_gene = None
                 for seq_record in self.seq_objs[gene_code]:
@@ -358,18 +360,18 @@ class Dataset(object):
                         this_gene = seq_record.name
 
                         seq_str = '>' + this_gene + '_1st_2nd_codons\n' + '--------------------'
-                        partition_list[0].append(seq_str)
+                        self.partition_list[0].append(seq_str)
 
                     codons = self.split_sequence_in_codon_positions(this_gene, seq_record.seq)
 
                     seq_str = '>' + seq_record.id + '\n' + str(chain_and_flatten([codons[0], codons[1]]))
-                    partition_list[0].append(seq_str)
-            return self.convert_lists_to_dataset(partition_list)
+                    self.partition_list[0].append(seq_str)
+            return self.convert_lists_to_dataset(self.partition_list)
 
         if '1st' in self.codon_positions and '2nd' in self.codon_positions and \
                 '3rd' in self.codon_positions and \
                 '1st2nd_3rd' in self.partition_by_positions:
-            partition_list = ([], [],)
+            self.partition_list = ([], [],)
             for gene_code in self.seq_objs:
                 this_gene = None
                 for seq_record in self.seq_objs[gene_code]:
@@ -382,16 +384,16 @@ class Dataset(object):
                         this_gene = seq_record.name
 
                         seq_str = '>' + this_gene + '_1st_2nd_codons\n' + '--------------------'
-                        partition_list[0].append(seq_str)
+                        self.partition_list[0].append(seq_str)
 
                         seq_str = '>' + this_gene + '_3rd_codon\n' + '--------------------'
-                        partition_list[1].append(seq_str)
+                        self.partition_list[1].append(seq_str)
 
                     codons = self.split_sequence_in_codon_positions(this_gene, seq_record.seq)
 
                     seq_str = '>' + seq_record.id + '\n' + str(chain_and_flatten([codons[0], codons[1]]))
-                    partition_list[0].append(seq_str)
+                    self.partition_list[0].append(seq_str)
 
                     seq_str = '>' + seq_record.id + '\n' + str(codons[2])
-                    partition_list[1].append(seq_str)
-            return self.convert_lists_to_dataset(partition_list)
+                    self.partition_list[1].append(seq_str)
+            return self.convert_lists_to_dataset(self.partition_list)
