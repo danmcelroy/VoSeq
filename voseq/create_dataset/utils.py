@@ -216,7 +216,7 @@ class CreateDataset(object):
 
         """
         # We might need to update our list of vouches and genes
-        vouchers = set()
+        vouchers_found = set()
         gene_codes = set()
 
         our_taxon_names = self.get_taxon_names_for_taxa()
@@ -226,7 +226,7 @@ class CreateDataset(object):
             code = s['code_id']
             gene_code = s['gene_code']
             if code in self.voucher_codes and gene_code in self.gene_codes:
-                vouchers.add(code)
+                vouchers_found.add(code)
                 gene_codes.add(gene_code)
 
                 seq_obj = self.create_seq_record(s)
@@ -241,7 +241,9 @@ class CreateDataset(object):
                     self.seq_objs[gene_code] = []
                 self.seq_objs[gene_code].append(seq_obj)
 
-        self.voucher_codes = list(vouchers)
+        vouchers_not_found = set(self.voucher_codes) - vouchers_found
+        self.warnings += ['Could not found sequences for voucher %s' % i for i in vouchers_not_found]
+        self.voucher_codes = list(vouchers_found)
         self.gene_codes = list(gene_codes)
         self.add_missing_seqs()
 
