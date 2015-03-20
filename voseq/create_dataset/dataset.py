@@ -1,4 +1,5 @@
 import collections
+import re
 
 from core.utils import chain_and_flatten
 from public_interface.models import Genes
@@ -24,6 +25,34 @@ class Dataset(object):
         self.voucher_codes_metadata = voucher_codes_metadata
         self.warnings = []
         self.partition_list = None
+
+    def get_number_of_genes_for_taxa(self, partitions):
+        number_of_genes_for_taxa = dict()
+        vouchers_to_drop = set()
+
+        gene_code = ''
+        for item in partitions[0]:
+            if item.startswith('\n'):
+                gene_code = item.strip().replace('[', '').replace(']', '')
+                continue
+            if gene_code != '':
+                entry = re.sub('\s+', ' ', item)
+                voucher, sequence = entry.split(' ')
+
+                if voucher not in number_of_genes_for_taxa:
+                    number_of_genes_for_taxa[voucher] = 0
+
+                sequence = sequence.replace('?', '')
+                if sequence != '':
+                    number_of_genes_for_taxa[voucher] += 1
+
+        if self.minimum_number_of_genes is None:
+            self.vouchers_to_drop = []
+        else:
+            for voucher in number_of_genes_for_taxa:
+                if number_of_genes_for_taxa[voucher] < self.minimum_number_of_genes:
+                    vouchers_to_drop.add(voucher)
+            self.vouchers_to_drop = vouchers_to_drop
 
     def get_reading_frames(self):
         """
