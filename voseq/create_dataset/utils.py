@@ -98,6 +98,7 @@ END;
         on needed dataset.
         """
         self.get_number_chars_from_partition_list(partitions)
+        self.get_number_of_genes_for_taxa(partitions)
 
         out = [
             '#NEXUS\n',
@@ -116,6 +117,26 @@ END;
         out += self.get_partitions_block()
         out += self.get_final_block()
         return '\n'.join(out)
+
+    def get_number_of_genes_for_taxa(self, partitions):
+        number_of_genes_for_taxa = dict()
+
+        gene_code = ''
+        for item in partitions[0]:
+            if item.startswith('\n'):
+                gene_code = item.strip().replace('[', '').replace(']', '')
+                continue
+            if gene_code != '':
+                entry = re.sub('\s+', ' ', item)
+                voucher, sequence = entry.split(' ')
+
+                if voucher not in number_of_genes_for_taxa:
+                    number_of_genes_for_taxa[voucher] = 0
+
+                sequence = sequence.replace('?', '')
+                if sequence != '':
+                    number_of_genes_for_taxa[voucher] += 1
+        print(number_of_genes_for_taxa)
 
     def get_number_chars_from_partition_list(self, partitions):
         chars = 0
@@ -150,6 +171,7 @@ class CreateDataset(object):
     def __init__(self, cleaned_data):
         self.errors = []
         self.seq_objs = dict()
+        self.minimum_number_of_genes = cleaned_data['number_genes']
         self.codon_positions = cleaned_data['positions']
         self.file_format = cleaned_data['file_format']
         self.partition_by_positions = cleaned_data['partition_by_positions']
@@ -186,7 +208,8 @@ class CreateDataset(object):
         if self.file_format == 'NEXUS':
             nexus = CreateNEXUS(self.codon_positions, self.partition_by_positions,
                                 self.seq_objs, self.gene_codes, self.voucher_codes,
-                                self.file_format, self.outgroup, self.voucher_codes_metadata)
+                                self.file_format, self.outgroup, self.voucher_codes_metadata,
+                                self.minimum_number_of_genes)
             nexus_dataset = nexus.from_seq_objs_to_dataset()
             self.warnings += nexus.warnings
             return nexus_dataset
