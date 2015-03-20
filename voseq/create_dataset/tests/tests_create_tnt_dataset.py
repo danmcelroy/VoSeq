@@ -59,7 +59,7 @@ class CreateTNTDatasetTest(TestCase):
         cleaned_data = self.cleaned_data
         cleaned_data['positions'] = ['1st']
         dataset_creator = CreateDataset(cleaned_data)
-        expected = 'nstates dna;\nxread\n2287 2\n\n[&dna]\nCP100-10_Melitaea_diamina'
+        expected = 'nstates dna;\nxread\n762 2\n\n[&dna]\nCP100-10_Melitaea_diamina'
         result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
 

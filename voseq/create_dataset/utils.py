@@ -21,7 +21,7 @@ class CreateTNT(Dataset):
     def __init__(self, *args, **kwargs):
         super(CreateTNT, self).__init__(*args, **kwargs)
         self.number_taxa = len(self.voucher_codes)
-        self.number_chars = self.get_number_chars_from_gene_codes()
+        self.number_chars = None
         self.vouchers_to_drop = None
 
     def convert_lists_to_dataset(self, partitions):
@@ -42,16 +42,6 @@ class CreateTNT(Dataset):
 
         out += '\n;\nproc/;'
         return out.strip()
-
-    def get_number_chars_from_gene_codes(self):
-        chars = 0
-
-        res = Genes.objects.all().values('gene_code', 'length')
-        gene_lengths = {i['gene_code']: i['length'] for i in res}
-
-        for gene in self.gene_codes:
-            chars += gene_lengths[gene]
-        return chars
 
 
 class CreateNEXUS(Dataset):
