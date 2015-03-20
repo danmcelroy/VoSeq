@@ -45,7 +45,6 @@ class Dataset(object):
                     chars += len(sequence)
                     gene_codes_and_lengths[gene_code] = len(sequence)
                     gene_code = ''
-            print(gene_codes_and_lengths)
             self.gene_codes_and_lengths = gene_codes_and_lengths
             self.number_chars = chars
 
