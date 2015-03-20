@@ -21,32 +21,27 @@ class CreateTNT(Dataset):
     def __init__(self, *args, **kwargs):
         super(CreateTNT, self).__init__(*args, **kwargs)
         self.number_taxa = len(self.voucher_codes)
-        self.number_chars = self.get_number_chars_from_gene_codes()
+        self.number_chars = None
+        self.vouchers_to_drop = None
 
     def convert_lists_to_dataset(self, partitions):
         """
         Overriden method from base clase in order to add headers and footers depending
         on needed dataset.
         """
-        out = 'nstates dna;\nxread\n'
-        out += str(self.number_chars) + ' ' + str(self.number_taxa)
+        self.get_number_of_genes_for_taxa(partitions)
+        self.get_number_chars_from_partition_list(partitions)
 
-        for i in partitions:
-            out += '\n'
-            out += '\n'.join(i)
+        out = 'nstates dna;\nxread\n'
+        out += str(self.number_chars) + ' ' + str(self.number_taxa - len(self.vouchers_to_drop))
+
+        for partition in partitions:
+            for i in partition:
+                if i.split(' ')[0] not in self.vouchers_to_drop:
+                    out += '\n' + i
 
         out += '\n;\nproc/;'
         return out.strip()
-
-    def get_number_chars_from_gene_codes(self):
-        chars = 0
-
-        res = Genes.objects.all().values('gene_code', 'length')
-        gene_lengths = {i['gene_code']: i['length'] for i in res}
-
-        for gene in self.gene_codes:
-            chars += gene_lengths[gene]
-        return chars
 
 
 class CreateNEXUS(Dataset):
@@ -121,53 +116,6 @@ END;
         out += self.get_final_block()
         return '\n'.join(out)
 
-    def get_number_of_genes_for_taxa(self, partitions):
-        number_of_genes_for_taxa = dict()
-        vouchers_to_drop = set()
-
-        gene_code = ''
-        for item in partitions[0]:
-            if item.startswith('\n'):
-                gene_code = item.strip().replace('[', '').replace(']', '')
-                continue
-            if gene_code != '':
-                entry = re.sub('\s+', ' ', item)
-                voucher, sequence = entry.split(' ')
-
-                if voucher not in number_of_genes_for_taxa:
-                    number_of_genes_for_taxa[voucher] = 0
-
-                sequence = sequence.replace('?', '')
-                if sequence != '':
-                    number_of_genes_for_taxa[voucher] += 1
-
-        if self.minimum_number_of_genes is None:
-            self.vouchers_to_drop = []
-        else:
-            for voucher in number_of_genes_for_taxa:
-                if number_of_genes_for_taxa[voucher] < self.minimum_number_of_genes:
-                    vouchers_to_drop.add(voucher)
-            self.vouchers_to_drop = vouchers_to_drop
-
-    def get_number_chars_from_partition_list(self, partitions):
-        chars = 0
-
-        gene_codes_and_lengths = collections.OrderedDict()
-
-        gene_code = ''
-        for item in partitions[0]:
-            if item.startswith('\n'):
-                gene_code = item.strip().replace('[', '').replace(']', '')
-                continue
-            if gene_code != '':
-                first_entry = re.sub('\s+', ' ', item)
-                voucher, sequence = first_entry.split(' ')
-                chars += len(sequence)
-                gene_codes_and_lengths[gene_code] = len(sequence)
-                gene_code = ''
-        self.gene_codes_and_lengths = gene_codes_and_lengths
-        self.number_chars = chars
-
 
 class CreateDataset(object):
     """
@@ -211,7 +159,9 @@ class CreateDataset(object):
 
         if self.file_format == 'TNT':
             tnt = CreateTNT(self.codon_positions, self.partition_by_positions,
-                            self.seq_objs, self.gene_codes, self.voucher_codes, self.file_format, self.outgroup)
+                            self.seq_objs, self.gene_codes, self.voucher_codes,
+                            self.file_format, self.outgroup, self.voucher_codes_metadata,
+                            self.minimum_number_of_genes)
             tnt_dataset = tnt.from_seq_objs_to_dataset()
             self.warnings += tnt.warnings
             return tnt_dataset
