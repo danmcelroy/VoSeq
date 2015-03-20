@@ -34,9 +34,11 @@ class CreateTNT(Dataset):
 
         out = 'nstates dna;\nxread\n'
         out += str(self.number_chars) + ' ' + str(self.number_taxa - len(self.vouchers_to_drop))
-        for i in partitions:
-            out += '\n'
-            out += '\n'.join(i)
+
+        for partition in partitions:
+            for i in partition:
+                if i.split(' ')[0] not in self.vouchers_to_drop:
+                    out += '\n' + i
 
         out += '\n;\nproc/;'
         return out.strip()
