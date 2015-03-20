@@ -28,40 +28,27 @@ class Dataset(object):
 
     def get_number_chars_from_partition_list(self, partitions):
         chars = 0
-
         gene_codes_and_lengths = collections.OrderedDict()
 
         i = 0
-        if self.file_format == 'TNT':
-            gene_code = ''
-            for item in partitions[0]:
-                if item.startswith('\n'):
+        gene_code = ''
+        for item in partitions[0]:
+            if item.startswith('\n'):
+                if self.file_format == 'NEXUS':
+                    gene_code = item.strip().replace('[', '').replace(']', '')
+                    continue
+                if self.file_format == 'TNT':
                     gene_code = "dummy" + str(i)
                     i += 1
                     continue
-                if gene_code != '':
-                    first_entry = re.sub('\s+', ' ', item)
-                    voucher, sequence = first_entry.split(' ')
-                    chars += len(sequence)
-                    gene_codes_and_lengths[gene_code] = len(sequence)
-                    gene_code = ''
-            self.gene_codes_and_lengths = gene_codes_and_lengths
-            self.number_chars = chars
-
-        if self.file_format == 'NEXUS':
-            gene_code = ''
-            for item in partitions[0]:
-                if item.startswith('\n'):
-                    gene_code = item.strip().replace('[', '').replace(']', '')
-                    continue
-                if gene_code != '':
-                    first_entry = re.sub('\s+', ' ', item)
-                    voucher, sequence = first_entry.split(' ')
-                    chars += len(sequence)
-                    gene_codes_and_lengths[gene_code] = len(sequence)
-                    gene_code = ''
-            self.gene_codes_and_lengths = gene_codes_and_lengths
-            self.number_chars = chars
+            if gene_code != '':
+                first_entry = re.sub('\s+', ' ', item)
+                voucher, sequence = first_entry.split(' ')
+                chars += len(sequence)
+                gene_codes_and_lengths[gene_code] = len(sequence)
+                gene_code = ''
+        self.gene_codes_and_lengths = gene_codes_and_lengths
+        self.number_chars = chars
 
     def get_number_of_genes_for_taxa(self, partitions):
         number_of_genes_for_taxa = dict()
