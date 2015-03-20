@@ -22,15 +22,18 @@ class CreateTNT(Dataset):
         super(CreateTNT, self).__init__(*args, **kwargs)
         self.number_taxa = len(self.voucher_codes)
         self.number_chars = self.get_number_chars_from_gene_codes()
+        self.vouchers_to_drop = None
 
     def convert_lists_to_dataset(self, partitions):
         """
         Overriden method from base clase in order to add headers and footers depending
         on needed dataset.
         """
-        out = 'nstates dna;\nxread\n'
-        out += str(self.number_chars) + ' ' + str(self.number_taxa)
+        self.get_number_of_genes_for_taxa(partitions)
+        self.get_number_chars_from_partition_list(partitions)
 
+        out = 'nstates dna;\nxread\n'
+        out += str(self.number_chars) + ' ' + str(self.number_taxa - len(self.vouchers_to_drop))
         for i in partitions:
             out += '\n'
             out += '\n'.join(i)
@@ -164,7 +167,9 @@ class CreateDataset(object):
 
         if self.file_format == 'TNT':
             tnt = CreateTNT(self.codon_positions, self.partition_by_positions,
-                            self.seq_objs, self.gene_codes, self.voucher_codes, self.file_format, self.outgroup)
+                            self.seq_objs, self.gene_codes, self.voucher_codes,
+                            self.file_format, self.outgroup, self.voucher_codes_metadata,
+                            self.minimum_number_of_genes)
             tnt_dataset = tnt.from_seq_objs_to_dataset()
             self.warnings += tnt.warnings
             return tnt_dataset
