@@ -25,6 +25,7 @@ class CreateTNTDatasetTest(TestCase):
             'voucher_codes': 'CP100-10\r\nCP100-11',
             'geneset': None,
             'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
+            'number_genes': None,
             'positions': ['2nd', '3rd'],
             'partition_by_positions': 'ONE',
             'file_format': 'TNT',
