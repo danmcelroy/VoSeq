@@ -38,7 +38,7 @@ class Dataset(object):
                     gene_code = item.strip().replace('[', '').replace(']', '')
                     continue
                 if self.file_format == 'TNT':
-                    gene_code = "dummy" + str(i)
+                    gene_code = 'dummy' + str(i)
                     i += 1
                     continue
             if gene_code != '':
@@ -54,55 +54,33 @@ class Dataset(object):
         number_of_genes_for_taxa = dict()
         vouchers_to_drop = set()
 
-        if self.file_format == 'NEXUS':
-            gene_code = ''
-            for item in partitions[0]:
-                if item.startswith('\n'):
-                    gene_code = item.strip().replace('[', '').replace(']', '')
-                    continue
-                if gene_code != '':
-                    entry = re.sub('\s+', ' ', item)
-                    voucher, sequence = entry.split(' ')
+        gene_code = ''
+        for item in partitions[0]:
+            if item.startswith('\n'):
+                    if self.file_format == 'NEXUS':
+                        gene_code = item.strip().replace('[', '').replace(']', '')
+                        continue
+                    if self.file_format == 'TNT':
+                        gene_code = 'dummy'
+                        continue
+            if gene_code != '':
+                entry = re.sub('\s+', ' ', item)
+                voucher, sequence = entry.split(' ')
 
-                    if voucher not in number_of_genes_for_taxa:
-                        number_of_genes_for_taxa[voucher] = 0
+                if voucher not in number_of_genes_for_taxa:
+                    number_of_genes_for_taxa[voucher] = 0
 
-                    sequence = sequence.replace('?', '')
-                    if sequence != '':
-                        number_of_genes_for_taxa[voucher] += 1
+                sequence = sequence.replace('?', '')
+                if sequence != '':
+                    number_of_genes_for_taxa[voucher] += 1
 
-            if self.minimum_number_of_genes is None:
-                self.vouchers_to_drop = []
-            else:
-                for voucher in number_of_genes_for_taxa:
-                    if number_of_genes_for_taxa[voucher] < self.minimum_number_of_genes:
-                        vouchers_to_drop.add(voucher)
-                self.vouchers_to_drop = vouchers_to_drop
-
-        if self.file_format == 'TNT':
-            gene_code = ''
-            for item in partitions[0]:
-                if item.startswith('\n'):
-                    gene_code = 'dummy'
-                    continue
-                if gene_code != '':
-                    entry = re.sub('\s+', ' ', item)
-                    voucher, sequence = entry.split(' ')
-
-                    if voucher not in number_of_genes_for_taxa:
-                        number_of_genes_for_taxa[voucher] = 0
-
-                    sequence = sequence.replace('?', '')
-                    if sequence != '':
-                        number_of_genes_for_taxa[voucher] += 1
-
-            if self.minimum_number_of_genes is None:
-                self.vouchers_to_drop = []
-            else:
-                for voucher in number_of_genes_for_taxa:
-                    if number_of_genes_for_taxa[voucher] < self.minimum_number_of_genes:
-                        vouchers_to_drop.add(voucher)
-                self.vouchers_to_drop = vouchers_to_drop
+        if self.minimum_number_of_genes is None:
+            self.vouchers_to_drop = []
+        else:
+            for voucher in number_of_genes_for_taxa:
+                if number_of_genes_for_taxa[voucher] < self.minimum_number_of_genes:
+                    vouchers_to_drop.add(voucher)
+            self.vouchers_to_drop = vouchers_to_drop
 
     def get_reading_frames(self):
         """
