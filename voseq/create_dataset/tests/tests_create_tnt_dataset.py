@@ -37,7 +37,7 @@ class CreateTNTDatasetTest(TestCase):
         self.maxDiff = None
 
     def test_create_dataset(self):
-        expected = 'nstates dna;\nxread\n2287 2\n\n[&dna]\nCP100-10_Melitaea_diamina'
+        expected = 'nstates dna;\nxread\n1523 2\n\n[&dna]\nCP100-10_Melitaea_diamina'
         result = self.dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
