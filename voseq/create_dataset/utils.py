@@ -55,6 +55,7 @@ class CreateNEXUS(Dataset):
         self.gene_codes_and_lengths = None
         self.number_taxa = len(self.voucher_codes)
         self.number_chars = None
+        self.vouchers_to_drop = None
 
     def get_charset_block(self):
         charset_block = []
@@ -97,19 +98,21 @@ END;
         Overriden method from base clase in order to add headers and footers depending
         on needed dataset.
         """
-        self.get_number_chars_from_partition_list(partitions)
         self.get_number_of_genes_for_taxa(partitions)
+        self.get_number_chars_from_partition_list(partitions)
 
         out = [
             '#NEXUS\n',
             'BEGIN DATA;',
-            'DIMENSIONS NTAX=' + str(self.number_taxa) + ' NCHAR=' + str(self.number_chars) + ';',
+            'DIMENSIONS NTAX=' + str(self.number_taxa - len(self.vouchers_to_drop)) + ' NCHAR=' + str(self.number_chars) + ';',
             'FORMAT INTERLEAVE DATATYPE=DNA MISSING=? GAP=-;',
             'MATRIX',
         ]
 
-        for i in partitions:
-            out += i
+        for partition in partitions:
+            for i in partition:
+                if i.split(' ')[0] not in self.vouchers_to_drop:
+                    out += [i]
 
         out += [';\nEND;']
         out += ['\nbegin mrbayes;']
@@ -120,6 +123,7 @@ END;
 
     def get_number_of_genes_for_taxa(self, partitions):
         number_of_genes_for_taxa = dict()
+        vouchers_to_drop = set()
 
         gene_code = ''
         for item in partitions[0]:
@@ -136,7 +140,14 @@ END;
                 sequence = sequence.replace('?', '')
                 if sequence != '':
                     number_of_genes_for_taxa[voucher] += 1
-        print(number_of_genes_for_taxa)
+
+        if self.minimum_number_of_genes is None:
+            self.vouchers_to_drop = []
+        else:
+            for voucher in number_of_genes_for_taxa:
+                if number_of_genes_for_taxa[voucher] < self.minimum_number_of_genes:
+                    vouchers_to_drop.add(voucher)
+            self.vouchers_to_drop = vouchers_to_drop
 
     def get_number_chars_from_partition_list(self, partitions):
         chars = 0
