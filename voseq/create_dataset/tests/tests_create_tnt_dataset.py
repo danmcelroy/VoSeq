@@ -40,8 +40,11 @@ class CreateTNTDatasetTest(TestCase):
         self.assertTrue(expected in result)
 
     def test_create_dataset_outgroup(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['outgroup'] = 'CP100-11'
+        dataset_creator = CreateDataset(cleaned_data)
         expected = 'nstates dna;\nxread\n1523 2\n\n[&dna]\nCP100-11_Melitaea_diamina'
-        result = self.dataset_creator.dataset_str
+        result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
     def test_create_dataset_ALL_codons(self):
