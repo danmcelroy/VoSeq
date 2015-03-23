@@ -56,12 +56,9 @@ class CreateTNT(Dataset):
                 elif voucher not in self.vouchers_to_drop:
                     if self.outgroup != '' and self.outgroup not in voucher:
                         out += '\n' + i
-                    else:
+                    elif self.outgroup == '':
                         out += '\n' + i
 
-        print(">>>>>>>>> output", self.outgroup)
-        print(">>>>>>>>> partitions", partitions)
-        print(">>>>>>>>> outgroup", outgroup_sequences)
         out += '\n;\nproc/;'
         return out.strip()
 
