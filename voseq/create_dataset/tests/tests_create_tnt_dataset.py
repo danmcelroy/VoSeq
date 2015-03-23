@@ -6,8 +6,6 @@ from django.core.management import call_command
 
 from create_dataset.utils import CreateDataset
 from public_interface.models import Genes
-from public_interface.models import GeneSets
-from public_interface.models import TaxonSets
 
 
 class CreateTNTDatasetTest(TestCase):
@@ -39,6 +37,14 @@ class CreateTNTDatasetTest(TestCase):
     def test_create_dataset(self):
         expected = 'nstates dna;\nxread\n1523 2\n\n[&dna]\nCP100-10_Melitaea_diamina'
         result = self.dataset_creator.dataset_str
+        self.assertTrue(expected in result)
+
+    def test_create_dataset_outgroup(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['outgroup'] = 'CP100-11'
+        dataset_creator = CreateDataset(cleaned_data)
+        expected = 'nstates dna;\nxread\n1523 2\n\n[&dna]\nCP100-11_Melitaea_diamina'
+        result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
     def test_create_dataset_ALL_codons(self):
