@@ -9,7 +9,12 @@
    database of French Guiana harvestmen (Arachnida, Opiliones). *Biodiversity 
    Data Journal*, 2: e4244.
    [doi: 10.3897/BDJ.2.e4244](http://dx.doi.org/10.3897/BDJ.2.e4244)
-   
+
+2. Doorenweerd C, van Nieukerken EJ, Menken SBJ (**2015**) A Global Phylogeny of
+   Leafmining *Ectoedemia* Moths (Lepidoptera: Nepticulidae): Exploring Host
+   Plant Family Shifts and Allopatry as Drivers of Speciation. *PLoS ONE* 10(3):
+   e0119586. [doi: 10.1371/journal.pone.0119586](http://dx.doi.org/10.1371/journal.pone.0119586) 
+
 1. Heikkilä, M. (**2014**). Systematizing morphology: a total evidence 
    approach to ditrysian phylogenetics (Lepidoptera). University of Helsinki. 
    PhD thesis.
