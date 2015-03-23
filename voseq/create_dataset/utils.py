@@ -35,11 +35,33 @@ class CreateTNT(Dataset):
         out = 'nstates dna;\nxread\n'
         out += str(self.number_chars) + ' ' + str(self.number_taxa - len(self.vouchers_to_drop))
 
+        outgroup_sequences = []
         for partition in partitions:
             for i in partition:
-                if i.split(' ')[0] not in self.vouchers_to_drop:
-                    out += '\n' + i
+                voucher = i.split(' ')[0]
+                if voucher not in self.vouchers_to_drop:
+                    if self.outgroup in voucher:
+                        outgroup_sequences.append(i)
+                        continue
 
+        partition_count = 0
+        for partition in partitions:
+            for i in partition:
+                voucher = i.split(' ')[0]
+                if voucher == '\n[&dna]':
+                    out += '\n' + i
+                    if self.outgroup != '':
+                        out += '\n' + outgroup_sequences[partition_count]
+                        partition_count += 1
+                elif voucher not in self.vouchers_to_drop:
+                    if self.outgroup != '' and self.outgroup not in voucher:
+                        out += '\n' + i
+                    else:
+                        out += '\n' + i
+
+        print(">>>>>>>>> output", self.outgroup)
+        print(">>>>>>>>> partitions", partitions)
+        print(">>>>>>>>> outgroup", outgroup_sequences)
         out += '\n;\nproc/;'
         return out.strip()
 
