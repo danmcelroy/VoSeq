@@ -70,9 +70,7 @@ END;
         self.get_number_chars_from_partition_list(partitions)
 
         out = [
-            '#NEXUS\n',
-            'BEGIN DATA;',
-            'DIMENSIONS NTAX=' + str(self.number_taxa - len(self.vouchers_to_drop)) + ' NCHAR=' + str(self.number_chars) + ';',
+            str(self.number_taxa - len(self.vouchers_to_drop)) + ' ' + str(self.number_chars),
             'FORMAT INTERLEAVE DATATYPE=DNA MISSING=? GAP=-;',
             'MATRIX',
         ]
