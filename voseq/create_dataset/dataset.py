@@ -60,7 +60,7 @@ class Dataset(object):
                     if self.file_format == 'NEXUS':
                         gene_code = item.strip().replace('[', '').replace(']', '')
                         continue
-                    if self.file_format == 'TNT':
+                    if self.file_format == 'TNT' or self.file_format == 'PHY':
                         gene_code = 'dummy'
                         continue
             if gene_code != '':
@@ -176,6 +176,9 @@ class Dataset(object):
                 seq_str += codon_description
             seq_str += '\n' + '--------------------'
 
+        if self.file_format == 'PHY':
+            seq_str = '\n[phy]'
+
         if self.file_format == 'TNT':
             seq_str = '\n[&dna]'
 
@@ -186,6 +189,8 @@ class Dataset(object):
     def format_record_id_and_seq_for_dataset(self, seq_record_id, seq_record_seq):
         if self.file_format == 'FASTA':
             seq_str = '>' + seq_record_id + '\n' + str(seq_record_seq)
+        if self.file_format == 'PHY':
+            seq_str = str(seq_record_id).ljust(55) + str(seq_record_seq)
         if self.file_format == 'TNT':
             seq_str = str(seq_record_id).ljust(55) + str(seq_record_seq)
         if self.file_format == 'NEXUS':
