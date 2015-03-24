@@ -17,6 +17,79 @@ class CreateFasta(Dataset):
     pass
 
 
+class CreatePhylip(Dataset):
+    def __init__(self, *args, **kwargs):
+        super(CreatePhylip, self).__init__(*args, **kwargs)
+        self.gene_codes_and_lengths = None
+        self.number_taxa = len(self.voucher_codes)
+        self.number_chars = None
+        self.vouchers_to_drop = None
+
+    def get_charset_block(self):
+        charset_block = []
+
+        bp_count_start = 0
+        bp_count_end = 0
+        self.gene_codes.sort()
+        for gene in self.gene_codes_and_lengths:
+            bp_count_end += self.gene_codes_and_lengths[gene]
+            line = '    charset ' + gene + ' = ' + str(
+                bp_count_start + 1) + '-' + str(bp_count_end) + ';'
+            bp_count_start += self.gene_codes_and_lengths[gene]
+            charset_block.append(line)
+        return charset_block
+
+    def get_partitions_block(self):
+        line = 'partition GENES = ' + str(len(self.gene_codes_and_lengths))
+        line += ': ' + ', '.join([i for i in self.gene_codes_and_lengths]) + ';\n'
+        line += '\nset partition = GENES;\n'
+        return [line]
+
+    def get_final_block(self):
+        block = "set autoclose=yes;"
+        if self.outgroup != '':
+            block += '\noutgroup ' + self.voucher_codes_metadata[self.outgroup] + ";"
+        block += """
+prset applyto=(all) ratepr=variable brlensp=unconstrained:Exp(100.0) shapepr=exp(1.0) tratiopr=beta(2.0,1.0);
+lset applyto=(all) nst=mixed rates=gamma [invgamma];
+unlink statefreq=(all);
+unlink shape=(all) revmat=(all) tratio=(all) [pinvar=(all)];
+mcmc ngen=10000000 printfreq=1000 samplefreq=1000 nchains=4 nruns=2 savebrlens=yes [temp=0.11];
+sump relburnin=yes [no] burninfrac=0.25 [2500];
+sumt relburnin=yes [no] burninfrac=0.25 [2500] contype=halfcompat [allcompat];
+END;
+"""
+        return [block.strip()]
+
+    def convert_lists_to_dataset(self, partitions):
+        """
+        Overriden method from base clase in order to add headers and footers depending
+        on needed dataset.
+        """
+        self.get_number_of_genes_for_taxa(partitions)
+        self.get_number_chars_from_partition_list(partitions)
+
+        out = [
+            '#NEXUS\n',
+            'BEGIN DATA;',
+            'DIMENSIONS NTAX=' + str(self.number_taxa - len(self.vouchers_to_drop)) + ' NCHAR=' + str(self.number_chars) + ';',
+            'FORMAT INTERLEAVE DATATYPE=DNA MISSING=? GAP=-;',
+            'MATRIX',
+        ]
+
+        for partition in partitions:
+            for i in partition:
+                if i.split(' ')[0] not in self.vouchers_to_drop:
+                    out += [i]
+
+        out += [';\nEND;']
+        out += ['\nbegin mrbayes;']
+        out += self.get_charset_block()
+        out += self.get_partitions_block()
+        out += self.get_final_block()
+        return '\n'.join(out)
+
+
 class CreateTNT(Dataset):
     def __init__(self, *args, **kwargs):
         super(CreateTNT, self).__init__(*args, **kwargs)
@@ -175,6 +248,15 @@ class CreateDataset(object):
             fasta_dataset = fasta.from_seq_objs_to_dataset()
             self.warnings += fasta.warnings
             return fasta_dataset
+
+        if self.file_format == 'PHY':
+            phy = CreatePhylip(self.codon_positions, self.partition_by_positions,
+                               self.seq_objs, self.gene_codes, self.voucher_codes,
+                               self.file_format, self.outgroup, self.voucher_codes_metadata,
+                               self.minimum_number_of_genes)
+            phylip_dataset = phy.from_seq_objs_to_dataset()
+            self.warnings += phy.warnings
+            return phylip_dataset
 
         if self.file_format == 'TNT':
             tnt = CreateTNT(self.codon_positions, self.partition_by_positions,
