@@ -34,10 +34,10 @@ class Dataset(object):
         gene_code = ''
         for item in partitions[0]:
             if item.startswith('\n'):
-                if self.file_format == 'NEXUS':
+                if self.file_format == 'NEXUS' or self.file_format == 'PHY':
                     gene_code = item.strip().replace('[', '').replace(']', '')
                     continue
-                if self.file_format == 'TNT' or self.file_format == 'PHY':
+                if self.file_format == 'TNT':
                     gene_code = 'dummy' + str(i)
                     i += 1
                     continue
@@ -60,7 +60,10 @@ class Dataset(object):
                     if self.file_format == 'NEXUS':
                         gene_code = item.strip().replace('[', '').replace(']', '')
                         continue
-                    if self.file_format == 'TNT' or self.file_format == 'PHY':
+                    if self.file_format == 'PHY':
+                        gene_code = item.strip().replace('[', '').replace(']', '')
+                        continue
+                    if self.file_format == 'TNT':
                         gene_code = 'dummy'
                         continue
             if gene_code != '':
@@ -177,7 +180,7 @@ class Dataset(object):
             seq_str += '\n' + '--------------------'
 
         if self.file_format == 'PHY':
-            seq_str = '\n[phy]'
+            seq_str = '\n[%s]' % this_gene
 
         if self.file_format == 'TNT':
             seq_str = '\n[&dna]'

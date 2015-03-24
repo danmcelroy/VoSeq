@@ -33,11 +33,11 @@ class CreatePhylip(Dataset):
         self.gene_codes.sort()
         for gene in self.gene_codes_and_lengths:
             bp_count_end += self.gene_codes_and_lengths[gene]
-            line = '    charset ' + gene + ' = ' + str(
-                bp_count_start + 1) + '-' + str(bp_count_end) + ';'
+            line = 'DNA, ' + gene + ' = ' + str(
+                bp_count_start + 1) + '-' + str(bp_count_end)
             bp_count_start += self.gene_codes_and_lengths[gene]
             charset_block.append(line)
-        return charset_block
+        return '\n'.join(charset_block)
 
     def get_partitions_block(self):
         line = 'partition GENES = ' + str(len(self.gene_codes_and_lengths))
@@ -77,7 +77,7 @@ END;
         for partition in partitions:
             for i in partition:
                 voucher_code = i.split(' ')[0]
-                if voucher_code == '\n[phy]':
+                if voucher_code.startswith('\n'):
                     partitions_incorporated += 1
                     out += ['\n']
                 elif voucher_code not in self.vouchers_to_drop:
@@ -89,11 +89,7 @@ END;
                             out += [' ' * 55 + line[-1] + '\n']
                             print(out)
 
-        out += [';\nEND;']
-        out += ['\nbegin mrbayes;']
         out += self.get_charset_block()
-        out += self.get_partitions_block()
-        out += self.get_final_block()
         return ''.join(out)
 
 
