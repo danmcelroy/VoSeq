@@ -1,3 +1,5 @@
+import re
+
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
@@ -29,8 +31,14 @@ def results(request):
             dataset = dataset_creator.dataset_str
             errors = dataset_creator.errors
             warnings = dataset_creator.warnings
+
+            phylip_file = dataset_creator.phylip_partition_file
+            if phylip_file is not None:
+                phylip_partition_file = re.search('(phylip_[a-z0-9]+_partitions\.phy)', phylip_file).groups()[0]
+
             return render(request, 'create_dataset/results.html',
                           {
+                              'phylip_partitions_file': phylip_partition_file,
                               'dataset': dataset,
                               'errors': errors,
                               'warnings': warnings,
