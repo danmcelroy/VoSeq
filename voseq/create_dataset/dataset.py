@@ -37,7 +37,7 @@ class Dataset(object):
                 if self.file_format == 'NEXUS':
                     gene_code = item.strip().replace('[', '').replace(']', '')
                     continue
-                if self.file_format == 'TNT':
+                if self.file_format == 'TNT' or self.file_format == 'PHY':
                     gene_code = 'dummy' + str(i)
                     i += 1
                     continue
