@@ -71,21 +71,30 @@ END;
 
         out = [
             str(self.number_taxa - len(self.vouchers_to_drop)) + ' ' + str(self.number_chars),
-            'FORMAT INTERLEAVE DATATYPE=DNA MISSING=? GAP=-;',
-            'MATRIX',
         ]
 
+        partitions_incorporated = 0
         for partition in partitions:
             for i in partition:
-                if i.split(' ')[0] not in self.vouchers_to_drop:
-                    out += [i]
+                voucher_code = i.split(' ')[0]
+                if voucher_code == '\n[phy]':
+                    partitions_incorporated += 1
+                    out += ['\n']
+                elif voucher_code not in self.vouchers_to_drop:
+                    if partitions_incorporated == 1:
+                        out += [i + '\n']
+                    else:
+                        line = i.split(' ')
+                        if len(line) > 1:
+                            out += [' ' * 55 + line[-1] + '\n']
+                            print(out)
 
         out += [';\nEND;']
         out += ['\nbegin mrbayes;']
         out += self.get_charset_block()
         out += self.get_partitions_block()
         out += self.get_final_block()
-        return '\n'.join(out)
+        return ''.join(out)
 
 
 class CreateTNT(Dataset):
