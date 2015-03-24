@@ -38,7 +38,8 @@ def results(request):
 
             return render(request, 'create_dataset/results.html',
                           {
-                              'phylip_partitions_file': phylip_partition_file,
+                              'phylip_partition_file': phylip_partition_file,
+                              'charset_block': dataset_creator.charset_block,
                               'dataset': dataset,
                               'errors': errors,
                               'warnings': warnings,

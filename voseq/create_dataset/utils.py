@@ -30,6 +30,7 @@ class CreatePhylip(Dataset):
                                                   'phylip_files',
                                                   'phylip_' + self.guid + '_partitions.phy',
                                                   )
+        self.charset_block = None
 
     def make_guid(self):
         return uuid.uuid4().hex
@@ -46,7 +47,7 @@ class CreatePhylip(Dataset):
                 bp_count_start + 1) + '-' + str(bp_count_end)
             bp_count_start += self.gene_codes_and_lengths[gene]
             charset_block.append(line)
-        return '\n'.join(charset_block)
+        self.charset_block = '\n'.join(charset_block)
 
     def get_partitions_block(self):
         line = 'partition GENES = ' + str(len(self.gene_codes_and_lengths))
@@ -97,7 +98,7 @@ END;
                         if len(line) > 1:
                             out += [' ' * 55 + line[-1] + '\n']
 
-        out += self.get_charset_block()
+        self.get_charset_block()
         return ''.join(out)
 
 
@@ -246,6 +247,7 @@ class CreateDataset(object):
         self.warnings = []
         self.outgroup = cleaned_data['outgroup']
         self.phylip_partition_file = None
+        self.charset_block = None
         self.dataset_str = self.create_dataset()
 
     def create_dataset(self):
@@ -269,7 +271,8 @@ class CreateDataset(object):
             phylip_dataset = phy.from_seq_objs_to_dataset()
             self.warnings += phy.warnings
             self.phylip_partition_file = phy.phylip_partition_file
-            print(self.phylip_partition_file)
+            print(">>>>>>>>>>>>> self.charset_block", phy.charset_block)
+            self.charset_block = phy.charset_block
             return phylip_dataset
 
         if self.file_format == 'TNT':

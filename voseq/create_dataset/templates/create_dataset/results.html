@@ -55,7 +55,7 @@
           <table class="table table-bordered">
             <tr>
               <td>
-                <textarea readonly style="height: 550px;" wrap="off" class="form-control dataset">{{ dataset }}</textarea>
+                <textarea readonly style="height: 450px;" wrap="off" class="form-control dataset">{{ dataset }}</textarea>
               </td>
             </tr>
           </table>
@@ -69,6 +69,23 @@
         </button></a>
 
 
+
+      {% if phylip_partition_file %}
+         <table class="table table-bordered">
+            <tr>
+              <td>
+                <textarea readonly style="height: 150px; white-space: nowrap;" class="form-control">{{ charset_block }}</textarea>
+              </td>
+            </tr>
+          </table>
+
+      <a href="/genbank_fasta/results/{{ protein_file }}">
+        <button class="btn btn-info">
+          <i class="fa fa-download"></i>
+          Download PHYLIP partitions file
+        </button>
+      </a>
+      {% endif %}
 
 
         </div><!-- col -->
