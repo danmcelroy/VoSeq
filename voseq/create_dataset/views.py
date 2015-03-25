@@ -35,6 +35,8 @@ def results(request):
             phylip_file = dataset_creator.phylip_partition_file
             if phylip_file is not None:
                 phylip_partition_file = re.search('(phylip_[a-z0-9]+_partitions\.phy)', phylip_file).groups()[0]
+            else:
+                phylip_partition_file = False
 
             return render(request, 'create_dataset/results.html',
                           {
