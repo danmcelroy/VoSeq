@@ -148,6 +148,9 @@ class ParseXML(object):
             item['geneset_description'] = row.find("./field/[@name='geneset_description']").text
             item['geneset_list'] = row.find("./field/[@name='geneset_list']").text
             # item['geneset_id'] = row.find("./field/[@name='geneset_id']").text
+
+            if item['geneset_creator'] is None:
+                item['geneset_creator'] = 'dummy'
             self.table_genesets_items.append(item)
 
     def import_table_genesets(self):
