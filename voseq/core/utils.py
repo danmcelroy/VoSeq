@@ -183,7 +183,7 @@ def flatten_taxon_names_dict(dictionary):
 
     out_striped = re.sub('_+', '_', out)
     out_clean = re.sub('_$', '', out_striped)
-    return out_clean
+    return out_clean.replace(" ", "_")
 
 
 def chain_and_flatten(seqs):
