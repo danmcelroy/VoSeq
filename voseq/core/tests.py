@@ -50,3 +50,10 @@ WAGMIGTSLSLIIRTELGNPSFLIGDDQIYNTIVTAHAFIMIFFMVMPIMIGGFGNWLVPLMLGAPDMAFPRMNYMSFWL
         expected = "Error Codon 'G?C' is invalid"
         results = utils.translate_to_protein(gene_model, sequence_model, seq_description, seq_id)
         self.assertEqual(expected, results)
+
+    def test_flatten_taxon_names_dict(self):
+        dictionary = {'code': 'CP100-10', 'orden': 'Lepidoptera',
+                      'genus': 'Danaus', 'species': 'sp. 5'}
+        expected = 'CP100-10_Lepidoptera_Danaus_sp._5'
+        results = utils.flatten_taxon_names_dict(dictionary)
+        self.assertEqual(expected, results)
