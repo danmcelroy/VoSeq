@@ -4,6 +4,7 @@ help:
 	@echo "docs - build documentation in HTML format"
 	@echo "serve - runserver for development"
 	@echo "test - use testing settings and SQlite3 database"
+	@echo "migrations - prepare database for Django based on models"
 
 clean: clean-build clean-pyc
 
