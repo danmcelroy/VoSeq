@@ -104,7 +104,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    BASE_DIR,
+    os.path.join(BASE_DIR, 'public_interface'),
 )
 
 # Get your API key from here:
