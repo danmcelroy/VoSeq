@@ -148,7 +148,9 @@ class Dataset(object):
         for i in partitions:
             out += '\n'
             out += '\n'.join(i)
-        return out.strip()
+        dataset_str = out.strip()
+        self.save_dataset_to_file(dataset_str)
+        return dataset_str
 
     def get_codons_in_each_partition(self, codons):
         partition_list = ()
