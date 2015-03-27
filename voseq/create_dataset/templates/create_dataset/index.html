@@ -28,7 +28,7 @@
     <div class="container">
       <div class="row">
 
-        <div class="col-xs-12 col-sm-12  col-md-11 col-lg-9 col-lg-offset-1">
+        <div class="col-xs-12 col-sm-12  col-md-11 col-lg-11 ">
 
         <form action="/create_dataset/results/" method="post">
         <div class="panel panel-primary" style="min-width: 790px;">
@@ -159,6 +159,16 @@
                         {{ form.voucher_codes }}
                       </td>
                     </tr>
+                    <tr>
+                      <td>
+                       &nbsp;
+                      </td>
+                      <td>
+                        <button type="submit" class="btn btn-info" id="submit_button">
+                          Create dataset
+                        </button>
+                      </td>
+                    </tr>
                   </table>
                 </td>
 
@@ -179,13 +189,19 @@
                         (if geneset chosen, adds extra genes)
                       </td>
                       <td>
-                        <table class="table table-condensed table-striped">
-                          <tr>
-                            <td>
+                        <table class="table table-condensed table-striped small_fonts">
                             {% for i in form.gene_codes %}
-                              {{ i }}&nbsp;&nbsp;&nbsp;&nbsp;
+                              {% if forloop.counter == 1 %}
+                                <tr>
+                              {% endif %}
+                                  <td>
+                                  {{ i }}
+                                  </td>
+                              {% if forloop.counter|divisibleby:"4" %}
+                                </tr>
+                              {% endif %}
+
                             {% endfor %}
-                            </td>
                           </tr>
                         </table>
                       </td>
@@ -198,9 +214,7 @@
 
         </div><!-- panel -->
 
-            <button type="submit" class="btn btn-info" id="submit_button">
-              Create dataset
-            </button>
+
         </form>
 
 

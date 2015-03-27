@@ -62,3 +62,8 @@ body {
     font-family: 'Source Code Pro', Courier, serif;
     font-weight: 600;
 }
+
+.small_fonts {
+    font-family: 'Source Code Pro', sans-serif;
+    font-size: 12px;
+}
