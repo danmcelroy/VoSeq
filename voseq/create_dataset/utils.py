@@ -255,6 +255,7 @@ class CreateDataset(object):
                                 self.file_format)
             fasta_dataset = fasta.from_seq_objs_to_dataset()
             self.warnings += fasta.warnings
+            self.dataset_file = fasta.dataset_file
             return fasta_dataset
 
         if self.file_format == 'PHY':
