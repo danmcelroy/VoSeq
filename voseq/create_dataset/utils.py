@@ -135,7 +135,9 @@ class CreateTNT(Dataset):
                         out += '\n' + i
 
         out += '\n;\nproc/;'
-        return out.strip()
+        dataset_str = out.strip()
+        self.save_dataset_to_file(dataset_str)
+        return dataset_str
 
 
 class CreateNEXUS(Dataset):
@@ -273,6 +275,7 @@ class CreateDataset(object):
                             self.minimum_number_of_genes)
             tnt_dataset = tnt.from_seq_objs_to_dataset()
             self.warnings += tnt.warnings
+            self.dataset_file = tnt.dataset_file
             return tnt_dataset
 
         if self.file_format == 'NEXUS':
