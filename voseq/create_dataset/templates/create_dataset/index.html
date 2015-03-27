@@ -190,12 +190,18 @@
                       </td>
                       <td>
                         <table class="table table-condensed table-striped">
-                          <tr>
-                            <td>
                             {% for i in form.gene_codes %}
-                              {{ i }}&nbsp;&nbsp;&nbsp;&nbsp;
+                              {% if forloop.counter == 1 %}
+                                <tr>
+                              {% endif %}
+                                  <td>
+                                  {{ i }}
+                                  </td>
+                              {% if forloop.counter|divisibleby:"4" %}
+                                </tr>
+                              {% endif %}
+
                             {% endfor %}
-                            </td>
                           </tr>
                         </table>
                       </td>
