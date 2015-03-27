@@ -1,6 +1,3 @@
-import os
-import uuid
-
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
@@ -24,16 +21,7 @@ class CreatePhylip(Dataset):
         self.number_taxa = len(self.voucher_codes)
         self.number_chars = None
         self.vouchers_to_drop = None
-        self.cwd = os.path.dirname(__file__)
-        self.guid = self.make_guid()
-        self.phylip_partition_file = os.path.join(self.cwd,
-                                                  'phylip_files',
-                                                  'phylip_' + self.guid + '_partitions.phy',
-                                                  )
         self.charset_block = None
-
-    def make_guid(self):
-        return uuid.uuid4().hex
 
     def get_charset_block(self):
         charset_block = []
@@ -99,7 +87,9 @@ END;
                             out += [' ' * 55 + line[-1] + '\n']
 
         self.get_charset_block()
-        return ''.join(out)
+        dataset_str = ''.join(out)
+        self.save_dataset_to_file(dataset_str)
+        return dataset_str
 
 
 class CreateTNT(Dataset):
@@ -246,7 +236,7 @@ class CreateDataset(object):
         self.gene_codes_metadata = self.get_gene_codes_metadata()
         self.warnings = []
         self.outgroup = cleaned_data['outgroup']
-        self.phylip_partition_file = None
+        self.dataset_file = None
         self.charset_block = None
         self.dataset_str = self.create_dataset()
 
@@ -270,8 +260,7 @@ class CreateDataset(object):
                                self.minimum_number_of_genes)
             phylip_dataset = phy.from_seq_objs_to_dataset()
             self.warnings += phy.warnings
-            self.phylip_partition_file = phy.phylip_partition_file
-            print(">>>>>>>>>>>>> self.charset_block", phy.charset_block)
+            self.dataset_file = phy.dataset_file
             self.charset_block = phy.charset_block
             return phylip_dataset
 
