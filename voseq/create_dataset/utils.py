@@ -208,7 +208,9 @@ END;
         out += self.get_charset_block()
         out += self.get_partitions_block()
         out += self.get_final_block()
-        return '\n'.join(out)
+        dataset_str = '\n'.join(out)
+        self.save_dataset_to_file(dataset_str)
+        return dataset_str
 
 
 class CreateDataset(object):
@@ -280,6 +282,7 @@ class CreateDataset(object):
                                 self.minimum_number_of_genes)
             nexus_dataset = nexus.from_seq_objs_to_dataset()
             self.warnings += nexus.warnings
+            self.dataset_file = nexus.dataset_file
             return nexus_dataset
 
     def create_seq_record(self, s):
