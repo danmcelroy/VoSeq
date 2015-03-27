@@ -35,7 +35,6 @@ def results(request):
             warnings = dataset_creator.warnings
 
             dataset_file_abs = dataset_creator.dataset_file
-            print(">>>>>>>>>dataset_file_abs", dataset_file_abs)
             if dataset_file_abs is not None:
                 dataset_file = re.search('([A-Z]+_[a-z0-9]+\.txt)', dataset_file_abs).groups()[0]
             else:
