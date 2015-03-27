@@ -1,4 +1,6 @@
 import collections
+import os
+import uuid
 import re
 
 from core.utils import chain_and_flatten
@@ -25,6 +27,20 @@ class Dataset(object):
         self.voucher_codes_metadata = voucher_codes_metadata
         self.warnings = []
         self.partition_list = None
+
+        self.cwd = os.path.dirname(__file__)
+        self.guid = self.make_guid()
+        self.dataset_file = os.path.join(self.cwd,
+                                         'dataset_files',
+                                         self.file_format + '_' + self.guid + '.txt',
+                                         )
+
+    def save_dataset_to_file(self, dataset_str):
+        with open(self.dataset_file, 'w') as handle:
+            handle.write(dataset_str)
+
+    def make_guid(self):
+        return uuid.uuid4().hex
 
     def get_number_chars_from_partition_list(self, partitions):
         chars = 0
@@ -132,7 +148,9 @@ class Dataset(object):
         for i in partitions:
             out += '\n'
             out += '\n'.join(i)
-        return out.strip()
+        dataset_str = out.strip()
+        self.save_dataset_to_file(dataset_str)
+        return dataset_str
 
     def get_codons_in_each_partition(self, codons):
         partition_list = ()
