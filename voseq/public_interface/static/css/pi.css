@@ -67,3 +67,14 @@ body {
     font-family: 'Source Code Pro', sans-serif;
     font-size: 12px;
 }
+
+footer {
+  position: relative;
+  padding-top: 12px;
+  margin-top: 80px;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 80px;
+  background-color: #f5f5f5;
+}
