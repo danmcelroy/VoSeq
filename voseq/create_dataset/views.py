@@ -70,9 +70,10 @@ def serve_file(request, file_name):
                                 'dataset_files',
                                 file_name,
                                 )
-    response = HttpResponse(open(dataset_file, 'r').read(), content_type='application/text')
-    response['Content-Disposition'] = 'attachment; filename=dataset_file.txt'
-
     if os.path.isfile(dataset_file):
+        response = HttpResponse(open(dataset_file, 'r').read(), content_type='application/text')
+        response['Content-Disposition'] = 'attachment; filename=dataset_file.txt'
         os.remove(dataset_file)
-    return response
+        return response
+    else:
+        return render(request, 'create_dataset/missing_file.html')
