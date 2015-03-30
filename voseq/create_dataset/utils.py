@@ -4,6 +4,7 @@ from Bio.SeqRecord import SeqRecord
 from core.utils import get_voucher_codes
 from core.utils import get_gene_codes
 from core.utils import flatten_taxon_names_dict
+from core.utils import translate_to_protein
 from public_interface.models import Genes
 from public_interface.models import Sequences
 from public_interface.models import Vouchers
@@ -71,25 +72,43 @@ END;
             str(self.number_taxa - len(self.vouchers_to_drop)) + ' ' + str(self.number_chars),
         ]
 
+        if self.aminoacids is True:
+            gene_models = Genes.objects.all().values()
+        else:
+            gene_models = False
+
         partitions_incorporated = 0
         for partition in partitions:
             for i in partition:
                 voucher_code = i.split(' ')[0]
                 if voucher_code.startswith('\n'):
+                    this_gene = voucher_code.replace('[', '').replace(']', '').strip()
+                    this_gene_model = get_gene_model_from_gene_id(this_gene, gene_models)
                     partitions_incorporated += 1
                     out += ['\n']
                 elif voucher_code not in self.vouchers_to_drop:
-                    if partitions_incorporated == 1:
-                        out += [i + '\n']
-                    else:
-                        line = i.split(' ')
-                        if len(line) > 1:
-                            out += [' ' * 55 + line[-1] + '\n']
+                    line = i.split(' ')
+                    if len(line) > 1:
+                        sequence = line[-1]
+
+                        if self.aminoacids is True:
+                            sequence = translate_to_protein(this_gene_model, sequence, '', '', self.file_format)
+
+                        if partitions_incorporated == 1:
+                            out += [line[0] + ' ' * 55 + sequence + '\n']
+                        else:
+                            out += [' ' * 55 + sequence + '\n']
 
         self.get_charset_block()
         dataset_str = ''.join(out)
         self.save_dataset_to_file(dataset_str)
         return dataset_str
+
+
+def get_gene_model_from_gene_id(this_gene, gene_models):
+    for i in gene_models:
+        if i['gene_code'] == this_gene:
+            return i
 
 
 class CreateTNT(Dataset):
@@ -229,6 +248,7 @@ class CreateDataset(object):
         self.errors = []
         self.seq_objs = dict()
         self.minimum_number_of_genes = cleaned_data['number_genes']
+        self.aminoacids = cleaned_data['aminoacids']
         self.codon_positions = cleaned_data['positions']
         self.file_format = cleaned_data['file_format']
         self.partition_by_positions = cleaned_data['partition_by_positions']
@@ -262,7 +282,7 @@ class CreateDataset(object):
             phy = CreatePhylip(self.codon_positions, self.partition_by_positions,
                                self.seq_objs, self.gene_codes, self.voucher_codes,
                                self.file_format, self.outgroup, self.voucher_codes_metadata,
-                               self.minimum_number_of_genes)
+                               self.minimum_number_of_genes, self.aminoacids)
             phylip_dataset = phy.from_seq_objs_to_dataset()
             self.warnings += phy.warnings
             self.dataset_file = phy.dataset_file
