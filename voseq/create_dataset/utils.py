@@ -95,7 +95,7 @@ END;
                             sequence = translate_to_protein(this_gene_model, sequence, '', '', self.file_format)
 
                         if partitions_incorporated == 1:
-                            out += [line[0] + ' ' * 55 + sequence + '\n']
+                            out += [line[0].ljust(55, ' ') + sequence + '\n']
                         else:
                             out += [' ' * 55 + sequence + '\n']
 
