@@ -35,7 +35,7 @@ class CreatePhylip(Dataset):
                 bp_count_start + 1) + '-' + str(bp_count_end)
             bp_count_start += self.gene_codes_and_lengths[gene]
             charset_block.append(line)
-        self.charset_block = '\n'.join(charset_block)
+        self.charset_block = '\r\n'.join(charset_block)
 
     def get_partitions_block(self):
         line = 'partition GENES = ' + str(len(self.gene_codes_and_lengths))
