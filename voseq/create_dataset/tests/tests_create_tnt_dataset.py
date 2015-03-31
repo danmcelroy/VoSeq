@@ -27,6 +27,7 @@ class CreateTNTDatasetTest(TestCase):
             'positions': ['2nd', '3rd'],
             'partition_by_positions': 'ONE',
             'file_format': 'TNT',
+            'aminoacids': False,
             'outgroup': '',
         }
 
