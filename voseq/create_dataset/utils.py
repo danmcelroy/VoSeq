@@ -72,10 +72,7 @@ END;
             str(self.number_taxa - len(self.vouchers_to_drop)) + ' ' + str(self.number_chars),
         ]
 
-        if self.aminoacids is True:
-            gene_models = Genes.objects.all().values()
-        else:
-            gene_models = False
+        gene_models = Genes.objects.all().values()
 
         partitions_incorporated = 0
         for partition in partitions:
