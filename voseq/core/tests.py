@@ -29,7 +29,7 @@ class TestCore(TestCase):
 >seq_id seq_description
 WAGMIGTSLSLIIRTELGNPSFLIGDDQIYNTIVTAHAFIMIFFMVMPIMIGGFGNWLVPLMLGAPDMAFPRMNYMSFWLLPPSLILLISSSIVENGAGTGWTVYPPLSSNIAHSGASVDLAIFSLHLAGISSILGAINFITTIINMRINNMSYDQMPLFVWAVGITALLLLLSLPVLAGAITMLLTDRNLNTSFFDSCGGGD
 """
-        results = utils.translate_to_protein(gene_model, sequence_model, seq_description, seq_id)
+        results = utils.translate_to_protein(gene_model, sequence_model.sequences, seq_description, seq_id)
         self.assertEqual(expected.lstrip(), results)
 
     def test_translation_to_protein_invalid_codons(self):
@@ -47,8 +47,8 @@ WAGMIGTSLSLIIRTELGNPSFLIGDDQIYNTIVTAHAFIMIFFMVMPIMIGGFGNWLVPLMLGAPDMAFPRMNYMSFWL
         sequence_model.sequences = ''.join(new_seq)
         seq_description = 'seq_description'
         seq_id = 'seq_id'
-        expected = "Error Codon 'G?C' is invalid"
-        results = utils.translate_to_protein(gene_model, sequence_model, seq_description, seq_id)
+        expected = ''
+        results = utils.translate_to_protein(gene_model, sequence_model.sequences, seq_description, seq_id)
         self.assertEqual(expected, results)
 
     def test_flatten_taxon_names_dict(self):
