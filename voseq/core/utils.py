@@ -203,9 +203,9 @@ def chain_and_flatten(seqs):
     return Seq(''.join(out))
 
 
-def translate_to_protein(gene_model, sequence_model, seq_description, seq_id):
+def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_format=None):
     # # Protein sequences
-    seq_seq, removed = strip_question_marks(sequence_model.sequences)
+    seq_seq, removed = strip_question_marks(sequence)
     if int(gene_model['reading_frame']) == 1:
         if removed % 3 == 0:
             start_translation = 0
@@ -236,7 +236,10 @@ def translate_to_protein(gene_model, sequence_model, seq_description, seq_id):
         prot_sequence = seq_obj.translate(table=gene_model['genetic_code'])
     except TranslationError as e:
         print("Error %s" % e)
-        return "Error %s" % e
+        return ""
+
+    if file_format == 'PHY':
+        return str(prot_sequence)
 
     out = '>' + seq_id + ' ' + seq_description + '\n'
     out += str(prot_sequence) + '\n'

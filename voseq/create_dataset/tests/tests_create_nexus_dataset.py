@@ -29,6 +29,7 @@ class CreateTNTDatasetTest(TestCase):
             'number_genes': None,
             'partition_by_positions': 'ONE',
             'file_format': 'NEXUS',
+            'aminoacids': False,
             'outgroup': '',
         }
 

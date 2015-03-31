@@ -92,7 +92,7 @@ class Results(object):
 
                     protein = utils.translate_to_protein(
                         gene,
-                        sequence_model,
+                        sequence_model.sequences,
                         seq_description,
                         seq_id,
                     )
