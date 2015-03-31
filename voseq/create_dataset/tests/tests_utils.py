@@ -29,6 +29,7 @@ class CreateDatasetUtilsTest(TestCase):
             'partition_by_positions': 'ONE',
             'number_genes': None,
             'file_format': 'FASTA',
+            'aminoacids': False,
             'outgroup': '',
         }
 
