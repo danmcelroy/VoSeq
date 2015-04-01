@@ -57,3 +57,30 @@ WAGMIGTSLSLIIRTELGNPSFLIGDDQIYNTIVTAHAFIMIFFMVMPIMIGGFGNWLVPLMLGAPDMAFPRMNYMSFWL
         expected = 'CP100-10_Lepidoptera_Danaus_sp._5'
         results = utils.flatten_taxon_names_dict(dictionary)
         self.assertEqual(expected, results)
+
+    def test_gapped_translation(self):
+        sequence = 'ATG---GCCATTGTAATGGGCCGG'
+        expected = 'M?AIVMGR'
+        result = utils.gapped_translation(sequence)
+        self.assertEqual(expected, result)
+
+    def test_getting_gap_indexes1(self):
+        sequence = 'ATG---GCCATTGTAATGGGCCGG'
+        expected = [1]
+        result = utils.get_gap_indexes(sequence)
+        self.assertEqual(expected, result)
+
+    def test_getting_gap_indexes2(self):
+        sequence = 'ATG---GCCATT---GTAATGGGCCGG'
+        expected = [1, 4]
+        result = utils.get_gap_indexes(sequence)
+        self.assertEqual(expected, result)
+
+    def test_getting_gap_indexes3(self):
+        """Dont mind if the are invalid codons. They will rejected by the
+        translation tool of Biopython.
+        """
+        sequence = 'ATG---GCC-TTGTAATGGGCCGG'
+        expected = [1]
+        result = utils.get_gap_indexes(sequence)
+        self.assertEqual(expected, result)
