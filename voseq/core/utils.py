@@ -253,7 +253,11 @@ def gapped_translation(sequence):
 
 
 def get_gap_indexes(sequence):
+    """If - is found not forming gap codons, it will be replaced by ? and
+    the new sequence will be returned with this replacemen.
+    """
     indexes_for_gaps_in_translated_sequence = []
+    new_sequence = ''
 
     i = 0
     for index in range((len(sequence) // 3) + 1):
@@ -261,5 +265,8 @@ def get_gap_indexes(sequence):
         tmp = sequence[i:j]
         if tmp.find('---') == 0:
             indexes_for_gaps_in_translated_sequence.append(index)
+        elif '-' in tmp:
+            tmp = tmp.replace('-', '?')
+        new_sequence += tmp
         i += 3
-    return indexes_for_gaps_in_translated_sequence
+    return indexes_for_gaps_in_translated_sequence, new_sequence
