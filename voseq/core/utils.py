@@ -248,8 +248,13 @@ def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_for
 
 
 def gapped_translation(sequence):
-    gap_indexes = get_gap_indexes(sequence)
-    return sequence
+    genetic_code = 1
+    gap_indexes, sequence = get_gap_indexes(sequence)
+    seq = Seq(sequence, generic_dna)
+    ungapped_seq = seq.ungap('-')
+    translated_seq = ungapped_seq.translate(table=genetic_code)
+    # TODO add gaps to translated sequence based on gap_indexes
+    return str(translated_seq)
 
 
 def get_gap_indexes(sequence):
