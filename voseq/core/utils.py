@@ -6,6 +6,7 @@ from django.conf import settings
 
 from Bio.Seq import Seq
 from Bio.Alphabet import IUPAC
+from Bio.Alphabet import generic_dna
 from Bio.Data.CodonTable import TranslationError
 
 from stats.models import Stats
@@ -244,3 +245,21 @@ def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_for
     out = '>' + seq_id + ' ' + seq_description + '\n'
     out += str(prot_sequence) + '\n'
     return out
+
+
+def gapped_translation(sequence):
+    gap_indexes = get_gap_indexes(sequence)
+    return sequence
+
+
+def get_gap_indexes(sequence):
+    indexes_for_gaps_in_translated_sequence = []
+
+    i = 0
+    for index in range((len(sequence) // 3) + 1):
+        j = i + 3
+        tmp = sequence[i:j]
+        if tmp.find('---') == 0:
+            indexes_for_gaps_in_translated_sequence.append(index)
+        i += 3
+    return indexes_for_gaps_in_translated_sequence
