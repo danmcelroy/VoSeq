@@ -67,20 +67,17 @@ WAGMIGTSLSLIIRTELGNPSFLIGDDQIYNTIVTAHAFIMIFFMVMPIMIGGFGNWLVPLMLGAPDMAFPRMNYMSFWL
     def test_getting_gap_indexes1(self):
         sequence = 'ATG---GCCATTGTAATGGGCCGG'
         expected = [1]
-        result = utils.get_gap_indexes(sequence)
-        self.assertEqual(expected, result)
+        indexes, sequence = utils.get_gap_indexes(sequence)
+        self.assertEqual(expected, indexes)
 
     def test_getting_gap_indexes2(self):
         sequence = 'ATG---GCCATT---GTAATGGGCCGG'
         expected = [1, 4]
-        result = utils.get_gap_indexes(sequence)
-        self.assertEqual(expected, result)
+        indexes, sequence = utils.get_gap_indexes(sequence)
+        self.assertEqual(expected, indexes)
 
     def test_getting_gap_indexes3(self):
-        """Dont mind if the are invalid codons. They will rejected by the
-        translation tool of Biopython.
-        """
         sequence = 'ATG---GCC-TTGTAATGGGCCGG'
-        expected = [1]
-        result = utils.get_gap_indexes(sequence)
-        self.assertEqual(expected, result)
+        expected = 'ATG---GCC?TTGTAATGGGCCGG'
+        indexes, sequence = utils.get_gap_indexes(sequence)
+        self.assertEqual(expected, sequence)
