@@ -89,7 +89,11 @@ END;
                         sequence = line[-1]
 
                         if self.aminoacids is True:
-                            sequence = translate_to_protein(this_gene_model, sequence, '', '', self.file_format)
+                            if this_gene_model['genetic_code'] is None or this_gene_model['reading_frame'] is None:
+                                self.warnings.append("Cannot translate gene %s sequences into aminoacids."
+                                                     " You need to define reading_frame and/or genetic_code." % this_gene_model['gene_code'])
+                            else:
+                                sequence = translate_to_protein(this_gene_model, sequence, '', '', self.file_format)
 
                         if partitions_incorporated == 1:
                             out += [line[0].ljust(55, ' ') + sequence + '\n']
