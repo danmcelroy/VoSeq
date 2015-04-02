@@ -1,6 +1,9 @@
 from django.test import TestCase
 from django.core.management import call_command
 
+from Bio.Seq import Seq
+from Bio.Alphabet import generic_dna
+
 from core import utils
 from public_interface.models import Genes
 from public_interface.models import Sequences
@@ -81,3 +84,59 @@ WAGMIGTSLSLIIRTELGNPSFLIGDDQIYNTIVTAHAFIMIFFMVMPIMIGGFGNWLVPLMLGAPDMAFPRMNYMSFWL
         expected = 'ATG---GCC?TTGTAATGGGCCGG'
         indexes, sequence = utils.get_gap_indexes(sequence)
         self.assertEqual(expected, sequence)
+
+    def test_add_gaps_to_seq1(self):
+        gap_indexes = [1]
+        sequence = 'ATGGCCATTGTAATGGGCCGG'
+        seq = Seq(sequence, generic_dna).translate()
+        expected = 'M?AIVMGR'
+        result = utils.add_gaps_to_seq(seq, gap_indexes)
+        self.assertEqual(expected, str(result))
+
+    def test_add_gaps_to_seq2(self):
+        gap_indexes = [1, 4]
+        sequence = 'ATGGCCATTGTAATGGGCCGG'
+        seq = Seq(sequence, generic_dna).translate()
+        expected = 'M?AI?VMGR'
+        result = utils.add_gaps_to_seq(seq, gap_indexes)
+        self.assertEqual(expected, str(result))
+
+    def test_add_gaps_to_seq3(self):
+        gap_indexes = [1, 5]
+        sequence = 'ATGGCCATTGTAATGGGCCGG'
+        seq = Seq(sequence, generic_dna).translate()
+        expected = 'M?AIV?MGR'
+        result = utils.add_gaps_to_seq(seq, gap_indexes)
+        self.assertEqual(expected, str(result))
+
+    def test_add_gaps_to_seq4(self):
+        gap_indexes = [2, 5]
+        sequence = 'ATGGCCATTGTAATGGGCCGG'
+        seq = Seq(sequence, generic_dna).translate()
+        expected = 'MA?IV?MGR'
+        result = utils.add_gaps_to_seq(seq, gap_indexes)
+        self.assertEqual(expected, str(result))
+
+    def test_add_gaps_to_seq5(self):
+        gap_indexes = [2, 5, 7]
+        sequence = 'ATGGCCATTGTAATGGGCCGG'
+        seq = Seq(sequence, generic_dna).translate()
+        expected = 'MA?IV?M?GR'
+        result = utils.add_gaps_to_seq(seq, gap_indexes)
+        self.assertEqual(expected, str(result))
+
+    def test_add_gaps_to_seq6(self):
+        gap_indexes = [2, 5, 7, 9, 10]
+        sequence = 'ATGGCCATTGTAATGGGCCGG'
+        seq = Seq(sequence, generic_dna).translate()
+        expected = 'MA?IV?M?G??R'
+        result = utils.add_gaps_to_seq(seq, gap_indexes)
+        self.assertEqual(expected, str(result))
+
+    def test_add_gaps_to_seq7(self):
+        gap_indexes = [0, 5, 7, 9, 10]
+        sequence = 'ATGGCCATTGTAATGGGCCGG'
+        seq = Seq(sequence, generic_dna).translate()
+        expected = '?MAIV?M?G??R'
+        result = utils.add_gaps_to_seq(seq, gap_indexes)
+        self.assertEqual(expected, str(result))
