@@ -253,8 +253,20 @@ def gapped_translation(sequence):
     seq = Seq(sequence, generic_dna)
     ungapped_seq = seq.ungap('-')
     translated_seq = ungapped_seq.translate(table=genetic_code)
-    # TODO add gaps to translated sequence based on gap_indexes
-    return str(translated_seq)
+    translated_seq_with_gaps = add_gaps_to_seq(translated_seq, gap_indexes)
+    return str(translated_seq_with_gaps)
+
+
+def add_gaps_to_seq(aa_sequence, gap_indexes):
+    aa_seq_as_list = list(aa_sequence)
+
+    number_of_question_marks_appended = 0
+    for index in gap_indexes:
+        new_index = index - number_of_question_marks_appended
+        this_aa = aa_seq_as_list[new_index]
+        aa_seq_as_list[new_index] = '?' + this_aa
+        number_of_question_marks_appended += 1
+    return ''.join(aa_seq_as_list)
 
 
 def get_gap_indexes(sequence):
