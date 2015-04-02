@@ -219,6 +219,7 @@ def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_for
 
     out = '>' + seq_id + ' ' + seq_description + '\n'
     out += str(prot_sequence) + '\n'
+    # TODO warn when tranlation issues stop codon, voucher code and gene code
     return out
 
 
