@@ -10,6 +10,7 @@ from Bio.Alphabet import generic_dna
 from Bio.Data.CodonTable import TranslationError
 
 from stats.models import Stats
+from . import exceptions
 
 
 def get_voucher_codes(cleaned_data):
@@ -86,29 +87,6 @@ def get_version_stats():
         stats = ''
 
     return version, stats
-
-
-def strip_question_marks(seq):
-    """Having too many ambiguous characters will mess up DNA translation.
-
-    :returns sequence and number of ambiguous bases removed at start.
-    """
-    removed = 0
-    seq = seq.upper()
-
-    res = re.search('^(\?+)', seq)
-    if res:
-        removed += len(res.groups()[0])
-    seq = re.sub('^\?+', '', seq)
-
-    res = re.search('^(N+)', seq)
-    if res:
-        removed += len(res.groups()[0])
-    seq = re.sub('^N+', '', seq)
-
-    seq = re.sub('\?+$', '', seq)
-    seq = re.sub('N+$', '', seq)
-    return seq, removed
 
 
 def flatten_taxon_names_dict(dictionary):
@@ -204,40 +182,37 @@ def chain_and_flatten(seqs):
     return Seq(''.join(out))
 
 
+def get_start_translation_index(gene_model):
+    if int(gene_model['reading_frame']) == 1:
+        start_translation = 0
+    elif int(gene_model['reading_frame']) == 2:
+        start_translation = 1
+    elif int(gene_model['reading_frame']) == 3:
+        start_translation = 2
+    else:
+        raise exceptions.MissingReadingFrameForGene("Gene %s" % gene_model['gene_code'])
+    return start_translation
+
+
 def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_format=None):
     # # Protein sequences
-    seq_seq, removed = strip_question_marks(sequence)
-    if int(gene_model['reading_frame']) == 1:
-        if removed % 3 == 0:
-            start_translation = 0
-        if removed % 3 == 1:
-            start_translation = 2
-        if removed % 3 == 2:
-            start_translation = 1
-    if int(gene_model['reading_frame']) == 2:
-        if removed % 3 == 0:
-            start_translation = 1
-        if removed % 3 == 1:
-            start_translation = 0
-        if removed % 3 == 2:
-            start_translation = 2
-    if int(gene_model['reading_frame']) == 3:
-        if removed % 3 == 0:
-            start_translation = 2
-        if removed % 3 == 1:
-            start_translation = 1
-        if removed % 3 == 2:
-            start_translation = 0
-    if '?' in seq_seq or 'N' in seq_seq.upper():
-        seq_obj = Seq(seq_seq[start_translation:], IUPAC.ambiguous_dna)
-    else:
-        seq_obj = Seq(seq_seq[start_translation:], IUPAC.unambiguous_dna)
+    seq_seq = sequence.replace('?', 'N')
+    start_translation = get_start_translation_index(gene_model)
 
-    try:
-        prot_sequence = seq_obj.translate(table=gene_model['genetic_code'])
-    except TranslationError as e:
-        print("Error %s" % e)
-        return ""
+    seq_obj = Seq(seq_seq[start_translation:], generic_dna)
+
+    if '---' in seq_seq:  # we have gaps
+        try:
+            prot_sequence = gapped_translation(seq_obj, gene_model['genetic_code'])
+        except TranslationError as e:
+            print("Error %s" % e)
+            return ""
+    else:
+        try:
+            prot_sequence = seq_obj.translate(table=gene_model['genetic_code'])
+        except TranslationError as e:
+            print("Error %s" % e)
+            return ""
 
     if file_format == 'PHY':
         return str(prot_sequence)
@@ -247,9 +222,8 @@ def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_for
     return out
 
 
-def gapped_translation(sequence):
-    genetic_code = 1
-    gap_indexes, sequence = get_gap_indexes(sequence)
+def gapped_translation(seq_obj, genetic_code):
+    gap_indexes, sequence = get_gap_indexes(seq_obj)
     seq = Seq(sequence, generic_dna)
     ungapped_seq = seq.ungap('-')
     translated_seq = ungapped_seq.translate(table=genetic_code)
@@ -263,13 +237,20 @@ def add_gaps_to_seq(aa_sequence, gap_indexes):
     number_of_question_marks_appended = 0
     for index in gap_indexes:
         new_index = index - number_of_question_marks_appended
-        this_aa = aa_seq_as_list[new_index]
-        aa_seq_as_list[new_index] = '?' + this_aa
+        try:
+            this_aa = aa_seq_as_list[new_index]
+        except IndexError:
+            this_aa = ''
+
+        try:
+            aa_seq_as_list[new_index] = '?' + this_aa
+        except IndexError:
+            aa_seq_as_list.append('?')
         number_of_question_marks_appended += 1
     return ''.join(aa_seq_as_list)
 
 
-def get_gap_indexes(sequence):
+def get_gap_indexes(seq_obj):
     """If - is found not forming gap codons, it will be replaced by ? and
     the new sequence will be returned with this replacemen.
     """
@@ -277,9 +258,9 @@ def get_gap_indexes(sequence):
     new_sequence = ''
 
     i = 0
-    for index in range((len(sequence) // 3) + 1):
+    for index in range((len(seq_obj) // 3) + 1):
         j = i + 3
-        tmp = sequence[i:j]
+        tmp = str(seq_obj[i:j])
         if tmp.find('---') == 0:
             indexes_for_gaps_in_translated_sequence.append(index)
         elif '-' in tmp:
