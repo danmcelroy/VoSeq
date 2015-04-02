@@ -16,12 +16,6 @@ class TestCore(TestCase):
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 
-    def test_strip_question_marks_n(self):
-        seq = '?NNNNNACTACGATGCRGCAST'
-        result = utils.strip_question_marks(seq)
-        expected = ('ACTACGATGCRGCAST', 6)
-        self.assertEqual(expected, result)
-
     def test_translation_to_protein(self):
         """Catch exceptions when input has invalid codons due to ?"""
         gene_model = Genes.objects.filter(gene_code='COI').values()[0]
@@ -64,7 +58,8 @@ WAGMIGTSLSLIIRTELGNPSFLIGDDQIYNTIVTAHAFIMIFFMVMPIMIGGFGNWLVPLMLGAPDMAFPRMNYMSFWL
     def test_gapped_translation(self):
         sequence = 'ATG---GCCATTGTAATGGGCCGG'
         expected = 'M?AIVMGR'
-        result = utils.gapped_translation(sequence)
+        genetic_code = 1
+        result = utils.gapped_translation(sequence, genetic_code)
         self.assertEqual(expected, result)
 
     def test_getting_gap_indexes1(self):
@@ -138,5 +133,14 @@ WAGMIGTSLSLIIRTELGNPSFLIGDDQIYNTIVTAHAFIMIFFMVMPIMIGGFGNWLVPLMLGAPDMAFPRMNYMSFWL
         sequence = 'ATGGCCATTGTAATGGGCCGG'
         seq = Seq(sequence, generic_dna).translate()
         expected = '?MAIV?M?G??R'
+        result = utils.add_gaps_to_seq(seq, gap_indexes)
+        self.assertEqual(expected, str(result))
+
+    def test_add_gaps_to_seq8(self):
+        """When the gap is at the end of sequence"""
+        gap_indexes = [2, 8]
+        sequence = 'ATGGCCATTGTAATGGGCCGG'
+        seq = Seq(sequence, generic_dna).translate()
+        expected = 'MA?IVMGR?'
         result = utils.add_gaps_to_seq(seq, gap_indexes)
         self.assertEqual(expected, str(result))
