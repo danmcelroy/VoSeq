@@ -182,22 +182,42 @@ def chain_and_flatten(seqs):
     return Seq(''.join(out))
 
 
-def get_start_translation_index(gene_model):
+def get_start_translation_index(gene_model, removed):
     if int(gene_model['reading_frame']) == 1:
-        start_translation = 0
+        if removed % 3 == 0:
+            start_translation = 0
+        if removed % 3 == 1:
+            start_translation = 2
+        if removed % 3 == 2:
+            start_translation = 1
     elif int(gene_model['reading_frame']) == 2:
-        start_translation = 1
+        if removed % 3 == 0:
+            start_translation = 1
+        if removed % 3 == 1:
+            start_translation = 0
+        if removed % 3 == 2:
+            start_translation = 2
     elif int(gene_model['reading_frame']) == 3:
-        start_translation = 2
+        if removed % 3 == 0:
+            start_translation = 2
+        if removed % 3 == 1:
+            start_translation = 1
+        if removed % 3 == 2:
+            start_translation = 0
     else:
         raise exceptions.MissingReadingFrameForGene("Gene %s" % gene_model['gene_code'])
     return start_translation
 
 
 def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_format=None):
-    # # Protein sequences
+    removed = 0
+    if file_format == 'FASTA':
+        sequence, removed = strip_question_marks(sequence)
+        print(">>>>>>>seqeunce", sequence)
+        print(">>>>>>>removed", removed)
     seq_seq = sequence.replace('?', 'N')
-    start_translation = get_start_translation_index(gene_model)
+
+    start_translation = get_start_translation_index(gene_model, removed)
 
     seq_obj = Seq(seq_seq[start_translation:], generic_dna)
 
@@ -269,3 +289,22 @@ def get_gap_indexes(seq_obj):
         new_sequence += tmp
         i += 3
     return indexes_for_gaps_in_translated_sequence, new_sequence
+
+
+def strip_question_marks(seq):
+    removed = 0
+    seq = seq.upper()
+
+    res = re.search('^(\?+)', seq)
+    if res:
+        removed += len(res.groups()[0])
+    seq = re.sub('^\?+', '', seq)
+
+    res = re.search('^(N+)', seq)
+    if res:
+        removed += len(res.groups()[0])
+    seq = re.sub('^N+', '', seq)
+
+    seq = re.sub('\?+$', '', seq)
+    seq = re.sub('N+$', '', seq)
+    return seq, removed
