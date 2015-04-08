@@ -61,7 +61,5 @@ class CreatePhylipDatasetTest(TestCase):
                         }
                         )
         expected = 'stop'
-        with open("test.html", "w") as handle:
-            handle.write(str(c.content))
         result = str(c.content)
         self.assertTrue(expected in result)
