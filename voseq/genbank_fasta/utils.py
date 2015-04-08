@@ -95,6 +95,7 @@ class Results(object):
                         sequence_model.sequences,
                         seq_description,
                         seq_id,
+                        'FASTA',
                     )
                     if not protein.startswith('Error'):
                         self.protein += protein
