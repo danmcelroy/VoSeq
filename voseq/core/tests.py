@@ -17,17 +17,13 @@ class TestCore(TestCase):
         call_command(cmd, *args, **opts)
 
     def test_translation_to_protein(self):
-        """Catch exceptions when input has invalid codons due to ?"""
         gene_model = Genes.objects.filter(gene_code='COI').values()[0]
         sequence_model = Sequences.objects.get(gene_code='COI', code='CP100-10')
         seq_description = 'seq_description'
         seq_id = 'seq_id'
-        expected = """
->seq_id seq_description
-WAGMIGTSLSLIIRTELGNPSFLIGDDQIYNTIVTAHAFIMIFFMVMPIMIGGFGNWLVPLMLGAPDMAFPRMNYMSFWLLPPSLILLISSSIVENGAGTGWTVYPPLSSNIAHSGASVDLAIFSLHLAGISSILGAINFITTIINMRINNMSYDQMPLFVWAVGITALLLLLSLPVLAGAITMLLTDRNLNTSFFDSCGGGD
-"""
+        expected = "XXXXXXXXWAGMIGTSLS"
         results = utils.translate_to_protein(gene_model, sequence_model.sequences, seq_description, seq_id)
-        self.assertEqual(expected.lstrip(), results)
+        self.assertTrue(expected in results)
 
     def test_translation_to_protein_invalid_codons(self):
         """Catch exceptions when input has invalid codons due to ?"""
@@ -44,9 +40,9 @@ WAGMIGTSLSLIIRTELGNPSFLIGDDQIYNTIVTAHAFIMIFFMVMPIMIGGFGNWLVPLMLGAPDMAFPRMNYMSFWL
         sequence_model.sequences = ''.join(new_seq)
         seq_description = 'seq_description'
         seq_id = 'seq_id'
-        expected = ''
+        expected = 'GMXGTSXSLXIRTELGXPSXLIGDDQXYNXIVTAHAXIMXFF'
         results = utils.translate_to_protein(gene_model, sequence_model.sequences, seq_description, seq_id)
-        self.assertEqual(expected, results)
+        self.assertTrue(expected in results)
 
     def test_flatten_taxon_names_dict(self):
         dictionary = {'code': 'CP100-10', 'orden': 'Lepidoptera',
