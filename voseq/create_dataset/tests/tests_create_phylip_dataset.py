@@ -39,3 +39,27 @@ class CreatePhylipDatasetTest(TestCase):
         expected = '2 2287\nCP100-10_Melitaea_diamina'
         result = self.dataset_creator.dataset_str
         self.assertTrue(expected in result)
+
+    def test_stop_codon_warning(self):
+        c = self.c.post('/create_dataset/results/',
+                        {
+                            'voucher_codes': '',
+                            'gene_codes': [],
+                            'geneset': 1,
+                            'taxonset': 1,
+                            'translations': False,
+                            'introns': 'YES',
+                            'file_format': 'PHY',
+                            'degen_translations': 'NORMAL',
+                            'exclude': 'YES',
+                            'aminoacids': True,
+                            'special': False,
+                            'outgroup': '',
+                            'positions': 'ALL',
+                            'partition_by_positions': 'ONE',
+                            'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
+                        }
+                        )
+        expected = 'stop'
+        result = str(c.content)
+        self.assertTrue(expected in result)
