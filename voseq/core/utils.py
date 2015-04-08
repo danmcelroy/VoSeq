@@ -213,8 +213,6 @@ def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_for
     removed = 0
     if file_format == 'FASTA':
         sequence, removed = strip_question_marks(sequence)
-        print(">>>>>>>seqeunce", sequence)
-        print(">>>>>>>removed", removed)
     seq_seq = sequence.replace('?', 'N')
 
     start_translation = get_start_translation_index(gene_model, removed)
@@ -234,13 +232,17 @@ def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_for
             print("Error %s" % e)
             return ""
 
+    if '*' in prot_sequence:
+        warning = 'Dataset block %s contains stop codons "*"' % gene_model['gene_code']
+    else:
+        warning = ''
+
     if file_format == 'PHY':
-        return str(prot_sequence)
+        return str(prot_sequence), warning
 
     out = '>' + seq_id + ' ' + seq_description + '\n'
     out += str(prot_sequence) + '\n'
-    # TODO warn when tranlation issues stop codon, voucher code and gene code
-    return out
+    return out, warning
 
 
 def gapped_translation(seq_obj, genetic_code):

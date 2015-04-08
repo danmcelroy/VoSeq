@@ -519,12 +519,15 @@ class Dataset(object):
                     self.fasta += '>' + seq_id + ' ' + seq_description + '\n'
                     self.fasta += str(seq_obj) + '\n'
 
-                    protein = utils.translate_to_protein(
+                    protein, warning = utils.translate_to_protein(
                         gene,
                         sequence_model,
                         seq_description,
                         seq_id,
                     )
+                    if warning != '':
+                        self.warnings.append(warning)
+
                     if not protein.startswith('Error'):
                         self.protein += protein
                     else:
