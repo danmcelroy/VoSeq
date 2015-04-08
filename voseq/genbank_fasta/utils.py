@@ -90,13 +90,16 @@ class Results(object):
                     self.fasta += '>' + seq_id + ' ' + seq_description + '\n'
                     self.fasta += str(seq_obj) + '\n'
 
-                    protein = utils.translate_to_protein(
+                    protein, warning = utils.translate_to_protein(
                         gene,
                         sequence_model.sequences,
                         seq_description,
                         seq_id,
                         'FASTA',
                     )
+                    if warning != '':
+                        self.warnings.append(warning)
+
                     if not protein.startswith('Error'):
                         self.protein += protein
                     else:
