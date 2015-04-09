@@ -43,8 +43,8 @@ def results(request):
             res = utils.Results(voucher_codes, gene_codes)
             res.get_datasets()
             items_with_accession = res.items_with_accession
-            fasta = res.fasta
-            protein = res.protein
+            fasta = res.fasta[0:1500] + '\n...\n\n\n' + '#######\nComplete dataset file available for download.\n#######'
+            protein = res.protein[0:1500] + '\n...\n\n\n' + '#######\nComplete dataset file available for download.\n#######'
             fasta_file = re.search('(fasta_[a-z0-9]+\.fasta)', res.fasta_file).groups()[0]
             protein_file = re.search('(prot_[a-z0-9]+\.fasta)', res.protein_file).groups()[0]
             warnings = res.warnings
