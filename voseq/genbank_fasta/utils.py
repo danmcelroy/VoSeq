@@ -12,32 +12,14 @@ from core import utils
 from create_dataset import dataset
 
 
-class Results(object):
-    """Returns:
-
-    Attributes:
-        * List of items with accession numbers that will not be included in FASTA or protein files (code, gene_code, accession).
-        * FASTA dataset as string.
-        * Protein dataset as string.
-
-    Usage:
-
-        >>> res = Results(voucher_codes, gene_codes)
-        >>> res.get_datasets()
-        >>> fasta_dataset = res.fasta
-        >>> protein_dataset = res.protein
-        >>> items_with_accession = res.items_with_accession
-
-    """
-    def __init__(self, voucher_codes, gene_codes):
-        self.warnings = []
-        self.voucher_codes = voucher_codes
-        self.gene_codes = gene_codes
-        self.items_with_accession = []
-        self.guid = self.make_guid()
-        self.fasta = ''
-        self.protein = ''
-        self.cwd = os.path.dirname(__file__)
+class Results(dataset.Dataset):
+    def __init__(self, *args, **kwargs):
+        super(Results, self).__init__(*args, **kwargs)
+        self.gene_codes_and_lengths = None
+        self.number_taxa = len(self.voucher_codes)
+        self.number_chars = None
+        self.vouchers_to_drop = None
+        self.charset_block = None
         self.fasta_file = os.path.join(self.cwd,
                                        'fasta_files',
                                        'fasta_' + self.guid + '.fasta',
@@ -47,98 +29,49 @@ class Results(object):
                                          'prot_' + self.guid + '.fasta',
                                          )
 
-    def build_fasta_seq_components(self, code, gene, sequence_model,
-                                   vouchers):
-        voucher = vouchers[code]
+    def convert_lists_to_dataset(self, partitions):
+        """
+        Overriden method from base clase in order to add headers and footers depending
+        on needed dataset.
+        """
+        self.get_number_of_genes_for_taxa(partitions)
+        self.get_number_chars_from_partition_list(partitions)
 
-        seq_id = voucher['genus'] + '_' + voucher['species'] + '_' + code
-        seq_description = '[org=' + voucher['genus'] + ' ' + voucher[
-            'species'] + ']'
-        seq_description += ' [Specimen-voucher=' + code + ']'
-        seq_description += ' [note=' + gene[
-            'description'] + ' gene, partial cds.]'
-        seq_description += ' [Lineage=]'
-        seq_seq = sequence_model.sequences
+        out = [
+            str(self.number_taxa - len(self.vouchers_to_drop)) + ' ' + str(self.number_chars),
+        ]
 
-        return seq_description, seq_id, seq_seq
-
-    def get_datasets(self):
-        sequence_models = Sequences.objects.all()
-        voucher_models = Vouchers.objects.all().values('genus', 'species', 'code')
         gene_models = Genes.objects.all().values()
-        for sequence_model in sequence_models:
-            code = sequence_model.code_id
-            gene_code = sequence_model.gene_code
-            gene = self.get_gene_from_gene_models(gene_code, gene_models)
-            if code in self.voucher_codes and gene_code in self.gene_codes:
-                if sequence_model.accession.strip() != '':
-                    self.items_with_accession.append(
-                        {
-                            'voucher_code': code,
-                            'gene_code': gene_code,
-                            'accession': sequence_model.accession,
-                        },
-                    )
-                else:
-                    for v in voucher_models:
-                        if v['code'] == code:
-                            seq_id = v['genus'] + '_' + v['species'] + '_' + code
-                            seq_description = '[org=' + v['genus'] + ' ' + v['species'] + ']'
-                            seq_description += ' [Specimen-voucher=' + code + ']'
-                            seq_description += ' [note=' + gene['description'] + ' gene, partial cds.]'
-                            seq_description += ' [Lineage=]'
-                            seq_seq = sequence_model.sequences
 
-                    # # DNA sequences
-                    seq_seq = utils.strip_question_marks(seq_seq)[0]
-                    if '?' in seq_seq or 'N' in seq_seq.upper():
-                        seq_obj = Seq(seq_seq, IUPAC.ambiguous_dna)
-                    else:
-                        seq_obj = Seq(seq_seq, IUPAC.unambiguous_dna)
+        partitions_incorporated = 0
+        for partition in partitions:
+            for i in partition:
+                voucher_code = i.split(' ')[0]
+                if voucher_code.startswith('\n'):
+                    this_gene = voucher_code.replace('[', '').replace(']', '').strip()
+                    this_gene_model = get_gene_model_from_gene_id(this_gene, gene_models)
+                    partitions_incorporated += 1
+                    out += ['\n']
+                elif voucher_code not in self.vouchers_to_drop:
+                    line = i.split(' ')
+                    if len(line) > 1:
+                        sequence = line[-1]
 
-                    self.fasta += '>' + seq_id + ' ' + seq_description + '\n'
-                    self.fasta += str(seq_obj) + '\n'
+                        if self.aminoacids is True:
+                            if this_gene_model['genetic_code'] is None or this_gene_model['reading_frame'] is None:
+                                self.warnings.append("Cannot translate gene %s sequences into aminoacids."
+                                                     " You need to define reading_frame and/or genetic_code." % this_gene_model['gene_code'])
+                            else:
+                                sequence, warning = translate_to_protein(this_gene_model, sequence, '', voucher_code, self.file_format)
+                                if warning != '':
+                                    self.warnings.append(warning)
 
-                    protein, warning = utils.translate_to_protein(
-                        gene,
-                        sequence_model,
-                        seq_description,
-                        seq_id,
-                    )
-                    if warning != '':
-                        self.warnings.append(warning)
+                        if partitions_incorporated == 1:
+                            out += [line[0].ljust(55, ' ') + sequence + '\n']
+                        else:
+                            out += [' ' * 55 + sequence + '\n']
 
-                    if not protein.startswith('Error'):
-                        self.protein += protein
-                    else:
-                        self.warnings.append("Could not translate %s: %s" % (seq_id, protein))
-
-        with open(self.fasta_file, 'w') as handle:
-            handle.write(self.fasta)
-
-        with open(self.protein_file, 'w') as handle:
-            handle.write(self.protein)
-
-    def get_sequences_from_sequence_models(self, sequence_models):
-        sequences = dict()
-        for sequence_model in sequence_models:
-            code = sequence_model.code_id
-            sequences[code] = sequence_model
-        return sequences
-
-    def get_vouchers_from_voucher_models(self, voucher_models):
-        vouchers = dict()
-        for voucher_model in voucher_models:
-            code = voucher_model['code']
-            vouchers[code] = voucher_model
-        return vouchers
-
-    def get_genes_from_gene_models(self, gene_models):
-        genes = dict()
-        for gene_model in gene_models:
-            gene_code = gene_model['gene_code'].lower()
-            genes[gene_code] = gene_model
-        return genes
-
-    def make_guid(self):
-        return uuid.uuid4().hex
+        self.get_charset_block()
+        dataset_str = ''.join(out)
+        self.save_dataset_to_file(dataset_str)
+        return dataset_str
