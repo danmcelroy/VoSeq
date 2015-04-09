@@ -9,6 +9,7 @@ from public_interface.models import Vouchers
 from public_interface.models import Sequences
 from public_interface.models import Genes
 from core import utils
+from create_dataset import dataset
 
 
 class Results(object):
@@ -62,23 +63,13 @@ class Results(object):
         return seq_description, seq_id, seq_seq
 
     def get_datasets(self):
-        """Queries sequences and creates FASTA, protein strings and list of
-        items with accession number (code, gene_code, accession).
-        """
         sequence_models = Sequences.objects.all()
         voucher_models = Vouchers.objects.all().values('genus', 'species', 'code')
         gene_models = Genes.objects.all().values()
-
-        vouchers = self.get_vouchers_from_voucher_models(voucher_models)
-        genes = self.get_genes_from_gene_models(gene_models)
-        sequences = self.get_sequences_from_sequence_models(sequence_models)
-        print(">>>>>>>>>sequences", sequences)
-
-        start = datetime.now()
         for sequence_model in sequence_models:
             code = sequence_model.code_id
             gene_code = sequence_model.gene_code
-            gene = genes[gene_code.lower()]
+            gene = self.get_gene_from_gene_models(gene_code, gene_models)
             if code in self.voucher_codes and gene_code in self.gene_codes:
                 if sequence_model.accession.strip() != '':
                     self.items_with_accession.append(
@@ -89,8 +80,14 @@ class Results(object):
                         },
                     )
                 else:
-                    seq_description, seq_id, seq_seq = self.build_fasta_seq_components(
-                        code, gene, sequence_model, vouchers)
+                    for v in voucher_models:
+                        if v['code'] == code:
+                            seq_id = v['genus'] + '_' + v['species'] + '_' + code
+                            seq_description = '[org=' + v['genus'] + ' ' + v['species'] + ']'
+                            seq_description += ' [Specimen-voucher=' + code + ']'
+                            seq_description += ' [note=' + gene['description'] + ' gene, partial cds.]'
+                            seq_description += ' [Lineage=]'
+                            seq_seq = sequence_model.sequences
 
                     # # DNA sequences
                     seq_seq = utils.strip_question_marks(seq_seq)[0]
@@ -104,10 +101,9 @@ class Results(object):
 
                     protein, warning = utils.translate_to_protein(
                         gene,
-                        sequence_model.sequences,
+                        sequence_model,
                         seq_description,
                         seq_id,
-                        'FASTA',
                     )
                     if warning != '':
                         self.warnings.append(warning)
@@ -116,9 +112,6 @@ class Results(object):
                         self.protein += protein
                     else:
                         self.warnings.append("Could not translate %s: %s" % (seq_id, protein))
-        end = datetime.now()
-        d = end - start
-        print(">>>>>>>>>>>>>>execution time loop over all seqs", d.total_seconds())
 
         with open(self.fasta_file, 'w') as handle:
             handle.write(self.fasta)
