@@ -202,6 +202,12 @@ class Dataset(object):
                 seq_str += codon_description
             seq_str += '\n' + '--------------------'
 
+        if self.file_format == 'GenbankFASTA':
+            seq_str = '>' + this_gene
+            if codon_description is not None:
+                seq_str += codon_description
+            seq_str += '\n' + '--------------------'
+
         if self.file_format == 'PHY':
             seq_str = '\n[%s]' % this_gene
 
@@ -213,6 +219,8 @@ class Dataset(object):
         return seq_str
 
     def format_record_id_and_seq_for_dataset(self, seq_record_id, seq_record_seq):
+        if self.file_format == 'GenbankFASTA':
+            seq_str = '>' + seq_record_id + '\n' + str(seq_record_seq)
         if self.file_format == 'FASTA':
             seq_str = '>' + seq_record_id + '\n' + str(seq_record_seq)
         if self.file_format == 'NEXUS' or \

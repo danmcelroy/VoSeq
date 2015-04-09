@@ -252,6 +252,15 @@ class CreateDataset(object):
         self.gene_codes = get_gene_codes(self.cleaned_data)
         self.create_seq_objs()
 
+        if self.file_format == 'GenbankFASTA':
+            fasta = CreateFasta(self.codon_positions, self.partition_by_positions,
+                                self.seq_objs, self.gene_codes, self.voucher_codes,
+                                self.file_format)
+            fasta_dataset = fasta.from_seq_objs_to_dataset()
+            self.warnings += fasta.warnings
+            self.dataset_file = fasta.dataset_file
+            return fasta_dataset
+
         if self.file_format == 'FASTA':
             fasta = CreateFasta(self.codon_positions, self.partition_by_positions,
                                 self.seq_objs, self.gene_codes, self.voucher_codes,
