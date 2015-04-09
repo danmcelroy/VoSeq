@@ -19,7 +19,6 @@ class CreatePhylip(Dataset):
     def __init__(self, *args, **kwargs):
         super(CreatePhylip, self).__init__(*args, **kwargs)
         self.gene_codes_and_lengths = None
-        self.vouchers_to_drop = None
         self.charset_block = None
 
     def get_charset_block(self):
@@ -115,7 +114,6 @@ def get_gene_model_from_gene_id(this_gene, gene_models):
 class CreateTNT(Dataset):
     def __init__(self, *args, **kwargs):
         super(CreateTNT, self).__init__(*args, **kwargs)
-        self.vouchers_to_drop = None
 
     def convert_lists_to_dataset(self, partitions):
         """
@@ -162,7 +160,6 @@ class CreateNEXUS(Dataset):
     def __init__(self, *args, **kwargs):
         super(CreateNEXUS, self).__init__(*args, **kwargs)
         self.gene_codes_and_lengths = None
-        self.vouchers_to_drop = None
 
     def get_charset_block(self):
         charset_block = []
