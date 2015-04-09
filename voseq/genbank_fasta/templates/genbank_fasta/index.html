@@ -25,30 +25,9 @@
         <table class="table table-bordered"><!-- big -->
             <tr>
                 <td>
-                  <table class="table table-bordered">
-                    <tr>
-                      <td>
-                        <label for="id_taxonset">Choose taxonset: </label>
-                      </td>
-                      <td>
-                        {% for i in form.taxonset.errors %}
-                        <div class="alert alert-warning">{{ i }}</div>
-                        {% endfor %}
-                        {{ form.taxonset }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <label for="id_voucher_codes">... and/or a list of voucher codes: </label>
-                      </td>
-                      <td>
-                        {% for i in form.voucher_codes.errors %}
-                        <div class="alert alert-warning">{{ i }}</div>
-                        {% endfor %}
-                        {{ form.voucher_codes }}
-                      </td>
-                    </tr>
-                  </table>
+
+                  {% include 'core/form_taxonset.html' %}
+
                 </td>
 
                 <td>
@@ -90,9 +69,7 @@
 
         </div><!-- panel -->
 
-            <button type="submit" class="btn btn-info" id="submit_button">
-                Make GenBank FASTA
-            </button>
+
         </form>
 
 
