@@ -224,13 +224,13 @@ def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_for
             prot_sequence = gapped_translation(seq_obj, gene_model['genetic_code'])
         except TranslationError as e:
             print("Error %s" % e)
-            return ""
+            return "", ""
     else:
         try:
             prot_sequence = seq_obj.translate(table=gene_model['genetic_code'])
         except TranslationError as e:
             print("Error %s" % e)
-            return ""
+            return "", ""
 
     if '*' in prot_sequence:
         warning = 'Gene %s, sequence %s contains stop codons "*"' % (gene_model['gene_code'], seq_id)
