@@ -45,11 +45,6 @@ class Results(object):
                                          'prot_' + self.guid + '.fasta',
                                          )
 
-    def get_gene_from_gene_models(self, gene_code, gene_models):
-        for i in gene_models:
-            if i['gene_code'] == gene_code:
-                return i
-
     def get_datasets(self):
         """Queries sequences and creates FASTA, protein strings and list of
         items with accession number (code, gene_code, accession).
@@ -57,10 +52,12 @@ class Results(object):
         sequence_models = Sequences.objects.all()
         voucher_models = Vouchers.objects.all().values('genus', 'species', 'code')
         gene_models = Genes.objects.all().values()
+        genes = self.get_genes_from_gene_models(gene_models)
+
         for sequence_model in sequence_models:
             code = sequence_model.code_id
             gene_code = sequence_model.gene_code
-            gene = self.get_gene_from_gene_models(gene_code, gene_models)
+            gene = genes[gene_code.lower()]
             if code in self.voucher_codes and gene_code in self.gene_codes:
                 if sequence_model.accession.strip() != '':
                     self.items_with_accession.append(
@@ -110,6 +107,13 @@ class Results(object):
 
         with open(self.protein_file, 'w') as handle:
             handle.write(self.protein)
+
+    def get_genes_from_gene_models(self, gene_models):
+        genes = dict()
+        for gene_model in gene_models:
+            gene_code = gene_model['gene_code'].lower()
+            genes[gene_code] = gene_model
+        return genes
 
     def make_guid(self):
         return uuid.uuid4().hex
