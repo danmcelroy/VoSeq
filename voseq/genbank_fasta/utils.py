@@ -45,6 +45,21 @@ class Results(object):
                                          'prot_' + self.guid + '.fasta',
                                          )
 
+    def build_fasta_seq_components(self, code, gene, sequence_model,
+                                   voucher_models):
+        for v in voucher_models:
+            if v['code'] == code:
+                seq_id = v['genus'] + '_' + v['species'] + '_' + code
+                seq_description = '[org=' + v['genus'] + ' ' + v[
+                    'species'] + ']'
+                seq_description += ' [Specimen-voucher=' + code + ']'
+                seq_description += ' [note=' + gene[
+                    'description'] + ' gene, partial cds.]'
+                seq_description += ' [Lineage=]'
+                seq_seq = sequence_model.sequences
+
+        return seq_description, seq_id, seq_seq
+
     def get_datasets(self):
         """Queries sequences and creates FASTA, protein strings and list of
         items with accession number (code, gene_code, accession).
@@ -52,6 +67,8 @@ class Results(object):
         sequence_models = Sequences.objects.all()
         voucher_models = Vouchers.objects.all().values('genus', 'species', 'code')
         gene_models = Genes.objects.all().values()
+
+        vouchers = self.get_vouchers_from_voucher_models(voucher_models)
         genes = self.get_genes_from_gene_models(gene_models)
 
         for sequence_model in sequence_models:
@@ -68,14 +85,8 @@ class Results(object):
                         },
                     )
                 else:
-                    for v in voucher_models:
-                        if v['code'] == code:
-                            seq_id = v['genus'] + '_' + v['species'] + '_' + code
-                            seq_description = '[org=' + v['genus'] + ' ' + v['species'] + ']'
-                            seq_description += ' [Specimen-voucher=' + code + ']'
-                            seq_description += ' [note=' + gene['description'] + ' gene, partial cds.]'
-                            seq_description += ' [Lineage=]'
-                            seq_seq = sequence_model.sequences
+                    seq_description, seq_id, seq_seq = self.build_fasta_seq_components(
+                        code, gene, sequence_model, voucher_models)
 
                     # # DNA sequences
                     seq_seq = utils.strip_question_marks(seq_seq)[0]
@@ -107,6 +118,13 @@ class Results(object):
 
         with open(self.protein_file, 'w') as handle:
             handle.write(self.protein)
+
+    def get_vouchers_from_voucher_models(self, voucher_models):
+        vouchers = dict()
+        for voucher_model in voucher_models:
+            code = voucher_model['code']
+            vouchers[code] = voucher_model
+        return vouchers
 
     def get_genes_from_gene_models(self, gene_models):
         genes = dict()
