@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import uuid
 
@@ -70,7 +71,10 @@ class Results(object):
 
         vouchers = self.get_vouchers_from_voucher_models(voucher_models)
         genes = self.get_genes_from_gene_models(gene_models)
+        sequences = self.get_sequences_from_sequence_models(sequence_models)
+        print(">>>>>>>>>sequences", sequences)
 
+        start = datetime.now()
         for sequence_model in sequence_models:
             code = sequence_model.code_id
             gene_code = sequence_model.gene_code
@@ -112,12 +116,22 @@ class Results(object):
                         self.protein += protein
                     else:
                         self.warnings.append("Could not translate %s: %s" % (seq_id, protein))
+        end = datetime.now()
+        d = end - start
+        print(">>>>>>>>>>>>>>execution time loop over all seqs", d.total_seconds())
 
         with open(self.fasta_file, 'w') as handle:
             handle.write(self.fasta)
 
         with open(self.protein_file, 'w') as handle:
             handle.write(self.protein)
+
+    def get_sequences_from_sequence_models(self, sequence_models):
+        sequences = dict()
+        for sequence_model in sequence_models:
+            code = sequence_model.code_id
+            sequences[code] = sequence_model
+        return sequences
 
     def get_vouchers_from_voucher_models(self, voucher_models):
         vouchers = dict()
