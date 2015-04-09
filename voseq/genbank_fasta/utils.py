@@ -46,17 +46,17 @@ class Results(object):
                                          )
 
     def build_fasta_seq_components(self, code, gene, sequence_model,
-                                   voucher_models):
-        for v in voucher_models:
-            if v['code'] == code:
-                seq_id = v['genus'] + '_' + v['species'] + '_' + code
-                seq_description = '[org=' + v['genus'] + ' ' + v[
-                    'species'] + ']'
-                seq_description += ' [Specimen-voucher=' + code + ']'
-                seq_description += ' [note=' + gene[
-                    'description'] + ' gene, partial cds.]'
-                seq_description += ' [Lineage=]'
-                seq_seq = sequence_model.sequences
+                                   vouchers):
+        voucher = vouchers[code]
+
+        seq_id = voucher['genus'] + '_' + voucher['species'] + '_' + code
+        seq_description = '[org=' + voucher['genus'] + ' ' + voucher[
+            'species'] + ']'
+        seq_description += ' [Specimen-voucher=' + code + ']'
+        seq_description += ' [note=' + gene[
+            'description'] + ' gene, partial cds.]'
+        seq_description += ' [Lineage=]'
+        seq_seq = sequence_model.sequences
 
         return seq_description, seq_id, seq_seq
 
@@ -86,7 +86,7 @@ class Results(object):
                     )
                 else:
                     seq_description, seq_id, seq_seq = self.build_fasta_seq_components(
-                        code, gene, sequence_model, voucher_models)
+                        code, gene, sequence_model, vouchers)
 
                     # # DNA sequences
                     seq_seq = utils.strip_question_marks(seq_seq)[0]
