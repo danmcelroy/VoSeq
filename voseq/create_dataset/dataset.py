@@ -3,8 +3,13 @@ import os
 import uuid
 import re
 
-from core.utils import chain_and_flatten
+from Bio.Seq import Seq
+from Bio.Alphabet import IUPAC
+
+from core import utils
 from public_interface.models import Genes
+from public_interface.models import Sequences
+from public_interface.models import Vouchers
 
 
 class Dataset(object):
@@ -244,7 +249,7 @@ class Dataset(object):
                 codons = self.split_sequence_in_codon_positions(this_gene,
                                                                 seq_record.seq)
 
-                codon_seqs = str(chain_and_flatten([codons[i] for i in codon_pos]))
+                codon_seqs = str(utils.chain_and_flatten([codons[i] for i in codon_pos]))
                 seq_str = self.format_record_id_and_seq_for_dataset(seq_record.id, codon_seqs)
 
                 partition_list[0].append(seq_str)
@@ -399,7 +404,7 @@ class Dataset(object):
 
                     codons = self.split_sequence_in_codon_positions(this_gene, seq_record.seq)
 
-                    seq_str = '>' + seq_record.id + '\n' + str(chain_and_flatten([codons[0], codons[1]]))
+                    seq_str = '>' + seq_record.id + '\n' + str(utils.chain_and_flatten([codons[0], codons[1]]))
                     self.partition_list[0].append(seq_str)
 
                     seq_str = '>' + seq_record.id + '\n' + str(codons[2])
@@ -447,7 +452,7 @@ class Dataset(object):
 
                     codons = self.split_sequence_in_codon_positions(this_gene, seq_record.seq)
 
-                    seq_str = '>' + seq_record.id + '\n' + str(chain_and_flatten([codons[0], codons[1]]))
+                    seq_str = '>' + seq_record.id + '\n' + str(utils.chain_and_flatten([codons[0], codons[1]]))
                     self.partition_list[0].append(seq_str)
             return self.convert_lists_to_dataset(self.partition_list)
 
@@ -474,7 +479,7 @@ class Dataset(object):
 
                     codons = self.split_sequence_in_codon_positions(this_gene, seq_record.seq)
 
-                    seq_str = '>' + seq_record.id + '\n' + str(chain_and_flatten([codons[0], codons[1]]))
+                    seq_str = '>' + seq_record.id + '\n' + str(utils.chain_and_flatten([codons[0], codons[1]]))
                     self.partition_list[0].append(seq_str)
 
                     seq_str = '>' + seq_record.id + '\n' + str(codons[2])
