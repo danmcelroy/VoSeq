@@ -16,10 +16,6 @@ class CreateFasta(Dataset):
 
 
 class CreatePhylip(Dataset):
-    def __init__(self, *args, **kwargs):
-        super(CreatePhylip, self).__init__(*args, **kwargs)
-        self.charset_block = None
-
     def get_charset_block(self):
         charset_block = []
 
