@@ -302,6 +302,7 @@ class CreateDataset(object):
         self.warnings = []
         self.outgroup = cleaned_data['outgroup']
         self.dataset_file = None
+        self.aa_dataset_file = None
         self.charset_block = None
         self.dataset_str = self.create_dataset()
 
@@ -317,6 +318,7 @@ class CreateDataset(object):
             fasta_dataset = fasta.from_seq_objs_to_dataset()
             self.warnings += fasta.warnings
             self.dataset_file = fasta.dataset_file
+            self.aa_dataset_file = fasta.aa_dataset_file
             return fasta_dataset
 
         if self.file_format == 'FASTA':
