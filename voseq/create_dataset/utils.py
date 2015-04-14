@@ -46,7 +46,6 @@ class CreateGenbankFasta(Dataset):
 
                     if voucher_code not in self.vouchers_to_drop:
                         line = i.split('\n')
-                        print(line)
                         if len(line) > 1:
                             sequence = line[-1]
 
