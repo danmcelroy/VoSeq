@@ -67,9 +67,10 @@ class CreateGenbankFasta(Dataset):
                             aa_out += [line[0] + '\n' + aa_sequence + '\n']
 
         dataset_str = ''.join(out)
+        aa_dataset_str = ''.join(aa_out)
         self.save_dataset_to_file(dataset_str)
-        self.save_aa_dataset_to_file(''.join(aa_out))
-        return dataset_str
+        self.save_aa_dataset_to_file(aa_dataset_str)
+        return dataset_str, aa_dataset_str
 
 
 class CreatePhylip(Dataset):
