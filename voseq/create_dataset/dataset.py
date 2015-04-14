@@ -40,7 +40,7 @@ class Dataset(object):
                                          )
         self.aa_dataset_file = os.path.join(self.cwd,
                                             'dataset_files',
-                                            self.file_format + '_aa__' + self.guid + '.txt',
+                                            self.file_format + '_aa_' + self.guid + '.txt',
                                             )
 
     def save_dataset_to_file(self, dataset_str):
