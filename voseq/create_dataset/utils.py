@@ -16,14 +16,6 @@ class CreateFasta(Dataset):
 
 
 class CreatePhylip(Dataset):
-    def __init__(self, *args, **kwargs):
-        super(CreatePhylip, self).__init__(*args, **kwargs)
-        self.gene_codes_and_lengths = None
-        self.number_taxa = len(self.voucher_codes)
-        self.number_chars = None
-        self.vouchers_to_drop = None
-        self.charset_block = None
-
     def get_charset_block(self):
         charset_block = []
 
@@ -115,12 +107,6 @@ def get_gene_model_from_gene_id(this_gene, gene_models):
 
 
 class CreateTNT(Dataset):
-    def __init__(self, *args, **kwargs):
-        super(CreateTNT, self).__init__(*args, **kwargs)
-        self.number_taxa = len(self.voucher_codes)
-        self.number_chars = None
-        self.vouchers_to_drop = None
-
     def convert_lists_to_dataset(self, partitions):
         """
         Overriden method from base clase in order to add headers and footers depending
@@ -163,13 +149,6 @@ class CreateTNT(Dataset):
 
 
 class CreateNEXUS(Dataset):
-    def __init__(self, *args, **kwargs):
-        super(CreateNEXUS, self).__init__(*args, **kwargs)
-        self.gene_codes_and_lengths = None
-        self.number_taxa = len(self.voucher_codes)
-        self.number_chars = None
-        self.vouchers_to_drop = None
-
     def get_charset_block(self):
         charset_block = []
 
@@ -258,6 +237,7 @@ class CreateDataset(object):
         self.cleaned_data = cleaned_data
         self.voucher_codes = get_voucher_codes(cleaned_data)
         self.gene_codes = get_gene_codes(cleaned_data)
+        self.gene_codes_and_lengths = None
         self.taxon_names = cleaned_data['taxon_names']
         self.voucher_codes_metadata = dict()
         self.gene_codes_metadata = self.get_gene_codes_metadata()

@@ -24,6 +24,8 @@ class Dataset(object):
         self.seq_objs = collections.OrderedDict(sorted(seq_objs.items(), key=lambda t: t[0]))
         self.gene_codes = gene_codes
         self.voucher_codes = voucher_codes
+        self.vouchers_to_drop = None
+        self.number_taxa = len(self.voucher_codes)
         self.reading_frames = self.get_reading_frames()
         self.voucher_codes_metadata = voucher_codes_metadata
         self.warnings = []
