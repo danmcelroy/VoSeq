@@ -51,9 +51,11 @@ def results(request):
             errors = dataset_creator.errors
             warnings = dataset_creator.warnings
 
+            print(">>>>>>>>>dataset file", dataset_creator.dataset_file)
             dataset_file_abs = dataset_creator.dataset_file
             if dataset_file_abs is not None:
-                dataset_file = re.search('([A-Z]+_[a-z0-9]+\.txt)', dataset_file_abs).groups()[0]
+                dataset_file = re.search('([a-zA-Z]+_[a-z0-9]+\.txt)', dataset_file_abs).groups()[0]
+                print(dataset_file)
             else:
                 dataset_file = False
 
@@ -84,7 +86,9 @@ def results(request):
 def serve_file(request, file_name):
     cwd = os.path.dirname(__file__)
     fasta_file = os.path.join(cwd,
-                              'fasta_files',
+                              '..',
+                              'create_dataset',
+                              'dataset_files',
                               file_name,
                               )
     response = HttpResponse(open(fasta_file, 'r').read(), content_type='application/text')
