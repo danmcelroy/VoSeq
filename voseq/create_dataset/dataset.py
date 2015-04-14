@@ -38,10 +38,18 @@ class Dataset(object):
                                          'dataset_files',
                                          self.file_format + '_' + self.guid + '.txt',
                                          )
+        self.aa_dataset_file = os.path.join(self.cwd,
+                                            'dataset_files',
+                                            self.file_format + '_aa__' + self.guid + '.txt',
+                                            )
 
     def save_dataset_to_file(self, dataset_str):
         with open(self.dataset_file, 'w') as handle:
             handle.write(dataset_str)
+
+    def save_aa_dataset_to_file(self, aa_dataset_str):
+        with open(self.aa_dataset_file, 'w') as handle:
+            handle.write(aa_dataset_str)
 
     def make_guid(self):
         return uuid.uuid4().hex

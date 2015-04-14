@@ -28,6 +28,7 @@ class CreateGenbankFasta(Dataset):
         self.get_number_chars_from_partition_list(partitions)
 
         out = []
+        aa_out = []
 
         gene_models = Genes.objects.all().values()
 
@@ -61,10 +62,13 @@ class CreateGenbankFasta(Dataset):
 
                             if aa_sequence.strip() == '':
                                 self.warnings.append("Sequence for %s %s was empty" % (voucher_code, this_gene))
+
                             out += [line[0] + '\n' + sequence + '\n']
+                            aa_out += [line[0] + '\n' + aa_sequence + '\n']
 
         dataset_str = ''.join(out)
         self.save_dataset_to_file(dataset_str)
+        self.save_aa_dataset_to_file(''.join(aa_out))
         return dataset_str
 
 
