@@ -7,11 +7,8 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from core.utils import get_version_stats
-from core.utils import get_gene_codes
-from core.utils import get_voucher_codes
 from .forms import GenBankFastaForm
 from create_dataset.utils import CreateDataset
-from . import utils
 
 
 def index(request):
