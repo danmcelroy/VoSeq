@@ -3,13 +3,8 @@ import os
 import uuid
 import re
 
-from Bio.Seq import Seq
-from Bio.Alphabet import IUPAC
-
 from core import utils
 from public_interface.models import Genes
-from public_interface.models import Sequences
-from public_interface.models import Vouchers
 
 
 class Dataset(object):
