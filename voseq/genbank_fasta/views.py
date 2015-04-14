@@ -42,17 +42,16 @@ def results(request):
             cleaned_data['taxon_names'] = ['CODE', 'GENUS', 'SPECIES']
             cleaned_data['outgroup'] = ''
 
-            print(">>>>", cleaned_data)
             dataset_creator = CreateDataset(cleaned_data)
-            dataset = dataset_creator.dataset_str[0:1500] + '\n...\n\n\n' + '#######\nComplete dataset file available for download.\n#######'
+            dataset, aa_dataset = dataset_creator.dataset_str
+            dataset = dataset[0:1500] + '\n...\n\n\n' + '#######\nComplete dataset file available for download.\n#######'
+            aa_dataset = aa_dataset[0:1500] + '\n...\n\n\n' + '#######\nComplete dataset file available for download.\n#######'
             errors = dataset_creator.errors
             warnings = dataset_creator.warnings
 
-            print(">>>>>>>>>dataset file", dataset_creator.dataset_file)
             dataset_file_abs = dataset_creator.dataset_file
             if dataset_file_abs is not None:
                 dataset_file = re.search('([a-zA-Z]+_[a-z0-9]+\.txt)', dataset_file_abs).groups()[0]
-                print(dataset_file)
             else:
                 dataset_file = False
 
@@ -61,7 +60,7 @@ def results(request):
                               'items_with_accession': '',
                               'dataset': dataset,
                               'fasta_file': dataset_file,
-                              'protein': '',
+                              'protein': aa_dataset,
                               'errors': errors,
                               'protein_file': '',
                               'warnings': warnings,
