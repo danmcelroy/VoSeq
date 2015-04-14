@@ -45,6 +45,7 @@ def results(request):
             cleaned_data['taxon_names'] = ['CODE', 'GENUS', 'SPECIES']
             cleaned_data['outgroup'] = ''
 
+            print(">>>>", cleaned_data)
             dataset_creator = CreateDataset(cleaned_data)
             dataset = dataset_creator.dataset_str
             errors = dataset_creator.errors

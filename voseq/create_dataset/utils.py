@@ -30,8 +30,8 @@ class CreateGenbankFasta(Dataset):
 
         partitions_incorporated = 0
         for partition in partitions:
-            print(partition)
             for i in partition:
+                print(i)
                 voucher_code = i.split(' ')[0]
                 if voucher_code.startswith('\n'):
                     this_gene = voucher_code.replace('[', '').replace(']', '').strip()
