@@ -1,3 +1,5 @@
+import re
+
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
@@ -31,30 +33,33 @@ class CreateGenbankFasta(Dataset):
         partitions_incorporated = 0
         for partition in partitions:
             for i in partition:
-                voucher_code = i.split(' ')[0]
-                if voucher_code.startswith('\n'):
-                    this_gene = voucher_code.replace('[', '').replace(']', '').strip()
+                if i.startswith('['):
+                    this_gene = i.replace('[', '').replace(']', '').strip()
                     this_gene_model = get_gene_model_from_gene_id(this_gene, gene_models)
                     partitions_incorporated += 1
                     out += ['\n']
-                elif voucher_code not in self.vouchers_to_drop:
-                    line = i.split(' ')
-                    if len(line) > 1:
-                        sequence = line[-1]
+                else:
+                    try:
+                        voucher_code = re.search('specimen-voucher=(.+)]', i).groups()[0]
+                    except AttributeError:
+                        continue
 
-                        if self.aminoacids is True:
-                            if this_gene_model['genetic_code'] is None or this_gene_model['reading_frame'] is None:
-                                self.warnings.append("Cannot translate gene %s sequences into aminoacids."
-                                                     " You need to define reading_frame and/or genetic_code." % this_gene_model['gene_code'])
-                            else:
-                                sequence, warning = translate_to_protein(this_gene_model, sequence, '', voucher_code, self.file_format)
-                                if warning != '':
-                                    self.warnings.append(warning)
+                    if voucher_code not in self.vouchers_to_drop:
+                        line = i.split('\n')
+                        print(line)
+                        if len(line) > 1:
+                            sequence = line[-1]
 
-                        if partitions_incorporated == 1:
-                            out += [line[0].ljust(55, ' ') + sequence + '\n']
-                        else:
-                            out += [' ' * 55 + sequence + '\n']
+                            if self.aminoacids is True:
+                                if this_gene_model['genetic_code'] is None or this_gene_model['reading_frame'] is None:
+                                    self.warnings.append("Cannot translate gene %s sequences into aminoacids."
+                                                         " You need to define reading_frame and/or genetic_code." % this_gene_model['gene_code'])
+                                else:
+                                    sequence, warning = translate_to_protein(this_gene_model, sequence, '', voucher_code, self.file_format)
+                                    if warning != '':
+                                        self.warnings.append(warning)
+
+                            out += [line[0] + '\n' + sequence + '\n']
 
         dataset_str = ''.join(out)
         self.save_dataset_to_file(dataset_str)
