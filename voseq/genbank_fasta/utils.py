@@ -1,14 +1,6 @@
-from datetime import datetime
 import os
-import uuid
 
-from Bio.Seq import Seq
-from Bio.Alphabet import IUPAC
-
-from public_interface.models import Vouchers
-from public_interface.models import Sequences
 from public_interface.models import Genes
-from core import utils
 from create_dataset import dataset
 
 
