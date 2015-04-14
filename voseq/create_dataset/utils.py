@@ -7,6 +7,7 @@ from core.utils import get_voucher_codes
 from core.utils import get_gene_codes
 from core.utils import flatten_taxon_names_dict
 from core.utils import translate_to_protein
+from core.utils import strip_question_marks
 from public_interface.models import Genes
 from public_interface.models import Sequences
 from public_interface.models import Vouchers
@@ -33,12 +34,13 @@ class CreateGenbankFasta(Dataset):
         partitions_incorporated = 0
         for partition in partitions:
             for i in partition:
+                i = i.strip()
                 if i.startswith('['):
                     this_gene = i.replace('[', '').replace(']', '').strip()
                     this_gene_model = get_gene_model_from_gene_id(this_gene, gene_models)
                     partitions_incorporated += 1
                     out += ['\n']
-                else:
+                elif i.startswith('>'):
                     try:
                         voucher_code = re.search('specimen-voucher=(.+)]', i).groups()[0]
                     except AttributeError:
@@ -49,15 +51,16 @@ class CreateGenbankFasta(Dataset):
                         if len(line) > 1:
                             sequence = line[-1]
 
-                            if self.aminoacids is True:
-                                if this_gene_model['genetic_code'] is None or this_gene_model['reading_frame'] is None:
-                                    self.warnings.append("Cannot translate gene %s sequences into aminoacids."
-                                                         " You need to define reading_frame and/or genetic_code." % this_gene_model['gene_code'])
-                                else:
-                                    sequence, warning = translate_to_protein(this_gene_model, sequence, '', voucher_code, self.file_format)
-                                    if warning != '':
-                                        self.warnings.append(warning)
+                            if this_gene_model['genetic_code'] is None or this_gene_model['reading_frame'] is None:
+                                self.warnings.append("Cannot translate gene %s sequences into aminoacids."
+                                                     " You need to define reading_frame and/or genetic_code." % this_gene_model['gene_code'])
+                            else:
+                                aa_sequence, warning = translate_to_protein(this_gene_model, sequence, '', voucher_code, self.file_format)
+                                if warning != '':
+                                    self.warnings.append(warning)
 
+                            if aa_sequence.strip() == '':
+                                self.warnings.append("Sequence for %s %s was empty" % (voucher_code, this_gene))
                             out += [line[0] + '\n' + sequence + '\n']
 
         dataset_str = ''.join(out)
