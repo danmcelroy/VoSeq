@@ -18,7 +18,6 @@ class CreateFasta(Dataset):
 class CreatePhylip(Dataset):
     def __init__(self, *args, **kwargs):
         super(CreatePhylip, self).__init__(*args, **kwargs)
-        self.gene_codes_and_lengths = None
         self.charset_block = None
 
     def get_charset_block(self):
@@ -154,10 +153,6 @@ class CreateTNT(Dataset):
 
 
 class CreateNEXUS(Dataset):
-    def __init__(self, *args, **kwargs):
-        super(CreateNEXUS, self).__init__(*args, **kwargs)
-        self.gene_codes_and_lengths = None
-
     def get_charset_block(self):
         charset_block = []
 
@@ -246,6 +241,7 @@ class CreateDataset(object):
         self.cleaned_data = cleaned_data
         self.voucher_codes = get_voucher_codes(cleaned_data)
         self.gene_codes = get_gene_codes(cleaned_data)
+        self.gene_codes_and_lengths = None
         self.taxon_names = cleaned_data['taxon_names']
         self.voucher_codes_metadata = dict()
         self.gene_codes_metadata = self.get_gene_codes_metadata()
