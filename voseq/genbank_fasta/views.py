@@ -60,7 +60,7 @@ def results(request):
             return render(request, 'genbank_fasta/results.html',
                           {
                               'items_with_accession': '',
-                              'fasta': '',
+                              'dataset': dataset[0:5000],
                               'fasta_file': dataset_file,
                               'protein': '',
                               'protein_file': '',
