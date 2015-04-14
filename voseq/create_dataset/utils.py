@@ -15,6 +15,53 @@ class CreateFasta(Dataset):
     pass
 
 
+class CreateGenbankFasta(Dataset):
+    def convert_lists_to_dataset(self, partitions):
+        """
+        Overriden method from base clase in order to add headers and footers depending
+        on needed dataset.
+        """
+        self.get_number_of_genes_for_taxa(partitions)
+        self.get_number_chars_from_partition_list(partitions)
+
+        out = []
+
+        gene_models = Genes.objects.all().values()
+
+        partitions_incorporated = 0
+        for partition in partitions:
+            print(partition)
+            for i in partition:
+                voucher_code = i.split(' ')[0]
+                if voucher_code.startswith('\n'):
+                    this_gene = voucher_code.replace('[', '').replace(']', '').strip()
+                    this_gene_model = get_gene_model_from_gene_id(this_gene, gene_models)
+                    partitions_incorporated += 1
+                    out += ['\n']
+                elif voucher_code not in self.vouchers_to_drop:
+                    line = i.split(' ')
+                    if len(line) > 1:
+                        sequence = line[-1]
+
+                        if self.aminoacids is True:
+                            if this_gene_model['genetic_code'] is None or this_gene_model['reading_frame'] is None:
+                                self.warnings.append("Cannot translate gene %s sequences into aminoacids."
+                                                     " You need to define reading_frame and/or genetic_code." % this_gene_model['gene_code'])
+                            else:
+                                sequence, warning = translate_to_protein(this_gene_model, sequence, '', voucher_code, self.file_format)
+                                if warning != '':
+                                    self.warnings.append(warning)
+
+                        if partitions_incorporated == 1:
+                            out += [line[0].ljust(55, ' ') + sequence + '\n']
+                        else:
+                            out += [' ' * 55 + sequence + '\n']
+
+        dataset_str = ''.join(out)
+        self.save_dataset_to_file(dataset_str)
+        return dataset_str
+
+
 class CreatePhylip(Dataset):
     def get_charset_block(self):
         charset_block = []
@@ -253,9 +300,9 @@ class CreateDataset(object):
         self.create_seq_objs()
 
         if self.file_format == 'GenbankFASTA':
-            fasta = CreateFasta(self.codon_positions, self.partition_by_positions,
-                                self.seq_objs, self.gene_codes, self.voucher_codes,
-                                self.file_format)
+            fasta = CreateGenbankFasta(self.codon_positions, self.partition_by_positions,
+                                       self.seq_objs, self.gene_codes, self.voucher_codes,
+                                       self.file_format)
             fasta_dataset = fasta.from_seq_objs_to_dataset()
             self.warnings += fasta.warnings
             self.dataset_file = fasta.dataset_file
