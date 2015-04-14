@@ -44,7 +44,7 @@ def results(request):
 
             print(">>>>", cleaned_data)
             dataset_creator = CreateDataset(cleaned_data)
-            dataset = dataset_creator.dataset_str
+            dataset = dataset_creator.dataset_str[0:1500] + '\n...\n\n\n' + '#######\nComplete dataset file available for download.\n#######'
             errors = dataset_creator.errors
             warnings = dataset_creator.warnings
 
@@ -59,7 +59,7 @@ def results(request):
             return render(request, 'genbank_fasta/results.html',
                           {
                               'items_with_accession': '',
-                              'dataset': dataset[0:5000],
+                              'dataset': dataset,
                               'fasta_file': dataset_file,
                               'protein': '',
                               'protein_file': '',
