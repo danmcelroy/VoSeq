@@ -28,6 +28,7 @@ class Dataset(object):
         # need to sort our seq_objs dictionary by gene_code
         self.seq_objs = collections.OrderedDict(sorted(seq_objs.items(), key=lambda t: t[0]))
         self.gene_codes = gene_codes
+        self.gene_code_descriptions = self.get_gene_code_descriptions()
         self.voucher_codes = voucher_codes
         self.vouchers_to_drop = None
         self.number_taxa = len(self.voucher_codes)
@@ -105,6 +106,14 @@ class Dataset(object):
                 if number_of_genes_for_taxa[voucher] < self.minimum_number_of_genes:
                     vouchers_to_drop.add(voucher)
             self.vouchers_to_drop = vouchers_to_drop
+
+    def get_gene_code_descriptions(self):
+        gene_metadata = dict()
+        genes = Genes.objects.all().values('gene_code', 'description')
+        for i in genes:
+            gene_code = i['gene_code']
+            gene_metadata[gene_code] = i['description']
+        return gene_metadata
 
     def get_reading_frames(self):
         """
@@ -217,7 +226,14 @@ class Dataset(object):
 
     def format_record_id_and_seq_for_dataset(self, seq_record_id, seq_record_seq):
         if self.file_format == 'GenbankFASTA':
-            seq_str = '>' + seq_record_id + '\n' + str(seq_record_seq)
+            seq_record_id = seq_record_id.split(' ')
+            code = seq_record_id[0]
+            gene = seq_record_id[1]
+            taxon = seq_record_id[2].replace('_', ' ')
+            gene_description = self.gene_code_descriptions[gene]
+
+            seq_str = '>' + code + '_' + gene + ' ' + '[organism=' + taxon + '] [specimen-voucher=' + code + '] ' + taxon
+            seq_str += ' ' + gene_description + '\n' + str(seq_record_seq)
         if self.file_format == 'FASTA':
             seq_str = '>' + seq_record_id + '\n' + str(seq_record_seq)
         if self.file_format == 'NEXUS' or \
