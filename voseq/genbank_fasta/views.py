@@ -50,10 +50,13 @@ def results(request):
             warnings = dataset_creator.warnings
 
             dataset_file_abs = dataset_creator.dataset_file
+            aa_dataset_file_abs = dataset_creator.aa_dataset_file
             if dataset_file_abs is not None:
                 dataset_file = re.search('([a-zA-Z]+_[a-z0-9]+\.txt)', dataset_file_abs).groups()[0]
+                aa_dataset_file = re.search('([a-zA-Z]+_aa_[a-z0-9]+\.txt)', aa_dataset_file_abs).groups()[0]
             else:
                 dataset_file = False
+                aa_dataset_file = False
 
             return render(request, 'genbank_fasta/results.html',
                           {
@@ -62,7 +65,7 @@ def results(request):
                               'fasta_file': dataset_file,
                               'protein': aa_dataset,
                               'errors': errors,
-                              'protein_file': '',
+                              'protein_file': aa_dataset_file,
                               'warnings': warnings,
                               'version': version,
                               'stats': stats,
