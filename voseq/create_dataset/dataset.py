@@ -203,10 +203,7 @@ class Dataset(object):
             seq_str += '\n' + '--------------------'
 
         if self.file_format == 'GenbankFASTA':
-            seq_str = '>' + this_gene
-            if codon_description is not None:
-                seq_str += codon_description
-            seq_str += '\n' + '--------------------'
+            seq_str = '\n[%s]' % this_gene
 
         if self.file_format == 'PHY':
             seq_str = '\n[%s]' % this_gene
@@ -385,7 +382,12 @@ class Dataset(object):
                         seq_str = self.get_gene_divisor(this_gene)
                         self.partition_list[0].append(seq_str)
 
-                    seq_str = self.format_record_id_and_seq_for_dataset(seq_record.id, seq_record.seq)
+                    if self.file_format == 'GenbankFASTA':
+                        seq_str = self.format_record_id_and_seq_for_dataset(seq_record.description + ' ' +
+                                                                            this_gene + ' ' +
+                                                                            seq_record.id.replace(seq_record.description + '_', ''), seq_record.seq)
+                    else:
+                        seq_str = self.format_record_id_and_seq_for_dataset(seq_record.id, seq_record.seq)
                     self.partition_list[0].append(seq_str)
             return self.convert_lists_to_dataset(self.partition_list)
 
