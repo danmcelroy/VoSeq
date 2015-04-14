@@ -112,9 +112,6 @@ def get_gene_model_from_gene_id(this_gene, gene_models):
 
 
 class CreateTNT(Dataset):
-    def __init__(self, *args, **kwargs):
-        super(CreateTNT, self).__init__(*args, **kwargs)
-
     def convert_lists_to_dataset(self, partitions):
         """
         Overriden method from base clase in order to add headers and footers depending
