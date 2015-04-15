@@ -211,7 +211,7 @@ def get_start_translation_index(gene_model, removed):
 
 def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_format=None):
     removed = 0
-    if file_format == 'FASTA':
+    if file_format == 'FASTA' or file_format == 'GenbankFASTA':
         sequence, removed = strip_question_marks(sequence)
     seq_seq = sequence.replace('?', 'N')
 
@@ -237,7 +237,7 @@ def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_for
     else:
         warning = ''
 
-    if file_format == 'PHY':
+    if file_format == 'PHY' or file_format == 'GenbankFASTA':
         return str(prot_sequence), warning
 
     out = '>' + seq_id + ' ' + seq_description + '\n'
