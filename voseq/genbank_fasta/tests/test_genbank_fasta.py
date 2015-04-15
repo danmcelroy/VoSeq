@@ -38,7 +38,7 @@ class TestGenBankFasta(TestCase):
                                  'taxonset': '',
                              }
                              )
-        expected = "Melitaea_diamina_CP100-10"
+        expected = "organism=Melitaea diamina"
         self.assertTrue(expected.strip() in str(c.content))
         expected = "TGAGCCGGTATAATTGGTACATCCCTAAGTCTTATTATTCGAACCGAATTAGGAAATCCTAGTTTTTTAATTGGAGATGATCAAATTTATAATACCATTGTAACAGCTCATGCTTTTATTATAATTTTTTTTATAGTTATGCCAATTATAATTGGAGGATTTGGTAATTGACTTGTACCATTAATATTGGGAGCCCCAGATATAGCTTTCCCCCGAATAAATTATATAAGATTTTGATTATTGCCTCCATCCTTAATTCTTTTAATTTCAAGTAGAATTGTAGAAAATGGGGCAGGAACTGGATGAACAGTTTACCCCCCACTTTCATCTAATATTGCCCATAGAGGAGCTTCAGTGGATTTAGCTATTTTTTCTTTACATTTAGCTGGGATTTCCTCTATCTTAGGAGCTATTAATTTTATTACTACAATTATTAATATACGAATTAATAATATATCTTATGATCAAATACCTTTATTTGTATGAGCAGTAGGAATTACAGCATTACTTCTCTTATTATCTTTACCAGTTTTAGCTGGAGCTATTACTATACTTTTAACGGATCGAAATCTTAATACCTCATTTTTTGATTCCTGCGGAGGAGGAGATCC"
         self.assertTrue(expected.strip() in str(c.content))
@@ -74,7 +74,7 @@ class TestGenBankFasta(TestCase):
                                  'taxonset': 1,
                              }
                              )
-        res = re.search('(fasta_[0-9a-z]+\.fasta)', str(c.content))
+        res = re.search('(GenbankFASTA_[0-9a-z]+\.txt)', str(c.content))
         fasta_filename = res.groups()[0]
         d = self.client.get('/genbank_fasta/results/' + fasta_filename + '/')
         self.assertEqual(200, d.status_code)
