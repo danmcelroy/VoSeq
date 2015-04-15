@@ -32,11 +32,6 @@ class TestGenBankFastaUtils(TestCase):
         result = get_gene_codes(self.cleaned_data)
         self.assertEqual(expected, len(result))
 
-    def test_dataset_reading_frame_2(self):
-        res = utils.Results(['CP100-10', 'CP100-11'], ['COI'])
-        res.get_datasets()
-        self.assertEqual('WAGMIGTSLSLIIRTELGNP', res.protein.splitlines()[1][0:20])
-
     def test_get_voucher_codes(self):
         expected = 3
         result = get_voucher_codes(self.cleaned_data)
