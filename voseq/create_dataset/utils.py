@@ -1,3 +1,5 @@
+import re
+
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
@@ -5,6 +7,7 @@ from core.utils import get_voucher_codes
 from core.utils import get_gene_codes
 from core.utils import flatten_taxon_names_dict
 from core.utils import translate_to_protein
+from core.utils import strip_question_marks
 from public_interface.models import Genes
 from public_interface.models import Sequences
 from public_interface.models import Vouchers
@@ -13,6 +16,62 @@ from .dataset import Dataset
 
 class CreateFasta(Dataset):
     pass
+
+
+class CreateGenbankFasta(Dataset):
+    def convert_lists_to_dataset(self, partitions):
+        """
+        Overriden method from base clase in order to add headers and footers depending
+        on needed dataset.
+        """
+        self.get_number_of_genes_for_taxa(partitions)
+        self.get_number_chars_from_partition_list(partitions)
+
+        out = []
+        aa_out = []
+
+        gene_models = Genes.objects.all().values()
+
+        partitions_incorporated = 0
+        for partition in partitions:
+            for i in partition:
+                i = i.strip()
+                if i.startswith('['):
+                    this_gene = i.replace('[', '').replace(']', '').strip()
+                    this_gene_model = get_gene_model_from_gene_id(this_gene, gene_models)
+                    partitions_incorporated += 1
+                    out += ['\n']
+                elif i.startswith('>'):
+                    try:
+                        voucher_code = re.search('specimen-voucher=(.+)]', i).groups()[0]
+                    except AttributeError:
+                        continue
+
+                    if voucher_code not in self.vouchers_to_drop:
+                        line = i.split('\n')
+                        if len(line) > 1:
+                            sequence = line[-1]
+
+                            if this_gene_model['genetic_code'] is None or this_gene_model['reading_frame'] is None:
+                                self.warnings.append("Cannot translate gene %s sequences into aminoacids."
+                                                     " You need to define reading_frame and/or genetic_code." % this_gene_model['gene_code'])
+                                continue
+                            else:
+                                aa_sequence, warning = translate_to_protein(this_gene_model, sequence, '', voucher_code, self.file_format)
+                                if warning != '':
+                                    self.warnings.append(warning)
+
+                            if aa_sequence.strip() == '':
+                                self.warnings.append("Sequence for %s %s was empty" % (voucher_code, this_gene))
+
+                            out += [line[0] + '\n' + sequence + '\n']
+                            aa_out += [line[0] + '\n' + aa_sequence + '\n']
+
+        dataset_str = ''.join(out)
+        aa_dataset_str = ''.join(aa_out)
+        self.save_dataset_to_file(dataset_str)
+        self.save_aa_dataset_to_file(aa_dataset_str)
+        return dataset_str, aa_dataset_str
 
 
 class CreatePhylip(Dataset):
@@ -244,6 +303,7 @@ class CreateDataset(object):
         self.warnings = []
         self.outgroup = cleaned_data['outgroup']
         self.dataset_file = None
+        self.aa_dataset_file = None
         self.charset_block = None
         self.dataset_str = self.create_dataset()
 
@@ -251,6 +311,16 @@ class CreateDataset(object):
         self.voucher_codes = get_voucher_codes(self.cleaned_data)
         self.gene_codes = get_gene_codes(self.cleaned_data)
         self.create_seq_objs()
+
+        if self.file_format == 'GenbankFASTA':
+            fasta = CreateGenbankFasta(self.codon_positions, self.partition_by_positions,
+                                       self.seq_objs, self.gene_codes, self.voucher_codes,
+                                       self.file_format)
+            fasta_dataset = fasta.from_seq_objs_to_dataset()
+            self.warnings += fasta.warnings
+            self.dataset_file = fasta.dataset_file
+            self.aa_dataset_file = fasta.aa_dataset_file
+            return fasta_dataset
 
         if self.file_format == 'FASTA':
             fasta = CreateFasta(self.codon_positions, self.partition_by_positions,

@@ -3,7 +3,7 @@ import os
 import uuid
 import re
 
-from core.utils import chain_and_flatten
+from core import utils
 from public_interface.models import Genes
 
 
@@ -23,6 +23,7 @@ class Dataset(object):
         # need to sort our seq_objs dictionary by gene_code
         self.seq_objs = collections.OrderedDict(sorted(seq_objs.items(), key=lambda t: t[0]))
         self.gene_codes = gene_codes
+        self.gene_code_descriptions = self.get_gene_code_descriptions()
         self.voucher_codes = voucher_codes
         self.vouchers_to_drop = None
         self.number_taxa = len(self.voucher_codes)
@@ -37,10 +38,18 @@ class Dataset(object):
                                          'dataset_files',
                                          self.file_format + '_' + self.guid + '.txt',
                                          )
+        self.aa_dataset_file = os.path.join(self.cwd,
+                                            'dataset_files',
+                                            self.file_format + '_aa_' + self.guid + '.txt',
+                                            )
 
     def save_dataset_to_file(self, dataset_str):
         with open(self.dataset_file, 'w') as handle:
             handle.write(dataset_str)
+
+    def save_aa_dataset_to_file(self, aa_dataset_str):
+        with open(self.aa_dataset_file, 'w') as handle:
+            handle.write(aa_dataset_str)
 
     def make_guid(self):
         return uuid.uuid4().hex
@@ -100,6 +109,14 @@ class Dataset(object):
                 if number_of_genes_for_taxa[voucher] < self.minimum_number_of_genes:
                     vouchers_to_drop.add(voucher)
             self.vouchers_to_drop = vouchers_to_drop
+
+    def get_gene_code_descriptions(self):
+        gene_metadata = dict()
+        genes = Genes.objects.all().values('gene_code', 'description')
+        for i in genes:
+            gene_code = i['gene_code']
+            gene_metadata[gene_code] = i['description']
+        return gene_metadata
 
     def get_reading_frames(self):
         """
@@ -197,6 +214,9 @@ class Dataset(object):
                 seq_str += codon_description
             seq_str += '\n' + '--------------------'
 
+        if self.file_format == 'GenbankFASTA':
+            seq_str = '\n[%s]' % this_gene
+
         if self.file_format == 'PHY':
             seq_str = '\n[%s]' % this_gene
 
@@ -208,6 +228,15 @@ class Dataset(object):
         return seq_str
 
     def format_record_id_and_seq_for_dataset(self, seq_record_id, seq_record_seq):
+        if self.file_format == 'GenbankFASTA':
+            seq_record_id = seq_record_id.split(' ')
+            code = seq_record_id[0]
+            gene = seq_record_id[1]
+            taxon = seq_record_id[2].replace('_', ' ')
+            gene_description = self.gene_code_descriptions[gene]
+
+            seq_str = '>' + code + '_' + gene + ' ' + '[organism=' + taxon + '] [specimen-voucher=' + code + '] ' + taxon
+            seq_str += ' ' + gene_description + '\n' + str(seq_record_seq)
         if self.file_format == 'FASTA':
             seq_str = '>' + seq_record_id + '\n' + str(seq_record_seq)
         if self.file_format == 'NEXUS' or \
@@ -244,7 +273,7 @@ class Dataset(object):
                 codons = self.split_sequence_in_codon_positions(this_gene,
                                                                 seq_record.seq)
 
-                codon_seqs = str(chain_and_flatten([codons[i] for i in codon_pos]))
+                codon_seqs = str(utils.chain_and_flatten([codons[i] for i in codon_pos]))
                 seq_str = self.format_record_id_and_seq_for_dataset(seq_record.id, codon_seqs)
 
                 partition_list[0].append(seq_str)
@@ -372,7 +401,12 @@ class Dataset(object):
                         seq_str = self.get_gene_divisor(this_gene)
                         self.partition_list[0].append(seq_str)
 
-                    seq_str = self.format_record_id_and_seq_for_dataset(seq_record.id, seq_record.seq)
+                    if self.file_format == 'GenbankFASTA':
+                        seq_str = self.format_record_id_and_seq_for_dataset(seq_record.description + ' ' +
+                                                                            this_gene + ' ' +
+                                                                            seq_record.id.replace(seq_record.description + '_', ''), seq_record.seq)
+                    else:
+                        seq_str = self.format_record_id_and_seq_for_dataset(seq_record.id, seq_record.seq)
                     self.partition_list[0].append(seq_str)
             return self.convert_lists_to_dataset(self.partition_list)
 
@@ -399,7 +433,7 @@ class Dataset(object):
 
                     codons = self.split_sequence_in_codon_positions(this_gene, seq_record.seq)
 
-                    seq_str = '>' + seq_record.id + '\n' + str(chain_and_flatten([codons[0], codons[1]]))
+                    seq_str = '>' + seq_record.id + '\n' + str(utils.chain_and_flatten([codons[0], codons[1]]))
                     self.partition_list[0].append(seq_str)
 
                     seq_str = '>' + seq_record.id + '\n' + str(codons[2])
@@ -447,7 +481,7 @@ class Dataset(object):
 
                     codons = self.split_sequence_in_codon_positions(this_gene, seq_record.seq)
 
-                    seq_str = '>' + seq_record.id + '\n' + str(chain_and_flatten([codons[0], codons[1]]))
+                    seq_str = '>' + seq_record.id + '\n' + str(utils.chain_and_flatten([codons[0], codons[1]]))
                     self.partition_list[0].append(seq_str)
             return self.convert_lists_to_dataset(self.partition_list)
 
@@ -474,69 +508,9 @@ class Dataset(object):
 
                     codons = self.split_sequence_in_codon_positions(this_gene, seq_record.seq)
 
-                    seq_str = '>' + seq_record.id + '\n' + str(chain_and_flatten([codons[0], codons[1]]))
+                    seq_str = '>' + seq_record.id + '\n' + str(utils.chain_and_flatten([codons[0], codons[1]]))
                     self.partition_list[0].append(seq_str)
 
                     seq_str = '>' + seq_record.id + '\n' + str(codons[2])
                     self.partition_list[1].append(seq_str)
             return self.convert_lists_to_dataset(self.partition_list)
-
-    def get_datasets_as_aminoacids(self, partitions):
-        """Queries sequences and creates protein strings and list of
-        items with accession number (code, gene_code, accession).
-        """
-        sequence_models = Sequences.objects.all()
-        voucher_models = Vouchers.objects.all().values('genus', 'species', 'code')
-        gene_models = Genes.objects.all().values()
-        for sequence_model in sequence_models:
-            code = sequence_model.code_id
-            gene_code = sequence_model.gene_code
-            gene = self.get_gene_from_gene_models(gene_code, gene_models)
-            if code in self.voucher_codes and gene_code in self.gene_codes:
-                if sequence_model.accession.strip() != '':
-                    self.items_with_accession.append(
-                        {
-                            'voucher_code': code,
-                            'gene_code': gene_code,
-                            'accession': sequence_model.accession,
-                        },
-                    )
-                else:
-                    for v in voucher_models:
-                        if v['code'] == code:
-                            seq_id = v['genus'] + '_' + v['species'] + '_' + code
-                            seq_description = '[org=' + v['genus'] + ' ' + v['species'] + ']'
-                            seq_description += ' [Specimen-voucher=' + code + ']'
-                            seq_description += ' [note=' + gene['description'] + ' gene, partial cds.]'
-                            seq_description += ' [Lineage=]'
-                            seq_seq = sequence_model.sequences
-
-                    # # DNA sequences
-                    seq_seq = utils.strip_question_marks(seq_seq)[0]
-                    if '?' in seq_seq or 'N' in seq_seq.upper():
-                        seq_obj = Seq(seq_seq, IUPAC.ambiguous_dna)
-                    else:
-                        seq_obj = Seq(seq_seq, IUPAC.unambiguous_dna)
-
-                    self.fasta += '>' + seq_id + ' ' + seq_description + '\n'
-                    self.fasta += str(seq_obj) + '\n'
-
-                    protein, warning = utils.translate_to_protein(
-                        gene,
-                        sequence_model,
-                        seq_description,
-                        seq_id,
-                    )
-                    if warning != '':
-                        self.warnings.append(warning)
-
-                    if not protein.startswith('Error'):
-                        self.protein += protein
-                    else:
-                        self.warnings.append("Could not translate %s: %s" % (seq_id, protein))
-
-        with open(self.fasta_file, 'w') as handle:
-            handle.write(self.fasta)
-
-        with open(self.protein_file, 'w') as handle:
-            handle.write(self.protein)
