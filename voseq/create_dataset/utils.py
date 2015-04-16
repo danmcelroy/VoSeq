@@ -413,7 +413,7 @@ class CreateDataset(object):
                 self.seq_objs[gene_code].append(seq_obj)
 
         vouchers_not_found = set(self.voucher_codes) - vouchers_found
-        self.warnings += ['Could not found sequences for voucher %s' % i for i in vouchers_not_found]
+        self.warnings += ['Could not find sequences for voucher %s' % i for i in vouchers_not_found]
         self.voucher_codes = list(vouchers_found)
         self.gene_codes = list(gene_codes)
         self.add_missing_seqs()
