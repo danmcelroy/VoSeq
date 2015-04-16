@@ -90,28 +90,6 @@ class CreatePhylip(Dataset):
             charset_block.append(line)
         self.charset_block = "\n".join(charset_block)
 
-    def get_partitions_block(self):
-        line = 'partition GENES = ' + str(len(self.gene_codes_and_lengths))
-        line += ': ' + ', '.join([i for i in self.gene_codes_and_lengths]) + ';\n'
-        line += '\nset partition = GENES;\n'
-        return [line]
-
-    def get_final_block(self):
-        block = "set autoclose=yes;"
-        if self.outgroup != '':
-            block += '\noutgroup ' + self.voucher_codes_metadata[self.outgroup] + ";"
-        block += """
-prset applyto=(all) ratepr=variable brlensp=unconstrained:Exp(100.0) shapepr=exp(1.0) tratiopr=beta(2.0,1.0);
-lset applyto=(all) nst=mixed rates=gamma [invgamma];
-unlink statefreq=(all);
-unlink shape=(all) revmat=(all) tratio=(all) [pinvar=(all)];
-mcmc ngen=10000000 printfreq=1000 samplefreq=1000 nchains=4 nruns=2 savebrlens=yes [temp=0.11];
-sump relburnin=yes [no] burninfrac=0.25 [2500];
-sumt relburnin=yes [no] burninfrac=0.25 [2500] contype=halfcompat [allcompat];
-END;
-"""
-        return [block.strip()]
-
     def convert_lists_to_dataset(self, partitions):
         """
         Overriden method from base clase in order to add headers and footers depending
@@ -119,12 +97,11 @@ END;
         """
         self.get_number_of_genes_for_taxa(partitions)
         self.get_number_chars_from_partition_list(partitions)
-
-        out = [
-            str(self.number_taxa - len(self.vouchers_to_drop)) + ' ' + str(self.number_chars),
-        ]
+        out = []
 
         gene_models = Genes.objects.all().values()
+
+        sequence_lengths_for_genes = dict()
 
         partitions_incorporated = 0
         for partition in partitions:
@@ -151,14 +128,25 @@ END;
                                     self.warnings.append(warning)
                             sequence = aa_sequence
 
-                        if sequence == '':
-                            sequence = '?'
+                            if sequence == '':
+                                sequence = '?'
+
+                        sequence_lengths_for_genes[this_gene] = len(sequence)
 
                         if partitions_incorporated == 1:
                             out += [line[0].ljust(55, ' ') + sequence + '\n']
                         else:
                             out += [' ' * 55 + sequence + '\n']
 
+        number_chars = 0
+        for k, v in sequence_lengths_for_genes.items():
+            number_chars += sequence_lengths_for_genes[k]
+
+        header = [
+            str(self.number_taxa - len(self.vouchers_to_drop)) + ' ' + str(number_chars),
+        ]
+
+        out = header + out
         self.get_charset_block()
         dataset_str = ''.join(out)
         self.save_dataset_to_file(dataset_str)
