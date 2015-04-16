@@ -76,17 +76,17 @@ class CreateGenbankFasta(Dataset):
 
 
 class CreatePhylip(Dataset):
-    def get_charset_block(self):
+    def get_charset_block(self, gene_codes_and_lengths):
         charset_block = []
 
         bp_count_start = 0
         bp_count_end = 0
         self.gene_codes.sort()
-        for gene in self.gene_codes_and_lengths:
-            bp_count_end += self.gene_codes_and_lengths[gene]
+        for gene in gene_codes_and_lengths:
+            bp_count_end += gene_codes_and_lengths[gene]
             line = 'DNA, ' + gene + ' = ' + str(
                 bp_count_start + 1) + '-' + str(bp_count_end)
-            bp_count_start += self.gene_codes_and_lengths[gene]
+            bp_count_start += gene_codes_and_lengths[gene]
             charset_block.append(line)
         self.charset_block = "\n".join(charset_block)
 
@@ -101,7 +101,7 @@ class CreatePhylip(Dataset):
 
         gene_models = Genes.objects.all().values()
 
-        sequence_lengths_for_genes = dict()
+        gene_codes_and_lengths = dict()
 
         partitions_incorporated = 0
         for partition in partitions:
@@ -131,7 +131,7 @@ class CreatePhylip(Dataset):
                             if sequence == '':
                                 sequence = '?'
 
-                        sequence_lengths_for_genes[this_gene] = len(sequence)
+                        gene_codes_and_lengths[this_gene] = len(sequence)
 
                         if partitions_incorporated == 1:
                             out += [line[0].ljust(55, ' ') + sequence + '\n']
@@ -139,15 +139,16 @@ class CreatePhylip(Dataset):
                             out += [' ' * 55 + sequence + '\n']
 
         number_chars = 0
-        for k, v in sequence_lengths_for_genes.items():
-            number_chars += sequence_lengths_for_genes[k]
+        for k, v in gene_codes_and_lengths.items():
+            number_chars += gene_codes_and_lengths[k]
 
         header = [
             str(self.number_taxa - len(self.vouchers_to_drop)) + ' ' + str(number_chars),
         ]
 
         out = header + out
-        self.get_charset_block()
+
+        self.get_charset_block(gene_codes_and_lengths)
         dataset_str = ''.join(out)
         self.save_dataset_to_file(dataset_str)
         return dataset_str
