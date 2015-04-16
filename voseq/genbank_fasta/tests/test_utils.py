@@ -6,7 +6,6 @@ from core.utils import get_voucher_codes
 from public_interface.models import TaxonSets
 from public_interface.models import GeneSets
 from public_interface.models import Genes
-from genbank_fasta import utils
 
 
 class TestGenBankFastaUtils(TestCase):
