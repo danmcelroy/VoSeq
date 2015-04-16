@@ -140,14 +140,19 @@ END;
                     if len(line) > 1:
                         sequence = line[-1]
 
+                        aa_sequence = ''
                         if self.aminoacids is True:
                             if this_gene_model['genetic_code'] is None or this_gene_model['reading_frame'] is None:
                                 self.warnings.append("Cannot translate gene %s sequences into aminoacids."
                                                      " You need to define reading_frame and/or genetic_code." % this_gene_model['gene_code'])
                             else:
-                                sequence, warning = translate_to_protein(this_gene_model, sequence, '', voucher_code, self.file_format)
+                                aa_sequence, warning = translate_to_protein(this_gene_model, sequence, '', voucher_code, self.file_format)
                                 if warning != '':
                                     self.warnings.append(warning)
+                            sequence = aa_sequence
+
+                        if sequence == '':
+                            sequence = '?'
 
                         if partitions_incorporated == 1:
                             out += [line[0].ljust(55, ' ') + sequence + '\n']
