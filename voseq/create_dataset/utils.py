@@ -64,7 +64,8 @@ class CreateGenbankFasta(Dataset):
                             if aa_sequence.strip() == '':
                                 self.warnings.append("Sequence for %s %s was empty" % (voucher_code, this_gene))
 
-                            out += [line[0] + '\n' + sequence + '\n']
+                            sequence = strip_question_marks(sequence)[0]
+                            out += [line[0] + '\n' + sequence.replace('?', 'N') + '\n']
                             aa_out += [line[0] + '\n' + aa_sequence + '\n']
 
         dataset_str = ''.join(out)
@@ -413,7 +414,7 @@ class CreateDataset(object):
                 self.seq_objs[gene_code].append(seq_obj)
 
         vouchers_not_found = set(self.voucher_codes) - vouchers_found
-        self.warnings += ['Could not found sequences for voucher %s' % i for i in vouchers_not_found]
+        self.warnings += ['Could not find sequences for voucher %s' % i for i in vouchers_not_found]
         self.voucher_codes = list(vouchers_found)
         self.gene_codes = list(gene_codes)
         self.add_missing_seqs()
