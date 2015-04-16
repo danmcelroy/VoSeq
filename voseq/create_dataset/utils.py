@@ -64,7 +64,8 @@ class CreateGenbankFasta(Dataset):
                             if aa_sequence.strip() == '':
                                 self.warnings.append("Sequence for %s %s was empty" % (voucher_code, this_gene))
 
-                            out += [line[0] + '\n' + sequence + '\n']
+                            sequence = strip_question_marks(sequence)[0]
+                            out += [line[0] + '\n' + sequence.replace('?', 'N') + '\n']
                             aa_out += [line[0] + '\n' + aa_sequence + '\n']
 
         dataset_str = ''.join(out)
