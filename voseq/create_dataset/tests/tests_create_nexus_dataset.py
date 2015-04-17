@@ -228,7 +228,7 @@ END;
 """
         self.assertEqual(expected.strip(), result)
 
-    def test_with_aminoacids(self):
+    def test_with_total_char_lengths_aminoacids(self):
         cleaned_data = self.cleaned_data
         cleaned_data['aminoacids'] = True
         cleaned_data['outgroup'] = ''
@@ -242,3 +242,13 @@ BEGIN DATA;
 DIMENSIONS NTAX=2 NCHAR=899;
 """
         self.assertTrue(expected.strip() in result)
+
+    def test_char_lengths_for_partitions_aminoacids(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['aminoacids'] = True
+        cleaned_data['outgroup'] = ''
+        cleaned_data['geneset'] = GeneSets.objects.get(geneset_name='4genes')
+        dataset_creator = CreateDataset(cleaned_data)
+        result = dataset_creator.dataset_str
+        expected = "charset 16S = 1-1"
+        self.assertTrue(expected in result)
