@@ -1,3 +1,4 @@
+from collections import namedtuple
 import re
 
 from Bio.Seq import Seq
@@ -90,6 +91,18 @@ class CreatePhylip(Dataset):
             charset_block.append(line)
         self.charset_block = "\n".join(charset_block)
 
+    def get_gene_for_current_partition(self, gene_models, out,
+                                       partitions_incorporated, voucher_code):
+        ThisGeneAndPartition = namedtuple('ThisGeneAndPartition', ['this_gene',
+                                                                   'this_gene_model',
+                                                                   'partitions_incorporated',
+                                                                   'out'])
+        ThisGeneAndPartition.this_gene = voucher_code.replace('[', '').replace(']', '').strip()
+        ThisGeneAndPartition.this_gene_model = get_gene_model_from_gene_id(ThisGeneAndPartition.this_gene, gene_models)
+        ThisGeneAndPartition.partitions_incorporated = partitions_incorporated + 1
+        ThisGeneAndPartition.out = out + ['\n']
+        return ThisGeneAndPartition
+
     def convert_lists_to_dataset(self, partitions):
         """
         Overriden method from base clase in order to add headers and footers depending
@@ -108,10 +121,10 @@ class CreatePhylip(Dataset):
             for i in partition:
                 voucher_code = i.split(' ')[0]
                 if voucher_code.startswith('\n'):
-                    this_gene = voucher_code.replace('[', '').replace(']', '').strip()
-                    this_gene_model = get_gene_model_from_gene_id(this_gene, gene_models)
-                    partitions_incorporated += 1
-                    out += ['\n']
+                    ThisGeneAndPartition = self.get_gene_for_current_partition(
+                        gene_models, out, partitions_incorporated, voucher_code
+                    )
+                    out = ThisGeneAndPartition.out
                 elif voucher_code not in self.vouchers_to_drop:
                     line = i.split(' ')
                     if len(line) > 1:
@@ -119,12 +132,12 @@ class CreatePhylip(Dataset):
 
                         if self.aminoacids is True:
                             sequence = self.translate_this_sequence(sequence,
-                                                                    this_gene_model,
+                                                                    ThisGeneAndPartition.this_gene_model,
                                                                     voucher_code)
 
-                        gene_codes_and_lengths[this_gene] = len(sequence)
+                        gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
 
-                        if partitions_incorporated == 1:
+                        if ThisGeneAndPartition.partitions_incorporated == 1:
                             out += [line[0].ljust(55, ' ') + sequence + '\n']
                         else:
                             out += [' ' * 55 + sequence + '\n']
@@ -248,6 +261,8 @@ END;
 
         for partition in partitions:
             for i in partition:
+                voucher_code = i.split(' ')[0]
+                print(i)
                 if i.split(' ')[0] not in self.vouchers_to_drop:
                     out += [i]
 
