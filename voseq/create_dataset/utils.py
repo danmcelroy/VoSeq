@@ -1,4 +1,4 @@
-from collections import namedtuple
+from collections import OrderedDict
 import re
 
 from Bio.Seq import Seq
@@ -237,7 +237,7 @@ END;
         self.get_number_chars_from_partition_list(partitions)
 
         gene_models = Genes.objects.all().values()
-        gene_codes_and_lengths = dict()
+        gene_codes_and_lengths = OrderedDict()
 
         partitions_incorporated = 0
 
@@ -278,6 +278,9 @@ END;
             'FORMAT INTERLEAVE DATATYPE=DNA MISSING=? GAP=-;',
             'MATRIX',
         ]
+
+        if self.aminoacids is True:
+            self.gene_codes_and_lengths = gene_codes_and_lengths
 
         out = header + out
 
