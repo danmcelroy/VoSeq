@@ -36,7 +36,7 @@ class CreatePhylipDatasetTest(TestCase):
         self.maxDiff = None
 
     def test_create_dataset(self):
-        expected = '2 2287\nCP100-10_Melitaea_diamina'
+        expected = '2 761\nCP100-10_Melitaea_diamina'
         result = self.dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
@@ -63,3 +63,26 @@ class CreatePhylipDatasetTest(TestCase):
         expected = 'stop'
         result = str(c.content)
         self.assertTrue(expected in result)
+
+    def test_numer_of_chars_for_aa_dataset(self):
+        c = self.c.post('/create_dataset/results/',
+                        {
+                            'voucher_codes': 'CP100-10',
+                            'gene_codes': 3,  # wingless
+                            'geneset': '',
+                            'taxonset': '',
+                            'translations': False,
+                            'introns': 'YES',
+                            'file_format': 'PHY',
+                            'degen_translations': 'NORMAL',
+                            'exclude': 'YES',
+                            'aminoacids': True,
+                            'special': False,
+                            'outgroup': '',
+                            'positions': 'ALL',
+                            'partition_by_positions': 'ONE',
+                            'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
+                        }
+                        )
+        expected = '1 137'
+        self.assertTrue(expected in str(c.content))
