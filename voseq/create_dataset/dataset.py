@@ -61,10 +61,14 @@ class Dataset(object):
                                                                    'this_gene_model',
                                                                    'partitions_incorporated',
                                                                    'out'])
-        ThisGeneAndPartition.this_gene = voucher_code.replace('[', '').replace(']', '').strip()
+        gene = voucher_code.replace('[', '').replace(']', '').strip()
+        ThisGeneAndPartition.this_gene = gene
         ThisGeneAndPartition.this_gene_model = self.get_gene_model_from_gene_id(ThisGeneAndPartition.this_gene, gene_models)
         ThisGeneAndPartition.partitions_incorporated = partitions_incorporated + 1
-        ThisGeneAndPartition.out = out + ['\n']
+        if self.file_format == 'NEXUS':
+            ThisGeneAndPartition.out = out + ['\n[' + gene + ']']
+        else:
+            ThisGeneAndPartition.out = out + ['\n']
         return ThisGeneAndPartition
 
     def get_gene_model_from_gene_id(self, this_gene, gene_models):
