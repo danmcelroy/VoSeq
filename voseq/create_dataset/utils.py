@@ -112,6 +112,7 @@ class CreatePhylip(Dataset):
                     ThisGeneAndPartition = self.get_gene_for_current_partition(
                         gene_models, out, partitions_incorporated, voucher_code
                     )
+                    partitions_incorporated = ThisGeneAndPartition.partitions_incorporated
                     out = ThisGeneAndPartition.out
                 elif voucher_code not in self.vouchers_to_drop:
                     line = i.split(' ')
@@ -127,7 +128,7 @@ class CreatePhylip(Dataset):
 
                         gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
 
-                        if ThisGeneAndPartition.partitions_incorporated == 1:
+                        if partitions_incorporated == 1:
                             out += [line[0].ljust(55, ' ') + sequence + '\n']
                         else:
                             out += [' ' * 55 + sequence + '\n']
@@ -363,7 +364,7 @@ class CreateDataset(object):
             nexus = CreateNEXUS(self.codon_positions, self.partition_by_positions,
                                 self.seq_objs, self.gene_codes, self.voucher_codes,
                                 self.file_format, self.outgroup, self.voucher_codes_metadata,
-                                self.minimum_number_of_genes)
+                                self.minimum_number_of_genes, self.aminoacids)
             nexus_dataset = nexus.from_seq_objs_to_dataset()
             self.warnings += nexus.warnings
             self.dataset_file = nexus.dataset_file
