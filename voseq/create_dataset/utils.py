@@ -76,41 +76,19 @@ class CreateGenbankFasta(Dataset):
 
 
 class CreatePhylip(Dataset):
-    def get_charset_block(self):
+    def get_charset_block(self, gene_codes_and_lengths):
         charset_block = []
 
         bp_count_start = 0
         bp_count_end = 0
         self.gene_codes.sort()
-        for gene in self.gene_codes_and_lengths:
-            bp_count_end += self.gene_codes_and_lengths[gene]
+        for gene in gene_codes_and_lengths:
+            bp_count_end += gene_codes_and_lengths[gene]
             line = 'DNA, ' + gene + ' = ' + str(
                 bp_count_start + 1) + '-' + str(bp_count_end)
-            bp_count_start += self.gene_codes_and_lengths[gene]
+            bp_count_start += gene_codes_and_lengths[gene]
             charset_block.append(line)
         self.charset_block = "\n".join(charset_block)
-
-    def get_partitions_block(self):
-        line = 'partition GENES = ' + str(len(self.gene_codes_and_lengths))
-        line += ': ' + ', '.join([i for i in self.gene_codes_and_lengths]) + ';\n'
-        line += '\nset partition = GENES;\n'
-        return [line]
-
-    def get_final_block(self):
-        block = "set autoclose=yes;"
-        if self.outgroup != '':
-            block += '\noutgroup ' + self.voucher_codes_metadata[self.outgroup] + ";"
-        block += """
-prset applyto=(all) ratepr=variable brlensp=unconstrained:Exp(100.0) shapepr=exp(1.0) tratiopr=beta(2.0,1.0);
-lset applyto=(all) nst=mixed rates=gamma [invgamma];
-unlink statefreq=(all);
-unlink shape=(all) revmat=(all) tratio=(all) [pinvar=(all)];
-mcmc ngen=10000000 printfreq=1000 samplefreq=1000 nchains=4 nruns=2 savebrlens=yes [temp=0.11];
-sump relburnin=yes [no] burninfrac=0.25 [2500];
-sumt relburnin=yes [no] burninfrac=0.25 [2500] contype=halfcompat [allcompat];
-END;
-"""
-        return [block.strip()]
 
     def convert_lists_to_dataset(self, partitions):
         """
@@ -119,12 +97,11 @@ END;
         """
         self.get_number_of_genes_for_taxa(partitions)
         self.get_number_chars_from_partition_list(partitions)
-
-        out = [
-            str(self.number_taxa - len(self.vouchers_to_drop)) + ' ' + str(self.number_chars),
-        ]
+        out = []
 
         gene_models = Genes.objects.all().values()
+
+        gene_codes_and_lengths = dict()
 
         partitions_incorporated = 0
         for partition in partitions:
@@ -140,21 +117,38 @@ END;
                     if len(line) > 1:
                         sequence = line[-1]
 
+                        aa_sequence = ''
                         if self.aminoacids is True:
                             if this_gene_model['genetic_code'] is None or this_gene_model['reading_frame'] is None:
                                 self.warnings.append("Cannot translate gene %s sequences into aminoacids."
                                                      " You need to define reading_frame and/or genetic_code." % this_gene_model['gene_code'])
                             else:
-                                sequence, warning = translate_to_protein(this_gene_model, sequence, '', voucher_code, self.file_format)
+                                aa_sequence, warning = translate_to_protein(this_gene_model, sequence, '', voucher_code, self.file_format)
                                 if warning != '':
                                     self.warnings.append(warning)
+                            sequence = aa_sequence
+
+                            if sequence == '':
+                                sequence = '?'
+
+                        gene_codes_and_lengths[this_gene] = len(sequence)
 
                         if partitions_incorporated == 1:
                             out += [line[0].ljust(55, ' ') + sequence + '\n']
                         else:
                             out += [' ' * 55 + sequence + '\n']
 
-        self.get_charset_block()
+        number_chars = 0
+        for k, v in gene_codes_and_lengths.items():
+            number_chars += gene_codes_and_lengths[k]
+
+        header = [
+            str(self.number_taxa - len(self.vouchers_to_drop)) + ' ' + str(number_chars),
+        ]
+
+        out = header + out
+
+        self.get_charset_block(gene_codes_and_lengths)
         dataset_str = ''.join(out)
         self.save_dataset_to_file(dataset_str)
         return dataset_str
