@@ -235,6 +235,11 @@ END;
         self.get_number_of_genes_for_taxa(partitions)
         self.get_number_chars_from_partition_list(partitions)
 
+        gene_models = Genes.objects.all().values()
+        gene_codes_and_lengths = dict()
+
+        partitions_incorporated = 0
+
         out = [
             '#NEXUS\n',
             'BEGIN DATA;',
@@ -246,9 +251,26 @@ END;
         for partition in partitions:
             for i in partition:
                 voucher_code = i.split(' ')[0]
-                print(i)
-                if i.split(' ')[0] not in self.vouchers_to_drop:
-                    out += [i]
+                if voucher_code.startswith('\n'):
+                    ThisGeneAndPartition = self.get_gene_for_current_partition(
+                        gene_models, out, partitions_incorporated, voucher_code
+                    )
+                    out = ThisGeneAndPartition.out
+                elif voucher_code not in self.vouchers_to_drop:
+                    line = i.split(' ')
+                    if len(line) > 1:
+                        sequence = line[-1]
+
+                        if self.aminoacids is True:
+                            sequence = self.translate_this_sequence(
+                                sequence,
+                                ThisGeneAndPartition.this_gene_model,
+                                voucher_code
+                            )
+
+                    gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
+
+                    out += [line[0].ljust(55, ' ') + sequence]
 
         out += [';\nEND;']
         out += ['\nbegin mrbayes;']
