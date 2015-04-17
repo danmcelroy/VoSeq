@@ -240,8 +240,7 @@ def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_for
     if file_format == 'PHY' or file_format == 'GenbankFASTA':
         return str(prot_sequence), warning
 
-    out = '>' + seq_id + ' ' + seq_description + '\n'
-    out += str(prot_sequence) + '\n'
+    out = str(prot_sequence)
     return out, warning
 
 
