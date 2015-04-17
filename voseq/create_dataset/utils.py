@@ -90,26 +90,6 @@ class CreatePhylip(Dataset):
             charset_block.append(line)
         self.charset_block = "\n".join(charset_block)
 
-    def translate_this_sequence(self, sequence, this_gene_model, voucher_code):
-        aa_sequence = ''
-        if this_gene_model['genetic_code'] is None or this_gene_model['reading_frame'] is None:
-            self.warnings.append(
-                "Cannot translate gene %s sequences into aminoacids."
-                " You need to define reading_frame and/or genetic_code." %
-                this_gene_model['gene_code'])
-        else:
-            aa_sequence, warning = translate_to_protein(this_gene_model,
-                                                        sequence, '',
-                                                        voucher_code,
-                                                        self.file_format)
-            if warning != '':
-                self.warnings.append(warning)
-        sequence = aa_sequence
-
-        if sequence == '':
-            sequence = '?'
-        return sequence
-
     def convert_lists_to_dataset(self, partitions):
         """
         Overriden method from base clase in order to add headers and footers depending
