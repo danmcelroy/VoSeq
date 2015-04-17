@@ -241,13 +241,7 @@ END;
 
         partitions_incorporated = 0
 
-        out = [
-            '#NEXUS\n',
-            'BEGIN DATA;',
-            'DIMENSIONS NTAX=' + str(self.number_taxa - len(self.vouchers_to_drop)) + ' NCHAR=' + str(self.number_chars) + ';',
-            'FORMAT INTERLEAVE DATATYPE=DNA MISSING=? GAP=-;',
-            'MATRIX',
-        ]
+        out = []
 
         for partition in partitions:
             for i in partition:
@@ -272,6 +266,20 @@ END;
                     gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
 
                     out += [line[0].ljust(55, ' ') + sequence]
+
+        number_chars = 0
+        for k, v in gene_codes_and_lengths.items():
+            number_chars += gene_codes_and_lengths[k]
+
+        header = [
+            '#NEXUS\n',
+            'BEGIN DATA;',
+            'DIMENSIONS NTAX=' + str(self.number_taxa - len(self.vouchers_to_drop)) + ' NCHAR=' + str(number_chars) + ';',
+            'FORMAT INTERLEAVE DATATYPE=DNA MISSING=? GAP=-;',
+            'MATRIX',
+        ]
+
+        out = header + out
 
         out += [';\nEND;']
         out += ['\nbegin mrbayes;']
