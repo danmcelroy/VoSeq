@@ -119,9 +119,11 @@ class CreatePhylip(Dataset):
                         sequence = line[-1]
 
                         if self.aminoacids is True:
-                            sequence = self.translate_this_sequence(sequence,
-                                                                    ThisGeneAndPartition.this_gene_model,
-                                                                    voucher_code)
+                            sequence = self.translate_this_sequence(
+                                sequence,
+                                ThisGeneAndPartition.this_gene_model,
+                                voucher_code
+                            )
 
                         gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
 
