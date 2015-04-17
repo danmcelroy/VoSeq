@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import re
 
 from Bio.Seq import Seq
@@ -38,7 +39,7 @@ class CreateGenbankFasta(Dataset):
                 i = i.strip()
                 if i.startswith('['):
                     this_gene = i.replace('[', '').replace(']', '').strip()
-                    this_gene_model = get_gene_model_from_gene_id(this_gene, gene_models)
+                    this_gene_model = self.get_gene_model_from_gene_id(this_gene, gene_models)
                     partitions_incorporated += 1
                     out += ['\n']
                 elif i.startswith('>'):
@@ -108,30 +109,24 @@ class CreatePhylip(Dataset):
             for i in partition:
                 voucher_code = i.split(' ')[0]
                 if voucher_code.startswith('\n'):
-                    this_gene = voucher_code.replace('[', '').replace(']', '').strip()
-                    this_gene_model = get_gene_model_from_gene_id(this_gene, gene_models)
-                    partitions_incorporated += 1
-                    out += ['\n']
+                    ThisGeneAndPartition = self.get_gene_for_current_partition(
+                        gene_models, out, partitions_incorporated, voucher_code
+                    )
+                    partitions_incorporated = ThisGeneAndPartition.partitions_incorporated
+                    out = ThisGeneAndPartition.out
                 elif voucher_code not in self.vouchers_to_drop:
                     line = i.split(' ')
                     if len(line) > 1:
                         sequence = line[-1]
 
-                        aa_sequence = ''
                         if self.aminoacids is True:
-                            if this_gene_model['genetic_code'] is None or this_gene_model['reading_frame'] is None:
-                                self.warnings.append("Cannot translate gene %s sequences into aminoacids."
-                                                     " You need to define reading_frame and/or genetic_code." % this_gene_model['gene_code'])
-                            else:
-                                aa_sequence, warning = translate_to_protein(this_gene_model, sequence, '', voucher_code, self.file_format)
-                                if warning != '':
-                                    self.warnings.append(warning)
-                            sequence = aa_sequence
+                            sequence = self.translate_this_sequence(
+                                sequence,
+                                ThisGeneAndPartition.this_gene_model,
+                                voucher_code
+                            )
 
-                            if sequence == '':
-                                sequence = '?'
-
-                        gene_codes_and_lengths[this_gene] = len(sequence)
+                        gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
 
                         if partitions_incorporated == 1:
                             out += [line[0].ljust(55, ' ') + sequence + '\n']
@@ -152,12 +147,6 @@ class CreatePhylip(Dataset):
         dataset_str = ''.join(out)
         self.save_dataset_to_file(dataset_str)
         return dataset_str
-
-
-def get_gene_model_from_gene_id(this_gene, gene_models):
-    for i in gene_models:
-        if i['gene_code'] == this_gene:
-            return i
 
 
 class CreateTNT(Dataset):
@@ -247,18 +236,53 @@ END;
         self.get_number_of_genes_for_taxa(partitions)
         self.get_number_chars_from_partition_list(partitions)
 
-        out = [
+        gene_models = Genes.objects.all().values()
+        gene_codes_and_lengths = OrderedDict()
+
+        partitions_incorporated = 0
+
+        out = []
+
+        for partition in partitions:
+            for i in partition:
+                voucher_code = i.split(' ')[0]
+                if voucher_code.startswith('\n'):
+                    ThisGeneAndPartition = self.get_gene_for_current_partition(
+                        gene_models, out, partitions_incorporated, voucher_code
+                    )
+                    out = ThisGeneAndPartition.out
+                elif voucher_code not in self.vouchers_to_drop:
+                    line = i.split(' ')
+                    if len(line) > 1:
+                        sequence = line[-1]
+
+                        if self.aminoacids is True:
+                            sequence = self.translate_this_sequence(
+                                sequence,
+                                ThisGeneAndPartition.this_gene_model,
+                                voucher_code
+                            )
+
+                    gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
+
+                    out += [line[0].ljust(55, ' ') + sequence]
+
+        number_chars = 0
+        for k, v in gene_codes_and_lengths.items():
+            number_chars += gene_codes_and_lengths[k]
+
+        header = [
             '#NEXUS\n',
             'BEGIN DATA;',
-            'DIMENSIONS NTAX=' + str(self.number_taxa - len(self.vouchers_to_drop)) + ' NCHAR=' + str(self.number_chars) + ';',
+            'DIMENSIONS NTAX=' + str(self.number_taxa - len(self.vouchers_to_drop)) + ' NCHAR=' + str(number_chars) + ';',
             'FORMAT INTERLEAVE DATATYPE=DNA MISSING=? GAP=-;',
             'MATRIX',
         ]
 
-        for partition in partitions:
-            for i in partition:
-                if i.split(' ')[0] not in self.vouchers_to_drop:
-                    out += [i]
+        if self.aminoacids is True:
+            self.gene_codes_and_lengths = gene_codes_and_lengths
+
+        out = header + out
 
         out += [';\nEND;']
         out += ['\nbegin mrbayes;']
@@ -351,7 +375,7 @@ class CreateDataset(object):
             nexus = CreateNEXUS(self.codon_positions, self.partition_by_positions,
                                 self.seq_objs, self.gene_codes, self.voucher_codes,
                                 self.file_format, self.outgroup, self.voucher_codes_metadata,
-                                self.minimum_number_of_genes)
+                                self.minimum_number_of_genes, self.aminoacids)
             nexus_dataset = nexus.from_seq_objs_to_dataset()
             self.warnings += nexus.warnings
             self.dataset_file = nexus.dataset_file

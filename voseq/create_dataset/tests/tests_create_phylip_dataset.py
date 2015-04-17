@@ -40,6 +40,12 @@ class CreatePhylipDatasetTest(TestCase):
         result = self.dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
+    def test_only_one_set_of_taxon_names(self):
+        expected = 1
+        dataset = self.dataset_creator.dataset_str
+        result = dataset.count('CP100-10_Melitaea_diamina')
+        self.assertEqual(expected, result)
+
     def test_stop_codon_warning(self):
         c = self.c.post('/create_dataset/results/',
                         {
