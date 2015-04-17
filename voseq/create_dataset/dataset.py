@@ -1,4 +1,5 @@
 import collections
+from collections import namedtuple
 import os
 import uuid
 import re
@@ -53,6 +54,23 @@ class Dataset(object):
 
     def make_guid(self):
         return uuid.uuid4().hex
+
+    def get_gene_for_current_partition(self, gene_models, out,
+                                       partitions_incorporated, voucher_code):
+        ThisGeneAndPartition = namedtuple('ThisGeneAndPartition', ['this_gene',
+                                                                   'this_gene_model',
+                                                                   'partitions_incorporated',
+                                                                   'out'])
+        ThisGeneAndPartition.this_gene = voucher_code.replace('[', '').replace(']', '').strip()
+        ThisGeneAndPartition.this_gene_model = self.get_gene_model_from_gene_id(ThisGeneAndPartition.this_gene, gene_models)
+        ThisGeneAndPartition.partitions_incorporated = partitions_incorporated + 1
+        ThisGeneAndPartition.out = out + ['\n']
+        return ThisGeneAndPartition
+
+    def get_gene_model_from_gene_id(self, this_gene, gene_models):
+        for i in gene_models:
+            if i['gene_code'] == this_gene:
+                return i
 
     def get_number_chars_from_partition_list(self, partitions):
         chars = 0
