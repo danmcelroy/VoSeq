@@ -1,4 +1,5 @@
 import collections
+from collections import namedtuple
 import os
 import uuid
 import re
@@ -53,6 +54,27 @@ class Dataset(object):
 
     def make_guid(self):
         return uuid.uuid4().hex
+
+    def get_gene_for_current_partition(self, gene_models, out,
+                                       partitions_incorporated, voucher_code):
+        ThisGeneAndPartition = namedtuple('ThisGeneAndPartition', ['this_gene',
+                                                                   'this_gene_model',
+                                                                   'partitions_incorporated',
+                                                                   'out'])
+        gene = voucher_code.replace('[', '').replace(']', '').strip()
+        ThisGeneAndPartition.this_gene = gene
+        ThisGeneAndPartition.this_gene_model = self.get_gene_model_from_gene_id(ThisGeneAndPartition.this_gene, gene_models)
+        ThisGeneAndPartition.partitions_incorporated = partitions_incorporated + 1
+        if self.file_format == 'NEXUS':
+            ThisGeneAndPartition.out = out + ['\n[' + gene + ']']
+        else:
+            ThisGeneAndPartition.out = out + ['\n']
+        return ThisGeneAndPartition
+
+    def get_gene_model_from_gene_id(self, this_gene, gene_models):
+        for i in gene_models:
+            if i['gene_code'] == this_gene:
+                return i
 
     def get_number_chars_from_partition_list(self, partitions):
         chars = 0
@@ -168,6 +190,26 @@ class Dataset(object):
         dataset_str = out.strip()
         self.save_dataset_to_file(dataset_str)
         return dataset_str
+
+    def translate_this_sequence(self, sequence, this_gene_model, voucher_code):
+        aa_sequence = ''
+        if this_gene_model['genetic_code'] is None or this_gene_model['reading_frame'] is None:
+            self.warnings.append(
+                "Cannot translate gene %s sequences into aminoacids."
+                " You need to define reading_frame and/or genetic_code." %
+                this_gene_model['gene_code'])
+        else:
+            aa_sequence, warning = utils.translate_to_protein(this_gene_model,
+                                                              sequence, '',
+                                                              voucher_code,
+                                                              self.file_format)
+            if warning != '':
+                self.warnings.append(warning)
+        sequence = aa_sequence
+
+        if sequence == '':
+            sequence = '?'
+        return sequence
 
     def get_codons_in_each_partition(self, codons):
         partition_list = ()
