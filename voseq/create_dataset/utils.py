@@ -39,7 +39,7 @@ class CreateGenbankFasta(Dataset):
                 i = i.strip()
                 if i.startswith('['):
                     this_gene = i.replace('[', '').replace(']', '').strip()
-                    this_gene_model = get_gene_model_from_gene_id(this_gene, gene_models)
+                    this_gene_model = self.get_gene_model_from_gene_id(this_gene, gene_models)
                     partitions_incorporated += 1
                     out += ['\n']
                 elif i.startswith('>'):
@@ -90,18 +90,6 @@ class CreatePhylip(Dataset):
             bp_count_start += gene_codes_and_lengths[gene]
             charset_block.append(line)
         self.charset_block = "\n".join(charset_block)
-
-    def get_gene_for_current_partition(self, gene_models, out,
-                                       partitions_incorporated, voucher_code):
-        ThisGeneAndPartition = namedtuple('ThisGeneAndPartition', ['this_gene',
-                                                                   'this_gene_model',
-                                                                   'partitions_incorporated',
-                                                                   'out'])
-        ThisGeneAndPartition.this_gene = voucher_code.replace('[', '').replace(']', '').strip()
-        ThisGeneAndPartition.this_gene_model = get_gene_model_from_gene_id(ThisGeneAndPartition.this_gene, gene_models)
-        ThisGeneAndPartition.partitions_incorporated = partitions_incorporated + 1
-        ThisGeneAndPartition.out = out + ['\n']
-        return ThisGeneAndPartition
 
     def convert_lists_to_dataset(self, partitions):
         """
@@ -156,12 +144,6 @@ class CreatePhylip(Dataset):
         dataset_str = ''.join(out)
         self.save_dataset_to_file(dataset_str)
         return dataset_str
-
-
-def get_gene_model_from_gene_id(this_gene, gene_models):
-    for i in gene_models:
-        if i['gene_code'] == this_gene:
-            return i
 
 
 class CreateTNT(Dataset):
