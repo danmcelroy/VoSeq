@@ -89,3 +89,26 @@ class CreateTNTDatasetTest(TestCase):
         result = dataset_creator.dataset_str
         expected = '2287 1'
         self.assertTrue(expected in result)
+
+    def test_create_dataset_aa(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['positions'] = ['ALL']
+        cleaned_data['aminoacids'] = True
+        dataset_creator = CreateDataset(cleaned_data)
+        expected = 'XXXXXXXXWAGMIGTSLSLIIRTELGNPSFLIGDDQIYNTIVTAHAFIMIFFMVM'
+        result = dataset_creator.dataset_str
+        self.assertTrue(expected in result)
+
+        expected = 'xread\n761 2\n'
+        result = dataset_creator.dataset_str
+        self.assertTrue(expected in result)
+
+    def test_create_dataset_aa_with_outgroup(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['positions'] = ['ALL']
+        cleaned_data['outgroup'] = 'CP100-11'
+        cleaned_data['aminoacids'] = True
+        dataset_creator = CreateDataset(cleaned_data)
+        expected = '[&dna]\nCP100-11_Melitaea_diamina                              XSRYNWYIPKSYY'
+        result = dataset_creator.dataset_str
+        self.assertTrue(expected in result)
