@@ -99,6 +99,10 @@ class CreateTNTDatasetTest(TestCase):
         result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
+        expected = 'xread\n761 2\n'
+        result = dataset_creator.dataset_str
+        self.assertTrue(expected in result)
+
     def test_create_dataset_aa_with_outgroup(self):
         cleaned_data = self.cleaned_data
         cleaned_data['positions'] = ['ALL']
