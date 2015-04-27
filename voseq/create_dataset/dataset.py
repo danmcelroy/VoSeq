@@ -601,14 +601,14 @@ class CreateGenbankFasta(Dataset):
                                                      " You need to define reading_frame and/or genetic_code." % this_gene_model['gene_code'])
                                 continue
                             else:
-                                aa_sequence, warning = translate_to_protein(this_gene_model, sequence, '', voucher_code, self.file_format)
+                                aa_sequence, warning = utils.translate_to_protein(this_gene_model, sequence, '', voucher_code, self.file_format)
                                 if warning != '':
                                     self.warnings.append(warning)
 
                             if aa_sequence.strip() == '':
                                 self.warnings.append("Sequence for %s %s was empty" % (voucher_code, this_gene))
 
-                            sequence = strip_question_marks(sequence)[0]
+                            sequence = utils.strip_question_marks(sequence)[0]
                             out += [line[0] + '\n' + sequence.replace('?', 'N') + '\n']
                             aa_out += [line[0] + '\n' + aa_sequence + '\n']
 
@@ -780,7 +780,7 @@ END;
         self.get_number_chars_from_partition_list(partitions)
 
         gene_models = Genes.objects.all().values()
-        gene_codes_and_lengths = OrderedDict()
+        gene_codes_and_lengths = collections.OrderedDict()
 
         partitions_incorporated = 0
 
