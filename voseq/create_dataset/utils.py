@@ -1,12 +1,14 @@
-from collections import OrderedDict
-import re
-
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
 from core.utils import get_voucher_codes
 from core.utils import get_gene_codes
 from core.utils import flatten_taxon_names_dict
+from .dataset import CreateGenbankFasta
+from .dataset import CreateFasta
+from .dataset import CreatePhylip
+from .dataset import CreateNEXUS
+from .dataset import CreateTNT
 from public_interface.models import Genes
 from public_interface.models import Sequences
 from public_interface.models import Vouchers
