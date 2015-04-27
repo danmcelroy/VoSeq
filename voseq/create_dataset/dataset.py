@@ -727,7 +727,7 @@ class CreateTNT(Dataset):
                     )
                     out += ['\n[&dna]']
                     if self.outgroup != '':
-                        out += ['\n' + outgroup_sequences[partition_count]]
+                        out += [outgroup_sequences[partition_count]]
                         partition_count += 1
                 elif voucher_code not in self.vouchers_to_drop:
                     line = i.split(' ')
