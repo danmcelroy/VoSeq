@@ -85,7 +85,7 @@ class CreateDataset(object):
             tnt = CreateTNT(self.codon_positions, self.partition_by_positions,
                             self.seq_objs, self.gene_codes, self.voucher_codes,
                             self.file_format, self.outgroup, self.voucher_codes_metadata,
-                            self.minimum_number_of_genes)
+                            self.minimum_number_of_genes, self.aminoacids)
             tnt_dataset = tnt.from_seq_objs_to_dataset()
             self.warnings += tnt.warnings
             self.dataset_file = tnt.dataset_file
