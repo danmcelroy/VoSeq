@@ -263,7 +263,7 @@ class Dataset(object):
             seq_str = '\n[%s]' % this_gene
 
         if self.file_format == 'TNT':
-            seq_str = '\n[&dna]'
+            seq_str = '\n[%s]' % this_gene
 
         if self.file_format == 'NEXUS':
             seq_str = '\n[%s]' % this_gene
@@ -701,8 +701,11 @@ class CreateTNT(Dataset):
         self.get_number_of_genes_for_taxa(partitions)
         self.get_number_chars_from_partition_list(partitions)
 
-        out = 'nstates dna;\nxread\n'
-        out += str(self.number_chars) + ' ' + str(self.number_taxa - len(self.vouchers_to_drop))
+        gene_models = Genes.objects.all().values()
+        gene_codes_and_lengths = collections.OrderedDict()
+
+        out = ['nstates dna;\nxread']
+        out += [str(self.number_chars) + ' ' + str(self.number_taxa - len(self.vouchers_to_drop))]
 
         outgroup_sequences = []
         for partition in partitions:
@@ -713,23 +716,40 @@ class CreateTNT(Dataset):
                         outgroup_sequences.append(i)
                         continue
 
+        partitions_incorporated = 0
         partition_count = 0
         for partition in partitions:
             for i in partition:
-                voucher = i.split(' ')[0]
-                if voucher == '\n[&dna]':
-                    out += '\n' + i
+                voucher_code = i.split(' ')[0]
+                if voucher_code.startswith('\n'):
+                    ThisGeneAndPartition = self.get_gene_for_current_partition(
+                        gene_models, out, partitions_incorporated, voucher_code
+                    )
+                    out += ['\n[&dna]']
                     if self.outgroup != '':
-                        out += '\n' + outgroup_sequences[partition_count]
+                        out += ['\n' + outgroup_sequences[partition_count]]
                         partition_count += 1
-                elif voucher not in self.vouchers_to_drop:
-                    if self.outgroup != '' and self.outgroup not in voucher:
-                        out += '\n' + i
-                    elif self.outgroup == '':
-                        out += '\n' + i
+                elif voucher_code not in self.vouchers_to_drop:
+                    line = i.split(' ')
+                    if len(line) > 1:
+                        sequence = line[-1]
 
-        out += '\n;\nproc/;'
-        dataset_str = out.strip()
+                        if self.aminoacids is True:
+                            sequence = self.translate_this_sequence(
+                                sequence,
+                                ThisGeneAndPartition.this_gene_model,
+                                voucher_code
+                            )
+
+                    gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
+
+                    if self.outgroup != '' and self.outgroup not in voucher_code:
+                        out += [line[0].ljust(55, ' ') + sequence]
+                    elif self.outgroup == '':
+                        out += [line[0].ljust(55, ' ') + sequence]
+
+        out += ['\n;\nproc/;']
+        dataset_str = '\n'.join(out)
         self.save_dataset_to_file(dataset_str)
         return dataset_str
 
