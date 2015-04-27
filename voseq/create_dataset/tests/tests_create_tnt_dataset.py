@@ -89,3 +89,12 @@ class CreateTNTDatasetTest(TestCase):
         result = dataset_creator.dataset_str
         expected = '2287 1'
         self.assertTrue(expected in result)
+
+    def test_create_dataset_aa(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['positions'] = ['ALL']
+        cleaned_data['aminoacids'] = True
+        dataset_creator = CreateDataset(cleaned_data)
+        expected = 'XXXXXXXXWAGMIGTSLSLIIRTELGNPSFLIGDDQIYNTIVTAHAFIMIFFMVM'
+        result = dataset_creator.dataset_str
+        self.assertTrue(expected in result)
