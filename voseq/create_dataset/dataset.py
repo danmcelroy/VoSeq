@@ -727,7 +727,19 @@ class CreateTNT(Dataset):
                     )
                     out += ['\n[&dna]']
                     if self.outgroup != '':
-                        out += [outgroup_sequences[partition_count]]
+                        line = outgroup_sequences[partition_count]
+                        tmp_line = line.split(' ')
+                        sequence = tmp_line[-1]
+
+                        if self.aminoacids is True:
+                            sequence = self.translate_this_sequence(
+                                sequence,
+                                ThisGeneAndPartition.this_gene_model,
+                                voucher_code
+                            )
+                            out += [tmp_line[0].ljust(55, ' ') + sequence]
+                        else:
+                            out += [outgroup_sequences[partition_count]]
                         partition_count += 1
                 elif voucher_code not in self.vouchers_to_drop:
                     line = i.split(' ')
