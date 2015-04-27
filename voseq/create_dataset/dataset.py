@@ -704,8 +704,7 @@ class CreateTNT(Dataset):
         gene_models = Genes.objects.all().values()
         gene_codes_and_lengths = collections.OrderedDict()
 
-        out = ['nstates dna;\nxread']
-        out += [str(self.number_chars) + ' ' + str(self.number_taxa - len(self.vouchers_to_drop))]
+        out = []
 
         outgroup_sequences = []
         for partition in partitions:
@@ -761,6 +760,15 @@ class CreateTNT(Dataset):
                         out += [line[0].ljust(55, ' ') + sequence]
 
         out += ['\n;\nproc/;']
+
+        number_chars = 0
+        for k, v in gene_codes_and_lengths.items():
+            number_chars += gene_codes_and_lengths[k]
+
+        header = ['nstates dna;\nxread']
+        header += [str(number_chars) + ' ' + str(self.number_taxa - len(self.vouchers_to_drop))]
+
+        out = header + out
         dataset_str = '\n'.join(out)
         self.save_dataset_to_file(dataset_str)
         return dataset_str
