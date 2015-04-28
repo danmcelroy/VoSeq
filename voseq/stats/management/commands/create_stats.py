@@ -1,5 +1,4 @@
 from django.core.management.base import BaseCommand
-from django.core.management.base import CommandError
 
 from public_interface.models import Vouchers
 from public_interface.models import Sequences
@@ -45,11 +44,11 @@ class Command(BaseCommand):
         Stats.objects.update_or_create(
             id=1,
             defaults={
-                     'vouchers': num_vouchers,
-                     'orders': num_orders,
-                     'families': num_families,
-                     'genera': num_genera,
-                     'species': num_species,
-                     'sequences': num_sequences,
-                     }
+                'vouchers': num_vouchers,
+                'orders': num_orders,
+                'families': num_families,
+                'genera': num_genera,
+                'species': num_species,
+                'sequences': num_sequences,
+            }
         )
