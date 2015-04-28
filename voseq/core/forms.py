@@ -1,7 +1,5 @@
 from django import forms
 
-from core.utils import get_voucher_codes
-from core.utils import get_gene_codes
 from public_interface.models import Genes
 from public_interface.models import GeneSets
 from public_interface.models import TaxonSets

@@ -1,7 +1,6 @@
 from django import forms
 from haystack.forms import ModelSearchForm
 from haystack.query import SearchQuerySet
-from haystack.query import EmptySearchQuerySet
 
 
 class AdvancedSearchForm(ModelSearchForm):
@@ -122,11 +121,10 @@ class AdvancedSearchForm(ModelSearchForm):
                 self.no_query_found()
 
 
-
 # The following form is for the admin site bacth_changes action
 # It would be nice not to repeat the lines from the previous
 # model, but...
-class BatchChangesForm(forms.Form): #forms.ModelForm):
+class BatchChangesForm(forms.Form):
     '''
     class Meta:
         model = Vouchers
@@ -145,24 +143,24 @@ class BatchChangesForm(forms.Form): #forms.ModelForm):
     WORKER = 'w'
     QUEEN = 'q'
     SEX_CHOICES = (
-                   (NULL, 'Select'),
-                   (MALE, 'male'),
-                   (FEMALE, 'female'),
-                   (LARVA, 'larva'),
-                   (WORKER, 'worker'),
-                   (QUEEN, 'queen'),
-                   )
+        (NULL, 'Select'),
+        (MALE, 'male'),
+        (FEMALE, 'female'),
+        (LARVA, 'larva'),
+        (WORKER, 'worker'),
+        (QUEEN, 'queen'),
+    )
 
     NULL = None
     DONT_KNOW = 'd'
     YES = 'y'
     NO = 'n'
     TYPE_SPECIES_CHOICES = (
-                            (NULL, 'Select'),
-                            (DONT_KNOW, 'don\'t know'),
-                            (YES, 'yes'),
-                            (NO, 'no'),
-                            )
+        (NULL, 'Select'),
+        (DONT_KNOW, 'don\'t know'),
+        (YES, 'yes'),
+        (NO, 'no'),
+    )
     NULL = None
     SPREAD = 's'
     ENVELOPE = 'e'
@@ -171,14 +169,14 @@ class BatchChangesForm(forms.Form): #forms.ModelForm):
     DESTROYED = 'd'
     LOST = 'l'
     VOUCHER_CHOICES = (
-                      (NULL, 'Select'),
-                      (SPREAD, 'spread'),
-                      (ENVELOPE, 'in envelope'),
-                      (PHOTO, 'only photo'),
-                      (NONE, 'no voucher'),
-                      (DESTROYED, 'destroyed'),
-                      (LOST, 'lost'),
-                      )
+        (NULL, 'Select'),
+        (SPREAD, 'spread'),
+        (ENVELOPE, 'in envelope'),
+        (PHOTO, 'only photo'),
+        (NONE, 'no voucher'),
+        (DESTROYED, 'destroyed'),
+        (LOST, 'lost'),
+    )
     code = forms.CharField(label="Code in voseq", max_length=100, required=False)
     orden = forms.CharField(label="Order", max_length=100, required=False)
     superfamily = forms.CharField(label="Superfamily", max_length=100, required=False)
@@ -213,12 +211,3 @@ class BatchChangesForm(forms.Form): #forms.ModelForm):
     code_bold = forms.CharField(label="Code in BOLD database", max_length=100, help_text="Optional code for specimens kept in the BOLD database.", required=False)
     determinedBy = forms.CharField(label="Determined by", max_length=100, help_text="Person that identified the taxon for this specimen.", required=False)
     author = forms.CharField(label="Author", max_length=100, help_text="Person that described this taxon.", required=False)
-
-
-
-
-
-
-
-
-
