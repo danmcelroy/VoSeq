@@ -22,6 +22,8 @@ SECRET_KEY = 'hola'
 
 ALLOWED_HOSTS = []
 
+# for testing in Travis CI
+TRAVIS = False
 
 # Application definition
 
