@@ -90,13 +90,9 @@ def show_voucher(request, voucher_code):
 
     images_queryset = FlickrImages.objects.filter(voucher=voucher_code)
 
-    seqs_queryset = Sequences.objects.filter(code=voucher_code).order_by('gene_code')
-    for item in seqs_queryset:
-        seq = item.sequences
-        item.sequence_length = len(seq)
-        item.ambiguous_seq_length = seq.count('?') + seq.count('-') + seq.count('N') + seq.count('n')
-        if item.labPerson is not None:
-            item.labPerson = item.labPerson.split(" ")[0]
+    seqs_queryset = Sequences.objects.filter(code=voucher_code).values('code', 'gene_code',
+                                                                       'number_ambiguous_bp',
+                                                                       'labPerson')
 
     return render(request, 'public_interface/show_voucher.html',
                   {'voucher': voucher_queryset,
@@ -135,32 +131,32 @@ def show_sequence(request, voucher_code, gene_code):
 @csrf_protect
 def change_selected(request, selected):
     """
-        Changes field values from Vouchers in batch.
-        
-        This action first displays a change form page whichs shows all the
-        fields of a Vouchers type.
-        Next, it changes all selected objects and redirects back to the changed list.
-        
-        The action that calls this function should raise a PermissionDenied
-        if the user has no rights for changes.
-        """
+    Changes field values from Vouchers in batch.
+
+    This action first displays a change form page whichs shows all the
+    fields of a Vouchers type.
+    Next, it changes all selected objects and redirects back to the changed list.
+
+    The action that calls this function should raise a PermissionDenied
+    if the user has no rights for changes.
+    """
 
     # The user has already proposed the changes.
     # Apply the changes and return a None to display the changed list.
-    
+
     if request.method == 'POST':
         form = BatchChangesForm(request.POST)
         ids = selected.split(",")
         queryset = Vouchers.objects.filter(pk__in=ids)
         n = queryset.count()
-        
+
         if n and form.is_valid():
             # do changes
             keywords = {}
             for field, value in form.cleaned_data.items():
                 if value:
                     keywords[field] = value
-        
+
             queryset.update(**keywords)
 
             return HttpResponseRedirect('/admin/public_interface/vouchers/')
@@ -171,9 +167,3 @@ def change_selected(request, selected):
     # Display the changes page
     context = {'form': form, 'selected': selected}
     return render(request, 'admin/public_interface/vouchers/batch_changes.html', context)
-
-
-
-
-
-
