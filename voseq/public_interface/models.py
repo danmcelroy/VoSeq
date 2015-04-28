@@ -166,6 +166,13 @@ class Sequences(models.Model):
     time_edited = models.DateTimeField(auto_now=True, null=True, blank=True)
     notes = models.TextField(blank=True)
     genbank = models.NullBooleanField()
+    number_ambiguous_bp = models.IntegerField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        ambiguous_seq_length = self.sequences.count('?') + self.sequences.count('-')
+        ambiguous_seq_length += self.sequences.count('N') + self.sequences.count('n')
+        self.number_ambiguous_bp = ambiguous_seq_length
+        super(Sequences, self).save(*args, **kwargs)
 
 
 class Primers(models.Model):
