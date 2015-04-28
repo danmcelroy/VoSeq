@@ -5,7 +5,6 @@ import re
 from django.conf import settings
 
 from Bio.Seq import Seq
-from Bio.Alphabet import IUPAC
 from Bio.Alphabet import generic_dna
 from Bio.Data.CodonTable import TranslationError
 
