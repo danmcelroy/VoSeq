@@ -48,7 +48,7 @@ index:
 stats:
 	python voseq/manage.py create_stats --settings=voseq.settings.local
 
-coverage: test
+coverage: travis_test
 	coverage report -m
 	coverage html
 
@@ -59,3 +59,11 @@ test:
 	coverage run --source voseq voseq/manage.py test -v 2 blast_local blast_local_full blast_ncbi blast_new \
 	    core create_dataset genbank_fasta public_interface stats view_genes genbank_fasta \
 	    --settings=voseq.settings.testing
+
+travis_test:
+	python voseq/manage.py makemigrations --settings=voseq.settings.testing
+	python voseq/manage.py migrate --settings=voseq.settings.testing
+	rm -rf htmlcov .coverage
+	coverage run --source voseq voseq/manage.py test -v 2 blast_local blast_local_full blast_ncbi blast_new \
+	    core create_dataset genbank_fasta public_interface stats view_genes genbank_fasta \
+	    --settings=voseq.settings.travis
