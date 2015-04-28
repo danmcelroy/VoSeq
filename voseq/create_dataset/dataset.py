@@ -107,12 +107,12 @@ class Dataset(object):
         gene_code = ''
         for item in partitions[0]:
             if item.startswith('\n'):
-                    if self.file_format == 'NEXUS' or self.file_format == 'PHY':
-                        gene_code = item.strip().replace('[', '').replace(']', '')
-                        continue
-                    if self.file_format == 'TNT':
-                        gene_code = 'dummy'
-                        continue
+                if self.file_format == 'NEXUS' or self.file_format == 'PHY':
+                    gene_code = item.strip().replace('[', '').replace(']', '')
+                    continue
+                if self.file_format == 'TNT':
+                    gene_code = 'dummy'
+                    continue
             if gene_code != '':
                 entry = re.sub('\s+', ' ', item)
                 voucher, sequence = entry.split(' ')
