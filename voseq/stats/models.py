@@ -20,4 +20,4 @@ class VouchersPerGene(models.Model):
     """Number of vouchers that have sequences for each of our genes.
     """
     gene_code = models.CharField(max_length=100)
-    vouchers_number = models.IntegerField()
+    number_of_vouchers = models.IntegerField()
