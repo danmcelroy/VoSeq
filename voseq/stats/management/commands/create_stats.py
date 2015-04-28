@@ -61,9 +61,13 @@ class Command(BaseCommand):
         genes = Sequences.objects.all().distinct('gene_code').values('gene_code')
 
         model_objects = []
+
+        pk_index = 1
         for gene in genes:
             voucher_count = Sequences.objects.filter(gene_code=gene['gene_code']).count()
             gene['voucher_count'] = voucher_count
-            model_objects.append(VouchersPerGene(**gene))
+            model_objects.append(VouchersPerGene(id=pk_index, **gene))
+            pk_index += 1
 
+        VouchersPerGene.objects.all().delete()
         VouchersPerGene.objects.bulk_create(model_objects)
