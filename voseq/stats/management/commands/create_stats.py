@@ -58,7 +58,7 @@ class Command(BaseCommand):
         )
 
     def count_vouchers_per_gene(self):
-        genes = Sequences.objects.all().distinct('gene_code').values('gene_code')
+        genes = Sequences.objects.all().values('gene_code').distinct()
 
         model_objects = []
 
