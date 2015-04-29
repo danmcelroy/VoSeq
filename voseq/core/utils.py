@@ -236,16 +236,16 @@ def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_for
     else:
         warning = ''
 
-    if file_format == 'PHY' or file_format == 'GenbankFASTA':
-        return str(prot_sequence), warning
-
-    out = str(prot_sequence)
     # 'J' is used in the extended IUPAC codes and means either Leucine or Isoleucine
     # too bad that RaXML does not accept it as valid aminoacid. So we replace it with 'X'
-    if 'J' in out:
-        out = out.replace('J', 'X')
+    prot_sequence = str(prot_sequence)
+    if 'J' in prot_sequence:
+        prot_sequence = prot_sequence.replace('J', 'X')
 
-    return out, warning
+    if file_format == 'PHY' or file_format == 'GenbankFASTA':
+        return prot_sequence, warning
+
+    return prot_sequence, warning
 
 
 def gapped_translation(seq_obj, genetic_code):
