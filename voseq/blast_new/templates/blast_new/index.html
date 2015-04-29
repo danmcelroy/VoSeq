@@ -48,13 +48,23 @@
                       <label for="id_gene_codes">Genes: </label>
                   </td>
                   <td>
+
+
                       {{ form.gene_codes.errors }}
-                      <table class="table table-condensed table-striped">
+                      <table class="table table-condensed table-striped small_fonts">
                           <tr>
                               {% for i in form.gene_codes %}
-                              <td>
-                              {{ i }}
-                              </td>
+                                {% if forloop.counter == 1 %}
+                                  <tr>
+                                {% endif %}
+                                    <td>
+                                      {{ i }}
+                                    </td>
+
+                                {% if forloop.counter|divisibleby:"5" %}
+                                  </tr>
+                                {% endif %}
+
                               {% endfor %}
                           </tr>
                       </table>
