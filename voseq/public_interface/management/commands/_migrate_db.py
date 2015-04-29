@@ -336,9 +336,12 @@ class ParseXML(object):
 
             item['time_edited'] = date_obj
 
-            ambiguous_chars = item['sequences'].count('?') + item['sequences'].count('-')
-            ambiguous_chars += item['sequences'].count('N') + item['sequences'].count('n')
-            item['number_ambiguous_bp'] = ambiguous_chars
+            if item['sequences'] is not None:
+                ambiguous_chars = item['sequences'].count('?') + item['sequences'].count('-')
+                ambiguous_chars += item['sequences'].count('N') + item['sequences'].count('n')
+                item['number_ambiguous_bp'] = ambiguous_chars
+            else:
+                item['number_ambiguous_bp'] = None
 
     def save_table_sequences_to_db(self):
         if self.table_sequences_items is None:
