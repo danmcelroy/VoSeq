@@ -47,6 +47,16 @@ def browse(request):
 
 def search(request):
     version, stats = get_version_stats()
+    return render(request, 'public_interface/search_results.html',
+                  {
+                      'version': version,
+                      'stats': stats,
+                  }
+                  )
+
+
+def advanced_search(request):
+    version, stats = get_version_stats()
 
     if request.method == 'GET' and bool(request.GET) is not False:
         form = AdvancedSearchForm(request.GET)
