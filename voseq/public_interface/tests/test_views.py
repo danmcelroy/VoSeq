@@ -63,7 +63,7 @@ class TestViews(TestCase):
         self.assertEqual(404, response.status_code)
 
     def test_search_hymenoptera(self):
-        response = self.client.get('/search/?orden=Hymenoptera')
+        response = self.client.get('/search/?q=Hymenoptera')
         content = str(response.content)
         self.assertTrue('CP100-14' in content)
 
@@ -71,13 +71,10 @@ class TestViews(TestCase):
         """
         Querying for several data fields should be equivalent of using AND."
         """
+        # TODO rewrite this test for search/advanced
         response = self.client.get('/search/?orden=Coleoptera&code=NN1-1')
         content = str(response.content)
         self.assertFalse('NN1-2' in content and 'NN1-1' in content)
-
-    def test_advanced_search(self):
-        response = self.client.get('/search/')
-        self.assertEqual(200, response.status_code)
 
     def tearDown(self):
         call_command('clear_index', interactive=False, verbosity=0)
