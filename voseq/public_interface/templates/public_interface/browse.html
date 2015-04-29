@@ -32,7 +32,15 @@ being deposited in GenBank (hence public).
                   <a href="/p/{{ i.code }}"><img src="{% static 'img/icon_image.png' %}" title="See photos"/></a>
                 {% endif %}
                 <br />
-                By {{ i.extractor }} on {{ i.timestamp|date }}
+
+                <small>
+                  {% if i.extractor != '' %}
+                    By {{ i.extractor }} on
+                  {% endif %}
+
+                  {{ i.timestamp|date }}
+                </small>
+
               </li>
               {% endfor %}
 
