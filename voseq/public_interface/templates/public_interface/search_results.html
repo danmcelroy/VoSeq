@@ -8,9 +8,9 @@
   <h3>Search</h3>
   <hr>
 
-  {% for item in results %}
+  {% for result in page.object_list %}
     <p>
-      <a href="{{ result.object.get_absolute_url }}">{{ item.code }}</a>
+      <a href="{{ result.object.get_absolute_url }}">{{ item.code }} {{ result.object.title}}</a>
     </p>
   {% empty %}
     <p>
