@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from django.conf import settings
 
 from haystack.forms import SearchForm
+from haystack.views import SearchView
 
 from core.utils import get_version_stats
 from .models import Vouchers
@@ -56,7 +57,16 @@ def search(request):
     if query == '':
         return redirect('/')
 
-    print(request.GET)
+    form = SearchForm(request.GET)
+    sqs = form.search()
+
+    search_view = SearchView(
+        template='public_interface/search_results.html',
+        searchqueryset=sqs,
+        form_class=SearchForm,
+    )
+    search_view.__call__(request)
+    return search_view.create_response()
 
 
 def advanced_search(request):
