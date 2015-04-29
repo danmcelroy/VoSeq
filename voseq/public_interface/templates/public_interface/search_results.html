@@ -8,15 +8,30 @@
   <h3>Search</h3>
   <hr>
 
+  <ul>
   {% for result in page.object_list %}
-    <p>
-      <a href="{{ result.object.get_absolute_url }}">{{ item.code }} {{ result.object.title}}</a>
-    </p>
+    <li>
+      <a href="/p/{{ result.object.code }}">{{ result.object.code }}</a>
+         <i>{{ result.object.genus}}</i>
+         <i>{{ result.object.species}}</i>
+
+      <br />
+
+      <small>
+        {% if result.object.extractor != '' %}
+          By {{ result.object.extractor }} on
+        {% endif %}
+
+        {{ result.object.timestamp|date }}
+      </small>
+
+    </li>
   {% empty %}
     <p>
     <i class="fa fa-search fa-2x"></i>
     <b>No results found.</b></p> You could try an <a href="/search/advanced/">advanced search</a>.
   {% endfor %}
+  </ul>
 
   {% if page.has_previous or page.has_next %}
     <div>
