@@ -1,7 +1,10 @@
 from django.http import HttpResponseRedirect, Http404
 from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render
+from django.shortcuts import redirect
 from django.conf import settings
+
+from haystack.forms import SearchForm
 
 from core.utils import get_version_stats
 from .models import Vouchers
@@ -46,13 +49,14 @@ def browse(request):
 
 
 def search(request):
-    version, stats = get_version_stats()
-    return render(request, 'public_interface/search_results.html',
-                  {
-                      'version': version,
-                      'stats': stats,
-                  }
-                  )
+    if 'q' not in request.GET:
+        return redirect('/')
+
+    query = request.GET['q'].strip()
+    if query == '':
+        return redirect('/')
+
+    print(request.GET)
 
 
 def advanced_search(request):
