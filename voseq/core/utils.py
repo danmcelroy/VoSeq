@@ -240,6 +240,11 @@ def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_for
         return str(prot_sequence), warning
 
     out = str(prot_sequence)
+    # 'J' is used in the extended IUPAC codes and means either Leucine or Isoleucine
+    # too bad that RaXML does not accept it as valid aminoacid. So we replace it with 'X'
+    if 'J' in out:
+        out = out.replace('J', 'X')
+
     return out, warning
 
 
