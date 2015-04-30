@@ -115,7 +115,6 @@ class CreateDataset(object):
         our_taxon_names = self.get_taxon_names_for_taxa()
 
         all_seqs = self.get_all_sequences()
-        print(all_seqs)
 
         for voucher in all_seqs:
             for s in voucher:
