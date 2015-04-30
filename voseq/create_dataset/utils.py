@@ -114,7 +114,7 @@ class CreateDataset(object):
 
         our_taxon_names = self.get_taxon_names_for_taxa()
 
-        all_seqs = Sequences.objects.all().values('code_id', 'gene_code', 'sequences').order_by('code_id')
+        all_seqs = self.get_all_sequences()
         for s in all_seqs:
             code = s['code_id']
             gene_code = s['gene_code']
@@ -139,6 +139,22 @@ class CreateDataset(object):
         self.voucher_codes = list(vouchers_found)
         self.gene_codes = list(gene_codes)
         self.add_missing_seqs()
+
+    def get_all_sequences(self):
+        # Return sequences as big dictionary with voucher_code as keys
+        seqs_dict = {}
+
+        all_seqs = Sequences.objects.all().values('code_id',
+                                                  'gene_code',
+                                                  'sequences').order_by('code_id')
+        for seq in all_seqs:
+            code = seq['code_id']
+            gene_code = seq['gene_code']
+            if code not in seqs_dict:
+                seqs_dict[code] = {}
+            seqs_dict[code][gene_code] = seq['sequences']
+
+        return seqs_dict
 
     def get_taxon_names_for_taxa(self):
         """Returns dict: {'CP100-10': {'taxon': 'name'}}
