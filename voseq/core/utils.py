@@ -24,13 +24,13 @@ def get_voucher_codes(cleaned_data):
         * `form.cleaned_data`: taken from a Form class
 
     Returns:
-        set of voucher codes, no dupes, dropped unwanted.
+        tuple of voucher codes, no dupes, dropped unwanted.
     """
-    voucher_codes = []
+    voucher_codes = tuple()
     if cleaned_data['taxonset'] is not None:
-        voucher_codes = json.loads(cleaned_data['taxonset'].taxonset_list)
+        voucher_codes += tuple(json.loads(cleaned_data['taxonset'].taxonset_list))
     if cleaned_data['voucher_codes'] != '':
-        voucher_codes += cleaned_data['voucher_codes'].splitlines()
+        voucher_codes += tuple(cleaned_data['voucher_codes'].splitlines())
 
     voucher_codes_clean = []
     for i in voucher_codes:
