@@ -60,13 +60,18 @@ def search(request):
     form = SearchForm(request.GET)
     sqs = form.search()
 
-    search_view = SearchView(
+    search_view = SimpleSearch(
         template='public_interface/search_results.html',
         searchqueryset=sqs,
         form_class=SearchForm,
     )
     search_view.__call__(request)
     return search_view.create_response()
+
+
+class SimpleSearch(SearchView):
+    def extra_context(self):
+        return {'result_count': len(self.searchqueryset)}
 
 
 def advanced_search(request):
