@@ -4,7 +4,7 @@ from .models import Vouchers
 
 
 class VouchersIndex(indexes.SearchIndex, indexes.Indexable):
-    text = indexes.CharField(document=True, use_template=True)
+    text = indexes.EdgeNgramField(document=True, use_template=True)
     code = indexes.EdgeNgramField(model_attr='code')
     orden = indexes.EdgeNgramField(model_attr='orden', null=True)
     superfamily = indexes.EdgeNgramField(model_attr='superfamily', null=True)
@@ -16,27 +16,27 @@ class VouchersIndex(indexes.SearchIndex, indexes.Indexable):
     species = indexes.EdgeNgramField(model_attr='species', null=True)
     subspecies = indexes.EdgeNgramField(model_attr='subspecies', null=True)
     hostorg = indexes.EdgeNgramField(model_attr='hostorg', null=True)
-    author = indexes.EdgeNgramField(model_attr='author', null=True)
+    # author = indexes.EdgeNgramField(model_attr='author', null=True)
 
-    country = indexes.EdgeNgramField(model_attr='country', null=True)
-    specificLocality = indexes.EdgeNgramField(model_attr='specificLocality', null=True)
-    latitude = indexes.EdgeNgramField(model_attr='latitude', null=True)
-    longitude = indexes.EdgeNgramField(model_attr='longitude', null=True)
-    max_altitude = indexes.EdgeNgramField(model_attr='max_altitude', null=True)
-    min_altitude = indexes.EdgeNgramField(model_attr='min_altitude', null=True)
+    # country = indexes.EdgeNgramField(model_attr='country', null=True)
+    # specificLocality = indexes.EdgeNgramField(model_attr='specificLocality', null=True)
+    # latitude = indexes.EdgeNgramField(model_attr='latitude', null=True)
+    # longitude = indexes.EdgeNgramField(model_attr='longitude', null=True)
+    # max_altitude = indexes.EdgeNgramField(model_attr='max_altitude', null=True)
+    # min_altitude = indexes.EdgeNgramField(model_attr='min_altitude', null=True)
+#
+    # code_bold = indexes.EdgeNgramField(model_attr='code_bold', null=True)
+    # voucherCode = indexes.EdgeNgramField(model_attr='voucherCode', null=True)
+    # voucherLocality = indexes.EdgeNgramField(model_attr='voucherLocality', null=True)
+    # determinedBy = indexes.EdgeNgramField(model_attr='determinedBy', null=True)
+    # collector = indexes.EdgeNgramField(model_attr='collector', null=True)
+#
+    # extraction = indexes.EdgeNgramField(model_attr='extraction', null=True)
+    # extractionTube = indexes.EdgeNgramField(model_attr='extractionTube', null=True)
+    # extractor = indexes.EdgeNgramField(model_attr='extractor', null=True)
 
-    code_bold = indexes.EdgeNgramField(model_attr='code_bold', null=True)
-    voucherCode = indexes.EdgeNgramField(model_attr='voucherCode', null=True)
-    voucherLocality = indexes.EdgeNgramField(model_attr='voucherLocality', null=True)
-    determinedBy = indexes.EdgeNgramField(model_attr='determinedBy', null=True)
-    collector = indexes.EdgeNgramField(model_attr='collector', null=True)
-
-    extraction = indexes.EdgeNgramField(model_attr='extraction', null=True)
-    extractionTube = indexes.EdgeNgramField(model_attr='extractionTube', null=True)
-    extractor = indexes.EdgeNgramField(model_attr='extractor', null=True)
-
-    publishedIn = indexes.EdgeNgramField(model_attr='publishedIn', null=True)
-    notes = indexes.EdgeNgramField(model_attr='notes', null=True)
+    # publishedIn = indexes.EdgeNgramField(model_attr='publishedIn', null=True)
+    # notes = indexes.EdgeNgramField(model_attr='notes', null=True)
 
     def get_model(self):
         return Vouchers
