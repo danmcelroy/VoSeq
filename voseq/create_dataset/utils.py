@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
@@ -109,22 +111,16 @@ class CreateDataset(object):
             list of sequence objects as produced by BioPython.
         """
         # We might need to update our list of vouches and genes
-        vouchers_found = set()
         gene_codes = set()
 
         our_taxon_names = self.get_taxon_names_for_taxa()
 
         all_seqs = self.get_all_sequences()
 
-        for voucher in all_seqs:
-            for s in voucher:
-                gene_code = s['gene_code']
-                code = s['code_id']
-                if code in self.voucher_codes and gene_code in self.gene_codes:
-                    vouchers_found.add(code)
-                    gene_codes.add(gene_code)
-
-                    seq_obj = self.create_seq_record(s)
+        for code in self.voucher_codes:
+            for gene_code in self.gene_codes:
+                if gene_code in all_seqs[code]:
+                    seq_obj = self.create_seq_record(all_seqs[code][gene_code])
                     seq_obj.id = flatten_taxon_names_dict(our_taxon_names[code])
                     if 'GENECODE' in self.taxon_names:
                         seq_obj.id += '_' + gene_code
@@ -133,15 +129,28 @@ class CreateDataset(object):
                     self.voucher_codes_metadata[code] = seq_obj.id
 
                     if gene_code not in self.seq_objs:
-                        self.seq_objs[gene_code] = []
-                    self.seq_objs[gene_code].append(seq_obj)
+                        self.seq_objs[gene_code] = tuple()
+                    self.seq_objs[gene_code] += (seq_obj,)
+                else:
+                    print(">>> there is no seq for gene_code %s and code %s" % (gene_code, code))
+                    seq = Seq('?' * self.gene_codes_metadata[gene_code])
+                    empty_seq_obj = SeqRecord(seq)
+                    try:
+                        empty_seq_obj.id = self.voucher_codes_metadata[code]
+                    except KeyError:
+                        pass
+                    empty_seq_obj.name = gene_code
+                    empty_seq_obj.description = code
 
-        self.voucher_codes = list(vouchers_found)
+                    if gene_code not in self.seq_objs:
+                        self.seq_objs[gene_code] = tuple()
+                    self.seq_objs[gene_code] += (empty_seq_obj,)
+
         self.gene_codes = list(gene_codes)
         self.add_missing_seqs()
 
     def get_all_sequences(self):
-        # Return sequences as tuple of lists containing sequence and relate data
+        # Return sequences as dict of lists containing sequence and related data
         seqs_dict = {}
 
         all_seqs = Sequences.objects.all().values('code_id',
@@ -153,16 +162,18 @@ class CreateDataset(object):
 
             if code in self.voucher_codes and gene_code in self.gene_codes:
                 if code not in seqs_dict:
-                    seqs_dict[code] = []
-                seqs_dict[code].append(seq)
+                    seqs_dict[code] = {gene_code: ''}
+                seqs_dict[code][gene_code] = seq
 
+        """
         seqs_with_old_order = tuple()
         for code in self.voucher_codes:
             try:
                 seqs_with_old_order += (seqs_dict[code],)
             except KeyError:
                 self.warnings += ['Could not find sequences for voucher %s' % code]
-        return seqs_with_old_order
+        """
+        return seqs_dict
 
     def create_seq_record(self, s):
         """
@@ -179,6 +190,37 @@ class CreateDataset(object):
         seq = Seq(sequence)
         seq_obj = SeqRecord(seq)
         return seq_obj
+
+    def add_missing_seqs(self):
+        """
+        Loops over the created seq_objects and adds sequences full of ? if
+        those where not found in our database.
+
+        Uses the updated lists of voucher_codes and gene_codes
+        """
+        new_seq_objs = OrderedDict()
+
+        for gene_code in self.seq_objs:
+            new_seq_objs[gene_code] = tuple()
+
+            i = 0
+            for seq_obj in self.seq_objs[gene_code]:
+                code = seq_obj.description
+                if code == self.voucher_codes[i]:
+                    new_seq_objs[gene_code] += (seq_obj,)
+                    i += 1
+                else:
+                    seq = Seq('?' * self.gene_codes_metadata[gene_code])
+                    empty_seq_obj = SeqRecord(seq)
+                    try:
+                        empty_seq_obj.id = self.voucher_codes_metadata[self.voucher_codes[i]]
+                    except KeyError:
+                        pass
+                    empty_seq_obj.name = gene_code
+                    empty_seq_obj.description = self.voucher_codes[i]
+                    new_seq_objs[gene_code] += (empty_seq_obj,)
+                    i += 1
+        self.seq_objs = new_seq_objs
 
     def get_taxon_names_for_taxa(self):
         """Returns dict: {'CP100-10': {'taxon': 'name'}}
@@ -217,25 +259,3 @@ class CreateDataset(object):
             gene_code = i['gene_code']
             gene_codes_metadata[gene_code] = i['length']
         return gene_codes_metadata
-
-    def add_missing_seqs(self):
-        """
-        Loops over the created seq_objects and adds sequences full of ? if
-        those where not found in our database.
-
-        Uses the updated lists of voucher_codes and gene_codes
-        """
-        for gene_code in self.seq_objs:
-            for code in self.voucher_codes:
-                found = False
-                for seq_obj in self.seq_objs[gene_code]:
-                    if code == seq_obj.description:
-                        found = True
-
-                if found is False:
-                    seq = Seq('?' * self.gene_codes_metadata[gene_code])
-                    empty_seq_obj = SeqRecord(seq)
-                    empty_seq_obj.id = self.voucher_codes_metadata[code]
-                    empty_seq_obj.name = gene_code
-                    empty_seq_obj.description = code
-                    self.seq_objs[gene_code].append(empty_seq_obj)
