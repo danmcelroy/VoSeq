@@ -1,4 +1,5 @@
 {% extends 'public_interface/base.html' %}
+{% load humanize %}
 
 
 {% block content %}
@@ -9,7 +10,7 @@
   <hr>
 
   {% if result_count > 0 %}
-    <p><b>I have found {{ result_count }} results</b></p>
+    <p><b>I have found {{ result_count|intcomma }} results</b></p>
     <hr>
   {% endif %}
   <ul>
