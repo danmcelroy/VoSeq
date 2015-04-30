@@ -101,29 +101,12 @@ class CreateDataset(object):
             self.dataset_file = nexus.dataset_file
             return nexus_dataset
 
-    def create_seq_record(self, s):
-        """
-        Adds ? if the sequence is not long enough
-        :param s:
-        :return:
-        """
-        gene_code = s['gene_code']
-        length = self.gene_codes_metadata[gene_code]
-        sequence = s['sequences']
-        length_difference = length - len(sequence)
-
-        sequence += '?' * length_difference
-        seq = Seq(sequence)
-        seq_obj = SeqRecord(seq)
-        return seq_obj
-
     def create_seq_objs(self):
         """Generate a list of sequence objects. Also takes into account the
         genes passed as geneset.
 
         Returns:
             list of sequence objects as produced by BioPython.
-
         """
         # We might need to update our list of vouches and genes
         vouchers_found = set()
@@ -157,6 +140,49 @@ class CreateDataset(object):
         self.gene_codes = list(gene_codes)
         self.add_missing_seqs()
 
+    def get_taxon_names_for_taxa(self):
+        """Returns dict: {'CP100-10': {'taxon': 'name'}}
+
+        Takes list of voucher_codes and list of taxon_names from cleaned form.
+
+        Returns:
+            Dictionary with data, also as dicts.
+
+        """
+        vouchers_with_taxon_names = {}
+
+        all_vouchers = Vouchers.objects.all().order_by('code').values('code', 'orden', 'superfamily',
+                                                                      'family', 'subfamily', 'tribe',
+                                                                      'subtribe', 'genus', 'species',
+                                                                      'subspecies', 'author', 'hostorg',)
+        for voucher in all_vouchers:
+            code = voucher['code']
+            if code in self.voucher_codes:
+                obj = dict()
+                for taxon_name in self.taxon_names:
+                    if taxon_name != 'GENECODE':
+                        taxon_name = taxon_name.lower()
+                        obj[taxon_name] = voucher[taxon_name]
+                vouchers_with_taxon_names[code] = obj
+
+        return vouchers_with_taxon_names
+
+    def create_seq_record(self, s):
+        """
+        Adds ? if the sequence is not long enough
+        :param s:
+        :return:
+        """
+        gene_code = s['gene_code']
+        length = self.gene_codes_metadata[gene_code]
+        sequence = s['sequences']
+        length_difference = length - len(sequence)
+
+        sequence += '?' * length_difference
+        seq = Seq(sequence)
+        seq_obj = SeqRecord(seq)
+        return seq_obj
+
     def get_gene_codes_metadata(self):
         """
         :return: dictionary with genecode and base pair number.
@@ -189,30 +215,3 @@ class CreateDataset(object):
                     empty_seq_obj.name = gene_code
                     empty_seq_obj.description = code
                     self.seq_objs[gene_code].append(empty_seq_obj)
-
-    def get_taxon_names_for_taxa(self):
-        """Returns dict: {'CP100-10': {'taxon': 'name'}}
-
-        Takes list of voucher_codes and list of taxon_names from cleaned form.
-
-        Returns:
-            Dictionary with data, also as dicts.
-
-        """
-        vouchers_with_taxon_names = {}
-
-        all_vouchers = Vouchers.objects.all().order_by('code').values('code', 'orden', 'superfamily',
-                                                                      'family', 'subfamily', 'tribe',
-                                                                      'subtribe', 'genus', 'species',
-                                                                      'subspecies', 'author', 'hostorg',)
-        for voucher in all_vouchers:
-            code = voucher['code']
-            if code in self.voucher_codes:
-                obj = dict()
-                for taxon_name in self.taxon_names:
-                    if taxon_name != 'GENECODE':
-                        taxon_name = taxon_name.lower()
-                        obj[taxon_name] = voucher[taxon_name]
-                vouchers_with_taxon_names[code] = obj
-
-        return vouchers_with_taxon_names
