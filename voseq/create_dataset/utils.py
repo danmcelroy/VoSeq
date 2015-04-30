@@ -115,24 +115,27 @@ class CreateDataset(object):
         our_taxon_names = self.get_taxon_names_for_taxa()
 
         all_seqs = self.get_all_sequences()
-        for s in all_seqs:
-            code = s['code_id']
-            gene_code = s['gene_code']
-            if code in self.voucher_codes and gene_code in self.gene_codes:
-                vouchers_found.add(code)
-                gene_codes.add(gene_code)
+        print(all_seqs)
 
-                seq_obj = self.create_seq_record(s)
-                seq_obj.id = flatten_taxon_names_dict(our_taxon_names[code])
-                if 'GENECODE' in self.taxon_names:
-                    seq_obj.id += '_' + gene_code
-                seq_obj.name = gene_code
-                seq_obj.description = code
-                self.voucher_codes_metadata[code] = seq_obj.id
+        for voucher in all_seqs:
+            for s in voucher:
+                gene_code = s['gene_code']
+                code = s['code_id']
+                if code in self.voucher_codes and gene_code in self.gene_codes:
+                    vouchers_found.add(code)
+                    gene_codes.add(gene_code)
 
-                if gene_code not in self.seq_objs:
-                    self.seq_objs[gene_code] = []
-                self.seq_objs[gene_code].append(seq_obj)
+                    seq_obj = self.create_seq_record(s)
+                    seq_obj.id = flatten_taxon_names_dict(our_taxon_names[code])
+                    if 'GENECODE' in self.taxon_names:
+                        seq_obj.id += '_' + gene_code
+                    seq_obj.name = gene_code
+                    seq_obj.description = code
+                    self.voucher_codes_metadata[code] = seq_obj.id
+
+                    if gene_code not in self.seq_objs:
+                        self.seq_objs[gene_code] = []
+                    self.seq_objs[gene_code].append(seq_obj)
 
         vouchers_not_found = set(self.voucher_codes) - vouchers_found
         self.warnings += ['Could not find sequences for voucher %s' % i for i in vouchers_not_found]
@@ -150,11 +153,32 @@ class CreateDataset(object):
         for seq in all_seqs:
             code = seq['code_id']
             gene_code = seq['gene_code']
-            if code not in seqs_dict:
-                seqs_dict[code] = {}
-            seqs_dict[code][gene_code] = seq['sequences']
 
-        return seqs_dict
+            if code in self.voucher_codes and gene_code in self.gene_codes:
+                if code not in seqs_dict:
+                    seqs_dict[code] = []
+                seqs_dict[code].append(seq)
+
+        seqs_with_old_order = tuple()
+        for code in self.voucher_codes:
+            seqs_with_old_order += (seqs_dict[code],)
+        return seqs_with_old_order
+
+    def create_seq_record(self, s):
+        """
+        Adds ? if the sequence is not long enough
+        :param s:
+        :return:
+        """
+        gene_code = s['gene_code']
+        length = self.gene_codes_metadata[gene_code]
+        sequence = s['sequences']
+        length_difference = length - len(sequence)
+
+        sequence += '?' * length_difference
+        seq = Seq(sequence)
+        seq_obj = SeqRecord(seq)
+        return seq_obj
 
     def get_taxon_names_for_taxa(self):
         """Returns dict: {'CP100-10': {'taxon': 'name'}}
@@ -182,22 +206,6 @@ class CreateDataset(object):
                 vouchers_with_taxon_names[code] = obj
 
         return vouchers_with_taxon_names
-
-    def create_seq_record(self, s):
-        """
-        Adds ? if the sequence is not long enough
-        :param s:
-        :return:
-        """
-        gene_code = s['gene_code']
-        length = self.gene_codes_metadata[gene_code]
-        sequence = s['sequences']
-        length_difference = length - len(sequence)
-
-        sequence += '?' * length_difference
-        seq = Seq(sequence)
-        seq_obj = SeqRecord(seq)
-        return seq_obj
 
     def get_gene_codes_metadata(self):
         """
