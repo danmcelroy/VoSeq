@@ -137,14 +137,12 @@ class CreateDataset(object):
                         self.seq_objs[gene_code] = []
                     self.seq_objs[gene_code].append(seq_obj)
 
-        vouchers_not_found = set(self.voucher_codes) - vouchers_found
-        self.warnings += ['Could not find sequences for voucher %s' % i for i in vouchers_not_found]
         self.voucher_codes = list(vouchers_found)
         self.gene_codes = list(gene_codes)
         self.add_missing_seqs()
 
     def get_all_sequences(self):
-        # Return sequences as big dictionary with voucher_code as keys
+        # Return sequences as tuple of lists containing sequence and relate data
         seqs_dict = {}
 
         all_seqs = Sequences.objects.all().values('code_id',
@@ -161,7 +159,10 @@ class CreateDataset(object):
 
         seqs_with_old_order = tuple()
         for code in self.voucher_codes:
-            seqs_with_old_order += (seqs_dict[code],)
+            try:
+                seqs_with_old_order += (seqs_dict[code],)
+            except KeyError:
+                self.warnings += ['Could not find sequences for voucher %s' % code]
         return seqs_with_old_order
 
     def create_seq_record(self, s):
