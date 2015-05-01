@@ -108,6 +108,7 @@ class CreateDataset(object):
         """
         # We might need to update our list of vouches and genes
         gene_codes = set()
+        vouchers_found = set()
         our_taxon_names = self.get_taxon_names_for_taxa()
         all_seqs = self.get_all_sequences()
 
@@ -119,7 +120,6 @@ class CreateDataset(object):
                     continue
 
                 if gene_code not in this_voucher_seqs:
-                    print(">>> there is no seq for gene_code %s and code %s" % (gene_code, code))
                     this_voucher_seqs = '?'
                 seq_obj = self.build_seq_obj(code, gene_code, our_taxon_names, this_voucher_seqs)
 
@@ -127,6 +127,11 @@ class CreateDataset(object):
                     self.seq_objs[gene_code] = tuple()
                 self.seq_objs[gene_code] += (seq_obj,)
                 gene_codes.add(gene_code)
+                vouchers_found.add(code)
+
+        vouchers_not_found = set(self.voucher_codes) - vouchers_found
+        for code in vouchers_not_found:
+            self.warnings += ['Could not find sequences for voucher %s' % code]
         self.gene_codes = list(gene_codes)
 
     def get_all_sequences(self):
@@ -144,15 +149,6 @@ class CreateDataset(object):
                 if code not in seqs_dict:
                     seqs_dict[code] = {gene_code: ''}
                 seqs_dict[code][gene_code] = seq
-
-        """
-        seqs_with_old_order = tuple()
-        for code in self.voucher_codes:
-            try:
-                seqs_with_old_order += (seqs_dict[code],)
-            except KeyError:
-                self.warnings += ['Could not find sequences for voucher %s' % code]
-        """
         return seqs_dict
 
     def build_seq_obj(self, code, gene_code, our_taxon_names, this_voucher_seqs):
