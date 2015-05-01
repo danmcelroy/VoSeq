@@ -18,7 +18,7 @@ from public_interface.models import Vouchers
 
 class CreateDataset(object):
     """
-    Accept form input to create a dataset in several formats, codon positions,
+    Accepts form input to create a dataset in several formats, codon positions,
     for list of codes and genes. Also takes into account the vouchers passed as
     taxonset.
 
@@ -112,39 +112,27 @@ class CreateDataset(object):
         """
         # We might need to update our list of vouches and genes
         gene_codes = set()
-
         our_taxon_names = self.get_taxon_names_for_taxa()
-
         all_seqs = self.get_all_sequences()
 
         for code in self.voucher_codes:
             for gene_code in self.gene_codes:
-                if gene_code in all_seqs[code]:
-                    seq_obj = self.create_seq_record(all_seqs[code][gene_code])
-                    seq_obj.id = flatten_taxon_names_dict(our_taxon_names[code])
-                    if 'GENECODE' in self.taxon_names:
-                        seq_obj.id += '_' + gene_code
-                    seq_obj.name = gene_code
-                    seq_obj.description = code
-                    self.voucher_codes_metadata[code] = seq_obj.id
+                try:
+                    this_voucher_seqs = all_seqs[code]
+                except KeyError:
+                    continue
 
-                    if gene_code not in self.seq_objs:
-                        self.seq_objs[gene_code] = tuple()
-                    self.seq_objs[gene_code] += (seq_obj,)
-                else:
+                if gene_code not in this_voucher_seqs:
                     print(">>> there is no seq for gene_code %s and code %s" % (gene_code, code))
-                    seq = Seq('?' * self.gene_codes_metadata[gene_code])
-                    empty_seq_obj = SeqRecord(seq)
-                    try:
-                        empty_seq_obj.id = self.voucher_codes_metadata[code]
-                    except KeyError:
-                        pass
-                    empty_seq_obj.name = gene_code
-                    empty_seq_obj.description = code
+                    this_voucher_seqs = '?'
+                seq_obj = self.build_seq_obj(code, gene_code, our_taxon_names, this_voucher_seqs)
 
-                    if gene_code not in self.seq_objs:
-                        self.seq_objs[gene_code] = tuple()
-                    self.seq_objs[gene_code] += (empty_seq_obj,)
+                if gene_code not in self.seq_objs:
+                    self.seq_objs[gene_code] = tuple()
+                self.seq_objs[gene_code] += (seq_obj,)
+
+        for k, v in self.seq_objs.items():
+            print(k, v)
 
         self.gene_codes = list(gene_codes)
         self.add_missing_seqs()
@@ -174,6 +162,21 @@ class CreateDataset(object):
                 self.warnings += ['Could not find sequences for voucher %s' % code]
         """
         return seqs_dict
+
+    def build_seq_obj(self, code, gene_code, our_taxon_names, this_voucher_seqs):
+        if this_voucher_seqs == '?':
+            seq = Seq('?' * self.gene_codes_metadata[gene_code])
+            seq_obj = SeqRecord(seq)
+        else:
+            seq_obj = self.create_seq_record(this_voucher_seqs[gene_code])
+        seq_obj.id = flatten_taxon_names_dict(our_taxon_names[code])
+        if 'GENECODE' in self.taxon_names:
+            seq_obj.id += '_' + gene_code
+        seq_obj.name = gene_code
+        seq_obj.description = code
+
+        self.voucher_codes_metadata[code] = seq_obj.id
+        return seq_obj
 
     def create_seq_record(self, s):
         """
