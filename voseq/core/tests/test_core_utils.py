@@ -36,6 +36,14 @@ class TestGenBankFastaUtils(TestCase):
         result = get_voucher_codes(self.cleaned_data)
         self.assertEqual(expected, len(result))
 
+    def test_get_voucher_codes_order(self):
+        """Voucher codes should not be sorted. Same order as input from author
+        should be kept."""
+        self.cleaned_data['voucher_codes'] = 'CP100-10\r\nCP100-11\r\nCP100-12\r\nCP100-13\r\nCP100-11'
+        expected = ('CP100-10', 'CP100-11', 'CP100-12', 'CP100-13')
+        result = get_voucher_codes(self.cleaned_data)
+        self.assertEqual(expected, result)
+
     def test_get_voucher_codes_dropped(self):
         self.cleaned_data['voucher_codes'] = 'CP100-10\r\n--CP100-11\r\nCP100-12'
         expected = 2
