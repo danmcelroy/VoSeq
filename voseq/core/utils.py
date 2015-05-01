@@ -24,32 +24,36 @@ def get_voucher_codes(cleaned_data):
         * `form.cleaned_data`: taken from a Form class
 
     Returns:
-        set of voucher codes, no dupes, dropped unwanted.
+        tuple of voucher codes, no dupes, dropped unwanted.
     """
-    voucher_codes = []
+    voucher_codes = tuple()
     if cleaned_data['taxonset'] is not None:
-        voucher_codes = json.loads(cleaned_data['taxonset'].taxonset_list)
+        voucher_codes += tuple(json.loads(cleaned_data['taxonset'].taxonset_list))
     if cleaned_data['voucher_codes'] != '':
-        voucher_codes += cleaned_data['voucher_codes'].splitlines()
+        voucher_codes += tuple(cleaned_data['voucher_codes'].splitlines())
 
-    voucher_codes_clean = []
+    voucher_codes_clean = tuple()
     for i in voucher_codes:
         if re.search('^--', i):
             i_clean = re.sub('^--', '', i)
-            voucher_codes_clean.append(i_clean)
+            voucher_codes_clean += (i_clean,)
         else:
-            voucher_codes_clean.append(i)
-    voucher_codes_set = set(voucher_codes_clean)
+            voucher_codes_clean += (i,)
+
+    voucher_codes_set = tuple()
+    for i in voucher_codes_clean:
+        if i not in voucher_codes_set:
+            voucher_codes_set += (i,)
 
     vouchers_to_drop = []
     for i in voucher_codes:
         if re.search('^--', i):
             vouchers_to_drop.append(re.sub('^--', '', i))
 
-    voucher_codes_filtered = []
+    voucher_codes_filtered = tuple()
     for i in voucher_codes_set:
         if i not in vouchers_to_drop:
-            voucher_codes_filtered.append(i)
+            voucher_codes_filtered += (i,)
     return voucher_codes_filtered
 
 
