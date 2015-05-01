@@ -52,7 +52,6 @@ class CreateDataset(object):
         self.voucher_codes = get_voucher_codes(self.cleaned_data)
         self.gene_codes = get_gene_codes(self.cleaned_data)
         self.create_seq_objs()
-
         if self.file_format == 'GenbankFASTA':
             fasta = CreateGenbankFasta(self.codon_positions, self.partition_by_positions,
                                        self.seq_objs, self.gene_codes, self.voucher_codes,
@@ -127,7 +126,7 @@ class CreateDataset(object):
                 if gene_code not in self.seq_objs:
                     self.seq_objs[gene_code] = tuple()
                 self.seq_objs[gene_code] += (seq_obj,)
-
+                gene_codes.add(gene_code)
         self.gene_codes = list(gene_codes)
 
     def get_all_sequences(self):
