@@ -5,9 +5,17 @@
 {% block content %}
 
 <div class="container">
+  <div class="row">
+    <div class="col-lg-10 col-lg-offset-1 col-md-offset-1">
 
-  <h3>Search</h3>
-  <hr>
+      <h3>Search</h3>
+      <hr>
+
+    </div><!-- col -->
+  </div><!-- row -->
+
+  <div class="row">
+    <div class="col-lg-9 col-lg-offset-2 col-md-offset-2">
 
   {% if result_count > 0 %}
     <p><b>I have found {{ result_count|intcomma }} results</b></p>
@@ -67,6 +75,9 @@
       </ul>
     </nav>
   {% endif %}
+
+    </div><!-- col -->
+  </div><!-- row -->
 
 </div>
 
