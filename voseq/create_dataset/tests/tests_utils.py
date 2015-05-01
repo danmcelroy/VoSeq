@@ -911,3 +911,9 @@ GCGTTGCCTGTTTGCATGACGTTTGAAATAACTTCCACTTTTTTTTTCTTTGGTGAGTTCTTTGCCATCTCGTAATGTGT
 """
         result = dataset_creator.dataset_str
         self.assertEqual(expected.strip(), result)
+
+    def test_have_no_sequences_for_input_voucher(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['voucher_codes'] = 'CP100-10\r\nCP100-11\r\nCP1000'
+        dataset_creator = CreateDataset(cleaned_data)
+        self.assertTrue('Could not find sequences for voucher CP1000' in dataset_creator.warnings)
