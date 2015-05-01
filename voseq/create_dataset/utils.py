@@ -104,11 +104,8 @@ class CreateDataset(object):
             return nexus_dataset
 
     def create_seq_objs(self):
-        """Generate a list of sequence objects. Also takes into account the
-        genes passed as geneset.
-
-        Returns:
-            list of sequence objects as produced by BioPython.
+        """Generate a dictionary of sequence objects. Also takes into account the genes passed as
+        geneset.
         """
         # We might need to update our list of vouches and genes
         gene_codes = set()
@@ -131,11 +128,7 @@ class CreateDataset(object):
                     self.seq_objs[gene_code] = tuple()
                 self.seq_objs[gene_code] += (seq_obj,)
 
-        for k, v in self.seq_objs.items():
-            print(k, v)
-
         self.gene_codes = list(gene_codes)
-        self.add_missing_seqs()
 
     def get_all_sequences(self):
         # Return sequences as dict of lists containing sequence and related data
@@ -193,37 +186,6 @@ class CreateDataset(object):
         seq = Seq(sequence)
         seq_obj = SeqRecord(seq)
         return seq_obj
-
-    def add_missing_seqs(self):
-        """
-        Loops over the created seq_objects and adds sequences full of ? if
-        those where not found in our database.
-
-        Uses the updated lists of voucher_codes and gene_codes
-        """
-        new_seq_objs = OrderedDict()
-
-        for gene_code in self.seq_objs:
-            new_seq_objs[gene_code] = tuple()
-
-            i = 0
-            for seq_obj in self.seq_objs[gene_code]:
-                code = seq_obj.description
-                if code == self.voucher_codes[i]:
-                    new_seq_objs[gene_code] += (seq_obj,)
-                    i += 1
-                else:
-                    seq = Seq('?' * self.gene_codes_metadata[gene_code])
-                    empty_seq_obj = SeqRecord(seq)
-                    try:
-                        empty_seq_obj.id = self.voucher_codes_metadata[self.voucher_codes[i]]
-                    except KeyError:
-                        pass
-                    empty_seq_obj.name = gene_code
-                    empty_seq_obj.description = self.voucher_codes[i]
-                    new_seq_objs[gene_code] += (empty_seq_obj,)
-                    i += 1
-        self.seq_objs = new_seq_objs
 
     def get_taxon_names_for_taxa(self):
         """Returns dict: {'CP100-10': {'taxon': 'name'}}
