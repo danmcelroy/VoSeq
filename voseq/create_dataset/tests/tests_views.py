@@ -31,7 +31,7 @@ class CreateDatasetViewsTest(TestCase):
     def test_view_result(self):
         res = self.c.post('/create_dataset/results/',
                           {
-                              'voucher_codes': None,
+                              'voucher_codes': 'CP100-10',
                               'gene_codes': [],
                               'geneset': 1,
                               'taxonset': 1,

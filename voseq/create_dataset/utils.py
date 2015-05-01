@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
@@ -16,7 +18,7 @@ from public_interface.models import Vouchers
 
 class CreateDataset(object):
     """
-    Accept form input to create a dataset in several formats, codon positions,
+    Accepts form input to create a dataset in several formats, codon positions,
     for list of codes and genes. Also takes into account the vouchers passed as
     taxonset.
 
@@ -50,7 +52,6 @@ class CreateDataset(object):
         self.voucher_codes = get_voucher_codes(self.cleaned_data)
         self.gene_codes = get_gene_codes(self.cleaned_data)
         self.create_seq_objs()
-
         if self.file_format == 'GenbankFASTA':
             fasta = CreateGenbankFasta(self.codon_positions, self.partition_by_positions,
                                        self.seq_objs, self.gene_codes, self.voucher_codes,
@@ -101,6 +102,74 @@ class CreateDataset(object):
             self.dataset_file = nexus.dataset_file
             return nexus_dataset
 
+    def create_seq_objs(self):
+        """Generate a dictionary of sequence objects. Also takes into account the genes passed as
+        geneset.
+        """
+        # We might need to update our list of vouches and genes
+        gene_codes = set()
+        our_taxon_names = self.get_taxon_names_for_taxa()
+        all_seqs = self.get_all_sequences()
+
+        for code in self.voucher_codes:
+            for gene_code in self.gene_codes:
+                try:
+                    this_voucher_seqs = all_seqs[code]
+                except KeyError:
+                    continue
+
+                if gene_code not in this_voucher_seqs:
+                    print(">>> there is no seq for gene_code %s and code %s" % (gene_code, code))
+                    this_voucher_seqs = '?'
+                seq_obj = self.build_seq_obj(code, gene_code, our_taxon_names, this_voucher_seqs)
+
+                if gene_code not in self.seq_objs:
+                    self.seq_objs[gene_code] = tuple()
+                self.seq_objs[gene_code] += (seq_obj,)
+                gene_codes.add(gene_code)
+        self.gene_codes = list(gene_codes)
+
+    def get_all_sequences(self):
+        # Return sequences as dict of lists containing sequence and related data
+        seqs_dict = {}
+
+        all_seqs = Sequences.objects.all().values('code_id',
+                                                  'gene_code',
+                                                  'sequences').order_by('code_id')
+        for seq in all_seqs:
+            code = seq['code_id']
+            gene_code = seq['gene_code']
+
+            if code in self.voucher_codes and gene_code in self.gene_codes:
+                if code not in seqs_dict:
+                    seqs_dict[code] = {gene_code: ''}
+                seqs_dict[code][gene_code] = seq
+
+        """
+        seqs_with_old_order = tuple()
+        for code in self.voucher_codes:
+            try:
+                seqs_with_old_order += (seqs_dict[code],)
+            except KeyError:
+                self.warnings += ['Could not find sequences for voucher %s' % code]
+        """
+        return seqs_dict
+
+    def build_seq_obj(self, code, gene_code, our_taxon_names, this_voucher_seqs):
+        if this_voucher_seqs == '?':
+            seq = Seq('?' * self.gene_codes_metadata[gene_code])
+            seq_obj = SeqRecord(seq)
+        else:
+            seq_obj = self.create_seq_record(this_voucher_seqs[gene_code])
+        seq_obj.id = flatten_taxon_names_dict(our_taxon_names[code])
+        if 'GENECODE' in self.taxon_names:
+            seq_obj.id += '_' + gene_code
+        seq_obj.name = gene_code
+        seq_obj.description = code
+
+        self.voucher_codes_metadata[code] = seq_obj.id
+        return seq_obj
+
     def create_seq_record(self, s):
         """
         Adds ? if the sequence is not long enough
@@ -116,79 +185,6 @@ class CreateDataset(object):
         seq = Seq(sequence)
         seq_obj = SeqRecord(seq)
         return seq_obj
-
-    def create_seq_objs(self):
-        """Generate a list of sequence objects. Also takes into account the
-        genes passed as geneset.
-
-        Returns:
-            list of sequence objects as produced by BioPython.
-
-        """
-        # We might need to update our list of vouches and genes
-        vouchers_found = set()
-        gene_codes = set()
-
-        our_taxon_names = self.get_taxon_names_for_taxa()
-
-        all_seqs = Sequences.objects.all().values('code_id', 'gene_code', 'sequences').order_by('code_id')
-        for s in all_seqs:
-            code = s['code_id']
-            gene_code = s['gene_code']
-            if code in self.voucher_codes and gene_code in self.gene_codes:
-                vouchers_found.add(code)
-                gene_codes.add(gene_code)
-
-                seq_obj = self.create_seq_record(s)
-                seq_obj.id = flatten_taxon_names_dict(our_taxon_names[code])
-                if 'GENECODE' in self.taxon_names:
-                    seq_obj.id += '_' + gene_code
-                seq_obj.name = gene_code
-                seq_obj.description = code
-                self.voucher_codes_metadata[code] = seq_obj.id
-
-                if gene_code not in self.seq_objs:
-                    self.seq_objs[gene_code] = []
-                self.seq_objs[gene_code].append(seq_obj)
-
-        vouchers_not_found = set(self.voucher_codes) - vouchers_found
-        self.warnings += ['Could not find sequences for voucher %s' % i for i in vouchers_not_found]
-        self.voucher_codes = list(vouchers_found)
-        self.gene_codes = list(gene_codes)
-        self.add_missing_seqs()
-
-    def get_gene_codes_metadata(self):
-        """
-        :return: dictionary with genecode and base pair number.
-        """
-        queryset = Genes.objects.all().values('gene_code', 'length')
-        gene_codes_metadata = dict()
-        for i in queryset:
-            gene_code = i['gene_code']
-            gene_codes_metadata[gene_code] = i['length']
-        return gene_codes_metadata
-
-    def add_missing_seqs(self):
-        """
-        Loops over the created seq_objects and adds sequences full of ? if
-        those where not found in our database.
-
-        Uses the updated lists of voucher_codes and gene_codes
-        """
-        for gene_code in self.seq_objs:
-            for code in self.voucher_codes:
-                found = False
-                for seq_obj in self.seq_objs[gene_code]:
-                    if code == seq_obj.description:
-                        found = True
-
-                if found is False:
-                    seq = Seq('?' * self.gene_codes_metadata[gene_code])
-                    empty_seq_obj = SeqRecord(seq)
-                    empty_seq_obj.id = self.voucher_codes_metadata[code]
-                    empty_seq_obj.name = gene_code
-                    empty_seq_obj.description = code
-                    self.seq_objs[gene_code].append(empty_seq_obj)
 
     def get_taxon_names_for_taxa(self):
         """Returns dict: {'CP100-10': {'taxon': 'name'}}
@@ -216,3 +212,14 @@ class CreateDataset(object):
                 vouchers_with_taxon_names[code] = obj
 
         return vouchers_with_taxon_names
+
+    def get_gene_codes_metadata(self):
+        """
+        :return: dictionary with genecode and base pair number.
+        """
+        queryset = Genes.objects.all().values('gene_code', 'length')
+        gene_codes_metadata = dict()
+        for i in queryset:
+            gene_code = i['gene_code']
+            gene_codes_metadata[gene_code] = i['length']
+        return gene_codes_metadata

@@ -142,8 +142,7 @@ class Dataset(object):
 
     def get_reading_frames(self):
         """
-
-        :return: dict of gene_code: reading_frame. If not found, flag warning.
+        :return: dict of gene_code: reading_frame
         """
         reading_frames = dict()
         genes = Genes.objects.all().values('gene_code', 'reading_frame')
