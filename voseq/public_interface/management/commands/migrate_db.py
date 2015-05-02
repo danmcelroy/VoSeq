@@ -17,14 +17,18 @@ class Command(BaseCommand):
                          'This file can be obtained from your MySQL database using this command:'
                          '\t"mysqdump --xml database > dump.xml"',
                     ),
+        make_option('--prefix',
+                    dest='prefix',
+                    help='If your tables of VoSeq have been prefixed you can specify it here.',
+                    ),
     )
 
     def handle(self, *args, **options):
         if options['dumpfile'] is None:
             error_msg = 'Enter name of database dump file as argument.' \
                         ' "python manage.py migrate_db --dumpfile=dump.xml --settings=voseq.settings.local' \
-                        'This file can be obtained from your MySQL database using this command:' \
-                        ' "mysqdump --xml database > dump.xml"',
+                        '. This file can be obtained from your MySQL database using this command:' \
+                        ' "mysqdump --xml database > dump.xml"'
             raise CommandError(error_msg)
 
         dump_file = options['dumpfile']
