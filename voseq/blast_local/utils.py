@@ -225,8 +225,6 @@ class BLAST(object):
 
         seq = re.sub('^N+', '', seq)
         seq = re.sub('N+$', '', seq)
-        if '?' in seq or 'N' in seq.upper():
-            # having ambiguous characters will mess up the creation of blast database
-            return ''
-        else:
-            return seq
+        seq = seq.replace('-', 'N')
+        seq = seq.replace('?', 'N')
+        return seq
