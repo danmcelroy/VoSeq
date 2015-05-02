@@ -6,6 +6,17 @@
 | |Build status|   | |Build Status|   |
 +------------------+------------------+
 
+Contents
+========
+
+* `VoSeq is being rewritten`_
+* `Configuration`_
+* `Migrate VoSeq database`_
+* `Test database for development`_
+* `Start the server`_
+* `Administrate the server`_
+
+
 VoSeq is being rewritten
 ========================
 
