@@ -123,7 +123,15 @@ database.
 .. code:: shell
 
     make migrations
-    python migrate_db.py dump.xml
+    python voseq/manage.py migrate_db --dumpfile=dump.xml --settings=voseq.settings.local
+
+If you have used a prefix for your tables in the old VoSeq, you can optionally input this as an
+argument for the import script:
+
+.. code:: shell
+
+    python voseq/manage.py migrate_db --dumpfile=dump.xml --prefix=voseq_ --settings=voseq.settings.local
+
 
 It might issue a warning message:
 
