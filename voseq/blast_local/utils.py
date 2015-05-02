@@ -123,11 +123,10 @@ class BLAST(object):
 
             my_records = []
             for i in queryset:
-                id = i.code_id + '|' + i.gene_code
+                item_id = i.code_id + '|' + i.gene_code
                 seq = self.strip_question_marks(i.sequences)
                 if seq != '':
-                    seq_record = SeqRecord(Seq(seq),
-                                           id=id)
+                    seq_record = SeqRecord(Seq(seq), id=item_id)
                     my_records.append(seq_record)
             SeqIO.write(my_records, self.seq_file, "fasta")
 
