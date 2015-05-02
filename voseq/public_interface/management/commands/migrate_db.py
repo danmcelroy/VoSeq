@@ -32,13 +32,12 @@ class Command(BaseCommand):
             raise CommandError(error_msg)
 
         dump_file = options['dumpfile']
+        tables_prefix = options['prefix']
         verbosity = options['verbosity']
 
         with codecs.open(dump_file, "r") as handle:
             dump = handle.read()
 
-        # tables_prefix = 'voseq_'
-        tables_prefix = ''
         parser = ParseXML(dump, tables_prefix, verbosity)
 
         parser.import_table_vouchers()
