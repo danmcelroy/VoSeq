@@ -28,14 +28,14 @@ VoSeq 2.0.0 is the future!
 Configuration
 =============
 
-Clone/download Voseq to your prefer directory.
+Clone/`download <https://github.com/carlosp420/VoSeq/releases>`__ Voseq to your prefer directory.
 
 You need to install some Python packages as dependencies:
 
 .. code:: shell
 
     cd /path/to/VoSeq
-    pip install -r requirements/dev.txt
+    pip install -r requirements/testing.txt
 
 Download and install PostgreSQL. For macOSX users we recommend to do it
 by downloading the Postgres.app from http://postgresapp.com
