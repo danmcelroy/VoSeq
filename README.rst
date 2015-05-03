@@ -10,6 +10,7 @@ Contents
 ========
 
 * `VoSeq is being rewritten`_
+* `New features`_
 * `Configuration`_
 * `Migrate VoSeq database`_
 * `Test database for development`_
@@ -35,6 +36,12 @@ More details about the migration can be found in our `discussion
 list <https://groups.google.com/forum/#!topic/voseq-discussion-list/wQ-E0Xcimgw>`__.
 
 VoSeq 2.0.0 is the future!
+
+New Features
+============
+Query suggestions for simple taxon searches:
+
+.. image:: imgs/simple_search_suggestion.png
 
 Configuration
 =============
