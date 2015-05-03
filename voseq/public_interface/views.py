@@ -59,6 +59,7 @@ def search(request):
 
     form = SearchForm(request.GET)
     sqs = form.search()
+    sqs.spelling_suggestion()
 
     search_view = SimpleSearch(
         template='public_interface/search_results.html',
@@ -66,6 +67,7 @@ def search(request):
         form_class=SearchForm,
     )
     search_view.__call__(request)
+    print(search_view)
     return search_view.create_response()
 
 
