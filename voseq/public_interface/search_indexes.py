@@ -58,7 +58,7 @@ class AdvancedSearchIndex(indexes.SearchIndex, indexes.Indexable):
     subfamily = indexes.CharField(model_attr='subfamily', null=True)
     tribe = indexes.CharField(model_attr='tribe', null=True)
     subtribe = indexes.CharField(model_attr='subtribe', null=True)
-    genus = indexes.CharField(model_attr='genus', null=True)
+    genus = indexes.EdgeNgramField(model_attr='genus', null=True)
     species = indexes.CharField(model_attr='species', null=True)
     subspecies = indexes.CharField(model_attr='subspecies', null=True)
     hostorg = indexes.CharField(model_attr='hostorg', null=True)
