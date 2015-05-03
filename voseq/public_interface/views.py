@@ -67,7 +67,6 @@ def search(request):
         form_class=SearchForm,
     )
     search_view.__call__(request)
-    print(search_view)
     return search_view.create_response()
 
 
