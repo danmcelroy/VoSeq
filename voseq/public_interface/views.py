@@ -76,7 +76,7 @@ class SimpleSearch(SearchView):
         return {'result_count': len(self.searchqueryset)}
 
 
-def advanced_search(request):
+def search_advanced(request):
     version, stats = get_version_stats()
 
     if request.method == 'GET' and bool(request.GET) is not False:
