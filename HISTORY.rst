@@ -12,6 +12,11 @@ HISTORY
 - Create GenBank fasta.
 - View genes.
 
+New features
+""""""""""""
+
+- Simple searches for taxa will return suggestions "Did you mean:" in case of misspellings.
+
 Version 1.7.X
 -------------
 
