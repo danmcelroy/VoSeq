@@ -42,7 +42,7 @@ def get_voucher_codes(cleaned_data):
 
     voucher_codes_set = tuple()
     for i in voucher_codes_clean:
-        if i not in voucher_codes_set:
+        if i not in voucher_codes_set and i.strip() != '':
             voucher_codes_set += (i,)
 
     vouchers_to_drop = []

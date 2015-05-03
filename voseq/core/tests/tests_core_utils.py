@@ -22,7 +22,7 @@ class TestGenBankFastaUtils(TestCase):
         self.cleaned_data = {
             'gene_codes': [g, g2],
             'taxonset': ts,
-            'voucher_codes': 'CP200-10\r\nCP100-11',
+            'voucher_codes': 'CP200-10\r\n \r\nCP100-11\r\n \r\n',
             'geneset': gs,
         }
 
