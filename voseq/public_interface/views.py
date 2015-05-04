@@ -76,7 +76,14 @@ class SimpleSearch(SearchView):
         return {'result_count': len(self.searchqueryset)}
 
 
-def advanced_search(request):
+def search_advanced(request):
+    """Uses the haystack index `advanced_search` to find values based on a
+    combination of queries for one or more fields.
+    Works in a similar way to **genus:Mopho AND species:helenor**
+
+    :param request: HTTP request from the url dispatcher.
+    :return: response to html template.
+    """
     version, stats = get_version_stats()
 
     if request.method == 'GET' and bool(request.GET) is not False:
