@@ -18,10 +18,7 @@ import sys, os
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
 
-cwd = os.getcwd()
-parent = os.path.dirname(cwd)
-sys.path.append(os.path.abspath(parent))
-sys.path.append(os.path.abspath(os.path.join(parent, 'voseq')))
+sys.path.insert(0, os.path.abspath('..'))
 sys.path.append(os.path.abspath('_themes'))
 
 
