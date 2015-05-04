@@ -25,7 +25,24 @@ taxon search and the other for the advanced search:
             'URL': 'http://127.0.0.1:9200/',
             'INDEX_NAME': 'haystack',
             'INCLUDE_SPELLING': True,
-        }
+            'EXCLUDED_INDEXES': ['public_interface.search_indexes.AdvancedSearchIndex'],
+        },
+        'advanced_search': {
+            'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+            'URL': 'http://127.0.0.1:9200/',
+            'INDEX_NAME': 'advanced_search',
+            'INCLUDE_SPELLING': False,
+            'EXCLUDED_INDEXES': ['public_interface.search_indexes.VouchersIndex'],
+        },
     }
 
-.. autofunction:: voseq.public_interface.views.advanced_search
+For testing purposes, I specified *EdgeNgramField* only for the field *genus* so it
+can be used for autocomplete in the advanced search form. The class defining
+this search index is:
+
+.. autoclass:: voseq.public_interface.search_indexes.AdvancedSearchIndex
+
+The view is created using a function:
+
+.. autofunction:: voseq.public_interface.views.search_advanced
+
