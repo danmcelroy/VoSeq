@@ -186,7 +186,7 @@ Import test data for your database:
 
 .. code:: shell
 
-    make import
+    make test_import
 
 Start the server
 ================
@@ -238,3 +238,18 @@ following command and provide the requested information:
 .. |Landscape| image:: https://landscape.io/github/carlosp420/VoSeq/master/landscape.svg
    :target: https://landscape.io/github/carlosp420/VoSeq/master
    :alt: Code Health
+
+Some features of VoSeq need to be run periodically. You can setup cronjobs to
+execute some commands once a day or every 2 hours depending on your needs:
+
+* Update the database index for the simple and advanced search functions:
+
+.. code:: shell
+
+    python voseq/manage.py update_index --settings=voseq.settings.local
+
+* Update some voucher and gene statistics for your installation of VoSeq:
+
+.. code:: shell
+
+    make stats
