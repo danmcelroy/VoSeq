@@ -1,7 +1,10 @@
-Detailed documentation
-======================
+.. _dev:
 
-.. toctree::
-   :maxdepth: 2
+.. module:: voseq
 
-    dev
+Advanced search
+===============
+
+Describe it.
+
+.. autofunction:: voseq.public_interface.views.advanced_search

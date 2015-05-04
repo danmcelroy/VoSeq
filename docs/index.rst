@@ -16,5 +16,13 @@ Contents:
    usage
    contributing
    authors
-   dev
    history
+
+Detailed documentation
+----------------------
+Here you will find more info on the implementation of various tools of VoSeq.
+
+.. toctree::
+   :maxdepth: 2
+
+   dev
