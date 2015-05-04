@@ -19,10 +19,10 @@ clean-pyc:
 	find . -name '*~' -exec rm -f {} +
 
 docs:
-	rm -f docs/voseq.*
+	# rm -f docs/voseq.*
+	# rm -f docs/modules.rst
 	rm -rf docs/_build
-	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ voseq
+	# sphinx-apidoc -o docs/ voseq
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 
