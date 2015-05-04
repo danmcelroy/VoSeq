@@ -117,3 +117,6 @@ GOOGLE_MAPS_API_KEY = 'fake api key'
 VERSION = '2.0.0'
 
 TESTING = False
+
+# Change this after obtaining VoSeq and before deployments to a production server
+SECRET_KEY = '65~55UJd9BRyFq_ota{IxlG9w=2ZO3'
