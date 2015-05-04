@@ -1,3 +1,5 @@
+import datetime
+
 from haystack import indexes
 
 from .models import Vouchers
@@ -42,8 +44,35 @@ class VouchersIndex(indexes.SearchIndex, indexes.Indexable):
         return Vouchers
 
     # TODO change to time_edited, time_created with auto in tables and migrate_db script
-    """
-    def index_queryset(self, using=None):
+    def index_queryset(self, using='default'):
         # Used when the entire index for model is updated.
-        return self.get_model().objects.filter(time_created__lte=datetime.datetime.now())
+        return self.get_model().objects.filter(timestamp__lte=datetime.datetime.now())
+
+
+class AdvancedSearchIndex(indexes.SearchIndex, indexes.Indexable):
+    """Defines an index and all fields should have autocomplete capabilities
+    in the GUI.
+
+    :param indexes.SearchIndex:
+    :param indexes.Indexable:
+    :returns: class AdvancedSearchIndex
     """
+    text = indexes.CharField(document=True, use_template=True)
+    code = indexes.CharField(model_attr='code')
+    orden = indexes.CharField(model_attr='orden', null=True)
+    superfamily = indexes.CharField(model_attr='superfamily', null=True)
+    family = indexes.CharField(model_attr='family', null=True)
+    subfamily = indexes.CharField(model_attr='subfamily', null=True)
+    tribe = indexes.CharField(model_attr='tribe', null=True)
+    subtribe = indexes.CharField(model_attr='subtribe', null=True)
+    genus = indexes.EdgeNgramField(model_attr='genus', null=True)
+    species = indexes.CharField(model_attr='species', null=True)
+    subspecies = indexes.CharField(model_attr='subspecies', null=True)
+    hostorg = indexes.CharField(model_attr='hostorg', null=True)
+
+    def get_model(self):
+        return AdvancedSearchIndex
+
+    def index_queryset(self, using='advanced_search'):
+        # Used when the entire index for model is updated.
+        return self.get_model().objects.filter(timestamp__lte=datetime.datetime.now())
