@@ -495,36 +495,32 @@ Now they are inserted as new entries.
 Version 1.1.0
 +++++++++++++
 
-| 20110725
-|  - (TM) Fixed the genbank list retrieval with taxonset, and gene
-picker. Fixed a viewing table in the normal section. Added a in-db data
-summary at footer.
+- 20110725 (TM) Fixed the genbank list retrieval with taxonset, and gene
+  picker. Fixed a viewing table in the normal section. Added a in-db data
+  summary at footer.
+- 20110614: (TM)    Added taxonset creator and editor, with display
+        of voucher info and existing sequences.
+        Taxonsets may be used for dataset retrieval
+        or table creation together with or as separate
+        from the free code field.
 
-::
+- 20110520: (TM)    edited dataset retrieval page and functionality,
+        now with support for various codon position partitioning,
+        as well as PHYLIP and FASTA formats
 
-    - 20110614: (TM)    Added taxonset creator and editor, with display
-            of voucher info and existing sequences.
-            Taxonsets may be used for dataset retrieval
-            or table creation together with or as separate
-            from the free code field.
+- 20110516: (TM)    added batch upload function for vouchers and sequences
+- (TM)  added gene table layout (view/edit/add)
+- (TM)  auto update of comboBoxes and auto removal of old
+        search results
+- (TM)  added field choice and value delimitor choice for table
+    and dataset generation and fasta format for dataset gen.
+- (TM)  some small bug and layout fixes
 
-    - 20110520: (TM)    edited dataset retrieval page and functionality, 
-            now with support for various codon position partitioning, 
-            as well as PHYLIP and FASTA formats
-
-    - 20110516: (TM)    added batch upload function for vouchers and sequences
-    - (TM)  added gene table layout (view/edit/add)
-    - (TM)  auto update of comboBoxes and auto removal of old 
-            search results
-    - (TM)  added field choice and value delimitor choice for table
-        and dataset generation and fasta format for dataset gen.
-    - (TM)  some small bug and layout fixes
-
-    - 20110414: (TM)    login scripts and password handling.
-    - (TM)  link refs and URL masking. 
-    - (TM)  some layout fixes and adding of host field.
-    - (TM)  added record history field, storing changes made to a 
-            record and by who (user). 
+- 20110414: (TM)    login scripts and password handling.
+- (TM)  link refs and URL masking.
+- (TM)  some layout fixes and adding of host field.
+- (TM)  added record history field, storing changes made to a
+        record and by who (user).
 
 Version 1.0.8
 +++++++++++++
