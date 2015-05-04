@@ -1,8 +1,8 @@
 HISTORY
-=======
+-------
 
 2.0.0 (2015-01-xx)
-~~~~~~~~~~~~~~~~~~
+++++++++++++++++++
 
 - rewrite project in Python using Django, PostgreSQL and elasticsearch.
 - Browse page.
@@ -12,13 +12,12 @@ HISTORY
 - Create GenBank fasta.
 - View genes.
 
-New features
-------------
+**New features**
 
 - Simple searches for taxa will return suggestions "Did you mean:" in case of misspellings.
 
 Version 1.7.X
-~~~~~~~~~~~~~
++++++++++++++
 
 -  2014-11-13 Carlos Peña:
     * When making voucher tables there were many repetitive columns, fixed.
@@ -29,7 +28,7 @@ Version 1.7.X
       curl. @file in curl_set_opt is deprecated.
 
 Version 1.7.4
-~~~~~~~~~~~~~
++++++++++++++
 
 -  2014-08-01 Carlos Peña
 
@@ -39,7 +38,7 @@ Version 1.7.4
        connections to Fclirk are now using https).
 
 Version 1.7.3
-~~~~~~~~~~~~~
++++++++++++++
 
 -  2013-11-07 Carlos Peña
 
@@ -52,7 +51,7 @@ Version 1.7.3
        processing.
 
 Version 1.7.2
-~~~~~~~~~~~~~
++++++++++++++
 
 -  2013-11-01 Tobias Malm
 
@@ -81,7 +80,7 @@ Version 1.7.2
        Some other small bugs and layout stuff.
 
 Version 1.7.1
-~~~~~~~~~~~~~
++++++++++++++
 
 -  2013-10-09 Carlos Peña mycalesis@gmail.com
 
@@ -149,7 +148,7 @@ Version 1.7.1
        wrong database file.
 
 Version 1.7.0
-~~~~~~~~~~~~~
++++++++++++++
 
 -  Tobias 2013-04-24
 
@@ -189,7 +188,7 @@ Version 1.7.0
        folder. Checking dojo_data instead.
 
 Version 1.6.0
-~~~~~~~~~~~~~
++++++++++++++
 
 -  Carlos 2013-03-29
 
@@ -205,7 +204,7 @@ Version 1.6.0
        MySQL database (using plupload).
 
 Version 1.5.0
-~~~~~~~~~~~~~
++++++++++++++
 
 ::
 
@@ -242,27 +241,27 @@ Version 1.5.0
    -  [Carlos 2013-03-17] Fixing mask\_url links in BLAST scripts.
 
 Version 1.4.3
-~~~~~~~~~~~~~
++++++++++++++
 
 ::
 
     - [Carlos 2013-02-16] Fixing directory chage for login-form.
 
 Version 1.4.2
-~~~~~~~~~~~~~
++++++++++++++
 
 ::
 
     - [Carlos 2013-02-13] Fixing checkdate bug in files for batch upload/update. [Thanks to Marianne Espeland].
 
 Version 1.4.1
-~~~~~~~~~~~~~
++++++++++++++
 
 -  Tobias 2013-02-10] Fixing curl function in Windows [connection to
    Github].
 
 Version 1.4.0
-~~~~~~~~~~~~~
++++++++++++++
 
 ::
 
@@ -270,7 +269,7 @@ Version 1.4.0
      server. No need for Flickr then. Add the line ```$photos_repository = 'local';``` to your ```conf.php``` file.
 
 Version 1.3.8
-~~~~~~~~~~~~~
++++++++++++++
 
 ::
 
@@ -285,7 +284,7 @@ Version 1.3.8
     - [Carlos 2013-01-31] Version is taken from changelog.md file.
 
 Version 1.3.7
-~~~~~~~~~~~~~
++++++++++++++
 
 ::
 
@@ -298,7 +297,7 @@ Version 1.3.7
     replace the ?-marks at the beginnings by "N".  
 
 Version 1.3.6
-~~~~~~~~~~~~~
++++++++++++++
 
 -  Tobias 2013-01-27] Added a checkbox for single gene datasets to
    exclude taxa missing that gene from the dataset (yes/no).
@@ -310,13 +309,13 @@ Version 1.3.6
    choosen genes.
 
 Version 1.3.5
-~~~~~~~~~~~~~
++++++++++++++
 
 -  Tobias 2012-12-04] Edited some table outputs for dataset and table
    creation and overview table.
 
 Version 1.3.4
-~~~~~~~~~~~~~
++++++++++++++
 
 -  Tobias 2012-11-30] Added automatical update of gene codes in primer
    and sequences tables when updating gene names.
@@ -328,14 +327,14 @@ Version 1.3.4
    and primers. Will not overwrite already existing values.
 
 Version 1.3.3
-~~~~~~~~~~~~~
++++++++++++++
 
 ::
 
     - [Carlos 2012-11-20] Fixing mask_url bug in add.php file.
 
 Version 1.3.2
-~~~~~~~~~~~~~
++++++++++++++
 
 ::
 
@@ -343,7 +342,7 @@ Version 1.3.2
     - [Carlos 2012-11-14] Fixing installation script to consider altenate socket
 
 Version 1.3.1
-~~~~~~~~~~~~~
++++++++++++++
 
 ::
 
@@ -352,7 +351,7 @@ Version 1.3.1
       Fixing adding taxonlist links and behaviour.
 
 Version 1.3.0
-~~~~~~~~~~~~~
++++++++++++++
 
 ::
 
@@ -360,14 +359,14 @@ Version 1.3.0
       no sequences when creating datasets
 
 Version 1.2.8
-~~~~~~~~~~~~~
++++++++++++++
 
 ::
 
     - [Carlos] fixes to take into account tildes and accents when creating users.
 
 Version 1.2.7
-~~~~~~~~~~~~~
++++++++++++++
 
 ::
 
@@ -375,7 +374,7 @@ Version 1.2.7
     - [Carlos] adding citation of PLOS paper to intro page.
 
 Version 1.2.6
-~~~~~~~~~~~~~
++++++++++++++
 
 -  Tobias] Change in form: accept-charset="utf8" in the
    upload\_sequences.php file to allow windows systems to properly
@@ -383,7 +382,7 @@ Version 1.2.6
    import process when encountering a special symbol.
 
 Version 1.2.5
-~~~~~~~~~~~~~
++++++++++++++
 
 ::
 
@@ -393,7 +392,7 @@ Version 1.2.5
    TaxonSets as well.
 
 Version 1.2.4
-~~~~~~~~~~~~~
++++++++++++++
 
 -  Tobias] included "Determined by" and "Auctor" fields to voucher table
    and "notes" to sequence table.
@@ -402,12 +401,12 @@ Version 1.2.4
       vouchers and sequences.
 
 Version 1.2.3
-~~~~~~~~~~~~~
++++++++++++++
 
 20120514 - (CP) including help text and links to online documentation..
 
 Version 1.2.2
-~~~~~~~~~~~~~
++++++++++++++
 
 20120426 - (CP) installation script: entering table prefix for MySQL is
 not mandatory now. 20120424 - (TM, CP) creating genbank fasta file keeps
@@ -455,7 +454,7 @@ before trying to blast against Genbank - (CP) blast\_locally\_full\_db
 output processing was a little bit redundant.
 
 Version 1.1.7
-~~~~~~~~~~~~~
++++++++++++++
 
 20120217 - (CP) setting width and height for images - (CP) setting
 .htaccess file with cache control and Leverage browser caching - (CP)
@@ -483,7 +482,7 @@ blast\_coi\_vs\_genbank.php => blast\_vs\_genbank.php line 107-108 line
 MS Excel table - (CP) sequences.php no utf8
 
 Version 1.1.5
-~~~~~~~~~~~~~
++++++++++++++
 
 20111128 - (CP) Fixed "update" primers when there is nothing to update.
 Now they are inserted as new entries.
@@ -494,47 +493,43 @@ Now they are inserted as new entries.
         
 
 Version 1.1.0
-~~~~~~~~~~~~~
++++++++++++++
 
-| 20110725
-|  - (TM) Fixed the genbank list retrieval with taxonset, and gene
-picker. Fixed a viewing table in the normal section. Added a in-db data
-summary at footer.
+- 20110725 (TM) Fixed the genbank list retrieval with taxonset, and gene
+  picker. Fixed a viewing table in the normal section. Added a in-db data
+  summary at footer.
+- 20110614: (TM)    Added taxonset creator and editor, with display
+        of voucher info and existing sequences.
+        Taxonsets may be used for dataset retrieval
+        or table creation together with or as separate
+        from the free code field.
 
-::
+- 20110520: (TM)    edited dataset retrieval page and functionality,
+        now with support for various codon position partitioning,
+        as well as PHYLIP and FASTA formats
 
-    - 20110614: (TM)    Added taxonset creator and editor, with display
-            of voucher info and existing sequences.
-            Taxonsets may be used for dataset retrieval
-            or table creation together with or as separate
-            from the free code field.
+- 20110516: (TM)    added batch upload function for vouchers and sequences
+- (TM)  added gene table layout (view/edit/add)
+- (TM)  auto update of comboBoxes and auto removal of old
+        search results
+- (TM)  added field choice and value delimitor choice for table
+    and dataset generation and fasta format for dataset gen.
+- (TM)  some small bug and layout fixes
 
-    - 20110520: (TM)    edited dataset retrieval page and functionality, 
-            now with support for various codon position partitioning, 
-            as well as PHYLIP and FASTA formats
-
-    - 20110516: (TM)    added batch upload function for vouchers and sequences
-    - (TM)  added gene table layout (view/edit/add)
-    - (TM)  auto update of comboBoxes and auto removal of old 
-            search results
-    - (TM)  added field choice and value delimitor choice for table
-        and dataset generation and fasta format for dataset gen.
-    - (TM)  some small bug and layout fixes
-
-    - 20110414: (TM)    login scripts and password handling.
-    - (TM)  link refs and URL masking. 
-    - (TM)  some layout fixes and adding of host field.
-    - (TM)  added record history field, storing changes made to a 
-            record and by who (user). 
+- 20110414: (TM)    login scripts and password handling.
+- (TM)  link refs and URL masking.
+- (TM)  some layout fixes and adding of host field.
+- (TM)  added record history field, storing changes made to a
+        record and by who (user).
 
 Version 1.0.8
-~~~~~~~~~~~~~
++++++++++++++
 
 2011-03-15 - Some minor modifications on voucher'page. - Added tool to
 do a blast of COI sequences against ncbi genbank, via webservice.
 
 Version 1.0.5
-~~~~~~~~~~~~~
++++++++++++++
 
 2007-08-24 - Included validation of latitude and longitude in admin
 interface, only decimal numbers are accepted now. This was included in
@@ -543,7 +538,7 @@ little to take into account when user doesn't enter coordinates so that
 it will be written in the database as NULL values.
 
 Version 1.0.4
-~~~~~~~~~~~~~
++++++++++++++
 
 2007-08-23 - Included Yahoo! Maps. - Included Tooltips in add.php (add
 and update records) of admin interface. So users can enter latitude and
@@ -552,33 +547,33 @@ Story.php shows sexagensimal coordinates that are converted in the fly
 from decimal numbers.
 
 Version 1.0.3
-~~~~~~~~~~~~~
++++++++++++++
 
 ::
 
     - Now interfaces show primer number 6, thanks to Julien Leneveu.
 
 Version 1.0.2
-~~~~~~~~~~~~~
++++++++++++++
 
 2007-05-03 - Included some more dojo. - In admin interface, included
 option to delete sequence records by id.
 
 Version 1.0.1
-~~~~~~~~~~~~~
++++++++++++++
 
 2007-03-25 - Included creation of thumbnails to avoid showing squashed
 pictures. - MySQL database modified, \`\`alter table add column
 thumbnail''
 
 Version 1.0.0
-~~~~~~~~~~~~~
++++++++++++++
 
 2007-03-21 - Heavy change in makeup. - Inclusion of AJAX using dojo:
 comboBox.
 
 Version 0.0.11
-~~~~~~~~~~~~~~
+++++++++++++++
 
 2007-03-15 - In Admin interface, the default geneCode has been
 eliminated, now user if forced to select one. - In Admin interface, the
@@ -587,29 +582,29 @@ code+geneCode. - In Admin interface, number of base pairs and ambigous
 base pairs are shown for sequences.
 
 Version 0.0.10
-~~~~~~~~~~~~~~
+++++++++++++++
 
 2007-03-13 - In Admin interface, updating voucher info was giving
 "duplicate code" errors, fixed now.
 
 Version 0.0.9
-~~~~~~~~~~~~~
++++++++++++++
 
 2007-03-11 - In Admin interface, it is posible to change record's code.
 
 Version 0.0.8
-~~~~~~~~~~~~~
++++++++++++++
 
 2007-03-10 - Fixed searches of genera. "%string%" by "string%".
 
 Version 0.0.7
-~~~~~~~~~~~~~
++++++++++++++
 
 2007-03-09 - Changed to smaller icons of "voucher picture" and "change
 picture". - Search results are ordered by voucher's code.
 
 Version 0.0.6
-~~~~~~~~~~~~~
++++++++++++++
 
 2007-03-02 - Improved "Next" and "Previous" arrwos to browse through
 records when user does searches in "User interface" 2007-02-28 - Lab
@@ -618,20 +613,20 @@ user has to enter dates. - Added "Next" and "Previous" arrows to browse
 through records when user does searches in "Admin interface"
 
 Version 0.0.5
-~~~~~~~~~~~~~
++++++++++++++
 
 2007-02-22 - Added "Next" and "Previous" arrows to browse through
 records when user does searches in "User interface"
 
 Version 0.0.4
-~~~~~~~~~~~~~
++++++++++++++
 
 2007-02-16 - Sequences appear wrapped now. - User interface now doesn't
 show misaligned rows for See sequences. - geneCode can be choosed from a
 selection of pre-stablished geneCodes.
 
 Version 0.0.3
-~~~~~~~~~~~~~
++++++++++++++
 
 2007-02-16 - Search interface for adminitration ("admin") expanded in a
 FileMaker's fashion. - Searches accept incomplete queries (i.e. typing

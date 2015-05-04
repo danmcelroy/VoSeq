@@ -1,4 +1,4 @@
-|Dependency Status| |Coverage Status| |Landscape|
+|Dependency Status| |Coverage Status| |Landscape| |Docs|
 
 +------------------+------------------+
 | Windows          | Linux            |
@@ -41,7 +41,7 @@ New Features
 ============
 Query suggestions for simple taxon searches:
 
-.. image:: imgs/simple_search_suggestion.png
+.. image:: https://raw.githubusercontent.com/carlosp420/VoSeq/docs/imgs/simple_search_suggestion.png
 
 Configuration
 =============
@@ -186,7 +186,7 @@ Import test data for your database:
 
 .. code:: shell
 
-    make import
+    make test_import
 
 Start the server
 ================
@@ -227,14 +227,34 @@ following command and provide the requested information:
 
     make admin
 
+
+Some features of VoSeq need to be run periodically. You can setup cronjobs to
+execute some commands once a day or every 2 hours depending on your needs:
+
+* Update the database index for the simple and advanced search functions:
+
+.. code:: shell
+
+    python voseq/manage.py update_index --settings=voseq.settings.local
+
+* Update some voucher and gene statistics for your installation of VoSeq:
+
+.. code:: shell
+
+    make stats
+
+
 .. |Dependency Status| image:: https://gemnasium.com/carlosp420/VoSeq.svg
-   :target: https://gemnasium.com/carlosp420/VoSeq
+:target: https://gemnasium.com/carlosp420/VoSeq
 .. |Coverage Status| image:: https://img.shields.io/coveralls/carlosp420/VoSeq.svg
-   :target: https://coveralls.io/r/carlosp420/VoSeq?branch=master
+:target: https://coveralls.io/r/carlosp420/VoSeq?branch=master
 .. |Build status| image:: https://ci.appveyor.com/api/projects/status/0ba440vjw8811845/branch/master?svg=true
-   :target: https://ci.appveyor.com/project/carlosp420/voseq/branch/master
+:target: https://ci.appveyor.com/project/carlosp420/voseq/branch/master
 .. |Build Status| image:: https://travis-ci.org/carlosp420/VoSeq.svg
-   :target: https://travis-ci.org/carlosp420/VoSeq
+:target: https://travis-ci.org/carlosp420/VoSeq
 .. |Landscape| image:: https://landscape.io/github/carlosp420/VoSeq/master/landscape.svg
-   :target: https://landscape.io/github/carlosp420/VoSeq/master
+:target: https://landscape.io/github/carlosp420/VoSeq/master
    :alt: Code Health
+.. |Docs| image:: https://readthedocs.org/projects/voseq/badge/?version=latest
+:target: https://readthedocs.org/projects/voseq/?badge=latest
+   :alt: Documentation Status
