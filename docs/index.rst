@@ -14,8 +14,6 @@ Contents:
    readme
    installation
    usage
-   nitty-gritty-of-development
    contributing
    authors
    history
-   modules
