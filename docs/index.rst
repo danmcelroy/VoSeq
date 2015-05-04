@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Welcome to VoSeq's documentation!
-=================================================================
+=================================
 
 Contents:
 
@@ -14,6 +14,7 @@ Contents:
    readme
    installation
    usage
+   nitty-gritty-of-development
    contributing
    authors
    history
