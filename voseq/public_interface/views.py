@@ -50,6 +50,7 @@ def browse(request):
 
 
 def search(request):
+    """Simple search tool"""
     if 'q' not in request.GET:
         return redirect('/')
 
