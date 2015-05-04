@@ -256,5 +256,5 @@ execute some commands once a day or every 2 hours depending on your needs:
 :target: https://landscape.io/github/carlosp420/VoSeq/master
    :alt: Code Health
 .. |Docs| image:: https://readthedocs.org/projects/voseq/badge/?version=latest
-:target: https://readthedocs.org/projects/voseq/?badge=latest
+:target: http://voseq.readthedocs.org/en/latest/
    :alt: Documentation Status
