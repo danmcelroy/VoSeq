@@ -71,7 +71,7 @@ class AdvancedSearchIndex(indexes.SearchIndex, indexes.Indexable):
     hostorg = indexes.CharField(model_attr='hostorg', null=True)
 
     def get_model(self):
-        return AdvancedSearchIndex
+        return Vouchers
 
     def index_queryset(self, using='advanced_search'):
         # Used when the entire index for model is updated.

@@ -1,4 +1,7 @@
+import json
+
 from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render
 from django.shortcuts import redirect
@@ -6,6 +9,7 @@ from django.conf import settings
 
 from haystack.forms import SearchForm
 from haystack.views import SearchView
+from haystack.query import SearchQuerySet
 
 from core.utils import get_version_stats
 from .models import Vouchers
@@ -74,6 +78,16 @@ def search(request):
 class SimpleSearch(SearchView):
     def extra_context(self):
         return {'result_count': len(self.searchqueryset)}
+
+
+def autocomplete(request):
+    sqs = SearchQuerySet().autocomplete(genus='euptyc')[:5]
+    suggestions = [result.genus for result in sqs]
+
+    the_data = json.dumps(
+        {'results': suggestions}
+    )
+    return HttpResponse(the_data, content_type='application/json')
 
 
 def search_advanced(request):
