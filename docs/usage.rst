@@ -1,6 +1,6 @@
-========
+=====
 Usage
-========
+=====
 
 To use VoSeq in a project::
 
