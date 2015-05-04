@@ -16,4 +16,5 @@ Contents:
    usage
    contributing
    authors
+   dev
    history
