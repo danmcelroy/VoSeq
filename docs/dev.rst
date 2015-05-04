@@ -40,9 +40,9 @@ For testing purposes, I specified *EdgeNgramField* only for the field *genus* so
 can be used for autocomplete in the advanced search form. The class defining
 this search index is:
 
-.. autoclass:: voseq.public_interface.search_indexes.AdvancedSearchIndex
+.. autoclass:: public_interface.search_indexes.AdvancedSearchIndex
 
 The view is created using a function:
 
-.. autofunction:: voseq.public_interface.views.search_advanced
+.. autofunction:: public_interface.views.search_advanced
 
