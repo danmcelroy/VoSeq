@@ -58,17 +58,17 @@ class AdvancedSearchIndex(indexes.SearchIndex, indexes.Indexable):
     :returns: class AdvancedSearchIndex
     """
     text = indexes.CharField(document=True, use_template=True)
-    code = indexes.CharField(model_attr='code')
-    orden = indexes.CharField(model_attr='orden', null=True)
-    superfamily = indexes.CharField(model_attr='superfamily', null=True)
-    family = indexes.CharField(model_attr='family', null=True)
-    subfamily = indexes.CharField(model_attr='subfamily', null=True)
-    tribe = indexes.CharField(model_attr='tribe', null=True)
-    subtribe = indexes.CharField(model_attr='subtribe', null=True)
+    code = indexes.EdgeNgramField(model_attr='code')
+    orden = indexes.EdgeNgramField(model_attr='orden', null=True)
+    superfamily = indexes.EdgeNgramField(model_attr='superfamily', null=True)
+    family = indexes.EdgeNgramField(model_attr='family', null=True)
+    subfamily = indexes.EdgeNgramField(model_attr='subfamily', null=True)
+    tribe = indexes.EdgeNgramField(model_attr='tribe', null=True)
+    subtribe = indexes.EdgeNgramField(model_attr='subtribe', null=True)
     genus = indexes.EdgeNgramField(model_attr='genus', null=True)
-    species = indexes.CharField(model_attr='species', null=True)
-    subspecies = indexes.CharField(model_attr='subspecies', null=True)
-    hostorg = indexes.CharField(model_attr='hostorg', null=True)
+    species = indexes.EdgeNgramField(model_attr='species', null=True)
+    subspecies = indexes.EdgeNgramField(model_attr='subspecies', null=True)
+    hostorg = indexes.EdgeNgramField(model_attr='hostorg', null=True)
 
     def get_model(self):
         return Vouchers
