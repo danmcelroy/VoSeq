@@ -25,6 +25,12 @@ class TestCustomCommand(TestCase):
         cmd = 'migrate_db'
         self.assertRaises(CommandError, call_command, cmd, *args, **opts)
 
+    def test_tables_prefix(self):
+        args = []
+        opts = {'dumpfile': 'test_db_dump.xml', 'prefix': 'vosesq_', 'verbosity': 0}
+        cmd = 'migrate_db'
+        self.assertRaises(ValueError, call_command, cmd, *args, **opts)
+
     def test_orden_none(self):
         b = Vouchers.objects.get(code='CP100-09')
         self.assertEqual('', b.orden)

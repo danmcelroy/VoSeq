@@ -85,18 +85,7 @@ class ParseXML(object):
             self.parse_table_genes(self.dump_string)
 
         for item in self.table_genes_items:
-            try:
-                date_obj = datetime.datetime.strptime(item['timestamp'], '%Y-%m-%d %H:%M:%S').replace(tzinfo=TZINFO)
-            except ValueError as e:
-                date_obj = None
-                if self.verbosity != 0:
-                    print(e)
-                    print("WARNING:: Could not parse dateCreation properly.")
-            except TypeError as e:
-                date_obj = None
-                if self.verbosity != 0:
-                    print(e)
-                    print("WARNING:: Could not parse dateCreation properly.")
+            date_obj = self.parse_timestamp(item['timestamp'], 'timestamp')
 
             item['time_created'] = date_obj
             del item['timestamp']
@@ -304,37 +293,8 @@ class ParseXML(object):
             item['gene_code'] = item['geneCode']
             del item['geneCode']
 
-            try:
-                date_obj = datetime.datetime.strptime(item['time_created'], '%Y-%m-%d').replace(tzinfo=TZINFO)
-            except ValueError as e:
-                date_obj = None
-                if self.verbosity != 0:
-                    print(e)
-                    print("WARNING:: Could not parse dateCreation properly.")
-                    print("WARNING:: Using empty date for `time_created` for code %s and gene_code %s." % (item['code_id'], item['gene_code']))
-            except TypeError as e:
-                date_obj = None
-                if self.verbosity != 0:
-                    print(e)
-                    print("WARNING:: Could not parse dateCreation properly.")
-                    print("WARNING:: Using empty date for `time_created` for code %s and gene_code %s." % (item['code_id'], item['gene_code']))
-
-            item['time_created'] = date_obj
-
-            try:
-                date_obj = datetime.datetime.strptime(item['time_edited'], '%Y-%m-%d').replace(tzinfo=TZINFO)
-            except ValueError:
-                date_obj = None
-                if self.verbosity != 0:
-                    print("WARNING:: Could not parse dateModification properly.")
-                    print("WARNING:: Using empty date for `time_edited` for code %s." % item['code_id'])
-            except TypeError:
-                date_obj = None
-                if self.verbosity != 0:
-                    print("WARNING:: Could not parse dateCreation properly.")
-                    print("WARNING:: Using empty as date for `time_edited` for code %s." % item['code_id'])
-
-            item['time_edited'] = date_obj
+            item['time_created'] = self.parse_timestamp(item['time_created'], 'time_created')
+            item['time_edited'] = self.parse_timestamp(item['time_edited'], 'time_edited')
 
             if item['sequences'] is not None:
                 ambiguous_chars = item['sequences'].count('?') + item['sequences'].count('-')
@@ -520,26 +480,9 @@ class ParseXML(object):
             if item['longitude'] is not None:
                 item['longitude'] = float(item['longitude'])
 
-            if item['dateCollection'] is not None:
-                try:
-                    date_obj = datetime.datetime.strptime(item['dateCollection'], '%Y-%m-%d').date()
-                except ValueError:
-                    date_obj = None
-                item['dateCollection'] = date_obj
-
-            if item['dateExtraction'] is not None:
-                try:
-                    date_obj = datetime.datetime.strptime(item['dateExtraction'], '%Y-%m-%d').date()
-                except ValueError:
-                    date_obj = None
-                item['dateExtraction'] = date_obj
-
-            if item['timestamp'] is not None:
-                try:
-                    date_obj = datetime.datetime.strptime(item['timestamp'], '%Y-%m-%d %H:%M:%S').replace(tzinfo=TZINFO)
-                except ValueError:
-                    date_obj = None
-                item['timestamp'] = date_obj
+            item['dateCollection'] = self.parse_timestamp(item['dateCollection'], 'dateCollection')
+            item['dateExtraction'] = self.parse_timestamp(item['dateExtraction'], 'dateExtraction')
+            item['timestamp'] = self.parse_timestamp(item['timestamp'], 'timestamp')
 
             # Deal with flickr images
             if item['voucherImage'] == '':
@@ -708,3 +651,16 @@ class ParseXML(object):
         except ValueError:
             string = None
         return string
+
+    def parse_timestamp(self, timestamp, field):
+        try:
+            date_obj = datetime.datetime.strptime(timestamp,
+                                                  '%Y-%m-%d %H:%M:%S').replace(tzinfo=TZINFO)
+        except ValueError:
+            date_obj = None
+        except TypeError:
+            date_obj = None
+
+        if self.verbosity != 0:
+            print("WARNING:: Could not parse %s properly." % field)
+        return date_obj
