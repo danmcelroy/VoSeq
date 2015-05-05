@@ -101,8 +101,11 @@ def autocomplete(request):
 
     field_term = {field: term}
     sqs = ValuesSearchQuerySet().autocomplete(**field_term).values(field)[:5]
-    suggestions = [result[field] for result in sqs]
-    print(suggestions)
+
+    suggestions = set()
+    for result in sqs:
+        suggestions.add(result[field])
+    suggestions = list(suggestions)
 
     the_data = json.dumps(
         {'results': suggestions}
