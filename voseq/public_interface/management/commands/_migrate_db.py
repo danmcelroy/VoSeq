@@ -85,7 +85,7 @@ class ParseXML(object):
             self.parse_table_genes(self.dump_string)
 
         for item in self.table_genes_items:
-            date_obj = self.parse_timestamp(item['timestamp'])
+            date_obj = self.parse_timestamp(item['timestamp'], 'timestamp')
 
             item['time_created'] = date_obj
             del item['timestamp']
@@ -293,8 +293,8 @@ class ParseXML(object):
             item['gene_code'] = item['geneCode']
             del item['geneCode']
 
-            item['time_created'] = self.parse_timestamp(item['time_created'])
-            item['time_edited'] = self.parse_timestamp(item['time_edited'])
+            item['time_created'] = self.parse_timestamp(item['time_created'], 'time_created')
+            item['time_edited'] = self.parse_timestamp(item['time_edited'], 'time_edited')
 
             if item['sequences'] is not None:
                 ambiguous_chars = item['sequences'].count('?') + item['sequences'].count('-')
@@ -480,9 +480,9 @@ class ParseXML(object):
             if item['longitude'] is not None:
                 item['longitude'] = float(item['longitude'])
 
-            item['dateCollection'] = self.parse_timestamp(item['dateCollection'])
-            item['dateExtraction'] = self.parse_timestamp(item['dateExtraction'])
-            item['timestamp'] = self.parse_timestamp(item['timestamp'])
+            item['dateCollection'] = self.parse_timestamp(item['dateCollection'], 'dateCollection')
+            item['dateExtraction'] = self.parse_timestamp(item['dateExtraction'], 'dateExtraction')
+            item['timestamp'] = self.parse_timestamp(item['timestamp'], 'timestamp')
 
             # Deal with flickr images
             if item['voucherImage'] == '':
@@ -652,7 +652,7 @@ class ParseXML(object):
             string = None
         return string
 
-    def parse_timestamp(self, timestamp):
+    def parse_timestamp(self, timestamp, field):
         try:
             date_obj = datetime.datetime.strptime(timestamp,
                                                   '%Y-%m-%d %H:%M:%S').replace(tzinfo=TZINFO)
@@ -662,5 +662,5 @@ class ParseXML(object):
             date_obj = None
 
         if self.verbosity != 0:
-            print("WARNING:: Could not parse dateCreation properly.")
+            print("WARNING:: Could not parse %s properly." % field)
         return date_obj
