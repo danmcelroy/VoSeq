@@ -107,9 +107,7 @@ def autocomplete(request):
         suggestions.add(result[field])
     suggestions = list(suggestions)
 
-    the_data = json.dumps(
-        {'results': suggestions}
-    )
+    the_data = json.dumps(suggestions)
     return HttpResponse(the_data, content_type='application/json')
 
 
