@@ -11,6 +11,7 @@ from django.conf import settings
 from haystack.forms import SearchForm
 from haystack.views import SearchView
 from haystack.query import SearchQuerySet
+from haystack.query import ValuesSearchQuerySet
 
 from core.utils import get_version_stats
 from .models import Vouchers
@@ -99,9 +100,9 @@ def autocomplete(request):
         raise Http404("Value for <b>term</b> query is missing.")
 
     field_term = {field: term}
-    sqs = SearchQuerySet().autocomplete(**field_term)[:5]
-    print(sqs)
-    suggestions = [result.genus for result in sqs]
+    sqs = ValuesSearchQuerySet().autocomplete(**field_term).values(field)
+    suggestions = [result[field] for result in sqs]
+    print(suggestions)
 
     the_data = json.dumps(
         {'results': suggestions}
