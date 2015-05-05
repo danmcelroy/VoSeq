@@ -232,12 +232,15 @@
   <script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}"></script>
 
   <script type="text/javascript">
-    $("[id^=id_]").autocomplete({
-        source: function( request, response) {
+    var input_field = $("[id^=id_]");
+
+    input_field.autocomplete({
+        source: function ( request, response) {
           $.ajax({
             url: '/autocomplete/',
             data: {
-                field: request.term
+                field: input_field.attr('id').replace('id_', ''),
+                term: request.term
             },
             success: function( data ) {
                 response( data );
