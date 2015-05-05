@@ -1,4 +1,8 @@
-from django.http import HttpResponseRedirect, Http404
+import json
+
+from django.http import HttpResponseRedirect
+from django.http import Http404
+from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render
 from django.shortcuts import redirect
@@ -6,6 +10,8 @@ from django.conf import settings
 
 from haystack.forms import SearchForm
 from haystack.views import SearchView
+from haystack.query import SearchQuerySet
+from haystack.query import ValuesSearchQuerySet
 
 from core.utils import get_version_stats
 from .models import Vouchers
@@ -74,6 +80,35 @@ def search(request):
 class SimpleSearch(SearchView):
     def extra_context(self):
         return {'result_count': len(self.searchqueryset)}
+
+
+def autocomplete(request):
+    """Used for JSON queries from javascript to fill autocomplete values in
+    input boxes of advanced searches.
+
+    :param request:
+    :return:
+    """
+    try:
+        field = request.GET['field']
+    except KeyError:
+        raise Http404("Value for <b>field</b> is missing.")
+
+    try:
+        term = request.GET['term']
+    except KeyError:
+        raise Http404("Value for <b>term</b> query is missing.")
+
+    field_term = {field: term}
+    sqs = ValuesSearchQuerySet().using('advanced_search').autocomplete(**field_term).values(field)[:5]
+
+    suggestions = set()
+    for result in sqs:
+        suggestions.add(result[field])
+    suggestions = list(suggestions)
+
+    the_data = json.dumps(suggestions)
+    return HttpResponse(the_data, content_type='application/json')
 
 
 def search_advanced(request):
