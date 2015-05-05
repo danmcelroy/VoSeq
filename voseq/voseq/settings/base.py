@@ -83,7 +83,7 @@ HAYSTACK_CONNECTIONS = {
         'URL': 'http://127.0.0.1:9200/',
         'INDEX_NAME': 'advanced_search',
         'INCLUDE_SPELLING': False,
-        'EXCLUDED_INDEXES': ['public_interface.search_indexes.VouchersIndex'],
+        'EXCLUDED_INDEXES': ['public_interface.search_indexes.SimpleSearchIndex'],
     },
 }
 HAYSTACK_DEFAULT_OPERATOR = 'AND'

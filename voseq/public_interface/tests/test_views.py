@@ -1,15 +1,8 @@
-import json
-import os
-
 from django.core.management import call_command
 from django.test import Client
 from django.test import TestCase
 from django.test.utils import override_settings
 import haystack
-
-from public_interface.models import Vouchers
-from public_interface.models import FlickrImages
-from public_interface.models import Sequences
 
 
 # Need to use a clean index for our tests
@@ -19,6 +12,16 @@ TEST_INDEX = {
         'URL': 'http://127.0.0.1:9200/',
         'TIMEOUT': 60 * 10,
         'INDEX_NAME': 'test_index',
+        'INCLUDE_SPELLING': True,
+        'EXCLUDED_INDEXES': ['public_interface.search_indexes.AdvancedSearchIndex'],
+    },
+    'advanced_search': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'TIMEOUT': 60 * 10,
+        'INDEX_NAME': 'test_advanced_search_index',
+        'INCLUDE_SPELLING': False,
+        'EXCLUDED_INDEXES': ['public_interface.search_indexes.SimpleSearchIndex'],
     },
 }
 
@@ -62,19 +65,43 @@ class TestViews(TestCase):
         response = self.client.get('/s/NN1-1aaaaa/EF1a/')
         self.assertEqual(404, response.status_code)
 
+    def test_search_redirected(self):
+        """Get redirected to home due to empty search query
+        """
+        response = self.client.get('/search/?q=')
+        self.assertEqual(302, response.status_code)
+
     def test_search_hymenoptera(self):
         response = self.client.get('/search/?q=Hymenoptera')
         content = str(response.content)
         self.assertTrue('CP100-14' in content)
 
     def test_search_returns_empty(self):
-        """
-        Querying for several data fields should be equivalent of using AND."
+        """Querying for several data fields should be equivalent of using AND.
         """
         # TODO rewrite this test for search/advanced
         response = self.client.get('/search/?orden=Coleoptera&code=NN1-1')
         content = str(response.content)
         self.assertFalse('NN1-2' in content and 'NN1-1' in content)
+
+    def test_autocomplete_param_field(self):
+        """Parameters field and term are required to return JSON info for
+        autocomplete input boxes in advanced search GUI.
+        """
+        response = self.client.get('/autocomplete/?field=genus')
+        self.assertEqual(404, response.status_code)
+
+    def test_autocomplete_param_term(self):
+        """Parameters field and term are required to return JSON info for
+        autocomplete input boxes in advanced search GUI.
+        """
+        response = self.client.get('/autocomplete/?term=euptychia')
+        self.assertEqual(404, response.status_code)
+
+    def test_autocomplete(self):
+        response = self.client.get('/autocomplete/?field=genus&term=melita')
+        content = response.content.decode('utf-8')
+        self.assertTrue('Melitaea' in content)
 
     def tearDown(self):
         call_command('clear_index', interactive=False, verbosity=0)

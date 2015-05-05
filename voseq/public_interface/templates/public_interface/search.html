@@ -1,9 +1,16 @@
 {% extends 'public_interface/base.html' %}
 
+{% block additional_css %}
+  {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.css' %}" />
+{% endblock additional_css %}
+
+
 {% block content %}
 
 
-<form method="get" action=".">
+   <form method="post" action="/search/" class="autocomplete-me">
+
 <div class="explorer-container">
   <div class="container">
     <div class="row">
@@ -219,3 +226,34 @@
 </form>
 
 {% endblock content %}
+
+{% block additional_javascript_footer %}
+  {% load staticfiles %}
+  <script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}"></script>
+
+  <script type="text/javascript">
+    $("[id^=id_]").autocomplete({
+        source: function ( request, response) {
+          var this_id = $(this)[0].element[0].id.replace('id_', '');
+          $.ajax({
+            url: '/autocomplete/',
+            data: {
+                field: this_id,
+                term: request.term
+            },
+            success: function( data ) {
+                console.log(data);
+                response( data );
+            }
+          });
+        },
+        minLength: 2,
+        open: function() {
+          $(this).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+        },
+        close: function() {
+          $(this).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+        }
+    });
+  </script>
+{% endblock additional_javascript_footer %}
