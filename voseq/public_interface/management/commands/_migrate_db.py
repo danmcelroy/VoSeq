@@ -85,18 +85,7 @@ class ParseXML(object):
             self.parse_table_genes(self.dump_string)
 
         for item in self.table_genes_items:
-            try:
-                date_obj = datetime.datetime.strptime(item['timestamp'], '%Y-%m-%d %H:%M:%S').replace(tzinfo=TZINFO)
-            except ValueError as e:
-                date_obj = None
-                if self.verbosity != 0:
-                    print(e)
-                    print("WARNING:: Could not parse dateCreation properly.")
-            except TypeError as e:
-                date_obj = None
-                if self.verbosity != 0:
-                    print(e)
-                    print("WARNING:: Could not parse dateCreation properly.")
+            date_obj = self.parse_timestamp(item['timestamp'])
 
             item['time_created'] = date_obj
             del item['timestamp']
@@ -708,3 +697,16 @@ class ParseXML(object):
         except ValueError:
             string = None
         return string
+
+    def parse_timestamp(self, timestamp):
+        try:
+            date_obj = datetime.datetime.strptime(timestamp,
+                                                  '%Y-%m-%d %H:%M:%S').replace(tzinfo=TZINFO)
+        except ValueError:
+            date_obj = None
+        except TypeError:
+            date_obj = None
+
+        if self.verbosity != 0:
+            print("WARNING:: Could not parse dateCreation properly.")
+        return date_obj
