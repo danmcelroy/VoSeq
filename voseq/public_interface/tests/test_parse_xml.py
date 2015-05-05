@@ -29,24 +29,24 @@ class TestParseXML(TestCase):
 
         timestamp = '2014-10-01 10:20:45'
         expected = datetime.datetime(2014, 10, 1, 10, 20, 45, tzinfo=TZINFO)
-        result = self.parse_xml.parse_timestamp(timestamp)
+        result = self.parse_xml.parse_timestamp(timestamp, 'good')
         self.assertEqual(expected, result)
 
     def test_parse_timestamp_bad(self):
         timestamp = '0000-00-00 00:00:00'
         expected = None
-        result = self.parse_xml.parse_timestamp(timestamp)
+        result = self.parse_xml.parse_timestamp(timestamp, 'bad')
         self.assertEqual(expected, result)
 
     def test_parse_timestamp_null(self):
         timestamp = None
         expected = None
-        result = self.parse_xml.parse_timestamp(timestamp)
+        result = self.parse_xml.parse_timestamp(timestamp, 'null')
         self.assertEqual(expected, result)
 
     def test_parse_timestamp_null_verbose(self):
         timestamp = None
         expected = None
         self.parse_xml.verbosity = 1
-        result = self.parse_xml.parse_timestamp(timestamp)
+        result = self.parse_xml.parse_timestamp(timestamp, 'null_verbose')
         self.assertEqual(expected, result)
