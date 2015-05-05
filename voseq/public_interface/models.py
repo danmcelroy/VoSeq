@@ -146,7 +146,7 @@ class Vouchers(models.Model):
     hostorg = models.CharField(max_length=200, help_text="Hostplant or other host.", blank=True)
     sex = models.CharField(max_length=1, choices=SEX_CHOICES, blank=True)
     voucher = models.CharField(max_length=1, choices=VOUCHER_CHOICES, blank=True)
-    voucherCode = models.CharField(max_length=100, help_text="Original code of voucher specimen.", blank=True)
+    voucherCode = models.CharField(max_length=100, help_text="Alternative code of voucher specimen.", blank=True)
     code_bold = models.CharField(max_length=100, help_text="Optional code for specimens kept in the BOLD database.", blank=True)
     determinedBy = models.CharField(max_length=100, help_text="Person that identified the taxon for this specimen.", blank=True)
     author = models.CharField(max_length=100, help_text="Person that described this taxon.", blank=True)
