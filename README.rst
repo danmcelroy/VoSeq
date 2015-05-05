@@ -41,7 +41,7 @@ New Features
 ============
 Query suggestions for simple taxon searches:
 
-.. image:: https://raw.githubusercontent.com/carlosp420/VoSeq/docs/imgs/simple_search_suggestion.png
+.. image:: https://raw.githubusercontent.com/carlosp420/VoSeq/master/imgs/simple_search_suggestion.png
 
 Configuration
 =============
