@@ -10,8 +10,6 @@
 
 
    <form method="post" action="/search/" class="autocomplete-me">
-    <input type="text" id="id_q" name="q">
-    <input type="submit" value="Search!">
 
 <div class="explorer-container">
   <div class="container">
@@ -234,7 +232,7 @@
   <script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}"></script>
 
   <script type="text/javascript">
-    $("#id_genus").autocomplete({
+    $("[id^=id_]").autocomplete({
         source: function( request, response) {
           $.ajax({
             url: '/autocomplete/',
