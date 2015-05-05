@@ -1,6 +1,7 @@
 import json
 
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect
+from django.http import Http404
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render
@@ -81,7 +82,25 @@ class SimpleSearch(SearchView):
 
 
 def autocomplete(request):
-    sqs = SearchQuerySet().autocomplete(genus='euptyc')[:5]
+    """Used for JSON queries from javascript to fill autocomplete values in
+    input boxes of advanced searches.
+
+    :param request:
+    :return:
+    """
+    try:
+        field = request.GET['field']
+    except KeyError:
+        raise Http404("Value for <b>field</b> is missing.")
+
+    try:
+        term = request.GET['term']
+    except KeyError:
+        raise Http404("Value for <b>term</b> query is missing.")
+
+    field_term = {field: term}
+    sqs = SearchQuerySet().autocomplete(**field_term)[:5]
+    print(sqs)
     suggestions = [result.genus for result in sqs]
 
     the_data = json.dumps(
