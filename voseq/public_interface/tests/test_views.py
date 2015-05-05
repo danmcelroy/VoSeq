@@ -98,5 +98,10 @@ class TestViews(TestCase):
         response = self.client.get('/autocomplete/?term=euptychia')
         self.assertEqual(404, response.status_code)
 
+    def test_autocomplete(self):
+        response = self.client.get('/autocomplete/?field=genus&term=melita')
+        content = response.content.decode('utf-8')
+        self.assertTrue('Melitaea' in content)
+
     def tearDown(self):
         call_command('clear_index', interactive=False, verbosity=0)
