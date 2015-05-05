@@ -21,7 +21,7 @@ TEST_INDEX = {
         'TIMEOUT': 60 * 10,
         'INDEX_NAME': 'test_advanced_search_index',
         'INCLUDE_SPELLING': False,
-        'EXCLUDED_INDEXES': ['public_interface.search_indexes.VouchersIndex'],
+        'EXCLUDED_INDEXES': ['public_interface.search_indexes.SimpleSearchIndex'],
     },
 }
 

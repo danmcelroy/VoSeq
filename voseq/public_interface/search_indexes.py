@@ -5,7 +5,7 @@ from haystack import indexes
 from .models import Vouchers
 
 
-class VouchersIndex(indexes.SearchIndex, indexes.Indexable):
+class SimpleSearchIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.EdgeNgramField(document=True, use_template=True)
     code = indexes.EdgeNgramField(model_attr='code')
     orden = indexes.EdgeNgramField(model_attr='orden', null=True)
@@ -28,7 +28,7 @@ class VouchersIndex(indexes.SearchIndex, indexes.Indexable):
         return self.get_model().objects.filter(timestamp__lte=datetime.datetime.now())
 
 
-class AdvancedSearchIndex(VouchersIndex):
+class AdvancedSearchIndex(SimpleSearchIndex):
     """Defines an index and all fields should have autocomplete capabilities
     in the GUI.
 
