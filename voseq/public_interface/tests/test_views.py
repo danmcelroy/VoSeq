@@ -1,15 +1,8 @@
-import json
-import os
-
 from django.core.management import call_command
 from django.test import Client
 from django.test import TestCase
 from django.test.utils import override_settings
 import haystack
-
-from public_interface.models import Vouchers
-from public_interface.models import FlickrImages
-from public_interface.models import Sequences
 
 
 # Need to use a clean index for our tests
@@ -19,6 +12,16 @@ TEST_INDEX = {
         'URL': 'http://127.0.0.1:9200/',
         'TIMEOUT': 60 * 10,
         'INDEX_NAME': 'test_index',
+        'INCLUDE_SPELLING': True,
+        'EXCLUDED_INDEXES': ['public_interface.search_indexes.AdvancedSearchIndex'],
+    },
+    'advanced_search': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'TIMEOUT': 60 * 10,
+        'INDEX_NAME': 'test_advanced_search_index',
+        'INCLUDE_SPELLING': False,
+        'EXCLUDED_INDEXES': ['public_interface.search_indexes.VouchersIndex'],
     },
 }
 
