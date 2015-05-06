@@ -130,7 +130,6 @@ def search_advanced(request):
         form = AdvancedSearchForm(request.GET)
 
         if form.is_valid():
-            # do search
             sqs = form.search()
             search_view = AdvancedSearch(
                 template='public_interface/search_results_voucher_objs.html',
@@ -139,35 +138,29 @@ def search_advanced(request):
             )
             search_view.__call__(request)
             search_view.query = sqs.query
-            print(">>> search view query", search_view.results)
 
-            results_are_sequence_objects = False
-            for i in search_view.results:
-                try:
-                    print(i.object.code.genus)
-                    results_are_sequence_objects = True
-                except AttributeError:
-                    pass
-                break
-
-            if results_are_sequence_objects is False:
-                return search_view.create_response()
-            else:
-                return render(request, 'public_interface/search_results_sequence_objects.html',
-                    {
-                        'form': form,
-                        'version': version,
-                        'stats': stats,
-                    })
+            if are_results_sequence_objects(search_view) is True:
+                search_view.template = 'public_interface/search_results_sequence_objs.html'
+            return search_view.create_response()
     else:
         form = AdvancedSearchForm()
+        return render(request, 'public_interface/search.html',
+                      {
+                          'form': form,
+                          'version': version,
+                          'stats': stats,
+                      })
 
-    return render(request, 'public_interface/search.html',
-                  {
-                      'form': form,
-                      'version': version,
-                      'stats': stats,
-                  })
+
+def are_results_sequence_objects(search_view):
+    for i in search_view.results:
+        try:
+            print(i.object.code.genus)
+            results_are_sequence_objects = True
+        except AttributeError:
+            results_are_sequence_objects = False
+            pass
+        return results_are_sequence_objects
 
 
 def show_voucher(request, voucher_code):
