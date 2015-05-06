@@ -10,18 +10,31 @@ TEST_INDEX = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
-        'TIMEOUT': 60 * 10,
-        'INDEX_NAME': 'test_index',
+        'INDEX_NAME': 'haystack',
         'INCLUDE_SPELLING': True,
-        'EXCLUDED_INDEXES': ['public_interface.search_indexes.AdvancedSearchIndex'],
+        'EXCLUDED_INDEXES': [
+            'public_interface.search_indexes.AdvancedSearchIndex',
+            'public_interface.search_indexes.VouchersIndex',
+        ],
+    },
+    'vouchers': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'vouchers',
+        'INCLUDE_SPELLING': False,
+        'EXCLUDED_INDEXES': [
+            'public_interface.search_indexes.SimpleSearchIndex',
+            'public_interface.search_indexes.AdvancedSearchIndex',
+        ],
     },
     'advanced_search': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
-        'TIMEOUT': 60 * 10,
-        'INDEX_NAME': 'test_advanced_search_index',
+        'INDEX_NAME': 'advanced_search',
         'INCLUDE_SPELLING': False,
-        'EXCLUDED_INDEXES': ['public_interface.search_indexes.SimpleSearchIndex'],
+        'EXCLUDED_INDEXES': [
+            'public_interface.search_indexes.SimpleSearchIndex',
+        ],
     },
 }
 
@@ -100,6 +113,21 @@ class TestViews(TestCase):
 
     def test_autocomplete(self):
         response = self.client.get('/autocomplete/?field=genus&term=melita')
+        content = response.content.decode('utf-8')
+        self.assertTrue('Melitaea' in content)
+
+    def test_advanced_search_gui_form(self):
+        response = self.client.get('/search/advanced/')
+        content = response.content.decode('utf-8')
+        self.assertTrue('Search by querying a single field for any combination of fields' in content)
+
+    def test_advanced_search_voucher_objs(self):
+        response = self.client.get('/search/advanced/?orden=Hymenoptera')
+        content = response.content.decode('utf-8')
+        self.assertTrue('Melitaea' in content)
+
+    def test_advanced_search_sequence_objs(self):
+        response = self.client.get('/search/advanced/?labPerson=Niklas')
         content = response.content.decode('utf-8')
         self.assertTrue('Melitaea' in content)
 
