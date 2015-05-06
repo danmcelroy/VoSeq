@@ -100,7 +100,7 @@ def autocomplete(request):
         raise Http404("Value for <b>term</b> query is missing.")
 
     field_term = {field: term}
-    sqs = ValuesSearchQuerySet().using('sequences').autocomplete(**field_term).values(field)[:5]
+    sqs = ValuesSearchQuerySet().using('advanced_search').autocomplete(**field_term).values(field)[:5]
 
     suggestions = set()
     for result in sqs:
