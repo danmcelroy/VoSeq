@@ -139,7 +139,26 @@ def search_advanced(request):
             )
             search_view.__call__(request)
             search_view.query = sqs.query
-            return search_view.create_response()
+            print(">>> search view query", search_view.results)
+
+            results_are_sequence_objects = False
+            for i in search_view.results:
+                try:
+                    print(i.object.code.genus)
+                    results_are_sequence_objects = True
+                except AttributeError:
+                    pass
+                break
+
+            if results_are_sequence_objects is False:
+                return search_view.create_response()
+            else:
+                return render(request, 'public_interface/search_results_sequence_objects.html',
+                    {
+                        'form': form,
+                        'version': version,
+                        'stats': stats,
+                    })
     else:
         form = AdvancedSearchForm()
 
