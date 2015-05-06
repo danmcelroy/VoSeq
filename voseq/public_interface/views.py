@@ -69,7 +69,7 @@ def search(request):
     sqs.spelling_suggestion()
 
     search_view = SimpleSearch(
-        template='public_interface/search_results.html',
+        template='public_interface/search_results_voucher_objs.html',
         searchqueryset=sqs,
         form_class=SearchForm,
     )
@@ -78,6 +78,11 @@ def search(request):
 
 
 class SimpleSearch(SearchView):
+    def extra_context(self):
+        return {'result_count': len(self.searchqueryset)}
+
+
+class AdvancedSearch(SearchView):
     def extra_context(self):
         return {'result_count': len(self.searchqueryset)}
 
@@ -123,34 +128,39 @@ def search_advanced(request):
 
     if request.method == 'GET' and bool(request.GET) is not False:
         form = AdvancedSearchForm(request.GET)
+
         if form.is_valid():
-            # do search
-            results = form.search()
-            if results:
-                return render(request, 'public_interface/search_results.html',
-                              {
-                                  'form': form,
-                                  'results': results,
-                                  'version': version,
-                                  'stats': stats,
-                              })
-            else:
-                return render(request, 'public_interface/search.html',
-                              {
-                                  'form': form,
-                                  'results': 'No results',
-                                  'version': version,
-                                  'stats': stats,
-                              })
+            sqs = form.search()
+            search_view = AdvancedSearch(
+                template='public_interface/search_results_voucher_objs.html',
+                searchqueryset=sqs,
+                form_class=AdvancedSearchForm,
+            )
+            search_view.__call__(request)
+            search_view.query = sqs.query
+
+            if are_results_sequence_objects(search_view) is True:
+                search_view.template = 'public_interface/search_results_sequence_objs.html'
+            return search_view.create_response()
     else:
         form = AdvancedSearchForm()
+        return render(request, 'public_interface/search.html',
+                      {
+                          'form': form,
+                          'version': version,
+                          'stats': stats,
+                      })
 
-    return render(request, 'public_interface/search.html',
-                  {
-                      'form': form,
-                      'version': version,
-                      'stats': stats,
-                  })
+
+def are_results_sequence_objects(search_view):
+    for i in search_view.results:
+        try:
+            print(i.object.code.genus)
+            results_are_sequence_objects = True
+        except AttributeError:
+            results_are_sequence_objects = False
+            pass
+        return results_are_sequence_objects
 
 
 def show_voucher(request, voucher_code):

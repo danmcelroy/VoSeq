@@ -1,0 +1,2 @@
+{{ object.sequences.labPerson }}
+{{ object.sequences.accession }}
