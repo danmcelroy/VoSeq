@@ -3,6 +3,7 @@ import datetime
 from haystack import indexes
 
 from .models import Vouchers
+from .models import Sequences
 
 
 class SimpleSearchIndex(indexes.SearchIndex, indexes.Indexable):
@@ -56,3 +57,15 @@ class AdvancedSearchIndex(SimpleSearchIndex):
     def index_queryset(self, using='advanced_search'):
         # Used when the entire index for model is updated.
         return self.get_model().objects.filter(timestamp__lte=datetime.datetime.now())
+
+
+class SequencesIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.EdgeNgramField(document=True, use_template=True)
+    labPerson = indexes.EdgeNgramField(model_attr='labPerson', null=True)
+
+    def get_model(self):
+        return Sequences
+
+    def index_queryset(self, using='sequences'):
+        # Used when the entire index for model is updated.
+        return self.get_model().objects.filter(time_created__lte=datetime.datetime.now())
