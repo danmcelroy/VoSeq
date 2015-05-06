@@ -10,18 +10,31 @@ TEST_INDEX = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
-        'TIMEOUT': 60 * 10,
-        'INDEX_NAME': 'test_index',
+        'INDEX_NAME': 'haystack',
         'INCLUDE_SPELLING': True,
-        'EXCLUDED_INDEXES': ['public_interface.search_indexes.AdvancedSearchIndex'],
+        'EXCLUDED_INDEXES': [
+            'public_interface.search_indexes.AdvancedSearchIndex',
+            'public_interface.search_indexes.VouchersIndex',
+        ],
+    },
+    'vouchers': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'vouchers',
+        'INCLUDE_SPELLING': False,
+        'EXCLUDED_INDEXES': [
+            'public_interface.search_indexes.SimpleSearchIndex',
+            'public_interface.search_indexes.AdvancedSearchIndex',
+        ],
     },
     'advanced_search': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
-        'TIMEOUT': 60 * 10,
-        'INDEX_NAME': 'test_advanced_search_index',
+        'INDEX_NAME': 'advanced_search',
         'INCLUDE_SPELLING': False,
-        'EXCLUDED_INDEXES': ['public_interface.search_indexes.SimpleSearchIndex'],
+        'EXCLUDED_INDEXES': [
+            'public_interface.search_indexes.SimpleSearchIndex',
+        ],
     },
 }
 
