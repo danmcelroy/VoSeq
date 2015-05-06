@@ -69,7 +69,7 @@ def search(request):
     sqs.spelling_suggestion()
 
     search_view = SimpleSearch(
-        template='public_interface/search_results.html',
+        template='public_interface/search_results_voucher_objs.html',
         searchqueryset=sqs,
         form_class=SearchForm,
     )
@@ -133,7 +133,7 @@ def search_advanced(request):
             # do search
             sqs = form.search()
             search_view = AdvancedSearch(
-                template='public_interface/search_results.html',
+                template='public_interface/search_results_voucher_objs.html',
                 searchqueryset=sqs,
                 form_class=AdvancedSearchForm,
             )
