@@ -109,8 +109,6 @@ class AdvancedSearchForm(ModelSearchForm):
                     continue
                 keywords[k] = v
 
-        print(keywords)
-
         # Check if we got any input value to search from
         if bool(keywords) is True:
             sqs = SearchQuerySet().using('advanced_search').filter(**keywords)
