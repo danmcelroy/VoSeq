@@ -131,7 +131,19 @@ def search_advanced(request):
 
         if form.is_valid():
             # do search
-            results = form.search()
+            sqs = form.search()
+            print(sqs)
+
+            search_view = AdvancedSearch(
+                template='public_interface/search_results.html',
+                searchqueryset=sqs,
+                form_class=AdvancedSearchForm,
+            )
+            search_view.__call__(request)
+            print(">>>>>search_view.results", search_view.results)
+            return search_view.create_response()
+
+            """
             print(">>>>>>>>>>results", results)
             if results:
                 return render(request, 'public_interface/search_results.html',
@@ -149,6 +161,7 @@ def search_advanced(request):
                                   'version': version,
                                   'stats': stats,
                               })
+            """
     else:
         form = AdvancedSearchForm()
 
