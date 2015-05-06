@@ -6,17 +6,17 @@
   {% for result in page.object_list %}
     <li>
       <a href="/p/{{ result.object.code }}">{{ result.object.code.code }}</a>
-         <i>{{ result.object.genus}}</i>
-         <i>{{ result.object.species}}</i>
+         <i>{{ result.object.code.genus }}</i>
+         <i>{{ result.object.code.species }}</i>
 
       <br />
 
       <small>
-        {% if result.object.extractor != '' %}
-          By {{ result.object.extractor }} on
+        {% if result.object.code.extractor != '' %}
+          By {{ result.object.code.extractor }} on
         {% endif %}
 
-        {{ result.object.timestamp|date }}
+        {{ result.object.code.timestamp|date }}
       </small>
 
     </li>
