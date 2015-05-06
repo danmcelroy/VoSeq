@@ -113,7 +113,7 @@ class AdvancedSearchForm(ModelSearchForm):
 
         # Check if we got any input value to search from
         if bool(keywords) is True:
-            sqs = SearchQuerySet().filter(**keywords)
+            sqs = SearchQuerySet().using('advanced_search').filter(**keywords)
 
             if len(sqs) > 0:
                 return sqs
