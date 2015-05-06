@@ -98,7 +98,6 @@ HAYSTACK_CONNECTIONS = {
         'INCLUDE_SPELLING': False,
         'EXCLUDED_INDEXES': [
             'public_interface.search_indexes.SimpleSearchIndex',
-            'public_interface.search_indexes.AdvancedSearchIndex',
         ],
     },
 }

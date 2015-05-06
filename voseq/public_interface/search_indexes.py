@@ -62,6 +62,7 @@ class AdvancedSearchIndex(SimpleSearchIndex):
 class SequencesIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.EdgeNgramField(document=True, use_template=True)
     labPerson = indexes.EdgeNgramField(model_attr='labPerson', null=True)
+    accession = indexes.EdgeNgramField(model_attr='accession', null=True)
 
     def get_model(self):
         return Sequences
