@@ -116,5 +116,20 @@ class TestViews(TestCase):
         content = response.content.decode('utf-8')
         self.assertTrue('Melitaea' in content)
 
+    def test_advanced_search_gui_form(self):
+        response = self.client.get('/search/advanced/')
+        content = response.content.decode('utf-8')
+        self.assertTrue('Search by querying a single field for any combination of fields' in content)
+
+    def test_advanced_search_voucher_objs(self):
+        response = self.client.get('/search/advanced/?orden=Hymenoptera')
+        content = response.content.decode('utf-8')
+        self.assertTrue('Melitaea' in content)
+
+    def test_advanced_search_sequence_objs(self):
+        response = self.client.get('/search/advanced/?labPerson=Niklas')
+        content = response.content.decode('utf-8')
+        self.assertTrue('Melitaea' in content)
+
     def tearDown(self):
         call_command('clear_index', interactive=False, verbosity=0)
