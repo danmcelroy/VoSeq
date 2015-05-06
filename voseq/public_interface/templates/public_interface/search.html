@@ -9,7 +9,7 @@
 {% block content %}
 
 
-   <form method="post" action="/search/" class="autocomplete-me">
+   <form method="get" action="/search/advanced/" class="autocomplete-me">
 
 <div class="explorer-container">
   <div class="container">
@@ -242,7 +242,6 @@
                 term: request.term
             },
             success: function( data ) {
-                console.log(data);
                 response( data );
             }
           });
