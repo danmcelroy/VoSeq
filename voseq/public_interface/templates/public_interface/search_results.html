@@ -20,7 +20,7 @@
   {% if result_count > 0 %}
     <p><b>I have found {{ result_count|intcomma }} results for query:</b> {{ query }}</p>
 
-      {% if suggestion != query and suggestion != None %}
+      {% if suggestion != query %}
         <span class="text-warning"><b>Did you mean:</b></span> <a href="/search/?q={{ suggestion }}">{{ suggestion }}</a>
       {% endif %}
     <hr>

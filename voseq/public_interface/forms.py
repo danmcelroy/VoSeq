@@ -1,6 +1,10 @@
 from django import forms
 from haystack.forms import ModelSearchForm
 from haystack.query import SearchQuerySet
+from haystack.query import RelatedSearchQuerySet
+
+from .models import Vouchers
+from .models import Sequences
 
 
 class AdvancedSearchForm(ModelSearchForm):
@@ -111,7 +115,9 @@ class AdvancedSearchForm(ModelSearchForm):
 
         # Check if we got any input value to search from
         if bool(keywords) is True:
-            sqs = SearchQuerySet().using('advanced_search').filter(**keywords)
+            #sqs = SearchQuerySet().using('advanced_search').filter(**keywords)
+            sqs = RelatedSearchQuerySet().using('advanced_search').filter(**keywords).load_all()
+            sqs.load_all_queryset(Vouchers, Vouchers.objects.all())
 
             if len(sqs) > 0:
                 return sqs
