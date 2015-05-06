@@ -142,26 +142,6 @@ def search_advanced(request):
             search_view.__call__(request)
             print(">>>>>search_view.results", search_view.results)
             return search_view.create_response()
-
-            """
-            print(">>>>>>>>>>results", results)
-            if results:
-                return render(request, 'public_interface/search_results.html',
-                              {
-                                  'form': form,
-                                  'results': results,
-                                  'version': version,
-                                  'stats': stats,
-                              })
-            else:
-                return render(request, 'public_interface/search.html',
-                              {
-                                  'form': form,
-                                  'results': 'No results',
-                                  'version': version,
-                                  'stats': stats,
-                              })
-            """
     else:
         form = AdvancedSearchForm()
 
