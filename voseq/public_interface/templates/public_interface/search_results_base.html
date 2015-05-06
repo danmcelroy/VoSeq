@@ -1,0 +1,67 @@
+{% extends 'public_interface/base.html' %}
+{% load humanize %}
+
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-10 col-lg-offset-1 col-md-offset-1">
+
+      <h3>Search</h3>
+      <hr>
+
+    </div><!-- col -->
+  </div><!-- row -->
+
+  <div class="row">
+    <div class="col-lg-9 col-lg-offset-2 col-md-offset-2">
+
+  {% if result_count > 0 %}
+    <p><b>I have found {{ result_count|intcomma }} results for query:</b> {{ query }}</p>
+
+      {% if suggestion != query and suggestion != None %}
+        <span class="text-warning"><b>Did you mean:</b></span> <a href="/search/?q={{ suggestion }}">{{ suggestion }}</a>
+      {% endif %}
+    <hr>
+  {% endif %}
+
+  {% block iterate_over_results %}
+  {% endblock iterate_over_results %}
+
+  {% if page.has_previous or page.has_next %}
+    <nav>
+      <ul class="pagination">
+        {% if page.has_previous %}
+        <li>
+          <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {% endif %}
+
+        {% for i in paginator.page_range %}
+          {% if i > page.number|add:"-10" and i < page.number|add:"10" %}
+            <li {% if page.number == i %} class="active" {% endif %}>
+              <a href="?q={{ query }}&amp;page={{ i }}">{{ i }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+
+        {% if page.has_next %}
+        <li>
+          <a href="?q={{ query }}&amp;page={{ page.next_page_number }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  {% endif %}
+
+    </div><!-- col -->
+  </div><!-- row -->
+
+</div>
+
+{% endblock content %}
