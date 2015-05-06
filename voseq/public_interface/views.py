@@ -82,6 +82,11 @@ class SimpleSearch(SearchView):
         return {'result_count': len(self.searchqueryset)}
 
 
+class AdvancedSearch(SearchView):
+    def extra_context(self):
+        return {'result_count': len(self.searchqueryset)}
+
+
 def autocomplete(request):
     """Used for JSON queries from javascript to fill autocomplete values in
     input boxes of advanced searches.
@@ -123,9 +128,11 @@ def search_advanced(request):
 
     if request.method == 'GET' and bool(request.GET) is not False:
         form = AdvancedSearchForm(request.GET)
+
         if form.is_valid():
             # do search
             results = form.search()
+            print(">>>>>>>>>>results", results)
             if results:
                 return render(request, 'public_interface/search_results.html',
                               {
