@@ -138,7 +138,12 @@ def search_advanced(request):
                 results = paginator.page(1)
             except EmptyPage:
                 results = paginator.page(paginator.num_pages)
-            return render(request, 'public_interface/search_results_sequence_objs.html',
+
+            if are_results_sequence_objects(this_queryset) is True:
+                template = 'public_interface/search_results_sequence_objs.html'
+            else:
+                template = 'public_interface/search_results_voucher_objs.html'
+            return render(request, template,
                           {
                               'form': form,
                               'results': results,
@@ -153,20 +158,19 @@ def search_advanced(request):
                       })
 
 
-class AdvancedSearch(SearchView):
-    def extra_context(self):
-        return {'result_count': len(self.results)}
-
-
-def are_results_sequence_objects(search_view):
-    for i in search_view.results:
+def are_results_sequence_objects(sqs):
+    for i in sqs:
         try:
-            print(i.object.code.genus)
+            print("> Form", i.code.genus)
             results_are_sequence_objects = True
         except AttributeError:
             results_are_sequence_objects = False
-            pass
         return results_are_sequence_objects
+
+
+class AdvancedSearch(SearchView):
+    def extra_context(self):
+        return {'result_count': len(self.results)}
 
 
 def show_voucher(request, voucher_code):

@@ -4,11 +4,11 @@
 
 {{ page.object_list }}
 <ul>
-  {% for result in page.object_list %}
+  {% for result in results %}
     <li>
-      <a href="/p/{{ result.object.code }}">{{ result.object.code }}</a>
-         <i>{{ result.object.genus}}</i>
-         <i>{{ result.object.species}}</i>
+      <a href="/p/{{ result.object.code }}">{{ result.code }}</a>
+         <i>{{ result.genus}}</i>
+         <i>{{ result.species}}</i>
 
       <br />
 
