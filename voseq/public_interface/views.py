@@ -7,6 +7,9 @@ from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.conf import settings
+from django.core.paginator import Paginator
+from django.core.paginator import EmptyPage
+from django.core.paginator import PageNotAnInteger
 
 from haystack.forms import SearchForm
 from haystack.views import SearchView
@@ -125,14 +128,21 @@ def search_advanced(request):
         form = AdvancedSearchForm(request.GET)
 
         if form.is_valid():
-            search_view = AdvancedSearch(
-                template='public_interface/search_results_voucher_objs.html',
-                form_class=AdvancedSearchForm,
-            )
-            search_view.__call__(request)
-            print(search_view.results)
-            # search_view.query = sqs.query
-            return search_view.create_response()
+            this_queryset = form.search()
+            paginator = Paginator(this_queryset, 20)
+            page = request.GET.get('page')
+
+            try:
+                results = paginator.page(page)
+            except PageNotAnInteger:
+                results = paginator.page(1)
+            except EmptyPage:
+                results = paginator.page(paginator.num_pages)
+            return render(request, 'public_interface/search_results_sequence_objs.html',
+                          {
+                              'form': form,
+                              'results': results,
+                          })
     else:
         form = AdvancedSearchForm()
         return render(request, 'public_interface/search.html',

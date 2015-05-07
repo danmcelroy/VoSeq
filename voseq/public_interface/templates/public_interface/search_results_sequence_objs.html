@@ -2,13 +2,12 @@
 
 {% block iterate_over_results %}
 
-{{ result }}
 <ul>
-  {% for result in page.object_list %}
+  {% for result in results %}
     <li>
-      <a href="/p/{{ result.object.code.code }}">{{ result.object.code }}</a>
-         <i>{{ result.object.code.genus }}</i>
-         <i>{{ result.object.code.species }}</i>
+      <a href="/p/{{ result.code.code }}">{{ result.code.code }}</a>
+         <i>{{ result.code.genus }}</i>
+         <i>{{ result.code.species }}</i>
 
       <br />
 
