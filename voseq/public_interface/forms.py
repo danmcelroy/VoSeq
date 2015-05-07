@@ -113,16 +113,14 @@ class AdvancedSearchForm(ModelSearchForm):
                 if k == 'sex' or k == 'typeSpecies' or k == 'voucher' or k == 'models' or k == 'genbank':
                     continue
                 keywords[k] = v
+        print(keywords)
 
         # Check if we got any input value to search from
         if bool(keywords) is True:
             # sqs = SearchQuerySet().using('advanced_search').filter(**keywords)
-            v = Sequences.objects.select_related('code').filter(**keywords).distinct('code')
-            for i in v:
-                print(i.code.code)
-            sqs = RelatedSearchQuerySet().using('advanced_search').filter(**keywords).load_all()
-            sqs = sqs.load_all_queryset(Sequences, v)
-            # sqs = sqs.load_all_queryset(Sequences, Sequences.objects.select_related('code'))
+            sqs = []
+            if 'labPerson' in keywords:
+                sqs = Sequences.objects.filter(**keywords).distinct('code').select_related('code')
 
             if len(sqs) > 0:
                 return sqs
