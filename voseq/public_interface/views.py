@@ -70,9 +70,10 @@ def search(request):
     form = SearchForm(request.GET)
     sqs = form.search()
     sqs.spelling_suggestion()
+    print(sqs)
 
     search_view = SimpleSearch(
-        template='public_interface/search_results_voucher_objs.html',
+        template='public_interface/search_results_simple.html',
         searchqueryset=sqs,
         form_class=SearchForm,
     )
