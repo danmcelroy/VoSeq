@@ -82,11 +82,6 @@ class SimpleSearch(SearchView):
         return {'result_count': len(self.searchqueryset)}
 
 
-class AdvancedSearch(SearchView):
-    def extra_context(self):
-        return {'result_count': len(self.searchqueryset)}
-
-
 def autocomplete(request):
     """Used for JSON queries from javascript to fill autocomplete values in
     input boxes of advanced searches.
@@ -130,14 +125,13 @@ def search_advanced(request):
         form = AdvancedSearchForm(request.GET)
 
         if form.is_valid():
-            sqs = form.search()
             search_view = AdvancedSearch(
                 template='public_interface/search_results_voucher_objs.html',
-                searchqueryset=sqs,
                 form_class=AdvancedSearchForm,
             )
             search_view.__call__(request)
-            search_view.query = sqs.query
+            print(search_view.results)
+            # search_view.query = sqs.query
 
             if are_results_sequence_objects(search_view) is True:
                 search_view.template = 'public_interface/search_results_sequence_objs.html'
@@ -150,6 +144,11 @@ def search_advanced(request):
                           'version': version,
                           'stats': stats,
                       })
+
+
+class AdvancedSearch(SearchView):
+    def extra_context(self):
+        return {'result_count': len(self.results)}
 
 
 def are_results_sequence_objects(search_view):
