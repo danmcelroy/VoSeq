@@ -117,13 +117,10 @@ class AdvancedSearchForm(ModelSearchForm):
 
         # Check if we got any input value to search from
         if bool(keywords) is True:
-            # sqs = SearchQuerySet().using('advanced_search').filter(**keywords)
-            sqs = []
-            if 'labPerson' in keywords:
-                sqs = Sequences.objects.filter(**keywords).distinct('code').select_related('code')
-            else:
-                sqs = Vouchers.objects.filter(**keywords)
-            print(sqs)
+            sqs = SearchQuerySet().using('advanced_search').filter(**keywords).facet('code')
+            for i in sqs:
+                print(i.code)
+            print(sqs.facet_counts())
 
             if len(sqs) > 0:
                 return sqs
