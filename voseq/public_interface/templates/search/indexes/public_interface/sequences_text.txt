@@ -1,3 +1,2 @@
-{{ object.code }}
 {{ object.labPerson }}
 {{ object.accession }}
