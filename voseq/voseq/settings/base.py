@@ -88,7 +88,7 @@ HAYSTACK_CONNECTIONS = {
         'INCLUDE_SPELLING': False,
         'EXCLUDED_INDEXES': [
             'public_interface.search_indexes.SimpleSearchIndex',
-            'public_interface.search_indexes.AdvancedSearchIndex',
+            # 'public_interface.search_indexes.AdvancedSearchIndex',
         ],
     },
     'advanced_search': {
@@ -97,6 +97,7 @@ HAYSTACK_CONNECTIONS = {
         'INDEX_NAME': 'advanced_search',
         'INCLUDE_SPELLING': False,
         'EXCLUDED_INDEXES': [
+            'public_interface.search_indexes.VouchersIndex',
             'public_interface.search_indexes.SimpleSearchIndex',
         ],
     },
