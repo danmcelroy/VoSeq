@@ -132,9 +132,6 @@ def search_advanced(request):
             search_view.__call__(request)
             print(search_view.results)
             # search_view.query = sqs.query
-
-            if are_results_sequence_objects(search_view) is True:
-                search_view.template = 'public_interface/search_results_sequence_objs.html'
             return search_view.create_response()
     else:
         form = AdvancedSearchForm()
