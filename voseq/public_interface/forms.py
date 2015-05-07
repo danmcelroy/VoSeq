@@ -121,6 +121,9 @@ class AdvancedSearchForm(ModelSearchForm):
             sqs = []
             if 'labPerson' in keywords:
                 sqs = Sequences.objects.filter(**keywords).distinct('code').select_related('code')
+            else:
+                sqs = Vouchers.objects.filter(**keywords)
+            print(sqs)
 
             if len(sqs) > 0:
                 return sqs
@@ -131,16 +134,6 @@ class AdvancedSearchForm(ModelSearchForm):
 class SimpleClass(object):
     def __init__(self, item):
         self.item = item
-
-
-def are_results_sequence_objects(sqs):
-    for i in sqs:
-        try:
-            print("> Form", i.object.code.genus)
-            results_are_sequence_objects = True
-        except AttributeError:
-            results_are_sequence_objects = False
-        return results_are_sequence_objects
 
 
 # The following form is for the admin site bacth_changes action
