@@ -64,7 +64,6 @@ class AdvancedSearchIndex(indexes.SearchIndex, indexes.Indexable):
     """We also need some fields from our Sequences model.
     """
     text = indexes.EdgeNgramField(document=True, use_template=True)
-    code = indexes.EdgeNgramField(model_attr='code', null=True)
     labPerson = indexes.EdgeNgramField(model_attr='labPerson', null=True)
     accession = indexes.EdgeNgramField(model_attr='accession', null=True)
 
