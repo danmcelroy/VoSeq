@@ -115,14 +115,37 @@ class AdvancedSearchForm(ModelSearchForm):
 
         # Check if we got any input value to search from
         if bool(keywords) is True:
-            #sqs = SearchQuerySet().using('advanced_search').filter(**keywords)
+            # sqs = SearchQuerySet().using('advanced_search').filter(**keywords)
             sqs = RelatedSearchQuerySet().using('advanced_search').filter(**keywords).load_all()
-            sqs.load_all_queryset(Vouchers, Vouchers.objects.all())
+            sqs = sqs.load_all_queryset(Sequences, Sequences.objects.all().select_related('code'))
+
+            codes = set()
+            filtered_sqs = []
+            append = filtered_sqs.append
+
+            if are_results_sequence_objects(sqs) is True:
+                for i in sqs:
+                    this_voucher = i.object.code
+                    this_code = this_voucher.code
+                    if this_code not in codes:
+                        codes.add(this_code)
+                        append(this_voucher)
+                sqs = filtered_sqs
 
             if len(sqs) > 0:
                 return sqs
             else:
                 self.no_query_found()
+
+
+def are_results_sequence_objects(sqs):
+    for i in sqs:
+        try:
+            print("> Form", i.object.code.genus)
+            results_are_sequence_objects = True
+        except AttributeError:
+            results_are_sequence_objects = False
+        return results_are_sequence_objects
 
 
 # The following form is for the admin site bacth_changes action
