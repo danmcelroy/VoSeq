@@ -131,5 +131,14 @@ class TestViews(TestCase):
         content = response.content.decode('utf-8')
         self.assertTrue('Melitaea' in content)
 
+    def test_advanced_search_dont_show_duplicate_records(self):
+        """Since we are looking into the Sequences tables, we might get
+        several sequences belonging to the same voucher. Need to get only
+        one.
+        """
+        response = self.client.get('/search/advanced/?labPerson=Niklas+Wahlberg')
+        content = response.content.decode('utf-8')
+        self.assertEqual(1, content.count('/CP100-10'))
+
     def tearDown(self):
         call_command('clear_index', interactive=False, verbosity=0)
