@@ -119,35 +119,11 @@ class AdvancedSearchForm(ModelSearchForm):
             # sqs = SearchQuerySet().using('advanced_search').filter(**keywords)
             sqs = RelatedSearchQuerySet().using('advanced_search').filter(**keywords).load_all()
             sqs = sqs.load_all_queryset(Sequences, Sequences.objects.all().select_related('code'))
-            for i in sqs:
-                print(i.score)
-
-            sqs = filter_sqs(sqs)
 
             if len(sqs) > 0:
                 return sqs
             else:
                 self.no_query_found()
-
-
-def filter_sqs(sqs):
-    """If we got sequence objects, return filtered voucher objects to avoid
-    dupes.
-    """
-    codes = set()
-    filtered_sqs = []
-    append = filtered_sqs.append
-    if are_results_sequence_objects(sqs) is True:
-        print(">>> true")
-        for i in sqs:
-            this_voucher = i.object.code
-            this_code = this_voucher.code
-            if this_code not in codes:
-                codes.add(this_code)
-                append(SearchResult('public_interface', 'vouchers', this_code, 2.645))
-        sqs = filtered_sqs
-        print(">>> sqs", sqs)
-    return sqs
 
 
 class SimpleClass(object):
