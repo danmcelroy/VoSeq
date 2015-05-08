@@ -147,16 +147,6 @@ def search_advanced(request):
                       })
 
 
-def are_results_sequence_objects(sqs):
-    for i in sqs:
-        try:
-            print("> Form", i.code.genus)
-            results_are_sequence_objects = True
-        except AttributeError:
-            results_are_sequence_objects = False
-        return results_are_sequence_objects
-
-
 class AdvancedSearch(SearchView):
     def extra_context(self):
         return {'result_count': len(self.results)}

@@ -1,11 +1,6 @@
 from django import forms
 from haystack.forms import ModelSearchForm
 from haystack.query import SearchQuerySet
-from haystack.query import RelatedSearchQuerySet
-from haystack.models import SearchResult
-
-from .models import Vouchers
-from .models import Sequences
 
 
 class AdvancedSearchForm(ModelSearchForm):
