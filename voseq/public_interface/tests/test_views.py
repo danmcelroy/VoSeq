@@ -140,5 +140,10 @@ class TestViews(TestCase):
         content = response.content.decode('utf-8')
         self.assertEqual(1, content.count('/CP100-10'))
 
+    def test_advanced_search_combined(self):
+        response = self.client.get('/search/advanced/?orden=Lepidoptera&labPerson=Niklas+Wahlberg')
+        content = response.content.decode('utf-8')
+        self.assertEqual(1, content.count('/CP100-10'))
+
     def tearDown(self):
         call_command('clear_index', interactive=False, verbosity=0)

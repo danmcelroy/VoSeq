@@ -112,6 +112,7 @@ class AdvancedSearchForm(ModelSearchForm):
         # Check if we got any input value to search from
         if bool(keywords) is True:
             sqs = SearchQuerySet().using('advanced_search').filter(**keywords).facet('code')
+            print(sqs)
             sqs = filter_results_from_sequence_table(sqs)
 
             if len(sqs) > 0:
