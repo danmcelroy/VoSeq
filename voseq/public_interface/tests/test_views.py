@@ -115,35 +115,3 @@ class TestViews(TestCase):
         response = self.client.get('/autocomplete/?field=genus&term=melita')
         content = response.content.decode('utf-8')
         self.assertTrue('Melitaea' in content)
-
-    def test_advanced_search_gui_form(self):
-        response = self.client.get('/search/advanced/')
-        content = response.content.decode('utf-8')
-        self.assertTrue('Search by querying a single field for any combination of fields' in content)
-
-    def test_advanced_search_voucher_objs(self):
-        response = self.client.get('/search/advanced/?orden=Hymenoptera')
-        content = response.content.decode('utf-8')
-        self.assertTrue('Melitaea' in content)
-
-    def test_advanced_search_sequence_objs(self):
-        response = self.client.get('/search/advanced/?labPerson=Niklas')
-        content = response.content.decode('utf-8')
-        self.assertTrue('Melitaea' in content)
-
-    def test_advanced_search_dont_show_duplicate_records(self):
-        """Since we are looking into the Sequences tables, we might get
-        several sequences belonging to the same voucher. Need to get only
-        one.
-        """
-        response = self.client.get('/search/advanced/?labPerson=Niklas+Wahlberg')
-        content = response.content.decode('utf-8')
-        self.assertEqual(1, content.count('/CP100-10'))
-
-    def test_advanced_search_combined(self):
-        response = self.client.get('/search/advanced/?orden=Lepidoptera&labPerson=Niklas+Wahlberg')
-        content = response.content.decode('utf-8')
-        self.assertEqual(1, content.count('/CP100-10'))
-
-    def tearDown(self):
-        call_command('clear_index', interactive=False, verbosity=0)
