@@ -31,14 +31,14 @@ class SimpleSearchIndex(indexes.SearchIndex, indexes.Indexable):
         return self.get_model().objects.filter(timestamp__lte=datetime.datetime.now())
 
 
-class VouchersIndex(SimpleSearchIndex):
+class AutoCompleteIndex(SimpleSearchIndex):
     """Defines an index and all fields should have autocomplete capabilities
     in the GUI.
 
     :param indexes.SearchIndex:
     :param indexes.Indexable:
     """
-    text = indexes.CharField(document=True, use_template=True)
+    text = indexes.EdgeNgramField(document=True, use_template=True)
     author = indexes.EdgeNgramField(model_attr='author', null=True)
 
     country = indexes.EdgeNgramField(model_attr='country', null=True)
@@ -54,6 +54,44 @@ class VouchersIndex(SimpleSearchIndex):
 
     publishedIn = indexes.EdgeNgramField(model_attr='publishedIn', null=True)
     notes = indexes.EdgeNgramField(model_attr='notes', null=True)
+
+    def index_queryset(self, using='autocomplete'):
+        # Used when the entire index for model is updated.
+        return self.get_model().objects.filter(timestamp__lte=datetime.datetime.now())
+
+
+class VouchersIndex(indexes.SearchIndex, indexes.Indexable):
+    """We want extact matches for most fields. No partial match.
+    """
+    text = indexes.CharField(document=True, use_template=True)
+    code = indexes.CharField(model_attr='code')
+    orden = indexes.CharField(model_attr='orden', null=True)
+    superfamily = indexes.CharField(model_attr='superfamily', null=True)
+    family = indexes.CharField(model_attr='family', null=True)
+    subfamily = indexes.CharField(model_attr='subfamily', null=True)
+    tribe = indexes.CharField(model_attr='tribe', null=True)
+    subtribe = indexes.CharField(model_attr='subtribe', null=True)
+    genus = indexes.CharField(model_attr='genus', null=True)
+    species = indexes.CharField(model_attr='species', null=True)
+    subspecies = indexes.CharField(model_attr='subspecies', null=True)
+    author = indexes.CharField(model_attr='author', null=True)
+
+    country = indexes.CharField(model_attr='country', null=True)
+    specificLocality = indexes.EdgeNgramField(model_attr='specificLocality', null=True)
+
+    voucherLocality = indexes.CharField(model_attr='voucherLocality', null=True)
+    collector = indexes.CharField(model_attr='collector', null=True)
+    code_bold = indexes.CharField(model_attr='code_bold', null=True)
+    voucherCode = indexes.CharField(model_attr='voucherCode', null=True)
+    determinedBy = indexes.CharField(model_attr='determinedBy', null=True)
+
+    extractor = indexes.CharField(model_attr='extractor', null=True)
+
+    publishedIn = indexes.EdgeNgramField(model_attr='publishedIn', null=True)
+    hostorg = indexes.CharField(model_attr='hostorg', null=True)
+
+    def get_model(self):
+        return Vouchers
 
     def index_queryset(self, using='vouchers'):
         # Used when the entire index for model is updated.

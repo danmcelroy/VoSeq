@@ -102,22 +102,32 @@ class AdvancedSearchForm(ModelSearchForm):
             return self.no_query_found()
 
         keywords = {}
+        sequence_keywords = {}
         for k, v in self.cleaned_data.items():
             if v != '' and v is not None:
                 # remove after adding this to index
                 if k == 'sex' or k == 'typeSpecies' or k == 'voucher' or k == 'models' or k == 'genbank':
                     continue
-                keywords[k] = v
+                if k == 'labPerson':
+                    sequence_keywords[k] = v
+                else:
+                    keywords[k] = v
 
         # Check if we got any input value to search from
-        if bool(keywords) is True:
-            sqs = SearchQuerySet().using('advanced_search').filter(**keywords).facet('code')
+        sqs = ''
+        if bool(sequence_keywords) is True:
+            sqs = SearchQuerySet().using('advanced_search').filter(**sequence_keywords).facet('code')
             sqs = filter_results_from_sequence_table(sqs)
-
-            if len(sqs) > 0:
-                return sqs
+        if bool(keywords) is True:
+            if sqs != '':
+                sqs = sqs.filter(**keywords)
             else:
-                self.no_query_found()
+                sqs = SearchQuerySet().using('vouchers').filter(**keywords)
+
+        if len(sqs) > 0:
+            return sqs
+        else:
+            self.no_query_found()
 
 
 def filter_results_from_sequence_table(sqs):
