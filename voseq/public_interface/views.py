@@ -167,7 +167,9 @@ class AdvancedSearch(SearchView):
 
     def strip_page(self, url_encoded_query):
         this_query = re.sub('page=[0-2]+', '', url_encoded_query)
-        return this_query.replace('&&', '&')
+        this_query = this_query.replace('&&', '&')
+        this_query = re.sub('^&', '', this_query)
+        return this_query
 
     def extra_context(self):
         return {
