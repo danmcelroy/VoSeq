@@ -2,9 +2,8 @@
 
 {% block iterate_over_results %}
 
-{{ page.object_list }}
 <ul>
-  {% for result in results %}
+  {% for result in page.object_list %}
     <li>
       <a href="/p/{{ result.object.code }}">{{ result.code }}</a>
          <i>{{ result.genus}}</i>
