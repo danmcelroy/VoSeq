@@ -72,7 +72,7 @@ def search(request):
     sqs = form.search()
     sqs.spelling_suggestion()
 
-    search_view = SimpleSearch(
+    search_view = VoSeqSearchView(
         template='public_interface/search_results.html',
         searchqueryset=sqs,
         form_class=SearchForm,
@@ -82,7 +82,7 @@ def search(request):
     return search_view.create_response()
 
 
-class SimpleSearch(SearchView):
+class VoSeqSearchView(SearchView):
     def __init__(self, url_encoded_query, *args, **kwargs):
         self.url_encoded_query = self.get_correct_query(url_encoded_query)
         super().__init__(*args, **kwargs)
@@ -95,6 +95,7 @@ class SimpleSearch(SearchView):
         this_query = re.sub('page=[0-2]+', '', url_encoded_query)
         this_query = this_query.replace('&&', '&')
         this_query = re.sub('^&', '', this_query)
+        this_query = re.sub('&$', '', this_query)
         return this_query
 
     def extra_context(self):
@@ -149,7 +150,7 @@ def search_advanced(request):
         if form.is_valid():
             url_encoded_query = request.GET.urlencode()
             sqs = form.search()
-            search_view = AdvancedSearch(
+            search_view = VoSeqSearchView(
                 url_encoded_query=url_encoded_query,
                 template='public_interface/search_results.html',
                 searchqueryset=sqs,
@@ -175,12 +176,6 @@ def search_advanced(request):
                           'version': version,
                           'stats': stats,
                       })
-
-
-class AdvancedSearch(SimpleSearch):
-    def get_correct_query(self, url_encoded_query):
-        this_query = self.strip_page(url_encoded_query)
-        return this_query
 
 
 def show_voucher(request, voucher_code):
