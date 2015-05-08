@@ -134,9 +134,17 @@ def search_advanced(request):
                 searchqueryset=sqs,
                 form_class=AdvancedSearchForm
             )
-            search_view.__call__(request)
-            search_view.query = sqs.query
-            return search_view.create_response()
+            if sqs is not None:
+                search_view.__call__(request)
+                search_view.query = sqs.query
+                return search_view.create_response()
+            else:
+                return render(request, 'public_interface/search_results.html',
+                              {
+                                  'form': form,
+                                  'version': version,
+                                  'stats': stats,
+                              })
     else:
         form = AdvancedSearchForm()
         return render(request, 'public_interface/search.html',
