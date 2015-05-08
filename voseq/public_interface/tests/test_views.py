@@ -14,13 +14,13 @@ TEST_INDEX = {
         'INCLUDE_SPELLING': True,
         'EXCLUDED_INDEXES': [
             'public_interface.search_indexes.AdvancedSearchIndex',
-            'public_interface.search_indexes.VouchersIndex',
+            'public_interface.search_indexes.AutoCompleteIndex',
         ],
     },
-    'vouchers': {
+    'autocomplete': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'vouchers',
+        'INDEX_NAME': 'autocomplete',
         'INCLUDE_SPELLING': False,
         'EXCLUDED_INDEXES': [
             'public_interface.search_indexes.SimpleSearchIndex',
