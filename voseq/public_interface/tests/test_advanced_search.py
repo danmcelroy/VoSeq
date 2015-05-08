@@ -76,24 +76,24 @@ class TestViews(TestCase):
         """
         response = self.client.get('/search/advanced/?labPerson=Niklas+Wahlberg')
         content = response.content.decode('utf-8')
-        self.assertEqual(1, content.count('/CP100-10'))
+        self.assertEqual(1, content.count('/p/CP100-10'))
 
     def test_advanced_search_sequence_table_only(self):
         response = self.client.get('/search/advanced/?labPerson=Niklas+Wahlberg')
         content = response.content.decode('utf-8')
-        self.assertTrue('CP100-10' in content)
-        self.assertTrue('CP100-11' in content)
+        self.assertTrue('/p/CP100-10' in content)
+        self.assertTrue('/p/CP100-11' in content)
 
     def test_advanced_search_voucher_table_only(self):
         response = self.client.get('/search/advanced/?orden=Lepidoptera')
         content = response.content.decode('utf-8')
-        self.assertTrue('CP100-11' in content)
-        self.assertTrue('CP100-13' in content)
-        self.assertFalse('CP100-10' in content)
+        self.assertTrue('/p/CP100-11' in content)
+        self.assertTrue('/p/CP100-13' in content)
+        self.assertFalse('/p/CP100-10' in content)
 
     def test_advanced_search_combined(self):
         response = self.client.get('/search/advanced/?orden=Lepidoptera&labPerson=Niklas+Wahlberg')
         content = response.content.decode('utf-8')
-        self.assertTrue('CP100-11' in content)
-        self.assertFalse('CP100-10' in content)
-        self.assertFalse('CP100-13' in content)
+        self.assertTrue('/p/CP100-11' in content)
+        self.assertFalse('/p/CP100-10' in content)
+        self.assertFalse('/p/CP100-13' in content)
