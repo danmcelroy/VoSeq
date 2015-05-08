@@ -115,3 +115,8 @@ class TestViews(TestCase):
         response = self.client.get('/search/advanced/?orden=Coleoptera&labPerson=Niklas+Wahlberg')
         content = response.content.decode('utf-8')
         self.assertTrue('No results found' in content)
+
+    def test_advanced_search_query(self):
+        response = self.client.get('/search/advanced/?orden=Lepidoptera&labPerson=Niklas+Wahlberg')
+        content = response.content.decode('utf-8')
+        self.assertTrue('No results found' in content)
