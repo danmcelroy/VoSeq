@@ -113,19 +113,29 @@ class AdvancedSearchForm(ModelSearchForm):
                 if k == 'sex' or k == 'typeSpecies' or k == 'voucher' or k == 'models' or k == 'genbank':
                     continue
                 keywords[k] = v
-        print(keywords)
 
         # Check if we got any input value to search from
         if bool(keywords) is True:
             sqs = SearchQuerySet().using('advanced_search').filter(**keywords).facet('code')
-            for i in sqs:
-                print(i.code)
-            print(sqs.facet_counts())
+            sqs = filter_results_from_sequence_table(sqs)
 
             if len(sqs) > 0:
                 return sqs
             else:
                 self.no_query_found()
+
+
+def filter_results_from_sequence_table(sqs):
+    """Need to avoid returning duplicated voucher results.
+    """
+    facet_counts = sqs.facet_counts()
+    voucher_codes_count = facet_counts['fields']['code']
+    if len(voucher_codes_count) > 0:
+        voucher_codes = [item[0] for item in voucher_codes_count]
+        filtered_sqs = SearchQuerySet().using('vouchers').filter(code__in=voucher_codes)
+        return filtered_sqs
+    else:
+        return sqs
 
 
 class SimpleClass(object):
