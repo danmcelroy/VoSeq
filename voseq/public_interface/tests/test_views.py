@@ -25,7 +25,6 @@ TEST_INDEX = {
         'INCLUDE_SPELLING': False,
         'EXCLUDED_INDEXES': [
             'public_interface.search_indexes.SimpleSearchIndex',
-            'public_interface.search_indexes.AdvancedSearchIndex',
             'public_interface.search_indexes.VouchersIndex',
         ],
     },
