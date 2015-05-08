@@ -1,2 +1,3 @@
-{{ object.sequences.labPerson }}
-{{ object.sequences.accession }}
+{{ object.vouchers.code }}
+{{ object.labPerson }}
+{{ object.accession }}

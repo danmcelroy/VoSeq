@@ -63,7 +63,9 @@ class VouchersIndex(SimpleSearchIndex):
 class AdvancedSearchIndex(indexes.SearchIndex, indexes.Indexable):
     """We also need some fields from our Sequences model.
     """
-    text = indexes.EdgeNgramField(document=True, use_template=True)
+    # text = indexes.EdgeNgramField(document=True, use_template=True)
+    text = indexes.CharField(document=True, use_template=True)
+    code = indexes.CharField(model_attr='code__code', faceted=True)
     labPerson = indexes.EdgeNgramField(model_attr='labPerson', null=True)
     accession = indexes.EdgeNgramField(model_attr='accession', null=True)
 

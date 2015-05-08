@@ -26,8 +26,30 @@
     <hr>
   {% endif %}
 
-  {% block iterate_over_results %}
-  {% endblock iterate_over_results %}
+    <ul>
+      {% for result in page.object_list %}
+        <li>
+          <a href="/p/{{ result.object.code }}">{{ result.code }}</a>
+             <i>{{ result.genus}}</i>
+             <i>{{ result.species}}</i>
+
+          <br />
+
+          <small>
+            {% if result.object.extractor != '' %}
+              By {{ result.object.extractor }} on
+            {% endif %}
+
+            {{ result.object.timestamp|date }}
+          </small>
+
+        </li>
+      {% empty %}
+        <p>
+        <i class="fa fa-search fa-2x"></i>
+        <b>No results found.</b></p> You could try an <a href="/search/advanced/">advanced search</a>.
+      {% endfor %}
+    </ul>
 
   {% if page.has_previous or page.has_next %}
     <nav>
