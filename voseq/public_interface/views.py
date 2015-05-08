@@ -76,14 +76,32 @@ def search(request):
         template='public_interface/search_results.html',
         searchqueryset=sqs,
         form_class=SearchForm,
+        url_encoded_query=request.GET.urlencode(),
     )
     search_view.__call__(request)
     return search_view.create_response()
 
 
 class SimpleSearch(SearchView):
+    def __init__(self, url_encoded_query, *args, **kwargs):
+        self.url_encoded_query = self.get_correct_query(url_encoded_query)
+        super().__init__(*args, **kwargs)
+
+    def get_correct_query(self, url_encoded_query):
+        this_query = self.strip_page(url_encoded_query)
+        return this_query
+
+    def strip_page(self, url_encoded_query):
+        this_query = re.sub('page=[0-2]+', '', url_encoded_query)
+        this_query = this_query.replace('&&', '&')
+        this_query = re.sub('^&', '', this_query)
+        return this_query
+
     def extra_context(self):
-        return {'result_count': len(self.searchqueryset)}
+        return {
+            'url_encoded_query': self.url_encoded_query,
+            'result_count': len(self.searchqueryset),
+        }
 
 
 def autocomplete(request):
@@ -137,7 +155,6 @@ def search_advanced(request):
                 searchqueryset=sqs,
                 form_class=AdvancedSearchForm
             )
-            print(">>>>>>>queyry", search_view.url_encoded_query)
 
             if sqs is not None:
                 search_view.__call__(request)
@@ -160,22 +177,10 @@ def search_advanced(request):
                       })
 
 
-class AdvancedSearch(SearchView):
-    def __init__(self, url_encoded_query, *args, **kwargs):
-        self.url_encoded_query = self.strip_page(url_encoded_query)
-        super().__init__(*args, **kwargs)
-
-    def strip_page(self, url_encoded_query):
-        this_query = re.sub('page=[0-2]+', '', url_encoded_query)
-        this_query = this_query.replace('&&', '&')
-        this_query = re.sub('^&', '', this_query)
+class AdvancedSearch(SimpleSearch):
+    def get_correct_query(self, url_encoded_query):
+        this_query = self.strip_page(url_encoded_query)
         return this_query
-
-    def extra_context(self):
-        return {
-            'result_count': len(self.results),
-            'url_encoded_query': self.url_encoded_query,
-        }
 
 
 def show_voucher(request, voucher_code):

@@ -6,6 +6,7 @@ from django.test.utils import override_settings
 
 import haystack
 
+from public_interface.views import SimpleSearch
 from public_interface.views import AdvancedSearch
 
 
@@ -14,7 +15,7 @@ TEST_INDEX = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'haystack',
+        'INDEX_NAME': 'test_haystack',
         'INCLUDE_SPELLING': True,
         'EXCLUDED_INDEXES': [
             'public_interface.search_indexes.AdvancedSearchIndex',
@@ -25,7 +26,7 @@ TEST_INDEX = {
     'autocomplete': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'autocomplete',
+        'INDEX_NAME': 'test_autocomplete',
         'INCLUDE_SPELLING': False,
         'EXCLUDED_INDEXES': [
             'public_interface.search_indexes.SimpleSearchIndex',
@@ -35,7 +36,7 @@ TEST_INDEX = {
     'vouchers': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'vouchers',
+        'INDEX_NAME': 'test_vouchers',
         'INCLUDE_SPELLING': False,
         'EXCLUDED_INDEXES': [
             'public_interface.search_indexes.SimpleSearchIndex',
@@ -46,7 +47,7 @@ TEST_INDEX = {
     'advanced_search': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'advanced_search',
+        'INDEX_NAME': 'test_advanced_search',
         'INCLUDE_SPELLING': False,
         'EXCLUDED_INDEXES': [
             'public_interface.search_indexes.SimpleSearchIndex',
@@ -134,7 +135,22 @@ class TestViews(TestCase):
         content = response.content.decode('utf-8')
         self.assertTrue('Melitaea' in content)
 
-    def test_url_encoded_query_advanced_search(self):
+    def test_url_encoded_query_advanced_search1(self):
         my_view = AdvancedSearch(url_encoded_query='page=2&genus=Melitaea')
         expected = 'genus=Melitaea'
+        self.assertEqual(expected, my_view.url_encoded_query)
+
+    def test_url_encoded_query_advanced_search2(self):
+        my_view = AdvancedSearch(url_encoded_query='&genus=Melitaea')
+        expected = 'genus=Melitaea'
+        self.assertEqual(expected, my_view.url_encoded_query)
+
+    def test_url_encoded_query_simple_search1(self):
+        my_view = SimpleSearch(url_encoded_query='q=Melitaea')
+        expected = 'q=Melitaea'
+        self.assertEqual(expected, my_view.url_encoded_query)
+
+    def test_url_encoded_query_simple_search2(self):
+        my_view = SimpleSearch(url_encoded_query='q=Melitaea&page=2')
+        expected = 'q=Melitaea'
         self.assertEqual(expected, my_view.url_encoded_query)
