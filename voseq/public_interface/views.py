@@ -99,9 +99,12 @@ class VoSeqSearchView(SearchView):
         return this_query
 
     def extra_context(self):
+        version, stats = get_version_stats()
         return {
             'url_encoded_query': self.url_encoded_query,
             'result_count': len(self.searchqueryset),
+            'version': version,
+            'stats': stats,
         }
 
 
