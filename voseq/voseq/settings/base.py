@@ -78,6 +78,18 @@ HAYSTACK_CONNECTIONS = {
         'INCLUDE_SPELLING': True,
         'EXCLUDED_INDEXES': [
             'public_interface.search_indexes.AdvancedSearchIndex',
+            'public_interface.search_indexes.AutoCompleteIndex',
+            'public_interface.search_indexes.VouchersIndex',
+        ],
+    },
+    'autocomplete': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'autocomplete',
+        'INCLUDE_SPELLING': False,
+        'EXCLUDED_INDEXES': [
+            'public_interface.search_indexes.SimpleSearchIndex',
+            'public_interface.search_indexes.AdvancedSearchIndex',
             'public_interface.search_indexes.VouchersIndex',
         ],
     },
@@ -89,6 +101,7 @@ HAYSTACK_CONNECTIONS = {
         'EXCLUDED_INDEXES': [
             'public_interface.search_indexes.SimpleSearchIndex',
             'public_interface.search_indexes.AdvancedSearchIndex',
+            'public_interface.search_indexes.AutoCompleteIndex',
         ],
     },
     'advanced_search': {
@@ -98,6 +111,7 @@ HAYSTACK_CONNECTIONS = {
         'INCLUDE_SPELLING': False,
         'EXCLUDED_INDEXES': [
             'public_interface.search_indexes.SimpleSearchIndex',
+            'public_interface.search_indexes.VouchersIndex',
         ],
     },
 }
