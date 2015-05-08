@@ -110,3 +110,8 @@ class TestViews(TestCase):
         self.assertTrue('/p/CP100-11' in content)
         self.assertFalse('/p/CP100-10' in content)
         self.assertFalse('/p/CP100-13' in content)
+
+    def test_advanced_search_no_result(self):
+        response = self.client.get('/search/advanced/?orden=Coleoptera&labPerson=Niklas+Wahlberg')
+        content = response.content.decode('utf-8')
+        self.assertTrue('No results found' in content)
