@@ -67,64 +67,46 @@ class TestViews(TestCase):
 
         self.client = Client()
 
-    def test_index(self):
-        response = self.client.get('/')
-        self.assertEqual(200, response.status_code)
+    def test_advanced_search_gui_form(self):
+        response = self.client.get('/search/advanced/')
+        content = response.content.decode('utf-8')
+        self.assertTrue('Search by querying a single field for any combination of fields' in content)
 
-    def test_browse(self):
-        response = self.client.get('/browse/')
-        self.assertEqual(200, response.status_code)
-
-    def test_show_voucher(self):
-        response = self.client.get('/p/CP100-10', follow=True)
-        self.assertEqual(200, response.status_code)
-
-    def test_show_voucher_doesnt_exist(self):
-        response = self.client.get('/p/NN1-1aaaaaaa', follow=True)
-        self.assertEqual(404, response.status_code)
-
-    def test_show_sequence(self):
-        response = self.client.get('/s/CP100-10/COI/')
-        self.assertEqual(200, response.status_code)
-
-    def test_show_sequence_doesnt_exist(self):
-        response = self.client.get('/s/NN1-1aaaaa/EF1a/')
-        self.assertEqual(404, response.status_code)
-
-    def test_search_redirected(self):
-        """Get redirected to home due to empty search query
-        """
-        response = self.client.get('/search/?q=')
-        self.assertEqual(302, response.status_code)
-
-    def test_search_hymenoptera(self):
-        response = self.client.get('/search/?q=Hymenoptera')
-        content = str(response.content)
-        self.assertTrue('CP100-14' in content)
-
-    def test_search_returns_empty(self):
-        """Querying for several data fields should be equivalent of using AND.
-        """
-        # TODO rewrite this test for search/advanced
-        response = self.client.get('/search/?orden=Coleoptera&code=NN1-1')
-        content = str(response.content)
-        self.assertFalse('NN1-2' in content and 'NN1-1' in content)
-
-    def test_autocomplete_param_field(self):
-        """Parameters field and term are required to return JSON info for
-        autocomplete input boxes in advanced search GUI.
-        """
-        response = self.client.get('/autocomplete/?field=genus')
-        self.assertEqual(404, response.status_code)
-
-    def test_autocomplete_param_term(self):
-        """Parameters field and term are required to return JSON info for
-        autocomplete input boxes in advanced search GUI.
-        """
-        response = self.client.get('/autocomplete/?term=euptychia')
-        self.assertEqual(404, response.status_code)
-
-    def test_autocomplete(self):
-        response = self.client.get('/autocomplete/?field=genus&term=melita')
+    def test_advanced_search_voucher_objs(self):
+        response = self.client.get('/search/advanced/?orden=Hymenoptera')
         content = response.content.decode('utf-8')
         self.assertTrue('Melitaea' in content)
+
+    def test_advanced_search_sequence_objs(self):
+        response = self.client.get('/search/advanced/?labPerson=Niklas')
+        content = response.content.decode('utf-8')
+        self.assertTrue('Melitaea' in content)
+
+    def test_advanced_search_dont_show_duplicate_records(self):
+        """Since we are looking into the Sequences tables, we might get
+        several sequences belonging to the same voucher. Need to get only
+        one.
+        """
+        response = self.client.get('/search/advanced/?labPerson=Niklas+Wahlberg')
+        content = response.content.decode('utf-8')
+        self.assertEqual(1, content.count('/p/CP100-10'))
+
+    def test_advanced_search_sequence_table_only(self):
+        response = self.client.get('/search/advanced/?labPerson=Niklas+Wahlberg')
+        content = response.content.decode('utf-8')
+        self.assertTrue('/p/CP100-10' in content)
+        self.assertTrue('/p/CP100-11' in content)
+
+    def test_advanced_search_voucher_table_only(self):
+        response = self.client.get('/search/advanced/?orden=Lepidoptera')
+        content = response.content.decode('utf-8')
+        self.assertTrue('/p/CP100-11' in content)
+        self.assertTrue('/p/CP100-13' in content)
+        self.assertFalse('/p/CP100-10' in content)
+
+    def test_advanced_search_combined(self):
+        response = self.client.get('/search/advanced/?orden=Lepidoptera&labPerson=Niklas+Wahlberg')
+        content = response.content.decode('utf-8')
+        self.assertTrue('/p/CP100-11' in content)
+        self.assertFalse('/p/CP100-10' in content)
+        self.assertFalse('/p/CP100-13' in content)
