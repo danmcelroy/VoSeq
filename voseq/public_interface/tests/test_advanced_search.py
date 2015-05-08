@@ -14,6 +14,18 @@ TEST_INDEX = {
         'INCLUDE_SPELLING': True,
         'EXCLUDED_INDEXES': [
             'public_interface.search_indexes.AdvancedSearchIndex',
+            'public_interface.search_indexes.AutoCompleteIndex',
+            'public_interface.search_indexes.VouchersIndex',
+        ],
+    },
+    'autocomplete': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'autocomplete',
+        'INCLUDE_SPELLING': False,
+        'EXCLUDED_INDEXES': [
+            'public_interface.search_indexes.SimpleSearchIndex',
+            'public_interface.search_indexes.AdvancedSearchIndex',
             'public_interface.search_indexes.VouchersIndex',
         ],
     },
@@ -25,6 +37,7 @@ TEST_INDEX = {
         'EXCLUDED_INDEXES': [
             'public_interface.search_indexes.SimpleSearchIndex',
             'public_interface.search_indexes.AdvancedSearchIndex',
+            'public_interface.search_indexes.AutoCompleteIndex',
         ],
     },
     'advanced_search': {
@@ -34,6 +47,7 @@ TEST_INDEX = {
         'INCLUDE_SPELLING': False,
         'EXCLUDED_INDEXES': [
             'public_interface.search_indexes.SimpleSearchIndex',
+            'public_interface.search_indexes.VouchersIndex',
         ],
     },
 }
