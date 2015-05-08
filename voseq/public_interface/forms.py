@@ -1,10 +1,6 @@
 from django import forms
 from haystack.forms import ModelSearchForm
 from haystack.query import SearchQuerySet
-from haystack.query import RelatedSearchQuerySet
-
-from .models import Vouchers
-from .models import Sequences
 
 
 class AdvancedSearchForm(ModelSearchForm):
@@ -115,14 +111,31 @@ class AdvancedSearchForm(ModelSearchForm):
 
         # Check if we got any input value to search from
         if bool(keywords) is True:
-            #sqs = SearchQuerySet().using('advanced_search').filter(**keywords)
-            sqs = RelatedSearchQuerySet().using('advanced_search').filter(**keywords).load_all()
-            sqs.load_all_queryset(Vouchers, Vouchers.objects.all())
+            sqs = SearchQuerySet().using('advanced_search').filter(**keywords).facet('code')
+            sqs = filter_results_from_sequence_table(sqs)
 
             if len(sqs) > 0:
                 return sqs
             else:
                 self.no_query_found()
+
+
+def filter_results_from_sequence_table(sqs):
+    """Need to avoid returning duplicated voucher results.
+    """
+    facet_counts = sqs.facet_counts()
+    voucher_codes_count = facet_counts['fields']['code']
+    if len(voucher_codes_count) > 0:
+        voucher_codes = [item[0] for item in voucher_codes_count]
+        filtered_sqs = SearchQuerySet().using('vouchers').filter(code__in=voucher_codes)
+        return filtered_sqs
+    else:
+        return sqs
+
+
+class SimpleClass(object):
+    def __init__(self, item):
+        self.item = item
 
 
 # The following form is for the admin site bacth_changes action
