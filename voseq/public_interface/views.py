@@ -148,10 +148,9 @@ def search_advanced(request):
         form = AdvancedSearchForm(request.GET)
 
         if form.is_valid():
-            url_encoded_query = request.GET.urlencode()
             sqs = form.search()
             search_view = VoSeqSearchView(
-                url_encoded_query=url_encoded_query,
+                url_encoded_query=request.GET.urlencode(),
                 template='public_interface/search_results.html',
                 searchqueryset=sqs,
                 form_class=AdvancedSearchForm
