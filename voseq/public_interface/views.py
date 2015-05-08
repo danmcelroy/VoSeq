@@ -1,4 +1,5 @@
 import json
+import re
 
 from django.http import HttpResponseRedirect
 from django.http import Http404
@@ -128,12 +129,16 @@ def search_advanced(request):
         form = AdvancedSearchForm(request.GET)
 
         if form.is_valid():
+            url_encoded_query = request.GET.urlencode()
             sqs = form.search()
             search_view = AdvancedSearch(
+                url_encoded_query=url_encoded_query,
                 template='public_interface/search_results.html',
                 searchqueryset=sqs,
                 form_class=AdvancedSearchForm
             )
+            print(">>>>>>>queyry", search_view.url_encoded_query)
+
             if sqs is not None:
                 search_view.__call__(request)
                 search_view.query = sqs.query
@@ -156,8 +161,19 @@ def search_advanced(request):
 
 
 class AdvancedSearch(SearchView):
+    def __init__(self, url_encoded_query, *args, **kwargs):
+        self.url_encoded_query = self.strip_page(url_encoded_query)
+        super().__init__(*args, **kwargs)
+
+    def strip_page(self, url_encoded_query):
+        this_query = re.sub('page=[0-2]+', '', url_encoded_query)
+        return this_query.replace('&&', '&')
+
     def extra_context(self):
-        return {'result_count': len(self.results)}
+        return {
+            'result_count': len(self.results),
+            'url_encoded_query': self.url_encoded_query,
+        }
 
 
 def show_voucher(request, voucher_code):
