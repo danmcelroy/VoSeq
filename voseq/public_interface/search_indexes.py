@@ -38,7 +38,7 @@ class AutoCompleteIndex(SimpleSearchIndex):
     :param indexes.SearchIndex:
     :param indexes.Indexable:
     """
-    text = indexes.CharField(document=True, use_template=True)
+    text = indexes.EdgeNgramField(document=True, use_template=True)
     author = indexes.EdgeNgramField(model_attr='author', null=True)
 
     country = indexes.EdgeNgramField(model_attr='country', null=True)
