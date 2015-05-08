@@ -6,8 +6,7 @@ from django.test.utils import override_settings
 
 import haystack
 
-from public_interface.views import SimpleSearch
-from public_interface.views import AdvancedSearch
+from public_interface.views import VoSeqSearchView
 
 
 # Need to use a clean index for our tests
@@ -136,21 +135,21 @@ class TestViews(TestCase):
         self.assertTrue('Melitaea' in content)
 
     def test_url_encoded_query_advanced_search1(self):
-        my_view = AdvancedSearch(url_encoded_query='page=2&genus=Melitaea')
+        my_view = VoSeqSearchView(url_encoded_query='page=2&genus=Melitaea')
         expected = 'genus=Melitaea'
         self.assertEqual(expected, my_view.url_encoded_query)
 
     def test_url_encoded_query_advanced_search2(self):
-        my_view = AdvancedSearch(url_encoded_query='&genus=Melitaea')
+        my_view = VoSeqSearchView(url_encoded_query='&genus=Melitaea')
         expected = 'genus=Melitaea'
         self.assertEqual(expected, my_view.url_encoded_query)
 
     def test_url_encoded_query_simple_search1(self):
-        my_view = SimpleSearch(url_encoded_query='q=Melitaea')
+        my_view = VoSeqSearchView(url_encoded_query='q=Melitaea')
         expected = 'q=Melitaea'
         self.assertEqual(expected, my_view.url_encoded_query)
 
     def test_url_encoded_query_simple_search2(self):
-        my_view = SimpleSearch(url_encoded_query='q=Melitaea&page=2')
+        my_view = VoSeqSearchView(url_encoded_query='q=Melitaea&page=2')
         expected = 'q=Melitaea'
         self.assertEqual(expected, my_view.url_encoded_query)
