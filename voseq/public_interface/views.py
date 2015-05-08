@@ -70,7 +70,6 @@ def search(request):
     form = SearchForm(request.GET)
     sqs = form.search()
     sqs.spelling_suggestion()
-    print(sqs)
 
     search_view = SimpleSearch(
         template='public_interface/search_results_simple.html',
@@ -129,26 +128,15 @@ def search_advanced(request):
         form = AdvancedSearchForm(request.GET)
 
         if form.is_valid():
-            this_queryset = form.search()
-            paginator = Paginator(this_queryset, 20)
-            page = request.GET.get('page')
-
-            try:
-                results = paginator.page(page)
-            except PageNotAnInteger:
-                results = paginator.page(1)
-            except EmptyPage:
-                results = paginator.page(paginator.num_pages)
-
-            if are_results_sequence_objects(this_queryset) is True:
-                template = 'public_interface/search_results_sequence_objs.html'
-            else:
-                template = 'public_interface/search_results_voucher_objs.html'
-            return render(request, template,
-                          {
-                              'form': form,
-                              'results': results,
-                          })
+            sqs = form.search()
+            search_view = AdvancedSearch(
+                template='public_interface/search_results_voucher_objs.html',
+                searchqueryset=sqs,
+                form_class=AdvancedSearchForm
+            )
+            search_view.__call__(request)
+            search_view.query = sqs.query
+            return search_view.create_response()
     else:
         form = AdvancedSearchForm()
         return render(request, 'public_interface/search.html',
