@@ -1,8 +1,12 @@
 from django.core.management import call_command
 from django.test import Client
 from django.test import TestCase
+from django.test import RequestFactory
 from django.test.utils import override_settings
+
 import haystack
+
+from public_interface.views import AdvancedSearch
 
 
 # Need to use a clean index for our tests
@@ -66,6 +70,7 @@ class TestViews(TestCase):
         super(TestViews, self).setUp()
 
         self.client = Client()
+        self.factory = RequestFactory()
 
     def test_index(self):
         response = self.client.get('/')
@@ -128,3 +133,8 @@ class TestViews(TestCase):
         response = self.client.get('/autocomplete/?field=genus&term=melita')
         content = response.content.decode('utf-8')
         self.assertTrue('Melitaea' in content)
+
+    def test_url_encoded_query_advanced_search(self):
+        my_view = AdvancedSearch(url_encoded_query='page=2&genus=Melitaea')
+        expected = 'genus=Melitaea'
+        self.assertEqual(expected, my_view.url_encoded_query)
