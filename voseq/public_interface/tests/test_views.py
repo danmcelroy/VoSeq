@@ -155,7 +155,7 @@ class TestViews(TestCase):
         self.assertEqual(expected, my_view.url_encoded_query)
 
     def test_stats(self):
+        call_command('create_stats')
         response = self.client.get('/search/advanced/?genus=melitaea')
         content = response.content.decode('utf-8')
-        print(content)
         self.assertTrue('Now with 10 vouchers' in content)
