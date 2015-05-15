@@ -1,8 +1,10 @@
 from collections import OrderedDict
+import csv
 import os
 import uuid
 
 from django.shortcuts import render
+from django.http import HttpResponse
 from amas import AMAS
 
 from .forms import GeneTableForm
@@ -28,15 +30,16 @@ def results(request):
     if request.method == 'POST':
         form = GeneTableForm(request.POST)
         if form.is_valid():
-            print(">>>>", form.cleaned_data)
             table = GeneTable(form.cleaned_data)
-            print(table.stats)
-            return render(request, 'gene_table/results.html',
-                          {
-                              'version': version,
-                              'stats': stats,
-                          },
-                          )
+            response = create_excel_file(table.stats)
+            return response
+
+    return render(request, 'gene_table/index.html',
+                  {
+                      'version': version,
+                      'stats': stats,
+                  },
+                  )
 
 
 class GeneTable(object):
@@ -123,3 +126,25 @@ class GeneTable(object):
 
     def make_guid(self):
         return uuid.uuid4().hex
+
+
+def create_excel_file(stats):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="gene_table.csv"'
+
+    writer = csv.writer(response)
+
+    row = ['Data set', 'Data type', 'Length', 'Dataset completion (%)', 'Variable (%)',
+           'Pars. Inf. (%)', 'Conserved (%)', 'Freq. A (%)', 'Freq. T/U (%)', 'Freq. C (%)',
+           'Freq. G (%)', 'Introns (n)', 'Tot. intron length (bp)']
+    writer.writerow(row)
+    for gene in stats:
+        this_stats = stats[gene]
+        row = [gene]
+        row.append(this_stats['data_type'])
+        row.append(this_stats['alignment_length'])
+        row.append(100 - float(this_stats['missing_percent']))
+        row.append(this_stats['proportion_variable_sites'])
+        row.append(this_stats['proportion_parsimony_informative'])
+        writer.writerow(row)
+    return response
