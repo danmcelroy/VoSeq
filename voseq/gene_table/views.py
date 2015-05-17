@@ -104,6 +104,12 @@ class GeneTable(object):
             aln = AMAS.DNAAlignment(in_file, 'fasta', 'dna')
             aln_stats = aln.summarize_alignment()
 
+            freq_summary = aln.get_freq_summary()[1][0:4]
+            aln_stats += freq_summary
+            aln_stats.append(code)
+
+            print(">>>>aln_stats", aln_stats)
+
             this_stat = {
                 'data_type': self.genes_type[code],
                 'number_of_taxa': aln_stats[1],
@@ -115,13 +121,17 @@ class GeneTable(object):
                 'proportion_variable_sites': aln_stats[7],
                 'parsimony_informative_sites': aln_stats[8],
                 'proportion_parsimony_informative': aln_stats[9],
+                'freq_a': aln_stats[10],
+                'freq_c': aln_stats[11],
+                'freq_g': aln_stats[12],
+                'freq_t': aln_stats[13],
             }
             stats[code] = this_stat
 
-        try:
-            os.remove(in_file)
-        except OSError:
-            pass
+            try:
+                os.remove(in_file)
+            except OSError:
+                pass
         return stats
 
     def make_guid(self):
@@ -144,7 +154,12 @@ def create_excel_file(stats):
         row.append(this_stats['data_type'])
         row.append(this_stats['alignment_length'])
         row.append(100 - float(this_stats['missing_percent']))
-        row.append(this_stats['proportion_variable_sites'])
+        row.append(float(this_stats['proportion_variable_sites']) * 100)
         row.append(this_stats['proportion_parsimony_informative'])
+        row.append('')
+        row.append(float(this_stats['freq_a']) * 100)
+        row.append(float(this_stats['freq_t']) * 100)
+        row.append(float(this_stats['freq_c']) * 100)
+        row.append(float(this_stats['freq_g']) * 100)
         writer.writerow(row)
     return response
