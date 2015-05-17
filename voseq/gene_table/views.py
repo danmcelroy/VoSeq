@@ -108,8 +108,6 @@ class GeneTable(object):
             aln_stats += freq_summary
             aln_stats.append(code)
 
-            print(">>>>aln_stats", aln_stats)
-
             this_stat = {
                 'data_type': self.genes_type[code],
                 'number_of_taxa': aln_stats[1],
@@ -156,7 +154,7 @@ def create_excel_file(stats):
         row.append(100 - float(this_stats['missing_percent']))
         row.append(float(this_stats['proportion_variable_sites']) * 100)
         row.append(this_stats['proportion_parsimony_informative'])
-        row.append('')
+        row.append(100 - (float(this_stats['proportion_variable_sites']) * 100))
         row.append(float(this_stats['freq_a']) * 100)
         row.append(float(this_stats['freq_t']) * 100)
         row.append(float(this_stats['freq_c']) * 100)
