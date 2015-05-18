@@ -16,10 +16,13 @@ from public_interface.models import Genes
 
 
 def index(request):
+    version, stats = get_version_stats()
     form = GeneTableForm()
 
     return render(request, 'gene_table/index.html',
                   {
+                      'version': version,
+                      'stats': stats,
                       'form': form,
                   },
                   )
@@ -38,6 +41,7 @@ def results(request):
                   {
                       'version': version,
                       'stats': stats,
+                      'form': form,
                   },
                   )
 
