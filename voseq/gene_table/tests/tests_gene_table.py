@@ -2,13 +2,6 @@ from django.test import TestCase
 from django.core.management import call_command
 from django.test import Client
 
-from Bio.Seq import Seq
-from Bio.Alphabet import generic_dna
-
-from core import utils
-from public_interface.models import Genes
-from public_interface.models import Sequences
-
 
 class TestGeneTable(TestCase):
     def setUp(self):
