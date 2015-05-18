@@ -31,3 +31,11 @@ class TestGeneTable(TestCase):
 
                                     })
         self.assertTrue(expected in str(response.content))
+
+    def test_results_invalid_form(self):
+        response = self.client.post('/create_gene_table/results/', {
+            'taxonset': 1000,
+            'geneset': 1000,
+        })
+        expected = 'Erebia'
+        self.assertTrue(expected in str(response.content))
