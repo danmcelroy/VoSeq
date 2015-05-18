@@ -49,6 +49,7 @@ INSTALLED_APPS = (
     'view_genes',
     'genbank_fasta',
     'gene_table',
+    'voucher_table',
 )
 
 MIDDLEWARE_CLASSES = (
