@@ -21,3 +21,13 @@ class TestGeneTable(TestCase):
     def test_view_index(self):
         response = self.client.get('/create_gene_table/')
         self.assertEqual(200, response.status_code)
+
+    def test_results(self):
+        expected = 'COI,mitochondrial,1047,58.357,42.0,0.0,58.0,17.299999999999997,22.5,9.5,9.1'
+        response = self.client.post('/create_gene_table/results/',
+                                    {
+                                        'taxonset': 1,
+                                        'geneset': 1,
+
+                                    })
+        self.assertTrue(expected in str(response.content))
