@@ -35,7 +35,7 @@ def results(request):
         form = VoucherTableForm(request.POST)
         if form.is_valid():
             table = VoucherTable(form.cleaned_data)
-            # response = create_excel_file(table.stats)
+            response = table.create_csv_file()
             return response
 
     return render(request, 'gene_table/index.html',
@@ -93,10 +93,18 @@ class VoucherTable(object):
         writer = csv.writer(response)
         for voucher_code in self.voucher_codes:
             row = [voucher_code]
+
             try:
                 self.voucher_info[voucher_code]
             except KeyError:
                 warning = 'We don\'t have that voucher in our database.'
+                self.warnings.append(warning)
+                continue
+
+            try:
+                self.sequences_info[voucher_code]
+            except KeyError:
+                warning = 'We don\'t have sequences for that voucher.'
                 self.warnings.append(warning)
                 continue
 
@@ -105,4 +113,13 @@ class VoucherTable(object):
                     continue
                 row.append(value)
 
-            print(row)
+            for gene_code in self.gene_codes:
+                try:
+                    row.append(self.sequences_info[voucher_code][gene_code])
+                except KeyError:
+                    warning = "We don't have sequences for {} and {}".format(gene_code, voucher_code)
+                    self.warnings.append(warning)
+                    row.append('')
+
+            writer.writerow(row)
+        return response
