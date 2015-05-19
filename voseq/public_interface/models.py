@@ -177,12 +177,15 @@ class Sequences(models.Model):
     time_edited = models.DateTimeField(auto_now=True, null=True, blank=True)
     notes = models.TextField(blank=True)
     genbank = models.BooleanField()
+    # total_number_bp = models.IntegerField(blank=True, null=True)
     number_ambiguous_bp = models.IntegerField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
         ambiguous_seq_length = self.sequences.count('?') + self.sequences.count('-')
         ambiguous_seq_length += self.sequences.count('N') + self.sequences.count('n')
         self.number_ambiguous_bp = ambiguous_seq_length
+        # TODO save length of sequence string as *total_number_bp*
+        # self.total_number_bp = len(self.sequences)
         super(Sequences, self).save(*args, **kwargs)
 
 
