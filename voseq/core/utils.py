@@ -76,7 +76,7 @@ def get_gene_codes(cleaned_data):
         gene_codes += [i.gene_code for i in cleaned_data['gene_codes']]
 
     gene_codes.sort()
-    return set(gene_codes)
+    return tuple(set(gene_codes))
 
 
 def get_version_stats():
