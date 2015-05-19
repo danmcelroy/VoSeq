@@ -4,6 +4,7 @@ from django.contrib import admin
 urlpatterns = patterns(
     '',
     url(r'^create_gene_table', include('gene_table.urls', namespace='gene_table')),
+    url(r'^create_voucher_table', include('voucher_table.urls', namespace='voucher_table')),
     url(r'^create_dataset', include('create_dataset.urls', namespace='create_dataset')),
     url(r'^genbank_fasta', include('genbank_fasta.urls', namespace='genbank_fasta')),
     url(r'^blast_local', include('blast_local.urls', namespace='blast_local')),
