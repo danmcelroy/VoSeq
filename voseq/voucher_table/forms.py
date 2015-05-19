@@ -30,7 +30,7 @@ class VoucherTableForm(BaseDatasetForm):
         choices=[
             ('country', 'Country'),
             ('specificLocality', 'Locality'),
-            ('COLLECTOR', 'Collector'),
+            ('collector', 'Collector'),
             ('dateCollection', 'Coll. date'),
             ('determinedBy', 'Determined by'),
             ('altitude', 'Altitude'),
