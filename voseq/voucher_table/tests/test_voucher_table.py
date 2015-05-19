@@ -30,6 +30,6 @@ class TestVoucherTable(TestCase):
 
     def test_header_csv_file(self):
         expected = ('Code', 'Genus', 'Species', 'Country', 'Specific Locality', 'Collector', '16S',
-                    'COI', 'wingless', 'EF1a',)
+                    'COI', 'EF1a', 'wingless')
         result = self.table.get_headers()
         self.assertEqual(expected, result)
