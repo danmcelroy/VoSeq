@@ -100,7 +100,7 @@ class VoucherTable(object):
             try:
                 self.voucher_info[voucher_code]
             except KeyError:
-                warning = 'We don\'t have that voucher in our database.'
+                warning = 'We don\'t have voucher {} in our database.'.format(voucher_code)
                 self.warnings.append(warning)
                 continue
 
