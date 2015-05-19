@@ -91,6 +91,9 @@ class VoucherTable(object):
         response['Content-Disposition'] = 'attachment; filename="gene_table.csv"'
 
         writer = csv.writer(response)
+        row = self.get_headers()
+        writer.writerow(row)
+
         for voucher_code in self.voucher_codes:
             row = [voucher_code]
 
@@ -123,3 +126,15 @@ class VoucherTable(object):
 
             writer.writerow(row)
         return response
+
+    def get_headers(self):
+        row = []
+
+        for i in self.voucher_info_values:
+            if i == 'specificLocality':
+                row.append('Specific Locality')
+                continue
+            row.append(i.capitalize())
+
+        row += [i for i in self.gene_codes]
+        return row
