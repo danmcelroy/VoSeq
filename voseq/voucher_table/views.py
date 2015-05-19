@@ -12,6 +12,7 @@ from core.utils import get_version_stats
 from core.utils import get_voucher_codes
 from core.utils import get_gene_codes
 from public_interface.models import Vouchers
+from public_interface.models import Sequences
 from create_dataset.utils import CreateDataset
 
 
@@ -52,6 +53,9 @@ class VoucherTable(object):
         self.voucher_codes = get_voucher_codes(cleaned_data)
         self.gene_codes = get_gene_codes(cleaned_data)
         self.voucher_info_values = self.get_voucher_info_values()
+        self.voucher_info = self.get_voucher_info()
+        self.sequences_info = self.get_sequence_info()
+        self.warnings = []
 
     def get_voucher_info_values(self):
         voucher_info_values = self.cleaned_data['voucher_info'] + self.cleaned_data['collector_info']
@@ -68,3 +72,37 @@ class VoucherTable(object):
             if code in self.voucher_codes:
                 my_dict[code] = voucher
         return my_dict
+
+    def get_sequence_info(self):
+        seq_values = dict()
+        seq_info = Sequences.objects.all().values('code', 'gene_code', 'sequences')
+
+        for seq in seq_info:
+            code = seq['code']
+            gene_code = seq['gene_code']
+            if code in self.voucher_codes and gene_code in self.gene_codes:
+                if code not in seq_values:
+                    seq_values[code] = dict()
+                seq_values[code][gene_code] = len(seq['sequences'])
+        return seq_values
+
+    def create_csv_file(self):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="gene_table.csv"'
+
+        writer = csv.writer(response)
+        for voucher_code in self.voucher_codes:
+            row = [voucher_code]
+            try:
+                self.voucher_info[voucher_code]
+            except KeyError:
+                warning = 'We don\'t have that voucher in our database.'
+                self.warnings.append(warning)
+                continue
+
+            for key, value in self.voucher_info[voucher_code].items():
+                if key == 'code':
+                    continue
+                row.append(value)
+
+            print(row)
