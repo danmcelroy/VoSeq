@@ -27,6 +27,7 @@ class TestVoucherTable(TestCase):
             'geneset': geneset,
         }
         self.table = VoucherTable(self.cleaned_data)
+        self.maxDiff = None
 
     def test_header_csv_file(self):
         expected = ('Code', 'Genus', 'Species', 'Country', 'Specific Locality', 'Collector', '16S',
@@ -56,7 +57,6 @@ class TestVoucherTable(TestCase):
         self.assertTrue(expected in result)
 
     def test_create_csv_missing_sequence(self):
-        expected = 'We don\'t have sequences for 16S and CP100-11'
         self.table.create_csv_file()
-        result = self.table.warnings
-        self.assertTrue(expected in result)
+        expected = "We don't have sequences for 16S and CP100-11"
+        self.assertTrue(expected in self.table.warnings)
