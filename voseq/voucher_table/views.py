@@ -128,13 +128,14 @@ class VoucherTable(object):
         return response
 
     def get_headers(self):
-        row = []
+        row = tuple()
 
         for i in self.voucher_info_values:
             if i == 'specificLocality':
-                row.append('Specific Locality')
+                row += ('Specific Locality',)
                 continue
-            row.append(i.capitalize())
+            row += (i.capitalize(),)
 
-        row += [i for i in self.gene_codes]
+        for i in self.gene_codes:
+            row += (i,)
         return row

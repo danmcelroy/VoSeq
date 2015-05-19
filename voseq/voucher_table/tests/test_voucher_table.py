@@ -29,7 +29,7 @@ class TestVoucherTable(TestCase):
         self.table = VoucherTable(self.cleaned_data)
 
     def test_header_csv_file(self):
-        expected = ['Code', 'Genus', 'Species', 'Country', 'Specific Locality', 'Collector', 'wingless',
-                    '16S', 'EF1a', 'COI']
+        expected = ('Code', 'Genus', 'Species', 'Country', 'Specific Locality', 'Collector', '16S',
+                    'COI', 'wingless', 'EF1a',)
         result = self.table.get_headers()
         self.assertEqual(expected, result)
