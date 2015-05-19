@@ -36,7 +36,7 @@
         <table class="table table-bordered"><!-- big -->
           <tr>
             <td>
-              Voucher info:
+              {{ form.voucher_info.label }}
             </td>
             <td>
               {% for i in form.voucher_info %}
@@ -46,11 +46,31 @@
           </tr>
           <tr>
             <td>
-              Locality and collector info:
+              {{ form.collector_info.label }}
             </td>
             <td>
               {% for i in form.collector_info %}
                 {{ i }}
+              {% endfor %}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ form.gene_info.label }}
+            </td>
+            <td>
+              {% for i in form.gene_info %}
+                {{ i }}
+              {% endfor %}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ form.field_delimitor.label }}
+            </td>
+            <td>
+              {% for i in form.field_delimitor %}
+                {{ i }}
               {% endfor %}
             </td>
           </tr>
