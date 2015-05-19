@@ -66,7 +66,7 @@ class VoucherTable(object):
         return self.convert_voucher_info_to_dict(vouchers_info)
 
     def convert_voucher_info_to_dict(self, vouchers_info):
-        my_dict = dict()
+        my_dict = OrderedDict()
         for voucher in vouchers_info:
             code = voucher['code']
             if code in self.voucher_codes:
@@ -111,6 +111,7 @@ class VoucherTable(object):
                 self.warnings.append(warning)
                 continue
 
+            # TODO need to do it in order here
             for key, value in self.voucher_info[voucher_code].items():
                 if key == 'code':
                     continue
