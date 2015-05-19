@@ -54,3 +54,9 @@ class TestVoucherTable(TestCase):
         expected = 'We don\'t have voucher CP1000-1000 in our database.'
         result = table.warnings
         self.assertTrue(expected in result)
+
+    def test_create_csv_missing_sequence(self):
+        expected = 'We don\'t have sequences for 16S and CP100-11'
+        self.table.create_csv_file()
+        result = self.table.warnings
+        self.assertTrue(expected in result)
