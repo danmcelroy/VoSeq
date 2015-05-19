@@ -35,7 +35,7 @@ class TestVoucherTable(TestCase):
         self.assertEqual(expected, result)
 
     def test_create_csv_file_taxa(self):
-        expected = 'CP100-10, '
+        expected = 'CP100-10,Melitaea,diamina'
         response = self.table.create_csv_file()
         result = response.content
-        self.assertEqual(expected, result.decode('utf-8'))
+        self.assertTrue(expected in result.decode('utf-8'))

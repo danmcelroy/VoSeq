@@ -111,11 +111,11 @@ class VoucherTable(object):
                 self.warnings.append(warning)
                 continue
 
-            # TODO need to do it in order here
-            for key, value in self.voucher_info[voucher_code].items():
-                if key == 'code':
+            item = self.voucher_info[voucher_code]
+            for i in self.voucher_info_values:
+                if i == 'code':
                     continue
-                row.append(value)
+                row.append(item[i])
 
             for gene_code in self.gene_codes:
                 try:
