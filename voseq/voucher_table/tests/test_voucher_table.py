@@ -39,3 +39,9 @@ class TestVoucherTable(TestCase):
         response = self.table.create_csv_file()
         result = response.content
         self.assertTrue(expected in result.decode('utf-8'))
+
+    def test_create_csv_file_genes(self):
+        expected = '515,669,1227,412'
+        response = self.table.create_csv_file()
+        result = response.content
+        self.assertTrue(expected in result.decode('utf-8'))
