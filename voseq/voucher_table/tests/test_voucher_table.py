@@ -43,5 +43,14 @@ class TestVoucherTable(TestCase):
     def test_create_csv_file_genes(self):
         expected = '515,669,1227,412'
         response = self.table.create_csv_file()
-        result = response.content
-        self.assertTrue(expected in result.decode('utf-8'))
+        result = response.content.decode('utf-8')
+        self.assertTrue(expected in result)
+
+    def test_create_csv_missing_voucher(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['voucher_codes'] = 'CP1000-1000'
+        table = VoucherTable(cleaned_data)
+        table.create_csv_file()
+        expected = 'We don\'t have voucher CP1000-1000 in our database.'
+        result = table.warnings
+        self.assertTrue(expected in result)
