@@ -33,3 +33,9 @@ class TestVoucherTable(TestCase):
                     'COI', 'EF1a', 'wingless')
         result = self.table.get_headers()
         self.assertEqual(expected, result)
+
+    def test_create_csv_file_taxa(self):
+        expected = 'CP100-10, '
+        response = self.table.create_csv_file()
+        result = response.content
+        self.assertEqual(expected, result.decode('utf-8'))
