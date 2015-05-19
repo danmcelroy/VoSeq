@@ -104,13 +104,6 @@ class VoucherTable(object):
                 self.warnings.append(warning)
                 continue
 
-            try:
-                self.sequences_info[voucher_code]
-            except KeyError:
-                warning = 'We don\'t have sequences for that voucher.'
-                self.warnings.append(warning)
-                continue
-
             item = self.voucher_info[voucher_code]
             for i in self.voucher_info_values:
                 if i == 'code':
