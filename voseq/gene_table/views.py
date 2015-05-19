@@ -41,7 +41,7 @@ def results(request):
                   {
                       'version': version,
                       'stats': stats,
-                      'form': form,
+                      'form': GeneTableForm(),
                   },
                   )
 

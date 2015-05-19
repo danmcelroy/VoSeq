@@ -18,7 +18,6 @@ from public_interface.models import Genes
 def index(request):
     version, stats = get_version_stats()
     form = VoucherTableForm()
-    print(form)
 
     return render(request, 'voucher_table/index.html',
                   {
@@ -30,4 +29,18 @@ def index(request):
 
 
 def results(request):
-    pass
+    version, stats = get_version_stats()
+    if request.method == 'POST':
+        form = VoucherTableForm(request.POST)
+        if form.is_valid():
+            table = GeneTable(form.cleaned_data)
+            response = create_excel_file(table.stats)
+            return response
+
+    return render(request, 'gene_table/index.html',
+                  {
+                      'version': version,
+                      'stats': stats,
+                      'form': VoucherTableForm(),
+                  },
+                  )
