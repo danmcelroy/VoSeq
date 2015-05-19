@@ -11,8 +11,8 @@ from .forms import VoucherTableForm
 from core.utils import get_version_stats
 from core.utils import get_voucher_codes
 from core.utils import get_gene_codes
+from public_interface.models import Vouchers
 from create_dataset.utils import CreateDataset
-from public_interface.models import Genes
 
 
 def index(request):
@@ -33,8 +33,8 @@ def results(request):
     if request.method == 'POST':
         form = VoucherTableForm(request.POST)
         if form.is_valid():
-            table = GeneTable(form.cleaned_data)
-            response = create_excel_file(table.stats)
+            table = VoucherTable(form.cleaned_data)
+            # response = create_excel_file(table.stats)
             return response
 
     return render(request, 'gene_table/index.html',
@@ -44,3 +44,20 @@ def results(request):
                       'form': VoucherTableForm(),
                   },
                   )
+
+
+class VoucherTable(object):
+    def __init__(self, cleaned_data):
+        print(cleaned_data)
+        self.cleaned_data = cleaned_data
+        self.voucher_codes = get_voucher_codes(cleaned_data)
+        self.gene_codes = get_gene_codes(cleaned_data)
+        self.voucher_info_values = self.get_voucher_info_values()
+
+    def get_voucher_info_values(self):
+        return [i.lower() for i in self.cleaned_data['voucher_info']]
+
+    def get_voucher_info(self):
+        vouchers = Vouchers.objects.all().values(*self.voucher_info_values)
+        print(">>> cleaned_data", self.cleaned_data)
+        print(">>> vouchers", vouchers)
