@@ -78,3 +78,12 @@ class TestVoucherTable(TestCase):
         response = table.create_csv_file()
         result = response.content.decode('utf-8')
         self.assertTrue(expected in result)
+
+    def test_create_csv_exist_or_empty(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['gene_info'] = 'EXIST OR EMPTY'
+        table = VoucherTable(cleaned_data)
+        expected = '-,X,-,-'
+        response = table.create_csv_file()
+        result = response.content.decode('utf-8')
+        self.assertTrue(expected in result)
