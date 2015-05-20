@@ -23,6 +23,7 @@ def results(request):
     if request.method == 'POST':
         form = VoucherTableForm(request.POST)
         if form.is_valid():
+            print(form.cleaned_data)
             table = VoucherTable(form.cleaned_data)
             response = table.create_csv_file()
             return response
