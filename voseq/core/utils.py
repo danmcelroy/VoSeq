@@ -78,8 +78,8 @@ def get_gene_codes(cleaned_data):
 
     if len(cleaned_data['gene_codes']) > 0:
         for i in cleaned_data['gene_codes']:
-            if i not in gene_codes:
-                gene_codes.append(i)
+            if i.gene_code not in gene_codes:
+                gene_codes.append(i.gene_code)
 
     gene_codes.sort()
     return tuple(gene_codes)
