@@ -1,11 +1,8 @@
 from collections import OrderedDict
 import csv
-import os
-import uuid
 
 from django.shortcuts import render
 from django.http import HttpResponse
-from amas import AMAS
 
 from .forms import VoucherTableForm
 from core.utils import get_version_stats
@@ -13,7 +10,6 @@ from core.utils import get_voucher_codes
 from core.utils import get_gene_codes
 from public_interface.models import Vouchers
 from public_interface.models import Sequences
-from create_dataset.utils import CreateDataset
 
 
 def index(request):
@@ -56,6 +52,7 @@ class VoucherTable(object):
         self.voucher_info = self.get_voucher_info()
         self.sequences_info = self.get_sequence_info()
         self.warnings = []
+        print(cleaned_data)
 
     def get_voucher_info_values(self):
         voucher_info_values = self.cleaned_data['voucher_info'] + self.cleaned_data['collector_info']
@@ -90,7 +87,9 @@ class VoucherTable(object):
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="gene_table.csv"'
 
-        writer = csv.writer(response)
+        delimiter = self.get_delimiter()
+
+        writer = csv.writer(response, delimiter=delimiter)
         row = self.get_headers()
         writer.writerow(row)
 
@@ -120,6 +119,15 @@ class VoucherTable(object):
 
             writer.writerow(row)
         return response
+
+    def get_delimiter(self):
+        field_delimiter = self.cleaned_data['field_delimitor']
+        if field_delimiter == '' or field_delimiter == 'COMMA':
+            return ','
+        elif field_delimiter == 'TAB':
+            return '\t'
+        else:
+            return ','
 
     def get_headers(self):
         row = tuple()
