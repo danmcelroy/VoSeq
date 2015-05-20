@@ -96,3 +96,12 @@ class TestVoucherTable(TestCase):
         response = table.create_csv_file()
         result = response.content.decode('utf-8')
         self.assertTrue(expected in result)
+
+    def test_create_csv_other_delimitation(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['field_delimitor'] = 'other symbol'
+        table = VoucherTable(cleaned_data)
+        expected = '-,646,-'
+        response = table.create_csv_file()
+        result = response.content.decode('utf-8')
+        self.assertTrue(expected in result)
