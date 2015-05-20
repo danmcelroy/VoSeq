@@ -2,8 +2,6 @@ from django.test import Client
 from django.test import TestCase
 from django.core.management import call_command
 
-from public_interface.models import GeneSets
-
 
 class TestViews(TestCase):
     def setUp(self):
