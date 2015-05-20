@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
 
 from .forms import VoucherTableForm
 from .utils import VoucherTable
@@ -19,7 +20,6 @@ def index(request):
 
 
 def results(request):
-    version, stats = get_version_stats()
     if request.method == 'POST':
         form = VoucherTableForm(request.POST)
         if form.is_valid():
@@ -27,10 +27,4 @@ def results(request):
             response = table.create_csv_file()
             return response
 
-    return render(request, 'gene_table/index.html',
-                  {
-                      'version': version,
-                      'stats': stats,
-                      'form': VoucherTableForm(),
-                  },
-                  )
+    return HttpResponseRedirect('/create_voucher_table/')
