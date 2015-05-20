@@ -3,8 +3,6 @@ from django.test import TestCase
 from django.core.management import call_command
 
 from public_interface.models import GeneSets
-from public_interface.models import TaxonSets
-from voucher_table.views import VoucherTable
 
 
 class TestViews(TestCase):
@@ -24,3 +22,16 @@ class TestViews(TestCase):
     def test_result_redirect(self):
         response = self.client.get('/create_voucher_table/results/')
         self.assertEqual(302, response.status_code)
+
+    def test_results(self):
+        expected = 'CP100-10,515,669'
+        response = self.client.post('/create_voucher_table/results/',
+                                    {
+                                        'voucher_info': 'code',
+                                        'voucher_codes': '',
+                                        'taxonset': 1,
+                                        'geneset': 1,
+                                    },
+                                    follow=True,
+                                    )
+        self.assertTrue(expected in response.content.decode('utf-8'))
