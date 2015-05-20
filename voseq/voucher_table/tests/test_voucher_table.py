@@ -87,3 +87,12 @@ class TestVoucherTable(TestCase):
         response = table.create_csv_file()
         result = response.content.decode('utf-8')
         self.assertTrue(expected in result)
+
+    def test_create_csv_tab_delimited(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['field_delimitor'] = 'TAB'
+        table = VoucherTable(cleaned_data)
+        expected = '-\t646\t-'
+        response = table.create_csv_file()
+        result = response.content.decode('utf-8')
+        self.assertTrue(expected in result)
