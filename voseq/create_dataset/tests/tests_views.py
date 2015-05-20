@@ -1,3 +1,5 @@
+import re
+
 from django.test import TestCase
 from django.test.client import Client
 from django.core.management import call_command
@@ -64,3 +66,29 @@ class CreateDatasetViewsTest(TestCase):
     def test_view_result_get(self):
         res = self.c.get('/create_dataset/results/')
         self.assertEqual(302, res.status_code)
+
+    def test_view_getting_file(self):
+        res = self.c.post('/create_dataset/results/',
+                          {
+                              'voucher_codes': 'CP100-10',
+                              'gene_codes': [],
+                              'geneset': 1,
+                              'taxonset': 1,
+                              'introns': 'YES',
+                              'positions': 'ALL',
+                              'translations': False,
+                              'partition_by_positions': 'ONE',
+                              'file_format': 'FASTA',
+                              'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
+                              'degen_translations': 'NORMAL',
+                              'exclude': 'YES',
+                              'aminoacids': False,
+                              'special': False,
+                              'outgroup': '',
+                          }
+                          )
+        html_page = res.content.decode('utf-8')
+        file_name = re.search('FASTA_\w+\.txt', html_page).group()
+        file_content = self.c.get('/create_dataset/results/' + file_name, follow=True)
+        expected = ">CP100-10_Melitaea_diamina\n????CGTGGTATCACTATTGATATTGCTSTATGG"
+        self.assertTrue(expected in file_content.content.decode('utf-8'))
