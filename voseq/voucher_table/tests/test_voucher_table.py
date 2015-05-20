@@ -69,3 +69,12 @@ class TestVoucherTable(TestCase):
         response = table.create_csv_file()
         result = response.content.decode('utf-8')
         self.assertTrue(expected in result)
+
+    def test_create_csv_accession_number(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['gene_info'] = 'ACCESSION NUMBER'
+        table = VoucherTable(cleaned_data)
+        expected = 'AY218254,X'
+        response = table.create_csv_file()
+        result = response.content.decode('utf-8')
+        self.assertTrue(expected in result)
