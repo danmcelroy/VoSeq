@@ -60,3 +60,12 @@ class TestVoucherTable(TestCase):
         self.table.create_csv_file()
         expected = "We don't have sequences for 16S and CP100-11"
         self.assertTrue(expected in self.table.warnings)
+
+    def test_create_csv_number_bases_by_default(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['gene_info'] = ''
+        table = VoucherTable(cleaned_data)
+        expected = '515,669,1227,412'
+        response = table.create_csv_file()
+        result = response.content.decode('utf-8')
+        self.assertTrue(expected in result)
