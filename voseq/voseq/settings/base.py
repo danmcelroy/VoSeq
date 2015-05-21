@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     'genbank_fasta',
     'gene_table',
     'voucher_table',
+    'gbif',
 )
 
 MIDDLEWARE_CLASSES = (
