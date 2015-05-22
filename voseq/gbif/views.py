@@ -1,7 +1,8 @@
 import json
 
-from django.shortcuts import render
 from django.http import HttpResponse
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 
 from core.utils import get_version_stats
 from public_interface.models import Vouchers
@@ -17,13 +18,13 @@ def index(request):
                   )
 
 
+@csrf_exempt
 def dump_data(request):
     try:
-        wanted = request.GET['request']
+        wanted = request.POST['request']
     except KeyError:
         msg = json.dumps({'result': 'error'})
         return HttpResponse(msg, content_type='application/json')
-    print(request.GET)
 
     if wanted == 'count_data':
         the_data = get_data_count()
