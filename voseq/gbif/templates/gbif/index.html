@@ -69,8 +69,9 @@
   <script type="text/javascript">
 
         function dump_data() {
-          $.post('dump_data.php', { request: "count_data" },
+          $.get('dump_data', { request: "count_data" },
             function(data) {
+              console.log(data);
               var out = '';
 
               out =  "<br /><br /><p>A total of <b>" + data.count + "</b> records were processed for GBIF. ";
@@ -86,7 +87,7 @@
             }, "json");
 
           // make and download MS EXCEL file
-          $.get('dump_data.php', { request: "make_file" });
+          $.get('dump_data', { request: "make_file" });
         }
 
   </script>
