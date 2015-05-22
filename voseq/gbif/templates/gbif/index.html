@@ -71,7 +71,7 @@
 
         function dump_data() {
           $.ajax({
-            type: "POST",
+            type: "GET",
             url: "dump_data/",
             data: {
                    'request': 'count_data'
@@ -81,7 +81,7 @@
                   var out = '';
 
                   out =  "<br /><br /><p>A total of <b>" + data.count + "</b> records were processed for GBIF. ";
-                  out += "<br />A MS EXCEL will be created with all data for GBIF. <a href='dump_data.php?request=make_file'>Click here to Download</a>. ";
+                  out += "<br />A MS EXCEL will be created with all data for GBIF. <a href='dump_data/?request=make_file'>Click here to Download</a>. ";
                   out += "<p>Submit to GBIF by using an installation of their ";
                   out += "<a href='http://www.gbif.org/ipt'>Integrated Publishing Toolkit (IPT)</a>.</p>";
                   out += "<p>See <a href='http://carlosp420.github.io/VoSeq/#integration-with-gbif'>VoSeq documentation</a> on how to upload this dump file into IPT.</p>";
