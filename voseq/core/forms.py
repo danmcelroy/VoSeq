@@ -19,12 +19,14 @@ class BaseDatasetForm(forms.Form):
         label='Choose taxonset',
         required=False,
         empty_label='Choose taxonset',
+        widget=forms.Select(attrs={'class': 'form-control'}),
     )
     geneset = forms.ModelChoiceField(
         GeneSets.objects.all(),
         label='Choose geneset',
         required=False,
         empty_label='Choose geneset',
+        widget=forms.Select(attrs={'class': 'form-control'}),
     )
     gene_codes = forms.ModelMultipleChoiceField(
         Genes.objects.all().order_by('gene_code'),
