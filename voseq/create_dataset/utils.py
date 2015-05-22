@@ -1,5 +1,3 @@
-from collections import OrderedDict
-
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
