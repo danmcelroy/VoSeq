@@ -75,7 +75,7 @@ def create_excel_file():
         row.append(voucher.genus)
         row.append(voucher.species)
         row.append(voucher.subspecies)
-        row.append(voucher.typeSpecies)
+        row.append(get_type_species(voucher.typeSpecies))
         row.append(voucher.country)
         row.append(voucher.specificLocality)
         row.append(voucher.latitude)
@@ -86,8 +86,8 @@ def create_excel_file():
         row.append(voucher.dateCollection)
         row.append(voucher.voucherLocality)
         row.append(voucher.hostorg)
-        row.append(voucher.sex)
-        row.append(voucher.voucher)
+        row.append(get_sex(voucher.sex))
+        row.append(get_voucher_state(voucher.voucher))
         row.append(voucher.voucherCode)
         row.append(voucher.code_bold)
         row.append(voucher.dateExtraction)
@@ -99,5 +99,48 @@ def create_excel_file():
     return response
 
 
-def results(request):
-    return ''
+def get_type_species(value):
+    if value == 'd':
+        return 'do not know'
+    elif value == 'y':
+        return 'yes'
+    elif value == 'n':
+        return 'no'
+    else:
+        return ''
+
+
+def get_sex(value):
+    if value == 'm':
+        return 'male'
+    elif value == 'f':
+        return 'female'
+    elif value == 'l':
+        return 'larva'
+    elif value == 'w':
+        return 'worker'
+    elif value == 'q':
+        return 'queen'
+    elif value == 'u':
+        return 'unknown'
+    else:
+        return ''
+
+
+def get_voucher_state(value):
+    if value == 's':
+        return 'spread'
+    elif value == 'e':
+        return 'envelope'
+    elif value == 'p':
+        return 'photo'
+    elif value == 'n':
+        return 'no voucher'
+    elif value == 'd':
+        return 'destroyed'
+    elif value == 'l':
+        return 'lost'
+    elif value == 'u':
+        return 'unknown'
+    else:
+        return ''
