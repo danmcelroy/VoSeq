@@ -26,9 +26,9 @@
     <hr>
   {% endif %}
 
-    <ul>
+    <ul class="fa-ul">
       {% for result in page.object_list %}
-        <li>
+        <li><i class="fa-li fa fa-circle"></i>
           <a href="/p/{{ result.code }}">{{ result.code }}</a>
              <i>{{ result.genus}}</i>
              <i>{{ result.species}}</i>
