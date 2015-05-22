@@ -17,10 +17,10 @@ being deposited in GenBank (hence public).
         <div class="col-sm-6 col-md-5 col-md-offset-1 col-lg-4 col-lg-offset-2">
           {% if results|length > 1 %}
             <h2>Lastest entries:</h2>
-            <ul>
+            <ul class="fa-ul">
 
               {% for i in results %}
-              <li>
+              <li><i class="fa-li fa fa-circle"></i>
                 <b><a href="/p/{{ i.code }}">{{ i.code }}</a></b>
                 <i>{{ i.genus }} {{ i.species }}</i>
                 {% if i.author != None %}
