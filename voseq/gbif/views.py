@@ -21,7 +21,7 @@ def index(request):
 @csrf_exempt
 def dump_data(request):
     try:
-        wanted = request.POST['request']
+        wanted = request.GET['request']
     except KeyError:
         msg = json.dumps({'result': 'error'})
         return HttpResponse(msg, content_type='application/json')
