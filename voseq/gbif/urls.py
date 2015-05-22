@@ -8,5 +8,4 @@ urlpatterns = patterns(
     '',
     url(r'^/$', views.index, name='index'),
     url(r'^/dump_data/$', views.dump_data, name='dump_data'),
-    url(r'^/results/$', views.results, name='results'),
 )
