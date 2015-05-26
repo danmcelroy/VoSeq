@@ -330,3 +330,8 @@ class TestCustomCommand(TestCase):
     def test_member_superuser_false(self):
         result = User.objects.get(username='carlosp420').is_superuser
         self.assertFalse(result)
+
+    def test_member_first_name(self):
+        expected = 'Carlos'
+        result = User.objects.get(username='carlosp420').first_name
+        self.assertEqual(expected, result)
