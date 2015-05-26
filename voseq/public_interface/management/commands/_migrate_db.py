@@ -196,7 +196,8 @@ class ParseXML(object):
             self.import_table_members()
 
         for item in self.table_members_items:
-            user = User.objects.create_user(item['username'], email=None, first_name=item['first_name'])
+            user = User.objects.create_user(item['username'], email=None, first_name=item['first_name'],
+                                            last_name=item['last_name'])
             user.is_staff = True
             if item['is_superuser'] is False:
                 user.is_superuser = False

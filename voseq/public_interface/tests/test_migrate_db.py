@@ -335,3 +335,8 @@ class TestCustomCommand(TestCase):
         expected = 'Carlos'
         result = User.objects.get(username='carlosp420').first_name
         self.assertEqual(expected, result)
+
+    def test_member_last_name(self):
+        expected = 'Pena'
+        result = User.objects.get(username='carlosp420').last_name
+        self.assertEqual(expected, result)
