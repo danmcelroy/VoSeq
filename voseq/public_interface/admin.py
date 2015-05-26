@@ -57,6 +57,9 @@ class VouchersAdmin(admin.ModelAdmin):
     batch_changes.short_description = "Change selected in batch"
 
 
+class SequencesAdmin(admin.ModelAdmin):
+    fields = ['code', 'gene_code', 'sequences', 'genbank', 'accession', 'labPerson', 'notes']
+
 # Register your models here.
 admin.site.register(Vouchers, VouchersAdmin)
-admin.site.register(Sequences)
+admin.site.register(Sequences, SequencesAdmin)
