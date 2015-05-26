@@ -11,8 +11,7 @@ from public_interface.views import change_selected
 class VouchersAdmin(admin.ModelAdmin):
     list_display = ['code', 'genus', 'species', 'sex', 'voucher', 'country', 'collector']
     ordering = ['code']
-    list_filter = ['voucher']
-    search_fields = ['=genus', '=species']
+    search_fields = ['=code', '=genus', '=species']
 
     # list_editable = ['genus', 'species', 'sex', 'voucher', 'country', 'collector']
 
@@ -58,8 +57,11 @@ class VouchersAdmin(admin.ModelAdmin):
 
 
 class SequencesAdmin(admin.ModelAdmin):
+    # TODO let users know that code and genecode keywords act as AND boolean search
+    search_fields = ['=code__code', '=gene_code']
     list_display = ['code', 'gene_code', 'genbank', 'accession', 'labPerson', 'notes']
     fields = ['code', 'gene_code', 'sequences', 'genbank', 'accession', 'labPerson', 'notes']
+
 
 # Register your models here.
 admin.site.register(Sequences, SequencesAdmin)
