@@ -119,14 +119,14 @@
 		<field name="lastname">Pena</field>
 		<field name="login">carlosp420</field>
 		<field name="passwd">f0578f1e7174b1a41c4ea8c6e17f7a8a3b88c92a</field>
-		<field name="admin">1</field>
+		<field name="admin">0</field>
 	</row>
 	<row>
 		<field name="member_id">2</field>
 		<field name="firstname">Admin</field>
 		<field name="lastname">admin</field>
 		<field name="login">admin</field>
-		<field name="passwd">9d4e1e23bd5b727046a9e3b4b7db57bd8d6ee684</field>
+		<field name="passwd">a72bd08fb0f60fa5ea658d0fa24b55ea58f90b62</field>
 		<field name="admin">1</field>
 	</row>
 	</table_data>
