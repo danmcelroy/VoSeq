@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 
 import pyprind
 from django.conf import settings
+from django.contrib.auth.models import User
 
 from public_interface.models import Vouchers
 from public_interface.models import FlickrImages
@@ -156,6 +157,10 @@ class ParseXML(object):
             item['geneset_list'] = item['geneset_list'].split(',')
             GeneSets.objects.create(**item)
 
+    def import_table_members(self):
+        if self.table_members_items is None:
+            self.parse_table_members(self.dump_string)
+
     def parse_table_members(self, xml_string):
         our_data = False
         this_table = self.tables_prefix + "members"
@@ -172,13 +177,35 @@ class ParseXML(object):
         self.table_members_items = []
         for row in our_data.findall('row'):
             item = dict()
-            item['member_id'] = row.find("./field/[@name='member_id']").text
-            item['firstname'] = row.find("./field/[@name='firstname']").text
-            item['lastname'] = row.find("./field/[@name='lastname']").text
-            item['login'] = row.find("./field/[@name='login']").text
-            item['passwd'] = row.find("./field/[@name='passwd']").text
-            item['admin'] = row.find("./field/[@name='admin']").text
+            item['username'] = row.find("./field/[@name='login']").text
+            item['first_name'] = row.find("./field/[@name='firstname']").text
+            item['last_name'] = row.find("./field/[@name='lastname']").text
+            item['password'] = row.find("./field/[@name='passwd']").text
+            admin = str(row.find("./field/[@name='admin']").text)
+
+            if admin == '0':
+                item['is_superuser'] = False
+            else:
+                item['is_superuser'] = True
+            item['is_staff'] = True
+            item['is_active'] = True
             self.table_members_items.append(item)
+
+    def save_table_members_to_db(self):
+        if self.table_members_items is None:
+            self.import_table_members()
+
+        for item in self.table_members_items:
+            if item['is_superuser'] is False:
+                user = User.objects.create_user(item['username'], email=None, password=item['password'])
+                user.is_staff = True
+                user.save()
+            else:
+                user = User.objects.create_superuser(item['username'], email=None, password=item['password'])
+                user.save()
+
+        if self.verbosity != 0:
+            print("Uploading table `public_interface_members`")
 
     def parse_table_primers(self, xml_string):
         our_data = False
