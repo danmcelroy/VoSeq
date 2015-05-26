@@ -179,6 +179,9 @@ class Sequences(models.Model):
     # total_number_bp = models.IntegerField(blank=True, null=True)
     number_ambiguous_bp = models.IntegerField(blank=True, null=True)
 
+    class Meta:
+        verbose_name_plural = "Sequences"
+
     def save(self, *args, **kwargs):
         ambiguous_seq_length = self.sequences.count('?') + self.sequences.count('-')
         ambiguous_seq_length += self.sequences.count('N') + self.sequences.count('n')
