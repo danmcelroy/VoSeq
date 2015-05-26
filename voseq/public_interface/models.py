@@ -165,6 +165,9 @@ class Vouchers(models.Model):
     class Meta:
         verbose_name_plural = "Vouchers"
 
+    def __str__(self):
+        return self.code
+
 
 class Sequences(models.Model):
     code = models.ForeignKey(Vouchers, help_text='This is your voucher code.')
@@ -189,6 +192,9 @@ class Sequences(models.Model):
         # TODO save length of sequence string as *total_number_bp*
         # self.total_number_bp = len(self.sequences)
         super(Sequences, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.code.code + ' ' + self.gene_code
 
 
 class Primers(models.Model):
