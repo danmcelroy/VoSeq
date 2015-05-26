@@ -3,6 +3,7 @@ import json
 
 from django.core.management import call_command
 from django.core.management import CommandError
+from django.contrib.auth.models import User
 from django.test import TestCase
 
 from public_interface.models import Vouchers
@@ -321,3 +322,11 @@ class TestCustomCommand(TestCase):
         expected = datetime.date(1996, 3, 25)
         b = Vouchers.objects.get(code='CP100-12')
         self.assertEqual(expected, b.dateCollection)
+
+    def test_member_superuser_true(self):
+        result = User.objects.get(username='admin').is_superuser
+        self.assertTrue(result)
+
+    def test_member_superuser_false(self):
+        result = User.objects.get(username='carlosp420').is_superuser
+        self.assertFalse(result)
