@@ -472,7 +472,10 @@ class ParseXML(object):
             item['extractionTube'] = row.find("./field/[@name='extractionTube']").text
             item['voucher'] = row.find("./field/[@name='voucher']").text
             item['voucherCode'] = row.find("./field/[@name='voucherCode']").text
-            item['code_bold'] = row.find("./field/[@name='code_bold']").text
+            try:
+                item['code_bold'] = row.find("./field/[@name='code_bold']").text
+            except AttributeError:
+                item['code_bold'] = None
             item['flickr_id'] = row.find("./field/[@name='flickr_id']").text
             item['determinedBy'] = row.find("./field/[@name='determinedBy']").text
             item['author'] = row.find("./field/[@name='auctor']").text
