@@ -1,7 +1,4 @@
-.. image:: https://badge.waffle.io/carlosp420/voseq.png?label=ready&title=Ready 
- :target: https://waffle.io/carlosp420/voseq
- :alt: 'Stories in Ready'
-|Dependency Status| |Coverage Status| |Landscape| |Docs|
+|Waffle| |Dependency Status| |Coverage Status| |Landscape| |Docs|
 
 +------------------+------------------+
 | Windows          | Linux            |
@@ -247,6 +244,9 @@ execute some commands once a day or every 2 hours depending on your needs:
     make stats
 
 
+.. |Waffle| image:: https://badge.waffle.io/carlosp420/voseq.png?label=in%20progress&title=In%20Progress
+   :target: https://waffle.io/carlosp420/voseq
+   :alt: 'Stories in Progress'
 .. |Dependency Status| image:: https://gemnasium.com/carlosp420/VoSeq.svg
    :target: https://gemnasium.com/carlosp420/VoSeq
 .. |Coverage Status| image:: https://img.shields.io/coveralls/carlosp420/VoSeq.svg
