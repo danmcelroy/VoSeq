@@ -58,8 +58,9 @@ class VouchersAdmin(admin.ModelAdmin):
 
 
 class SequencesAdmin(admin.ModelAdmin):
+    list_display = ['code', 'gene_code', 'genbank', 'accession', 'labPerson', 'notes']
     fields = ['code', 'gene_code', 'sequences', 'genbank', 'accession', 'labPerson', 'notes']
 
 # Register your models here.
-admin.site.register(Vouchers, VouchersAdmin)
 admin.site.register(Sequences, SequencesAdmin)
+admin.site.register(Vouchers, VouchersAdmin)
