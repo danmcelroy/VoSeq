@@ -5,6 +5,7 @@ help:
 	@echo "serve - runserver for development"
 	@echo "test - use testing settings and SQlite3 database"
 	@echo "migrations - prepare database for Django based on models"
+	@echo "admin - create administrator user for your VoSeq installation"
 
 clean: clean-build clean-pyc
 
