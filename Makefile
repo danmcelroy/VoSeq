@@ -1,10 +1,13 @@
-.PHONY: clean-pyc clean-build docs
+.PHONY: docs serve test migrations import index admin
 
 help:
 	@echo "docs - build documentation in HTML format"
 	@echo "serve - runserver for development"
 	@echo "test - use testing settings and SQlite3 database"
 	@echo "migrations - prepare database for Django based on models"
+	@echo "import - import a MySQL database dump in XML format"
+	@echo "index - rebuild the database index. Required. Speeds up data retrieval"
+	@echo "admin - create administrator user for your VoSeq installation"
 
 clean: clean-build clean-pyc
 
