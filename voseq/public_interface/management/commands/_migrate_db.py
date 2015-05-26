@@ -196,13 +196,13 @@ class ParseXML(object):
             self.import_table_members()
 
         for item in self.table_members_items:
+            user = User.objects.create_user(item['username'], email=None)
+            user.is_staff = True
             if item['is_superuser'] is False:
-                user = User.objects.create_user(item['username'], email=None, password=item['password'])
-                user.is_staff = True
-                user.save()
+                user.is_superuser = False
             else:
-                user = User.objects.create_superuser(item['username'], email=None, password=item['password'])
-                user.save()
+                user.is_superuser = True
+            user.save()
 
         if self.verbosity != 0:
             print("Uploading table `public_interface_members`")
