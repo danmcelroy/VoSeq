@@ -167,7 +167,7 @@ class Vouchers(models.Model):
 
 
 class Sequences(models.Model):
-    code = models.ForeignKey(Vouchers, help_text='Save as lower case.')
+    code = models.ForeignKey(Vouchers, help_text='This is your voucher code.')
     gene_code = models.CharField(max_length=100)
     sequences = models.TextField(blank=True)
     accession = models.CharField(max_length=100, blank=True)
