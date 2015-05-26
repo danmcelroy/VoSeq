@@ -18,25 +18,24 @@ class VouchersAdmin(admin.ModelAdmin):
     actions = ['batch_changes']
 
     fieldsets = [('Voucher Information', {'fields': ['code', 'voucher', 'voucherLocality',
-                                                     'voucherCode', 'code_bold']}
+                                                     'voucherCode']}
                   ),
 
                  ('Specimen Information', {'fields': ['orden', 'superfamily', 'family',
                                                       'subfamily', 'tribe', 'subtribe',
                                                       'genus', 'species', 'subspecies',
-                                                      'sex', 'typeSpecies',
-                                                      'author', 'determinedBy',
-                                                      'publishedIn',
+                                                      'hostorg', 'author', 'typeSpecies',
                                                       ],
                                            'classes': ['collapse']}),
 
                  ('Collection Information', {'fields': ['country', 'specificLocality',
                                                         'latitude', 'longitude',
                                                         'max_altitude', 'min_altitude',
-                                                        'dateCollection', 'collector',
-                                                        'hostorg', 'dateExtraction',
-                                                        'extractor', 'extraction',
+                                                        'collector', 'code_bold',
+                                                        'dateCollection', 'determinedBy',
+                                                        'sex', 'extractor', 'extraction',
                                                         'extractionTube', 'notes',
+                                                        'publishedIn', 'dateExtraction',
                                                         'edits', 'latesteditor',
                                                         ],
                                              'classes': ['collapse']}),
