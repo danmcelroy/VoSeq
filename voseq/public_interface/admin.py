@@ -3,6 +3,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpRequest
 
 from public_interface.models import Vouchers
+from public_interface.models import Sequences
 from public_interface.views import change_selected
 
 
@@ -58,3 +59,4 @@ class VouchersAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(Vouchers, VouchersAdmin)
+admin.site.register(Sequences)
