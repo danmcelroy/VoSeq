@@ -143,7 +143,6 @@ USE_TZ = True
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-SITE_ID = 1
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
@@ -167,6 +166,8 @@ TESTING = False
 # Django registration redux
 ACCOUNT_ACTIVATION_DAYS = 7  # One-week activation window; you may, of course, use a different value.
 REGISTRATION_AUTO_LOGIN = True  # Automatically log the user in.
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/browse/'
 
 # Change this after obtaining VoSeq and before deployments to a production server
 SECRET_KEY = '65~55UJd9BRyFq_ota{IxlG9w=2ZO3'
