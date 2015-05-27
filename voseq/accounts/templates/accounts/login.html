@@ -1,0 +1,31 @@
+{% extends 'public_interface/base.html' %}
+
+{% block content %}
+
+  {% if form.errors %}
+    <p class="error">Sorry, that's not a valid username or password</p>
+  {% endif %}
+
+
+  <form action="{% url 'django.contrib.auth.views.login' %}" method="post">
+    {% csrf_token %}
+
+    LogIn!
+
+    <table>
+      <tr>
+        <td>{{ form.username.label_tag }}</td>
+        <td>{{ form.username }}</td>
+      </tr>
+      <tr>
+        <td>{{ form.password.label_tag }}</td>
+        <td>{{ form.password }}</td>
+      </tr>
+    </table>
+
+    <input type="submit" value="login" />
+    <input type="hidden" name="next" value="{{ next }}" />
+
+  </form>
+
+{% endblock content %}
