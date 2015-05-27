@@ -28,6 +28,7 @@ INSTALLED_APPS = (
     # added
     'suit',
     'haystack',
+    'registration',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -51,6 +52,8 @@ INSTALLED_APPS = (
     'gene_table',
     'voucher_table',
     'gbif',
+
+    'accounts',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -156,6 +159,10 @@ GOOGLE_MAPS_API_KEY = 'fake api key'
 VERSION = '2.0.0'
 
 TESTING = False
+
+# Django registration redux
+ACCOUNT_ACTIVATION_DAYS = 7  # One-week activation window; you may, of course, use a different value.
+REGISTRATION_AUTO_LOGIN = True  # Automatically log the user in.
 
 # Change this after obtaining VoSeq and before deployments to a production server
 SECRET_KEY = '65~55UJd9BRyFq_ota{IxlG9w=2ZO3'
