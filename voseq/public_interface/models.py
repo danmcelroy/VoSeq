@@ -165,9 +165,12 @@ class Vouchers(models.Model):
     class Meta:
         verbose_name_plural = "Vouchers"
 
+    def __str__(self):
+        return self.code
+
 
 class Sequences(models.Model):
-    code = models.ForeignKey(Vouchers, help_text='Save as lower case.')
+    code = models.ForeignKey(Vouchers, help_text='This is your voucher code.')
     gene_code = models.CharField(max_length=100)
     sequences = models.TextField(blank=True)
     accession = models.CharField(max_length=100, blank=True)
@@ -179,6 +182,9 @@ class Sequences(models.Model):
     # total_number_bp = models.IntegerField(blank=True, null=True)
     number_ambiguous_bp = models.IntegerField(blank=True, null=True)
 
+    class Meta:
+        verbose_name_plural = "Sequences"
+
     def save(self, *args, **kwargs):
         ambiguous_seq_length = self.sequences.count('?') + self.sequences.count('-')
         ambiguous_seq_length += self.sequences.count('N') + self.sequences.count('n')
@@ -186,6 +192,9 @@ class Sequences(models.Model):
         # TODO save length of sequence string as *total_number_bp*
         # self.total_number_bp = len(self.sequences)
         super(Sequences, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.code.code + ' ' + self.gene_code
 
 
 class Primers(models.Model):
