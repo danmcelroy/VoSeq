@@ -3,6 +3,7 @@ import re
 from django.test import TestCase
 from django.test.client import Client
 from django.core.management import call_command
+from django.contrib.auth.models import User
 
 from public_interface.models import Genes
 
@@ -25,6 +26,9 @@ class CreateDatasetViewsTest(TestCase):
         }
 
         self.c = Client()
+        self.user = User.objects.get(username='admin')
+        self.user.set_password('pass')
+        self.user.save()
 
     def test_view_index(self):
         res = self.c.get('/create_dataset/')
@@ -53,6 +57,7 @@ class CreateDatasetViewsTest(TestCase):
         self.assertEqual(200, res.status_code)
 
     def test_view_result_invalid_form(self):
+        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
         res = self.c.post('/create_dataset/results/',
                           {
                               'voucher_codes': None,
