@@ -28,6 +28,7 @@ INSTALLED_APPS = (
     # added
     'suit',
     'haystack',
+    'crispy_forms',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -36,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django.contrib.sites',
 
     # my apps
     'core',
@@ -51,6 +53,8 @@ INSTALLED_APPS = (
     'gene_table',
     'voucher_table',
     'gbif',
+
+    'registration',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -137,6 +141,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
@@ -156,6 +162,12 @@ GOOGLE_MAPS_API_KEY = 'fake api key'
 VERSION = '2.0.0'
 
 TESTING = False
+
+# Django registration redux
+ACCOUNT_ACTIVATION_DAYS = 7  # One-week activation window; you may, of course, use a different value.
+REGISTRATION_AUTO_LOGIN = True  # Automatically log the user in.
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/browse/'
 
 # Change this after obtaining VoSeq and before deployments to a production server
 SECRET_KEY = '65~55UJd9BRyFq_ota{IxlG9w=2ZO3'
