@@ -116,6 +116,7 @@ rss icon by: http://glyphicons.com/
               <form action="#" class="navbar-form form-inline">
                 <div class="form-group">
                   {% if request.user.is_authenticated %}
+                    <a class="btn btn-info" href="/admin/">Admin</a>
                     <a class="btn btn-danger" href="{% url 'auth_logout' %}">Logout</a>
                   {% else %}
                     <a class="btn btn-success" href="{% url 'auth_login' %}">Login</a>
