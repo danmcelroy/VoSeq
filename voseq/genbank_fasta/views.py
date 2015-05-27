@@ -1,6 +1,7 @@
 import os
 import re
 
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
@@ -11,6 +12,7 @@ from .forms import GenBankFastaForm
 from create_dataset.utils import CreateDataset
 
 
+@login_required
 def index(request):
     version, stats = get_version_stats()
 
@@ -25,6 +27,7 @@ def index(request):
                   )
 
 
+@login_required
 @csrf_exempt
 def results(request):
     version, stats = get_version_stats()
@@ -83,6 +86,7 @@ def results(request):
     return HttpResponseRedirect('/genbank_fasta/')
 
 
+@login_required
 def serve_file(request, file_name):
     cwd = os.path.dirname(__file__)
     fasta_file = os.path.join(cwd,
