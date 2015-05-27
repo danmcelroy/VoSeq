@@ -160,7 +160,7 @@ class Vouchers(models.Model):
                                     help_text="Person that identified the taxon for this specimen.",
                                     blank=True)
     author = models.CharField(max_length=100, help_text="Person that described this taxon.", blank=True)
-    timestamp = models.DateTimeField(null=True)  # TODO change this to date_created = models.DateField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Vouchers"
