@@ -3,6 +3,7 @@ import re
 from django.test import TestCase
 from django.test import Client
 from django.core.management import call_command
+from django.contrib.auth.models import User
 
 
 class TestGenBankFasta(TestCase):
@@ -13,12 +14,17 @@ class TestGenBankFasta(TestCase):
         call_command(cmd, *args, **opts)
 
         self.client = Client()
+        self.user = User.objects.get(username='admin')
+        self.user.set_password('pass')
+        self.user.save()
 
     def test_index(self):
+        self.client.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
         c = self.client.get('/genbank_fasta/')
         self.assertEqual(200, c.status_code)
 
     def test_results(self):
+        self.client.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
         c = self.client.post('/genbank_fasta/results/',
                              {
                                  'voucher_codes': 'CP100-10\r\nCP100-11',
@@ -30,6 +36,7 @@ class TestGenBankFasta(TestCase):
         self.assertEqual(200, c.status_code)
 
     def test_results_dataset(self):
+        self.client.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
         c = self.client.post('/genbank_fasta/results/',
                              {
                                  'voucher_codes': 'CP100-10',
@@ -44,6 +51,7 @@ class TestGenBankFasta(TestCase):
         self.assertTrue(expected.strip() in str(c.content))
 
     def test_results_valid_form(self):
+        self.client.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
         c = self.client.post('/genbank_fasta/results/',
                              {
                                  'voucher_codes': None,
@@ -55,6 +63,7 @@ class TestGenBankFasta(TestCase):
         self.assertEqual(200, c.status_code)
 
     def test_results_valid_form_no_taxon(self):
+        self.client.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
         c = self.client.post('/genbank_fasta/results/',
                              {
                                  'voucher_codes': '',
@@ -66,6 +75,7 @@ class TestGenBankFasta(TestCase):
         self.assertEqual(200, c.status_code)
 
     def test_results_fasta_file(self):
+        self.client.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
         c = self.client.post('/genbank_fasta/results/',
                              {
                                  'voucher_codes': None,
