@@ -3,6 +3,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpRequest
 
 from public_interface.models import Vouchers
+from public_interface.models import Sequences
 from public_interface.views import change_selected
 
 
@@ -10,8 +11,7 @@ from public_interface.views import change_selected
 class VouchersAdmin(admin.ModelAdmin):
     list_display = ['code', 'genus', 'species', 'sex', 'voucher', 'country', 'collector']
     ordering = ['code']
-    list_filter = ['voucher']
-    search_fields = ['=genus', '=species']
+    search_fields = ['=code', '=genus', '=species']
 
     # list_editable = ['genus', 'species', 'sex', 'voucher', 'country', 'collector']
 
@@ -56,5 +56,13 @@ class VouchersAdmin(admin.ModelAdmin):
     batch_changes.short_description = "Change selected in batch"
 
 
+class SequencesAdmin(admin.ModelAdmin):
+    # TODO let users know that code and genecode keywords act as AND boolean search
+    search_fields = ['=code__code', '=gene_code']
+    list_display = ['code', 'gene_code', 'genbank', 'accession', 'labPerson', 'notes']
+    fields = ['code', 'gene_code', 'sequences', 'genbank', 'accession', 'labPerson', 'notes']
+
+
 # Register your models here.
+admin.site.register(Sequences, SequencesAdmin)
 admin.site.register(Vouchers, VouchersAdmin)
