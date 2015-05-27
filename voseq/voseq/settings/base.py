@@ -28,7 +28,7 @@ INSTALLED_APPS = (
     # added
     'suit',
     'haystack',
-    'registration',
+    'crispy_forms',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django.contrib.sites',
 
     # my apps
     'core',
@@ -53,7 +54,7 @@ INSTALLED_APPS = (
     'voucher_table',
     'gbif',
 
-    'accounts',
+    'registration',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -140,6 +141,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+SITE_ID = 1
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/

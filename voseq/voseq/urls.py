@@ -18,5 +18,5 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
 
     # user auth urls
-    url(r'^accounts/login/$', 'accounts.views.login'),
+    url(r'^accounts/', include('registration.backends.default.urls')),
 )
