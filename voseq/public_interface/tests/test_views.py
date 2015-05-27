@@ -70,7 +70,6 @@ class TestViews(TestCase):
         super(TestViews, self).setUp()
 
         self.client = Client()
-        self.factory = RequestFactory()
 
     def test_index(self):
         response = self.client.get('/')
