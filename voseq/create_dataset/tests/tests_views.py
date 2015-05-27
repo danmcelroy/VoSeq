@@ -31,10 +31,12 @@ class CreateDatasetViewsTest(TestCase):
         self.user.save()
 
     def test_view_index(self):
+        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
         res = self.c.get('/create_dataset/')
         self.assertEqual(200, res.status_code)
 
     def test_view_result(self):
+        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
         res = self.c.post('/create_dataset/results/',
                           {
                               'voucher_codes': 'CP100-10',
@@ -73,6 +75,7 @@ class CreateDatasetViewsTest(TestCase):
         self.assertEqual(302, res.status_code)
 
     def test_view_getting_file(self):
+        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
         res = self.c.post('/create_dataset/results/',
                           {
                               'voucher_codes': 'CP100-10',
