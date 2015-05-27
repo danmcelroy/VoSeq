@@ -39,8 +39,6 @@ class VouchersAdmin(admin.ModelAdmin):
                                                         'edits', 'latesteditor',
                                                         ],
                                              'classes': ['collapse']}),
-
-                 (None, {'fields': ['timestamp']}),
                  ]
 
     def batch_changes(self, request, queryset):
