@@ -59,7 +59,7 @@ class VouchersAdmin(admin.ModelAdmin):
 class SequencesAdmin(admin.ModelAdmin):
     # TODO let users know that code and genecode keywords act as AND boolean search
     search_fields = ['=code__code', '=gene_code']
-    list_display = ['code', 'gene_code', 'genbank', 'accession', 'labPerson', 'notes']
+    list_display = ['code', 'gene_code', 'genbank', 'accession', 'labPerson', 'notes', 'time_edited', 'time_created']
     fields = ['code', 'gene_code', 'sequences', 'genbank', 'accession', 'labPerson', 'notes']
 
 
