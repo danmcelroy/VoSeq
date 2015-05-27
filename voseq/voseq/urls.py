@@ -16,4 +16,7 @@ urlpatterns = patterns(
     url(r'^', include('public_interface.urls', namespace='public_interace')),
 
     url(r'^admin/', include(admin.site.urls)),
+
+    # user auth urls
+    url(r'^accounts/login/$', 'accounts.views.login'),
 )
