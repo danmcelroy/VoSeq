@@ -261,3 +261,8 @@ execute some commands once a day or every 2 hours depending on your needs:
 .. |Docs| image:: https://readthedocs.org/projects/voseq/badge/?version=latest
    :target: http://voseq.readthedocs.org/en/latest/
    :alt: Documentation Status
+
+
+.. image:: https://badges.gitter.im/Join%20Chat.svg
+   :alt: Join the chat at https://gitter.im/carlosp420/VoSeq
+   :target: https://gitter.im/carlosp420/VoSeq?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
