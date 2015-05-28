@@ -1,6 +1,7 @@
 import os
 import re
 
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
@@ -10,6 +11,7 @@ from .forms import CreateDatasetForm
 from .utils import CreateDataset
 
 
+@login_required
 def index(request):
     form = CreateDatasetForm()
 
@@ -21,6 +23,7 @@ def index(request):
                   )
 
 
+@login_required
 def results(request):
     version, stats = get_version_stats()
 
@@ -64,6 +67,7 @@ def results(request):
         return HttpResponseRedirect('/create_dataset/')
 
 
+@login_required
 def serve_file(request, file_name):
     cwd = os.path.dirname(__file__)
     dataset_file = os.path.join(cwd,
