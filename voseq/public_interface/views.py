@@ -1,6 +1,7 @@
 import json
 import re
 
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.http import Http404
 from django.http import HttpResponse
@@ -217,6 +218,7 @@ def show_voucher(request, voucher_code):
                   )
 
 
+@login_required
 def show_sequence(request, voucher_code, gene_code):
     version, stats = get_version_stats()
 

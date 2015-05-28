@@ -1,7 +1,7 @@
 from django.core.management import call_command
 from django.test import Client
 from django.test import TestCase
-from django.test import RequestFactory
+from django.contrib.auth.models import User
 from django.test.utils import override_settings
 
 import haystack
@@ -70,6 +70,9 @@ class TestViews(TestCase):
         super(TestViews, self).setUp()
 
         self.client = Client()
+        self.user = User.objects.get(username='admin')
+        self.user.set_password('pass')
+        self.user.save()
 
     def test_index(self):
         response = self.client.get('/')
@@ -88,10 +91,12 @@ class TestViews(TestCase):
         self.assertEqual(404, response.status_code)
 
     def test_show_sequence(self):
+        self.client.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
         response = self.client.get('/s/CP100-10/COI/')
         self.assertEqual(200, response.status_code)
 
     def test_show_sequence_doesnt_exist(self):
+        self.client.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
         response = self.client.get('/s/NN1-1aaaaa/EF1a/')
         self.assertEqual(404, response.status_code)
 
