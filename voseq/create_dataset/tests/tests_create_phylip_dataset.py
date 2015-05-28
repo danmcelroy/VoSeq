@@ -1,8 +1,7 @@
-from Bio.Seq import Seq
-
 from django.test import TestCase
 from django.test.client import Client
 from django.core.management import call_command
+from django.contrib.auth.models import User
 
 from create_dataset.utils import CreateDataset
 from public_interface.models import Genes
@@ -31,6 +30,10 @@ class CreatePhylipDatasetTest(TestCase):
             'outgroup': '',
         }
 
+        self.user = User.objects.get(username='admin')
+        self.user.set_password('pass')
+        self.user.save()
+
         self.c = Client()
         self.dataset_creator = CreateDataset(self.cleaned_data)
         self.maxDiff = None
@@ -47,6 +50,7 @@ class CreatePhylipDatasetTest(TestCase):
         self.assertEqual(expected, result)
 
     def test_stop_codon_warning(self):
+        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
         c = self.c.post('/create_dataset/results/',
                         {
                             'voucher_codes': '',
@@ -71,6 +75,7 @@ class CreatePhylipDatasetTest(TestCase):
         self.assertTrue(expected in result)
 
     def test_numer_of_chars_for_aa_dataset(self):
+        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
         c = self.c.post('/create_dataset/results/',
                         {
                             'voucher_codes': 'CP100-10',

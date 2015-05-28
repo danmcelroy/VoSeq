@@ -30,3 +30,16 @@ You can create users and change passwords for old users. Also, you can set the
 different levels of permissions for your users.
 
 .. image:: _static/admin_new_user.png
+
+
+User's permissions
+------------------
+Only logged users are able to see the actual DNA sequences for vouchers. Users
+that do not have accounts in VoSeq will be redirected to the login page.
+
+As users cannot create accounts for themselves, only those users with accounts
+created by the superuser (administrator) will be able to access those
+sequences.
+
+The same for creation of datasets. Only authorized users (those that hold an
+account) will be able to retrieve DNA sequences from VoSeq.
