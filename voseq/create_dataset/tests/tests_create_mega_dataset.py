@@ -33,7 +33,12 @@ class CreateMEGADatasetTest(TestCase):
         self.dataset_creator = CreateDataset(self.cleaned_data)
         self.maxDiff = None
 
-    def test_create_dataset(self):
-        expected = '#MEGA\n!TITLE title;\n\n['
+    def test_headers(self):
+        expected = '#MEGA\n!TITLE title;\n\n'
         result = self.dataset_creator.dataset_str
         self.assertTrue(expected in result)
+
+    def test_sequence_line_breaks(self):
+        expected = '#CP100-10_Melitaea_diamina\n?????????????????????????TGAGCCGGTATAATTGGTACAT'
+        result = self.dataset_creator.dataset_str
+        self.assertTrue(expected.strip() in result)

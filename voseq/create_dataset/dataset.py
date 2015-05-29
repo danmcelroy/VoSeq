@@ -571,10 +571,11 @@ class CreateMEGA(Dataset):
         for partition in partitions:
             for line in partition:
                 if not line.startswith('\n['):
+                    line = line.split(' ')
+                    taxon = line[0]
+                    sequence = line[-1]
                     out += '#'
-                else:
-                    out += '\n'
-                out += line.strip() + '\n'
+                    out += taxon.strip() + '\n' + sequence + '\n'
         dataset_str = '#MEGA\n!TITLE title;\n\n' + out.strip()
         self.save_dataset_to_file(dataset_str)
         return dataset_str
