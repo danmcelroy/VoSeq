@@ -564,7 +564,7 @@ class CreateFasta(Dataset):
 class CreateGenbankFasta(Dataset):
     def convert_lists_to_dataset(self, partitions):
         """
-        Overriden method from base clase in order to add headers and footers depending
+        Overridden method from base class in order to add headers and footers depending
         on needed dataset.
         """
         self.get_number_of_genes_for_taxa(partitions)
@@ -635,7 +635,7 @@ class CreatePhylip(Dataset):
 
     def convert_lists_to_dataset(self, partitions):
         """
-        Overriden method from base clase in order to add headers and footers depending
+        Overridden method from base class in order to add headers and footers depending
         on needed dataset.
         """
         self.get_number_of_genes_for_taxa(partitions)
@@ -694,7 +694,7 @@ class CreatePhylip(Dataset):
 class CreateTNT(Dataset):
     def convert_lists_to_dataset(self, partitions):
         """
-        Overriden method from base clase in order to add headers and footers depending
+        Overridden method from base class in order to add headers and footers depending
         on needed dataset.
         """
         self.get_number_of_genes_for_taxa(partitions)
@@ -812,7 +812,7 @@ END;
 
     def convert_lists_to_dataset(self, partitions):
         """
-        Overriden method from base clase in order to add headers and footers depending
+        Overridden method from base class in order to add headers and footers depending
         on needed dataset.
         """
         self.get_number_of_genes_for_taxa(partitions)
