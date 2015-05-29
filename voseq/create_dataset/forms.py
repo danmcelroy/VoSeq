@@ -10,6 +10,7 @@ class CreateDatasetForm(BaseDatasetForm):
             ('TNT', 'TNT format'),
             ('NEXUS', 'NEXUS format'),
             ('PHY', 'PHYLIP format'),
+            ('MEGA', 'MEGA format'),
             ('FASTA', 'Unaligned FASTA format'),
         ],
         widget=forms.RadioSelect(),
