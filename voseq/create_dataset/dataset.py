@@ -567,15 +567,21 @@ class CreateFasta(Dataset):
 
 class CreateMEGA(Dataset):
     def convert_lists_to_dataset(self, partitions):
-        out = ''
+        sequence_dict = dict()
         for partition in partitions:
             for line in partition:
                 if not line.startswith('\n['):
                     line = line.split(' ')
                     taxon = line[0]
                     sequence = line[-1]
-                    out += '#'
-                    out += taxon.strip() + '\n' + sequence + '\n'
+                    if taxon not in sequence_dict:
+                        sequence_dict[taxon] = ''
+                        sequence_dict[taxon] += sequence
+                    else:
+                        sequence_dict[taxon] += sequence
+        out = ''
+        for k, v in sequence_dict.items():
+            out += '\n#' + k + '\n' + v
         dataset_str = '#MEGA\n!TITLE title;\n\n' + out.strip()
         self.save_dataset_to_file(dataset_str)
         return dataset_str
