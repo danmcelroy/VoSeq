@@ -41,4 +41,9 @@ class CreateMEGADatasetTest(TestCase):
     def test_sequence_line_breaks(self):
         expected = '#CP100-10_Melitaea_diamina\n?????????????????????????TGAGCCGGTATAATTGGTACAT'
         result = self.dataset_creator.dataset_str
-        self.assertTrue(expected.strip() in result)
+        self.assertTrue(expected in result)
+
+    def test_sequence_concatenation(self):
+        expected = '??????????????????????????CAAGT'
+        result = self.dataset_creator.dataset_str
+        self.assertTrue(expected in result)
