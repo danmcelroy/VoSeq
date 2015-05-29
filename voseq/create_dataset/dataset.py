@@ -255,6 +255,9 @@ class Dataset(object):
                 seq_str += codon_description
             seq_str += '\n' + '--------------------'
 
+        if self.file_format == 'MEGA':
+            seq_str = '\n[%s]' % this_gene
+
         if self.file_format == 'GenbankFASTA':
             seq_str = '\n[%s]' % this_gene
 
@@ -282,6 +285,7 @@ class Dataset(object):
             seq_str = '>' + seq_record_id + '\n' + str(seq_record_seq)
         if self.file_format == 'NEXUS' or \
                 self.file_format == 'PHY' or \
+                self.file_format == 'MEGA' or \
                 self.file_format == 'TNT':
             seq_str = str(seq_record_id).ljust(55) + str(seq_record_seq)
         return seq_str
@@ -559,6 +563,21 @@ class Dataset(object):
 
 class CreateFasta(Dataset):
     pass
+
+
+class CreateMEGA(Dataset):
+    def convert_lists_to_dataset(self, partitions):
+        out = ''
+        for partition in partitions:
+            for line in partition:
+                if not line.startswith('\n['):
+                    out += '#'
+                else:
+                    out += '\n'
+                out += line.strip() + '\n'
+        dataset_str = out.strip()
+        self.save_dataset_to_file(dataset_str)
+        return dataset_str
 
 
 class CreateGenbankFasta(Dataset):
