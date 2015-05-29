@@ -34,6 +34,6 @@ class CreateMEGADatasetTest(TestCase):
         self.maxDiff = None
 
     def test_create_dataset(self):
-        expected = '#MEGA\n!TITLE blablabla;\n\n#'
+        expected = '#MEGA\n!TITLE title;\n\n['
         result = self.dataset_creator.dataset_str
         self.assertTrue(expected in result)

@@ -575,7 +575,7 @@ class CreateMEGA(Dataset):
                 else:
                     out += '\n'
                 out += line.strip() + '\n'
-        dataset_str = out.strip()
+        dataset_str = '#MEGA\n!TITLE title;\n\n' + out.strip()
         self.save_dataset_to_file(dataset_str)
         return dataset_str
 
