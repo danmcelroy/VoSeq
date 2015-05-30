@@ -50,12 +50,13 @@ Installation instructions
 These instructions assume that your libraries are up to date and that you have Python, pip, Java 7+ and virtual environments installed. Python3 is recommended.
 
 Step 1: get VoSeq.
-Clone or `download <https://github.com/carlosp420/VoSeq/releases>`__ VoSeq to your prefered directory.
+|Clone or `download <https://github.com/carlosp420/VoSeq/releases>`__ VoSeq to your prefered directory.
 
 Step 2: create a virtual environment and install dependencies.
-To ensure that all the dependancies will work without conflict, it is best to install them within a virtual environment.
+|To ensure that all the dependancies will work without conflict, it is best to install them within a virtual environment.
 
 .. code:: shell
+
     mkvirtualenv -p /usr/bin/python voseq_environment
     cd /path/to/VoSeq
     workon voseq_environment
@@ -64,35 +65,41 @@ To ensure that all the dependancies will work without conflict, it is best to in
 Exit the virtual environment for now to continue from the shell:
 
 .. code:: shell
+
     deactivate
 
-Step 3: download and install elasticsearch
-For elasticsearch, java needs to be installed. Mac users can download and install ``elasticsearch`` from here:
+Step 3: download and install elasticsearch.
+|For elasticsearch, java needs to be installed. Mac users can download and install ``elasticsearch`` from here:
 http://www.elasticsearch.org/overview/elkdownloads/ . In Linux, you can do:
 
 .. code:: shell
+
 wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.5.2.deb
 sudo dpkg -i elasticsearch-1.5.2.deb
 
 The bin directory of elasticsearch should be added automatically to your PATH. If not, add the following line to your ``.profile`` (Linux) or ``.bash_profile`` (macOSX) file:
 
 .. code:: shell
+
     export PATH="$PATH:/parth/to/elasticsearch/bin/"
 
-Step 4: download, install and configure PostgreSQL
-For macOSX users we recommend to do it by downloading the Postgres.app from http://postgresapp.com . Linux users can use apt-get:
+Step 4: download, install and configure PostgreSQL.
+|For macOSX users we recommend to do it by downloading the Postgres.app from http://postgresapp.com . Linux users can use apt-get:
 
 .. code:: shell
+
     sudo apt-get install postgresql postgresql-contrib postgresql-server-dev-9.3
 
 Create new role by typing:
 
 .. code:: shell
+
     createuser --interactive
 
 Enter the psql shell, create a password for this user and create a database for VoSeq:
 
 .. code:: shell
+
     psql
     postgres=# ALTER ROLE postgres WITH PASSWORD 'hu8jmn3';
     postgres=# create database voseq;
@@ -101,23 +108,27 @@ Enter the psql shell, create a password for this user and create a database for 
 In macOSX if you are using the Postgres.app, it my be enough to run:
 
 .. code:: shell
+
     psql
     user.name=# CREATE DATABASE voseq;
 
 To exit the psql shell:
 
 .. code:: shell
+
     \q
     
 Next, create a ``config.json`` file to keep the database variables:
 
 .. code:: shell
+
     cd /path/to/Voseq
     touch config.json
 
 and write in the following content:
 
 .. code:: javascript
+
     {
     "SECRET_KEY": "create_a_secret_key",
     "DB_USER": "role_name",
@@ -141,11 +152,13 @@ development.
 First, enter the virtual environment:
 
 .. code:: shell
+
     workon voseq_environment
 
 Then, create tables for the database:
 
 .. code:: shell
+
     cd /path/to/Voseq/
     make migrations
 
@@ -160,6 +173,7 @@ Start a test server
 In Linux start elasticsearch as a service, then enter the virtual environment and then start the server:
 
 .. code:: shell
+
     sudo service elasticsearch start
     workon voseq_environment
     cd /path/to/Voseq
@@ -169,6 +183,7 @@ In macOSX if you do not have the ``service`` command, run
 ``elasticsearch`` in the background and then start the server (\*):
 
 .. code:: shell
+
     elasticsearch -d
     cd /path/to/Voseq
     make serve
@@ -186,6 +201,7 @@ Migrate VoSeq database
 If you have an existing Voseq 1.x database and want to migrate, you need to dump your MySQL database into a XML file:
 
 .. code:: shell
+
     cd /path/to/Voseq/
     mysqldump --xml voseq_database > dump.xml
 
@@ -193,6 +209,7 @@ Then use our script to migrate all your VoSeq data into a PostGreSQL
 database.
 
 .. code:: shell
+
     make migrations
     python voseq/manage.py migrate_db --dumpfile=dump.xml --settings=voseq.settings.local
 
@@ -200,6 +217,7 @@ If you have used a prefix for your tables in the old VoSeq, you can optionally i
 argument for the import script:
 
 .. code:: shell
+
     python voseq/manage.py migrate_db --dumpfile=dump.xml --prefix=voseq_ --settings=voseq.settings.local
 
 
