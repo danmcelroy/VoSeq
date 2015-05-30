@@ -49,11 +49,11 @@ Installation instructions
 
 These instructions assume that your libraries are up to date and that you have Python, pip, Java 7+ and virtual environments installed. Python3 is recommended.
 
-Step 1: get VoSeq.
-|Clone or `download <https://github.com/carlosp420/VoSeq/releases>`__ VoSeq to your prefered directory.
+**Step 1: get VoSeq.**
+Clone or `download <https://github.com/carlosp420/VoSeq/releases>`__ VoSeq to your prefered directory.
 
-Step 2: create a virtual environment and install dependencies.
-|To ensure that all the dependancies will work without conflict, it is best to install them within a virtual environment.
+**Step 2: create a virtual environment and install dependencies.**
+To ensure that all the dependancies will work without conflict, it is best to install them within a virtual environment.
 
 .. code:: shell
 
@@ -68,8 +68,8 @@ Exit the virtual environment for now to continue from the shell:
 
     deactivate
 
-Step 3: download and install elasticsearch.
-|For elasticsearch, java needs to be installed. Mac users can download and install ``elasticsearch`` from here:
+**Step 3: download and install elasticsearch.**
+For elasticsearch, java needs to be installed. Mac users can download and install ``elasticsearch`` from here:
 http://www.elasticsearch.org/overview/elkdownloads/ . In Linux, you can do:
 
 .. code:: shell
@@ -83,8 +83,8 @@ The bin directory of elasticsearch should be added automatically to your PATH. I
 
     export PATH="$PATH:/parth/to/elasticsearch/bin/"
 
-Step 4: download, install and configure PostgreSQL.
-|For macOSX users we recommend to do it by downloading the Postgres.app from http://postgresapp.com . Linux users can use apt-get:
+**Step 4: download, install and configure PostgreSQL.**
+For macOSX users we recommend to do it by downloading the Postgres.app from http://postgresapp.com . Linux users can use apt-get:
 
 .. code:: shell
 
