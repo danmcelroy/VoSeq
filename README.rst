@@ -74,8 +74,8 @@ http://www.elasticsearch.org/overview/elkdownloads/ . In Linux, you can do:
 
 .. code:: shell
 
-wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.5.2.deb
-sudo dpkg -i elasticsearch-1.5.2.deb
+    wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.5.2.deb
+    sudo dpkg -i elasticsearch-1.5.2.deb
 
 The bin directory of elasticsearch should be added automatically to your PATH. If not, add the following line to your ``.profile`` (Linux) or ``.bash_profile`` (macOSX) file:
 
@@ -165,6 +165,7 @@ Then, create tables for the database:
 And import test data for your database:
 
 .. code:: shell
+
     make test_import
 
 Start a test server
