@@ -314,23 +314,27 @@ Upgrade VoSeq's software
 If you cloned the VoSeq software you can easily get the new changes by typing the following commands
 in a computer terminal or console:
 
-```shell
-cd /path/to/VoSeq
-git pull origin master
-```
+.. code:: shell
+
+    cd /path/to/VoSeq
+    git pull origin master
+
 
 Do the updates to the database structure:
 
-```shell
-workon voseq_environment
-make migrations
-```
+.. code:: shell
+
+    workon voseq_environment
+    make migrations
+
 
 Rebuild the index and start the test server:
-```shell
-make index
-make serve
-```
+
+.. code:: shell
+
+    make index
+    make serve
+
 
 Database backups
 ================
