@@ -37,3 +37,4 @@ voseq/stats/migrations/*
 # avoid including doc files for modules
 docs/voseq.*
 docs/_build
+.vagrant/
