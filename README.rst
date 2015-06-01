@@ -19,6 +19,8 @@ Contents
 * `Migrate VoSeq database`_
 * `Set-up a publicly available web server`_
 * `Administrate the server`_
+* `Upgrade VoSeq's software`_
+* `Database backups`_
 
 
 VoSeq is being rewritten
@@ -54,6 +56,18 @@ virtual environments installed. Python3 is recommended.
 
 **Step 1: get VoSeq.**
 Clone or `download <https://github.com/carlosp420/VoSeq/releases>`__ VoSeq to your preferred directory.
+We recommend cloning VoSeq as it will be easier to do software upgrades with on single command:
+
+* To clone VoSeq:
+```shell
+git clone https://github.com/carlosp420/VoSeq.git
+```
+
+* To upgrade VoSeq to newer versions:
+```shell
+cd /path/to/VoSeq
+git pull origin master
+```
 
 **Step 2: create a virtual environment and install dependencies.**
 To ensure that all the dependencies will work without conflict, it is best to install them within a virtual environment.
@@ -282,7 +296,8 @@ following command and provide the requested information:
 Some features of VoSeq need to be run periodically. You can setup cronjobs to execute some commands
 once a day or every 2 hours depending on your needs:
 
-* Update the database index for the simple and advanced search functions:
+* Update the database index for the simple and advanced search functions: [# TODO: to remove see
+  issue #213]
 
 .. code:: shell
 
@@ -293,6 +308,34 @@ once a day or every 2 hours depending on your needs:
 .. code:: shell
 
     make stats
+
+Upgrade VoSeq's software
+========================
+If you cloned the VoSeq software you can easily get the new changes by typing the following commands
+in a computer terminal or console:
+
+```shell
+cd /path/to/VoSeq
+git pull origin master
+```
+
+Do the updates to the database structure:
+
+```shell
+workon voseq_environment
+make migrations
+```
+
+Rebuild the index and start the test server:
+```shell
+make index
+make serve
+```
+
+Database backups
+================
+You might want to do periodical backups of your VoSeq database. You can follow these instrucctions
+for backup data from postgreSQL databases: https://wiki.postgresql.org/wiki/Automated_Backup_on_Linux
 
 
 .. |Waffle| image:: https://badge.waffle.io/carlosp420/voseq.png?label=in%20progress&title=In%20Progress
