@@ -47,7 +47,8 @@ Query suggestions for simple taxon searches:
 Installation instructions
 =========================
 
-These instructions assume that your libraries are up to date and that you have Python, pip, Java 7+ and virtual environments installed. Python3 is recommended.
+These instructions assume that your libraries are up to date and that you have Python, pip, Java 7+ and
+virtual environments installed. Python3 is recommended.
 
 **Step 1: get VoSeq.**
 Clone or `download <https://github.com/carlosp420/VoSeq/releases>`__ VoSeq to your prefered directory.
@@ -70,21 +71,23 @@ Exit the virtual environment for now to continue from the shell:
 
 **Step 3: download and install elasticsearch.**
 For elasticsearch, java needs to be installed. Mac users can download and install ``elasticsearch`` from here:
-http://www.elasticsearch.org/overview/elkdownloads/ . In Linux, you can do:
+http://www.elasticsearch.org/overview/elkdownloads/. In Linux, you can do:
 
 .. code:: shell
 
     wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.5.2.deb
     sudo dpkg -i elasticsearch-1.5.2.deb
 
-The bin directory of elasticsearch should be added automatically to your PATH. If not, add the following line to your ``.profile`` (Linux) or ``.bash_profile`` (macOSX) file:
+The bin directory of elasticsearch should be added automatically to your PATH. If not, add the following
+line to your ``.profile`` (Linux) or ``.bash_profile`` (macOSX) file:
 
 .. code:: shell
 
-    export PATH="$PATH:/parth/to/elasticsearch/bin/"
+    export PATH="$PATH:/path/to/elasticsearch/bin/"
 
 **Step 4: download, install and configure PostgreSQL.**
-For macOSX users we recommend to do it by downloading the Postgres.app from http://postgresapp.com . Linux users can use apt-get:
+For macOSX users we recommend to do it by downloading the Postgres.app from http://postgresapp.com.
+Linux users can use apt-get:
 
 .. code:: shell
 
@@ -132,16 +135,22 @@ and write in the following content:
     {
     "SECRET_KEY": "create_a_secret_key",
     "DB_USER": "role_name",
-    "DB_PASS": "create_a_database_password",
+    "DB_PASS": "hu8jmn3",
     "DB_NAME": "voseq",
     "DB_PORT": "5432",
     "DB_HOST": "localhost",
     "GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key"
     }
 
-If you followed the above instructions to the letter, the DB_USER will be "postgres" and the DB_PASS will be "hu8jmn3". It is of recommended to come up with your own password. Instructions to obtain a personal google map browser API key can be found `here <https://developers.google.com/maps/documentation/javascript/tutorial#api_key>`__. 
+If you followed the above instructions to the letter, the DB_USER will be "postgres" and the DB_PASS
+will be "hu8jmn3". It is of recommended to come up with your own password.
+Instructions to obtain a personal google map browser API key can be found
+`here <https://developers.google.com/maps/documentation/javascript/tutorial#api_key>`__.
 
-After following these four steps everything should be installed and ready to run. You can now choose to either continue with adding real data migrated from VoSeq 1.x and setting up a publicly available web server, or to first add some test data and test the set-up with a lightweight local server included in the VoSeq package.
+After following these four steps everything should be installed and ready to run. You can now choose
+to either continue with adding real data migrated from VoSeq 1.x and setting up a publicly available
+web server, or to first add some test data and test the set-up with a lightweight local server
+included in the VoSeq package.
 
 Test database for development
 =============================
@@ -194,12 +203,15 @@ login, you first have to go to Applications and start it manually from
 there by clicking on the Postgres.app. Do this before running the
 server.*
 
-You now have a local webserver running. You can access it by opening this URL in your web browser: ``http://127.0.0.1:8000/`` and try all the buttons to see if they all work! Also notice the debug bar on the right of the screen where you can check if all the configurations are correct.
+You now have a local webserver running. You can access it by opening this URL in your web browser:
+``http://127.0.0.1:8000/`` and try all the buttons to see if they all work! Also notice the debug bar
+on the right of the screen where you can check if all the configurations are correct.
 
 Migrate VoSeq database
 ======================
 
-If you have an existing Voseq 1.x database and want to migrate, you need to dump your MySQL database into a XML file:
+If you have an existing Voseq 1.x database and want to migrate, you need to dump your MySQL database
+into a XML file:
 
 .. code:: shell
 
@@ -243,7 +255,9 @@ Create an index for all the data in your database:
 Set-up a publicly available web server
 ======================================
 
-To make VoSeq available to multiple users, you will have to set-up a publicly available web server. There are several options to do this, for example using nginx and gunicorn (best performance) or Apache and WSGI (more suitable for hosting multiple websites).
+To make VoSeq available to multiple users, you will have to set-up a publicly available web server.
+There are several options to do this, for example using nginx and gunicorn (best performance) or
+Apache and WSGI (more suitable for hosting multiple websites).
 
 Instructions for how to do this will follow later, but the DigitalOcean tutorials may be of use for now:
 
@@ -263,7 +277,8 @@ following command and provide the requested information:
     make admin
 
 
-Some features of VoSeq need to be run periodically. You can setup cronjobs to execute some commands once a day or every 2 hours depending on your needs:
+Some features of VoSeq need to be run periodically. You can setup cronjobs to execute some commands
+once a day or every 2 hours depending on your needs:
 
 * Update the database index for the simple and advanced search functions:
 
