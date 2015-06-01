@@ -1,5 +1,7 @@
 |Waffle| |Dependency Status| |Coverage Status| |Landscape| |Docs|
 
+|Chat|
+
 +------------------+------------------+
 | Windows          | Linux            |
 +==================+==================+
@@ -51,14 +53,14 @@ These instructions assume that your libraries are up to date and that you have P
 virtual environments installed. Python3 is recommended.
 
 **Step 1: get VoSeq.**
-Clone or `download <https://github.com/carlosp420/VoSeq/releases>`__ VoSeq to your prefered directory.
+Clone or `download <https://github.com/carlosp420/VoSeq/releases>`__ VoSeq to your preferred directory.
 
 **Step 2: create a virtual environment and install dependencies.**
-To ensure that all the dependancies will work without conflict, it is best to install them within a virtual environment.
+To ensure that all the dependencies will work without conflict, it is best to install them within a virtual environment.
 
 .. code:: shell
 
-    mkvirtualenv -p /usr/bin/python voseq_environment
+    mkvirtualenv -p /usr/bin/python3 voseq_environment
     cd /path/to/VoSeq
     workon voseq_environment
     pip install -r requirements/testing.txt
@@ -310,8 +312,6 @@ once a day or every 2 hours depending on your needs:
 .. |Docs| image:: https://readthedocs.org/projects/voseq/badge/?version=latest
    :target: http://voseq.readthedocs.org/en/latest/
    :alt: Documentation Status
-
-
-.. image:: https://badges.gitter.im/Join%20Chat.svg
+.. |Chat| image:: https://badges.gitter.im/Join%20Chat.svg
    :alt: Join the chat at https://gitter.im/carlosp420/VoSeq
    :target: https://gitter.im/carlosp420/VoSeq?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
