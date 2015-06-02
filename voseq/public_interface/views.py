@@ -168,6 +168,7 @@ def search_advanced(request):
 
 def show_voucher(request, voucher_code):
     version, stats = get_version_stats()
+    username = get_username(request)
 
     try:
         voucher_queryset = Vouchers.objects.get(code__iexact=voucher_code)
@@ -181,14 +182,15 @@ def show_voucher(request, voucher_code):
                                                                        'accession', 'labPerson')
 
     return render(request, 'public_interface/show_voucher.html',
-                  {'voucher': voucher_queryset,
-                   'images': images_queryset,
-                   'sequences': seqs_queryset,
-                   'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
-                   'version': version,
-                   'stats': stats,
-                   },
-                  )
+                  {
+                      'username': username,
+                      'voucher': voucher_queryset,
+                      'images': images_queryset,
+                      'sequences': seqs_queryset,
+                      'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
+                      'version': version,
+                      'stats': stats,
+                  })
 
 
 @login_required
