@@ -13,6 +13,7 @@ from haystack.forms import SearchForm
 from haystack.query import ValuesSearchQuerySet
 
 from core.utils import get_version_stats
+from core.utils import get_username
 from .utils import VoSeqSearchView
 from .models import Vouchers
 from .models import FlickrImages
@@ -23,10 +24,12 @@ from .forms import AdvancedSearchForm, BatchChangesForm
 
 def index(request):
     version, stats = get_version_stats()
+    username = get_username(request)
 
     return render(request,
                   'public_interface/index.html',
                   {
+                      'username': username,
                       'version': version,
                       'stats': stats,
                   },
@@ -185,6 +188,7 @@ def show_voucher(request, voucher_code):
 @login_required
 def show_sequence(request, voucher_code, gene_code):
     version, stats = get_version_stats()
+    username = get_username(request)
 
     try:
         queryset = Vouchers.objects.get(code__iexact=voucher_code)
@@ -197,6 +201,7 @@ def show_sequence(request, voucher_code, gene_code):
 
     return render(request, 'public_interface/show_sequence.html',
                   {
+                      'username': username,
                       'voucher': queryset,
                       'sequence': seqs_queryset,
                       'images': images_queryset,
