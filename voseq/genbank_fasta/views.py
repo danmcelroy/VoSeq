@@ -34,12 +34,12 @@ def index(request):
 @csrf_exempt
 def results(request):
     version, stats = get_version_stats()
+    username = get_username(request)
 
     if request.method == 'POST':
         form = GenBankFastaForm(request.POST)
 
         if form.is_valid():
-            username = get_username(request)
             cleaned_data = form.cleaned_data
             cleaned_data['file_format'] = 'GenbankFASTA'
             cleaned_data['number_genes'] = ''
