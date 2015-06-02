@@ -4,148 +4,181 @@ HISTORY
 2.0.0 (2015-01-xx)
 ++++++++++++++++++
 
-- rewrite project in Python using Django, PostgreSQL and elasticsearch.
-- Browse page.
-- Voucher page.
-- Sequences page.
-- Local BLAST and against NCBI Genbank.
-- Create GenBank fasta.
-- View genes.
+pre-release v2.0.0-alpha-1
+++++++++++++++++++++++++++
 
-**New features**
+Re-written features
+~~~~~~~~~~~~~~~~~~~
 
-- Simple searches for taxa will return suggestions "Did you mean:" in case of misspellings.
+-  **Browse page** for vouchers recently modified/added to the database.
+-  **Blast new sequence** tool for blasting any sequence against all or
+   a subset of sequences kept in VoSeq.
+-  **View genes** tool to quickly see what genes are currently in the
+   database. **New:** there is a badge for each gene showing the number
+   of voucher records that have sequences for that particular gene.
+-  **Create dataset** tool to generate ready-to-run datasets in commonly
+   used phylogenetic software such as TNT, PAUP, MrBayes, BEAST, RaXML.
+   **Note** that it still needs the ability to generate datasets using
+   the degenerated translations by Zwick et al, 2012.
+-  **Create voucher table** tool that generates a ready for publication
+   CSV table (importable in MS Excel) with information for each voucher
+   record, such as: Code, Genus, Species, Locality, Sequences present or
+   not for each gene, etc.
+-  **Create gene table** tool that generates a CSV table with statistics
+   about particular DNA alignments (constructed with the vouchers and
+   gene codes that you can select) such as gene type, sequences length,
+   dataset completion, percentage of variable sites, parsimony
+   informative, conserved sites, and frequency of each nucleotide in
+   your alignment.
+-  **Create GenBank FASTA file** tool that generates FASTA file with
+   most of the required info ready for submission to GenBank using their
+   Sequin software.
+-  **Share data with GBIF** tool that creates a data dump of the
+   information from all vouchers into a CSV table (that can be imported
+   in MS Excel) ready for being used with GBIF's tool IPT.
+-  **Advanced search** tool for searching voucher or sequences using
+   combination of data fields.
+-  **Batch modification of voucher data** tool in the Administration
+   interface.
+
+New features
+~~~~~~~~~~~~
+
+-  **Faster generation of datasets** due to the use of more efficient
+   algorithms.
+-  **Faster advanced searches** due to the indexing of the database
+   using the backend elasticsearch.
+-  **General search** tool in the navegation bar that accepts taxonomic
+   keywords to search for voucher records.
+-  **Keyword suggestions** tool for the general search. If users
+   misspell a taxonomic name when they use this tool, they will be shown
+   the possible correct spelling of the query with the message "Did you
+   mean:".
+-  **Pagination** tool for searches, so that up to 20 results are shown
+   per page along with links to **next** and **previous** pages.
+-  **Fine grained** permissions to upload and look at the sequences.
+-  **Login accounts**. Only users with a working account will be able to
+   look/retrieve any DNA sequence. They will not be able to create
+   datasets. However, they will still be able to look at voucher
+   information, search for vouchers and sequences and perform BLASTs.
+-  **Superuser account**. Only the Superuser/Administrator will be able
+   to create login accounts, change passwords, add user email. Also
+   users can be given specific permission to most of components in VoSeq
+   such as: adding genes, gene sets, members, vouchers, primers,
+   sequences, etc.
+-  **Users can be grouped** for better management of permissions.
+-  **Batch deletion** tools for vouchers and sequences.
 
 Version 1.7.X
 +++++++++++++
 
--  2014-11-13 Carlos Peña:
-    * When making voucher tables there were many repetitive columns, fixed.
--  2014-08-19 Carlos Peña:
-    * Upated flickr_upload_from_directory file to batch upload photos into
-      Flickr from local directory. One file at a time.
-    * Updated phpflickr api file to use CURLFile when uploading files using
-      curl. @file in curl_set_opt is deprecated.
+- 2014-11-13 Carlos Peña:
+    When making voucher tables there were many repetitive columns, fixed.
+
+- 2014-08-19 Carlos Peña:
+    Upated flickr_upload_from_directory file to batch upload photos into
+
+    Flickr from local directory. One file at a time.
+
+    Updated phpflickr api file to use CURLFile when uploading files using
+    curl. @file in curl_set_opt is deprecated.
 
 Version 1.7.4
 +++++++++++++
 
--  2014-08-01 Carlos Peña
-
-   ::
-
-       Updating phpFlickr to deal with the change in Flickr's API (all
-       connections to Fclirk are now using https).
+- 2014-08-01 Carlos Peña
+    Updating phpFlickr to deal with the change in Flickr's API (all
+    connections to Fclirk are now using https).
 
 Version 1.7.3
 +++++++++++++
 
--  2013-11-07 Carlos Peña
+- 2013-11-07 Carlos Peña
+    Fixing bugs when creating degenerated datasets
 
-   ::
-
-       Fixing bugs when creating degenerated datasets
-       The codon ATG was converted to ??? due to a typo (an extra white
-       space). Codon with lower case letters in the sequences were converted
-       to ???. Fixed by converting the whole sequence to uppercase before
-       processing.
+    The codon ATG was converted to ??? due to a typo (an extra white
+    space). Codon with lower case letters in the sequences were converted
+    to ???. Fixed by converting the whole sequence to uppercase before
+    processing.
 
 Version 1.7.2
 +++++++++++++
 
--  2013-11-01 Tobias Malm
+- 2013-11-01 Tobias Malm
+    Fixed the GenBank fasta file creator to work for introned genes. Now
+    creates an extra protein alingnment to upload together with the
+    nuclotde one. Also removes sequences that already are associated with
+    an accession number.
 
-   ::
+- 2013-10-10 Tobias Malm
+    Implemented degenerate coding for retrieval of datasets and
+    restructured the dataset creator a bit. Degenerate (Degen) coding
+    translates possible synonymous change sites to IUPAC codes to minimize
+    heterogeneity problems. It is implemented in some different flavours
+    (at least for standard genetic code.) Read more in Zwick etal. (2012)
+    and Regier et al. (2010). - Thanks to Andreas Zwick for the translation
+    code base.
 
-       Fixed the GenBank fasta file creator to work for introned genes. Now
-       creates an extra protein alingnment to upload together with the
-       nuclotde one. Also removes sequences that already are associated with
-       an accession number. 
+    Fixed a bug in taxon/gene set creator trying empty names when using
+    list mode. - Thanks to Rasa Bukontaite
 
--  2013-10-10 Tobias Malm
-
-   ::
-
-       Implemented degenerate coding for retrieval of datasets and
-       restructured the dataset creator a bit. Degenerate (Degen) coding
-       translates possible synonymous change sites to IUPAC codes to minimize
-       heterogeneity problems. It is implemented in some different flavours
-       (at least for standard genetic code.) Read more in Zwick etal. (2012)
-       and Regier et al. (2010). - Thanks to Andreas Zwick for the translation
-       code base.
-
-       Fixed a bug in taxon/gene set creator trying empty names when using
-       list mode. - Thanks to Rasa Bukontaite
-
-       Some other small bugs and layout stuff.
+    Some other small bugs and layout stuff.
 
 Version 1.7.1
 +++++++++++++
 
--  2013-10-09 Carlos Peña mycalesis@gmail.com
+- 2013-10-09 Carlos Peña mycalesis@gmail.com
+    Scripts to MySQL import and merge Do not remove the placeholder file
+    index.html in uploads folder.
 
-   ::
+    Tools to import and merge databases
+    It is possible to merge databases. All data that is not already in the
+    current database will be incorporated. If there are conflicts, the
+    changes will not be made, and warning messages will be issued.
 
-       Scripts to MySQL import and merge Do not remove the placeholder file
-       index.html in uploads folder.
+    MySQL dump was not working
+    It couldn't find the right path for ``mysqldump``. Fixed, works for now.
 
-       Tools to import and merge databases
-       It is possible to merge databases. All data that is not already in the
-       current database will be incorporated. If there are conflicts, the
-       changes will not be made, and warning messages will be issued.
+    File was missing
 
-       MySQL dump was not working
-       It couldn't find the right path for ``mysqldump``. Fixed, works for
-       now.
+    Adding more files from Tobias
+    MySQL database import, export, merge and new dataset tools creation.
 
-       file was missing
+- 2013-09-28 Carlos Peña mycalesis@gmail.com
+    Added Tobias's code
 
-       Adding more files from Tobias
-       MySQL database import, export, merge and new dataset tools creation.
+- Tobias 2013-10-01
+    Fixed a small bug in data set creator apparently adding "unit
+    separator" codes in taxon names under some circumstances.
 
--  2013-09-28 Carlos Peña mycalesis@gmail.com
+- Tobias 2013-09-11
+    Included a merge databases option under admin, that let you add values
+    from a database backup to your existing database. This will not
+    overwrite anything in your old database and will only add
+    non-problematic information to your current db. E.g. if a genecode or
+    voucher already exist but is specified differently between databases,
+    these and their related values (sequences/primers) will not be added.
 
-   ::
+    After the merge you will recieve an output stating what was and what
+    was not added to the database (and why).
 
-       added Tobias's code
+    Fixed a bug in the import database script that didnt check for prefix
+    names, resulting in wrongly named new database tables.
 
--  Tobias 2013-10-01
+- Tobias 2013-08-30
+    Included functions to store aligned morphological data as a
+    gene/alignment (i.e. a string of numbers,e.g. 01100110) representing
+    character states for a voucher. A morphology alignment need to be
+    aligned!! Multistate characters can be introduced within brackets, i.e.
+    (),{},[] as well as with or without separating comma. E.g. [01] as in
+    TNT or {0,1,2} as in MrBayes. These will be reformed when creating
+    datasets.
 
-   ::
+    Datasets, gene/alignment tables and so on can now be made to include
+    morpholocical data.
 
-       Fixed a small bug in data set creator apparently adding "unit 
-       separator" codes in taxon names under some circumstances.
-
--  Tobias 2013-09-11
-
-   ::
-
-       Included a merge databases option under admin, that let you add values
-       from a database backup to your existing database. This will not
-       overwrite anything in your old database and will only add
-       non-problematic information to your current db. E.g. if a genecode or
-       voucher already exist but is specified differently between databases,
-       these and their related values (sequences/primers) will not be added.
-       After the merge you will recieve an output stating what was and what
-       was not added to the database (and why).
-       Fixed a bug in the import database script that didnt check for prefix
-       names, resulting in wrongly named new database tables.
-
--  Tobias 2013-08-30
-
-   ::
-
-       Included functions to store aligned morphological data as a
-       gene/alignment (i.e. a string of numbers,e.g. 01100110) representing
-       character states for a voucher. A morphology alignment need to be
-       aligned!! Multistate characters can be introduced within brackets, i.e.
-       (),{},[] as well as with or without separating comma. E.g. [01] as in
-       TNT or {0,1,2} as in MrBayes. These will be reformed when creating
-       datasets.
-       Datasets, gene/alignment tables and so on can now be made to include
-       morpholocical data.
-       Fixed a bug in local blast for windows, that tried to read from the
-       wrong database file.
+    Fixed a bug in local blast for windows, that tried to read from the
+    wrong database file.
 
 Version 1.7.0
 +++++++++++++
