@@ -10,6 +10,8 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import re
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -168,7 +170,7 @@ def get_version():
             if 'xx' in line:
                 continue
             elif 'Version' in line or 'release' in line.lower():
-                return line
+                return re.sub('\(.+\)', '', line)
     else:
         return 'xyz'
 VERSION = get_version()
