@@ -38,6 +38,7 @@ def index(request):
 
 def browse(request):
     version, stats = get_version_stats()
+    username = get_username(request)
 
     queryset = Vouchers.objects.order_by('-timestamp')[:10]
 
@@ -50,6 +51,7 @@ def browse(request):
 
     return render(request, 'public_interface/browse.html',
                   {
+                      'username': username,
                       'results': queryset,
                       'vouchers_with_images': vouchers_with_images,
                       'version': version,
@@ -119,6 +121,7 @@ def search_advanced(request):
     :return: response to html template.
     """
     version, stats = get_version_stats()
+    username = get_username(request)
 
     if request.method == 'GET' and bool(request.GET) is not False:
         form = AdvancedSearchForm(request.GET)
@@ -139,6 +142,7 @@ def search_advanced(request):
             else:
                 return render(request, 'public_interface/search_results.html',
                               {
+                                  'username': username,
                                   'form': form,
                                   'version': version,
                                   'stats': stats,
@@ -146,6 +150,7 @@ def search_advanced(request):
         else:
             return render(request, 'public_interface/search.html',
                           {
+                              'username': username,
                               'form': form,
                               'version': version,
                               'stats': stats,
@@ -154,6 +159,7 @@ def search_advanced(request):
         form = AdvancedSearchForm()
         return render(request, 'public_interface/search.html',
                       {
+                          'username': username,
                           'form': form,
                           'version': version,
                           'stats': stats,
