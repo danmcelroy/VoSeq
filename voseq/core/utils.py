@@ -98,6 +98,13 @@ def get_version_stats():
     return version, stats
 
 
+def get_username(request):
+    username = 'Guest'
+    if request.user.is_authenticated():
+        username = request.user.username
+    return username
+
+
 def flatten_taxon_names_dict(dictionary):
     """Converts a dict to string suitable for FASTA object id
 
