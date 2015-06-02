@@ -158,8 +158,21 @@ STATICFILES_DIRS = (
 # so that you can show Google Maps in your voucher pages.
 GOOGLE_MAPS_API_KEY = 'fake api key'
 
+
 # This VoSeq version
-VERSION = '2.0.0'
+def get_version():
+    if os.path.isfile('HISTORY.rst'):
+        with open('HISTORY.rst', 'r') as handle:
+            lines = handle.readlines()
+        for line in lines:
+            if 'xx' in line:
+                continue
+            elif 'Version' in line or 'release' in line.lower():
+                return line
+    else:
+        return 'xyz'
+VERSION = get_version()
+
 
 TESTING = False
 
