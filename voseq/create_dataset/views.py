@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 
 from core.utils import get_version_stats
+from core.utils import get_username
 from .forms import CreateDatasetForm
 from .utils import CreateDataset
 
@@ -14,10 +15,12 @@ from .utils import CreateDataset
 @login_required
 def index(request):
     form = CreateDatasetForm()
+    username = get_username(request)
 
     return render(request,
                   'create_dataset/index.html',
                   {
+                      'username': username,
                       'form': form,
                   },
                   )
@@ -26,6 +29,7 @@ def index(request):
 @login_required
 def results(request):
     version, stats = get_version_stats()
+    username = get_username(request)
 
     if request.method == 'POST':
         form = CreateDatasetForm(request.POST)
@@ -45,6 +49,7 @@ def results(request):
 
             return render(request, 'create_dataset/results.html',
                           {
+                              'username': username,
                               'dataset_file': dataset_file,
                               'charset_block': dataset_creator.charset_block,
                               'dataset': dataset,
@@ -58,6 +63,7 @@ def results(request):
             print("invalid form")
             return render(request, 'create_dataset/index.html',
                           {
+                              'username': username,
                               'form': form,
                               'version': version,
                               'stats': stats,

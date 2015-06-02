@@ -10,6 +10,8 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import re
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -158,8 +160,21 @@ STATICFILES_DIRS = (
 # so that you can show Google Maps in your voucher pages.
 GOOGLE_MAPS_API_KEY = 'fake api key'
 
+
 # This VoSeq version
-VERSION = '2.0.0'
+def get_version():
+    if os.path.isfile('HISTORY.rst'):
+        with open('HISTORY.rst', 'r') as handle:
+            lines = handle.readlines()
+        for line in lines:
+            if 'xx' in line:
+                continue
+            elif 'Version' in line or 'release' in line.lower():
+                return re.sub('\(.+\)', '', line)
+    else:
+        return 'xyz'
+VERSION = get_version()
+
 
 TESTING = False
 

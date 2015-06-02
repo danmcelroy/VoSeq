@@ -3,6 +3,7 @@ import re
 from haystack.views import SearchView
 
 from core.utils import get_version_stats
+from core.utils import get_username
 
 
 class VoSeqSearchView(SearchView):
@@ -41,7 +42,9 @@ class VoSeqSearchView(SearchView):
 
     def extra_context(self):
         version, stats = get_version_stats()
+        username = get_username(self.request)
         return {
+            'username': username,
             'voucher_code_list': self.voucher_code_list,
             'simple_query': self.simple_query,
             'url_encoded_query': self.url_encoded_query,

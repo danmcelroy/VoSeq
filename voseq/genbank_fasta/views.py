@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from core.utils import get_version_stats
+from core.utils import get_username
 from .forms import GenBankFastaForm
 from create_dataset.utils import CreateDataset
 
@@ -15,11 +16,13 @@ from create_dataset.utils import CreateDataset
 @login_required
 def index(request):
     version, stats = get_version_stats()
+    username = get_username(request)
 
     form = GenBankFastaForm()
     return render(request,
                   'genbank_fasta/index.html',
                   {
+                      'username': username,
                       'form': form,
                       'version': version,
                       'stats': stats,
@@ -31,6 +34,7 @@ def index(request):
 @csrf_exempt
 def results(request):
     version, stats = get_version_stats()
+    username = get_username(request)
 
     if request.method == 'POST':
         form = GenBankFastaForm(request.POST)
@@ -63,6 +67,7 @@ def results(request):
 
             return render(request, 'genbank_fasta/results.html',
                           {
+                              'username': username,
                               'items_with_accession': '',
                               'dataset': dataset,
                               'fasta_file': dataset_file,
@@ -77,6 +82,7 @@ def results(request):
         else:
             return render(request, 'genbank_fasta/index.html',
                           {
+                              'username': username,
                               'form': form,
                               'version': version,
                               'stats': stats,

@@ -13,6 +13,7 @@ from haystack.forms import SearchForm
 from haystack.query import ValuesSearchQuerySet
 
 from core.utils import get_version_stats
+from core.utils import get_username
 from .utils import VoSeqSearchView
 from .models import Vouchers
 from .models import FlickrImages
@@ -23,10 +24,12 @@ from .forms import AdvancedSearchForm, BatchChangesForm
 
 def index(request):
     version, stats = get_version_stats()
+    username = get_username(request)
 
     return render(request,
                   'public_interface/index.html',
                   {
+                      'username': username,
                       'version': version,
                       'stats': stats,
                   },
@@ -35,6 +38,7 @@ def index(request):
 
 def browse(request):
     version, stats = get_version_stats()
+    username = get_username(request)
 
     queryset = Vouchers.objects.order_by('-timestamp')[:10]
 
@@ -47,6 +51,7 @@ def browse(request):
 
     return render(request, 'public_interface/browse.html',
                   {
+                      'username': username,
                       'results': queryset,
                       'vouchers_with_images': vouchers_with_images,
                       'version': version,
@@ -116,6 +121,7 @@ def search_advanced(request):
     :return: response to html template.
     """
     version, stats = get_version_stats()
+    username = get_username(request)
 
     if request.method == 'GET' and bool(request.GET) is not False:
         form = AdvancedSearchForm(request.GET)
@@ -136,6 +142,7 @@ def search_advanced(request):
             else:
                 return render(request, 'public_interface/search_results.html',
                               {
+                                  'username': username,
                                   'form': form,
                                   'version': version,
                                   'stats': stats,
@@ -143,6 +150,7 @@ def search_advanced(request):
         else:
             return render(request, 'public_interface/search.html',
                           {
+                              'username': username,
                               'form': form,
                               'version': version,
                               'stats': stats,
@@ -151,6 +159,7 @@ def search_advanced(request):
         form = AdvancedSearchForm()
         return render(request, 'public_interface/search.html',
                       {
+                          'username': username,
                           'form': form,
                           'version': version,
                           'stats': stats,
@@ -159,6 +168,7 @@ def search_advanced(request):
 
 def show_voucher(request, voucher_code):
     version, stats = get_version_stats()
+    username = get_username(request)
 
     try:
         voucher_queryset = Vouchers.objects.get(code__iexact=voucher_code)
@@ -172,19 +182,21 @@ def show_voucher(request, voucher_code):
                                                                        'accession', 'labPerson')
 
     return render(request, 'public_interface/show_voucher.html',
-                  {'voucher': voucher_queryset,
-                   'images': images_queryset,
-                   'sequences': seqs_queryset,
-                   'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
-                   'version': version,
-                   'stats': stats,
-                   },
-                  )
+                  {
+                      'username': username,
+                      'voucher': voucher_queryset,
+                      'images': images_queryset,
+                      'sequences': seqs_queryset,
+                      'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
+                      'version': version,
+                      'stats': stats,
+                  })
 
 
 @login_required
 def show_sequence(request, voucher_code, gene_code):
     version, stats = get_version_stats()
+    username = get_username(request)
 
     try:
         queryset = Vouchers.objects.get(code__iexact=voucher_code)
@@ -197,6 +209,7 @@ def show_sequence(request, voucher_code, gene_code):
 
     return render(request, 'public_interface/show_sequence.html',
                   {
+                      'username': username,
                       'voucher': queryset,
                       'sequence': seqs_queryset,
                       'images': images_queryset,
