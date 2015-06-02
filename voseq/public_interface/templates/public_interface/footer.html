@@ -4,8 +4,15 @@
     <p class="text-center">
       <small>
         2015 VoSeq
-        <a href="https://github.com/carlosp420/VoSeq/blob/master/HISTORY.md"> {{ version }}</a>
-        Logged in as: Victor Solis. <a href="#">Logout</a><br />
+        <a href="https://github.com/carlosp420/VoSeq/blob/master/HISTORY.md"> {{ version }}</a>.
+        {% if username != 'Guest' %}
+          Logged in as: {{ username }}.
+          <a href="/accounts/logout/">Logout</a><br />
+        {% else %}
+          As Guest.
+          <a href="/accounts/login/">Login</a><br />
+        {% endif %}
+
         Now with {{ stats.vouchers }} vouchers,
         over {{ stats.orders }} orders,
         {{ stats.families }} familes,
