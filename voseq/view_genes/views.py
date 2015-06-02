@@ -1,12 +1,14 @@
 from django.shortcuts import render
 
 from core.utils import get_version_stats
+from core.utils import get_username
 from public_interface.models import Genes
 from stats.models import VouchersPerGene
 
 
 def index(request):
     version, stats = get_version_stats()
+    username = get_username(request)
 
     voucher_count = get_voucher_count()
 
@@ -19,6 +21,7 @@ def index(request):
 
     return render(request, 'view_genes/index.html',
                   {
+                      'username': username,
                       'result': result,
                       'version': version,
                       'stats': stats,
@@ -37,6 +40,7 @@ def get_voucher_count():
 
 def gene(request, gene_code):
     version, stats = get_version_stats()
+    username = get_username(request)
 
     queryset = Genes.objects.filter(gene_code=gene_code)
     if len(queryset) < 1:
@@ -55,6 +59,7 @@ def gene(request, gene_code):
 
     return render(request, 'view_genes/gene.html',
                   {
+                      'username': username,
                       'item': item,
                       'version': version,
                       'stats': stats,
