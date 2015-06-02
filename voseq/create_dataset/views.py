@@ -69,6 +69,7 @@ def results(request):
 
 @login_required
 def serve_file(request, file_name):
+    final_name = guess_file_extension(file_name)
     cwd = os.path.dirname(__file__)
     dataset_file = os.path.join(cwd,
                                 'dataset_files',
@@ -76,8 +77,23 @@ def serve_file(request, file_name):
                                 )
     if os.path.isfile(dataset_file):
         response = HttpResponse(open(dataset_file, 'r').read(), content_type='application/text')
-        response['Content-Disposition'] = 'attachment; filename=dataset_file.txt'
+        response['Content-Disposition'] = 'attachment; filename={}'.format(final_name)
         os.remove(dataset_file)
         return response
     else:
         return render(request, 'create_dataset/missing_file.html')
+
+
+def guess_file_extension(file_name):
+    try:
+        prefix = re.search('^(\w+)\_', file_name).group()
+    except AttributeError:
+        return file_name
+
+    if prefix == 'MEGA_':
+        extension = 'meg'
+    else:
+        return file_name
+
+    name = file_name.replace('.txt', '')
+    return '{}.{}'.format(name, extension)
