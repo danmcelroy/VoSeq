@@ -23,7 +23,7 @@
                 {% if i.voucher_count == 1 %}
                   <b>{{ i.voucher_count }} voucher</b>
                 {% else %}
-                  <b>{{ i.voucher_count }} vouchers</b>
+                  <b>{{ i.voucher_count|intcomma }} vouchers</b>
                 {% endif %}
                 </span>
 
