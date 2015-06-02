@@ -4,8 +4,13 @@ HISTORY
 2.0.0 (2015-01-xx)
 ++++++++++++++++++
 
-pre-release v2.0.0-alpha-2
-++++++++++++++++++++++++++
+pre-release v2.0.0-alpha-3 (2015-xx-xx)
++++++++++++++++++++++++++++++++++++++++
+
+- **Getting correct VoSeq version number** from ``HISTORY.rst``.
+
+pre-release v2.0.0-alpha-2 (2015-06-02)
++++++++++++++++++++++++++++++++++++++++
 
 - **Note** that it still needs the ability to generate datasets using
   the degenerated translations by Zwick et al, 2012.
