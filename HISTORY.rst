@@ -4,8 +4,21 @@ HISTORY
 2.0.0 (2015-01-xx)
 ++++++++++++++++++
 
-pre-release v2.0.0-alpha-1
+pre-release v2.0.0-alpha-2
 ++++++++++++++++++++++++++
+
+- **Note** that it still needs the ability to generate datasets using
+  the degenerated translations by Zwick et al, 2012.
+
+New features
+~~~~~~~~~~~~
+
+- **Create dataset** in MEGA format.
+- Search results show a text box with the full list of vouchers so that they can be copied in order
+  to create new taxonsets.
+
+pre-release v2.0.0-alpha-1 (2015-05-28)
++++++++++++++++++++++++++++++++++++++++
 
 Re-written features
 ~~~~~~~~~~~~~~~~~~~
@@ -18,8 +31,6 @@ Re-written features
    of voucher records that have sequences for that particular gene.
 -  **Create dataset** tool to generate ready-to-run datasets in commonly
    used phylogenetic software such as TNT, PAUP, MrBayes, BEAST, RaXML.
-   **Note** that it still needs the ability to generate datasets using
-   the degenerated translations by Zwick et al, 2012.
 -  **Create voucher table** tool that generates a ready for publication
    CSV table (importable in MS Excel) with information for each voucher
    record, such as: Code, Genus, Species, Locality, Sequences present or
