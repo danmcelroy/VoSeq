@@ -9,6 +9,9 @@ config.json
 *bak
 *.fasta
 
+# virtual machine in vagrant
+./vagrant
+
 # package builds
 VoSeq.egg-info
 build
