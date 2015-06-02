@@ -11,16 +11,19 @@ from .forms import GeneTableForm
 from core.utils import get_version_stats
 from core.utils import get_voucher_codes
 from core.utils import get_gene_codes
+from core.utils import get_username
 from create_dataset.utils import CreateDataset
 from public_interface.models import Genes
 
 
 def index(request):
     version, stats = get_version_stats()
+    username = get_username(request)
     form = GeneTableForm()
 
     return render(request, 'gene_table/index.html',
                   {
+                      'username': username,
                       'version': version,
                       'stats': stats,
                       'form': form,
@@ -30,6 +33,7 @@ def index(request):
 
 def results(request):
     version, stats = get_version_stats()
+    username = get_username(request)
     if request.method == 'POST':
         form = GeneTableForm(request.POST)
         if form.is_valid():
@@ -39,6 +43,7 @@ def results(request):
 
     return render(request, 'gene_table/index.html',
                   {
+                      'username': username,
                       'version': version,
                       'stats': stats,
                       'form': GeneTableForm(),
