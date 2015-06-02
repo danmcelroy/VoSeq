@@ -572,7 +572,7 @@ class CreateMEGA(Dataset):
             for line in partition:
                 if not line.startswith('\n['):
                     line = line.split(' ')
-                    taxon = line[0]
+                    taxon = line[0].replace('?', '')
                     sequence = line[-1]
                     if taxon not in sequence_dict:
                         sequence_dict[taxon] = ''
