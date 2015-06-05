@@ -71,7 +71,12 @@
    Towards a  better understanding of Neotropical biogeography. *Molecular 
    phylogenetics and evolution*, 66(1), 54-68.
    [doi: 10.1016/j.ympev.2012.09.005](http://dx.doi.org/10.1016/j.ympev.2012.09.005)
-  
+
+3. Peña, C., Witthauer, H., Klečková, I., Fric, Z. & Wahlberg, N. (**2015**). Adaptive
+   Radiations in Butterflies: Evolutionary History of the Genus Erebia (Nymphalidae:
+   Satyrinae). *Biological Journal of the Linnean Society*,
+   [doi: 10.1111/bij.12597](http://dx.doi.org/10.1111/bij.12597)
+
 4. Müller, C. J., Matos‐Maraví, P. F., & Beheregaray, L. B. (**2013**). Delving 
    into *Delias* Hübner (Lepidoptera: Pieridae): fine‐scale biogeography, 
    phylogenetics and systematics of the world's largest butterfly genus. 
