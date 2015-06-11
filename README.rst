@@ -156,8 +156,12 @@ and write in the following content:
     "DB_NAME": "voseq",
     "DB_PORT": "5432",
     "DB_HOST": "localhost",
-    "GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key"
+    "GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key",
+    "PHOTOS_REPOSITORY": "local"
     }
+
+If you want to host your photos in Flickr you need to change the last parameter
+of your ``config.json`` file to ``"PHOTOS_REPOSITORY": "flickr"``.
 
 If you followed the above instructions to the letter, the DB_USER will be "postgres" and the DB_PASS
 will be "hu8jmn3". It is of recommended to come up with your own password.
