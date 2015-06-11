@@ -526,6 +526,7 @@ class ParseXML(object):
             item['timestamp'] = self.parse_timestamp(item['timestamp'], 'timestamp')
 
             # Deal with flickr images
+            got_flickr = self.test_if_photo_in_flickr(item)
             if item['voucherImage'] == '':
                 item['voucherImage'] = None
             elif item['voucherImage'] is not None:
@@ -536,25 +537,37 @@ class ParseXML(object):
             elif item['thumbnail'] is not None:
                 item['thumbnail'] = self.get_as_tuple(item['thumbnail'])
 
-            if item['flickr_id'] == '':
-                item['flickr_id'] = None
-            elif item['flickr_id'] is not None:
-                item['flickr_id'] = self.get_as_tuple(item['flickr_id'])
+            if got_flickr is True:
+                if item['flickr_id'] == '':
+                    item['flickr_id'] = None
+                elif item['flickr_id'] is not None:
+                    item['flickr_id'] = self.get_as_tuple(item['flickr_id'])
 
-            items_to_flickr = None
-            if item['voucherImage'] is not None and item['thumbnail'] is not None \
-                    and item['flickr_id'] is not None:
-                items_to_flickr = []
-                for i in range(0, len(item['voucherImage']), 1):
-                    items_to_flickr.append({
-                        'voucher_id': item['code'],
-                        'voucherImage': item['voucherImage'][i],
-                        'thumbnail': item['thumbnail'][i],
-                        'flickr_id': item['flickr_id'][i],
-                    })
+                items_to_flickr = None
+                if item['voucherImage'] is not None and item['thumbnail'] is not None \
+                        and item['flickr_id'] is not None:
+                    items_to_flickr = []
+                    for i in range(0, len(item['voucherImage']), 1):
+                        items_to_flickr.append({
+                            'voucher_id': item['code'],
+                            'voucherImage': item['voucherImage'][i],
+                            'thumbnail': item['thumbnail'][i],
+                            'flickr_id': item['flickr_id'][i],
+                        })
+            else:
+                if item['voucherImage'] is not None and item['thumbnail'] is not None:
+                    items_to_localimage_table = []
+                    for i in range(0, len(item['voucherImage']), 1):
+                        items_to_localimage_table.append({
+                            'voucher_id': item['code'],
+                            'voucherImage': item['voucherImage'][i],
+                            'thumbnail': item['thumbnail'][i],
+                        })
+
             del item['voucherImage']
             del item['thumbnail']
-            del item['flickr_id']
+            if 'flickr_id' in item:
+                del item['flickr_id']
 
             item['sex'] = get_sex(item['sex'])
             item['voucher'] = get_voucher(item['voucher'])
@@ -564,6 +577,14 @@ class ParseXML(object):
                 self.table_flickr_images_items += items_to_flickr
 
             self.list_of_voucher_codes.append(item['code'])
+
+    def test_if_photo_in_flickr(self, item):
+        value = item['voucherImage']
+        if value is not None:
+            value = value.replace('|', '').strip()
+            if value.startswith('https://www.flickr'):
+                return True
+        return False
 
     def save_table_vouchers_to_db(self):
         if self.table_vouchers_items is None:
