@@ -559,7 +559,6 @@ class ParseXML(object):
 
         imgs = []
         if got_flickr is True:
-            print(item)
             if item['flickr_id'] == '':
                 item['flickr_id'] = None
             elif item['flickr_id'] is not None:
@@ -640,8 +639,6 @@ class ParseXML(object):
         Vouchers.objects.bulk_create(voucher_objs)
 
         flickr_objs = []
-        print(self.table_flickr_images_items)
-        print(self.table_local_images_items)
         for item in self.table_flickr_images_items:
             flickr_objs.append(FlickrImages(**item))
         FlickrImages.objects.bulk_create(flickr_objs)
