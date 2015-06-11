@@ -530,9 +530,10 @@ class ParseXML(object):
             item['dateExtraction'] = self.parse_date(item['dateExtraction'], 'dateExtraction')
             item['timestamp'] = self.parse_timestamp(item['timestamp'], 'timestamp')
 
-            # Deal with flickr images
+            print("Deal with flickr images")
             items_to_localimage_table = None
             items_to_flickr = None
+            self.got_flickr = None
             self.test_if_photo_in_flickr(item)
             if item['voucherImage'] == '':
                 item['voucherImage'] = None
@@ -560,7 +561,7 @@ class ParseXML(object):
                             'thumbnail': item['thumbnail'][i],
                             'flickr_id': item['flickr_id'][i],
                         })
-            else:
+            elif self.got_flickr is False:
                 if item['voucherImage'] is not None and item['thumbnail'] is not None:
                     items_to_localimage_table = []
                     for i in range(0, len(item['voucherImage']), 1):
@@ -579,10 +580,13 @@ class ParseXML(object):
             item['voucher'] = get_voucher(item['voucher'])
             item['typeSpecies'] = parse_type_species(item['typeSpecies'])
 
+            print("Images ")
             if items_to_flickr is not None:
                 self.table_flickr_images_items += items_to_flickr
+                print("to flickr: ", items_to_flickr)
             if items_to_localimage_table is not None:
                 self.table_local_images_items += items_to_localimage_table
+                print("to local folder: ", items_to_localimage_table)
 
             self.list_of_voucher_codes.append(item['code'])
 
@@ -675,14 +679,18 @@ class ParseXML(object):
         list1 = string.split("|")
         for item in list1:
             if item.strip() != '':
-                if self.got_flickr is False:
-                    item = self.strip_domain_from_filename(item)
+                item = self.strip_domain_from_filename(item)
                 as_tupple += (item,)
         return as_tupple
 
     def strip_domain_from_filename(self, item):
-        dissasembled = parse.urlsplit(item)
-        return basename(dissasembled.path)
+        if self.got_flickr is False:
+            disassembled = parse.urlsplit(item)
+            return basename(disassembled.path)
+        elif self.got_flickr is True:
+            return item
+        else:
+            return None
 
     def convert_to_int(self, string):
         try:
