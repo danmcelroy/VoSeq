@@ -5,8 +5,10 @@ Needs an XML file with the database dump from MySQL:
 > mysqldump --xml database > dump.xml
 """
 import datetime
+from os.path import basename
 import pytz
 import re
+from urllib import parse
 import xml.etree.ElementTree as ET
 
 import pyprind
@@ -52,6 +54,7 @@ class ParseXML(object):
         self.table_flickr_images_items = []
         self.table_local_images_items = []
         self.list_of_voucher_codes = []
+        self.got_flickr = None
         self.verbosity = int(verbosity)
 
     def parse_table_genes(self, xml_string):
@@ -529,7 +532,8 @@ class ParseXML(object):
 
             # Deal with flickr images
             items_to_localimage_table = None
-            got_flickr = self.test_if_photo_in_flickr(item)
+            items_to_flickr = None
+            self.test_if_photo_in_flickr(item)
             if item['voucherImage'] == '':
                 item['voucherImage'] = None
             elif item['voucherImage'] is not None:
@@ -540,13 +544,12 @@ class ParseXML(object):
             elif item['thumbnail'] is not None:
                 item['thumbnail'] = self.get_as_tuple(item['thumbnail'])
 
-            if got_flickr is True:
+            if self.got_flickr is True:
                 if item['flickr_id'] == '':
                     item['flickr_id'] = None
                 elif item['flickr_id'] is not None:
                     item['flickr_id'] = self.get_as_tuple(item['flickr_id'])
 
-                items_to_flickr = None
                 if item['voucherImage'] is not None and item['thumbnail'] is not None \
                         and item['flickr_id'] is not None:
                     items_to_flickr = []
@@ -588,8 +591,8 @@ class ParseXML(object):
         if value is not None:
             value = value.replace('|', '').strip()
             if value.startswith('https://www.flickr'):
-                return True
-        return False
+                self.got_flickr = True
+        self.got_flickr = False
 
     def save_table_vouchers_to_db(self):
         if self.table_vouchers_items is None:
@@ -665,15 +668,21 @@ class ParseXML(object):
         return item
 
     def get_as_tuple(self, string):
+        # http://www.nymphalidae.net/VoSeq/pictures/kitten1.jpg
         as_tupple = ()
         if string == 'na.gif':
             return None
         list1 = string.split("|")
         for item in list1:
             if item.strip() != '':
+                if self.got_flickr is False:
+                    item = self.strip_domain_from_filename(item)
                 as_tupple += (item,)
-
         return as_tupple
+
+    def strip_domain_from_filename(self, item):
+        dissasembled = parse.urlsplit(item)
+        return basename(dissasembled.path)
 
     def convert_to_int(self, string):
         try:
