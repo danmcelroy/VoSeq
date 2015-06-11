@@ -15,6 +15,7 @@ from django.contrib.auth.models import User
 
 from public_interface.models import Vouchers
 from public_interface.models import FlickrImages
+from public_interface.models import LocalImages
 from public_interface.models import Sequences
 from public_interface.models import Primers
 from public_interface.models import Genes
@@ -49,6 +50,7 @@ class ParseXML(object):
         self.table_taxonsets_items = None
         self.table_vouchers_items = None
         self.table_flickr_images_items = []
+        self.table_local_images_items = []
         self.list_of_voucher_codes = []
         self.verbosity = int(verbosity)
 
@@ -526,6 +528,7 @@ class ParseXML(object):
             item['timestamp'] = self.parse_timestamp(item['timestamp'], 'timestamp')
 
             # Deal with flickr images
+            items_to_localimage_table = None
             got_flickr = self.test_if_photo_in_flickr(item)
             if item['voucherImage'] == '':
                 item['voucherImage'] = None
@@ -575,6 +578,8 @@ class ParseXML(object):
 
             if items_to_flickr is not None:
                 self.table_flickr_images_items += items_to_flickr
+            if items_to_localimage_table is not None:
+                self.table_local_images_items += items_to_localimage_table
 
             self.list_of_voucher_codes.append(item['code'])
 
@@ -636,6 +641,11 @@ class ParseXML(object):
         for item in self.table_flickr_images_items:
             flickr_objs.append(FlickrImages(**item))
         FlickrImages.objects.bulk_create(flickr_objs)
+
+        image_objs = []
+        for item in self.table_local_images_items:
+            image_objs.append(LocalImages(**item))
+        LocalImages.objects.bulk_create(image_objs)
 
         if self.verbosity != 0:
             print("Uploading table `public_interface_flickrimages`")
