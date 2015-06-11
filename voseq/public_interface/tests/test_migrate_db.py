@@ -9,6 +9,7 @@ from django.test import TestCase
 from public_interface.models import Vouchers
 from public_interface.models import Sequences
 from public_interface.models import FlickrImages
+from public_interface.models import LocalImages
 from public_interface.models import Primers
 from public_interface.models import GeneSets
 from public_interface.models import TaxonSets
@@ -340,3 +341,13 @@ class TestCustomCommand(TestCase):
         expected = 'Pena'
         result = User.objects.get(username='carlosp420').last_name
         self.assertEqual(expected, result)
+
+    def test_voucher_image_in_local_folder(self):
+        v = Vouchers.objects.get(code='CP100-10')
+        expected = {'voucherImage': 'kitten1.jpg'}
+        result = LocalImages.objects.filter(voucher=v).values('voucherImage')
+        self.assertTrue(expected in result)
+
+        expected = {'voucherImage': 'kitten3.jpg'}
+        result = LocalImages.objects.filter(voucher=v).values('voucherImage')
+        self.assertTrue(expected in result)
