@@ -41,15 +41,17 @@ fi
 # bash environment global setup
 cp -p /vagrant_data/bashrc /home/vagrant/.bashrc
 
-# install our common Python packages in a temporary virtual env so that they'll get cached
-if [[ ! -e /home/vagrant/.pip_download_cache ]]; then
-    su - vagrant -c "mkdir -p /home/vagrant/.pip_download_cache && \
-        virtualenv /home/vagrant/yayforcaching && \
-        PIP_DOWNLOAD_CACHE=/home/vagrant/.pip_download_cache /home/vagrant/yayforcaching/bin/pip install -r /vagrant_data/common_requirements.txt && \
-        rm -rf /home/vagrant/yayforcaching"
-fi
-
-
 # Cleanup
 apt-get clean
 
+
+# Virtualenv for VoSeq
+if [[ ! -e /home/vagrant/.virtualenvs/voseq ]]; then
+    su - vagrant -c "source /usr/local/bin/virtualenvwrapper.sh &&            \
+        mkvirtualenv -p /usr/bin/python3 voseq && pip install pip --upgrade && \
+        pip install -r /vagrant/requirements/base.txt"
+fi
+
+apt-get -y install openjdk-7-jdk openjdk-7-jre
+wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.6.0.deb && \
+    dpkg -i elasticsearch-1.6.0.deb && /etc/init.d/elasticsearch start
