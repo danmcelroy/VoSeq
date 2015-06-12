@@ -20,6 +20,7 @@ Contents
 * `Migrate VoSeq database`_
 * `Set-up a publicly available web server`_
 * `Administrate the server`_
+* `Deployment of VoSeq`_
 * `Upgrade VoSeq's software`_
 * `Database backups`_
 
