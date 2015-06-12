@@ -531,8 +531,8 @@
         <field name="altitude"> 600m</field>
         <field name="collector">Niklas Wahlberg</field>
         <field name="dateCollection">1996-03-25</field>
-        <field name="voucherImage">|http://www.nymphalidae.net/VoSeq/pictures/1_kitten2.jpg|http://www.nymphalidae.net/VoSeq/pictures/1_kitten3.jpg</field>
-        <field name="thumbnail">|http://www.nymphalidae.net/VoSeq/pictures/thumbnails/tn_1_kitten2.jpg|http://www.nymphalidae.net/VoSeq/pictures/thumbnails/tn_1_kitten3.jpg</field>
+        <field name="voucherImage">|http://www.nymphalidae.net/VoSeq/pictures/kitten2.jpg|http://www.nymphalidae.net/VoSeq/pictures/kitten3.jpg</field>
+        <field name="thumbnail">|http://www.nymphalidae.net/VoSeq/pictures/thumbnails/tn_kitten2.jpg|http://www.nymphalidae.net/VoSeq/pictures/thumbnails/tn_kitten3.jpg</field>
         <field name="extraction">1</field>
         <field name="dateExtraction">2008-07-17</field>
         <field name="extractor">Niklas Wahlberg</field>
