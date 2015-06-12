@@ -4,10 +4,11 @@ HISTORY
 2.0.0 (2015-01-xx)
 ++++++++++++++++++
 
-pre-release v2.0.0-alpha-3 (2015-xx-xx)
+pre-release v2.0.0-alpha-3 (2015-06-12)
 +++++++++++++++++++++++++++++++++++++++
 
 - **Getting correct VoSeq version number** from ``HISTORY.rst``.
+- **Importing voucher image files** to database and new VoSeq package.
 
 pre-release v2.0.0-alpha-2 (2015-06-02)
 +++++++++++++++++++++++++++++++++++++++
