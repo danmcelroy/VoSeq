@@ -17,6 +17,10 @@ body {
     font-family: 'Raleway', Verdana, Arial, sans-serif;
 }
 
+.advanced-search {
+    font-size: 12px;
+}
+
 .explorer-container {
     display: block;
     margin-left: auto;
