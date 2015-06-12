@@ -212,3 +212,13 @@ class FlickrImages(models.Model):
     voucherImage = models.URLField(help_text="URLs of the Flickr page.")
     thumbnail = models.URLField(help_text="URLs for the small sized image from Flickr.")
     flickr_id = models.CharField(max_length=100, help_text="ID numbers from Flickr for our photo.")
+
+
+class LocalImages(models.Model):
+    """Voucher images saved in local system."""
+    voucher = models.ForeignKey(
+        Vouchers,
+        help_text='Relation with id of voucher. Save as lower case.',
+    )
+    voucherImage = models.ImageField(help_text="voucher photo.")
+    thumbnail = models.ImageField(help_text="thumbnail of voucher photo.")

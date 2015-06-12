@@ -9,6 +9,7 @@ from django.test import TestCase
 from public_interface.models import Vouchers
 from public_interface.models import Sequences
 from public_interface.models import FlickrImages
+from public_interface.models import LocalImages
 from public_interface.models import Primers
 from public_interface.models import GeneSets
 from public_interface.models import TaxonSets
@@ -159,6 +160,12 @@ class TestCustomCommand(TestCase):
         c = FlickrImages.objects.all().filter(voucher=b)
         results = [i.voucherImage for i in c]
         self.assertTrue('https://www.flickr.com/photos/nsg_db/15728978251/' in results)
+
+    def test_voucher_image_none(self):
+        b = Vouchers.objects.get(code='CP100-18')
+        c = FlickrImages.objects.all().filter(voucher=b)
+        results = [i.voucherImage for i in c]
+        self.assertEqual([], results)
 
     def test_country(self):
         b = Vouchers.objects.get(code='CP100-09')
@@ -340,3 +347,13 @@ class TestCustomCommand(TestCase):
         expected = 'Pena'
         result = User.objects.get(username='carlosp420').last_name
         self.assertEqual(expected, result)
+
+    def test_voucher_image_in_local_folder(self):
+        v = Vouchers.objects.get(code='CP100-10')
+        expected = {'voucherImage': 'kitten1.jpg'}
+        result = LocalImages.objects.filter(voucher=v).values('voucherImage')
+        self.assertTrue(expected in result)
+
+        expected = {'voucherImage': 'kitten3.jpg'}
+        result = LocalImages.objects.filter(voucher=v).values('voucherImage')
+        self.assertTrue(expected in result)
