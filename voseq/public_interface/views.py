@@ -49,6 +49,10 @@ def browse(request):
         if q.count() > 0:
             vouchers_with_images.append(i.code)
 
+    for i in Vouchers.objects.filter(localimages__voucher_id__isnull=False):
+        if i.code not in vouchers_with_images:
+            vouchers_with_images.append(i.code)
+
     return render(request, 'public_interface/browse.html',
                   {
                       'username': username,
