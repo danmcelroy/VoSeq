@@ -161,6 +161,12 @@ class TestCustomCommand(TestCase):
         results = [i.voucherImage for i in c]
         self.assertTrue('https://www.flickr.com/photos/nsg_db/15728978251/' in results)
 
+    def test_voucher_image_none(self):
+        b = Vouchers.objects.get(code='CP100-18')
+        c = FlickrImages.objects.all().filter(voucher=b)
+        results = [i.voucherImage for i in c]
+        self.assertEqual([], results)
+
     def test_country(self):
         b = Vouchers.objects.get(code='CP100-09')
         self.assertEqual('FINLAND', b.country)
