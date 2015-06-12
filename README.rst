@@ -156,8 +156,12 @@ and write in the following content:
     "DB_NAME": "voseq",
     "DB_PORT": "5432",
     "DB_HOST": "localhost",
-    "GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key"
+    "GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key",
+    "PHOTOS_REPOSITORY": "local"
     }
+
+If you want to host your photos in Flickr you need to change the last parameter
+of your ``config.json`` file to ``"PHOTOS_REPOSITORY": "flickr"``.
 
 If you followed the above instructions to the letter, the DB_USER will be "postgres" and the DB_PASS
 will be "hu8jmn3". It is of recommended to come up with your own password.
@@ -269,6 +273,22 @@ Create an index for all the data in your database:
 
     make index
 
+If you kept your **voucher images** in your local computer or server then
+your need to copy them to the correct location in the VoSeq folders:
+
+.. code:: shell
+
+    cp old_voseq/pictures/* VoSeq/voseq/public_interface/static/.
+
+Now copy the thumbnails of those images:
+
+.. code:: shell
+
+    cp old_voseq/pictures/thumbnails/* VoSeq/voseq/public_interface/static/.
+
+If you have your photos in Flickr, then don't worry you don't need to copy any
+image file.
+
 Set-up a publicly available web server
 ======================================
 
@@ -309,6 +329,62 @@ once a day or every 2 hours depending on your needs:
 .. code:: shell
 
     make stats
+
+Deployment of VoSeq
+===================
+VoSeq comes with a very simple server software (from Django) that you can use
+for development and testing purposes. This is the server that starts up when
+you use the command ``make serve``.
+
+However, the Django developers warn that you will need to do some extra configuration
+if you want VoSeq to start serving data to the users of your lab from your institution
+server or commercial servers:
+
+* To serve statics files such as stylesheet and javascript files, you
+  need to choose a folder in your sever to be the root folder for such files.
+  Open the file ``VoSeq_repo/voseq/voseq/settings/production.py`` and change this
+  line so that it points to your server's folder:
+
+.. code:: python
+
+    STATIC_ROOT = "/var/www/VoSeq/static/"
+
+* Do something similar for being able to serve voucher images from your local
+  server:
+
+.. code:: python
+
+    MEDIA_ROOT = "/var/www/VoSeq/media/"
+
+You might want to leave it with the default values. It should work (# TODO test).
+
+* If you have installed VoSeq in a commercial server and already bought an Internet
+  domain, you need to add it to the ``production.py`` file. Change the following
+  line:
+
+.. code:: python
+
+    ALLOWED_HOSTS = [
+        '192.168.0.106',  # Your Domain or IP address
+    ]
+
+If you don't have a domain like (myawesomedomain.com) then just replace the IP
+address for the one of your server.
+
+Before starting up VoSeq, you will need to gather all the static files in the
+folders you just specified so they will be available for your users.
+Use the following command:
+
+.. code:: shell
+
+    python voseq/manage.py collectstatic --settings=voseq.settings.production
+
+Then start VoSeq using the ``production`` configuration file:
+
+.. code:: shell
+
+    python voseq/manage.py runserver --settings=voseq.settings.production
+
 
 Upgrade VoSeq's software
 ========================
