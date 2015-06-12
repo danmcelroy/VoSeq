@@ -42,22 +42,18 @@ def browse(request):
 
     queryset = Vouchers.objects.order_by('-timestamp')[:10]
 
-    # TODO improve this ugly hack. Use select_related or prefetch_related
     vouchers_with_images = []
-    for i in queryset:
-        q = FlickrImages.objects.filter(voucher=i.code)
-        if q.count() > 0:
-            vouchers_with_images.append(i.code)
+    for i in Vouchers.objects.filter(flickrimages__voucher_id__isnull=False):
+        vouchers_with_images.append(i.code)
 
     for i in Vouchers.objects.filter(localimages__voucher_id__isnull=False):
-        if i.code not in vouchers_with_images:
-            vouchers_with_images.append(i.code)
+        vouchers_with_images.append(i.code)
 
     return render(request, 'public_interface/browse.html',
                   {
                       'username': username,
                       'results': queryset,
-                      'vouchers_with_images': vouchers_with_images,
+                      'vouchers_with_images': set(vouchers_with_images),
                       'version': version,
                       'stats': stats,
                   },
