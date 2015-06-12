@@ -273,6 +273,22 @@ Create an index for all the data in your database:
 
     make index
 
+If you kept your **voucher images** in your local computer or server then
+your need to copy them to the correct location in the VoSeq folders:
+
+.. code:: shell
+
+    cp old_voseq/pictures/* VoSeq/voseq/public_interface/static/.
+
+Now copy the thumbnails of those images:
+
+.. code:: shell
+
+    cp old_voseq/pictures/thumbnails/* VoSeq/voseq/public_interface/static/.
+
+If you have your photos in Flickr, then don't worry you don't need to copy any
+image file.
+
 Set-up a publicly available web server
 ======================================
 
@@ -327,7 +343,7 @@ server or commercial servers:
 * To serve statics files such as stylesheet and javascript files, you
   need to choose a folder in your sever to be the root folder for such files.
   Open the file ``VoSeq_repo/voseq/voseq/settings/production.py`` and change this
-  line so that it points to your sever's folder:
+  line so that it points to your server's folder:
 
 .. code:: python
 
@@ -342,7 +358,7 @@ server or commercial servers:
 
 You might want to leave it with the default values. It should work (# TODO test).
 
-* If you have installed VoSeq in a comercial server and already bought an Internet
+* If you have installed VoSeq in a commercial server and already bought an Internet
   domain, you need to add it to the ``production.py`` file. Change the following
   line:
 
