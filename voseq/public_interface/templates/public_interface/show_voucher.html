@@ -243,7 +243,9 @@
         <div class="panel panel-default">
           <div class="panel-body">
             {% for image in images %}
-              <a href="{{ image.voucherImage }}"><img class="img-thumbnail" src="{{ image.thumbnail }}" /></a>
+              <a href="/static/{{ image.voucherImage }}">
+                <img class="img-thumbnail" src="/static/{{ image.thumbnail }}" />
+              </a>
             {% endfor %}
           </div>
         </div><!-- panel -->
