@@ -32,6 +32,13 @@ if ! command -v psql; then
     echo "create database voseq" | psql -U postgres
 fi
 
+# elasticsearch
+apt-get -y install openjdk-7-jdk openjdk-7-jre
+if [[ ! -f /etc/init.d/elasticsearch ]]; then
+    wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.6.0.deb && \
+        dpkg -i elasticsearch-1.6.0.deb && /etc/init.d/elasticsearch start
+fi
+
 # virtualenv global setup
 if ! command -v pip; then
     easy_install -U pip
@@ -55,9 +62,18 @@ if [[ ! -e /home/vagrant/.virtualenvs/voseq ]]; then
         pip install -r /vagrant/requirements/base.txt"
 fi
 
-apt-get -y install openjdk-7-jdk openjdk-7-jre
-if [[ ! -f /etc/init.d/elasticsearch ]]; then
-    wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.6.0.deb && \
-        dpkg -i elasticsearch-1.6.0.deb && /etc/init.d/elasticsearch start
+# config.json file for VoSeq
+if [[ ! -f /vagrant/config.json ]]; then
+    echo '{
+        "SECRET_KEY": "create_a_secret_key",
+        "DB_USER": "postgres",
+        "DB_PASS": "hu8jmn3",
+        "DB_NAME": "voseq",
+        "DB_PORT": "5432",
+        "DB_HOST": "localhost",
+        "GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key",
+        "PHOTOS_REPOSITORY": "local"
+    }
+    ' >  /vagrant/config.json
 fi
 
