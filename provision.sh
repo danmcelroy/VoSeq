@@ -28,12 +28,15 @@ if ! command -v psql; then
     apt-get install -y postgresql-$PGSQL_VERSION libpq-dev
     cp /vagrant_data/pg_hba.conf /etc/postgresql/$PGSQL_VERSION/main/
     /etc/init.d/postgresql reload
+    echo "alter role postgres with password 'hu8jmn3'" | psql -U postgres
+    echo "create database voseq" | psql -U postgres
 fi
 
 # virtualenv global setup
 if ! command -v pip; then
     easy_install -U pip
 fi
+
 if [[ ! -f /usr/local/bin/virtualenv ]]; then
     easy_install virtualenv virtualenvwrapper stevedore virtualenv-clone
 fi
