@@ -396,8 +396,8 @@ Vagrant allows setting up virtual machines that automatically installs all
 dependencies and sets up configuration from a *recipe* contained in the Vagrant
 file.
 
-You need both `Vagrant<http://www.vagrantup.com/downloads.html>`__ and 
-`VirtualBox<https://www.virtualbox.org/wiki/Downloads>`__ installed in your
+You need both `Vagrant <http://www.vagrantup.com/downloads.html>`__ and 
+`VirtualBox <https://www.virtualbox.org/wiki/Downloads>`__ installed in your
 computer or server.
 
 Just go to the VoSeq's directory and execute the following command:
