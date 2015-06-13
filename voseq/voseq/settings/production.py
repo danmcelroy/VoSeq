@@ -8,5 +8,5 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = [
-    '192.168.0.106',  # Your Domain or IP address
+    '127.0.0.1',  # Your Domain or IP address
 ]
