@@ -451,10 +451,10 @@ Then restart the web server:
 .. code:: shell
 
     sudo supervisorctl restart voseq
-    sudo service restart nginx
+    sudo service nginx restart
 
 In your host system, open your brower and load this URL:
-<http://localhost:1234> to see your fresh installation of VoSeq.
+http://localhost:1234 to see your fresh installation of VoSeq.
 
 
 Upgrade VoSeq's software
