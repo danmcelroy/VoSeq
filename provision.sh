@@ -53,5 +53,8 @@ if [[ ! -e /home/vagrant/.virtualenvs/voseq ]]; then
 fi
 
 apt-get -y install openjdk-7-jdk openjdk-7-jre
-wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.6.0.deb && \
-    dpkg -i elasticsearch-1.6.0.deb && /etc/init.d/elasticsearch start
+if [[ ! -f /etc/init.d/elasticsearch ]]; then
+    wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.6.0.deb && \
+        dpkg -i elasticsearch-1.6.0.deb && /etc/init.d/elasticsearch start
+fi
+
