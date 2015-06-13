@@ -214,5 +214,7 @@ echo '
 
 sudo ln -s /etc/nginx/sites-available/voseq /etc/nginx/sites-enabled/voseq
 sudo rm /etc/nginx/sites-enabled/default
+sudo mkdir /var/www
+sudo chown vagrant:vagrant -R /var/www
 sudo service nginx restart
 
