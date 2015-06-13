@@ -94,8 +94,7 @@ if [[ ! -e /home/vagrant/bin ]]; then
     mkdir /home/vagrant/bin
 fi
 
-echo '
-#!/bin/bash
+echo '#!/bin/bash
 
 NAME="voseq"                                  # Name of the application
 DJANGODIR=/vagrant/voseq                      # Django project directory
@@ -128,7 +127,7 @@ exec /home/vagrant/.virtualenvs/voseq/bin/gunicorn ${DJANGO_WSGI_MODULE}:applica
 ' > /home/vagrant/bin/gunicorn_start
 
 chmod u+x /home/vagrant/bin/gunicorn_start
-chown vagrant:vagrant /home/vagrant/bin/gunicorn_start
+chown vagrant:vagrant -R /home/vagrant
 apt-get install -y supervisor
 
 sudo echo '
@@ -214,5 +213,6 @@ echo '
 ' > /etc/nginx/sites-available/voseq
 
 sudo ln -s /etc/nginx/sites-available/voseq /etc/nginx/sites-enabled/voseq
+sudo rm /etc/nginx/sites-enabled/default
 sudo service nginx restart
 
