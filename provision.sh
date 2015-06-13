@@ -23,6 +23,9 @@ apt-get install -y libjpeg-dev libtiff-dev zlib1g-dev libfreetype6-dev liblcms2-
 # Git (we'd rather avoid people keeping credentials for git commits in the repo, but sometimes we need it for pip requirements that aren't in PyPI)
 apt-get install -y git
 
+apt-get install -y nginx
+sudo service nginx start 
+
 # Postgresql
 if ! command -v psql; then
     apt-get install -y postgresql-$PGSQL_VERSION libpq-dev
@@ -58,8 +61,12 @@ apt-get clean
 # Virtualenv for VoSeq
 if [[ ! -e /home/vagrant/.virtualenvs/voseq ]]; then
     su - vagrant -c "source /usr/local/bin/virtualenvwrapper.sh &&            \
-        mkvirtualenv -p /usr/bin/python3 voseq && pip install pip --upgrade && \
-        pip install -r /vagrant/requirements/base.txt"
+        mkvirtualenv -p /usr/bin/python3 voseq && \
+        source /home/vagrant/.virtualenvs/voseq/bin/activate && \
+        pip install pip --upgrade && \
+        pip install -r /vagrant/requirements/base.txt && \
+        pip install gunicorn && \
+        pip install setproctitle "
 fi
 
 # config.json file for VoSeq
@@ -76,4 +83,135 @@ if [[ ! -f /vagrant/config.json ]]; then
     }
     ' >  /vagrant/config.json
 fi
+
+# setup server using gunicorn
+if [[ ! -e /vagrant/run ]]; then
+    mkdir /vagrant/run && mkdir /vagrant/logs && \
+        touch /vagrant/logs/guincorn_supervisor.log
+fi
+
+if [[ ! -e /home/vagrant/bin ]]; then
+    mkdir /home/vagrant/bin
+fi
+
+echo '
+#!/bin/bash
+
+NAME="voseq"                                  # Name of the application
+DJANGODIR=/vagrant/voseq                      # Django project directory
+SOCKFILE=/vagrant/run/gunicorn.sock           # we will communicte using this unix socket
+USER=vagrant                                        # the user to run as
+GROUP=vagrant                                     # the group to run as
+NUM_WORKERS=3                                     # how many worker processes should Gunicorn spawn
+DJANGO_SETTINGS_MODULE=voseq.settings.production             # which settings file should Django use
+DJANGO_WSGI_MODULE=voseq.wsgi                     # WSGI module name
+
+# Activate the virtual environment
+cd $DJANGODIR
+source /home/vagrant/.virtualenvs/voseq/bin/activate
+export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+export PYTHONPATH=$DJANGODIR:$PYTHONPATH
+
+# Create the run directory if it doesnt exist
+RUNDIR=$(dirname $SOCKFILE)
+test -d $RUNDIR || mkdir -p $RUNDIR
+
+# Start your Django Unicorn
+# Programs meant to be run under supervisor should not daemonize themselves (do not use --daemon)
+exec /home/vagrant/.virtualenvs/voseq/bin/gunicorn ${DJANGO_WSGI_MODULE}:application \
+    --name $NAME \
+    --workers $NUM_WORKERS \
+    --user=$USER --group=$GROUP \
+    --bind=unix:$SOCKFILE \
+    --log-level=debug \
+    --log-file=-
+' > /home/vagrant/bin/gunicorn_start
+
+chmod u+x /home/vagrant/bin/gunicorn_start
+apt-get install -y supervisor
+
+sudo echo '
+[program:voseq]
+command = /home/vagrant/bin/gunicorn_start                    ; Command to start app
+user = vagrant                                                          ; User to run as
+stdout_logfile = /vagrant/logs/gunicorn_supervisor.log   ; Where to write log messages
+redirect_stderr = true                                                ; Save stderr in the same log
+environment=LANG=en_GB.UTF-8,LC_ALL=en_GB.UTF-8                       ; Set UTF-8 as default encoding
+' > /etc/supervisor/conf.d/voseq.conf
+
+sudo supervisord -c /etc/supervisor/supervisord.conf
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl restart voseq
+
+# nginx configuration
+echo '
+    upstream voseq_app_server {
+    # fail_timeout=0 means we always retry an upstream even if it failed
+    # to return a good HTTP response (in case the Unicorn master nukes a
+    # single worker for timing out).
+    
+    server unix:/vagrant/run/gunicorn.sock fail_timeout=0;
+    }
+    
+    server {
+    
+        listen   80;
+        server_name example.com;
+    
+        client_max_body_size 1G;
+    
+        access_log /vagrant/logs/nginx-access.log;
+        error_log /vagrant/logs/nginx-error.log;
+    
+        location /static/ {
+            alias   /vagrant/static/;
+        }
+        
+        location /media/ {
+            alias   /vagrant/media/;
+        }
+    
+        location / {
+            # an HTTP header important enough to have its own Wikipedia entry:
+            #   http://en.wikipedia.org/wiki/X-Forwarded-For
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    
+            # enable this if and only if you use HTTPS, this helps Rack
+            # set the proper protocol for doing redirects:
+            # proxy_set_header X-Forwarded-Proto https;
+    
+            # pass the Host: header from the client right along so redirects
+            # can be set properly within the Rack application
+            proxy_set_header Host $http_host;
+    
+            # we dont want nginx trying to do something clever with
+            # redirects, we set the Host: header above already.
+            proxy_redirect off;
+    
+            # set "proxy_buffering off" *only* for Rainbows! when doing
+            # Comet/long-poll stuff.  It's also safe to set if you're
+            # using only serving fast clients with Unicorn + nginx.
+            # Otherwise you _want_ nginx to buffer responses to slow
+            # clients, really.
+            # proxy_buffering off;
+    
+            # Try to serve static files from nginx, no point in making an
+            # *application* server like Unicorn/Rainbows! serve static files.
+            if (!-f $request_filename) {
+                proxy_pass http://voseq_app_server;
+                break;
+            }
+        }
+    
+        # Error pages
+        error_page 500 502 503 504 /500.html;
+        location = /500.html {
+            root /vagrant/static/;
+        }
+    }
+' > /etc/nginx/sites-available/voseq
+
+sudo ln -s /etc/nginx/sites-available/voseq /etc/nginx/sites-enabled/voseq
+sudo service nginx restart
 
