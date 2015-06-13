@@ -152,7 +152,7 @@ and write in the following content:
 
     {
     "SECRET_KEY": "create_a_secret_key",
-    "DB_USER": "role_name",
+    "DB_USER": "postgres",
     "DB_PASS": "hu8jmn3",
     "DB_NAME": "voseq",
     "DB_PORT": "5432",
