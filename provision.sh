@@ -85,9 +85,9 @@ if [[ ! -f /vagrant/config.json ]]; then
 fi
 
 # setup server using gunicorn
-if [[ ! -e /vagrant/run ]]; then
-    mkdir /vagrant/run && mkdir /vagrant/logs && \
-        touch /vagrant/logs/guincorn_supervisor.log
+if [[ ! -e /home/vagrant/run ]]; then
+    mkdir /home/vagrant/run && mkdir /home/vagrant/logs && \
+        touch /home/vagrant/logs/gunicorn_supervisor.log
 fi
 
 if [[ ! -e /home/vagrant/bin ]]; then
@@ -99,7 +99,7 @@ echo '
 
 NAME="voseq"                                  # Name of the application
 DJANGODIR=/vagrant/voseq                      # Django project directory
-SOCKFILE=/vagrant/run/gunicorn.sock           # we will communicte using this unix socket
+SOCKFILE=/home/vagrant/run/gunicorn.sock           # we will communicte using this unix socket
 USER=vagrant                                        # the user to run as
 GROUP=vagrant                                     # the group to run as
 NUM_WORKERS=3                                     # how many worker processes should Gunicorn spawn
@@ -128,13 +128,14 @@ exec /home/vagrant/.virtualenvs/voseq/bin/gunicorn ${DJANGO_WSGI_MODULE}:applica
 ' > /home/vagrant/bin/gunicorn_start
 
 chmod u+x /home/vagrant/bin/gunicorn_start
+chown vagrant:vagrant /home/vagrant/bin/gunicorn_start
 apt-get install -y supervisor
 
 sudo echo '
 [program:voseq]
 command = /home/vagrant/bin/gunicorn_start                    ; Command to start app
 user = vagrant                                                          ; User to run as
-stdout_logfile = /vagrant/logs/gunicorn_supervisor.log   ; Where to write log messages
+stdout_logfile = /home/vagrant/logs/gunicorn_supervisor.log   ; Where to write log messages
 redirect_stderr = true                                                ; Save stderr in the same log
 environment=LANG=en_GB.UTF-8,LC_ALL=en_GB.UTF-8                       ; Set UTF-8 as default encoding
 ' > /etc/supervisor/conf.d/voseq.conf
@@ -151,7 +152,7 @@ echo '
     # to return a good HTTP response (in case the Unicorn master nukes a
     # single worker for timing out).
     
-    server unix:/vagrant/run/gunicorn.sock fail_timeout=0;
+    server unix:/home/vagrant/run/gunicorn.sock fail_timeout=0;
     }
     
     server {
@@ -161,8 +162,8 @@ echo '
     
         client_max_body_size 1G;
     
-        access_log /vagrant/logs/nginx-access.log;
-        error_log /vagrant/logs/nginx-error.log;
+        access_log /home/vagrant/logs/nginx-access.log;
+        error_log /home/vagrant/logs/nginx-error.log;
     
         location /static/ {
             alias   /vagrant/static/;
