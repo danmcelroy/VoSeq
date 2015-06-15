@@ -14,6 +14,7 @@ Contents
 
 * `VoSeq is being rewritten`_
 * `New features`_
+* `Quick install of VoSeq using Vagrant (Recommended)`_
 * `Installation instructions`_
 * `Test database for development`_
 * `Start a test server`_
@@ -21,7 +22,6 @@ Contents
 * `Set-up a publicly available web server`_
 * `Administrate the server`_
 * `Deployment of VoSeq`_
-* `Quick install of VoSeq using Vagrant (Recommended)`_
 * `Upgrade VoSeq's software`_
 * `Database backups`_
 
@@ -50,6 +50,73 @@ New Features
 Query suggestions for simple taxon searches:
 
 .. image:: https://raw.githubusercontent.com/carlosp420/VoSeq/master/imgs/simple_search_suggestion.png
+
+Quick install of VoSeq using Vagrant (Recommended)
+==================================================
+Vagrant allows setting up virtual machines that automatically installs all
+dependencies and sets up configuration from a *recipe* contained in the Vagrant
+file.
+
+You need both `Vagrant <http://www.vagrantup.com/downloads.html>`__ and
+`VirtualBox <https://www.virtualbox.org/wiki/Downloads>`__ installed in your
+computer or server.
+
+Just go to the VoSeq's directory and execute the following command:
+
+.. code:: shell
+
+    vagrant up
+
+Once the process has finished, you will have a new Ubuntu virtual machine with
+VoSeq installed. To enter this virtual machine:
+
+.. code:: shell
+
+    vagrant ssh
+
+Then you just need to run the following commands to set up your database:
+
+.. code:: shell
+
+    cd /vagrant
+    workon voseq
+    make migrations
+
+Additionally, you can import your old VoSeq database from a MySQL dump (see
+`Migrate VoSeq database`_). If you don't import anything your VoSeq
+installation will be usable, but empty. In such a case, you might want to
+import test data:
+
+.. code:: shell
+
+    make test_import
+
+Set up an administrator account (see `Administrate the server`_).
+
+It is necessary to index your imported data:
+
+.. code:: shell
+
+    make index
+
+Since this installation of VoSeq will be running as a deployed application from
+inside the virtual machine you need to collect the static files in the correct
+locations:
+
+.. code:: shell
+
+    python voseq/manage.py collectstatic --settings=voseq.settings.production
+
+Then restart the web server:
+
+.. code:: shell
+
+    sudo supervisorctl restart voseq
+    sudo service nginx restart
+
+In your host system, open your brower and load this URL:
+http://localhost:1234 to see your fresh installation of VoSeq.
+
 
 Installation instructions
 =========================
@@ -389,72 +456,6 @@ Then start VoSeq using the ``production`` configuration file:
 .. code:: shell
 
     python voseq/manage.py runserver --settings=voseq.settings.production
-
-Quick install of VoSeq using Vagrant (Recommended)
-==================================================
-Vagrant allows setting up virtual machines that automatically installs all
-dependencies and sets up configuration from a *recipe* contained in the Vagrant
-file.
-
-You need both `Vagrant <http://www.vagrantup.com/downloads.html>`__ and 
-`VirtualBox <https://www.virtualbox.org/wiki/Downloads>`__ installed in your
-computer or server.
-
-Just go to the VoSeq's directory and execute the following command:
-
-.. code:: shell
-
-    vagrant up
-
-Once the process has finished, you will have a new Ubuntu virtual machine with
-VoSeq installed. To enter this virtual machine:
-
-.. code:: shell
-
-    vagrant ssh
-
-Then you just need to run the following commands to set up your database:
-
-.. code:: shell
-
-    cd /vagrant
-    workon voseq
-    make migrations
-
-Additionally, you can import your old VoSeq database from a MySQL dump (see
-`Migrate VoSeq database`_). If you don't import anything your VoSeq
-installation will be usable, but empty. In such a case, you might want to
-import test data:
-
-.. code:: shell
-
-    make test_import
-
-Set up an administrator account (see `Administrate the server`_).
-
-It is necessary to index your imported data:
-
-.. code:: shell
-
-    make index
-
-Since this installation of VoSeq will be running as a deployed application from
-inside the virtual machine you need to collect the static files in the correct
-locations:
-
-.. code:: shell
-
-    python voseq/manage.py collectstatic --settings=voseq.settings.production
-
-Then restart the web server:
-
-.. code:: shell
-
-    sudo supervisorctl restart voseq
-    sudo service nginx restart
-
-In your host system, open your brower and load this URL:
-http://localhost:1234 to see your fresh installation of VoSeq.
 
 
 Upgrade VoSeq's software
