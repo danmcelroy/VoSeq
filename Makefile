@@ -1,4 +1,4 @@
-.PHONY: docs serve test migrations import index admin
+.PHONY: docs serve test migrations import index collectstatic admin
 
 help:
 	@echo "docs - build documentation in HTML format"
@@ -50,6 +50,9 @@ index:
 
 stats:
 	python voseq/manage.py create_stats --settings=voseq.settings.local
+
+collectstatic:
+	python voseq/manage.py collectstatic --settings=voseq.settings.production
 
 coverage: travis_test
 	coverage report -m
