@@ -9,6 +9,5 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = [
-    '127.0.0.1',  # Your Domain or IP address
-    'localhost',
+    '33.33.33.10',  # Your Domain or IP address
 ]
