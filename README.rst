@@ -14,6 +14,7 @@ Contents
 
 * `VoSeq is being rewritten`_
 * `New features`_
+* `Quick install of VoSeq using Vagrant (Recommended)`_
 * `Installation instructions`_
 * `Test database for development`_
 * `Start a test server`_
@@ -50,6 +51,82 @@ Query suggestions for simple taxon searches:
 
 .. image:: https://raw.githubusercontent.com/carlosp420/VoSeq/master/imgs/simple_search_suggestion.png
 
+Quick install of VoSeq using Vagrant (Recommended)
+==================================================
+Vagrant allows setting up virtual machines that automatically installs all
+dependencies and sets up configuration from a *recipe* contained in the Vagrant
+file.
+
+You need both `Vagrant <http://www.vagrantup.com/downloads.html>`__ and
+`VirtualBox <https://www.virtualbox.org/wiki/Downloads>`__ installed in your
+computer or server.
+
+Just go to the VoSeq's directory and execute the following command:
+
+.. code:: shell
+
+    vagrant up
+
+If the installation of packages gets interrupted you can relaunch the process
+with the following command:
+
+.. code:: shell
+
+    vagrant reload --provision
+
+
+Once the process has finished, you will have a new Ubuntu virtual machine with
+VoSeq installed. To enter this virtual machine:
+
+.. code:: shell
+
+    vagrant ssh
+
+Then you just need to run the following commands to set up your database:
+
+.. code:: shell
+
+    cd /vagrant
+    workon voseq
+    make migrations
+
+Additionally, you can import your old VoSeq database from a MySQL dump (see
+`Migrate VoSeq database`_). If you don't import anything your VoSeq
+installation will be usable, but empty. In such a case, you might want to
+import test data:
+
+.. code:: shell
+
+    make test_import
+
+Set up an administrator account by using the command ``make admin``
+(see `Administrate the server`_).
+
+It is necessary to index your imported data:
+
+.. code:: shell
+
+    make index
+
+Since this installation of VoSeq will be running as a deployed application from
+inside the virtual machine you need to collect the static files in the correct
+locations:
+
+.. code:: shell
+
+    make collectstatic
+
+Then restart the web server:
+
+.. code:: shell
+
+    sudo supervisorctl restart voseq
+    sudo service nginx restart
+
+In your host system, open your brower and load this URL:
+http://33.33.33.10 to see your fresh installation of VoSeq.
+
+
 Installation instructions
 =========================
 
@@ -61,15 +138,18 @@ Clone or `download <https://github.com/carlosp420/VoSeq/releases>`__ VoSeq to yo
 We recommend cloning VoSeq as it will be easier to do software upgrades with on single command:
 
 * To clone VoSeq:
-```shell
-git clone https://github.com/carlosp420/VoSeq.git
-```
+
+.. code:: shell
+
+    git clone https://github.com/carlosp420/VoSeq.git
+
 
 * To upgrade VoSeq to newer versions:
-```shell
-cd /path/to/VoSeq
-git pull origin master
-```
+
+.. code:: shell
+
+    cd /path/to/VoSeq
+    git pull origin master
 
 **Step 2: create a virtual environment and install dependencies.**
 To ensure that all the dependencies will work without conflict, it is best to install them within a virtual environment.
@@ -324,7 +404,7 @@ once a day or every 2 hours depending on your needs:
 
 .. code:: shell
 
-    python voseq/manage.py update_index --settings=voseq.settings.local
+    make index
 
 * Update some voucher and gene statistics for your installation of VoSeq:
 
