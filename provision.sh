@@ -24,7 +24,7 @@ apt-get install -y libjpeg-dev libtiff-dev zlib1g-dev libfreetype6-dev liblcms2-
 apt-get install -y git
 
 apt-get install -y nginx
-sudo service nginx start 
+service nginx start
 
 # Postgresql
 if ! command -v psql; then
@@ -38,8 +38,12 @@ fi
 # elasticsearch
 apt-get -y install openjdk-7-jdk openjdk-7-jre
 if [[ ! -f /etc/init.d/elasticsearch ]]; then
-    wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.6.0.deb && \
-        dpkg -i elasticsearch-1.6.0.deb && /etc/init.d/elasticsearch start
+    wget -q https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.6.0.deb && \
+        dpkg -i elasticsearch-1.6.0.deb
+fi
+
+if [[ ! -e /var/run/elasticsearch ]]; then
+    mkdir -p /var/run/elasticsearch && /etc/init.d/elasticsearch start
 fi
 
 # virtualenv global setup
@@ -139,6 +143,10 @@ redirect_stderr = true                                                ; Save std
 environment=LANG=en_GB.UTF-8,LC_ALL=en_GB.UTF-8                       ; Set UTF-8 as default encoding
 ' > /etc/supervisor/conf.d/voseq.conf
 
+if [[ /var/run/supervisor.sock ]]; then
+    unlink /var/run/supervisor.sock
+fi
+
 sudo supervisord -c /etc/supervisor/supervisord.conf
 sudo supervisorctl reread
 sudo supervisorctl update
@@ -165,11 +173,11 @@ echo '
         error_log /home/vagrant/logs/nginx-error.log;
     
         location /static/ {
-            alias   /vagrant/static/;
+            alias   /vagrant/www/VoSeq/static/;
         }
         
         location /media/ {
-            alias   /vagrant/media/;
+            alias   /vagrant/www/VoSeq/media/;
         }
     
         location / {
@@ -190,7 +198,7 @@ echo '
             proxy_redirect off;
     
             # set "proxy_buffering off" *only* for Rainbows! when doing
-            # Comet/long-poll stuff.  It's also safe to set if you're
+            # Comet/long-poll stuff.  Its also safe to set if youre
             # using only serving fast clients with Unicorn + nginx.
             # Otherwise you _want_ nginx to buffer responses to slow
             # clients, really.
@@ -212,9 +220,15 @@ echo '
     }
 ' > /etc/nginx/sites-available/voseq
 
-sudo ln -s /etc/nginx/sites-available/voseq /etc/nginx/sites-enabled/voseq
-sudo rm /etc/nginx/sites-enabled/default
-sudo mkdir /var/www
-sudo chown vagrant:vagrant -R /var/www
+if [[ ! -f /etc/nginx/sites-enabled/voseq ]]; then
+    ln -s /etc/nginx/sites-available/voseq /etc/nginx/sites-enabled/voseq
+fi
+
+rm -rf /etc/nginx/sites-enabled/default
+
+if [[ ! -e /var/www ]]; then
+    mkdir /var/www &&  chown vagrant:vagrant -R /var/www
+fi
+
 sudo service nginx restart
 

@@ -115,7 +115,7 @@ Then restart the web server:
     sudo service nginx restart
 
 In your host system, open your brower and load this URL:
-http://localhost:1234 to see your fresh installation of VoSeq.
+http://33.33.33.10 to see your fresh installation of VoSeq.
 
 
 Installation instructions
