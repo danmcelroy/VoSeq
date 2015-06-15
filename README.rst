@@ -99,7 +99,8 @@ import test data:
 
     make test_import
 
-Set up an administrator account (see `Administrate the server`_).
+Set up an administrator account by using the command ``make admin``
+(see `Administrate the server`_).
 
 It is necessary to index your imported data:
 
@@ -113,7 +114,7 @@ locations:
 
 .. code:: shell
 
-    python voseq/manage.py collectstatic --settings=voseq.settings.production
+    make collectstatic
 
 Then restart the web server:
 
@@ -402,7 +403,7 @@ once a day or every 2 hours depending on your needs:
 
 .. code:: shell
 
-    python voseq/manage.py update_index --settings=voseq.settings.local
+    make index
 
 * Update some voucher and gene statistics for your installation of VoSeq:
 
