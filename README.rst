@@ -67,6 +67,14 @@ Just go to the VoSeq's directory and execute the following command:
 
     vagrant up
 
+If the installation of packages gets interrupted you can relaunch the process
+with the following command:
+
+.. code:: shell
+
+    vagrant reload --provision
+
+
 Once the process has finished, you will have a new Ubuntu virtual machine with
 VoSeq installed. To enter this virtual machine:
 

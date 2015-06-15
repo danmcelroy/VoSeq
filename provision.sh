@@ -36,7 +36,7 @@ if ! command -v psql; then
 fi
 
 # elasticsearch
-apt-get -y install openjdk-7-jdk openjdk-7-jre
+apt-get install -y openjdk-7-jdk openjdk-7-jre
 if [[ ! -f /etc/init.d/elasticsearch ]]; then
     wget -q https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.6.0.deb && \
         dpkg -i elasticsearch-1.6.0.deb
@@ -45,6 +45,7 @@ fi
 if [[ ! -e /var/run/elasticsearch ]]; then
     mkdir -p /var/run/elasticsearch && /etc/init.d/elasticsearch start
 fi
+/etc/init.d/elasticsearch start
 
 # virtualenv global setup
 if ! command -v pip; then
@@ -173,7 +174,7 @@ echo '
         error_log /home/vagrant/logs/nginx-error.log;
     
         location /static/ {
-            alias   /vagrant/www/VoSeq/static/;
+            alias   /var/www/VoSeq/static/;
         }
         
         location /media/ {
@@ -215,20 +216,16 @@ echo '
         # Error pages
         error_page 500 502 503 504 /500.html;
         location = /500.html {
-            root /vagrant/static/;
+            root /var/www/VoSeq/static/;
         }
     }
 ' > /etc/nginx/sites-available/voseq
 
-if [[ ! -f /etc/nginx/sites-enabled/voseq ]]; then
-    ln -s /etc/nginx/sites-available/voseq /etc/nginx/sites-enabled/voseq
-fi
-
+ln -s /etc/nginx/sites-available/voseq /etc/nginx/sites-enabled/voseq
 rm -rf /etc/nginx/sites-enabled/default
+rm -rf /etc/nginx/sites-available/default
 
 if [[ ! -e /var/www ]]; then
     mkdir /var/www &&  chown vagrant:vagrant -R /var/www
 fi
-
-sudo service nginx restart
 
