@@ -4,6 +4,12 @@ HISTORY
 2.0.0 (2015-01-xx)
 ++++++++++++++++++
 
+pre-release v2.0.0-alpha-4 (2015-xx-xx)
++++++++++++++++++++++++++++++++++++++++
+
+- **Easy instalation** and deployment using Vagrant virtual machines. Install
+  and configure VoSeq and all its dependencies with the command ``vagrant up``.
+
 pre-release v2.0.0-alpha-3 (2015-06-12)
 +++++++++++++++++++++++++++++++++++++++
 

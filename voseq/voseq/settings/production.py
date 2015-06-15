@@ -4,9 +4,10 @@ from .local import *
 STATIC_ROOT = "/var/www/VoSeq/static/"
 MEDIA_ROOT = "/var/www/VoSeq/media/"
 
+
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = [
-    '192.168.0.106',  # Your Domain or IP address
+    '33.33.33.10',  # Your Domain or IP address
 ]
