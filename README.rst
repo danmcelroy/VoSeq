@@ -167,7 +167,8 @@ of your ``config.json`` file to ``"PHOTOS_REPOSITORY": "flickr"``.
 If you followed the above instructions to the letter, the DB_USER will be "postgres" and the DB_PASS
 will be "hu8jmn3". It is of recommended to come up with your own password.
 Instructions to obtain a personal google map browser API key can be found
-`here <https://developers.google.com/maps/documentation/javascript/tutorial#api_key>`__.
+`here <https://developers.google.com/maps/documentation/javascript/tutorial>`__.
+You need to create a **Google Maps JavaScript API** for yourself.
 
 After following these four steps everything should be installed and ready to run. You can now choose
 to either continue with adding real data migrated from VoSeq 1.x and setting up a publicly available
