@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 from core.utils import get_version_stats
 from core.utils import get_username
+from public_interface.models import Genes
 from public_interface.models import Sequences
 from public_interface.models import Vouchers
 
@@ -15,6 +16,7 @@ def index(request):
                                              'hostorg').order_by('code')
     vouchers = convert_to_dict(vouchers)
     sequences = Sequences.objects.all().values('code', 'gene_code', 'sequences').order_by('code')
+    genes = Genes.objects.all().values('gene_code').order_by('gene_code')
 
     for sequence in sequences:
         code = sequence['code']
@@ -33,6 +35,7 @@ def index(request):
                       'version': version,
                       'stats': stats,
                       'data': vouchers,
+                      'genes': genes,
                   },
                   )
 
