@@ -114,7 +114,7 @@ class Vouchers(models.Model):
         (LOST, 'lost'),
         (UNKNOWN, 'unknown'),
     )
-    code = models.TextField(unique=True, primary_key=True, help_text="Voucher code.")
+    code = models.CharField(max_length=300, unique=True, primary_key=True, help_text="Voucher code.")
     orden = models.TextField(blank=True)
     superfamily = models.TextField(blank=True)
     family = models.TextField(blank=True)

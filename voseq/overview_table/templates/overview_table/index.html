@@ -54,17 +54,17 @@
               </thead>
               <tbody>
 
-                {% for key, item in data.items %}
+                {% for item in data %}
                   <tr>
-                    <td><a href="/p/{{ key }}/">{{ key }}</a></td>
+                    <td><a href="/p/{{ item.code }}/">{{ item.code }}</a></td>
                     <td>{{ item.orden }}</td>
                     <td>{{ item.family }}</td>
                     <td>{{ item.subfamily }}</td>
                     <td>{{ item.genus }}</td>
                     <td>{{ item.species }}</td>
                     <td>{{ item.hostorg }}</td>
-                    {% for i in item.sequences %}
-                      <td>{{ i.gene_code }} {{ i.length }}</td>
+                    {% for k, v in item.sequences.items %}
+                      <td>{{ v }}</td>
                     {% endfor %}
                   </tr>
                 {% endfor %}
