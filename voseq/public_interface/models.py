@@ -114,52 +114,46 @@ class Vouchers(models.Model):
         (LOST, 'lost'),
         (UNKNOWN, 'unknown'),
     )
-    code = models.CharField(max_length=100, unique=True,
-                            primary_key=True,
-                            help_text="Voucher code.",
-                            )
-    orden = models.CharField(max_length=100, blank=True)
-    superfamily = models.CharField(max_length=100, blank=True)
-    family = models.CharField(max_length=100, blank=True)
-    subfamily = models.CharField(max_length=100, blank=True)
-    tribe = models.CharField(max_length=100, blank=True)
-    subtribe = models.CharField(max_length=100, blank=True)
-    genus = models.CharField(max_length=100, blank=True)
-    species = models.CharField(max_length=100, blank=True)
-    subspecies = models.CharField(max_length=100, blank=True)
-    country = models.CharField(max_length=100, blank=True)
-    specificLocality = models.CharField(max_length=250, help_text="Locality of origin for this specimen.", blank=True)
+    code = models.TextField(unique=True, primary_key=True, help_text="Voucher code.")
+    orden = models.TextField(blank=True)
+    superfamily = models.TextField(blank=True)
+    family = models.TextField(blank=True)
+    subfamily = models.TextField(blank=True)
+    tribe = models.TextField(blank=True)
+    subtribe = models.TextField(blank=True)
+    genus = models.TextField(blank=True)
+    species = models.TextField(blank=True)
+    subspecies = models.TextField(blank=True)
+    country = models.TextField(blank=True)
+    specificLocality = models.TextField(help_text="Locality of origin for this specimen.", blank=True)
     typeSpecies = models.CharField(max_length=1, choices=TYPE_SPECIES_CHOICES,
                                    help_text="Is this a type species?")
     latitude = models.FloatField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     max_altitude = models.IntegerField(blank=True, null=True, help_text="Enter altitude in meters above sea level.")
     min_altitude = models.IntegerField(blank=True, null=True, help_text="Enter altitude in meters above sea level.")
-    collector = models.CharField(max_length=100, blank=True)
+    collector = models.TextField(blank=True)
     dateCollection = models.DateField(null=True)  # TODO check if better blank null rather than null true
-    extraction = models.CharField(max_length=50, help_text="Number of extraction event.", blank=True)
-    extractionTube = models.CharField(max_length=50, help_text="Tube containing DNA extract.",
-                                      blank=True)
+    extraction = models.TextField(help_text="Number of extraction event.", blank=True)
+    extractionTube = models.TextField(help_text="Tube containing DNA extract.", blank=True)
     dateExtraction = models.DateField(null=True)
-    extractor = models.CharField(max_length=100, blank=True)
-    voucherLocality = models.CharField(max_length=200, blank=True)
+    extractor = models.TextField(blank=True)
+    voucherLocality = models.TextField(blank=True)
     publishedIn = models.TextField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
     edits = models.TextField(blank=True, null=True)
     latesteditor = models.TextField(blank=True, null=True)
-    hostorg = models.CharField(max_length=200, help_text="Hostplant or other host.", blank=True)
+    hostorg = models.TextField(help_text="Hostplant or other host.", blank=True)
     sex = models.CharField(max_length=1, choices=SEX_CHOICES, blank=True)
     voucher = models.CharField(max_length=1, choices=VOUCHER_CHOICES, blank=True,
                                help_text="Voucher status.")
-    voucherCode = models.CharField(max_length=100, help_text="Alternative code of voucher specimen.",
+    voucherCode = models.TextField(help_text="Alternative code of voucher specimen.",
                                    blank=True)
-    code_bold = models.CharField(max_length=100,
-                                 help_text="Optional code for specimens kept in the BOLD database.",
+    code_bold = models.TextField(help_text="Optional code for specimens kept in the BOLD database.",
                                  blank=True)
-    determinedBy = models.CharField(max_length=100,
-                                    help_text="Person that identified the taxon for this specimen.",
+    determinedBy = models.TextField(help_text="Person that identified the taxon for this specimen.",
                                     blank=True)
-    author = models.CharField(max_length=100, help_text="Person that described this taxon.", blank=True)
+    author = models.TextField(help_text="Person that described this taxon.", blank=True)
     timestamp = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     class Meta:
