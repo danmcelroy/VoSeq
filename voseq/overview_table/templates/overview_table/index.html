@@ -27,7 +27,7 @@
                 <tr>
               {% endif %}
                   <td>
-                    <input type="checkbox" class="toggle-vis" data-column="0" />
+                    <input type="checkbox" class="toggle-vis" data-column="{{ forloop.counter|add:"6" }}" />
                     {{ i.gene_code }}
                   </td>
               {% if forloop.counter|divisibleby:"4" %}
