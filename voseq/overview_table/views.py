@@ -15,7 +15,7 @@ def index(request):
 
     vouchers_with_sequences = get_vouchers_with_seqs()
     vouchers_without_sequences = get_vouchers_without_seqs()
-    vouchers = vouchers_without_sequences + vouchers_with_sequences
+    # vouchers = vouchers_without_sequences + vouchers_with_sequences
 
     genes = Genes.objects.all().order_by('gene_code')
 
@@ -25,40 +25,20 @@ def index(request):
                       'username': username,
                       'version': version,
                       'stats': stats,
-                      'data': vouchers,
+                      'data': vouchers_with_sequences,
                       'genes': genes,
                   },
                   )
 
 
 def get_vouchers_with_seqs():
-    seqs = Sequences.objects.select_related('code').order_by('code')
-
-    vouchers = []
-    for i in seqs:
-        my_dict = {
-            'code': i.code,
-            'orden': i.code.orden,
-            'family': i.code.family,
-            'subfamily': i.code.subfamily,
-            'genus': i.code.genus,
-            'species': i.code.species,
-            'hostorg': i.code.hostorg,
-            'sequences': get_empty_sequences(),
-        }
-        my_dict['sequences'][i.gene_code] = len(i.sequences)
-        vouchers.append(my_dict)
-    return vouchers
+    seqs = Sequences.objects.select_related('code').order_by('code').values('code', 'gene_code')
+    return seqs
 
 
 def get_vouchers_without_seqs():
     vouchers = Vouchers.objects.all().filter(sequences__code__isnull=True).values('code', 'orden', 'family', 'subfamily', 'genus', 'species', 'hostorg').order_by('code')
-
-    vouchers1 = []
-    for i in vouchers:
-        i['sequences'] = get_empty_sequences()
-        vouchers1.append(i)
-    return vouchers1
+    return vouchers
 
 
 def get_empty_sequences():
