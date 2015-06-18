@@ -88,6 +88,7 @@
               {% endif %}
 
               {% for i in page_range %}
+                {% if i > data.number|add:"-10" and i < data.number|add:"10" %}
                   {% if data.number == i %}
                     <li class="active">
                   {% else %}
@@ -95,6 +96,7 @@
                   {% endif %}
                       <a href="?{{ url_encoded_query }}&amp;page={{ i }}">{{ i }}</a>
                     </li>
+                {% endif %}
               {% endfor %}
 
               {% if data.has_next %}
