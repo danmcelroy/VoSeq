@@ -12,9 +12,9 @@ def index(request):
     username = get_username(request)
 
     genes = Genes.objects.all().order_by('gene_code')
-    vouchers = OverviewTable.objects.all()[0:100]
+    vouchers = OverviewTable.objects.all()
 
-    paginator = Paginator(vouchers, 25)
+    paginator = Paginator(vouchers, 100)
 
     page = request.GET.get('page')
     try:
