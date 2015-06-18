@@ -74,6 +74,40 @@
         </div><!-- col -->
 
       </div><!-- row -->
+
+      <div class="row"><!-- pagination -->
+        {% if data.has_previous or data.has_next %}
+          <nav>
+            <ul class="pagination">
+              {% if data.has_previous %}
+              <li>
+                <a href="?page={{ data.previous_page_number }}" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              {% endif %}
+
+              {% for i in page_range %}
+                  {% if data.number == i %}
+                    <li class="active">
+                  {% else %}
+                    <li>
+                  {% endif %}
+                      <a href="?{{ url_encoded_query }}&amp;page={{ i }}">{{ i }}</a>
+                    </li>
+              {% endfor %}
+
+              {% if data.has_next %}
+              <li>
+                <a href="?page={{ data.next_page_number }}" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+              {% endif %}
+            </ul>
+          </nav>
+        {% endif %}
+      </div><!-- pagination -->
     </div><!-- container -->
 
 
@@ -87,7 +121,11 @@
   <script type="text/javascript" charset="utf8" src="{% static 'js/dataTables.bootstrap.min.js' %}"></script>
 <script>
   $(document).ready( function () {
-      var table = $('#datatable').DataTable();
+      var table = $('#datatable').DataTable(
+          {
+              "paging": false
+          }
+      );
 
       table.columns( '.genes' ).visible(false, false);
       table.columns.adjust().draw(false);

@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
 
 from core.utils import get_version_stats
@@ -12,13 +13,25 @@ def index(request):
 
     genes = Genes.objects.all().order_by('gene_code')
     vouchers = OverviewTable.objects.all()[0:100]
+
+    paginator = Paginator(vouchers, 25)
+
+    page = request.GET.get('page')
+    try:
+        vouchers_for_page = paginator.page(page)
+    except PageNotAnInteger:
+        vouchers_for_page = paginator.page(1)
+    except EmptyPage:
+        vouchers_for_page = paginator.page(paginator.num_pages)
+
     return render(request,
                   'overview_table/index.html',
                   {
                       'username': username,
                       'version': version,
                       'stats': stats,
-                      'data': vouchers,
+                      'data': vouchers_for_page,
                       'genes': genes,
+                      'page_range': paginator.page_range,
                   },
                   )
