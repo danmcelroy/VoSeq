@@ -1,5 +1,8 @@
+from django.conf import settings
 from django.core.management.base import BaseCommand
 
+from overview_table.models import OverviewTable
+from overview_table.utils import OverviewTableMaker
 from public_interface.models import Vouchers
 from public_interface.models import Sequences
 from stats.models import Stats
@@ -9,7 +12,8 @@ from stats.models import VouchersPerGene
 class Command(BaseCommand):
     help = 'Extracts total number of orders, families, genera, etc. from ' \
            'our database. Also counts the number of vouchers for each of ' \
-           'our genes.'
+           'our genes.\n' \
+           'Updates the overview table with the sequence lengths for each gene.'
 
     def handle(self, *args, **options):
         self.count_vouchers_per_gene()
@@ -57,6 +61,9 @@ class Command(BaseCommand):
             }
         )
 
+        if 'overview_table' in settings.INSTALLED_APPS:
+            self.make_overview_database_table()
+
     def count_vouchers_per_gene(self):
         genes = Sequences.objects.all().values('gene_code').distinct()
 
@@ -71,3 +78,19 @@ class Command(BaseCommand):
 
         VouchersPerGene.objects.all().delete()
         VouchersPerGene.objects.bulk_create(model_objects)
+
+    def make_overview_database_table(self):
+        o = OverviewTable.objects.all()
+        o.delete()
+
+        table = OverviewTableMaker()
+        overview_table_items = table.items
+
+        objects_to_upload = []
+        for i in overview_table_items:
+            i['o_code'] = i['code']
+            del i['code']
+            o = OverviewTable(**i)
+            objects_to_upload.append(o)
+
+        OverviewTable.objects.bulk_create(objects_to_upload)
