@@ -332,8 +332,10 @@ class ParseXML(object):
                 ambiguous_chars = item['sequences'].count('?') + item['sequences'].count('-')
                 ambiguous_chars += item['sequences'].count('N') + item['sequences'].count('n')
                 item['number_ambiguous_bp'] = ambiguous_chars
+                item['total_number_bp'] = len(item['sequences'])
             else:
                 item['number_ambiguous_bp'] = None
+                item['total_number_bp'] = None
 
             if item['genbank'] == '0':
                 item['genbank'] = False
