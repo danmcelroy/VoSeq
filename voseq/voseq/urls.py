@@ -13,6 +13,7 @@ urlpatterns = patterns(
     url(r'^blast_local_full', include('blast_local_full.urls', namespace='blast_local_full')),
     url(r'^blast_ncbi', include('blast_ncbi.urls', namespace='blast_ncbi')),
     url(r'^blast_new', include('blast_new.urls', namespace='blast_new')),
+    url(r'^view_table', include('overview_table.urls', namespace='view_table')),
     url(r'^genes', include('view_genes.urls', namespace='view_genes')),
     url(r'^share_data_gbif', include('gbif.urls', namespace='gbif')),
     url(r'^', include('public_interface.urls', namespace='public_interace')),
