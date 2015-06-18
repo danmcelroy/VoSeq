@@ -14,9 +14,6 @@ class TestOverviewTable(TestCase):
 
     def test_utils(self):
         o = OverviewTableMaker()
-        expected = {
-            'orden': '',
-            'family': '',
-            'code': 'CP1',
-        }
-        self.assertEqual(expected, o.items)
+        expected = 3
+        result = len(o.items)
+        self.assertEqual(expected, result)
