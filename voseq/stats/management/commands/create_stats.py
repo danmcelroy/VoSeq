@@ -62,7 +62,7 @@ class Command(BaseCommand):
         )
 
         if 'overview_table' in settings.INSTALLED_APPS:
-            self.make_overview_table()
+            self.make_overview_database_table()
 
     def count_vouchers_per_gene(self):
         genes = Sequences.objects.all().values('gene_code').distinct()
@@ -79,8 +79,18 @@ class Command(BaseCommand):
         VouchersPerGene.objects.all().delete()
         VouchersPerGene.objects.bulk_create(model_objects)
 
-    def make_overview_table(self):
+    def make_overview_database_table(self):
+        o = OverviewTable.objects.all()
+        o.delete()
+
         table = OverviewTableMaker()
         overview_table_items = table.items
 
-        OverviewTable.objects.bulk_create(overview_table_items)
+        objects_to_upload = []
+        for i in overview_table_items:
+            i['o_code'] = i['code']
+            del i['code']
+            o = OverviewTable(**i)
+            objects_to_upload.append(o)
+
+        OverviewTable.objects.bulk_create(objects_to_upload)
