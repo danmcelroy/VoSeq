@@ -55,6 +55,7 @@ INSTALLED_APPS = (
     'gene_table',
     'voucher_table',
     'gbif',
+    'overview_table',
 
     'registration',
 )

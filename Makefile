@@ -64,7 +64,7 @@ test:
 	rm -rf htmlcov .coverage
 	coverage run --source voseq voseq/manage.py test -v 2 blast_local blast_local_full blast_ncbi blast_new \
 	    core create_dataset genbank_fasta public_interface stats view_genes genbank_fasta gene_table \
-	    voucher_table gbif \
+	    voucher_table gbif overview_table \
 	    --settings=voseq.settings.testing
 
 travis_test:
@@ -73,5 +73,5 @@ travis_test:
 	rm -rf htmlcov .coverage
 	coverage run --source voseq voseq/manage.py test -v 2 blast_local blast_local_full blast_ncbi blast_new \
 	    core create_dataset genbank_fasta public_interface stats view_genes genbank_fasta gene_table \
-	    voucher_table gbif \
+	    voucher_table gbif overview_table \
 	    --settings=voseq.settings.travis
