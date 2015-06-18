@@ -20,8 +20,8 @@ class OverviewTableMaker(object):
         return unique_vouchers
 
     def get_unique(self):
-        v = Vouchers.objects.all().filter(sequences__code__isnull=False).values('code', 'orden', 'superfamily',
-                                                                                'family', 'subfamily', 'genus', 'species')
+        v = Vouchers.objects.all().filter(sequences__code__isnull=False).values('code', 'orden', 'superfamily', 'family',
+                                                                                'subfamily', 'genus', 'species').distinct()
         return v
 
     def convert_to_dict(self, sequences):
