@@ -366,6 +366,8 @@ class ParseXML(object):
         seqs_objects = []
         for i in range(n):
             item = seqs_to_insert[i]
+            if item['sequences'] is None:
+                continue
             item = self.clean_value(item, 'labPerson')
             item = self.clean_value(item, 'notes')
             item = self.clean_value(item, 'sequences')

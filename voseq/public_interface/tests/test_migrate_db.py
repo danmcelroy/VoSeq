@@ -357,3 +357,9 @@ class TestCustomCommand(TestCase):
         expected = {'voucherImage': 'kitten3.jpg'}
         result = LocalImages.objects.filter(voucher=v).values('voucherImage')
         self.assertTrue(expected in result)
+
+    def test_avoid_importing_null_sequences(self):
+        s = Sequences.objects.filter(code='CP100-15')
+        expected = 1
+        result = len(s)
+        self.assertEqual(expected, result)
