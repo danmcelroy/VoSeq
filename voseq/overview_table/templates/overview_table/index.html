@@ -18,7 +18,7 @@
     <div class="container">
       <div class="row">
 
-        <div class="col-xs-12 col-sm-12  col-md-11 col-lg-11">
+        <div class="col-xs-12 col-sm-12  col-md-11 col-lg-12">
 
 
           <table class="table table-condensed table-striped small_fonts">
@@ -26,10 +26,12 @@
               {% if forloop.counter == 1 %}
                 <tr>
               {% endif %}
-                  <td>
-                    <input type="checkbox" class="toggle-vis" data-column="{{ forloop.counter|add:"6" }}" />
+                <td>
+                  <input type="checkbox" class="toggle-vis" data-column="{{ forloop.counter|add:6 }}">
                     {{ i.gene_code }}
-                  </td>
+                  </input>
+                </td>
+
               {% if forloop.counter|divisibleby:"4" %}
                 </tr>
               {% endif %}
@@ -77,7 +79,7 @@
 
       <div class="row"><!-- pagination -->
         {% if data.has_previous or data.has_next %}
-          <nav>
+          <nav class="text-center">
             <ul class="pagination">
               {% if data.has_previous %}
               <li>
@@ -125,7 +127,9 @@
   $(document).ready( function () {
       var table = $('#datatable').DataTable(
           {
-              "paging": false
+              "paging": false,
+              "scrollY": 600,
+              "info": false
           }
       );
 
