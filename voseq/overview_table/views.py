@@ -11,7 +11,7 @@ def index(request):
     username = get_username(request)
 
     genes = Genes.objects.all().order_by('gene_code')
-    vouchers = OverviewTable.objects.all()
+    vouchers = OverviewTable.objects.all()[0:100]
     return render(request,
                   'overview_table/index.html',
                   {

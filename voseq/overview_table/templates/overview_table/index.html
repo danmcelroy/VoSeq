@@ -43,29 +43,27 @@
                   <tr>
                     <th>Code</th>
                     <th>Order</th>
+                    <th>Superfamily</th>
                     <th>Family</th>
                     <th>Subfamily</th>
                     <th>Genus</th>
                     <th>Species</th>
-                    <th>Host org.</th>
                     {% for i in genes %}
-                      <th>{{ i.gene_code }}</th>
+                      <th class="genes">{{ i.gene_code }}</th>
                     {% endfor %}
               </thead>
               <tbody>
 
                 {% for item in data %}
                   <tr>
-                    <td><a href="/p/{{ item.code }}/">{{ item.code }}</a></td>
+                    <td><a href="/p/{{ item.o_code }}/">{{ item.o_code }}</a></td>
                     <td>{{ item.orden }}</td>
+                    <td>{{ item.superfamily }}</td>
                     <td>{{ item.family }}</td>
                     <td>{{ item.subfamily }}</td>
                     <td>{{ item.genus }}</td>
                     <td>{{ item.species }}</td>
-                    <td>{{ item.hostorg }}</td>
-                    {% for k, v in item.sequences.items %}
-                      <td>{{ v }}</td>
-                    {% endfor %}
+                    {{ item.sequence_string|safe }}
                   </tr>
                 {% endfor %}
 
@@ -90,6 +88,9 @@
 <script>
   $(document).ready( function () {
       var table = $('#datatable').DataTable();
+
+      table.columns( '.genes' ).visible(false, false);
+      table.columns.adjust().draw(false);
 
       $('input.toggle-vis').on('click', function(e) {
         e.preventDefault();
