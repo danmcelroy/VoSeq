@@ -7,6 +7,7 @@ HISTORY
 pre-release v2.0.0-alpha-4 (2015-xx-xx)
 +++++++++++++++++++++++++++++++++++++++
 
+- **Interactive overview table** to browse taxa and the genes sequenced for them.
 - **Easy instalation** and deployment using Vagrant virtual machines. Install
   and configure VoSeq and all its dependencies with the command ``vagrant up``.
 
