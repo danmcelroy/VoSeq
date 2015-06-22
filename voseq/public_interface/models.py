@@ -64,11 +64,7 @@ class TaxonSets(models.Model):
     taxonset_name = models.CharField(max_length=75, blank=False)
     taxonset_creator = models.CharField(max_length=75, blank=False)
     taxonset_description = models.CharField(max_length=140, blank=True)
-    taxonset_list = models.TextField()
-
-    def save(self, *args, **kwargs):
-        self.taxonset_list = json.dumps(self.taxonset_list)
-        super(TaxonSets, self).save(*args, **kwargs)
+    taxonset_list = models.TextField(help_text='As items separated by newline.')
 
     def __str__(self):
         return self.taxonset_name
