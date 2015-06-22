@@ -28,7 +28,7 @@ def get_voucher_codes(cleaned_data):
     """
     voucher_codes = tuple()
     if cleaned_data['taxonset'] is not None:
-        voucher_codes += tuple(json.loads(cleaned_data['taxonset'].taxonset_list))
+        voucher_codes += tuple(cleaned_data['taxonset'].taxonset_list.splitlines())
     if cleaned_data['voucher_codes'] != '':
         voucher_codes += tuple(cleaned_data['voucher_codes'].splitlines())
 
