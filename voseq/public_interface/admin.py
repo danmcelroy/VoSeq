@@ -65,15 +65,7 @@ class SequencesAdmin(admin.ModelAdmin):
 
 
 class TaxonSetsAdmin(admin.ModelAdmin):
-    readonly_fields = ('taxa',)
-    fields = ['taxonset_name', 'taxonset_creator', 'taxonset_description', 'taxa']
     list_display = ['taxonset_name', 'taxonset_creator', 'taxonset_description']
-
-    def taxa(self, instance):
-        out = []
-        for i in json.loads(instance.taxonset_list):
-            out.append(i)
-        return '\n'.join(out)
 
 
 # Register your models here.
