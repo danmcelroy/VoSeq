@@ -73,6 +73,9 @@ class TaxonSets(models.Model):
     def __str__(self):
         return self.taxonset_name
 
+    class Meta:
+        verbose_name_plural = "Taxon sets"
+
 
 class Vouchers(models.Model):
     MALE = 'm'
