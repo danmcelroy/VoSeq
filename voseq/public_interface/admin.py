@@ -1,9 +1,12 @@
+import json
+
 from django.contrib import admin
 from django.core.exceptions import PermissionDenied
 from django.http import HttpRequest
 
-from public_interface.models import Vouchers
+from public_interface.models import TaxonSets
 from public_interface.models import Sequences
+from public_interface.models import Vouchers
 from public_interface.views import change_selected
 
 
@@ -61,6 +64,16 @@ class SequencesAdmin(admin.ModelAdmin):
     fields = ['code', 'gene_code', 'sequences', 'genbank', 'accession', 'labPerson', 'notes']
 
 
+def taxa(obj):
+    out = []
+    return 'hola'
+
+
+class TaxonSetsAdmin(admin.ModelAdmin):
+    list_display = ['taxonset_name', 'taxonset_creator', 'taxonset_description']
+
+
 # Register your models here.
 admin.site.register(Sequences, SequencesAdmin)
+admin.site.register(TaxonSets, TaxonSetsAdmin)
 admin.site.register(Vouchers, VouchersAdmin)
