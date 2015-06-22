@@ -282,8 +282,8 @@ class TestCustomCommand(TestCase):
 
     def test_taxonset_list(self):
         b = TaxonSets.objects.get(taxonset_name='Erebia')
-        expected = ['CP100-10', 'CP100-11']
-        self.assertEqual(expected, json.loads(b.taxonset_list))
+        expected = 'CP100-10\nCP100-11'
+        self.assertEqual(expected, b.taxonset_list)
 
     def test_type_species_dont_know(self):
         value = '0'
