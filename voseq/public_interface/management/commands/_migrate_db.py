@@ -420,7 +420,7 @@ class ParseXML(object):
             if item['taxonset_creator'] is None:
                 item['taxonset_creator'] = ''
             if item['taxonset_list'] is not None:
-                item['taxonset_list'] = item['taxonset_list'].split(',')
+                item['taxonset_list'] = item['taxonset_list'].replace(',', '\n')
 
     def save_table_taxonsets_to_db(self):
         if self.table_taxonsets_items is None:
