@@ -1,5 +1,3 @@
-import json
-
 from django.contrib import admin
 from django.core.exceptions import PermissionDenied
 from django.http import HttpRequest
