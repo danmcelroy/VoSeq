@@ -1,5 +1,7 @@
 {% extends 'public_interface/base.html' %}
 
+{% load thumbnail %}
+
 {% block title %}
  {{ voucher.code }} - VoSeq
 {% endblock title %}
@@ -249,11 +251,12 @@
             {% for image in images %}
               {% if 'staticflickr' in image.thumbnail %}
                 <a href="/media/{{ image.voucherImage }}">
-                  <img class="img-thumbnail" src="/media/{{ image.thumbnail }}" />
+                  <img class="img-thumbnail" style="width: {{ thumbnail.width }}" src="{{ thumbnail.url }}" />
                 </a>
               {% else %}
+                /media/{{ image.voucherImage }}
                 <a href="/media/{{ image.voucherImage }}">
-                  <img class="img-thumbnail" src="/media/{{ image.thumbnail }}" />
+                  <img class="img-thumbnail" src="{{ image.voucherImage|thumbnail_url:'avatar' }}" />
                 </a>
               {% endif %}
             {% endfor %}

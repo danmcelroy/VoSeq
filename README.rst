@@ -241,6 +241,10 @@ and write in the following content:
     "PHOTOS_REPOSITORY": "local"
     }
 
+VoSeq needs to process voucher images and produce thumbnails. For that, it uses
+the library Pillow which has several dependencies. Install the dependencies
+by following the instructions here: http://pillow.readthedocs.org/installation.html#external-libraries
+
 If you want to host your photos in Flickr you need to change the last parameter
 of your ``config.json`` file to ``"PHOTOS_REPOSITORY": "flickr"``.
 
