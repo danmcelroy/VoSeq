@@ -251,7 +251,7 @@
             {% for image in images %}
               {% if 'staticflickr' in image.thumbnail %}
                 <a href="/media/{{ image.voucherImage }}">
-                  <img class="img-thumbnail" style="width: {{ thumbnail.width }}" src="{{ thumbnail.url }}" />
+                  <img class="img-thumbnail" src="{{ image.thumbnail }}" />
                 </a>
               {% else %}
                 <a href="/media/{{ image.voucherImage }}">
