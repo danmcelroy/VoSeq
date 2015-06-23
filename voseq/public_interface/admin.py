@@ -12,8 +12,9 @@ from public_interface.models import Vouchers
 from public_interface.views import change_selected
 
 
-class ImageInLine(admin.TabularInline):
+class ImageInLine(admin.StackedInline):
     model = LocalImages
+    fields = ['voucherImage']
 
 
 # Customize what and the way you show it
