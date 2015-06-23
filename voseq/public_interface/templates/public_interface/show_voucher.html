@@ -254,9 +254,8 @@
                   <img class="img-thumbnail" style="width: {{ thumbnail.width }}" src="{{ thumbnail.url }}" />
                 </a>
               {% else %}
-                /media/{{ image.voucherImage }}
                 <a href="/media/{{ image.voucherImage }}">
-                  <img class="img-thumbnail" src="{{ image.voucherImage|thumbnail_url:'avatar' }}" />
+                  <img class="img-thumbnail" src="{{ image.voucherImage|thumbnail_url:'thumb' }}" />
                 </a>
               {% endif %}
             {% endfor %}
