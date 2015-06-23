@@ -1,5 +1,7 @@
+from django import forms
 from django.contrib import admin
 from django.core.exceptions import PermissionDenied
+from django.db import models
 from django.http import HttpRequest
 
 from public_interface.models import TaxonSets
@@ -53,6 +55,9 @@ class VouchersAdmin(admin.ModelAdmin):
             return change_selected(new_request, ",".join(selected))
 
     batch_changes.short_description = "Change selected in batch"
+    formfield_overrides = {
+        models.TextField: {'widget': forms.TextInput}
+    }
 
 
 class SequencesAdmin(admin.ModelAdmin):
