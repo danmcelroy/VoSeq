@@ -58,6 +58,7 @@ INSTALLED_APPS = (
     'overview_table',
 
     'registration',
+    'easy_thumbnails',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -158,6 +159,11 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, '..', 'public_interface'),
 )
 
+THUMBNAIL_ALIASES = {
+    '': {
+        'avatar': {'size': (200, 200), 'crop': False},
+    },
+}
 # Get your API key from here:
 # https://developers.google.com/maps/documentation/javascript/tutorial#api_key
 # so that you can show Google Maps in your voucher pages.
