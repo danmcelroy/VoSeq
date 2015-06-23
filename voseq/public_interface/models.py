@@ -205,6 +205,9 @@ class FlickrImages(models.Model):
     thumbnail = models.URLField(help_text="URLs for the small sized image from Flickr.")
     flickr_id = models.CharField(max_length=100, help_text="ID numbers from Flickr for our photo.")
 
+    class Meta:
+        verbose_name_plural = 'Flickr Images'
+
 
 class LocalImages(models.Model):
     """Voucher images saved in local system."""
