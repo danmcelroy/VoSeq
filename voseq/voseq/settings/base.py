@@ -150,6 +150,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 MEDIA_URL = '/media/'
+MEDIA_ROOT = '/var/www/VoSeq/static/media/'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
