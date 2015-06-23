@@ -1,13 +1,19 @@
 from django import forms
 from django.contrib import admin
+from django.contrib.contenttypes.admin import GenericTabularInline
 from django.core.exceptions import PermissionDenied
 from django.db import models
 from django.http import HttpRequest
 
+from public_interface.models import LocalImages
 from public_interface.models import TaxonSets
 from public_interface.models import Sequences
 from public_interface.models import Vouchers
 from public_interface.views import change_selected
+
+
+class ImageInLine(admin.TabularInline):
+    model = LocalImages
 
 
 # Customize what and the way you show it
@@ -58,6 +64,9 @@ class VouchersAdmin(admin.ModelAdmin):
     formfield_overrides = {
         models.TextField: {'widget': forms.TextInput}
     }
+    inlines = [
+        ImageInLine,
+    ]
 
 
 class SequencesAdmin(admin.ModelAdmin):
