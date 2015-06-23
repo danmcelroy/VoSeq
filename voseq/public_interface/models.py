@@ -1,7 +1,6 @@
 import json
 
 from django.db import models
-from easy_thumbnails.fields import ThumbnailerImageField
 
 
 class Genes(models.Model):
@@ -214,7 +213,6 @@ class LocalImages(models.Model):
         help_text='Relation with id of voucher.',
     )
     voucherImage = models.ImageField(help_text="voucher photo.")
-    thumbnail = ThumbnailerImageField(upload_to='photos', blank=True)
 
     class Meta:
         verbose_name_plural = 'Local Images'
