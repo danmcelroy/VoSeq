@@ -246,7 +246,8 @@ the library Pillow which has several dependencies. Install the dependencies
 by following the instructions here: http://pillow.readthedocs.org/installation.html#external-libraries
 
 If you want to host your photos in Flickr you need to change the last parameter
-of your ``config.json`` file to ``"PHOTOS_REPOSITORY": "flickr"``.
+of your ``config.json`` file to ``"PHOTOS_REPOSITORY": "flickr"``. By default
+all the photos will be kept in your local computer/server.
 
 If you followed the above instructions to the letter, the DB_USER will be "postgres" and the DB_PASS
 will be "hu8jmn3". It is of recommended to come up with your own password.
