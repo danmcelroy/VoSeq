@@ -214,3 +214,6 @@ class LocalImages(models.Model):
     )
     voucherImage = models.ImageField(help_text="voucher photo.")
     thumbnail = models.ImageField(help_text="thumbnail of voucher photo.")
+
+    class Meta:
+        verbose_name_plural = 'Local Images'
