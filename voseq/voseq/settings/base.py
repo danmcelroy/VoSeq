@@ -161,7 +161,7 @@ STATICFILES_DIRS = (
 
 THUMBNAIL_ALIASES = {
     '': {
-        'avatar': {'size': (200, 200), 'crop': False},
+        'thumb': {'size': (200, 200), 'crop': False},
     },
 }
 # Get your API key from here:
