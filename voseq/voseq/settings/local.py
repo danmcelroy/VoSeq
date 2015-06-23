@@ -31,6 +31,8 @@ SECRET_KEY = get_secret("SECRET_KEY")
 
 GOOGLE_MAPS_API_KEY = get_secret("GOOGLE_MAPS_API_KEY")
 
+PHOTOS_REPOSITORY = get_secret("PHOTOS_REPOSITORY")
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
