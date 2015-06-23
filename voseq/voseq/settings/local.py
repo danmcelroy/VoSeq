@@ -31,10 +31,7 @@ SECRET_KEY = get_secret("SECRET_KEY")
 
 GOOGLE_MAPS_API_KEY = get_secret("GOOGLE_MAPS_API_KEY")
 
-try:
-    PHOTOS_REPOSITORY = get_secret("PHOTOS_REPOSITORY")
-except ImproperlyConfigured:
-    PHOTOS_REPOSITORY = 'local'
+PHOTOS_REPOSITORY = get_secret("PHOTOS_REPOSITORY")
 
 DATABASES = {
     'default': {

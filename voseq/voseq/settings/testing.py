@@ -2,6 +2,7 @@ import sys
 
 from .base import *
 
+PHOTOS_REPOSITORY = "local"
 
 print('Testing')
 
