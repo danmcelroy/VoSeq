@@ -10,6 +10,10 @@ pre-release v2.0.0-alpha-4 (2015-xx-xx)
 - **Interactive overview table** to browse taxa and the genes sequenced for them.
 - **Easy instalation** and deployment using Vagrant virtual machines. Install
   and configure VoSeq and all its dependencies with the command ``vagrant up``.
+- **Fixed search unnecessary spelling suggestions** in search results due to
+  capital and lower cases of the same word.
+- **Added interactive overview table** for vouchers and genes using `dataTables`.
+- **Added taxonset creation** by adding lists of taxon codes.
 
 pre-release v2.0.0-alpha-3 (2015-06-12)
 +++++++++++++++++++++++++++++++++++++++
