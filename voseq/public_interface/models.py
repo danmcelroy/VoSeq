@@ -249,6 +249,17 @@ def update_flickr_image(instance, **kwargs):
     if instance.flickr_id == '':
         rsp = flickr.upload(filename)
         instance.flickr_id = rsp.findtext('photoid')
+
+        info = flickr.photos.getInfo(photo_id=instance.flickr_id, format="json")
+        info = json.loads(info.decode('utf-8'))
+        instance.voucherImage = info['photo']['urls']['url'][0]['_content']
+
+        # https://farm1.staticflickr.com/466/19107794522_80a2c9534d_m_d.jpg
+        farm = info['photo']['farm']
+        server = info['photo']['server']
+        secret = info['photo']['secret']
+        thumbnail_url = 'https://farm{}.staticflickr.com/{}/{}_{}_m_d.jpg'.format(farm, server, instance.flickr_id, secret)
+        instance.thumbnail = thumbnail_url
         instance.save()
 
 
