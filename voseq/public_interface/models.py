@@ -1,6 +1,9 @@
 import json
+import os
 
+from django.conf import settings
 from django.db import models
+from django.db.models.signals import post_save
 
 
 class Genes(models.Model):
@@ -196,6 +199,21 @@ class Primers(models.Model):
     primer_r = models.CharField(max_length=100, blank=True)
 
 
+class FileWithCallback(object):
+    def __init__(self, filename, callback):
+        self.file = open(filename, 'rb')
+        self.callback = callback
+        # the following attributes and methods are required
+        self.len = os.path.getsize(filename)
+        self.fileno = self.file.fileno
+        self.tell = self.file.tell
+
+    def read(self, size):
+        if self.callback:
+            self.callback(self.tell() * 100 // self.len)
+        return self.file.read(size)
+
+
 class FlickrImages(models.Model):
     voucher = models.ForeignKey(
         Vouchers,
@@ -204,9 +222,34 @@ class FlickrImages(models.Model):
     voucherImage = models.URLField(help_text="URLs of the Flickr page.")
     thumbnail = models.URLField(help_text="URLs for the small sized image from Flickr.")
     flickr_id = models.CharField(max_length=100, help_text="ID numbers from Flickr for our photo.")
+    image_file = models.ImageField(help_text="Placeholder for image file so we can send it to Flickr. "
+                                             "The file has been deleted right after upload.")
 
     class Meta:
         verbose_name_plural = 'Flickr Images'
+
+    def save(self, *args, **kwargs):
+        post_save.connect(update_flickr_image, sender=FlickrImages, dispatch_uid="update_flickr_image_count")
+        super(FlickrImages, self).save(*args, **kwargs)
+
+
+def callback(progress):
+    print(progress)
+
+
+def update_flickr_image(instance, **kwargs):
+    import flickrapi
+    my_api_key = settings.FLICKR_API_KEY
+    my_secret = settings.FLICKR_API_SECRET
+    flickr = flickrapi.FlickrAPI(my_api_key, my_secret)
+    flickr.authenticate_via_browser(perms='write')
+
+    filename = os.path.join(settings.MEDIA_ROOT, str(instance.image_file))
+
+    if instance.flickr_id == '':
+        rsp = flickr.upload(filename)
+        instance.flickr_id = rsp.findtext('photoid')
+        instance.save()
 
 
 class LocalImages(models.Model):
