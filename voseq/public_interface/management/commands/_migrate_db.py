@@ -584,7 +584,6 @@ class ParseXML(object):
                     imgs.append({
                         'voucher_id': item['code'],
                         'voucherImage': item['voucherImage'][i],
-                        'thumbnail': item['thumbnail'][i],
                     })
             return False, imgs
 
