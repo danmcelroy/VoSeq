@@ -58,6 +58,7 @@ INSTALLED_APPS = (
     'overview_table',
 
     'registration',
+    'easy_thumbnails',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -150,6 +151,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 MEDIA_URL = '/media/'
+MEDIA_ROOT = '/var/www/VoSeq/static/media/'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
@@ -157,6 +159,11 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, '..', 'public_interface'),
 )
 
+THUMBNAIL_ALIASES = {
+    '': {
+        'thumb': {'size': (200, 200), 'crop': False},
+    },
+}
 # Get your API key from here:
 # https://developers.google.com/maps/documentation/javascript/tutorial#api_key
 # so that you can show Google Maps in your voucher pages.
