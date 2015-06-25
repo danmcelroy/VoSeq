@@ -20,7 +20,7 @@ class ImageInLine(admin.StackedInline):
 
 class FlickImageInLine(admin.StackedInline):
     model = FlickrImages
-    fields = ['voucherImage']
+    fields = ['image_file']
 
 
 # Customize what and the way you show it

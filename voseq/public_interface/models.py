@@ -1,6 +1,10 @@
 import json
+import os
 
+from django.conf import settings
 from django.db import models
+from django.db.models.signals import post_save
+import flickrapi
 
 
 class Genes(models.Model):
@@ -204,9 +208,79 @@ class FlickrImages(models.Model):
     voucherImage = models.URLField(help_text="URLs of the Flickr page.")
     thumbnail = models.URLField(help_text="URLs for the small sized image from Flickr.")
     flickr_id = models.CharField(max_length=100, help_text="ID numbers from Flickr for our photo.")
+    image_file = models.ImageField(help_text="Placeholder for image file so we can send it to Flickr. "
+                                             "The file has been deleted right after upload.")
 
     class Meta:
         verbose_name_plural = 'Flickr Images'
+
+    def save(self, *args, **kwargs):
+        post_save.connect(self.update_flickr_image, sender=FlickrImages, dispatch_uid="update_flickr_image_count")
+        self.delete_local_photo(self.image_file)
+        super(FlickrImages, self).save(*args, **kwargs)
+
+    def delete_local_photo(self, image_filename):
+        file_path = os.path.join(settings.MEDIA_ROOT, str(image_filename))
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+
+    def update_flickr_image(self, instance, **kwargs):
+        my_api_key = settings.FLICKR_API_KEY
+        my_secret = settings.FLICKR_API_SECRET
+        flickr = flickrapi.FlickrAPI(my_api_key, my_secret)
+        flickr.authenticate_via_browser(perms='write')
+
+        filename = os.path.join(settings.MEDIA_ROOT, str(instance.image_file))
+
+        if instance.flickr_id == '':
+            title = self.make_title(instance)
+            description = self.make_description(instance)
+            tags = self.make_tags(instance)
+
+            rsp = flickr.upload(filename, title=title, description=description,
+                                tags=tags)
+
+            instance.flickr_id = rsp.findtext('photoid')
+
+            info = flickr.photos.getInfo(photo_id=instance.flickr_id, format="json")
+            info = json.loads(info.decode('utf-8'))
+            instance.voucherImage = info['photo']['urls']['url'][0]['_content']
+
+            farm = info['photo']['farm']
+            server = info['photo']['server']
+            secret = info['photo']['secret']
+            thumbnail_url = 'https://farm{}.staticflickr.com/{}/{}_{}_m_d.jpg'.format(farm, server, instance.flickr_id, secret)
+            instance.thumbnail = thumbnail_url
+            instance.save()
+
+    def make_title(self, instance):
+        title = '{} {} {}'.format(
+            instance.voucher.code,
+            instance.voucher.genus,
+            instance.voucher.species,
+        )
+        return title
+
+    def make_description(self, instance):
+        description = '{}. {}. {}'.format(
+            instance.voucher.country,
+            instance.voucher.specificLocality,
+            instance.voucher.publishedIn,
+        )
+        return description
+
+    def make_tags(self, instance):
+        tags = [
+            instance.voucher.country,
+            instance.voucher.family,
+            instance.voucher.subfamily,
+            instance.voucher.tribe,
+            instance.voucher.subtribe,
+            instance.voucher.genus,
+            instance.voucher.species,
+        ]
+        tags = '"' + '" "'.join(tags) + '"'
+        return tags
 
 
 class LocalImages(models.Model):
