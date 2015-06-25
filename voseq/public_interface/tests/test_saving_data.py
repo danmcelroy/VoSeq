@@ -12,15 +12,16 @@ class TestViews(TestCase):
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 
+        self.voucher_model = Vouchers.objects.get(code='CP100-18')
+
     def test_save_sequences_ambiguous_characters(self):
-        voucher_model = Vouchers.objects.get(code='CP100-18')
         sequence_model = Sequences(
-            code=voucher_model,
+            code=self.voucher_model,
             sequences='???---NNNATCTACTA',
             gene_code='COI',
             genbank=False,
         )
         sequence_model.save()
 
-        sequence_model = Sequences.objects.get(code=voucher_model, gene_code='COI')
+        sequence_model = Sequences.objects.get(code=self.voucher_model, gene_code='COI')
         self.assertEqual(sequence_model.number_ambiguous_bp, 9)
