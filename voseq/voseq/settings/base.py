@@ -169,6 +169,9 @@ THUMBNAIL_ALIASES = {
 # so that you can show Google Maps in your voucher pages.
 GOOGLE_MAPS_API_KEY = 'fake api key'
 
+FLICKR_API_KEY = "fake api key"
+FLICKR_API_SECRET = "fake api secret"
+
 
 # This VoSeq version
 def get_version():

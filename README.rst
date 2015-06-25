@@ -241,13 +241,8 @@ and write in the following content:
     "PHOTOS_REPOSITORY": "local"
     }
 
-VoSeq needs to process voucher images and produce thumbnails. For that, it uses
-the library Pillow which has several dependencies. Install the dependencies
-by following the instructions here: http://pillow.readthedocs.org/installation.html#external-libraries
-
 If you want to host your photos in Flickr you need to change the last parameter
-of your ``config.json`` file to ``"PHOTOS_REPOSITORY": "flickr"``. By default
-all the photos will be kept in your local computer/server.
+of your ``config.json`` file to ``"PHOTOS_REPOSITORY": "flickr"``.
 
 If you followed the above instructions to the letter, the DB_USER will be "postgres" and the DB_PASS
 will be "hu8jmn3". It is of recommended to come up with your own password.
@@ -505,6 +500,30 @@ Database backups
 You might want to do periodical backups of your VoSeq database. You can follow these instrucctions
 for backup data from postgreSQL databases: https://wiki.postgresql.org/wiki/Automated_Backup_on_Linux
 
+Flickr Plugin
+=============
+VoSeq is able to host all the specimen photos in Flickr. If you have a free
+account you can host up to 200 photos. The Pro account allows you hosting
+unlimited number of photos for a yearly fee (25 USD).
+
+You need to get `API keys from Flickr <https://www.flickr.com/services/api/keys/>`__
+and place them in the ``config.json`` configuration file of VoSeq:
+
+* Create and account in Flickr (if you don't own one already)
+* Follow the instructions to get an API key and Secret key.
+* After submitting you will get your Key and Secret. Write down those keys.
+* Using a text editor software, edit the file ``config.json`` by copying your keys in it.
+
+    * For example [these are not real keys and will not work if you use them]::
+
+    .. code:: javascript
+
+        "FLICKR_API_KEY": "2d7f59f9aaa2d5c0a2782d7f5d9083a6",
+        "FLICKR_API_SECRET": "ef0def0f3d5f3f15f1"
+
+    * Save and exit.
+
+Thus, every picture that you upload into your VoSeq installation will be uploaded into your Flickr account.
 
 .. |Waffle| image:: https://badge.waffle.io/carlosp420/voseq.png?label=in%20progress&title=In%20Progress
    :target: https://waffle.io/carlosp420/voseq
