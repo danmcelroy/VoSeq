@@ -4,6 +4,7 @@ import os
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
+import flickrapi
 
 
 class Genes(models.Model):
@@ -199,21 +200,6 @@ class Primers(models.Model):
     primer_r = models.CharField(max_length=100, blank=True)
 
 
-class FileWithCallback(object):
-    def __init__(self, filename, callback):
-        self.file = open(filename, 'rb')
-        self.callback = callback
-        # the following attributes and methods are required
-        self.len = os.path.getsize(filename)
-        self.fileno = self.file.fileno
-        self.tell = self.file.tell
-
-    def read(self, size):
-        if self.callback:
-            self.callback(self.tell() * 100 // self.len)
-        return self.file.read(size)
-
-
 class FlickrImages(models.Model):
     voucher = models.ForeignKey(
         Vouchers,
@@ -229,38 +215,72 @@ class FlickrImages(models.Model):
         verbose_name_plural = 'Flickr Images'
 
     def save(self, *args, **kwargs):
-        post_save.connect(update_flickr_image, sender=FlickrImages, dispatch_uid="update_flickr_image_count")
+        post_save.connect(self.update_flickr_image, sender=FlickrImages, dispatch_uid="update_flickr_image_count")
+        self.delete_local_photo(self.image_file)
         super(FlickrImages, self).save(*args, **kwargs)
 
+    def delete_local_photo(self, image_filename):
+        file_path = os.path.join(settings.MEDIA_ROOT, str(image_filename))
+        if os.path.isfile(file_path):
+            os.remove(file_path)
 
-def callback(progress):
-    print(progress)
+    def update_flickr_image(self, instance, **kwargs):
+        my_api_key = settings.FLICKR_API_KEY
+        my_secret = settings.FLICKR_API_SECRET
+        flickr = flickrapi.FlickrAPI(my_api_key, my_secret)
+        flickr.authenticate_via_browser(perms='write')
 
+        filename = os.path.join(settings.MEDIA_ROOT, str(instance.image_file))
 
-def update_flickr_image(instance, **kwargs):
-    import flickrapi
-    my_api_key = settings.FLICKR_API_KEY
-    my_secret = settings.FLICKR_API_SECRET
-    flickr = flickrapi.FlickrAPI(my_api_key, my_secret)
-    flickr.authenticate_via_browser(perms='write')
+        if instance.flickr_id == '':
+            title = self.make_title(instance)
+            description = self.make_description(instance)
+            tags = self.make_tags(instance)
 
-    filename = os.path.join(settings.MEDIA_ROOT, str(instance.image_file))
+            rsp = flickr.upload(filename, title=title, description=description,
+                                tags=tags)
 
-    if instance.flickr_id == '':
-        rsp = flickr.upload(filename)
-        instance.flickr_id = rsp.findtext('photoid')
+            instance.flickr_id = rsp.findtext('photoid')
 
-        info = flickr.photos.getInfo(photo_id=instance.flickr_id, format="json")
-        info = json.loads(info.decode('utf-8'))
-        instance.voucherImage = info['photo']['urls']['url'][0]['_content']
+            info = flickr.photos.getInfo(photo_id=instance.flickr_id, format="json")
+            info = json.loads(info.decode('utf-8'))
+            instance.voucherImage = info['photo']['urls']['url'][0]['_content']
 
-        # https://farm1.staticflickr.com/466/19107794522_80a2c9534d_m_d.jpg
-        farm = info['photo']['farm']
-        server = info['photo']['server']
-        secret = info['photo']['secret']
-        thumbnail_url = 'https://farm{}.staticflickr.com/{}/{}_{}_m_d.jpg'.format(farm, server, instance.flickr_id, secret)
-        instance.thumbnail = thumbnail_url
-        instance.save()
+            farm = info['photo']['farm']
+            server = info['photo']['server']
+            secret = info['photo']['secret']
+            thumbnail_url = 'https://farm{}.staticflickr.com/{}/{}_{}_m_d.jpg'.format(farm, server, instance.flickr_id, secret)
+            instance.thumbnail = thumbnail_url
+            instance.save()
+
+    def make_title(self, instance):
+        title = '{} {} {}'.format(
+            instance.voucher.code,
+            instance.voucher.genus,
+            instance.voucher.species,
+        )
+        return title
+
+    def make_description(self, instance):
+        description = '{}. {}. {}'.format(
+            instance.voucher.country,
+            instance.voucher.specificLocality,
+            instance.voucher.publishedIn,
+        )
+        return description
+
+    def make_tags(self, instance):
+        tags = [
+            instance.voucher.country,
+            instance.voucher.family,
+            instance.voucher.subfamily,
+            instance.voucher.tribe,
+            instance.voucher.subtribe,
+            instance.voucher.genus,
+            instance.voucher.species,
+        ]
+        tags = '"' + '" "'.join(tags) + '"'
+        return tags
 
 
 class LocalImages(models.Model):
