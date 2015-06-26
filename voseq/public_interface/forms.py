@@ -14,12 +14,12 @@ DateInput = partial(forms.DateInput, {'class': 'datepicker form-control',
 
 class AdvancedSearchForm(ModelSearchForm):
     NULL = 'Select'
-    MALE = 'm'
-    FEMALE = 'f'
-    LARVA = 'l'
-    WORKER = 'w'
-    QUEEN = 'q'
-    UNKNOWN = 'u'
+    MALE = 'male'
+    FEMALE = 'female'
+    LARVA = 'larva'
+    WORKER = 'worker'
+    QUEEN = 'queen'
+    UNKNOWN = 'unknown'
     SEX_CHOICES = (
         (NULL, 'Select'),
         (MALE, 'male'),
@@ -31,23 +31,23 @@ class AdvancedSearchForm(ModelSearchForm):
     )
 
     NULL = 'Select'
-    DONT_KNOW = 'd'
-    YES = 'y'
-    NO = 'n'
+    DONT_KNOW = 'unknown'
+    YES = 'yes'
+    NO = 'not'
     TYPE_SPECIES_CHOICES = (
         (NULL, 'Select'),
-        (DONT_KNOW, 'don\'t know'),
+        (DONT_KNOW, 'unknown'),
         (YES, 'yes'),
-        (NO, 'no'),
+        (NO, 'not'),
     )
 
     NULL = 'Select'
-    SPREAD = 's'
-    ENVELOPE = 'e'
-    PHOTO = 'p'
-    NONE = 'n'
-    DESTROYED = 'd'
-    LOST = 'l'
+    SPREAD = 'spread'
+    ENVELOPE = 'in envelope'
+    PHOTO = 'only photo'
+    NONE = 'no voucher'
+    DESTROYED = 'destroyed'
+    LOST = 'lost'
     VOUCHER_CHOICES = (
         (NULL, 'Select'),
         (SPREAD, 'spread'),
@@ -129,6 +129,7 @@ class AdvancedSearchForm(ModelSearchForm):
             sqs = SearchQuerySet().using('advanced_search').filter(**sequence_keywords).facet('code')
             sqs = filter_results_from_sequence_table(sqs)
         if bool(keywords) is True:
+            print(keywords)
             if sqs != '':
                 sqs = sqs.filter(**keywords)
             else:
@@ -161,13 +162,6 @@ class AdvancedSearchForm(ModelSearchForm):
                         sequence_keywords[k] = 'true'
                     else:
                         sequence_keywords[k] = 'false'
-                if k == 'typeSpecies':
-                    if v == 'y':
-                        keywords[k] = 'yes'
-                    elif v == 'n':
-                        keywords[k] = 'no'
-                    else:
-                        keywords[k] = 'don\'t know'
                 if k not in ['labPerson', 'accession', 'genbank', 'gene_code']:
                     keywords[k] = v
 
@@ -203,11 +197,11 @@ class BatchChangesForm(forms.Form):
     '''
 
     NULL = None
-    MALE = 'm'
-    FEMALE = 'f'
-    LARVA = 'l'
-    WORKER = 'w'
-    QUEEN = 'q'
+    MALE = 'male'
+    FEMALE = 'female'
+    LARVA = 'larva'
+    WORKER = 'worker'
+    QUEEN = 'queen'
     SEX_CHOICES = (
         (NULL, 'Select'),
         (MALE, 'male'),
@@ -218,22 +212,22 @@ class BatchChangesForm(forms.Form):
     )
 
     NULL = None
-    DONT_KNOW = 'd'
-    YES = 'y'
-    NO = 'n'
+    DONT_KNOW = 'unknown'
+    YES = 'yes'
+    NO = 'not'
     TYPE_SPECIES_CHOICES = (
         (NULL, 'Select'),
-        (DONT_KNOW, 'don\'t know'),
+        (DONT_KNOW, 'unknown'),
         (YES, 'yes'),
-        (NO, 'no'),
+        (NO, 'not'),
     )
     NULL = None
-    SPREAD = 's'
-    ENVELOPE = 'e'
-    PHOTO = 'p'
-    NONE = 'n'
-    DESTROYED = 'd'
-    LOST = 'l'
+    SPREAD = 'spread'
+    ENVELOPE = 'in envelope'
+    PHOTO = 'only photo'
+    NONE = 'no voucher'
+    DESTROYED = 'destroyed'
+    LOST = 'lost'
     VOUCHER_CHOICES = (
         (NULL, 'Select'),
         (SPREAD, 'spread'),
