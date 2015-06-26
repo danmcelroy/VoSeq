@@ -43,6 +43,8 @@ class BatchImportVouchersResource(resources.ModelResource):
 
 # Customize what and the way you show it
 class VouchersAdmin(ImportExportModelAdmin):
+    import_template_name = 'admin/public_interface/vouchers/batch_import.html'
+
     list_display = ['code', 'genus', 'species', 'sex', 'voucher', 'country', 'collector']
     ordering = ['code']
     search_fields = ['=code', '=genus', '=species']
