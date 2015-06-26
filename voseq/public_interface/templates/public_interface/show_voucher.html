@@ -106,13 +106,7 @@
 
               <td><b>Type species?</b></td>
               <td>
-                {% if voucher.typeSpecies == 'd' %}
-                don't know
-                {% elif voucher.typeSpecies == 'y' %}
-                yes
-                {% elif voucher.typeSpecies == 'n' %}
-                no
-                {% endif %}
+                {{ voucher.typeSpecies }}
               </td>
             </tr>
           </table>
@@ -178,22 +172,7 @@
                 {% endif %}
               </td>
 
-              {% if voucher.voucher == 's' %}
-              <td>Spread</td>
-              {% elif voucher.voucher == 'e' %}
-              <td>In envelope</td>
-              {% elif voucher.voucher == 'p' %}
-              <td>Only photo</td>
-              {% elif voucher.voucher == 'n' %}
-              <td>No voucher</td>
-              {% elif voucher.voucher == 'd' %}
-              <td>Destroyed</td>
-              {% elif voucher.voucher == 'l' %}
-              <td>Lost</td>
-              {% else %}
-              <td></td>
-              {% endif %}
-
+              <td>{{ voucher.voucher }}</td>
               <td>{{ voucher.dateCollection }}</td>
             </tr>
             <tr>
@@ -204,20 +183,7 @@
             <tr>
               <td>{{ voucher.voucherCode }}</td>
               <td>{{ voucher.determinedBy }}</td>
-
-              {% if voucher.sex == 'm' %}
-              <td>Male</td>
-              {% elif voucher.sex == 'f' %}
-              <td>Female</td>
-              {% elif voucher.sex == 'l' %}
-              <td>Larva</td>
-              {% elif voucher.sex == 'w' %}
-              <td>Worker</td>
-              {% elif voucher.sex == 'q' %}
-              <td>Queen</td>
-              {% else %}
-              <td></td>
-              {% endif %}
+              <td>{{ voucher.sex }}</td>
 
             </tr>
           </table>
