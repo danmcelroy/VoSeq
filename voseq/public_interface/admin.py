@@ -10,6 +10,7 @@ from django.http import HttpRequest
 
 from public_interface.models import FlickrImages
 from public_interface.models import LocalImages
+from public_interface.models import GeneSets
 from public_interface.models import TaxonSets
 from public_interface.models import Sequences
 from public_interface.models import Vouchers
@@ -113,7 +114,12 @@ class TaxonSetsAdmin(admin.ModelAdmin):
     list_display = ['taxonset_name', 'taxonset_creator', 'taxonset_description']
 
 
+class GeneSetsAdmin(admin.ModelAdmin):
+    list_display = ['geneset_name', 'geneset_creator', 'geneset_description']
+
+
 # Register your models here.
 admin.site.register(Sequences, SequencesAdmin)
+admin.site.register(GeneSets, GeneSetsAdmin)
 admin.site.register(TaxonSets, TaxonSetsAdmin)
 admin.site.register(Vouchers, VouchersAdmin)

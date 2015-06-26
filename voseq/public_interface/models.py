@@ -55,6 +55,9 @@ class GeneSets(models.Model):
     def __str__(self):
         return self.geneset_name
 
+    class Meta:
+        verbose_name_plural = "Gene sets"
+
 
 class Members(models.Model):
     firstname = models.CharField(max_length=100)
