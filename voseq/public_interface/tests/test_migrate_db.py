@@ -173,72 +173,72 @@ class TestCustomCommand(TestCase):
 
     def test_sex1(self):
         result = migrate_script.get_sex('female')
-        expected = 'f'
+        expected = 'female'
         self.assertEqual(expected, result)
 
     def test_sex2(self):
         result = migrate_script.get_sex('Female')
-        expected = 'f'
+        expected = 'female'
         self.assertEqual(expected, result)
 
     def test_sex3(self):
         result = migrate_script.get_sex('f')
-        expected = 'f'
+        expected = 'female'
         self.assertEqual(expected, result)
 
     def test_sex4(self):
         result = migrate_script.get_sex('F')
-        expected = 'f'
+        expected = 'female'
         self.assertEqual(expected, result)
 
     def test_sex5(self):
         result = migrate_script.get_sex('Mae')
-        expected = 'm'
+        expected = 'male'
         self.assertEqual(expected, result)
 
     def test_sex6(self):
         result = migrate_script.get_sex('male')
-        expected = 'm'
+        expected = 'male'
         self.assertEqual(expected, result)
 
     def test_sex7(self):
         result = migrate_script.get_sex('Male')
-        expected = 'm'
+        expected = 'male'
         self.assertEqual(expected, result)
 
     def test_sex8(self):
         result = migrate_script.get_sex('m')
-        expected = 'm'
+        expected = 'male'
         self.assertEqual(expected, result)
 
     def test_sex9(self):
         result = migrate_script.get_sex('M')
-        expected = 'm'
+        expected = 'male'
         self.assertEqual(expected, result)
 
     def test_sex10(self):
         result = migrate_script.get_sex('NA')
-        expected = 'u'  # unknown
+        expected = 'unknown'  # unknown
         self.assertEqual(expected, result)
 
     def test_sex11(self):
         result = migrate_script.get_sex('NULL')
-        expected = 'u'  # unknown
+        expected = 'unknown'  # unknown
         self.assertEqual(expected, result)
 
     def test_sex12(self):
         result = migrate_script.get_sex(None)
-        expected = 'u'  # unknown
+        expected = 'unknown'  # unknown
         self.assertEqual(expected, result)
 
     def test_sex13(self):
         result = migrate_script.get_sex('Worker')
-        expected = 'w'
+        expected = 'worker'
         self.assertEqual(expected, result)
 
     def test_sex14(self):
         b = Vouchers.objects.get(code='CP100-09')
-        expected = 'f'
+        expected = 'female'
         self.assertEqual(expected, b.sex)
 
     def test_primers(self):
