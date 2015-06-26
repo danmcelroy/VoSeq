@@ -167,7 +167,7 @@ class TestAdvancedSearch(TestCase):
         self.assertTrue('CP100-09' in content)
 
     def test_advanced_search_by_sex(self):
-        response = self.client.get('/search/advanced/?sex=f')
+        response = self.client.get('/search/advanced/?sex=female')
         content = response.content.decode('utf-8')
         self.assertTrue('CP100-09' in content)
 
