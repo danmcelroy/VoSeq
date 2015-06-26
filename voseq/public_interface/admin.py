@@ -31,7 +31,14 @@ class BatchImportVouchersResource(resources.ModelResource):
     class Meta:
         model = Vouchers
         import_id_fields = ('code',)
-        fields = ('code', 'genus', 'species',)
+        fields = ('code', 'orden', 'superfamily', 'family', 'subfamily', 'tribe',
+                  'subtribe', 'genus', 'species', 'subspecies', 'author',
+                  'hostorg', 'typeSpecies', 'country', 'specificLocality',
+                  'collector', 'dateCollection', 'latitude', 'longitude',
+                  'max_altitude', 'min_altitude', 'voucherCode', 'voucher',
+                  'voucherLocality', 'determinedBy', 'sex', 'extraction',
+                  'extractionTube', 'dateExtraction', 'publishedIn', 'notes',
+                  )
 
 
 # Customize what and the way you show it
