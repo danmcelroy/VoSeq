@@ -95,11 +95,11 @@ class Vouchers(models.Model):
 
     DONT_KNOW = 'unknown'
     YES = 'yes'
-    NO = 'no'
+    NO = 'not'
     TYPE_SPECIES_CHOICES = (
         (DONT_KNOW, 'unknown'),
         (YES, 'yes'),
-        (NO, 'no'),
+        (NO, 'not'),
     )
 
     SPREAD = 'spread'

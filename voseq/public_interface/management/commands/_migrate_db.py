@@ -773,7 +773,7 @@ def parse_type_species(value):
     elif value == '1':
         new_value = 'yes'
     elif value == '2':
-        new_value = 'no'
+        new_value = 'not'
     else:
         new_value = 'unknown'
     return new_value
