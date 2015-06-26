@@ -197,11 +197,11 @@ class BatchChangesForm(forms.Form):
     '''
 
     NULL = None
-    MALE = 'm'
-    FEMALE = 'f'
-    LARVA = 'l'
-    WORKER = 'w'
-    QUEEN = 'q'
+    MALE = 'male'
+    FEMALE = 'female'
+    LARVA = 'larva'
+    WORKER = 'worker'
+    QUEEN = 'queen'
     SEX_CHOICES = (
         (NULL, 'Select'),
         (MALE, 'male'),
@@ -212,22 +212,22 @@ class BatchChangesForm(forms.Form):
     )
 
     NULL = None
-    DONT_KNOW = 'd'
-    YES = 'y'
-    NO = 'n'
+    DONT_KNOW = 'unknown'
+    YES = 'yes'
+    NO = 'not'
     TYPE_SPECIES_CHOICES = (
         (NULL, 'Select'),
-        (DONT_KNOW, 'don\'t know'),
+        (DONT_KNOW, 'unknown'),
         (YES, 'yes'),
-        (NO, 'no'),
+        (NO, 'not'),
     )
     NULL = None
-    SPREAD = 's'
-    ENVELOPE = 'e'
-    PHOTO = 'p'
-    NONE = 'n'
-    DESTROYED = 'd'
-    LOST = 'l'
+    SPREAD = 'spread'
+    ENVELOPE = 'in envelope'
+    PHOTO = 'only photo'
+    NONE = 'no voucher'
+    DESTROYED = 'destroyed'
+    LOST = 'lost'
     VOUCHER_CHOICES = (
         (NULL, 'Select'),
         (SPREAD, 'spread'),
