@@ -1,3 +1,6 @@
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
+
 from django import forms
 from django.conf import settings
 from django.contrib import admin
@@ -23,8 +26,16 @@ class FlickImageInLine(admin.StackedInline):
     fields = ['image_file']
 
 
+class BatchImportVouchersResource(resources.ModelResource):
+
+    class Meta:
+        model = Vouchers
+        import_id_fields = ('code',)
+        fields = ('code', 'genus', 'species',)
+
+
 # Customize what and the way you show it
-class VouchersAdmin(admin.ModelAdmin):
+class VouchersAdmin(ImportExportModelAdmin):
     list_display = ['code', 'genus', 'species', 'sex', 'voucher', 'country', 'collector']
     ordering = ['code']
     search_fields = ['=code', '=genus', '=species']
@@ -78,6 +89,8 @@ class VouchersAdmin(admin.ModelAdmin):
         inlines.append(FlickImageInLine)
     else:
         inlines.append(ImageInLine)
+
+    resource_class = BatchImportVouchersResource
 
 
 class SequencesAdmin(admin.ModelAdmin):
