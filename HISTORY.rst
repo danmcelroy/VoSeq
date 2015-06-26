@@ -14,6 +14,8 @@ pre-release v2.0.0-alpha-4 (2015-xx-xx)
   capital and lower cases of the same word.
 - **Added interactive overview table** for vouchers and genes using `dataTables`.
 - **Added taxonset creation** by adding lists of taxon codes.
+- **Importing voucher images to Flickr** (optional, by default it keeps all the
+  image files in the local server).
 
 pre-release v2.0.0-alpha-3 (2015-06-12)
 +++++++++++++++++++++++++++++++++++++++
