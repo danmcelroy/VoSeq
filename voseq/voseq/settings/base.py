@@ -59,6 +59,7 @@ INSTALLED_APPS = (
 
     'registration',
     'easy_thumbnails',
+    'import_export',
 )
 
 MIDDLEWARE_CLASSES = (
