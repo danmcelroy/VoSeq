@@ -16,6 +16,9 @@ pre-release v2.0.0-alpha-4 (2015-xx-xx)
 - **Added taxonset creation** by adding lists of taxon codes.
 - **Importing voucher images to Flickr** (optional, by default it keeps all the
   image files in the local server).
+- **Added batch upload of voucher** data. It will show a diff between fields that
+  could be updated and will also show a confirmation page before execution of
+  changes.
 
 pre-release v2.0.0-alpha-3 (2015-06-12)
 +++++++++++++++++++++++++++++++++++++++
