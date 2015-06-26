@@ -78,12 +78,12 @@ class TaxonSets(models.Model):
 
 
 class Vouchers(models.Model):
-    MALE = 'm'
-    FEMALE = 'f'
-    LARVA = 'l'
-    WORKER = 'w'
-    QUEEN = 'q'
-    UNKNOWN = 'u'
+    MALE = 'male'
+    FEMALE = 'female'
+    LARVA = 'larva'
+    WORKER = 'worker'
+    QUEEN = 'queen'
+    UNKNOWN = 'unknown'
     SEX_CHOICES = (
         (MALE, 'male'),
         (FEMALE, 'female'),
@@ -147,7 +147,7 @@ class Vouchers(models.Model):
     edits = models.TextField(blank=True, null=True)
     latesteditor = models.TextField(blank=True, null=True)
     hostorg = models.TextField(help_text="Hostplant or other host.", blank=True)
-    sex = models.CharField(max_length=1, choices=SEX_CHOICES, blank=True)
+    sex = models.CharField(max_length=100, choices=SEX_CHOICES, blank=True)
     voucher = models.CharField(max_length=1, choices=VOUCHER_CHOICES, blank=True,
                                help_text="Voucher status.")
     voucherCode = models.TextField(help_text="Alternative code of voucher specimen.",
