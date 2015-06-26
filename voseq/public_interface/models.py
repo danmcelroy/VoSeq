@@ -93,21 +93,21 @@ class Vouchers(models.Model):
         (UNKNOWN, 'unknown'),
     )
 
-    DONT_KNOW = 'd'
-    YES = 'y'
-    NO = 'n'
+    DONT_KNOW = 'unknown'
+    YES = 'yes'
+    NO = 'no'
     TYPE_SPECIES_CHOICES = (
-        (DONT_KNOW, 'don\'t know'),
+        (DONT_KNOW, 'unknown'),
         (YES, 'yes'),
         (NO, 'no'),
     )
 
-    SPREAD = 's'
-    ENVELOPE = 'e'
-    PHOTO = 'p'
-    NONE = 'n'
-    DESTROYED = 'd'
-    LOST = 'l'
+    SPREAD = 'spread'
+    ENVELOPE = 'in envelope'
+    PHOTO = 'only photo'
+    NONE = 'no voucher'
+    DESTROYED = 'destroyed'
+    LOST = 'lost'
     VOUCHER_CHOICES = (
         (SPREAD, 'spread'),
         (ENVELOPE, 'in envelope'),
@@ -129,7 +129,7 @@ class Vouchers(models.Model):
     subspecies = models.TextField(blank=True)
     country = models.TextField(blank=True)
     specificLocality = models.TextField(help_text="Locality of origin for this specimen.", blank=True)
-    typeSpecies = models.CharField(max_length=1, choices=TYPE_SPECIES_CHOICES,
+    typeSpecies = models.CharField(max_length=100, choices=TYPE_SPECIES_CHOICES,
                                    help_text="Is this a type species?")
     latitude = models.FloatField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
@@ -148,7 +148,7 @@ class Vouchers(models.Model):
     latesteditor = models.TextField(blank=True, null=True)
     hostorg = models.TextField(help_text="Hostplant or other host.", blank=True)
     sex = models.CharField(max_length=100, choices=SEX_CHOICES, blank=True)
-    voucher = models.CharField(max_length=1, choices=VOUCHER_CHOICES, blank=True,
+    voucher = models.CharField(max_length=100, choices=VOUCHER_CHOICES, blank=True,
                                help_text="Voucher status.")
     voucherCode = models.TextField(help_text="Alternative code of voucher specimen.",
                                    blank=True)

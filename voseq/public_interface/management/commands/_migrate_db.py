@@ -728,23 +728,23 @@ def get_voucher(value):
     try:
         value = value.lower().strip()
     except AttributeError:
-        return 'u'
+        return 'unknown'
     if value == 'no photo':
-        return 'e'
+        return 'in envelope'
     elif value == 'no voucher':
-        return 'n'
+        return 'no voucher'
     elif value == 'spread':
-        return 's'
+        return 'spread'
     elif value == 'unspread':
-        return 'e'
+        return 'in envelope'
     elif value == 'voucher destroyed':
-        return 'd'
+        return 'destroyed'
     elif value == 'voucher lost':
-        return 'l'
+        return 'lost'
     elif value == 'voucher photo':
-        return 'p'
+        return 'only photo'
     else:
-        return 'u'
+        return 'unknown'
 
 
 def get_sex(value):
@@ -754,26 +754,26 @@ def get_sex(value):
         return 'u'
 
     if value == 'f' or value == 'female':
-        return 'f'
+        return 'female'
     elif value == 'm' or value == 'male' or value == 'mae':
-        return 'm'
+        return 'male'
     elif value == 'larva':
-        return 'l'
+        return 'larva'
     elif value == 'worker':
-        return 'w'
+        return 'worker'
     elif value == 'queen':
-        return 'q'
+        return 'queen'
     else:
-        return 'u'
+        return 'unknown'
 
 
 def parse_type_species(value):
     if value == '0':
-        new_value = 'd'
+        new_value = 'unknown'
     elif value == '1':
-        new_value = 'y'
+        new_value = 'yes'
     elif value == '2':
-        new_value = 'n'
+        new_value = 'no'
     else:
-        new_value = 'd'
+        new_value = 'unknown'
     return new_value
