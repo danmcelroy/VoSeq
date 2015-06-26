@@ -1,3 +1,6 @@
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
+
 from django import forms
 from django.conf import settings
 from django.contrib import admin
@@ -23,8 +26,25 @@ class FlickImageInLine(admin.StackedInline):
     fields = ['image_file']
 
 
+class BatchImportVouchersResource(resources.ModelResource):
+
+    class Meta:
+        model = Vouchers
+        import_id_fields = ('code',)
+        fields = ('code', 'orden', 'superfamily', 'family', 'subfamily', 'tribe',
+                  'subtribe', 'genus', 'species', 'subspecies', 'author',
+                  'hostorg', 'typeSpecies', 'country', 'specificLocality',
+                  'collector', 'dateCollection', 'latitude', 'longitude',
+                  'max_altitude', 'min_altitude', 'voucherCode', 'voucher',
+                  'voucherLocality', 'determinedBy', 'sex', 'extraction',
+                  'extractionTube', 'dateExtraction', 'publishedIn', 'notes',
+                  )
+
+
 # Customize what and the way you show it
-class VouchersAdmin(admin.ModelAdmin):
+class VouchersAdmin(ImportExportModelAdmin):
+    import_template_name = 'admin/public_interface/vouchers/batch_import.html'
+
     list_display = ['code', 'genus', 'species', 'sex', 'voucher', 'country', 'collector']
     ordering = ['code']
     search_fields = ['=code', '=genus', '=species']
@@ -78,6 +98,8 @@ class VouchersAdmin(admin.ModelAdmin):
         inlines.append(FlickImageInLine)
     else:
         inlines.append(ImageInLine)
+
+    resource_class = BatchImportVouchersResource
 
 
 class SequencesAdmin(admin.ModelAdmin):
