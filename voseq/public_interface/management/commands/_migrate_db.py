@@ -751,7 +751,7 @@ def get_sex(value):
     try:
         value = value.lower().strip()
     except AttributeError:
-        return 'u'
+        return 'unknown'
 
     if value == 'f' or value == 'female':
         return 'female'
