@@ -117,43 +117,43 @@ class TestCustomCommand(TestCase):
 
     def test_voucher_none(self):
         b = Vouchers.objects.get(code='CP100-09')
-        self.assertEqual('n', b.voucher)
+        self.assertEqual('no voucher', b.voucher)
 
     def test_voucher_spread(self):
         b = Vouchers.objects.get(code='CP100-10')
-        self.assertEqual('s', b.voucher)
+        self.assertEqual('spread', b.voucher)
 
     def test_voucher_unspread(self):
         b = Vouchers.objects.get(code='CP100-11')
-        self.assertEqual('e', b.voucher)
+        self.assertEqual('in envelope', b.voucher)
 
     def test_voucher_null(self):
         b = Vouchers.objects.get(code='CP100-12')
-        self.assertEqual('u', b.voucher)
+        self.assertEqual('unknown', b.voucher)
 
     def test_voucher_empty(self):
         b = Vouchers.objects.get(code='CP100-13')
-        self.assertEqual('u', b.voucher)
+        self.assertEqual('unknown', b.voucher)
 
     def test_voucher_photo(self):
         b = Vouchers.objects.get(code='CP100-14')
-        self.assertEqual('p', b.voucher)
+        self.assertEqual('only photo', b.voucher)
 
     def test_voucher_lost(self):
         b = Vouchers.objects.get(code='CP100-15')
-        self.assertEqual('l', b.voucher)
+        self.assertEqual('lost', b.voucher)
 
     def test_voucher_destroyed(self):
         b = Vouchers.objects.get(code='CP100-16')
-        self.assertEqual('d', b.voucher)
+        self.assertEqual('destroyed', b.voucher)
 
     def test_voucher_no_photo(self):
         b = Vouchers.objects.get(code='CP100-17')
-        self.assertEqual('e', b.voucher)
+        self.assertEqual('in envelope', b.voucher)
 
     def test_voucher_other(self):
         b = Vouchers.objects.get(code='CP100-17')
-        self.assertEqual('e', b.voucher)
+        self.assertEqual('in envelope', b.voucher)
 
     def test_voucher_image(self):
         b = Vouchers.objects.get(code='CP100-09')
@@ -173,72 +173,72 @@ class TestCustomCommand(TestCase):
 
     def test_sex1(self):
         result = migrate_script.get_sex('female')
-        expected = 'f'
+        expected = 'female'
         self.assertEqual(expected, result)
 
     def test_sex2(self):
         result = migrate_script.get_sex('Female')
-        expected = 'f'
+        expected = 'female'
         self.assertEqual(expected, result)
 
     def test_sex3(self):
         result = migrate_script.get_sex('f')
-        expected = 'f'
+        expected = 'female'
         self.assertEqual(expected, result)
 
     def test_sex4(self):
         result = migrate_script.get_sex('F')
-        expected = 'f'
+        expected = 'female'
         self.assertEqual(expected, result)
 
     def test_sex5(self):
         result = migrate_script.get_sex('Mae')
-        expected = 'm'
+        expected = 'male'
         self.assertEqual(expected, result)
 
     def test_sex6(self):
         result = migrate_script.get_sex('male')
-        expected = 'm'
+        expected = 'male'
         self.assertEqual(expected, result)
 
     def test_sex7(self):
         result = migrate_script.get_sex('Male')
-        expected = 'm'
+        expected = 'male'
         self.assertEqual(expected, result)
 
     def test_sex8(self):
         result = migrate_script.get_sex('m')
-        expected = 'm'
+        expected = 'male'
         self.assertEqual(expected, result)
 
     def test_sex9(self):
         result = migrate_script.get_sex('M')
-        expected = 'm'
+        expected = 'male'
         self.assertEqual(expected, result)
 
     def test_sex10(self):
         result = migrate_script.get_sex('NA')
-        expected = 'u'  # unknown
+        expected = 'unknown'  # unknown
         self.assertEqual(expected, result)
 
     def test_sex11(self):
         result = migrate_script.get_sex('NULL')
-        expected = 'u'  # unknown
+        expected = 'unknown'  # unknown
         self.assertEqual(expected, result)
 
     def test_sex12(self):
         result = migrate_script.get_sex(None)
-        expected = 'u'  # unknown
+        expected = 'unknown'  # unknown
         self.assertEqual(expected, result)
 
     def test_sex13(self):
         result = migrate_script.get_sex('Worker')
-        expected = 'w'
+        expected = 'worker'
         self.assertEqual(expected, result)
 
     def test_sex14(self):
         b = Vouchers.objects.get(code='CP100-09')
-        expected = 'f'
+        expected = 'female'
         self.assertEqual(expected, b.sex)
 
     def test_primers(self):
@@ -287,25 +287,25 @@ class TestCustomCommand(TestCase):
 
     def test_type_species_dont_know(self):
         value = '0'
-        expected = 'd'
+        expected = 'unknown'
         result = migrate_script.parse_type_species(value)
         self.assertEqual(expected, result)
 
     def test_type_species_yes(self):
         value = '1'
-        expected = 'y'
+        expected = 'yes'
         result = migrate_script.parse_type_species(value)
         self.assertEqual(expected, result)
 
     def test_type_species_no(self):
         value = '2'
-        expected = 'n'
+        expected = 'not'
         result = migrate_script.parse_type_species(value)
         self.assertEqual(expected, result)
 
     def test_type_species_null(self):
         value = None
-        expected = 'd'
+        expected = 'unknown'
         result = migrate_script.parse_type_species(value)
         self.assertEqual(expected, result)
 
