@@ -216,7 +216,7 @@
           <div class="panel-body">
             {% for image in images %}
               {% if 'staticflickr' in image.thumbnail %}
-                <a href="/media/{{ image.voucherImage }}">
+                <a href="{{ image.voucherImage }}">
                   <img class="img-thumbnail" src="{{ image.thumbnail }}" />
                 </a>
               {% else %}
