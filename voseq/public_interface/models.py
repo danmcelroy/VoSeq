@@ -74,6 +74,11 @@ class TaxonSets(models.Model):
     taxonset_description = models.CharField(max_length=140, blank=True)
     taxonset_list = models.TextField(help_text='As items separated by linebreak.')
 
+    def save(self, *args, **kwargs):
+        tmp = [i.strip() for i in self.taxonset_list.splitlines() if len(i) > 0]
+        self.taxonset_list = '\n'.join(tmp)
+        super(TaxonSets, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.taxonset_name
 
