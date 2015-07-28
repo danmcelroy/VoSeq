@@ -71,6 +71,7 @@ def get_gene_codes(cleaned_data):
     """
     gene_codes = []
     if cleaned_data['geneset'] is not None:
+        print(">>>>genese_list", cleaned_data['geneset'].geneset_list)
         geneset_list = json.loads(cleaned_data['geneset'].geneset_list)
         for i in geneset_list:
             if i not in gene_codes:
