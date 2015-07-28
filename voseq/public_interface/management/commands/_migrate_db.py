@@ -158,7 +158,7 @@ class ParseXML(object):
         for item in self.table_genesets_items:
             if item['geneset_description'] is None:
                 item['geneset_description'] = ''
-            item['geneset_list'] = item['geneset_list'].split(',')
+            item['geneset_list'] = item['geneset_list'].replace(',', '\n')
             GeneSets.objects.create(**item)
 
     def import_table_members(self):
