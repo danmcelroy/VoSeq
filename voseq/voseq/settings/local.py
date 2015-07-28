@@ -32,8 +32,9 @@ SECRET_KEY = get_secret("SECRET_KEY")
 GOOGLE_MAPS_API_KEY = get_secret("GOOGLE_MAPS_API_KEY")
 
 PHOTOS_REPOSITORY = get_secret("PHOTOS_REPOSITORY")
-FLICKR_API_KEY = get_secret("FLICKR_API_KEY")
-FLICKR_API_SECRET = get_secret("FLICKR_API_SECRET")
+if PHOTOS_REPOSITORY == 'flickr':
+    FLICKR_API_KEY = get_secret("FLICKR_API_KEY")
+    FLICKR_API_SECRET = get_secret("FLICKR_API_SECRET")
 
 DATABASES = {
     'default': {
