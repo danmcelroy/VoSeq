@@ -1,5 +1,4 @@
 import datetime
-import json
 
 from django.core.management import call_command
 from django.core.management import CommandError
@@ -274,7 +273,7 @@ class TestCustomCommand(TestCase):
     def test_geneset_list(self):
         b = GeneSets.objects.get(geneset_name='4genes')
         expected = ['COI', 'EF1a', 'wingless', '16S']
-        self.assertEqual(expected, json.loads(b.geneset_list))
+        self.assertEqual(expected, b.geneset_list.splitlines())
 
     def test_taxonset_name(self):
         b = TaxonSets.objects.get(taxonset_name='Erebia')
