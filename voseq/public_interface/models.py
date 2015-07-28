@@ -46,11 +46,7 @@ class GeneSets(models.Model):
     geneset_name = models.CharField(max_length=75, blank=False)
     geneset_creator = models.CharField(max_length=75, blank=False)
     geneset_description = models.CharField(max_length=140, blank=True)
-    geneset_list = models.TextField(blank=False)
-
-    def save(self, *args, **kwargs):
-        self.geneset_list = json.dumps(self.geneset_list)
-        super(GeneSets, self).save(*args, **kwargs)
+    geneset_list = models.TextField(blank=False, help_text='As items separated by linebreak.')
 
     def __str__(self):
         return self.geneset_name
@@ -71,7 +67,7 @@ class TaxonSets(models.Model):
     taxonset_name = models.CharField(max_length=75, blank=False)
     taxonset_creator = models.CharField(max_length=75, blank=False)
     taxonset_description = models.CharField(max_length=140, blank=True)
-    taxonset_list = models.TextField(help_text='As items separated by newline.')
+    taxonset_list = models.TextField(help_text='As items separated by linebreak.')
 
     def __str__(self):
         return self.taxonset_name
