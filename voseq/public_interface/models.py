@@ -48,6 +48,11 @@ class GeneSets(models.Model):
     geneset_description = models.CharField(max_length=140, blank=True)
     geneset_list = models.TextField(blank=False, help_text='As items separated by linebreak.')
 
+    def save(self, *args, **kwargs):
+        tmp = [i.strip() for i in self.geneset_list.splitlines() if len(i) > 0]
+        self.geneset_list = '\n'.join(tmp)
+        super(GeneSets, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.geneset_name
 
