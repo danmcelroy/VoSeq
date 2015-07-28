@@ -46,14 +46,18 @@ class GeneSets(models.Model):
     geneset_name = models.CharField(max_length=75, blank=False)
     geneset_creator = models.CharField(max_length=75, blank=False)
     geneset_description = models.CharField(max_length=140, blank=True)
-    geneset_list = models.TextField(blank=False)
+    geneset_list = models.TextField(blank=False, help_text='As items separated by linebreak.')
 
     def save(self, *args, **kwargs):
-        self.geneset_list = json.dumps(self.geneset_list)
+        tmp = [i.strip() for i in self.geneset_list.splitlines() if len(i) > 0]
+        self.geneset_list = '\n'.join(tmp)
         super(GeneSets, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.geneset_name
+
+    class Meta:
+        verbose_name_plural = "Gene sets"
 
 
 class Members(models.Model):
@@ -68,7 +72,12 @@ class TaxonSets(models.Model):
     taxonset_name = models.CharField(max_length=75, blank=False)
     taxonset_creator = models.CharField(max_length=75, blank=False)
     taxonset_description = models.CharField(max_length=140, blank=True)
-    taxonset_list = models.TextField(help_text='As items separated by newline.')
+    taxonset_list = models.TextField(help_text='As items separated by linebreak.')
+
+    def save(self, *args, **kwargs):
+        tmp = [i.strip() for i in self.taxonset_list.splitlines() if len(i) > 0]
+        self.taxonset_list = '\n'.join(tmp)
+        super(TaxonSets, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.taxonset_name
