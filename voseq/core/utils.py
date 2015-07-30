@@ -229,10 +229,9 @@ def _degenerate(gene_model, sequence, degen_translation):
     removed = 0
     translation_start = get_start_translation_index(gene_model, removed)
 
-    print(gene_model)
     dna = sequence[translation_start:]
     my_type = degen_translation
-    res = Degenera(dna, gene_model['genetic_code'], my_type)
+    res = Degenera(dna.upper(), gene_model['genetic_code'], my_type)
     res.degenerate()
     return res.degenerated, ''
 
