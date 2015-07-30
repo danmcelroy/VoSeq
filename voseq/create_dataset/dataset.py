@@ -14,7 +14,8 @@ class Dataset(object):
     """
     def __init__(self, codon_positions, partition_by_positions, seq_objs, gene_codes,
                  voucher_codes, file_format, outgroup=None, voucher_codes_metadata=None,
-                 minimum_number_of_genes=None, aminoacids=None):
+                 minimum_number_of_genes=None, aminoacids=None, degen_translations=None):
+        self.degen_translations = degen_translations
         self.minimum_number_of_genes = minimum_number_of_genes
         self.outgroup = outgroup
         self.file_format = file_format
@@ -184,11 +185,33 @@ class Dataset(object):
         """
         out = ''
         for i in partitions:
+            seq = self.degenerate(i)
             out += '\n'
-            out += '\n'.join(i)
+            out += '\n'.join(seq)
         dataset_str = out.strip()
         self.save_dataset_to_file(dataset_str)
         return dataset_str
+
+    def degenerate(self, seq, gene_model):
+        if self.degen_translations in ['NORMAL', 'S', 'Z', 'SZ']:
+            if self.partition_by_positions != 'ONE':
+                self.warnings.append(
+                    'Cannot degenerate codons if they go to different partitions.'
+                )
+
+            if 'ALL' in self.codon_positions or (
+                    '1st' in self.codon_positions and
+                    '2nd' in self.codon_positions and
+                    '3rd' in self.codon_positions):
+                degenerated, warnings = utils._degenerate(gene_model, seq, self.degen_translations)
+                if warnings != '':
+                    self.warnings.append(warnings)
+                return degenerated
+            else:
+                self.warnings.append(
+                    'Cannot degenerate codons if they you have not selected all codon positions.'
+                )
+        return seq
 
     def translate_this_sequence(self, sequence, this_gene_model, voucher_code):
         aa_sequence = ''
@@ -693,6 +716,7 @@ class CreatePhylip(Dataset):
                                 ThisGeneAndPartition.this_gene_model,
                                 voucher_code
                             )
+                        sequence = self.degenerate(sequence, ThisGeneAndPartition.this_gene_model)
 
                         gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
 

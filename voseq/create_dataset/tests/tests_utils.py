@@ -26,6 +26,7 @@ class CreateDatasetUtilsTest(TestCase):
             'taxon_names': ['CODE', 'SUPERFAMILY', 'GENUS', 'SPECIES'],
             'positions': ['ALL'],
             'partition_by_positions': 'ONE',
+            'degen_translations': None,
             'number_genes': None,
             'file_format': 'FASTA',
             'aminoacids': False,
