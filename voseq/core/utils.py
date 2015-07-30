@@ -1,5 +1,4 @@
 import itertools
-import json
 import re
 
 from django.conf import settings
@@ -7,6 +6,7 @@ from django.conf import settings
 from Bio.Seq import Seq
 from Bio.Alphabet import generic_dna
 from Bio.Data.CodonTable import TranslationError
+from degenerate_dna import Degenera
 
 from stats.models import Stats
 from . import exceptions
@@ -225,15 +225,27 @@ def get_start_translation_index(gene_model, removed):
     return start_translation
 
 
+def _degenerate(gene_model, sequence, degen_translation):
+    removed = 0
+    translation_start = get_start_translation_index(gene_model, removed)
+
+    print(gene_model)
+    dna = sequence[translation_start:]
+    my_type = degen_translation
+    res = Degenera(dna, gene_model['genetic_code'], my_type)
+    res.degenerate()
+    return res.degenerated, ''
+
+
 def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_format=None):
     removed = 0
     if file_format == 'FASTA' or file_format == 'GenbankFASTA':
         sequence, removed = strip_question_marks(sequence)
     seq_seq = sequence.replace('?', 'N')
 
-    start_translation = get_start_translation_index(gene_model, removed)
+    translation_start = get_start_translation_index(gene_model, removed)
 
-    seq_obj = Seq(seq_seq[start_translation:], generic_dna)
+    seq_obj = Seq(seq_seq[translation_start:], generic_dna)
 
     if '---' in seq_seq:  # we have gaps
         try:
