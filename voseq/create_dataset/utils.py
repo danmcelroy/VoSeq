@@ -26,6 +26,7 @@ class CreateDataset(object):
 
     """
     def __init__(self, cleaned_data):
+        self.degen_translations = cleaned_data['degen_translations']
         self.errors = []
         self.seq_objs = dict()
         self.minimum_number_of_genes = cleaned_data['number_genes']
@@ -74,7 +75,7 @@ class CreateDataset(object):
         if self.file_format == 'FASTA':
             fasta = CreateFasta(self.codon_positions, self.partition_by_positions,
                                 self.seq_objs, self.gene_codes, self.voucher_codes,
-                                self.file_format)
+                                self.file_format, degen_translations=self.degen_translations)
             fasta_dataset = fasta.from_seq_objs_to_dataset()
             self.warnings += fasta.warnings
             self.dataset_file = fasta.dataset_file
@@ -84,7 +85,7 @@ class CreateDataset(object):
             phy = CreatePhylip(self.codon_positions, self.partition_by_positions,
                                self.seq_objs, self.gene_codes, self.voucher_codes,
                                self.file_format, self.outgroup, self.voucher_codes_metadata,
-                               self.minimum_number_of_genes, self.aminoacids)
+                               self.minimum_number_of_genes, self.aminoacids, degen_translations=self.degen_translations)
             phylip_dataset = phy.from_seq_objs_to_dataset()
             self.warnings += phy.warnings
             self.dataset_file = phy.dataset_file
