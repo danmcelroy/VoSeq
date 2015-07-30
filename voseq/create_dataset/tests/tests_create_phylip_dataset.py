@@ -23,6 +23,7 @@ class CreatePhylipDatasetTest(TestCase):
             'geneset': None,
             'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
             'number_genes': None,
+            'degen_translations': None,
             'positions': ['ALL'],
             'partition_by_positions': 'ONE',
             'file_format': 'PHY',
