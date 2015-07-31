@@ -199,6 +199,7 @@ def chain_and_flatten(seqs):
 
 
 def get_start_translation_index(gene_model, removed):
+    start_translation = 0
     if int(gene_model['reading_frame']) == 1:
         if removed % 3 == 0:
             start_translation = 0
@@ -226,14 +227,17 @@ def get_start_translation_index(gene_model, removed):
 
 
 def _degenerate(gene_model, sequence, degen_translation):
-    removed = 0
-    translation_start = get_start_translation_index(gene_model, removed)
+    print(gene_model)
+    translation_start = get_start_translation_index(gene_model, removed=0)
 
     dna = sequence[translation_start:]
     my_type = degen_translation
     res = Degenera(dna.upper(), gene_model['genetic_code'], my_type)
     res.degenerate()
-    return res.degenerated, ''
+
+    # put back the base that was excluded from the degeneration
+    out = '{}{}'.format(sequence[:translation_start], res.degenerated)
+    return out, ''
 
 
 def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_format=None):
