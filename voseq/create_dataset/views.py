@@ -39,7 +39,7 @@ def results(request):
             dataset_creator = CreateDataset(form.cleaned_data)
             dataset = dataset_creator.dataset_str[0:1500] + '\n...\n\n\n' + '#######\nComplete dataset file available for download.\n#######'
             errors = dataset_creator.errors
-            warnings = dataset_creator.warnings
+            warnings = set(dataset_creator.warnings)
 
             dataset_file_abs = dataset_creator.dataset_file
             if dataset_file_abs is not None:
