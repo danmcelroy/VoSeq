@@ -230,12 +230,7 @@ def _degenerate(gene_model, sequence, degen_translation):
     translation_start_position = get_start_translation_index(gene_model, removed=0) + 1
     bases_to_remove = translation_start_position - 1
 
-    # Add removed base to the end so we can degenerate it fully
-    dna = sequence[bases_to_remove:] + 'N' * bases_to_remove
-    dna, ns_added = fill_with_NNN(dna)
-    print(">>>>>seq", sequence)
-    print(">>>>>dna", dna)
-    print(">>>>>len(dna)", len(dna))
+    dna = sequence[bases_to_remove:]
     my_type = degen_translation
     res = Degenera(dna.upper(), gene_model['genetic_code'], my_type)
     res.degenerate()
@@ -244,23 +239,7 @@ def _degenerate(gene_model, sequence, degen_translation):
     missing = sequence[:bases_to_remove].replace('?', 'N').upper()
     out = '{}{}'.format(missing, res.degenerated)
 
-    # remove the base that we added before
-    out = out[:-(bases_to_remove + ns_added)]
-    print(">>>>>out", out)
     return out, ''
-
-
-def fill_with_NNN(dna):
-    """Fills sequences not multiple of 3 with Ns at the end.
-
-    returns sequence and number of bases added.
-    """
-    if len(dna) % 3 == 1:
-        return '{}NN'.format(dna), 2
-    if len(dna) % 3 == 2:
-        return '{}N'.format(dna), 1
-    else:
-        return dna, 0
 
 
 def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_format=None):
