@@ -152,3 +152,25 @@ class TestCoreUtils(TestCase):
         expected = 'NYTNTTYTGRTTYTTYGG'
         result = _degenerate(gene_model, dna, table)[0]
         self.assertEqual(expected, result)
+
+    def test_degenerate_incomplete_seq2(self):
+        gene_model = {
+            'description': 'cytochrome oxidase c subunit I',
+            'genetic_code': 5,
+            'reading_frame': 2,
+            'intron': '',
+            'notes': 'DNA barcode part',
+            'aligned': 'yes',
+            'length': 669,
+            'prot_code': 'yes',
+            'id': 29,
+            'gene_code': 'COI-begin',
+            'time_created': datetime.datetime(2015, 7, 28, 8, 1, 2, 901757),
+            'gene_type': 'mitochondrial',
+        }
+
+        dna = '?TTATTTTGATTTTTTG'
+        table = 5
+        expected = 'NYTNTTYTGRTTYTTYG'
+        result = _degenerate(gene_model, dna, table)[0]
+        self.assertEqual(expected, result)
