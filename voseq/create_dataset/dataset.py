@@ -597,11 +597,24 @@ class CreateMEGA(Dataset):
     def convert_lists_to_dataset(self, partitions):
         sequence_dict = dict()
         for partition in partitions:
+            this_gene = ''
             for line in partition:
-                if not line.startswith('\n['):
+                if line.startswith('\n['):
+                    this_gene_partition = line.replace('[', '').replace(']', '').strip()
+                    this_gene = Genes.objects.filter(gene_code=this_gene_partition).values()
+                    try:
+                        this_gene = this_gene[0]
+                    except KeyError:
+                        pass
+                else:
                     line = line.split(' ')
                     taxon = line[0].replace('?', '')
                     sequence = line[-1]
+
+                    if self.aminoacids is not True and this_gene != '' and \
+                            self.translations is True:
+                        sequence = self.degenerate(sequence, this_gene)
+
                     if taxon not in sequence_dict:
                         sequence_dict[taxon] = ''
                         sequence_dict[taxon] += sequence
