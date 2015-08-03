@@ -109,7 +109,8 @@ class CreateDataset(object):
             nexus = CreateNEXUS(self.codon_positions, self.partition_by_positions,
                                 self.seq_objs, self.gene_codes, self.voucher_codes,
                                 self.file_format, self.outgroup, self.voucher_codes_metadata,
-                                self.minimum_number_of_genes, self.aminoacids)
+                                self.minimum_number_of_genes, self.aminoacids,
+                                degen_translations=self.degen_translations, translations=self.translations)
             nexus_dataset = nexus.from_seq_objs_to_dataset()
             self.warnings += nexus.warnings
             self.dataset_file = nexus.dataset_file

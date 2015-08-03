@@ -902,6 +902,8 @@ END;
                                 ThisGeneAndPartition.this_gene_model,
                                 voucher_code
                             )
+                        if self.aminoacids is not True:
+                            sequence = self.degenerate(sequence, ThisGeneAndPartition.this_gene_model)
 
                     gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
 
