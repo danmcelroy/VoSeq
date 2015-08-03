@@ -14,8 +14,10 @@ class Dataset(object):
     """
     def __init__(self, codon_positions, partition_by_positions, seq_objs, gene_codes,
                  voucher_codes, file_format, outgroup=None, voucher_codes_metadata=None,
-                 minimum_number_of_genes=None, aminoacids=None, degen_translations=None):
+                 minimum_number_of_genes=None, aminoacids=None, degen_translations=None,
+                 translations=None):
         self.degen_translations = degen_translations
+        self.translations = translations
         self.minimum_number_of_genes = minimum_number_of_genes
         self.outgroup = outgroup
         self.file_format = file_format
@@ -193,6 +195,9 @@ class Dataset(object):
         return dataset_str
 
     def degenerate(self, seq, gene_model):
+        if self.translations is None or self.translations is False:
+            return seq
+
         if self.degen_translations in ['NORMAL', 'S', 'Z', 'SZ']:
             if self.partition_by_positions != 'ONE':
                 self.warnings.append(
