@@ -721,7 +721,8 @@ class CreatePhylip(Dataset):
                                 ThisGeneAndPartition.this_gene_model,
                                 voucher_code
                             )
-                        sequence = self.degenerate(sequence, ThisGeneAndPartition.this_gene_model)
+                        if self.aminoacids is not True:
+                            sequence = self.degenerate(sequence, ThisGeneAndPartition.this_gene_model)
 
                         gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
 
@@ -806,7 +807,8 @@ class CreateTNT(Dataset):
                                 voucher_code
                             )
 
-                    gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
+                        sequence = self.degenerate(sequence, ThisGeneAndPartition.this_gene_model)
+                        gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
 
                     if self.outgroup != '' and self.outgroup not in voucher_code:
                         out += [line[0].ljust(55, ' ') + sequence]
