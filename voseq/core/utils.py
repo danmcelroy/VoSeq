@@ -7,6 +7,7 @@ from Bio.Seq import Seq
 from Bio.Alphabet import generic_dna
 from Bio.Data.CodonTable import TranslationError
 from degenerate_dna import Degenera
+from degenerate_dna.exceptions import WrongParameterError
 
 from stats.models import Stats
 from . import exceptions
@@ -230,10 +231,16 @@ def _degenerate(gene_model, sequence, degen_translation):
     translation_start_position = get_start_translation_index(gene_model, removed=0) + 1
     bases_to_remove = translation_start_position - 1
 
-    dna = sequence[bases_to_remove:]
     my_type = degen_translation
+    if my_type.upper() == 'NORMAL':
+        my_type = 'normal'
+
+    dna = sequence[bases_to_remove:]
     res = Degenera(dna.upper(), gene_model['genetic_code'], my_type)
-    res.degenerate()
+    try:
+        res.degenerate()
+    except WrongParameterError as e:
+        return '', e
 
     # put back the base that was excluded from the degeneration
     missing = sequence[:bases_to_remove].replace('?', 'N').upper()
