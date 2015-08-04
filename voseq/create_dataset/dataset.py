@@ -197,6 +197,8 @@ class Dataset(object):
                         this_gene = this_gene[0]
                     except KeyError:
                         pass
+                    out += '\n'
+                    out += line
                 else:
                     line_contents = line.split('\n')
                     taxon = line_contents[0]
