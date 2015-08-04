@@ -237,10 +237,7 @@ def _degenerate(gene_model, sequence, degen_translation):
 
     dna = sequence[bases_to_remove:]
     res = Degenera(dna.upper(), gene_model['genetic_code'], my_type)
-    try:
-        res.degenerate()
-    except WrongParameterError as e:
-        return '', e
+    res.degenerate()
 
     # put back the base that was excluded from the degeneration
     missing = sequence[:bases_to_remove].replace('?', 'N').upper()
