@@ -21,7 +21,6 @@ class TestGeneTable(TestCase):
                                     {
                                         'taxonset': 1,
                                         'geneset': 1,
-
                                     })
         self.assertTrue(expected in str(response.content))
 

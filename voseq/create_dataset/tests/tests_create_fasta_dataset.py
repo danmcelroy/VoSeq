@@ -7,7 +7,7 @@ from create_dataset.utils import CreateDataset
 from public_interface.models import Genes
 
 
-class CreatePhylipDatasetTest(TestCase):
+class CreateFASTADatasetTest(TestCase):
     def setUp(self):
         args = []
         opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
@@ -39,43 +39,7 @@ class CreatePhylipDatasetTest(TestCase):
         self.dataset_creator = CreateDataset(self.cleaned_data)
         self.maxDiff = None
 
-    def test_create_dataset(self):
-        expected = '2 761\nCP100-10_Melitaea_diamina'
-        result = self.dataset_creator.dataset_str
-        self.assertTrue(expected in result)
-
-    def test_only_one_set_of_taxon_names(self):
-        expected = 1
-        dataset = self.dataset_creator.dataset_str
-        result = dataset.count('CP100-10_Melitaea_diamina')
-        self.assertEqual(expected, result)
-
-    def test_stop_codon_warning(self):
-        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
-        c = self.c.post('/create_dataset/results/',
-                        {
-                            'voucher_codes': '',
-                            'gene_codes': [],
-                            'geneset': 1,
-                            'taxonset': 1,
-                            'translations': False,
-                            'introns': 'YES',
-                            'file_format': 'PHY',
-                            'degen_translations': 'NORMAL',
-                            'exclude': 'YES',
-                            'aminoacids': True,
-                            'special': False,
-                            'outgroup': '',
-                            'positions': 'ALL',
-                            'partition_by_positions': 'ONE',
-                            'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
-                        }
-                        )
-        expected = 'stop'
-        result = str(c.content)
-        self.assertTrue(expected in result)
-
-    def test_numer_of_chars_for_aa_dataset(self):
+    def test_create_dataset_degenerated(self):
         self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
         c = self.c.post('/create_dataset/results/',
                         {
@@ -83,12 +47,12 @@ class CreatePhylipDatasetTest(TestCase):
                             'gene_codes': 3,  # wingless
                             'geneset': '',
                             'taxonset': '',
-                            'translations': False,
+                            'translations': True,
                             'introns': 'YES',
-                            'file_format': 'PHY',
+                            'file_format': 'FASTA',
                             'degen_translations': 'NORMAL',
                             'exclude': 'YES',
-                            'aminoacids': True,
+                            'aminoacids': False,
                             'special': False,
                             'outgroup': '',
                             'positions': 'ALL',
@@ -96,5 +60,53 @@ class CreatePhylipDatasetTest(TestCase):
                             'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
                         }
                         )
-        expected = '1 137'
+        expected = 'ACAYGTNGAYTCNGGNAARTCNACNACNACNGG'
+        self.assertTrue(expected in str(c.content))
+
+    def test_create_dataset_degenerated_warning_data_cannot_be_partitioned(self):
+        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
+        c = self.c.post('/create_dataset/results/',
+                        {
+                            'voucher_codes': 'CP100-10',
+                            'gene_codes': 4,
+                            'geneset': '',
+                            'taxonset': '',
+                            'translations': True,
+                            'introns': 'YES',
+                            'file_format': 'FASTA',
+                            'degen_translations': 'NORMAL',
+                            'exclude': 'YES',
+                            'aminoacids': False,
+                            'special': False,
+                            'outgroup': '',
+                            'positions': 'ALL',
+                            'partition_by_positions': 'EACH',
+                            'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
+                        }
+                        )
+        expected = 'Cannot degenerate codons if they go to different partitions'
+        self.assertTrue(expected in str(c.content))
+
+    def test_create_dataset_degenerated_warning_data_cannot_be_of_partial_codons(self):
+        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
+        c = self.c.post('/create_dataset/results/',
+                        {
+                            'voucher_codes': 'CP100-10',
+                            'gene_codes': 4,
+                            'geneset': '',
+                            'taxonset': '',
+                            'translations': True,
+                            'introns': 'YES',
+                            'file_format': 'FASTA',
+                            'degen_translations': 'NORMAL',
+                            'exclude': 'YES',
+                            'aminoacids': False,
+                            'special': False,
+                            'outgroup': '',
+                            'positions': '1st',
+                            'partition_by_positions': 'ONE',
+                            'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
+                        }
+                        )
+        expected = 'Cannot degenerate codons if they you have not selected all codon positions'
         self.assertTrue(expected in str(c.content))

@@ -23,6 +23,7 @@ class CreateMEGADatasetTest(TestCase):
             'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
             'number_genes': None,
             'positions': ['ALL'],
+            'degen_translations': None,
             'partition_by_positions': 'ONE',
             'file_format': 'MEGA',
             'aminoacids': False,

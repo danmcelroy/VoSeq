@@ -1,5 +1,4 @@
 import itertools
-import json
 import re
 
 from django.conf import settings
@@ -7,6 +6,8 @@ from django.conf import settings
 from Bio.Seq import Seq
 from Bio.Alphabet import generic_dna
 from Bio.Data.CodonTable import TranslationError
+from degenerate_dna import Degenera
+from degenerate_dna.exceptions import WrongParameterError
 
 from stats.models import Stats
 from . import exceptions
@@ -199,6 +200,7 @@ def chain_and_flatten(seqs):
 
 
 def get_start_translation_index(gene_model, removed):
+    start_translation = 0
     if int(gene_model['reading_frame']) == 1:
         if removed % 3 == 0:
             start_translation = 0
@@ -225,15 +227,34 @@ def get_start_translation_index(gene_model, removed):
     return start_translation
 
 
+def _degenerate(gene_model, sequence, degen_translation):
+    translation_start_position = get_start_translation_index(gene_model, removed=0) + 1
+    bases_to_remove = translation_start_position - 1
+
+    my_type = degen_translation
+    if my_type.upper() == 'NORMAL':
+        my_type = 'normal'
+
+    dna = sequence[bases_to_remove:]
+    res = Degenera(dna.upper(), gene_model['genetic_code'], my_type)
+    res.degenerate()
+
+    # put back the base that was excluded from the degeneration
+    missing = sequence[:bases_to_remove].replace('?', 'N').upper()
+    out = '{}{}'.format(missing, res.degenerated)
+
+    return out
+
+
 def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_format=None):
     removed = 0
     if file_format == 'FASTA' or file_format == 'GenbankFASTA':
         sequence, removed = strip_question_marks(sequence)
     seq_seq = sequence.replace('?', 'N')
 
-    start_translation = get_start_translation_index(gene_model, removed)
+    translation_start = get_start_translation_index(gene_model, removed)
 
-    seq_obj = Seq(seq_seq[start_translation:], generic_dna)
+    seq_obj = Seq(seq_seq[translation_start:], generic_dna)
 
     if '---' in seq_seq:  # we have gaps
         try:
