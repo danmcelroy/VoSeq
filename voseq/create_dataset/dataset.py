@@ -229,16 +229,13 @@ class Dataset(object):
                     '1st' in self.codon_positions and
                     '2nd' in self.codon_positions and
                     '3rd' in self.codon_positions):
-                degenerated, warnings = utils._degenerate(gene_model, seq, self.degen_translations)
-                if warnings != '':
-                    self.warnings.append(warnings)
+                degenerated = utils._degenerate(gene_model, seq, self.degen_translations)
                 return degenerated
             else:
                 self.warnings.append(
                     'Cannot degenerate codons if they you have not selected all codon positions.'
                 )
                 return ''
-        return seq
 
     def translate_this_sequence(self, sequence, this_gene_model, voucher_code):
         aa_sequence = ''

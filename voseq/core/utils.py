@@ -243,7 +243,7 @@ def _degenerate(gene_model, sequence, degen_translation):
     missing = sequence[:bases_to_remove].replace('?', 'N').upper()
     out = '{}{}'.format(missing, res.degenerated)
 
-    return out, ''
+    return out
 
 
 def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_format=None):
