@@ -223,6 +223,7 @@ class Dataset(object):
                 self.warnings.append(
                     'Cannot degenerate codons if they go to different partitions.'
                 )
+                return ''
 
             if 'ALL' in self.codon_positions or (
                     '1st' in self.codon_positions and
@@ -236,6 +237,7 @@ class Dataset(object):
                 self.warnings.append(
                     'Cannot degenerate codons if they you have not selected all codon positions.'
                 )
+                return ''
         return seq
 
     def translate_this_sequence(self, sequence, this_gene_model, voucher_code):
