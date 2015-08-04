@@ -6,6 +6,7 @@ from create_dataset.utils import CreateDataset
 from create_dataset.views import guess_file_extension
 from public_interface.models import Genes
 from public_interface.models import GeneSets
+from public_interface.models import Sequences
 from public_interface.models import TaxonSets
 
 
@@ -26,6 +27,7 @@ class CreateDatasetUtilsTest(TestCase):
             'taxon_names': ['CODE', 'SUPERFAMILY', 'GENUS', 'SPECIES'],
             'positions': ['ALL'],
             'partition_by_positions': 'ONE',
+            'degen_translations': None,
             'number_genes': None,
             'file_format': 'FASTA',
             'aminoacids': False,

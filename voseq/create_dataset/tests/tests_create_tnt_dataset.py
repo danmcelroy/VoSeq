@@ -24,6 +24,7 @@ class CreateTNTDatasetTest(TestCase):
             'geneset': None,
             'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
             'number_genes': None,
+            'degen_translations': None,
             'positions': ['2nd', '3rd'],
             'partition_by_positions': 'ONE',
             'file_format': 'TNT',

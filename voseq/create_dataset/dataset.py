@@ -14,7 +14,10 @@ class Dataset(object):
     """
     def __init__(self, codon_positions, partition_by_positions, seq_objs, gene_codes,
                  voucher_codes, file_format, outgroup=None, voucher_codes_metadata=None,
-                 minimum_number_of_genes=None, aminoacids=None):
+                 minimum_number_of_genes=None, aminoacids=None, degen_translations=None,
+                 translations=None):
+        self.degen_translations = degen_translations
+        self.translations = translations
         self.minimum_number_of_genes = minimum_number_of_genes
         self.outgroup = outgroup
         self.file_format = file_format
@@ -183,12 +186,56 @@ class Dataset(object):
         on needed dataset.
         """
         out = ''
-        for i in partitions:
-            out += '\n'
-            out += '\n'.join(i)
+        for partition in partitions:
+            this_gene = ''
+            for line in partition:
+                line_contents = line.split('\n')
+                if line_contents[1] == '--------------------':
+                    this_gene_partition = line_contents[0].replace('>', '').strip()
+                    this_gene = Genes.objects.filter(gene_code=this_gene_partition).values()
+                    try:
+                        this_gene = this_gene[0]
+                    except IndexError:
+                        pass
+                    out += '\n'
+                    out += line
+                else:
+                    line_contents = line.split('\n')
+                    taxon = line_contents[0]
+                    sequence = line_contents[1]
+
+                    if self.aminoacids is not True and this_gene != '' and \
+                            self.translations is True:
+                        sequence = self.degenerate(sequence, this_gene)
+                    out += '\n'
+                    out += '\n'.join([taxon, sequence])
+
         dataset_str = out.strip()
         self.save_dataset_to_file(dataset_str)
         return dataset_str
+
+    def degenerate(self, seq, gene_model):
+        if self.translations is None or self.translations is False:
+            return seq
+
+        if self.degen_translations in ['NORMAL', 'S', 'Z', 'SZ']:
+            if self.partition_by_positions != 'ONE':
+                self.warnings.append(
+                    'Cannot degenerate codons if they go to different partitions.'
+                )
+                return ''
+
+            if 'ALL' in self.codon_positions or (
+                    '1st' in self.codon_positions and
+                    '2nd' in self.codon_positions and
+                    '3rd' in self.codon_positions):
+                degenerated = utils._degenerate(gene_model, seq, self.degen_translations)
+                return degenerated
+            else:
+                self.warnings.append(
+                    'Cannot degenerate codons if they you have not selected all codon positions.'
+                )
+                return ''
 
     def translate_this_sequence(self, sequence, this_gene_model, voucher_code):
         aa_sequence = ''
@@ -569,11 +616,24 @@ class CreateMEGA(Dataset):
     def convert_lists_to_dataset(self, partitions):
         sequence_dict = dict()
         for partition in partitions:
+            this_gene = ''
             for line in partition:
-                if not line.startswith('\n['):
+                if line.startswith('\n['):
+                    this_gene_partition = line.replace('[', '').replace(']', '').strip()
+                    this_gene = Genes.objects.filter(gene_code=this_gene_partition).values()
+                    try:
+                        this_gene = this_gene[0]
+                    except KeyError:
+                        pass
+                else:
                     line = line.split(' ')
                     taxon = line[0].replace('?', '')
                     sequence = line[-1]
+
+                    if self.aminoacids is not True and this_gene != '' and \
+                            self.translations is True:
+                        sequence = self.degenerate(sequence, this_gene)
+
                     if taxon not in sequence_dict:
                         sequence_dict[taxon] = ''
                         sequence_dict[taxon] += sequence
@@ -693,6 +753,8 @@ class CreatePhylip(Dataset):
                                 ThisGeneAndPartition.this_gene_model,
                                 voucher_code
                             )
+                        if self.aminoacids is not True:
+                            sequence = self.degenerate(sequence, ThisGeneAndPartition.this_gene_model)
 
                         gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
 
@@ -776,8 +838,10 @@ class CreateTNT(Dataset):
                                 ThisGeneAndPartition.this_gene_model,
                                 voucher_code
                             )
+                        if self.aminoacids is not True:
+                            sequence = self.degenerate(sequence, ThisGeneAndPartition.this_gene_model)
 
-                    gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
+                        gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
 
                     if self.outgroup != '' and self.outgroup not in voucher_code:
                         out += [line[0].ljust(55, ' ') + sequence]
@@ -870,6 +934,8 @@ END;
                                 ThisGeneAndPartition.this_gene_model,
                                 voucher_code
                             )
+                        if self.aminoacids is not True:
+                            sequence = self.degenerate(sequence, ThisGeneAndPartition.this_gene_model)
 
                     gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
 

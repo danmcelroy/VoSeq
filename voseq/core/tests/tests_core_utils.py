@@ -1,3 +1,5 @@
+import datetime
+
 from django.test import TestCase
 from django.core.management import call_command
 
@@ -6,6 +8,7 @@ from core.utils import get_gene_codes
 from core.utils import get_voucher_codes
 from core.utils import get_start_translation_index
 from core.utils import strip_question_marks
+from core.utils import _degenerate
 from public_interface.models import TaxonSets
 from public_interface.models import GeneSets
 from public_interface.models import Genes
@@ -104,4 +107,70 @@ class TestCoreUtils(TestCase):
         seq = '???NNNATC'
         result = strip_question_marks(seq)
         expected = ('ATC', 6)
+        self.assertEqual(expected, result)
+
+    def test_degenerate(self):
+        gene_model = {
+            'description': 'cytochrome oxidase c subunit I',
+            'genetic_code': 5,
+            'reading_frame': 2,
+            'intron': '',
+            'notes': 'DNA barcode part',
+            'aligned': 'yes',
+            'length': 669,
+            'prot_code': 'yes',
+            'id': 29,
+            'gene_code': 'COI-begin',
+            'time_created': datetime.datetime(2015, 7, 28, 8, 1, 2, 901757),
+            'gene_type': 'mitochondrial',
+        }
+
+        dna = '?ACTTTATATTTTATTTTTGGAATTTGAGCAG'
+        degen_translation = 'NORMAL'
+        expected = 'NACNYTNTAYTTYATYTTYGGNATYTGRGCNG'
+        result = _degenerate(gene_model, dna, degen_translation)
+        self.assertEqual(expected, result)
+
+    def test_degenerate_incomplete_seq(self):
+        gene_model = {
+            'description': 'cytochrome oxidase c subunit I',
+            'genetic_code': 5,
+            'reading_frame': 2,
+            'intron': '',
+            'notes': 'DNA barcode part',
+            'aligned': 'yes',
+            'length': 669,
+            'prot_code': 'yes',
+            'id': 29,
+            'gene_code': 'COI-begin',
+            'time_created': datetime.datetime(2015, 7, 28, 8, 1, 2, 901757),
+            'gene_type': 'mitochondrial',
+        }
+
+        dna = '?TTATTTTGATTTTTTGG'
+        degen_translation = 'NORMAL'
+        expected = 'NYTNTTYTGRTTYTTYGG'
+        result = _degenerate(gene_model, dna, degen_translation)
+        self.assertEqual(expected, result)
+
+    def test_degenerate_incomplete_seq2(self):
+        gene_model = {
+            'description': 'cytochrome oxidase c subunit I',
+            'genetic_code': 5,
+            'reading_frame': 2,
+            'intron': '',
+            'notes': 'DNA barcode part',
+            'aligned': 'yes',
+            'length': 669,
+            'prot_code': 'yes',
+            'id': 29,
+            'gene_code': 'COI-begin',
+            'time_created': datetime.datetime(2015, 7, 28, 8, 1, 2, 901757),
+            'gene_type': 'mitochondrial',
+        }
+
+        dna = '?TTATTTTGATTTTTTG'
+        degen_translation = 'NORMAL'
+        expected = 'NYTNTTYTGRTTYTTYG'
+        result = _degenerate(gene_model, dna, degen_translation)
         self.assertEqual(expected, result)
