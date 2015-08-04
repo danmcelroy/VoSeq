@@ -128,7 +128,7 @@ class TestCoreUtils(TestCase):
         dna = '?ACTTTATATTTTATTTTTGGAATTTGAGCAG'
         degen_translation = 'NORMAL'
         expected = 'NACNYTNTAYTTYATYTTYGGNATYTGRGCNG'
-        result = _degenerate(gene_model, dna, degen_translation)[0]
+        result = _degenerate(gene_model, dna, degen_translation)
         self.assertEqual(expected, result)
 
     def test_degenerate_incomplete_seq(self):
@@ -150,7 +150,7 @@ class TestCoreUtils(TestCase):
         dna = '?TTATTTTGATTTTTTGG'
         degen_translation = 'NORMAL'
         expected = 'NYTNTTYTGRTTYTTYGG'
-        result = _degenerate(gene_model, dna, degen_translation)[0]
+        result = _degenerate(gene_model, dna, degen_translation)
         self.assertEqual(expected, result)
 
     def test_degenerate_incomplete_seq2(self):
@@ -172,5 +172,5 @@ class TestCoreUtils(TestCase):
         dna = '?TTATTTTGATTTTTTG'
         degen_translation = 'NORMAL'
         expected = 'NYTNTTYTGRTTYTTYG'
-        result = _degenerate(gene_model, dna, degen_translation)[0]
+        result = _degenerate(gene_model, dna, degen_translation)
         self.assertEqual(expected, result)
