@@ -26,8 +26,16 @@ class CreateDataset(object):
 
     """
     def __init__(self, cleaned_data):
-        self.degen_translations = cleaned_data['degen_translations']
-        self.translations = cleaned_data['translations']
+        try:
+            self.degen_translations = cleaned_data['degen_translations']
+        except KeyError:
+            self.degen_translations = None
+
+        try:
+            self.translations = cleaned_data['translations']
+        except KeyError:
+            self.translations = None
+
         self.errors = []
         self.seq_objs = dict()
         self.minimum_number_of_genes = cleaned_data['number_genes']
