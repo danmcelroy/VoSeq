@@ -186,10 +186,28 @@ class Dataset(object):
         on needed dataset.
         """
         out = ''
-        for i in partitions:
-            seq = self.degenerate(i)
-            out += '\n'
-            out += '\n'.join(seq)
+        for partition in partitions:
+            this_gene = ''
+            for line in partition:
+                line_contents = line.split('\n')
+                if line_contents[1] == '--------------------':
+                    this_gene_partition = line_contents[0].replace('>', '').strip()
+                    this_gene = Genes.objects.filter(gene_code=this_gene_partition).values()
+                    try:
+                        this_gene = this_gene[0]
+                    except KeyError:
+                        pass
+                else:
+                    line_contents = line.split('\n')
+                    taxon = line_contents[0]
+                    sequence = line_contents[1]
+
+                    if self.aminoacids is not True and this_gene != '' and \
+                            self.translations is True:
+                        sequence = self.degenerate(sequence, this_gene)
+                    out += '\n'
+                    out += '\n'.join([taxon, sequence])
+
         dataset_str = out.strip()
         self.save_dataset_to_file(dataset_str)
         return dataset_str
