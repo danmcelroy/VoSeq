@@ -195,7 +195,7 @@ class Dataset(object):
                     this_gene = Genes.objects.filter(gene_code=this_gene_partition).values()
                     try:
                         this_gene = this_gene[0]
-                    except KeyError:
+                    except IndexError:
                         pass
                     out += '\n'
                     out += line
