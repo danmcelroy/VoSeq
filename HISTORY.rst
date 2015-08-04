@@ -19,6 +19,7 @@ pre-release v2.0.0-alpha-4 (2015-xx-xx)
 - **Added batch upload of voucher** data. It will show a diff between fields that
   could be updated and will also show a confirmation page before execution of
   changes.
+- **Added Zwick et al. method** to degenerate DNA sequences for create_dataset tool.
 
 pre-release v2.0.0-alpha-3 (2015-06-12)
 +++++++++++++++++++++++++++++++++++++++
