@@ -170,7 +170,7 @@ class TestCoreUtils(TestCase):
         }
 
         dna = '?TTATTTTGATTTTTTG'
-        table = 5
+        degen_translation = 'NORMAL'
         expected = 'NYTNTTYTGRTTYTTYG'
-        result = _degenerate(gene_model, dna, table)[0]
+        result = _degenerate(gene_model, dna, degen_translation)[0]
         self.assertEqual(expected, result)
