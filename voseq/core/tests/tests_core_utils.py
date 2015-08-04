@@ -126,9 +126,9 @@ class TestCoreUtils(TestCase):
         }
 
         dna = '?ACTTTATATTTTATTTTTGGAATTTGAGCAG'
-        table = 5
+        degen_translation = 'NORMAL'
         expected = 'NACNYTNTAYTTYATYTTYGGNATYTGRGCNG'
-        result = _degenerate(gene_model, dna, table)[0]
+        result = _degenerate(gene_model, dna, degen_translation)[0]
         self.assertEqual(expected, result)
 
     def test_degenerate_incomplete_seq(self):
@@ -148,9 +148,9 @@ class TestCoreUtils(TestCase):
         }
 
         dna = '?TTATTTTGATTTTTTGG'
-        table = 5
+        degen_translation = 'NORMAL'
         expected = 'NYTNTTYTGRTTYTTYGG'
-        result = _degenerate(gene_model, dna, table)[0]
+        result = _degenerate(gene_model, dna, degen_translation)[0]
         self.assertEqual(expected, result)
 
     def test_degenerate_incomplete_seq2(self):
