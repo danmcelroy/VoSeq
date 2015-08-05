@@ -110,3 +110,27 @@ class CreateFASTADatasetTest(TestCase):
                         )
         expected = 'Cannot degenerate codons if they you have not selected all codon positions'
         self.assertTrue(expected in str(c.content))
+
+    def test_fasta_as_aminoacids(self):
+        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
+        c = self.c.post('/create_dataset/results/',
+                        {
+                            'voucher_codes': 'CP100-10',
+                            'gene_codes': 3,  # wingless
+                            'geneset': '',
+                            'taxonset': '',
+                            'translations': True,
+                            'introns': 'YES',
+                            'file_format': 'FASTA',
+                            'degen_translations': 'NORMAL',
+                            'exclude': 'YES',
+                            'aminoacids': True,
+                            'special': False,
+                            'outgroup': '',
+                            'positions': 'ALL',
+                            'partition_by_positions': 'ONE',
+                            'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
+                        }
+                        )
+        expected = 'GKSTTTGHLIYKCGGIDKRTIEKFEKEAQEM'
+        self.assertTrue(expected in str(c.content))
