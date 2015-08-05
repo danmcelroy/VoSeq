@@ -949,7 +949,6 @@ END;
                     )
 
                 if voucher_code not in self.vouchers_to_drop:
-                    print(i)
                     line = i.split(' ')
                     if len(line) > 1:
                         sequence = line[-1]
@@ -963,13 +962,13 @@ END;
                         if self.aminoacids is not True:
                             sequence = self.degenerate(sequence, ThisGeneAndPartition.this_gene_model)
 
-                    gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
+                        gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
 
-                tmp_seq = sequence.replace('-', '')
-                if len(tmp_seq) < 1:
-                    out = ['\n[{}]'.format(voucher_code)]
-                else:
-                    out += [line[0].ljust(55, ' ') + sequence]
+                        tmp_seq = sequence.replace('-', '')
+                        if len(tmp_seq) < 1:
+                            out = ['\n[{}]'.format(voucher_code)]
+                        else:
+                            out += [line[0].ljust(55, ' ') + sequence]
 
         number_chars = 0
         for k in gene_codes_and_lengths.keys():
