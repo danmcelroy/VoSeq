@@ -844,7 +844,15 @@ class CreateTNT(Dataset):
                         else:
                             out += [outgroup_sequences[partition_count]]
                         partition_count += 1
-                elif voucher_code not in self.vouchers_to_drop:
+                elif voucher_code.startswith('>'):
+                    voucher_code = i.splitlines()[0].replace('>', '')
+                    sequence = i.splitlines()[1]
+                    i = '{} {}'.format(voucher_code, sequence)
+                    ThisGeneAndPartition = self.get_gene_for_current_partition(
+                        gene_models, out, partitions_incorporated, voucher_code
+                    )
+
+                if voucher_code not in self.vouchers_to_drop:
                     line = i.split(' ')
                     if len(line) > 1:
                         sequence = line[-1]
@@ -860,10 +868,14 @@ class CreateTNT(Dataset):
 
                         gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
 
-                    if self.outgroup != '' and self.outgroup not in voucher_code:
-                        out += [line[0].ljust(55, ' ') + sequence]
-                    elif self.outgroup == '':
-                        out += [line[0].ljust(55, ' ') + sequence]
+                        tmp_seq = sequence.replace('-', '')
+                        if len(tmp_seq) < 1:
+                            out = ['\n[{}]'.format(voucher_code)]
+                        else:
+                            if self.outgroup != '' and self.outgroup not in voucher_code:
+                                out += [line[0].ljust(55, ' ') + sequence]
+                            elif self.outgroup == '':
+                                out += [line[0].ljust(55, ' ') + sequence]
 
         out += ['\n;\nproc/;']
 
