@@ -42,7 +42,7 @@ def browse(request):
     version, stats = get_version_stats()
     username = get_username(request)
 
-    queryset = Vouchers.objects.order_by('-timestamp')[:10]
+    queryset = Vouchers.objects.order_by('-modified')[:10]
 
     vouchers_with_images = []
     # Lookups that span relationships
