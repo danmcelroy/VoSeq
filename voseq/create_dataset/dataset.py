@@ -623,6 +623,10 @@ class CreateFasta(Dataset):
 
 class CreateMEGA(Dataset):
     def convert_lists_to_dataset(self, partitions):
+        gene_models = Genes.objects.all().values()
+        out = []
+        partitions_incorporated = 0
+
         sequence_dict = dict()
         for partition in partitions:
             this_gene = ''
@@ -634,28 +638,33 @@ class CreateMEGA(Dataset):
                         this_gene = this_gene[0]
                     except KeyError:
                         pass
+                elif line.startswith('>'):
+                    voucher_code = line.splitlines()[0].replace('>', '')
+                    sequence = line.splitlines()[1]
+                    line = '{} {}'.format(voucher_code, sequence)
+
+                line = line.split(' ')
+                taxon = line[0].replace('?', '')
+                voucher_code = taxon.split('_')[0]
+                sequence = line[-1]
+
+                if self.aminoacids is True:
+                    sequence = self.translate_this_sequence(
+                        sequence,
+                        this_gene,
+                        voucher_code,
+                    )
+
+                if self.aminoacids is not True and this_gene != '' and \
+                        self.translations is True:
+                    sequence = self.degenerate(sequence, this_gene)
+
+                if taxon not in sequence_dict:
+                    sequence_dict[taxon] = ''
+                    sequence_dict[taxon] += sequence
                 else:
-                    line = line.split(' ')
-                    taxon = line[0].replace('?', '')
-                    voucher_code = taxon.split('_')[0]
-                    sequence = line[-1]
+                    sequence_dict[taxon] += sequence
 
-                    if self.aminoacids is True:
-                        sequence = self.translate_this_sequence(
-                            sequence,
-                            this_gene,
-                            voucher_code,
-                        )
-
-                    if self.aminoacids is not True and this_gene != '' and \
-                            self.translations is True:
-                        sequence = self.degenerate(sequence, this_gene)
-
-                    if taxon not in sequence_dict:
-                        sequence_dict[taxon] = ''
-                        sequence_dict[taxon] += sequence
-                    else:
-                        sequence_dict[taxon] += sequence
         out = ''
         for k, v in sequence_dict.items():
             out += '\n#' + k + '\n' + v
