@@ -623,10 +623,6 @@ class CreateFasta(Dataset):
 
 class CreateMEGA(Dataset):
     def convert_lists_to_dataset(self, partitions):
-        gene_models = Genes.objects.all().values()
-        out = []
-        partitions_incorporated = 0
-
         sequence_dict = dict()
         for partition in partitions:
             this_gene = ''
@@ -647,6 +643,10 @@ class CreateMEGA(Dataset):
                 taxon = line[0].replace('?', '')
                 voucher_code = taxon.split('_')[0]
                 sequence = line[-1]
+
+                if self.partition_by_positions != 'ONE' and self.translations is True:
+                    self.warnings.append('Cannot degenerate codons if they go to different partitions.')
+                    continue
 
                 if self.aminoacids is True:
                     sequence = self.translate_this_sequence(
