@@ -618,7 +618,6 @@ class CreateMEGA(Dataset):
         for partition in partitions:
             this_gene = ''
             for line in partition:
-                print(line)
                 if line.startswith('\n['):
                     this_gene_partition = line.replace('[', '').replace(']', '').strip()
                     this_gene = Genes.objects.filter(gene_code=this_gene_partition).values()
