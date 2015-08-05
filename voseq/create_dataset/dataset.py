@@ -202,11 +202,20 @@ class Dataset(object):
                 else:
                     line_contents = line.split('\n')
                     taxon = line_contents[0]
+                    voucher_code = taxon.replace('>', '').split('_')[0]
                     sequence = line_contents[1]
 
                     if self.aminoacids is not True and this_gene != '' and \
                             self.translations is True:
                         sequence = self.degenerate(sequence, this_gene)
+
+                    if self.aminoacids is True:
+                        sequence = self.translate_this_sequence(
+                            sequence,
+                            this_gene,
+                            voucher_code,
+                        )
+
                     out += '\n'
                     out += '\n'.join([taxon, sequence])
 
