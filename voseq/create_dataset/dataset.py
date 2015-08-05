@@ -941,15 +941,15 @@ END;
                     )
                     out = ThisGeneAndPartition.out
                 elif voucher_code.startswith('>'):
-                    voucher_code = i.splitlines()[0].split('_')[0].replace('>', '')
+                    voucher_code = i.splitlines()[0].replace('>', '')
                     sequence = i.splitlines()[1]
                     i = '{} {}'.format(voucher_code, sequence)
                     ThisGeneAndPartition = self.get_gene_for_current_partition(
                         gene_models, out, partitions_incorporated, voucher_code
                     )
-                    print(">>>>{}====".format(sequence))
 
                 if voucher_code not in self.vouchers_to_drop:
+                    print(i)
                     line = i.split(' ')
                     if len(line) > 1:
                         sequence = line[-1]
@@ -965,6 +965,10 @@ END;
 
                     gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
 
+                tmp_seq = sequence.replace('-', '')
+                if len(tmp_seq) < 1:
+                    out = ['\n[{}]'.format(voucher_code)]
+                else:
                     out += [line[0].ljust(55, ' ') + sequence]
 
         number_chars = 0
