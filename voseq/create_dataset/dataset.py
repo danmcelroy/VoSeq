@@ -628,7 +628,15 @@ class CreateMEGA(Dataset):
                 else:
                     line = line.split(' ')
                     taxon = line[0].replace('?', '')
+                    voucher_code = taxon.split('_')[0]
                     sequence = line[-1]
+
+                    if self.aminoacids is True:
+                        sequence = self.translate_this_sequence(
+                            sequence,
+                            this_gene,
+                            voucher_code,
+                        )
 
                     if self.aminoacids is not True and this_gene != '' and \
                             self.translations is True:
