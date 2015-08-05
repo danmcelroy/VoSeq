@@ -7,6 +7,18 @@ from django.db.models.signals import post_save
 import flickrapi
 
 
+class TimeStampedModel(models.Model):
+    """
+    Abstract base class model to provide self-updating ``created`` and
+    ``modified`` fields. Taken from the 'Two scoops of django' book (v1.8).
+    """
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
 class Genes(models.Model):
     gene_code = models.CharField(max_length=100)
     genetic_code = models.PositiveSmallIntegerField(
@@ -86,7 +98,7 @@ class TaxonSets(models.Model):
         verbose_name_plural = "Taxon sets"
 
 
-class Vouchers(models.Model):
+class Vouchers(TimeStampedModel):
     MALE = 'male'
     FEMALE = 'female'
     LARVA = 'larva'
@@ -166,7 +178,6 @@ class Vouchers(models.Model):
     determinedBy = models.TextField(help_text="Person that identified the taxon for this specimen.",
                                     blank=True)
     author = models.TextField(help_text="Person that described this taxon.", blank=True)
-    timestamp = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Vouchers"
