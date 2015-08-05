@@ -28,7 +28,7 @@ class SimpleSearchIndex(indexes.SearchIndex, indexes.Indexable):
     # TODO change to time_edited, time_created with auto in tables and migrate_db script
     def index_queryset(self, using='default'):
         # Used when the entire index for model is updated.
-        return self.get_model().objects.filter(timestamp__lte=datetime.datetime.now())
+        return self.get_model().objects.filter(modified__lte=datetime.datetime.now())
 
 
 class AutoCompleteIndex(SimpleSearchIndex):
@@ -59,7 +59,7 @@ class AutoCompleteIndex(SimpleSearchIndex):
 
     def index_queryset(self, using='autocomplete'):
         # Used when the entire index for model is updated.
-        return self.get_model().objects.filter(timestamp__lte=datetime.datetime.now())
+        return self.get_model().objects.filter(modified__lte=datetime.datetime.now())
 
 
 class VouchersIndex(indexes.SearchIndex, indexes.Indexable):
@@ -105,7 +105,7 @@ class VouchersIndex(indexes.SearchIndex, indexes.Indexable):
 
     def index_queryset(self, using='vouchers'):
         # Used when the entire index for model is updated.
-        return self.get_model().objects.filter(timestamp__lte=datetime.datetime.now())
+        return self.get_model().objects.filter(modified__lte=datetime.datetime.now())
 
 
 class AdvancedSearchIndex(indexes.SearchIndex, indexes.Indexable):
