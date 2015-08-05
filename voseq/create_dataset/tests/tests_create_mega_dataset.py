@@ -48,3 +48,12 @@ class CreateMEGADatasetTest(TestCase):
         expected = '??????????????????????????CAAGT'
         result = self.dataset_creator.dataset_str
         self.assertTrue(expected in result)
+
+    def test_dataset_as_aminoacids(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['aminoacids'] = True
+        dataset_creator = CreateDataset(cleaned_data)
+
+        expected = 'PSFLIGDDQIYNTIVTAHAFIMIFFMVMPIMIGGFGNWLVPLMLG'
+        result = dataset_creator.dataset_str
+        self.assertTrue(expected in result)
