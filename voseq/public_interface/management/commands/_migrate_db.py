@@ -488,7 +488,7 @@ class ParseXML(object):
             item['flickr_id'] = row.find("./field/[@name='flickr_id']").text
             item['determinedBy'] = row.find("./field/[@name='determinedBy']").text
             item['author'] = row.find("./field/[@name='auctor']").text
-            item['timestamp'] = row.find("./field/[@name='timestamp']").text
+            item['created'] = row.find("./field/[@name='timestamp']").text
             self.table_vouchers_items.append(item)
 
     def import_table_vouchers(self):
@@ -531,7 +531,7 @@ class ParseXML(object):
 
             item['dateCollection'] = self.parse_date(item['dateCollection'], 'dateCollection')
             item['dateExtraction'] = self.parse_date(item['dateExtraction'], 'dateExtraction')
-            item['timestamp'] = self.parse_timestamp(item['timestamp'], 'timestamp')
+            item['created'] = self.parse_timestamp(item['created'], 'created')
 
             is_flickr, image_info = self.parse_image_info(item)
             if is_flickr is True:
