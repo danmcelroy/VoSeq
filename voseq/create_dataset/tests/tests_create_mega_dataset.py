@@ -57,3 +57,32 @@ class CreateMEGADatasetTest(TestCase):
         expected = 'PSFLIGDDQIYNTIVTAHAFIMIFFMVMPIMIGGFGNWLVPLMLG'
         result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
+
+    def test_dataset_with_partitions(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        expected = '?TGGCGGATATGGACTCCTAGCTATATCGACGATTGGAACCAGTTTTATGGGAGAC'
+        result = dataset_creator.dataset_str
+        self.assertTrue(expected in result)
+
+    def test_dataset_with_degen_tranlations(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['degen_translations'] = 'NORMAL'
+        cleaned_data['translations'] = True
+        dataset_creator = CreateDataset(cleaned_data)
+
+        expected = 'NTGRGCNGGNATRATYGGNA'
+        result = dataset_creator.dataset_str.strip()
+        self.assertTrue(expected in result)
+
+    def test_dataset_with_partitions_and_degen_tranlations(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['translations'] = True
+        dataset_creator = CreateDataset(cleaned_data)
+
+        expected = '#MEGA\n!TITLE title;'
+        result = dataset_creator.dataset_str.strip()
+        self.assertEqual(expected, result)
