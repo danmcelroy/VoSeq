@@ -267,6 +267,7 @@ class Dataset(object):
         return sequence
 
     def get_codons_in_each_partition(self, codons):
+        print("===============codons", codons)
         partition_list = ()
         codon_descriptions = []
         codon_pos = []
@@ -513,6 +514,7 @@ class Dataset(object):
 
         if 'ALL' in self.codon_positions and \
                 '1st2nd_3rd' in self.partition_by_positions:
+            print("hola cuy")
             self.partition_list = ([], [],)
 
             for gene_code in self.seq_objs:
@@ -526,18 +528,27 @@ class Dataset(object):
                     if this_gene is None:
                         this_gene = seq_record.name
 
-                        seq_str = '>' + this_gene + '_1st_2nd_codons\n' + '--------------------'
-                        self.partition_list[0].append(seq_str)
-
-                        seq_str = '>' + this_gene + '_3rd_codon\n' + '--------------------'
-                        self.partition_list[1].append(seq_str)
+                        if self.file_format == 'PHY':
+                            seq_str = '\n' + this_gene + '_1st_2nd_codons\n' + '--------------------'
+                            self.partition_list[0].append(seq_str)
+                        else:
+                            seq_str = '>' + this_gene + '_1st_2nd_codons\n' + '--------------------'
+                            self.partition_list[0].append(seq_str)
+                            seq_str = '>' + this_gene + '_3rd_codon\n' + '--------------------'
+                            self.partition_list[1].append(seq_str)
 
                     codons = self.split_sequence_in_codon_positions(this_gene, seq_record.seq)
 
-                    seq_str = '>' + seq_record.id + '\n' + str(utils.chain_and_flatten([codons[0], codons[1]]))
+                    if self.file_format == 'PHY':
+                        seq_str = seq_record.id + ' ' + str(utils.chain_and_flatten([codons[0], codons[1]]))
+                    else:
+                        seq_str = '>' + seq_record.id + '\n' + str(utils.chain_and_flatten([codons[0], codons[1]]))
                     self.partition_list[0].append(seq_str)
 
-                    seq_str = '>' + seq_record.id + '\n' + str(codons[2])
+                    if self.file_format == 'PHY':
+                        seq_str = seq_record.id + ' ' + str(codons[2])
+                    else:
+                        seq_str = '>' + seq_record.id + '\n' + str(codons[2])
                     self.partition_list[1].append(seq_str)
             return self.convert_lists_to_dataset(self.partition_list)
 
