@@ -25,7 +25,9 @@ class SimpleSearchIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return Vouchers
 
-    # TODO change to time_edited, time_created with auto in tables and migrate_db script
+    def get_updated_field(self):
+        return "modified"
+
     def index_queryset(self, using='default'):
         # Used when the entire index for model is updated.
         return self.get_model().objects.filter(modified__lte=datetime.datetime.now())
@@ -56,6 +58,9 @@ class AutoCompleteIndex(SimpleSearchIndex):
 
     publishedIn = indexes.EdgeNgramField(model_attr='publishedIn', null=True)
     notes = indexes.EdgeNgramField(model_attr='notes', null=True)
+
+    def get_updated_field(self):
+        return "modified"
 
     def index_queryset(self, using='autocomplete'):
         # Used when the entire index for model is updated.
@@ -103,6 +108,9 @@ class VouchersIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return Vouchers
 
+    def get_updated_field(self):
+        return "modified"
+
     def index_queryset(self, using='vouchers'):
         # Used when the entire index for model is updated.
         return self.get_model().objects.filter(modified__lte=datetime.datetime.now())
@@ -121,6 +129,9 @@ class AdvancedSearchIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return Sequences
+
+    def get_updated_field(self):
+        return "time_edited"
 
     def index_queryset(self, using='advanced_search'):
         # Used when the entire index for model is updated.
