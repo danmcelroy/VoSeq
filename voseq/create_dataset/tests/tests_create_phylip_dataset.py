@@ -98,3 +98,27 @@ class CreatePhylipDatasetTest(TestCase):
                         )
         expected = '1 137'
         self.assertTrue(expected in str(c.content))
+
+    def test_partitioned_1st2nd_3rd(self):
+        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
+        c = self.c.post('/create_dataset/results/',
+                        {
+                            'voucher_codes': 'CP100-10',
+                            'gene_codes': 3,  # wingless
+                            'geneset': '',
+                            'taxonset': '',
+                            'translations': False,
+                            'introns': 'YES',
+                            'file_format': 'PHY',
+                            'degen_translations': 'NORMAL',
+                            'exclude': 'YES',
+                            'aminoacids': False,
+                            'special': False,
+                            'outgroup': '',
+                            'positions': 'ALL',
+                            'partition_by_positions': '1st2nd_3rd',
+                            'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
+                        }
+                        )
+        expected = 'CAGTGATCGGAATCACACACGGCATTATT'
+        self.assertTrue(expected in str(c.content))

@@ -267,6 +267,7 @@ class Dataset(object):
         return sequence
 
     def get_codons_in_each_partition(self, codons):
+        print("===============codons", codons)
         partition_list = ()
         codon_descriptions = []
         codon_pos = []
@@ -526,18 +527,27 @@ class Dataset(object):
                     if this_gene is None:
                         this_gene = seq_record.name
 
-                        seq_str = '>' + this_gene + '_1st_2nd_codons\n' + '--------------------'
-                        self.partition_list[0].append(seq_str)
-
-                        seq_str = '>' + this_gene + '_3rd_codon\n' + '--------------------'
-                        self.partition_list[1].append(seq_str)
+                        if self.file_format == 'PHY':
+                            seq_str = '\n' + this_gene + '_1st_2nd_codons\n' + '--------------------'
+                            self.partition_list[0].append(seq_str)
+                        else:
+                            seq_str = '>' + this_gene + '_1st_2nd_codons\n' + '--------------------'
+                            self.partition_list[0].append(seq_str)
+                            seq_str = '>' + this_gene + '_3rd_codon\n' + '--------------------'
+                            self.partition_list[1].append(seq_str)
 
                     codons = self.split_sequence_in_codon_positions(this_gene, seq_record.seq)
 
-                    seq_str = '>' + seq_record.id + '\n' + str(utils.chain_and_flatten([codons[0], codons[1]]))
+                    if self.file_format == 'PHY':
+                        seq_str = seq_record.id + ' ' + str(utils.chain_and_flatten([codons[0], codons[1]]))
+                    else:
+                        seq_str = '>' + seq_record.id + '\n' + str(utils.chain_and_flatten([codons[0], codons[1]]))
                     self.partition_list[0].append(seq_str)
 
-                    seq_str = '>' + seq_record.id + '\n' + str(codons[2])
+                    if self.file_format == 'PHY':
+                        seq_str = seq_record.id + ' ' + str(codons[2])
+                    else:
+                        seq_str = '>' + seq_record.id + '\n' + str(codons[2])
                     self.partition_list[1].append(seq_str)
             return self.convert_lists_to_dataset(self.partition_list)
 
@@ -634,28 +644,37 @@ class CreateMEGA(Dataset):
                         this_gene = this_gene[0]
                     except KeyError:
                         pass
+                elif line.startswith('>'):
+                    voucher_code = line.splitlines()[0].replace('>', '')
+                    sequence = line.splitlines()[1]
+                    line = '{} {}'.format(voucher_code, sequence)
+
+                line = line.split(' ')
+                taxon = line[0].replace('?', '')
+                voucher_code = taxon.split('_')[0]
+                sequence = line[-1]
+
+                if self.partition_by_positions != 'ONE' and self.translations is True:
+                    self.warnings.append('Cannot degenerate codons if they go to different partitions.')
+                    continue
+
+                if self.aminoacids is True:
+                    sequence = self.translate_this_sequence(
+                        sequence,
+                        this_gene,
+                        voucher_code,
+                    )
+
+                if self.aminoacids is not True and this_gene != '' and \
+                        self.translations is True:
+                    sequence = self.degenerate(sequence, this_gene)
+
+                if taxon not in sequence_dict:
+                    sequence_dict[taxon] = ''
+                    sequence_dict[taxon] += sequence
                 else:
-                    line = line.split(' ')
-                    taxon = line[0].replace('?', '')
-                    voucher_code = taxon.split('_')[0]
-                    sequence = line[-1]
+                    sequence_dict[taxon] += sequence
 
-                    if self.aminoacids is True:
-                        sequence = self.translate_this_sequence(
-                            sequence,
-                            this_gene,
-                            voucher_code,
-                        )
-
-                    if self.aminoacids is not True and this_gene != '' and \
-                            self.translations is True:
-                        sequence = self.degenerate(sequence, this_gene)
-
-                    if taxon not in sequence_dict:
-                        sequence_dict[taxon] = ''
-                        sequence_dict[taxon] += sequence
-                    else:
-                        sequence_dict[taxon] += sequence
         out = ''
         for k, v in sequence_dict.items():
             out += '\n#' + k + '\n' + v
@@ -844,7 +863,15 @@ class CreateTNT(Dataset):
                         else:
                             out += [outgroup_sequences[partition_count]]
                         partition_count += 1
-                elif voucher_code not in self.vouchers_to_drop:
+                elif voucher_code.startswith('>'):
+                    voucher_code = i.splitlines()[0].replace('>', '')
+                    sequence = i.splitlines()[1]
+                    i = '{} {}'.format(voucher_code, sequence)
+                    ThisGeneAndPartition = self.get_gene_for_current_partition(
+                        gene_models, out, partitions_incorporated, voucher_code
+                    )
+
+                if voucher_code not in self.vouchers_to_drop:
                     line = i.split(' ')
                     if len(line) > 1:
                         sequence = line[-1]
@@ -860,10 +887,14 @@ class CreateTNT(Dataset):
 
                         gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
 
-                    if self.outgroup != '' and self.outgroup not in voucher_code:
-                        out += [line[0].ljust(55, ' ') + sequence]
-                    elif self.outgroup == '':
-                        out += [line[0].ljust(55, ' ') + sequence]
+                        tmp_seq = sequence.replace('-', '')
+                        if len(tmp_seq) < 1:
+                            out = ['\n[{}]'.format(voucher_code)]
+                        else:
+                            if self.outgroup != '' and self.outgroup not in voucher_code:
+                                out += [line[0].ljust(55, ' ') + sequence]
+                            elif self.outgroup == '':
+                                out += [line[0].ljust(55, ' ') + sequence]
 
         out += ['\n;\nproc/;']
 
@@ -940,7 +971,15 @@ END;
                         gene_models, out, partitions_incorporated, voucher_code
                     )
                     out = ThisGeneAndPartition.out
-                elif voucher_code not in self.vouchers_to_drop:
+                elif voucher_code.startswith('>'):
+                    voucher_code = i.splitlines()[0].replace('>', '')
+                    sequence = i.splitlines()[1]
+                    i = '{} {}'.format(voucher_code, sequence)
+                    ThisGeneAndPartition = self.get_gene_for_current_partition(
+                        gene_models, out, partitions_incorporated, voucher_code
+                    )
+
+                if voucher_code not in self.vouchers_to_drop:
                     line = i.split(' ')
                     if len(line) > 1:
                         sequence = line[-1]
@@ -954,9 +993,13 @@ END;
                         if self.aminoacids is not True:
                             sequence = self.degenerate(sequence, ThisGeneAndPartition.this_gene_model)
 
-                    gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
+                        gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
 
-                    out += [line[0].ljust(55, ' ') + sequence]
+                        tmp_seq = sequence.replace('-', '')
+                        if len(tmp_seq) < 1:
+                            out = ['\n[{}]'.format(voucher_code)]
+                        else:
+                            out += [line[0].ljust(55, ' ') + sequence]
 
         number_chars = 0
         for k in gene_codes_and_lengths.keys():
