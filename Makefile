@@ -8,6 +8,7 @@ help:
 	@echo "import - import a MySQL database dump in XML format"
 	@echo "index - rebuild the database index. Required. Speeds up data retrieval"
 	@echo "update_index - update the database index. Required. Syncs the data and its index"
+	@echo "update_index_production - update the production (deployed) database index. Required. Syncs the data and its index"
 	@echo "admin - create administrator user for your VoSeq installation"
 
 clean: clean-build clean-pyc
@@ -51,6 +52,9 @@ index:
 
 update_index:
 	python voseq/manage.py update_index --age=1 --remove --settings=voseq.settings.local
+
+update_index_production:
+	python voseq/manage.py update_index --age=$(age) --remove --settings=voseq.settings.local
 
 stats:
 	python voseq/manage.py create_stats --settings=voseq.settings.local
