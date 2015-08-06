@@ -395,16 +395,39 @@ following command and provide the requested information:
 
     make admin
 
-
-Some features of VoSeq need to be run periodically. You can setup cronjobs to execute some commands
-once a day or every 2 hours depending on your needs:
-
-* Update the database index for the simple and advanced search functions: [# TODO: to remove see
-  issue #213]
+* Create a database index for the simple and advanced search functions. This will speed
+up the data retrieval. You need to run it once as soon as you deploy VoSeq to the server:
 
 .. code:: shell
 
     make index
+
+Some features of VoSeq need to be run periodically
+--------------------------------------------------
+You can setup cronjobs to execute some commands once a day or every 2 hours depending on your needs.
+
+If you remove or add data to VoSeq quite rarely (once a day) you might want to
+sync the database index with your real data. In this way, new vouchers or sequences will
+be found by VoSeq's search tools.
+
+To update your database index every 24 hours (at 3:00 am) set the following cronjob:
+
+.. code:: shell
+
+    crontab -e
+
+Add the following line, save and exit:
+
+.. code:: shell
+
+    0 3 * * * /path/to/python /path/to/voseq/manage.py update_index --age=24 --remove --settings=voseq.settings.production
+
+If you add and delete data from your VoSeq instalation then you might want to update
+your database index more often. Let us try every three hours:
+
+.. code:: shell
+
+    0 */3 * * * /path/to/python /path/to/voseq/manage.py update_index --age=3 --remove --settings=voseq.settings.production
 
 * Update some voucher and gene statistics for your installation of VoSeq:
 
