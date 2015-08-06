@@ -1,11 +1,11 @@
 HISTORY
 -------
 
-2.0.0 (2015-01-xx)
+2.0.0 (2015-xx-xx)
 ++++++++++++++++++
 
-pre-release v2.0.0-alpha-4 (2015-xx-xx)
-+++++++++++++++++++++++++++++++++++++++
+pre-release v2.0.0-beta (2015-08-06)
+++++++++++++++++++++++++++++++++++++
 
 - **Interactive overview table** to browse taxa and the genes sequenced for them.
 - **Easy instalation** and deployment using Vagrant virtual machines. Install
@@ -20,6 +20,8 @@ pre-release v2.0.0-alpha-4 (2015-xx-xx)
   could be updated and will also show a confirmation page before execution of
   changes.
 - **Added Zwick et al. method** to degenerate DNA sequences for create_dataset tool.
+- **Implemented ``get_updated_field``** for haystack so it would be quicker to update
+  our database index as the option ``age=number of hours`` can be used.
 
 pre-release v2.0.0-alpha-3 (2015-06-12)
 +++++++++++++++++++++++++++++++++++++++
