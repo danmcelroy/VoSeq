@@ -14,7 +14,7 @@ django-import-export==0.2.7
 django-registration-redux==1.2
 django-debug-toolbar==1.3.2
 django-suit==0.2.13
-git+https://github.com/django-haystack/django-haystack.git@bd60745ce82318b1819768c9a31db0579228654d
+django-haystack==2.4.0
 easy-thumbnails==2.2
 flickrapi==2.0
 
