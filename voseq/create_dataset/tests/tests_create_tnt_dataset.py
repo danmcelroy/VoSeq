@@ -113,3 +113,15 @@ class CreateTNTDatasetTest(TestCase):
         expected = '[&dna]\nCP100-11_Melitaea_diamina                              XSRYNWYIPKSYY'
         result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
+
+    def test_create_dataset_try_with_degen_translation_and_paritioned_by_codon(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['positions'] = ['ALL']
+        cleaned_data['degen_translations'] = 'NORMAL'
+        cleaned_data['translations'] = True
+        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        dataset_creator = CreateDataset(cleaned_data)
+        expected = 'nstates dna;\nxread\n0 2\n\n[CP100-11_Melitaea_diamina]\n\n;\nproc/;'
+
+        result = dataset_creator.dataset_str
+        self.assertEqual(expected, result)
