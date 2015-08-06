@@ -268,3 +268,14 @@ CP100-11_Melitaea_diamina                              ??TGAGCCGGTATAATTGGTACATC
 CP100-10_Melitaea_diamina
 """
         self.assertTrue(expected.strip() in result)
+
+    def test_try_dataset_degenerated_in_partitions(self):
+        cleaned_data = self.cleaned_data
+        cleaned_data['voucher_codes'] = 'CP100-10'
+        cleaned_data['degen_translations'] = 'NORMAL'
+        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['translations'] = True
+        dataset_creator = CreateDataset(cleaned_data)
+        result = dataset_creator.dataset_str
+        expected = "DIMENSIONS NTAX=1 NCHAR=0;"
+        self.assertTrue(expected in result)
