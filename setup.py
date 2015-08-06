@@ -42,7 +42,7 @@ setup(
     install_requires=requirements,
     license='BSD',
     classifiers=[
-        'Development Status :: 2 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Natural Language :: English',
         'License :: OSI Approved :: BSD License',
