@@ -395,7 +395,7 @@ following command and provide the requested information:
 
     make admin
 
-* Create a database index for the simple and advanced search functions. This will speed
+Create a database index for the simple and advanced search functions. This will speed
 up the data retrieval. You need to run it once as soon as you deploy VoSeq to the server:
 
 .. code:: shell
@@ -422,14 +422,14 @@ Add the following line, save and exit:
 
     0 3 * * * /path/to/python /path/to/voseq/manage.py update_index --age=24 --remove --settings=voseq.settings.production
 
-If you add and delete data from your VoSeq instalation then you might want to update
+If you add and delete data several times a day then you might want to update
 your database index more often. Let us try every three hours:
 
 .. code:: shell
 
     0 */3 * * * /path/to/python /path/to/voseq/manage.py update_index --age=3 --remove --settings=voseq.settings.production
 
-* Update some voucher and gene statistics for your installation of VoSeq:
+Update some voucher and gene statistics for your installation of VoSeq:
 
 .. code:: shell
 
