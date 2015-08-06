@@ -514,7 +514,6 @@ class Dataset(object):
 
         if 'ALL' in self.codon_positions and \
                 '1st2nd_3rd' in self.partition_by_positions:
-            print("hola cuy")
             self.partition_list = ([], [],)
 
             for gene_code in self.seq_objs:
