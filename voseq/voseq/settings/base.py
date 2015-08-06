@@ -127,7 +127,7 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 HAYSTACK_DEFAULT_OPERATOR = 'AND'
-
+HAYSTACK_IDENTIFIER_METHOD = 'public_interface.models.get_identifier'
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
