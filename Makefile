@@ -7,6 +7,7 @@ help:
 	@echo "migrations - prepare database for Django based on models"
 	@echo "import - import a MySQL database dump in XML format"
 	@echo "index - rebuild the database index. Required. Speeds up data retrieval"
+	@echo "update_index - update the database index. Required. Syncs the data and its index"
 	@echo "admin - create administrator user for your VoSeq installation"
 
 clean: clean-build clean-pyc
@@ -47,6 +48,9 @@ test_import:
 
 index:
 	python voseq/manage.py rebuild_index --settings=voseq.settings.local
+
+update_index:
+	python voseq/manage.py update_index --age=1 --remove --settings=voseq.settings.local
 
 stats:
 	python voseq/manage.py create_stats --settings=voseq.settings.local
