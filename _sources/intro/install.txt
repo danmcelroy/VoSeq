@@ -1,0 +1,228 @@
+.. _intro-install:
+
+Download to install VoSeq
+-------------------------
+Install the command line tool `git <https://git-scm.com/downloads>`__.
+Then open a terminal and use this command:
+
+.. code:: shell
+
+    git clone https://github.com/carlosp420/VoSeq.git
+
+You should see messages similar to these:
+
+.. code:: shell
+
+    Cloning into 'VoSeq'...
+    remote: Counting objects: 12597, done.
+    remote: Compressing objects: 100% (16/16), done.
+    remote: Total 12597 (delta 4), reused 0 (delta 0), pack-reused 12579
+    Receiving objects: 100% (12597/12597), 40.75 MiB | 10.52 MiB/s, done.
+    Resolving deltas: 100% (7706/7706), done.
+    Checking connectivity... done.
+
+The VoSeq source code resides in the newly created folder ``VoSeq``.
+
+Installation guide
+------------------
+
+Easy and quick install (recommended)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Vagrant allows setting up virtual machines that automatically installs all
+dependencies and sets up configuration from a *recipe* contained in the Vagrant
+file.
+
+You need both `Vagrant <http://www.vagrantup.com/downloads.html>`__ and
+`VirtualBox <https://www.virtualbox.org/wiki/Downloads>`__ installed in your
+computer or server.
+
+Just go to the VoSeq's directory to run Vagrant:
+
+.. code:: shell
+
+    cd /path/to/VoSeq
+    vagrant up
+
+If the installation of packages gets interrupted you can relaunch the process
+with the following command:
+
+.. code:: shell
+
+    vagrant reload --provision
+
+
+Once the process has finished, you will have a new Ubuntu virtual machine with
+VoSeq installed. To enter this virtual machine:
+
+.. code:: shell
+
+    vagrant ssh
+
+Then you just need to run the following commands to set up your database:
+
+.. code:: shell
+
+    cd /vagrant
+    workon voseq
+    make migrations
+
+Edit or create a ``conf.json`` file to specify your settings. See
+:ref:`configure`.
+
+Additionally, you can import your old VoSeq database from a MySQL dump (see
+:ref:`Migrate VoSeq database`). If you don't import anything your VoSeq
+installation will be usable, but empty. In such a case, you might want to
+import test data:
+
+.. code:: shell
+
+    make test_import
+
+Set up an administrator account by using the command ``make admin``
+(see :ref:`Administrate the server`).
+
+It is necessary to index your imported data:
+
+.. code:: shell
+
+    make index
+
+Since this installation of VoSeq will be running as a deployed application from
+inside the virtual machine you need to collect the static files in the correct
+locations:
+
+.. code:: shell
+
+    make collectstatic
+
+Then restart the web server:
+
+.. code:: shell
+
+    sudo supervisorctl restart voseq
+    sudo service nginx restart
+
+In your host system, open your browser and load this URL:
+http://33.33.33.10 to see your fresh installation of VoSeq.
+
+
+Long and arduous install
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Create a virtual environment and install dependencies
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+To ensure that all the dependencies will work without conflict, it is best to install them within a virtual environment.
+
+.. code:: shell
+
+    mkvirtualenv -p /usr/bin/python3 voseq_environment
+    cd /path/to/VoSeq
+    workon voseq_environment
+    pip install -r requirements/testing.txt
+
+Exit the virtual environment for now to continue from the shell:
+
+.. code:: shell
+
+    deactivate
+
+Download and install elasticsearch
+""""""""""""""""""""""""""""""""""
+
+For elasticsearch, java needs to be installed. Mac users can download and install ``elasticsearch`` from here:
+http://www.elasticsearch.org/overview/elkdownloads/. In Linux, you can do:
+
+.. code:: shell
+
+    wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.5.2.deb
+    sudo dpkg -i elasticsearch-1.5.2.deb
+
+The bin directory of elasticsearch should be added automatically to your PATH. If not, add the following
+line to your ``.profile`` (Linux) or ``.bash_profile`` (macOSX) file:
+
+.. code:: shell
+
+    export PATH="$PATH:/path/to/elasticsearch/bin/"
+
+Download, install and configure PostgreSQL
+""""""""""""""""""""""""""""""""""""""""""
+
+For MacOSX users we recommend to do it by downloading the Postgres.app from http://postgresapp.com.
+Linux users can use apt-get:
+
+.. code:: shell
+
+    sudo apt-get install postgresql postgresql-contrib postgresql-server-dev-9.3
+
+Create new role by typing:
+
+.. code:: shell
+
+    createuser --interactive
+
+Enter the psql shell, create a password for this user and create a database for VoSeq:
+
+.. code:: shell
+
+    psql
+    postgres=# ALTER ROLE postgres WITH PASSWORD 'hu8jmn3';
+    postgres=# create database voseq;
+
+
+In MacOSX if you are using the Postgres.app, it my be enough to run:
+
+.. code:: shell
+
+    psql
+    user.name=# CREATE DATABASE voseq;
+
+To exit the psql shell:
+
+.. code:: shell
+
+    \q
+
+Edit or create a ``conf.json`` file to specify your settings. See
+:ref:`configure`.
+
+.. _configure:
+
+Configure VoSeq
+^^^^^^^^^^^^^^^
+
+Next, create a ``config.json`` file to keep the database variables:
+
+.. code:: shell
+
+    cd /path/to/Voseq
+    touch config.json
+
+and write in the following content:
+
+.. code:: javascript
+
+    {
+    "SECRET_KEY": "create_a_secret_key",
+    "DB_USER": "postgres",
+    "DB_PASS": "hu8jmn3",
+    "DB_NAME": "voseq",
+    "DB_PORT": "5432",
+    "DB_HOST": "localhost",
+    "GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key",
+    "PHOTOS_REPOSITORY": "local"
+    }
+
+If you want to host your photos in Flickr you need to change the last parameter
+of your ``config.json`` file to ``"PHOTOS_REPOSITORY": "flickr"``.
+
+If you followed the above instructions to the letter, the DB_USER will be "postgres"
+and the DB_PASS will be ``"hu8jmn3"``. It is of recommended to come up with your
+own password. Instructions to obtain a personal google map browser API key can be found
+`here <https://developers.google.com/maps/documentation/javascript/tutorial>`__.
+You need to create a **Google Maps JavaScript API** for yourself.
+
+After following these four steps everything should be installed and ready to run.
+You can now choose to either continue with adding real data migrated from VoSeq 1.x
+and setting up a publicly available web server, or to first add some test data and
+test the set-up with a lightweight local server included in the VoSeq package.

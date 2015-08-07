@@ -12,6 +12,10 @@ Getting help
 ============
 
 * Try the :doc:`FAQ <faq>` -- with answers to common questions.
+* If you need help regarding installation or usage of th application, please
+  contact `Carlos Peña <mycalesis@gmail.com>`_ or `Tobias Malm <tobemalm@gmail.com>`_.
+* You can also subscribe to VoSeq's discussion list on
+  `Google Groups <https://groups.google.com/d/forum/voseq-discussion-list>`_.
 
 .. toctree::
    :maxdepth: 2
@@ -48,333 +52,51 @@ Start here
    :hidden:
 
    intro/overview
+   intro/install
+
+   usage/adding-vouchers
 
 :doc:`intro/overview`
    Find out what VoSeq can do. It might be right for you.
 
-.. image:: images/intro1.png
-   :align: center
-   :width: 240px
+:doc:`intro/install`
+   Install VoSeq on your computer or server.
 
-.. image:: images/create_taxonset2_small.png
-   :align: center
-   :width: 357px
+:ref:`configure`
+   Create a ``conf.json`` file to specify your settings.
 
-.. image:: images/create_dataset_small.png
-   :align: center
-   :width: 329px
 
-.. _MySQL: http://www.mysql.com
-
-^^^^^^^^^^^^^^^^^
+.. _citing-voseq:
+=================
 How to cite VoSeq
-^^^^^^^^^^^^^^^^^
+=================
 If you think VoSeq is useful and you happen to use it during your work, it
 would be great if you cite us as a source:
 
 * Peña, C. & Malm, T. **2012**. VoSeq: a Voucher and DNA Sequence Web Application. *PLOS ONE*, 7(6): e39071.  `doi <http://dx.doi.org/10.1371/journal.pone.0039071>`_
 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Help and contact information
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+===========
+Using VoSeq
+===========
 
-If you need help regarding installation or usage of th application, please
-contact `Carlos Peña <mycalesis@gmail.com>`_ or `Tobias Malm <tobemalm@gmail.com>`_.
+:doc:`usage/adding-vouchers`
+    Learn how to create records for voucher specimens in VoSeq.
 
-You can also subscribe to VoSeq's discussion list on `Google Groups <https://groups.google.com/d/forum/voseq-discussion-list>`_.
+#. :ref:`adding_genes`
+#. :ref:`adding_sequences`
+#. :ref:`create_taxonset`
+#. :ref:`create_datasets`
+#. :ref:`my_search`
+#. :ref:`upload_voucher_photos`
+#. :ref:`create_excel_table`
+#. :ref:`update_voucher`
 
 
 
 
 
-..
-	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><
-	Page 2.
 
----------------
-Getting Started
----------------
 
-Once you have successfully downloaded VoSeq, you can find out how to:
-
-* :ref:`install_in_linux`
-* :ref:`install_in_mac`
-* :ref:`install_in_windows`
-* :ref:`quick_guide` to get started with VoSeq.
-
-
-.. _install_in_linux:
-
-^^^^^^^^^^^^^^^^
-Install in Linux
-^^^^^^^^^^^^^^^^
-Before installing VoSeq, you need to install in your computer a web server
-(such as `Apache <http://httpd.apache.org/>`_) and the relational database
-`MySQL`_.
-
-
-"""""""""""""""""
-Required software
-"""""""""""""""""
-
-* Web server with PHP 5.0 or higher (http://www.php.net/manual/install.unix.php). **Compile it with the library CURL**, which is needed to do BLASTs against GenBank.
-
-	* Apache HTTP Server
-	* PHP
-* A MySQL server 5.0 or higher (see http://www.mysql.com)
-* GD library
-
-.. note:: These instructions assume that your are using Linux and Apache, and have installed `LAMP <http://en.wikipedia.org/wiki/LAMP>`_ (Linux, Apache, MySQL and PHP on your computer).
-
-#. Compile PHP with support for the graphics library GD. More info `here <http://www.php.net/manual/en/image.installation.php>`_.
-#. Download VoSeq: `Download from github <https://github.com/carlosp420/VoSeq/tags>`_.
-#. Unzip the source files in some directory: ``unzip VoSeq_X.Y.Z.zip``
-#. If you are not a Linux Guru and you have `WinRAR <http://www.rarlab.com/>`_ (like WinZip but works with gzipped files) on your Windows system you can cheat a little bit here. You can download the file to your Windows machine, use WinRAR to unzip the gzipped file into a directory in Windows and then use an FTP program like `WinSCP <http://winscp.net/eng/index.php>`_ to transfer the entire VoSeq directory for you to a commercial server for example.
-#. Move the directory into your web directory: e.g. ``mv VoSeq /usr/local/apache2/htdocs/myVoSeq`` or ``mv VoSeq public_html/myVoSeq`` or use your FTP software to do this for you.
-#. To run the installation script, you'll need to temporarily make your myVoSeq directory writable by the web server. The simplest way to do this on a Unix/Linux system is to make it world-writable by typing: ``chmod 777 myVoSeq``. To do this into a commercial server you will need a telnet client like `PuTTY <http://www.chiark.greenend.org.uk/~sgtatham/putty/>`_ on your system.
-#. At this point you should have Apache and MySQL running (this varies between distributions and setups, see their documentations for details).
-#. Go to your web browser and surf into the VoSeq installation directory (under ``htdocs`` or ``public_html`` folders of Apache). It will direct you to the config script (if it doesn't, just load up the ``http://localhost/myVoSeq/index.php`` file. Fill out the forms.
-#. If all goes well, the installer will create a configuration file named ``conf.php`` in your myVoSeq installation directory. This file will contain all the important variables and information needed to run VoSeq in your system.
-
-
-.. _install_in_mac:
-
-^^^^^^^^^^^^^^^^^^^
-Install in Mac OS X
-^^^^^^^^^^^^^^^^^^^
-We have successfully installed VoSeq in a MacBook OS X Lion. It appears that the Mac
-operative systems **come already with Apache and PHP installed**. However you will
-need to enable Apache to read and run PHP files.
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""
-To connect Apache and PHP so that they work together:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-#. Edit Apache's configuration text file:
-
-    * ``sudo nano /etc/apache2/httpd.conf``
-#. Make sure that the line: ``LoadModule php5_module     libexec/apache2/libphp5.so``  is in the file and it is not commented (there is no # symbol at the beginning of the line).
-#. Find the section ``<IfModule mime_module>`` and write the following line ``AddType application/x-httpd-php .php`` so that Apache will run any file with the extension .php as a script and will not show it as plain text.
-
-
-"""""""""""""
-Install MySQL
-"""""""""""""
-Unfortunately Mac OS X systems don't come with MySQL installed. You can download it from here:
-
-#. Download MySQL from here: http://dev.mysql.com/downloads/mysql/5.1.html
-
-    * Download the ``.dmg`` package according to your systems specifications (32 bits or 64 bits).
-#. You might also want to install MySQL GUI Tools http://dev.mysql.com/downloads/gui-tools/5.0.html
-#. The following is a quick guide to installling MySQL on your computer. **It is not comprehensive and you will find much more info in the documentation for installing MySQL here**: http://dev.mysql.com/doc/mysql-macosx-excerpt/5.5/en/index.html
-#. Unpack and install both pieces of software. Make sure you install the package, in my case, ``mysql-5.1.60-osx10.6-x86_64.pkg`` and ``MySQLStartupitem.pkg``
-#. Start the MySQL server by typing in the terminal: ``sudo /Library/StartupItems/MySQLCOM/MySQLCOM start``
-#. Create a password for the user **root** by typing: ``/usr/local/mysql/bin/mysqladmin -uroot password 'myownpassword'``
-
-
-"""""""""""""
-Install VoSeq
-"""""""""""""
-#. To start Apache, go to System Preferences>Sharing> and tick Web Sharing to start your web server. Your assigned folder to host your webpages and VoSeq installation is the folder Sites in your Home directory: ``/Users/YourName/Sites``. You will need to place there the source files of ``VoSeq_X.Y.Z.zip``
-#. You need to click the button "create personal share folder" to create the folder "Sites".
-#. Open a Terminal: go to Applications>Utilities>Terminal. In the Terminal window, type ``cd ~/Sites`` to go to the folder where the file ``Voseq_X.Y.Z.zip`` should be.
-#. Unpack the contents by typing ``unzip VoSeq_X.Y.Z.zip``
-#. Start the MySQL server: ``sudo /Library/StartupItems/MySQLCOM/MySQLCOM start``
-#. Go to your web browser and point it to the VoSeq installation directory: ``http://localhost/~YourName/VoSeq``. It will direct you to the config script. Fill out the forms.
-#. If all goes well, the installer will create a configuration file named ``conf.php`` in your VoSeq installation directory. This file will contain all the important variables and information needed to run VoSeq in your system.
-#. If during installation, VoSeq cannot connect to MySQL server, you might need to modify your ``/usr/local/mysql/support-files/my-large.cnf`` file parameters:
-
-    * Modify the lines ``/var/mysqld/mysqld.sock`` to  this ``/tmp/mysql.sock``
-    * Save the file as ``/etc/my.cnf``
-
-
-
-.. _install_in_windows:
-
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Manual Install in Windows 7 / Vista / XP
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Follow these instructions to install Apache, PHP and MySQL and lastly VoSeq on Windows 7 / Vista / XP systems - its not as hard as it looks!
-
-""""""
-Apache
-""""""
-
-#. **Download and install "Apache2.x"** (tested on 2.2.x) http://httpd.apache.org/ as recommended, preferrably use "localhost" as Network Domain and Server Name. Start the service and try it out by opening http://localhost in your web browser - the output should be **It works!**.
-
-.. note:: Notice that Apache will want to use port ``0.0.0.0:80``, which may be used by other programs, if Apache doesnt start (may say something about port occupied), write ``netstat -nab`` in Terminal and check if some other process is using that adress - then close that process if appropriate.
-
-"""
-PHP
-"""
-
-#. **Download "PHP 5.x.zip"** (tested on version 5.2.17) http://windows.php.net/download/. We recommend that you download the  ``VC6 Thread Safe`` version if using Apache. Unpack the ``PHP5.x.zip`` file to a folder named PHP (ex. ``C:\PHP`` or ``C:\Program Files\PHP``). Then copy the ``php.ini-???`` to ``C:\WINDOWS`` and rename it ``php.ini``. (``???`` can be dist, production or development).
-#. Open the apache configuration file ``httpd.conf`` in a text editor (found in the ``C:\Program Files\Apache Software Foundation\Apache2.2\conf`` folder after standard install).
-#. Add the following 4 lines at the end of the ``LoadModule`` section (now assuming php installed to ``C:\PHP`` otherwise change this to correct installation folder)::
-
-    LoadModule php5_module "c:/PHP/php5apache2_2.dll"
-    AddHandler application/x-httpd-php .php
-    # configure the path to php.ini
-    PHPIniDir "c:/windows"
-
-#. Add a file called ``info.php`` containing ``<?php phpinfo();?>`` to the ``C:\Program Files\Apache Software Foundation\Apache2.2\htdocs`` folder.
-#. Restart your Apache Server to confirm changes: "Start > All Programs > Apache HTTP Server 4.2.4 > Control Apache Server > Restart".
-#. Open up your web browser and type in: http://localhost/info.php. If you get a page with blue tables containing PHP and Apache info, then **installation is successful!**
-#. Finish installing PHP by modifying your PHP Configuration File (``C:\WINDOWS\php.ini``) in a text editor:
-
-    * Find the line containing: (Delete the "``;``" at the beginning of the lines)
-
-        * ``;extension_dir = "./"`` and change it to
-        * ``extension_dir = "C:\php\ext"``
-
-    * and the line containing:
-
-        * ``;session.save_path = "/tmp"``" and change it to
-        * ``session.save_path = "C:\WINDOWS\temp"``
-
-
-""""""""""""""""""""""""
-Enable the curl protocol
-""""""""""""""""""""""""
-
-Curl is needed to get the Flickr plugin to work and enable VoSeq to interact with other databases.
-
-#. Copy the file ``php_curl.dll`` from the folder ``C:\PHP\ext`` into the folder ``C:\WINDOWS\system32``
-#. Remove the semicolon ``;`` from the line ``;extension=php_curl.dll`` in your file ``C:\WINDOWS\php.ini``
-#. Restart the apache server.
-
-
-"""""
-MySQL
-"""""
-
-#. **Download and install MySQL** (tested on 5.5) from http://dev.mysql.com/downloads/mysql/ with typical install - check the "skip Sign-Up" and '"Configure the MySQL server now" boxes when they arrive. Finish installation.
-#. The MySQL Server Instance Configuration Wizard should appear.
-
-    * Click "next" ->
-    * Select "Detailed Configuraton" and click "next" ->
-    * Select "Developer Machine" and click "next" ->
-    * Select "Multifunctional Database" and click "next" -> click "next" ->
-    * Select "Decision support (DSS)/OLAP" and click "next" ->
-    * Check "Enable TCP/IP Networking"
-    * "Port Number" should be set to "3306" and
-    * Check "Enable strict mode", click "next" ->
-    * Select "Standard Character Set" and click "next" ->
-    * Check "Install As Windows Service, set the name to "MySQL" and check "Launch the MySQL Server automatically
-    * Make sure that the "Include Bin Directory in Windows Path" **is NOT checked**.
-    * Click "Next". -> Check the box that says "Modify Security Settings".
-    * Enter a password for the default "root" account, and confirm the password in the box below.
-    * **Do NOT check the boxes** "Enable root access from remote machines" or "Create An Anonymous Account".
-    * Click "Next" -> Click "Execute" and let it finish.
-    * Click "Finish". Now MySQL should be installed.
-
-#. **To enable PHP to use the MySQL databases**, open the ``php.ini`` (``C:/WINDOWS/php.ini``) file in your text editor and find the line ``;extension=php_mysql.dll``. Delete the "``;``" at the beginning of the line and save the file.
-#. Add the PHP directory to Windows PATH - To do this, click:
-
-    * Start > My Computer > Properties > Advanced > Environment Variables.
-    * Under the second list (System Variables), there will be a variable called "Path".
-    * Select it and click "Edit". Add "``;C:\php``" (or your own path to PHP if installed as other) to the very end of the string and click "OK".
-
-#. Restart your computer and try out the database.
-#. (Optional) In order to easily makes changes or additions in your database download and try out the `MySQL Workbench <http://dev.mysql.com/downloads/workbench/5.2.html>`_
-
-
-
-"""""""""""""
-Install VoSeq
-"""""""""""""
-
-#. Download and unzip the file ``Voseq_VersionNumber.zip`` in the Apache folder (rename the new folder if necessary):
-
-    * ``C:\Program Files\Apache Software Foundation\Apache2.2\htdocs``
-
-#. Point your web browser to the address (that is - localhost + the name of your VoSeq folder): ``http://localhost/VoSeq_VersionNumber`` and follow the instructions for installing the software.
-#. If all goes well, the installer will create a configuration file named ``conf.php`` in your VoSeq installation directory. This file will contain all the important variables and information needed to run VoSeq in your system.
-
-
-
-.. _install_with_xampp:
-
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Install in Windows with XAMPP
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-If you dont want to install Apache, MySQL and PHP manually you may want to try using a 3-rd party installer.
-XAMPP installs all three as well as the extra protocols needed for PHP.
-
-"""""""""""""
-Install XAMPP
-"""""""""""""
-
-You can download XAMPP installer at http://www.apachefriends.org/en/xampp.html
-Then install it with the installer (tested with version 1.8.1).
-With XAMPP MySQL is installed without password, **for security you need to create a new password for MySQL** (as well as for the XAMPP web directory which by default is accessible for everyone that know your IP adress, though you may still be somewhat protected behind a router (`read here <http://www.apachefriends.org/en/xampp-windows.html#1221>`_).
-
-* Goto ``localhost/security`` and check your security level and set passwords!
-
-"""""""""""""
-Install VoSeq
-"""""""""""""
-
-#. Download and unzip the file ``Voseq_VersionNumber.zip`` in the XAMPP/htdocs directory (rename the new folder if necessary):
-
-    * ``C:\XAMPP\htdocs``
-
-#. Point your web browser to the address (that is - localhost + the name of your VoSeq folder): ``http://localhost/VoSeq_VersionNumber`` and follow the instructions for installing the software.
-#. If all goes well, the installer will create a configuration file named ``conf.php`` in your myVoSeq installation directory. This file will contain all the important variables and information needed to run VoSeq in your system.
-
-Configuration files after XAMPP install can be seen :ref:`xampp_config`.
-
-.. note::
-    * This has only been tested quickly, and may not work for all computer systems!
-
-        * We welcome all feedback for this type of installation!
-
-    * If you already have MySQL install XAMPP SHOULD not overwrite your existing databases, but precaution is a virtue (or something...) and we advice making backups of stored data before installation. (We can not be held responsible for any loss of data)
-    * More information regarding XAMPP for windows is found here: http://www.apachefriends.org/en/xampp-windows.html
-
-
-.. _xampp_config:
-
-""""""""""""
-XAMPP config
-""""""""""""
-
-.. image:: images/XAMPP_configs.png
-   :align: center
-   :width: 571px
-
-..
-	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><
-	Page 3.
-
-.. _quick_guide:
-
-
-
-
-
-.. _adding_vouchers:
-
-^^^^^^^^^^^^^^^
-Adding vouchers
-^^^^^^^^^^^^^^^
-
-After successful installation, the first thing to do is to add records (vouchers, or specimens). You can add a single record by going to the **Administrator interface** and clicking on the link **Add new record**.
-
-.. image:: images/add_new_record.png
-   :align: center
-   :width: 446px
-
-The most important information to enter is the **code** of voucher, which has to be unique. VoSeq will refuse to accept duplicate codes and will issue error message if this happens. Another necessary field is the **Genus** entry, while all other fields are optional.
-
-You can also upload a batch of records using the tool **Upload batch sequences/vouchers**. You will be shown a page to batch-upload sequences. By clicking the button **Upload vouchers instead** you will see instructions on how to upload specimen data. You can quickly import voucher data from a table in MS Excel by copying and pasting into the text area, provided that you use the right field headers.
-
-.. image:: images/batch_record_upload.png
-   :align: center
-   :width: 902px
 
 
 

@@ -56,6 +56,7 @@ release:
 	@echo "Replacing _static for static in html files"
 	sed -i 's/_static/static/g' build/html/*html
 	sed -i 's/_static/static/g' build/html/intro/*html
+	sed -i 's/_static/static/g' build/html/usage/*html
 	@echo
 	@echo "Copying html files"
 	rm -rf build/html/_static
@@ -170,16 +171,16 @@ doctest:
 gh-pages:
 	git checkout gh-pages
 	rm -rf ../images  ../_images
-	rm -rf ../sources ../_sources 
+	rm -rf ../sources ../_sources
 	rm -rf ../static  ../_static
-	rm -rf build 
+	rm -rf build
 	git checkout master source
 	git checkout Makefile
 	make html
 	mv -v build/html/* ../
-	mv ../_images ../images 
-	mv ../_sources ../sources 
-	mv ../_static ../static 
+	mv ../_images ../images
+	mv ../_sources ../sources
+	mv ../_static ../static
 	sed -i 's/_static/static/g' ../index.html
 	sed -i 's/_images/images/g' ../index.html
 	sed -i 's/_sources/sources/g' ../index.html

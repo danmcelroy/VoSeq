@@ -93,6 +93,19 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="intro/overview.html">VoSeq overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro/install.html">Download to install VoSeq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro/install.html#installation-guide">Installation guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro/install.html#easy-and-quick-install-recommended">Easy and quick install (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro/install.html#long-and-arduous-install">Long and arduous install</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="intro/install.html#create-a-virtual-environment-and-install-dependencies">Create a virtual environment and install dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/install.html#download-and-install-elasticsearch">Download and install elasticsearch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro/install.html#download-install-and-configure-postgresql">Download, install and configure PostgreSQL</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intro/install.html#configure-voseq">Configure VoSeq</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage/adding-vouchers.html">Adding vouchers</a></li>
 </ul>
 
           
@@ -136,6 +149,10 @@
 <h2>Getting help<a class="headerlink" href="#getting-help" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Try the <a class="reference internal" href="faq.html"><em>FAQ</em></a> &#8211; with answers to common questions.</li>
+<li>If you need help regarding installation or usage of th application, please
+contact <a class="reference external" href="mailto:mycalesis&#37;&#52;&#48;gmail&#46;com">Carlos Peña</a> or <a class="reference external" href="mailto:tobemalm&#37;&#52;&#48;gmail&#46;com">Tobias Malm</a>.</li>
+<li>You can also subscribe to VoSeq&#8217;s discussion list on
+<a class="reference external" href="https://groups.google.com/d/forum/voseq-discussion-list">Google Groups</a>.</li>
 </ul>
 <div class="toctree-wrapper compound">
 </div>
@@ -162,297 +179,38 @@ server service.</p>
 <dl class="docutils">
 <dt><a class="reference internal" href="intro/overview.html"><em>VoSeq overview</em></a></dt>
 <dd>Find out what VoSeq can do. It might be right for you.</dd>
+<dt><a class="reference internal" href="intro/install.html"><em>Download to install VoSeq</em></a></dt>
+<dd>Install VoSeq on your computer or server.</dd>
+<dt><a class="reference internal" href="intro/install.html#configure"><span>Configure VoSeq</span></a></dt>
+<dd>Create a <code class="docutils literal"><span class="pre">conf.json</span></code> file to specify your settings.</dd>
 </dl>
-<a class="reference internal image-reference" href="_images/intro1.png"><img alt="_images/intro1.png" class="align-center" src="_images/intro1.png" style="width: 240px;" /></a>
-<a class="reference internal image-reference" href="_images/create_taxonset2_small.png"><img alt="_images/create_taxonset2_small.png" class="align-center" src="_images/create_taxonset2_small.png" style="width: 357px;" /></a>
-<a class="reference internal image-reference" href="_images/create_dataset_small.png"><img alt="_images/create_dataset_small.png" class="align-center" src="_images/create_dataset_small.png" style="width: 329px;" /></a>
+</div>
 <div class="section" id="how-to-cite-voseq">
-<h3>How to cite VoSeq<a class="headerlink" href="#how-to-cite-voseq" title="Permalink to this headline">¶</a></h3>
+<h2>How to cite VoSeq<a class="headerlink" href="#how-to-cite-voseq" title="Permalink to this headline">¶</a></h2>
 <p>If you think VoSeq is useful and you happen to use it during your work, it
 would be great if you cite us as a source:</p>
 <ul class="simple">
 <li>Peña, C. &amp; Malm, T. <strong>2012</strong>. VoSeq: a Voucher and DNA Sequence Web Application. <em>PLOS ONE</em>, 7(6): e39071.  <a class="reference external" href="http://dx.doi.org/10.1371/journal.pone.0039071">doi</a></li>
 </ul>
 </div>
-<div class="section" id="help-and-contact-information">
-<h3>Help and contact information<a class="headerlink" href="#help-and-contact-information" title="Permalink to this headline">¶</a></h3>
-<p>If you need help regarding installation or usage of th application, please
-contact <a class="reference external" href="mailto:mycalesis&#37;&#52;&#48;gmail&#46;com">Carlos Peña</a> or <a class="reference external" href="mailto:tobemalm&#37;&#52;&#48;gmail&#46;com">Tobias Malm</a>.</p>
-<p>You can also subscribe to VoSeq&#8217;s discussion list on <a class="reference external" href="https://groups.google.com/d/forum/voseq-discussion-list">Google Groups</a>.</p>
-<div class="section" id="getting-started">
-<h4>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h4>
-<p>Once you have successfully downloaded VoSeq, you can find out how to:</p>
-<ul class="simple">
-<li><a class="reference internal" href="#install-in-linux"><span>Install in Linux</span></a></li>
-<li><a class="reference internal" href="#install-in-mac"><span>Install in Mac OS X</span></a></li>
-<li><a class="reference internal" href="#install-in-windows"><span>Manual Install in Windows 7 / Vista / XP</span></a></li>
-<li><a class="reference internal" href="#quick-guide"><span>Adding vouchers</span></a> to get started with VoSeq.</li>
-</ul>
-</div>
-</div>
-<div class="section" id="install-in-linux">
-<span id="id1"></span><h3>Install in Linux<a class="headerlink" href="#install-in-linux" title="Permalink to this headline">¶</a></h3>
-<p>Before installing VoSeq, you need to install in your computer a web server
-(such as <a class="reference external" href="http://httpd.apache.org/">Apache</a>) and the relational database
-<a class="reference external" href="http://www.mysql.com">MySQL</a>.</p>
-<ul>
-<li><p class="first">Web server with PHP 5.0 or higher (<a class="reference external" href="http://www.php.net/manual/install.unix.php">http://www.php.net/manual/install.unix.php</a>). <strong>Compile it with the library CURL</strong>, which is needed to do BLASTs against GenBank.</p>
-<blockquote>
-<div><ul class="simple">
-<li>Apache HTTP Server</li>
-<li>PHP</li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">A MySQL server 5.0 or higher (see <a class="reference external" href="http://www.mysql.com">http://www.mysql.com</a>)</p>
-</li>
-<li><p class="first">GD library</p>
-</li>
-</ul>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">These instructions assume that your are using Linux and Apache, and have installed <a class="reference external" href="http://en.wikipedia.org/wiki/LAMP">LAMP</a> (Linux, Apache, MySQL and PHP on your computer).</p>
-</div>
+<div class="section" id="using-voseq">
+<h2>Using VoSeq<a class="headerlink" href="#using-voseq" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><a class="reference internal" href="usage/adding-vouchers.html"><em>Adding vouchers</em></a></dt>
+<dd>Learn how to create records for voucher specimens in VoSeq.</dd>
+</dl>
 <ol class="arabic simple">
-<li>Compile PHP with support for the graphics library GD. More info <a class="reference external" href="http://www.php.net/manual/en/image.installation.php">here</a>.</li>
-<li>Download VoSeq: <a class="reference external" href="https://github.com/carlosp420/VoSeq/tags">Download from github</a>.</li>
-<li>Unzip the source files in some directory: <code class="docutils literal"><span class="pre">unzip</span> <span class="pre">VoSeq_X.Y.Z.zip</span></code></li>
-<li>If you are not a Linux Guru and you have <a class="reference external" href="http://www.rarlab.com/">WinRAR</a> (like WinZip but works with gzipped files) on your Windows system you can cheat a little bit here. You can download the file to your Windows machine, use WinRAR to unzip the gzipped file into a directory in Windows and then use an FTP program like <a class="reference external" href="http://winscp.net/eng/index.php">WinSCP</a> to transfer the entire VoSeq directory for you to a commercial server for example.</li>
-<li>Move the directory into your web directory: e.g. <code class="docutils literal"><span class="pre">mv</span> <span class="pre">VoSeq</span> <span class="pre">/usr/local/apache2/htdocs/myVoSeq</span></code> or <code class="docutils literal"><span class="pre">mv</span> <span class="pre">VoSeq</span> <span class="pre">public_html/myVoSeq</span></code> or use your FTP software to do this for you.</li>
-<li>To run the installation script, you&#8217;ll need to temporarily make your myVoSeq directory writable by the web server. The simplest way to do this on a Unix/Linux system is to make it world-writable by typing: <code class="docutils literal"><span class="pre">chmod</span> <span class="pre">777</span> <span class="pre">myVoSeq</span></code>. To do this into a commercial server you will need a telnet client like <a class="reference external" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/">PuTTY</a> on your system.</li>
-<li>At this point you should have Apache and MySQL running (this varies between distributions and setups, see their documentations for details).</li>
-<li>Go to your web browser and surf into the VoSeq installation directory (under <code class="docutils literal"><span class="pre">htdocs</span></code> or <code class="docutils literal"><span class="pre">public_html</span></code> folders of Apache). It will direct you to the config script (if it doesn&#8217;t, just load up the <code class="docutils literal"><span class="pre">http://localhost/myVoSeq/index.php</span></code> file. Fill out the forms.</li>
-<li>If all goes well, the installer will create a configuration file named <code class="docutils literal"><span class="pre">conf.php</span></code> in your myVoSeq installation directory. This file will contain all the important variables and information needed to run VoSeq in your system.</li>
+<li><a class="reference internal" href="#adding-genes"><span>Adding genes</span></a></li>
+<li><a class="reference internal" href="#adding-sequences"><span>Adding sequences</span></a></li>
+<li><a class="reference internal" href="#create-taxonset"><span>Create taxonset</span></a></li>
+<li><a class="reference internal" href="#create-datasets"><span>Create datasets</span></a></li>
+<li><a class="reference internal" href="#my-search"><span>Search</span></a></li>
+<li><a class="reference internal" href="#upload-voucher-photos"><span>Upload voucher photos</span></a></li>
+<li><a class="reference internal" href="#create-excel-table"><span>Create Excel table</span></a></li>
+<li><a class="reference internal" href="#update-voucher"><span>Update voucher</span></a></li>
 </ol>
-</div>
-<div class="section" id="install-in-mac-os-x">
-<span id="install-in-mac"></span><h3>Install in Mac OS X<a class="headerlink" href="#install-in-mac-os-x" title="Permalink to this headline">¶</a></h3>
-<p>We have successfully installed VoSeq in a MacBook OS X Lion. It appears that the Mac
-operative systems <strong>come already with Apache and PHP installed</strong>. However you will
-need to enable Apache to read and run PHP files.</p>
-<ol class="arabic">
-<li><p class="first">Edit Apache&#8217;s configuration text file:</p>
-<blockquote>
-<div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">sudo</span> <span class="pre">nano</span> <span class="pre">/etc/apache2/httpd.conf</span></code></li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">Make sure that the line: <code class="docutils literal"><span class="pre">LoadModule</span> <span class="pre">php5_module</span>&nbsp;&nbsp;&nbsp;&nbsp; <span class="pre">libexec/apache2/libphp5.so</span></code>  is in the file and it is not commented (there is no # symbol at the beginning of the line).</p>
-</li>
-<li><p class="first">Find the section <code class="docutils literal"><span class="pre">&lt;IfModule</span> <span class="pre">mime_module&gt;</span></code> and write the following line <code class="docutils literal"><span class="pre">AddType</span> <span class="pre">application/x-httpd-php</span> <span class="pre">.php</span></code> so that Apache will run any file with the extension .php as a script and will not show it as plain text.</p>
-</li>
-</ol>
-<p>Unfortunately Mac OS X systems don&#8217;t come with MySQL installed. You can download it from here:</p>
-<ol class="arabic">
-<li><p class="first">Download MySQL from here: <a class="reference external" href="http://dev.mysql.com/downloads/mysql/5.1.html">http://dev.mysql.com/downloads/mysql/5.1.html</a></p>
-<blockquote>
-<div><ul class="simple">
-<li>Download the <code class="docutils literal"><span class="pre">.dmg</span></code> package according to your systems specifications (32 bits or 64 bits).</li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">You might also want to install MySQL GUI Tools <a class="reference external" href="http://dev.mysql.com/downloads/gui-tools/5.0.html">http://dev.mysql.com/downloads/gui-tools/5.0.html</a></p>
-</li>
-<li><p class="first">The following is a quick guide to installling MySQL on your computer. <strong>It is not comprehensive and you will find much more info in the documentation for installing MySQL here</strong>: <a class="reference external" href="http://dev.mysql.com/doc/mysql-macosx-excerpt/5.5/en/index.html">http://dev.mysql.com/doc/mysql-macosx-excerpt/5.5/en/index.html</a></p>
-</li>
-<li><p class="first">Unpack and install both pieces of software. Make sure you install the package, in my case, <code class="docutils literal"><span class="pre">mysql-5.1.60-osx10.6-x86_64.pkg</span></code> and <code class="docutils literal"><span class="pre">MySQLStartupitem.pkg</span></code></p>
-</li>
-<li><p class="first">Start the MySQL server by typing in the terminal: <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">/Library/StartupItems/MySQLCOM/MySQLCOM</span> <span class="pre">start</span></code></p>
-</li>
-<li><p class="first">Create a password for the user <strong>root</strong> by typing: <code class="docutils literal"><span class="pre">/usr/local/mysql/bin/mysqladmin</span> <span class="pre">-uroot</span> <span class="pre">password</span> <span class="pre">'myownpassword'</span></code></p>
-</li>
-</ol>
-<ol class="arabic">
-<li><p class="first">To start Apache, go to System Preferences&gt;Sharing&gt; and tick Web Sharing to start your web server. Your assigned folder to host your webpages and VoSeq installation is the folder Sites in your Home directory: <code class="docutils literal"><span class="pre">/Users/YourName/Sites</span></code>. You will need to place there the source files of <code class="docutils literal"><span class="pre">VoSeq_X.Y.Z.zip</span></code></p>
-</li>
-<li><p class="first">You need to click the button &#8220;create personal share folder&#8221; to create the folder &#8220;Sites&#8221;.</p>
-</li>
-<li><p class="first">Open a Terminal: go to Applications&gt;Utilities&gt;Terminal. In the Terminal window, type <code class="docutils literal"><span class="pre">cd</span> <span class="pre">~/Sites</span></code> to go to the folder where the file <code class="docutils literal"><span class="pre">Voseq_X.Y.Z.zip</span></code> should be.</p>
-</li>
-<li><p class="first">Unpack the contents by typing <code class="docutils literal"><span class="pre">unzip</span> <span class="pre">VoSeq_X.Y.Z.zip</span></code></p>
-</li>
-<li><p class="first">Start the MySQL server: <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">/Library/StartupItems/MySQLCOM/MySQLCOM</span> <span class="pre">start</span></code></p>
-</li>
-<li><p class="first">Go to your web browser and point it to the VoSeq installation directory: <code class="docutils literal"><span class="pre">http://localhost/~YourName/VoSeq</span></code>. It will direct you to the config script. Fill out the forms.</p>
-</li>
-<li><p class="first">If all goes well, the installer will create a configuration file named <code class="docutils literal"><span class="pre">conf.php</span></code> in your VoSeq installation directory. This file will contain all the important variables and information needed to run VoSeq in your system.</p>
-</li>
-<li><p class="first">If during installation, VoSeq cannot connect to MySQL server, you might need to modify your <code class="docutils literal"><span class="pre">/usr/local/mysql/support-files/my-large.cnf</span></code> file parameters:</p>
-<blockquote>
-<div><ul class="simple">
-<li>Modify the lines <code class="docutils literal"><span class="pre">/var/mysqld/mysqld.sock</span></code> to  this <code class="docutils literal"><span class="pre">/tmp/mysql.sock</span></code></li>
-<li>Save the file as <code class="docutils literal"><span class="pre">/etc/my.cnf</span></code></li>
-</ul>
-</div></blockquote>
-</li>
-</ol>
-</div>
-<div class="section" id="manual-install-in-windows-7-vista-xp">
-<span id="install-in-windows"></span><h3>Manual Install in Windows 7 / Vista / XP<a class="headerlink" href="#manual-install-in-windows-7-vista-xp" title="Permalink to this headline">¶</a></h3>
-<p>Follow these instructions to install Apache, PHP and MySQL and lastly VoSeq on Windows 7 / Vista / XP systems - its not as hard as it looks!</p>
-<ol class="arabic simple">
-<li><strong>Download and install &#8220;Apache2.x&#8221;</strong> (tested on 2.2.x) <a class="reference external" href="http://httpd.apache.org/">http://httpd.apache.org/</a> as recommended, preferrably use &#8220;localhost&#8221; as Network Domain and Server Name. Start the service and try it out by opening <a class="reference external" href="http://localhost">http://localhost</a> in your web browser - the output should be <strong>It works!</strong>.</li>
-</ol>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Notice that Apache will want to use port <code class="docutils literal"><span class="pre">0.0.0.0:80</span></code>, which may be used by other programs, if Apache doesnt start (may say something about port occupied), write <code class="docutils literal"><span class="pre">netstat</span> <span class="pre">-nab</span></code> in Terminal and check if some other process is using that adress - then close that process if appropriate.</p>
-</div>
-<ol class="arabic">
-<li><p class="first"><strong>Download &#8220;PHP 5.x.zip&#8221;</strong> (tested on version 5.2.17) <a class="reference external" href="http://windows.php.net/download/">http://windows.php.net/download/</a>. We recommend that you download the  <code class="docutils literal"><span class="pre">VC6</span> <span class="pre">Thread</span> <span class="pre">Safe</span></code> version if using Apache. Unpack the <code class="docutils literal"><span class="pre">PHP5.x.zip</span></code> file to a folder named PHP (ex. <code class="docutils literal"><span class="pre">C:\PHP</span></code> or <code class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files\PHP</span></code>). Then copy the <code class="docutils literal"><span class="pre">php.ini-???</span></code> to <code class="docutils literal"><span class="pre">C:\WINDOWS</span></code> and rename it <code class="docutils literal"><span class="pre">php.ini</span></code>. (<code class="docutils literal"><span class="pre">???</span></code> can be dist, production or development).</p>
-</li>
-<li><p class="first">Open the apache configuration file <code class="docutils literal"><span class="pre">httpd.conf</span></code> in a text editor (found in the <code class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files\Apache</span> <span class="pre">Software</span> <span class="pre">Foundation\Apache2.2\conf</span></code> folder after standard install).</p>
-</li>
-<li><p class="first">Add the following 4 lines at the end of the <code class="docutils literal"><span class="pre">LoadModule</span></code> section (now assuming php installed to <code class="docutils literal"><span class="pre">C:\PHP</span></code> otherwise change this to correct installation folder):</p>
-<div class="highlight-python"><div class="highlight"><pre>LoadModule php5_module &quot;c:/PHP/php5apache2_2.dll&quot;
-AddHandler application/x-httpd-php .php
-# configure the path to php.ini
-PHPIniDir &quot;c:/windows&quot;
-</pre></div>
-</div>
-</li>
-<li><p class="first">Add a file called <code class="docutils literal"><span class="pre">info.php</span></code> containing <code class="docutils literal"><span class="pre">&lt;?php</span> <span class="pre">phpinfo();?&gt;</span></code> to the <code class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files\Apache</span> <span class="pre">Software</span> <span class="pre">Foundation\Apache2.2\htdocs</span></code> folder.</p>
-</li>
-<li><p class="first">Restart your Apache Server to confirm changes: &#8220;Start &gt; All Programs &gt; Apache HTTP Server 4.2.4 &gt; Control Apache Server &gt; Restart&#8221;.</p>
-</li>
-<li><p class="first">Open up your web browser and type in: <a class="reference external" href="http://localhost/info.php">http://localhost/info.php</a>. If you get a page with blue tables containing PHP and Apache info, then <strong>installation is successful!</strong></p>
-</li>
-<li><p class="first">Finish installing PHP by modifying your PHP Configuration File (<code class="docutils literal"><span class="pre">C:\WINDOWS\php.ini</span></code>) in a text editor:</p>
-<blockquote>
-<div><ul>
-<li><p class="first">Find the line containing: (Delete the &#8220;<code class="docutils literal"><span class="pre">;</span></code>&#8221; at the beginning of the lines)</p>
-<blockquote>
-<div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">;extension_dir</span> <span class="pre">=</span> <span class="pre">&quot;./&quot;</span></code> and change it to</li>
-<li><code class="docutils literal"><span class="pre">extension_dir</span> <span class="pre">=</span> <span class="pre">&quot;C:\php\ext&quot;</span></code></li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">and the line containing:</p>
-<blockquote>
-<div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">;session.save_path</span> <span class="pre">=</span> <span class="pre">&quot;/tmp&quot;</span></code>&#8221; and change it to</li>
-<li><code class="docutils literal"><span class="pre">session.save_path</span> <span class="pre">=</span> <span class="pre">&quot;C:\WINDOWS\temp&quot;</span></code></li>
-</ul>
-</div></blockquote>
-</li>
-</ul>
-</div></blockquote>
-</li>
-</ol>
-<p>Curl is needed to get the Flickr plugin to work and enable VoSeq to interact with other databases.</p>
-<ol class="arabic simple">
-<li>Copy the file <code class="docutils literal"><span class="pre">php_curl.dll</span></code> from the folder <code class="docutils literal"><span class="pre">C:\PHP\ext</span></code> into the folder <code class="docutils literal"><span class="pre">C:\WINDOWS\system32</span></code></li>
-<li>Remove the semicolon <code class="docutils literal"><span class="pre">;</span></code> from the line <code class="docutils literal"><span class="pre">;extension=php_curl.dll</span></code> in your file <code class="docutils literal"><span class="pre">C:\WINDOWS\php.ini</span></code></li>
-<li>Restart the apache server.</li>
-</ol>
-<ol class="arabic">
-<li><p class="first"><strong>Download and install MySQL</strong> (tested on 5.5) from <a class="reference external" href="http://dev.mysql.com/downloads/mysql/">http://dev.mysql.com/downloads/mysql/</a> with typical install - check the &#8220;skip Sign-Up&#8221; and &#8216;&#8220;Configure the MySQL server now&#8221; boxes when they arrive. Finish installation.</p>
-</li>
-<li><p class="first">The MySQL Server Instance Configuration Wizard should appear.</p>
-<blockquote>
-<div><ul class="simple">
-<li>Click &#8220;next&#8221; -&gt;</li>
-<li>Select &#8220;Detailed Configuraton&#8221; and click &#8220;next&#8221; -&gt;</li>
-<li>Select &#8220;Developer Machine&#8221; and click &#8220;next&#8221; -&gt;</li>
-<li>Select &#8220;Multifunctional Database&#8221; and click &#8220;next&#8221; -&gt; click &#8220;next&#8221; -&gt;</li>
-<li>Select &#8220;Decision support (DSS)/OLAP&#8221; and click &#8220;next&#8221; -&gt;</li>
-<li>Check &#8220;Enable TCP/IP Networking&#8221;</li>
-<li>&#8220;Port Number&#8221; should be set to &#8220;3306&#8221; and</li>
-<li>Check &#8220;Enable strict mode&#8221;, click &#8220;next&#8221; -&gt;</li>
-<li>Select &#8220;Standard Character Set&#8221; and click &#8220;next&#8221; -&gt;</li>
-<li>Check &#8220;Install As Windows Service, set the name to &#8220;MySQL&#8221; and check &#8220;Launch the MySQL Server automatically</li>
-<li>Make sure that the &#8220;Include Bin Directory in Windows Path&#8221; <strong>is NOT checked</strong>.</li>
-<li>Click &#8220;Next&#8221;. -&gt; Check the box that says &#8220;Modify Security Settings&#8221;.</li>
-<li>Enter a password for the default &#8220;root&#8221; account, and confirm the password in the box below.</li>
-<li><strong>Do NOT check the boxes</strong> &#8220;Enable root access from remote machines&#8221; or &#8220;Create An Anonymous Account&#8221;.</li>
-<li>Click &#8220;Next&#8221; -&gt; Click &#8220;Execute&#8221; and let it finish.</li>
-<li>Click &#8220;Finish&#8221;. Now MySQL should be installed.</li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first"><strong>To enable PHP to use the MySQL databases</strong>, open the <code class="docutils literal"><span class="pre">php.ini</span></code> (<code class="docutils literal"><span class="pre">C:/WINDOWS/php.ini</span></code>) file in your text editor and find the line <code class="docutils literal"><span class="pre">;extension=php_mysql.dll</span></code>. Delete the &#8220;<code class="docutils literal"><span class="pre">;</span></code>&#8221; at the beginning of the line and save the file.</p>
-</li>
-<li><p class="first">Add the PHP directory to Windows PATH - To do this, click:</p>
-<blockquote>
-<div><ul class="simple">
-<li>Start &gt; My Computer &gt; Properties &gt; Advanced &gt; Environment Variables.</li>
-<li>Under the second list (System Variables), there will be a variable called &#8220;Path&#8221;.</li>
-<li>Select it and click &#8220;Edit&#8221;. Add &#8220;<code class="docutils literal"><span class="pre">;C:\php</span></code>&#8221; (or your own path to PHP if installed as other) to the very end of the string and click &#8220;OK&#8221;.</li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">Restart your computer and try out the database.</p>
-</li>
-<li><p class="first">(Optional) In order to easily makes changes or additions in your database download and try out the <a class="reference external" href="http://dev.mysql.com/downloads/workbench/5.2.html">MySQL Workbench</a></p>
-</li>
-</ol>
-<ol class="arabic">
-<li><p class="first">Download and unzip the file <code class="docutils literal"><span class="pre">Voseq_VersionNumber.zip</span></code> in the Apache folder (rename the new folder if necessary):</p>
-<blockquote>
-<div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files\Apache</span> <span class="pre">Software</span> <span class="pre">Foundation\Apache2.2\htdocs</span></code></li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">Point your web browser to the address (that is - localhost + the name of your VoSeq folder): <code class="docutils literal"><span class="pre">http://localhost/VoSeq_VersionNumber</span></code> and follow the instructions for installing the software.</p>
-</li>
-<li><p class="first">If all goes well, the installer will create a configuration file named <code class="docutils literal"><span class="pre">conf.php</span></code> in your VoSeq installation directory. This file will contain all the important variables and information needed to run VoSeq in your system.</p>
-</li>
-</ol>
-</div>
-<div class="section" id="install-in-windows-with-xampp">
-<span id="install-with-xampp"></span><h3>Install in Windows with XAMPP<a class="headerlink" href="#install-in-windows-with-xampp" title="Permalink to this headline">¶</a></h3>
-<p>If you dont want to install Apache, MySQL and PHP manually you may want to try using a 3-rd party installer.
-XAMPP installs all three as well as the extra protocols needed for PHP.</p>
-<p>You can download XAMPP installer at <a class="reference external" href="http://www.apachefriends.org/en/xampp.html">http://www.apachefriends.org/en/xampp.html</a>
-Then install it with the installer (tested with version 1.8.1).
-With XAMPP MySQL is installed without password, <strong>for security you need to create a new password for MySQL</strong> (as well as for the XAMPP web directory which by default is accessible for everyone that know your IP adress, though you may still be somewhat protected behind a router (<a class="reference external" href="http://www.apachefriends.org/en/xampp-windows.html#1221">read here</a>).</p>
-<ul class="simple">
-<li>Goto <code class="docutils literal"><span class="pre">localhost/security</span></code> and check your security level and set passwords!</li>
-</ul>
-<ol class="arabic">
-<li><p class="first">Download and unzip the file <code class="docutils literal"><span class="pre">Voseq_VersionNumber.zip</span></code> in the XAMPP/htdocs directory (rename the new folder if necessary):</p>
-<blockquote>
-<div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">C:\XAMPP\htdocs</span></code></li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">Point your web browser to the address (that is - localhost + the name of your VoSeq folder): <code class="docutils literal"><span class="pre">http://localhost/VoSeq_VersionNumber</span></code> and follow the instructions for installing the software.</p>
-</li>
-<li><p class="first">If all goes well, the installer will create a configuration file named <code class="docutils literal"><span class="pre">conf.php</span></code> in your myVoSeq installation directory. This file will contain all the important variables and information needed to run VoSeq in your system.</p>
-</li>
-</ol>
-<p>Configuration files after XAMPP install can be seen <span class="xref std std-ref">xampp_config</span>.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<ul class="last">
-<li><p class="first">This has only been tested quickly, and may not work for all computer systems!</p>
-<blockquote>
-<div><ul class="simple">
-<li>We welcome all feedback for this type of installation!</li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">If you already have MySQL install XAMPP SHOULD not overwrite your existing databases, but precaution is a virtue (or something...) and we advice making backups of stored data before installation. (We can not be held responsible for any loss of data)</p>
-</li>
-<li><p class="first">More information regarding XAMPP for windows is found here: <a class="reference external" href="http://www.apachefriends.org/en/xampp-windows.html">http://www.apachefriends.org/en/xampp-windows.html</a></p>
-</li>
-</ul>
-</div>
-<a class="reference internal image-reference" href="_images/XAMPP_configs.png"><img alt="_images/XAMPP_configs.png" class="align-center" src="_images/XAMPP_configs.png" style="width: 571px;" /></a>
-</div>
-<div class="section" id="adding-vouchers">
-<span id="quick-guide"></span><span id="id2"></span><h3>Adding vouchers<a class="headerlink" href="#adding-vouchers" title="Permalink to this headline">¶</a></h3>
-<p>After successful installation, the first thing to do is to add records (vouchers, or specimens). You can add a single record by going to the <strong>Administrator interface</strong> and clicking on the link <strong>Add new record</strong>.</p>
-<a class="reference internal image-reference" href="_images/add_new_record.png"><img alt="_images/add_new_record.png" class="align-center" src="_images/add_new_record.png" style="width: 446px;" /></a>
-<p>The most important information to enter is the <strong>code</strong> of voucher, which has to be unique. VoSeq will refuse to accept duplicate codes and will issue error message if this happens. Another necessary field is the <strong>Genus</strong> entry, while all other fields are optional.</p>
-<p>You can also upload a batch of records using the tool <strong>Upload batch sequences/vouchers</strong>. You will be shown a page to batch-upload sequences. By clicking the button <strong>Upload vouchers instead</strong> you will see instructions on how to upload specimen data. You can quickly import voucher data from a table in MS Excel by copying and pasting into the text area, provided that you use the right field headers.</p>
-<a class="reference internal image-reference" href="_images/batch_record_upload.png"><img alt="_images/batch_record_upload.png" class="align-center" src="_images/batch_record_upload.png" style="width: 902px;" /></a>
-</div>
 <div class="section" id="adding-genes">
-<span id="id3"></span><h3>Adding genes<a class="headerlink" href="#adding-genes" title="Permalink to this headline">¶</a></h3>
+<span id="id1"></span><h3>Adding genes<a class="headerlink" href="#adding-genes" title="Permalink to this headline">¶</a></h3>
 <p>The second thing after adding vouchers that should be done is to create <strong>new genes</strong> or &#8220;alignments&#8221; for your database. This must be done in order to be able to <strong>add sequences</strong> to the database.
 You can add a single record by going to the <strong>Administrator interface</strong> and clicking on the link <strong>Add/edit/view gene information</strong>, followed by <strong>Add gene</strong>&#8216;.</p>
 <a class="reference internal image-reference" href="_images/add-edit_gene.png"><img alt="_images/add-edit_gene.png" class="align-center" src="_images/add-edit_gene.png" style="width: 540px;" /></a>
@@ -466,7 +224,7 @@ You can for example create a gene code for aligned data, say the barcode version
 <p><strong>Introns</strong> may be added - enter number of introns in your alignment and click &#8216;update introns&#8217;, that will give new fields for entering starting and finsihing positions for your introns. (Remember that positions in an alignment here is counted from 1 and upwards).</p>
 </div>
 <div class="section" id="adding-sequences">
-<span id="id4"></span><h3>Adding sequences<a class="headerlink" href="#adding-sequences" title="Permalink to this headline">¶</a></h3>
+<span id="id2"></span><h3>Adding sequences<a class="headerlink" href="#adding-sequences" title="Permalink to this headline">¶</a></h3>
 <p>In the <strong>Administrator interface</strong>, the tool <strong>Upload batch sequences/vouchers</strong> allows you to upload DNA sequences into VoSeq. Along with the DNA sequences, you have to upload the required fields <strong>gene code</strong> and <strong>voucher code</strong>, optionalyl the primer names, laborator and creation date. Each sequence and its related data goes into one line, with fields separated by tabs. If you have your data in a spreadsheet such as MS Excel, you can copy and paste the data into the text area.</p>
 <ul class="simple">
 <li>It is important to use the same headers provided in the text area.</li>
@@ -476,7 +234,7 @@ You can for example create a gene code for aligned data, say the barcode version
 <a class="reference internal image-reference" href="_images/batch_seq_upload.png"><img alt="_images/batch_seq_upload.png" class="align-center" src="_images/batch_seq_upload.png" style="width: 902px;" /></a>
 </div>
 <div class="section" id="create-taxonset">
-<span id="id5"></span><h3>Create taxonset<a class="headerlink" href="#create-taxonset" title="Permalink to this headline">¶</a></h3>
+<span id="id3"></span><h3>Create taxonset<a class="headerlink" href="#create-taxonset" title="Permalink to this headline">¶</a></h3>
 <p>Taxonsets is a way to make a list of taxa that are being used for a specific project or analysis. A Taxonset is just a list of voucher codes. By having Taxonsets, you can quickly create datasets and tables for them.</p>
 <p>If you have not set Taxonsets you will need to type specimen codes everytime you create a dataset. Instead, if you have a Taxonset for a particular project, you could select it when creating Tables for manuscripts.</p>
 <p>Go to the <strong>Administrator interface</strong> and click on the link <strong>Add/edit/view Taxon sets</strong>.</p>
@@ -493,7 +251,7 @@ In order to perform a filtering or after selection of a new genecode you must pr
 If you are updating an already existing taxonset - press <strong>Update taxon set</strong>.</p>
 </div>
 <div class="section" id="create-datasets">
-<span id="id6"></span><h3>Create datasets<a class="headerlink" href="#create-datasets" title="Permalink to this headline">¶</a></h3>
+<span id="id4"></span><h3>Create datasets<a class="headerlink" href="#create-datasets" title="Permalink to this headline">¶</a></h3>
 <p>We believe that one of VoSeq&#8217;s important features is the <strong>capability to create dataset files of molecular sequences that are ready-to-run in phylogenetic software</strong> such as <strong>MrBayes, TNT, PAUP, RaXML</strong>, etc.</p>
 <p>Now that you have voucher and sequence data in your installation of VoSeq, you might want to create datasets for analysis of sequences in phylogenetic software.</p>
 <p>In the <strong>user interface</strong>, you will find under the <strong>Tools</strong> section the link <strong>Create new dataset</strong>. You will be shown a page to select the sequences you want by entering the <strong>voucher codes</strong> and <strong>gene codes</strong>. You can select your data to be in several formats (FASTA, NEXUS, etc), choose between codon positions, as well as choosing what information your taxon names should include.</p>
@@ -527,7 +285,7 @@ This can be done in both the <strong>user interface</strong> and the <strong>adm
 <a class="reference internal image-reference" href="_images/search.png"><img alt="_images/search.png" class="align-center" src="_images/search.png" style="width: 590px;" /></a>
 </div>
 <div class="section" id="upload-voucher-photos">
-<span id="id7"></span><h3>Upload voucher photos<a class="headerlink" href="#upload-voucher-photos" title="Permalink to this headline">¶</a></h3>
+<span id="id5"></span><h3>Upload voucher photos<a class="headerlink" href="#upload-voucher-photos" title="Permalink to this headline">¶</a></h3>
 <p>In the <strong>Administrator interface</strong> you will see that some records have the link <strong>Picture missing</strong>. By clicking on this link, you will be able to upload a photo for that voucher.</p>
 <a class="reference internal image-reference" href="_images/picture_missing.png"><img alt="_images/picture_missing.png" class="align-center" src="_images/picture_missing.png" style="width: 376px;" /></a>
 <p>If you want to replace an existing picture with another, you will need to click the <strong>Change picture</strong> icon.</p>
@@ -552,7 +310,7 @@ This can be done in both the <strong>user interface</strong> and the <strong>adm
 <a class="reference internal image-reference" href="_images/additional_voucher_photos.png"><img alt="_images/additional_voucher_photos.png" class="align-center" src="_images/additional_voucher_photos.png" style="width: 433px;" /></a>
 </div>
 <div class="section" id="create-excel-table">
-<span id="id8"></span><h3>Create Excel table<a class="headerlink" href="#create-excel-table" title="Permalink to this headline">¶</a></h3>
+<span id="id6"></span><h3>Create Excel table<a class="headerlink" href="#create-excel-table" title="Permalink to this headline">¶</a></h3>
 <p>You can create a MS Excel table with specimen codes, genus and species names, genes used in analysis along with their accession numbers.</p>
 <p>Go to the <strong>User interface</strong> and under the <strong>Toolbox</strong> click on the link <strong>Create MS Excel table</strong></p>
 <p>Instead of typing your specimen codes in the text area below, you could select a Taxonset (provided that it has been set before (<a class="reference internal" href="#create-taxonset"><span>Create taxonset</span></a>).
@@ -563,7 +321,7 @@ This table will be ready to attach to a manuscript for publication.</p>
 <a class="reference internal image-reference" href="_images/create_table.png"><img alt="_images/create_table.png" class="align-center" src="_images/create_table.png" style="width: 819px;" /></a>
 </div>
 <div class="section" id="update-voucher">
-<span id="id9"></span><h3>Update voucher<a class="headerlink" href="#update-voucher" title="Permalink to this headline">¶</a></h3>
+<span id="id7"></span><h3>Update voucher<a class="headerlink" href="#update-voucher" title="Permalink to this headline">¶</a></h3>
 <p>When you <strong>click on the code</strong> of an already existing voucher in the <strong>administrator interface</strong> you will be transferred to it&#8217;s <strong>voucher information page</strong>.</p>
 <p>Here you may make changes to all the fields - and these will be updated after pressing <strong>Update record</strong>.</p>
 <p>A changed <strong>voucher code</strong> will automaticly change the code in the connected fields for sequences and primer informations, so as to keep them connected.</p>
@@ -634,7 +392,7 @@ After installing VoSeq, you can enable this capability by getting a <strong>Yaho
 <p>After doing this, VoSeq will be able to pull maps from Yahoo! whenever there is geographic information in your database. Note that you need to enter the geographic coordinates into VoSeq converted into decimal format, using the sign minus for the Southern and Western hemispheres.</p>
 </div>
 <div class="section" id="flickr-plugin">
-<span id="id10"></span><h3>Flickr plugin<a class="headerlink" href="#flickr-plugin" title="Permalink to this headline">¶</a></h3>
+<span id="id8"></span><h3>Flickr plugin<a class="headerlink" href="#flickr-plugin" title="Permalink to this headline">¶</a></h3>
 <p><strong>VoSeq</strong> hosts all the specimen photos in <a class="reference external" href="http://www.flickr.com/">Flickr</a>. If you have a free account you can host up to 200 photos. The Pro account allows you hosting unlimited number of photos for a yearly fee (25 USD).</p>
 <ol class="arabic">
 <li><p class="first">You need to get an API key from Flickr.</p>
@@ -668,7 +426,7 @@ After installing VoSeq, you can enable this capability by getting a <strong>Yaho
 </div>
 </div>
 <div class="section" id="blast-plugin">
-<span id="id12"></span><h3>BLAST plugin<a class="headerlink" href="#blast-plugin" title="Permalink to this headline">¶</a></h3>
+<span id="id10"></span><h3>BLAST plugin<a class="headerlink" href="#blast-plugin" title="Permalink to this headline">¶</a></h3>
 <p>VoSeq has <a class="reference external" href="http://en.wikipedia.org/wiki/BLAST">BLAST capabilities</a>.</p>
 <p>You can search for homologous sequences of your markers in GenBank. If you have a VoSeq installation in your work computer (or your server provider allows you to run the BLAST executable files), you do local BLASTs. For example, BLAST any or your sequences against all sequences of the same gene, or against all your sequences (full BLAST). Click on the &#8220;BLAST&#8221; icons in your voucher&#8217;s pages:</p>
 <a class="reference internal image-reference" href="_images/voseq01.png"><img alt="_images/voseq01.png" class="align-center" src="_images/voseq01.png" style="width: 800px;" /></a>
@@ -700,7 +458,7 @@ After installing VoSeq, you can enable this capability by getting a <strong>Yaho
 <a class="reference internal image-reference" href="_images/authority_from_eol.png"><img alt="_images/authority_from_eol.png" class="align-center" src="_images/authority_from_eol.png" style="width: 574px;" /></a>
 </div>
 <div class="section" id="sharing-photos-with-eol">
-<span id="id13"></span><h3>Sharing Photos with EOL<a class="headerlink" href="#sharing-photos-with-eol" title="Permalink to this headline">¶</a></h3>
+<span id="id11"></span><h3>Sharing Photos with EOL<a class="headerlink" href="#sharing-photos-with-eol" title="Permalink to this headline">¶</a></h3>
 <p>VoSeq makes it easy to share your voucher photos with EOL. You can submit your best photos to EOL from VoSeq with just one click.</p>
 <p>If you haven&#8217;t done it already, you need to create an account in Flickr. Then log in to Flickr with your account and join the EOL group:</p>
 <ol class="arabic simple">
