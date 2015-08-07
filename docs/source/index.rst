@@ -3,19 +3,27 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to VoSeq's documentation!
-=================================
+=========================================
+Welcome to VoSeq |version| documentation!
+=========================================
+
+Getting help
+============
+
+* Try the :doc:`FAQ <faq>` -- with answers to common questions.
 
 .. toctree::
    :maxdepth: 2
+   :hidden:
 
    news
+   faq
 
 ..
 	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><
 	Page 1.
 
- 
+
 -----------
 Hello there
 -----------
@@ -26,15 +34,15 @@ biological data of museum specimens and molecular data such as DNA sequences,
 primers and genes.
 
 VoSeq has tools that facilitate the batch upload of lots of voucher data and
-DNA sequences with a few clicks. It also has 
+DNA sequences with a few clicks. It also has
 `BLAST <http://en.wikipedia.org/wiki/BLAST/>`_ capabilities, meaning that you
 can find out whether one particular
-DNA sequence is most similar to other sequence in `NCBI GenBank 
+DNA sequence is most similar to other sequence in `NCBI GenBank
 <http://www.ncbi.nlm.nih.gov/genbank/>`_. You can also BLAST your sequence
 against all others in your VoSeq database (see :ref:`blast-plugin` section for
 details).
 
-VoSeq is written mainly in `PHP <http://www.php.net/>`_. It uses 
+VoSeq is written mainly in `PHP <http://www.php.net/>`_. It uses
 `MySQL`_ as back-end and it is designed to run in a
 local server (for example by installing `Apache <http://httpd.apache.org/>`_
 on your computer) or to run on any commercial server service.
@@ -95,7 +103,7 @@ Once you have successfully downloaded VoSeq, you can find out how to:
 ^^^^^^^^^^^^^^^^
 Install in Linux
 ^^^^^^^^^^^^^^^^
-Before installing VoSeq, you need to install in your computer a web server 
+Before installing VoSeq, you need to install in your computer a web server
 (such as `Apache <http://httpd.apache.org/>`_) and the relational database
 `MySQL`_.
 
@@ -121,7 +129,7 @@ Required software
 #. To run the installation script, you'll need to temporarily make your myVoSeq directory writable by the web server. The simplest way to do this on a Unix/Linux system is to make it world-writable by typing: ``chmod 777 myVoSeq``. To do this into a commercial server you will need a telnet client like `PuTTY <http://www.chiark.greenend.org.uk/~sgtatham/putty/>`_ on your system.
 #. At this point you should have Apache and MySQL running (this varies between distributions and setups, see their documentations for details).
 #. Go to your web browser and surf into the VoSeq installation directory (under ``htdocs`` or ``public_html`` folders of Apache). It will direct you to the config script (if it doesn't, just load up the ``http://localhost/myVoSeq/index.php`` file. Fill out the forms.
-#. If all goes well, the installer will create a configuration file named ``conf.php`` in your myVoSeq installation directory. This file will contain all the important variables and information needed to run VoSeq in your system. 
+#. If all goes well, the installer will create a configuration file named ``conf.php`` in your myVoSeq installation directory. This file will contain all the important variables and information needed to run VoSeq in your system.
 
 
 .. _install_in_mac:
@@ -131,7 +139,7 @@ Install in Mac OS X
 ^^^^^^^^^^^^^^^^^^^
 We have successfully installed VoSeq in a MacBook OS X Lion. It appears that the Mac
 operative systems **come already with Apache and PHP installed**. However you will
-need to enable Apache to read and run PHP files. 
+need to enable Apache to read and run PHP files.
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -148,9 +156,9 @@ To connect Apache and PHP so that they work together:
 """""""""""""
 Install MySQL
 """""""""""""
-Unfortunately Mac OS X systems don't come with MySQL installed. You can download it from here: 
+Unfortunately Mac OS X systems don't come with MySQL installed. You can download it from here:
 
-#. Download MySQL from here: http://dev.mysql.com/downloads/mysql/5.1.html 
+#. Download MySQL from here: http://dev.mysql.com/downloads/mysql/5.1.html
 
     * Download the ``.dmg`` package according to your systems specifications (32 bits or 64 bits).
 #. You might also want to install MySQL GUI Tools http://dev.mysql.com/downloads/gui-tools/5.0.html
@@ -166,13 +174,13 @@ Install VoSeq
 #. To start Apache, go to System Preferences>Sharing> and tick Web Sharing to start your web server. Your assigned folder to host your webpages and VoSeq installation is the folder Sites in your Home directory: ``/Users/YourName/Sites``. You will need to place there the source files of ``VoSeq_X.Y.Z.zip``
 #. You need to click the button "create personal share folder" to create the folder "Sites".
 #. Open a Terminal: go to Applications>Utilities>Terminal. In the Terminal window, type ``cd ~/Sites`` to go to the folder where the file ``Voseq_X.Y.Z.zip`` should be.
-#. Unpack the contents by typing ``unzip VoSeq_X.Y.Z.zip``  
+#. Unpack the contents by typing ``unzip VoSeq_X.Y.Z.zip``
 #. Start the MySQL server: ``sudo /Library/StartupItems/MySQLCOM/MySQLCOM start``
 #. Go to your web browser and point it to the VoSeq installation directory: ``http://localhost/~YourName/VoSeq``. It will direct you to the config script. Fill out the forms.
-#. If all goes well, the installer will create a configuration file named ``conf.php`` in your VoSeq installation directory. This file will contain all the important variables and information needed to run VoSeq in your system.  
+#. If all goes well, the installer will create a configuration file named ``conf.php`` in your VoSeq installation directory. This file will contain all the important variables and information needed to run VoSeq in your system.
 #. If during installation, VoSeq cannot connect to MySQL server, you might need to modify your ``/usr/local/mysql/support-files/my-large.cnf`` file parameters:
 
-    * Modify the lines ``/var/mysqld/mysqld.sock`` to  this ``/tmp/mysql.sock`` 
+    * Modify the lines ``/var/mysqld/mysqld.sock`` to  this ``/tmp/mysql.sock``
     * Save the file as ``/etc/my.cnf``
 
 
@@ -189,7 +197,7 @@ Follow these instructions to install Apache, PHP and MySQL and lastly VoSeq on W
 Apache
 """"""
 
-#. **Download and install "Apache2.x"** (tested on 2.2.x) http://httpd.apache.org/ as recommended, preferrably use "localhost" as Network Domain and Server Name. Start the service and try it out by opening http://localhost in your web browser - the output should be **It works!**. 
+#. **Download and install "Apache2.x"** (tested on 2.2.x) http://httpd.apache.org/ as recommended, preferrably use "localhost" as Network Domain and Server Name. Start the service and try it out by opening http://localhost in your web browser - the output should be **It works!**.
 
 .. note:: Notice that Apache will want to use port ``0.0.0.0:80``, which may be used by other programs, if Apache doesnt start (may say something about port occupied), write ``netstat -nab`` in Terminal and check if some other process is using that adress - then close that process if appropriate.
 
@@ -210,15 +218,15 @@ PHP
 #. Restart your Apache Server to confirm changes: "Start > All Programs > Apache HTTP Server 4.2.4 > Control Apache Server > Restart".
 #. Open up your web browser and type in: http://localhost/info.php. If you get a page with blue tables containing PHP and Apache info, then **installation is successful!**
 #. Finish installing PHP by modifying your PHP Configuration File (``C:\WINDOWS\php.ini``) in a text editor:
-   
+
     * Find the line containing: (Delete the "``;``" at the beginning of the lines)
 
-        * ``;extension_dir = "./"`` and change it to 
+        * ``;extension_dir = "./"`` and change it to
         * ``extension_dir = "C:\php\ext"``
 
     * and the line containing:
 
-        * ``;session.save_path = "/tmp"``" and change it to 
+        * ``;session.save_path = "/tmp"``" and change it to
         * ``session.save_path = "C:\WINDOWS\temp"``
 
 
@@ -238,21 +246,21 @@ MySQL
 """""
 
 #. **Download and install MySQL** (tested on 5.5) from http://dev.mysql.com/downloads/mysql/ with typical install - check the "skip Sign-Up" and '"Configure the MySQL server now" boxes when they arrive. Finish installation.
-#. The MySQL Server Instance Configuration Wizard should appear. 
+#. The MySQL Server Instance Configuration Wizard should appear.
 
-    * Click "next" -> 
-    * Select "Detailed Configuraton" and click "next" -> 
+    * Click "next" ->
+    * Select "Detailed Configuraton" and click "next" ->
     * Select "Developer Machine" and click "next" ->
-    * Select "Multifunctional Database" and click "next" -> click "next" -> 
-    * Select "Decision support (DSS)/OLAP" and click "next" -> 
+    * Select "Multifunctional Database" and click "next" -> click "next" ->
+    * Select "Decision support (DSS)/OLAP" and click "next" ->
     * Check "Enable TCP/IP Networking"
-    * "Port Number" should be set to "3306" and 
+    * "Port Number" should be set to "3306" and
     * Check "Enable strict mode", click "next" ->
-    * Select "Standard Character Set" and click "next" -> 
+    * Select "Standard Character Set" and click "next" ->
     * Check "Install As Windows Service, set the name to "MySQL" and check "Launch the MySQL Server automatically
     * Make sure that the "Include Bin Directory in Windows Path" **is NOT checked**.
-    * Click "Next". -> Check the box that says "Modify Security Settings". 
-    * Enter a password for the default "root" account, and confirm the password in the box below. 
+    * Click "Next". -> Check the box that says "Modify Security Settings".
+    * Enter a password for the default "root" account, and confirm the password in the box below.
     * **Do NOT check the boxes** "Enable root access from remote machines" or "Create An Anonymous Account".
     * Click "Next" -> Click "Execute" and let it finish.
     * Click "Finish". Now MySQL should be installed.
@@ -261,10 +269,10 @@ MySQL
 #. Add the PHP directory to Windows PATH - To do this, click:
 
     * Start > My Computer > Properties > Advanced > Environment Variables.
-    * Under the second list (System Variables), there will be a variable called "Path". 
+    * Under the second list (System Variables), there will be a variable called "Path".
     * Select it and click "Edit". Add "``;C:\php``" (or your own path to PHP if installed as other) to the very end of the string and click "OK".
 
-#. Restart your computer and try out the database. 
+#. Restart your computer and try out the database.
 #. (Optional) In order to easily makes changes or additions in your database download and try out the `MySQL Workbench <http://dev.mysql.com/downloads/workbench/5.2.html>`_
 
 
@@ -289,7 +297,7 @@ Install in Windows with XAMPP
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you dont want to install Apache, MySQL and PHP manually you may want to try using a 3-rd party installer.
-XAMPP installs all three as well as the extra protocols needed for PHP. 
+XAMPP installs all three as well as the extra protocols needed for PHP.
 
 """""""""""""
 Install XAMPP
@@ -391,16 +399,16 @@ You can add a single record by going to the **Administrator interface** and clic
    :align: center
    :width: 540px
 
-The most important and the only field that is obligatory is the **gene code** field, this will be the name of your gene when using the database. This could be a simple short version (e.g. **COI** for **Cytochrome oxidase I**) or any other name (no spaces allowed, but **_** are ok). 
-You can for example create a gene code for aligned data, say the barcode version of COI of 658 bp could be named COI_658 or similar. Other genecodes could be made for unaligned sequences (e.g. COI_raw). 
+The most important and the only field that is obligatory is the **gene code** field, this will be the name of your gene when using the database. This could be a simple short version (e.g. **COI** for **Cytochrome oxidase I**) or any other name (no spaces allowed, but **_** are ok).
+You can for example create a gene code for aligned data, say the barcode version of COI of 658 bp could be named COI_658 or similar. Other genecodes could be made for unaligned sequences (e.g. COI_raw).
 
 First the gene/alignment have to be **specified if aligned or not**. For example may raw sequences be set to **no** (and these may be retrieved as FASTA-files, whereas if you want to build other datasets (Nexus, PHYLIP, TNT) they need to be set to aligned. If set to **no**, then other information regarding reading frames and such will be ignored!
 
 Then (if aligned) you should include the **length** of an aligned gene - this will be used for dataset creation and will there warn for sequences longer than the specified length.
 
-You may also add a **description** for the gene - these should be the **full name of the gene** (e.g. **Cytochrome oxidase I**) - as this field is used for example in creating tables to submit to **GenBank**. 
+You may also add a **description** for the gene - these should be the **full name of the gene** (e.g. **Cytochrome oxidase I**) - as this field is used for example in creating tables to submit to **GenBank**.
 
-Aligned genes may be set as **protein-coding** for **additional prot-coding gene functionality** when retrieveing datasets for example (e.g. position choices, translation). 
+Aligned genes may be set as **protein-coding** for **additional prot-coding gene functionality** when retrieveing datasets for example (e.g. position choices, translation).
 
 For aligned protein coding (=yes) genes you may choose to specify the **reading frame** as well as the genetic code for translation - this will be used for dataset creation and is a must f you want to partition your genes according to **codon positions** or **amino acids**.
 
@@ -453,7 +461,7 @@ Or by browsing the data in VoSeq and choosing the specimens you are interested i
    :width: 792px
 
 Here you can sort the table according to choosen information (taxonomic level, code, X-marked or not), as well as choose genes to display information of.
-If you have choosen one or several genes, you can sort the table according to sequence availability for selected genes. 
+If you have choosen one or several genes, you can sort the table according to sequence availability for selected genes.
 You can also press **mark all** or **unmark all** to add or remove X's to or from each taxa that are displayed (works well with filtering).
 In order to perform a filtering or after selection of a new genecode you must press **Sort/Filter** to proceed. Your already marked taxa will be remembered.
 
@@ -468,7 +476,7 @@ If you are updating an already existing taxonset - press **Update taxon set**.
 Create datasets
 ^^^^^^^^^^^^^^^
 
-We believe that one of VoSeq's important features is the **capability to create dataset files of molecular sequences that are ready-to-run in phylogenetic software** such as **MrBayes, TNT, PAUP, RaXML**, etc. 
+We believe that one of VoSeq's important features is the **capability to create dataset files of molecular sequences that are ready-to-run in phylogenetic software** such as **MrBayes, TNT, PAUP, RaXML**, etc.
 
 Now that you have voucher and sequence data in your installation of VoSeq, you might want to create datasets for analysis of sequences in phylogenetic software.
 
@@ -489,7 +497,7 @@ Codon positions
 	Note that codon position choices as well as translation to aminoacids are only able to function if the user have specified a **reading frame** for the chosen gene(s) (see :ref:`adding_genes`).
 
 Partition by (position)
-	Here you can choose how to do partitioning for each gene. 
+	Here you can choose how to do partitioning for each gene.
 	**as one** will create one partition per gene, regardless of which codon positions you include.
 	**each** will create a partition per codon position, whereas **1st-2nd, 3rd** will create one combined partition for the 1st and 2nd positions and one separate for the 3rd codon positions.
 	Note that **each** and **all** are only possible to process with a per gene specified **reading frame** (see :ref:`adding_genes`).
@@ -531,11 +539,11 @@ In the **Administrator interface** you will see that some records have the link 
    :align: center
    :width: 376px
 
-If you want to replace an existing picture with another, you will need to click the **Change picture** icon. 
+If you want to replace an existing picture with another, you will need to click the **Change picture** icon.
 
 After you upload your photo, VoSeq will automatically **post the picture in Flickr** and save the necessary URL addresses in the MySQL database. Thus, you will see your photo in the corresponding voucher page.
 
-If you have not enabled the :ref:`flickr_plugin`, VoSeq will instruct you how to do this. 
+If you have not enabled the :ref:`flickr_plugin`, VoSeq will instruct you how to do this.
 
 **If you don't want to use Flickr**, you can host your photos locally on your own server or computer. For this you will need to edit a line in your ``conf.php`` file:
 
@@ -557,23 +565,23 @@ Starting with version 1.5.0, VoSeq can host many photos for each voucher. Photos
 ^^^^^^^^^^^^^^^^^^
 Create Excel table
 ^^^^^^^^^^^^^^^^^^
-You can create a MS Excel table with specimen codes, genus and species names, genes used in analysis along with their accession numbers. 
+You can create a MS Excel table with specimen codes, genus and species names, genes used in analysis along with their accession numbers.
 
 Go to the **User interface** and under the **Toolbox** click on the link **Create MS Excel table**
 
 Instead of typing your specimen codes in the text area below, you could select a Taxonset (provided that it has been set before (:ref:`create_taxonset`).
 This table will be ready to attach to a manuscript for publication.
 
-You can also change the way sequence information is displayed in the table by choosing between **number of bases** (displays number of bases - does not count questionmarks **?**), **accession numbers** (displays stored accession numbers instead of sequence length) or **X/-** (displays **X** if sequence is present and **-** if sequence is missing. 
+You can also change the way sequence information is displayed in the table by choosing between **number of bases** (displays number of bases - does not count questionmarks **?**), **accession numbers** (displays stored accession numbers instead of sequence length) or **X/-** (displays **X** if sequence is present and **-** if sequence is missing.
 
-**Display missing sequence beginnings/ends with star(*)?:** will show search for questionmarks (?) in the beginning or end of the sequences (when displayed by number of bases) and show if the sequence misses bases in those positions with an asterisk (*). Easy then to see during laboratory phase then where sequence information might be missing for your taxa. 
+**Display missing sequence beginnings/ends with star(*)?:** will show search for questionmarks (?) in the beginning or end of the sequences (when displayed by number of bases) and show if the sequence misses bases in those positions with an asterisk (*). Easy then to see during laboratory phase then where sequence information might be missing for your taxa.
 
-You may also change between comma (,) and tab-delimited table mode. 
+You may also change between comma (,) and tab-delimited table mode.
 
 .. image:: images/create_table.png
    :align: center
    :width: 819px
-   
+
 
 
 
@@ -617,7 +625,7 @@ Also:
 
     * For Mac users it may work better to use the ``sudo chown -R _www VoSeq_folder`` command instead, since files belong to user instead of root!
 
-* **If you have voucher photos stored**, transfer them from the old one to the new one also (in ``pictures`` folder). 
+* **If you have voucher photos stored**, transfer them from the old one to the new one also (in ``pictures`` folder).
 
 
 
@@ -668,7 +676,7 @@ Flickr plugin
 
 **VoSeq** hosts all the specimen photos in `Flickr <http://www.flickr.com/>`_. If you have a free account you can host up to 200 photos. The Pro account allows you hosting unlimited number of photos for a yearly fee (25 USD).
 
-#. You need to get an API key from Flickr. 
+#. You need to get an API key from Flickr.
 #. Create and account in `Flickr <http://www.flickr.com/>`_ (if you don't own one already)
 #. Go to http://nymphalidae.utu.fi/cpena/VoSeq/
 #. Follow the instructions to get an **API key**, **Secret key** and **Token key**.
@@ -714,7 +722,7 @@ Remember that you need to download from NCBI the stand alone BLAST executable fi
 
 * In Linux: ``/path/to/your/VoSeq/blast/bin/``
 * In Windows: ``C:\Program Files\Apache Software Foundation\Apache2.2\htdocs\VoSeq\blast\bin\``
-* It is important that the executable files are placed inside the folder **bin**. 
+* It is important that the executable files are placed inside the folder **bin**.
 
 
 
@@ -761,7 +769,7 @@ under your voucher photos. If you click this button, VoSeq will add a "machine t
 
 Thus you will be able to see your photo in EOL's pool of photos in their Flickr account http://www.flickr.com/groups/encyclopedia_of_life/pool/with/4096153224/
 
-EOL harvests the photos quite frequently, so in one day or two, you will be able to find your photo in the respective page in EOL. 
+EOL harvests the photos quite frequently, so in one day or two, you will be able to find your photo in the respective page in EOL.
 
 
 
@@ -807,72 +815,3 @@ Create a dump file and use in an IPT installation
 .. image:: images/ipt02.png
    :align: center
    :width: 625px
-
-
----
-FAQ
----
-
-^^^^^^^^^^^^^^^^^
-Installation FAQ:
-^^^^^^^^^^^^^^^^^
-
-**Q.-** **During installation I get the error 2002: "Can't connect to local MySQL server through socket ....bla bla bla..."**
-
-    * VoSeq is trying to connect to MySQL using a file called **socket**. This error occurs when PHP tells VoSeq to find the socket in a folder where it is not placed. This can be fixed by telling MySQL to put the socket as the file ``/tmp/mysql.sock`` and by telling PHP to find it there and not to look for it in any other folder.
-    * From the installation folder of **PHP**, save the file ``php.ini-development`` in the folder ``/usr/local/lib/`` and name it ``php.ini``
-    * Edit your file ``php.ini`` and look for the command ``mysql.default_socket`` and make sure it says:
-
-        * ``mysql.default_socket = /tmp/mysql.sock``
-
-    * Edit your MySQL installation file ``/usr/local/mysql/support-files/my-large.cnf``:
-
-        * File parameters: modify the lines ``socket  = /var/mysqld/mysqld.sock`` to ``socket = /tmp/mysql.sock``
-        * Save the file as ``/etc/my.cnf``  and ``/etc/mysql/my.cnf``
-
-    * Restart the server and resume the installation of VoSeq.
-
-
-^^^^^^^^^^^^^^^^^^
-POST request error
-^^^^^^^^^^^^^^^^^^
-**Q.-** ...my computer complains that "The requested resource /VoSeq_XXX/somefile.php does not allow request data with POST requests, or the amount of data provided in the request exceeds the capacity limit."?
-
-**A.-** Open the PHP config file (see below "How to find PHP.ini") and increase the value for ``POST_max_size``, save file and restart webserver.
-
-^^^^^^^^^^^^^^^^^^^^
-Execution time error
-^^^^^^^^^^^^^^^^^^^^
-**Q.-** ...my computer stops a VoSeq page from running due to execution timeout?
-
-**A.-** Open the PHP config file (see below "How to find PHP.ini") and increase the value for ``max_execution_time``, save file and restart webserver.
-
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-Too many variables problem
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-**Q.-** ...my huge taxonsets or other lists doesnt include all the values I had marked and added for them?
-
-**A.-** PHP may have set a too low value to ``max_input_vars``. Open the PHP config file (see below "How to find PHP.ini") and increase the value for ``max_input_vars``, save file and restart webserver.
-
-^^^^^^^^^^^^^^^^^^^^^^
-Mac permission problem
-^^^^^^^^^^^^^^^^^^^^^^
-**Q.-** ...if for example BLAST, storing pictures etc dont work on Mac!
-
-**A.-** It happens specially when upgrading VoSeq. When you download a fresh copy of VoSeq form Github and copy the contents on your installation of VoSeq, it happens that all the files and folders have you as **owner**. So, VoSeq (and the Apache server) cannot write into the folders. To fix this it is necessary to set the Apache server as the **owner** of files and folder. In my MacBook the id for the Apache "user" is ``_www``. So we need to do the following to transfer ownership of files and folders of VoSeq to the server:
-Open a terminal or console and use the command: ``sudo chown -R _www VoSeq_folder``. This should give the permissions to VoSeq (actually the Apache server) to do this things!
-
-
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-How to find php.ini and see your PHP settings
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Place a file named **info.php** containing ``<?php phpinfo(); ?>`` in your web server folder where you have your VoSeq folder. 
-Open your browser and go to that file/page (ie. **http://localhost/info.php** for win/linux or **http://127.0.0.1/~yourprivatefoldername/info.php** for mac).
-This should get you the PHP config output, where you can find "Configuration File(php.ini) Path" and "Loaded Configuration File". These fields should tell you where your config file (php.ini) is located.
-If these says "(none)" see below. 
-
-    * Windows - In windows the PHP configuration file (php.ini) should be found under ``C:Windows/``. If it's not there then copy the php.ini-??? to ``C:\WINDOWS`` and rename it php.ini. (??? can be dist, production or development).
-    * Mac - on mac the the PHP configuration file (php.ini) should be found under ``/private/etc/`` . If no php.ini is found there but a php.ini.default is, run ``sudo cp /private/etc/php.ini.default /private/etc/php.ini`` in terminal create a php.ini file. Then restart server. 
-    * Linux - Open a terminal or console and type ``locate php.ini``. In my server I got this location: ``/usr/local/lib/php.ini``
-
-
