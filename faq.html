@@ -1,0 +1,266 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Frequently Asked Questions &mdash; VoSeq 2.0.0-beta documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="VoSeq 2.0.0-beta documentation" href="index.html"/>
+        <link rel="prev" title="News" href="news.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="index.html" class="icon icon-home"> VoSeq
+        
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="news.html">News</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="news.html#aug-2015">07 Aug 2015</a></li>
+<li class="toctree-l2"><a class="reference internal" href="news.html#mar-2013">28 Mar 2013</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Frequently Asked Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-7-3-and-earlier">Version 1.7.3 and earlier</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installation-faq">Installation FAQ:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#post-request-error">POST request error</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#execution-time-error">Execution time error</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#too-many-variables-problem">Too many variables problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mac-permission-problem">Mac permission problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-find-php-ini-and-see-your-php-settings">How to find php.ini and see your PHP settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">VoSeq</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Frequently Asked Questions</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/faq.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="frequently-asked-questions">
+<span id="faq"></span><h1>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-1-7-3-and-earlier">
+<h2>Version 1.7.3 and earlier<a class="headerlink" href="#version-1-7-3-and-earlier" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="installation-faq">
+<h3>Installation FAQ:<a class="headerlink" href="#installation-faq" title="Permalink to this headline">¶</a></h3>
+<p><strong>Q.-</strong> <strong>During installation I get the error 2002: &#8220;Can&#8217;t connect to local MySQL server through socket ....bla bla bla...&#8221;</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first">VoSeq is trying to connect to MySQL using a file called <strong>socket</strong>. This error occurs when PHP tells VoSeq to find the socket in a folder where it is not placed. This can be fixed by telling MySQL to put the socket as the file <code class="docutils literal"><span class="pre">/tmp/mysql.sock</span></code> and by telling PHP to find it there and not to look for it in any other folder.</p>
+</li>
+<li><p class="first">From the installation folder of <strong>PHP</strong>, save the file <code class="docutils literal"><span class="pre">php.ini-development</span></code> in the folder <code class="docutils literal"><span class="pre">/usr/local/lib/</span></code> and name it <code class="docutils literal"><span class="pre">php.ini</span></code></p>
+</li>
+<li><p class="first">Edit your file <code class="docutils literal"><span class="pre">php.ini</span></code> and look for the command <code class="docutils literal"><span class="pre">mysql.default_socket</span></code> and make sure it says:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">mysql.default_socket</span> <span class="pre">=</span> <span class="pre">/tmp/mysql.sock</span></code></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Edit your MySQL installation file <code class="docutils literal"><span class="pre">/usr/local/mysql/support-files/my-large.cnf</span></code>:</p>
+<blockquote>
+<div><ul class="simple">
+<li>File parameters: modify the lines <code class="docutils literal"><span class="pre">socket</span>&nbsp; <span class="pre">=</span> <span class="pre">/var/mysqld/mysqld.sock</span></code> to <code class="docutils literal"><span class="pre">socket</span> <span class="pre">=</span> <span class="pre">/tmp/mysql.sock</span></code></li>
+<li>Save the file as <code class="docutils literal"><span class="pre">/etc/my.cnf</span></code>  and <code class="docutils literal"><span class="pre">/etc/mysql/my.cnf</span></code></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Restart the server and resume the installation of VoSeq.</p>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="post-request-error">
+<h3>POST request error<a class="headerlink" href="#post-request-error" title="Permalink to this headline">¶</a></h3>
+<p><strong>Q.-</strong> ...my computer complains that &#8220;The requested resource /VoSeq_XXX/somefile.php does not allow request data with POST requests, or the amount of data provided in the request exceeds the capacity limit.&#8221;?</p>
+<p><strong>A.-</strong> Open the PHP config file (see below &#8220;How to find PHP.ini&#8221;) and increase the value for <code class="docutils literal"><span class="pre">POST_max_size</span></code>, save file and restart webserver.</p>
+</div>
+<div class="section" id="execution-time-error">
+<h3>Execution time error<a class="headerlink" href="#execution-time-error" title="Permalink to this headline">¶</a></h3>
+<p><strong>Q.-</strong> ...my computer stops a VoSeq page from running due to execution timeout?</p>
+<p><strong>A.-</strong> Open the PHP config file (see below &#8220;How to find PHP.ini&#8221;) and increase the value for <code class="docutils literal"><span class="pre">max_execution_time</span></code>, save file and restart webserver.</p>
+</div>
+<div class="section" id="too-many-variables-problem">
+<h3>Too many variables problem<a class="headerlink" href="#too-many-variables-problem" title="Permalink to this headline">¶</a></h3>
+<p><strong>Q.-</strong> ...my huge taxonsets or other lists doesnt include all the values I had marked and added for them?</p>
+<p><strong>A.-</strong> PHP may have set a too low value to <code class="docutils literal"><span class="pre">max_input_vars</span></code>. Open the PHP config file (see below &#8220;How to find PHP.ini&#8221;) and increase the value for <code class="docutils literal"><span class="pre">max_input_vars</span></code>, save file and restart webserver.</p>
+</div>
+<div class="section" id="mac-permission-problem">
+<h3>Mac permission problem<a class="headerlink" href="#mac-permission-problem" title="Permalink to this headline">¶</a></h3>
+<p><strong>Q.-</strong> ...if for example BLAST, storing pictures etc dont work on Mac!</p>
+<p><strong>A.-</strong> It happens specially when upgrading VoSeq. When you download a fresh copy of VoSeq form Github and copy the contents on your installation of VoSeq, it happens that all the files and folders have you as <strong>owner</strong>. So, VoSeq (and the Apache server) cannot write into the folders. To fix this it is necessary to set the Apache server as the <strong>owner</strong> of files and folder. In my MacBook the id for the Apache &#8220;user&#8221; is <code class="docutils literal"><span class="pre">_www</span></code>. So we need to do the following to transfer ownership of files and folders of VoSeq to the server:
+Open a terminal or console and use the command: <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">chown</span> <span class="pre">-R</span> <span class="pre">_www</span> <span class="pre">VoSeq_folder</span></code>. This should give the permissions to VoSeq (actually the Apache server) to do this things!</p>
+</div>
+<div class="section" id="how-to-find-php-ini-and-see-your-php-settings">
+<h3>How to find php.ini and see your PHP settings<a class="headerlink" href="#how-to-find-php-ini-and-see-your-php-settings" title="Permalink to this headline">¶</a></h3>
+<p>Place a file named <strong>info.php</strong> containing <code class="docutils literal"><span class="pre">&lt;?php</span> <span class="pre">phpinfo();</span> <span class="pre">?&gt;</span></code> in your web server folder where you have your VoSeq folder.
+Open your browser and go to that file/page (ie. <strong>http://localhost/info.php</strong> for win/linux or <strong>http://127.0.0.1/~yourprivatefoldername/info.php</strong> for mac).
+This should get you the PHP config output, where you can find &#8220;Configuration File(php.ini) Path&#8221; and &#8220;Loaded Configuration File&#8221;. These fields should tell you where your config file (php.ini) is located.
+If these says &#8220;(none)&#8221; see below.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Windows - In windows the PHP configuration file (php.ini) should be found under <code class="docutils literal"><span class="pre">C:Windows/</span></code>. If it&#8217;s not there then copy the php.ini-??? to <code class="docutils literal"><span class="pre">C:\WINDOWS</span></code> and rename it php.ini. (??? can be dist, production or development).</li>
+<li>Mac - on mac the the PHP configuration file (php.ini) should be found under <code class="docutils literal"><span class="pre">/private/etc/</span></code> . If no php.ini is found there but a php.ini.default is, run <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">cp</span> <span class="pre">/private/etc/php.ini.default</span> <span class="pre">/private/etc/php.ini</span></code> in terminal create a php.ini file. Then restart server.</li>
+<li>Linux - Open a terminal or console and type <code class="docutils literal"><span class="pre">locate</span> <span class="pre">php.ini</span></code>. In my server I got this location: <code class="docutils literal"><span class="pre">/usr/local/lib/php.ini</span></code></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="news.html" class="btn btn-neutral" title="News" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2013-2015, Carlos Peña, Tobias Malm.
+      Last updated on Aug 07, 2015.
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2.0.0-beta',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
