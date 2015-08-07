@@ -3,10 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-=========================================
+#########################################
 Welcome to VoSeq |version| documentation!
-=========================================
+#########################################
 
+============
 Getting help
 ============
 
@@ -19,14 +20,6 @@ Getting help
    news
    faq
 
-..
-	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><
-	Page 1.
-
-
------------
-Hello there
------------
 
 Welcome to **VoSeq**, a database to store voucher and DNA sequence data for
 phylogenetic analysis. It's a unique database that enables to digitize
@@ -42,10 +35,22 @@ DNA sequence is most similar to other sequence in `NCBI GenBank
 against all others in your VoSeq database (see :ref:`blast-plugin` section for
 details).
 
-VoSeq is written mainly in `PHP <http://www.php.net/>`_. It uses
-`MySQL`_ as back-end and it is designed to run in a
-local server (for example by installing `Apache <http://httpd.apache.org/>`_
-on your computer) or to run on any commercial server service.
+VoSeq is written in `Python <https://www.python.org/>`_. It uses
+`PostgreSQL <http://www.postgresql.org/>`_ as database back-end and it is
+designed to run either locally in your own computer or on a remote (commercial)
+server service.
+
+==========
+Start here
+==========
+
+.. toctree::
+   :hidden:
+
+   intro/overview
+
+:doc:`intro/overview`
+   Find out what VoSeq can do. It might be right for you.
 
 .. image:: images/intro1.png
    :align: center
@@ -347,20 +352,7 @@ XAMPP config
 
 .. _quick_guide:
 
------------
-Quick Guide
------------
-Here is a quick overview on how to use VoSeq with your data.
 
-#. :ref:`adding_vouchers`
-#. :ref:`adding_genes`
-#. :ref:`adding_sequences`
-#. :ref:`create_taxonset`
-#. :ref:`create_datasets`
-#. :ref:`my_search`
-#. :ref:`upload_voucher_photos`
-#. :ref:`create_excel_table`
-#. :ref:`update_voucher`
 
 
 
