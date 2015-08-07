@@ -22,3 +22,10 @@ Here is a quick overview on how to use VoSeq with your data.
 #. :ref:`upload_voucher_photos`
 #. :ref:`create_excel_table`
 #. :ref:`update_voucher`
+
+VoSeq comes with an administrative interface that allows you to create user accounts
+and upload, modify and delete voucher and sequence data.
+The user accounts are created by the administrator which can choose general
+or specific privileges for them.
+By default, users without accounts (guests) can only see voucher data but not
+sequences. They cannot create datasets, add or modify data.

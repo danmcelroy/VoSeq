@@ -20,6 +20,7 @@ I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
 	@echo "  html       to make standalone HTML files"
+	@echo "  release    to do fixes for _static and push to Github"
 	@echo "  dirhtml    to make HTML files named index.html in directories"
 	@echo "  singlehtml to make a single large HTML file"
 	@echo "  pickle     to make pickle files"
@@ -46,6 +47,19 @@ html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
+
+release:
+	@echo
+	@echo "Copying static files"
+	cp -r build/html/_static/* ../static/.
+	@echo
+	@echo "Replacing _static for static in html files"
+	sed -i 's/_static/static/g' build/html/*html
+	sed -i 's/_static/static/g' build/html/intro/*html
+	@echo
+	@echo "Copying html files"
+	rm -rf build/html/_static
+	cp -r build/html/* ..
 
 dirhtml:
 	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
