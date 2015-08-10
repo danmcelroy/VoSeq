@@ -82,241 +82,30 @@ Using VoSeq
 :doc:`usage/adding-vouchers`
     Learn how to create records for voucher specimens in VoSeq.
 
-#. :ref:`adding_genes`
-#. :ref:`adding_sequences`
-#. :ref:`create_taxonset`
-#. :ref:`create_datasets`
-#. :ref:`my_search`
-#. :ref:`upload_voucher_photos`
-#. :ref:`create_excel_table`
-#. :ref:`update_voucher`
+:doc:`usage/adding-genes`
+    Learn how to add data about sequenced genes in VoSeq.
 
+:doc:`usage/adding-sequences`
+    Learn how to upload DNA sequences to VoSeq.
 
+:doc:`usage/create-taxonset`
+    Learn how to group set of vouchers in TaxonSets.
 
+:doc:`usage/create-datasets`
+    Learn how to create dataset files for phylogenetic software.
 
+:doc:`usage/search`
+    Learn how to do simple and advanced searches.
 
+:doc:`usage/upload-voucher-photos`
+    Learn how to upload voucher pictures in VoSeq.
 
+:doc:`usage/create-excel-table`
+    Learn how to export data ready for Excel tables.
 
+:doc:`usage/update-voucher`
+    Learn how to update voucher and sequence data.
 
-
-
-.. _adding_genes:
-
-^^^^^^^^^^^^
-Adding genes
-^^^^^^^^^^^^
-
-The second thing after adding vouchers that should be done is to create **new genes** or "alignments" for your database. This must be done in order to be able to **add sequences** to the database.
-You can add a single record by going to the **Administrator interface** and clicking on the link **Add/edit/view gene information**, followed by **Add gene**'.
-
-.. image:: images/add-edit_gene.png
-   :align: center
-   :width: 540px
-
-The most important and the only field that is obligatory is the **gene code** field, this will be the name of your gene when using the database. This could be a simple short version (e.g. **COI** for **Cytochrome oxidase I**) or any other name (no spaces allowed, but **_** are ok).
-You can for example create a gene code for aligned data, say the barcode version of COI of 658 bp could be named COI_658 or similar. Other genecodes could be made for unaligned sequences (e.g. COI_raw).
-
-First the gene/alignment have to be **specified if aligned or not**. For example may raw sequences be set to **no** (and these may be retrieved as FASTA-files, whereas if you want to build other datasets (Nexus, PHYLIP, TNT) they need to be set to aligned. If set to **no**, then other information regarding reading frames and such will be ignored!
-
-Then (if aligned) you should include the **length** of an aligned gene - this will be used for dataset creation and will there warn for sequences longer than the specified length.
-
-You may also add a **description** for the gene - these should be the **full name of the gene** (e.g. **Cytochrome oxidase I**) - as this field is used for example in creating tables to submit to **GenBank**.
-
-Aligned genes may be set as **protein-coding** for **additional prot-coding gene functionality** when retrieveing datasets for example (e.g. position choices, translation).
-
-For aligned protein coding (=yes) genes you may choose to specify the **reading frame** as well as the genetic code for translation - this will be used for dataset creation and is a must f you want to partition your genes according to **codon positions** or **amino acids**.
-
-**Introns** may be added - enter number of introns in your alignment and click 'update introns', that will give new fields for entering starting and finsihing positions for your introns. (Remember that positions in an alignment here is counted from 1 and upwards).
-
-
-.. _adding_sequences:
-
-^^^^^^^^^^^^^^^^
-Adding sequences
-^^^^^^^^^^^^^^^^
-
-In the **Administrator interface**, the tool **Upload batch sequences/vouchers** allows you to upload DNA sequences into VoSeq. Along with the DNA sequences, you have to upload the required fields **gene code** and **voucher code**, optionalyl the primer names, laborator and creation date. Each sequence and its related data goes into one line, with fields separated by tabs. If you have your data in a spreadsheet such as MS Excel, you can copy and paste the data into the text area.
-
-* It is important to use the same headers provided in the text area.
-* It is also necessary that that the **code** of each sequence matches the **code** of voucher specimens that had been uploaded into VoSeq. This is the unique identifier that is used to connect the voucher data and their sequences.
-
-(Aligned sequences should for best use of the database have missing data coded as questionmark (?) and gaps as a dash (-))
-
-.. image:: images/batch_seq_upload.png
-   :align: center
-   :width: 902px
-
-
-
-.. _`create_taxonset`:
-
-^^^^^^^^^^^^^^^
-Create taxonset
-^^^^^^^^^^^^^^^
-
-Taxonsets is a way to make a list of taxa that are being used for a specific project or analysis. A Taxonset is just a list of voucher codes. By having Taxonsets, you can quickly create datasets and tables for them.
-
-If you have not set Taxonsets you will need to type specimen codes everytime you create a dataset. Instead, if you have a Taxonset for a particular project, you could select it when creating Tables for manuscripts.
-
-Go to the **Administrator interface** and click on the link **Add/edit/view Taxon sets**.
-
-A taxonset must have a name in order to be saved and usable later!
-
-You can create a **Taxonset** by entering a list of specimen codes, each separated by a return:
-
-.. image:: images/create_taxonset1.png
-   :align: center
-   :width: 518px
-
-Or by browsing the data in VoSeq and choosing the specimens you are interested in by marking them in the **X** field:
-
-.. image:: images/create_taxonset2.png
-   :align: center
-   :width: 792px
-
-Here you can sort the table according to choosen information (taxonomic level, code, X-marked or not), as well as choose genes to display information of.
-If you have choosen one or several genes, you can sort the table according to sequence availability for selected genes.
-You can also press **mark all** or **unmark all** to add or remove X's to or from each taxa that are displayed (works well with filtering).
-In order to perform a filtering or after selection of a new genecode you must press **Sort/Filter** to proceed. Your already marked taxa will be remembered.
-
-After completing your selection of taxa and adding name and descriptions - press the **Add dataset** button to save it.
-If you are updating an already existing taxonset - press **Update taxon set**.
-
-
-
-.. _create_datasets:
-
-^^^^^^^^^^^^^^^
-Create datasets
-^^^^^^^^^^^^^^^
-
-We believe that one of VoSeq's important features is the **capability to create dataset files of molecular sequences that are ready-to-run in phylogenetic software** such as **MrBayes, TNT, PAUP, RaXML**, etc.
-
-Now that you have voucher and sequence data in your installation of VoSeq, you might want to create datasets for analysis of sequences in phylogenetic software.
-
-In the **user interface**, you will find under the **Tools** section the link **Create new dataset**. You will be shown a page to select the sequences you want by entering the **voucher codes** and **gene codes**. You can select your data to be in several formats (FASTA, NEXUS, etc), choose between codon positions, as well as choosing what information your taxon names should include.
-
-This will create a **ready-to-use** data set for analyses!
-
-.. image:: images/create_dataset_new.png
-   :align: center
-   :width: 534px
-
-The **Outgroup** field, if needed, should include the voucher code for the chosen outgroup taxa.
-
-Codon positions
-	Marking **1st**, **2nd** or **3rd** and unmarking **all** positions will create a dataset with only the chosen position(s) for all genes.
-	**Special** will take you to a new page where you will be able to choose which codon positions to include for each gene.
-	Marking **amino acids** will tranlate **protein-coding** genes with a set **genetic code** , the others will be treated as normal dna, i.e. making "mixed" datatype in Nexus for MrBayes, and setting partitions correctly in Nexus and PHYLIP format.
-	Note that codon position choices as well as translation to aminoacids are only able to function if the user have specified a **reading frame** for the chosen gene(s) (see :ref:`adding_genes`).
-
-Partition by (position)
-	Here you can choose how to do partitioning for each gene.
-	**as one** will create one partition per gene, regardless of which codon positions you include.
-	**each** will create a partition per codon position, whereas **1st-2nd, 3rd** will create one combined partition for the 1st and 2nd positions and one separate for the 3rd codon positions.
-	Note that **each** and **all** are only possible to process with a per gene specified **reading frame** (see :ref:`adding_genes`).
-
-You can also chose to **omit taxa from a taxonset that contains less than a specific number sequences**. Say you have a 10 gene data set and want to remove all taxa with 5 or less! Easy! Just eneter a minimum number of genes!
-
-If you have introns in your alignment you can choose to include or remove them from the output data set. If included they will be treated as separate data blocks and partitions for the Nexus and PHYLIP outputs!
-
-The voucher codes can be entered one by one (separated by return) in the text area or you could create a :ref:`create_taxonset` (a list of voucher codes for a specific project).
-
-.. note:: As of version 1.5.0, protein-coding ability, aligned or not, introns and genetic code will be set for each gene/alignment in the admin gene section!
-
-
-
-.. _my_search:
-
-^^^^^^
-Search
-^^^^^^
-
-You can search for records by queries using single fields or any combination of them. The autocomplete dropboxes will help you query existing data easily.
-This can be done in both the **user interface** and the **administrator interface** - where the latter have more options to search (e.g. record history).
-
-.. image:: images/search.png
-   :align: center
-   :width: 590px
-
-
-
-.. _upload_voucher_photos:
-
-^^^^^^^^^^^^^^^^^^^^^
-Upload voucher photos
-^^^^^^^^^^^^^^^^^^^^^
-
-In the **Administrator interface** you will see that some records have the link **Picture missing**. By clicking on this link, you will be able to upload a photo for that voucher.
-
-.. image:: images/picture_missing.png
-   :align: center
-   :width: 376px
-
-If you want to replace an existing picture with another, you will need to click the **Change picture** icon.
-
-After you upload your photo, VoSeq will automatically **post the picture in Flickr** and save the necessary URL addresses in the MySQL database. Thus, you will see your photo in the corresponding voucher page.
-
-If you have not enabled the :ref:`flickr_plugin`, VoSeq will instruct you how to do this.
-
-**If you don't want to use Flickr**, you can host your photos locally on your own server or computer. For this you will need to edit a line in your ``conf.php`` file:
-
-* Change the line:
-
-	* ``$photos_repository = 'flickr';`` to this one:
-	* ``$photos_repository = 'local';``
-
-Starting with version 1.5.0, VoSeq can host many photos for each voucher. Photos can be added in the voucher page using the administrator interface of VoSeq. You can delete photos individually by clicking on it's "trash" icon.
-
-.. note:: If you have more than two photos for voucher, all additional photos will appear at the bottom of the voucher page (see image below).
-
-.. image:: images/additional_voucher_photos.png
-   :align: center
-   :width: 433px
-
-.. _create_excel_table:
-
-^^^^^^^^^^^^^^^^^^
-Create Excel table
-^^^^^^^^^^^^^^^^^^
-You can create a MS Excel table with specimen codes, genus and species names, genes used in analysis along with their accession numbers.
-
-Go to the **User interface** and under the **Toolbox** click on the link **Create MS Excel table**
-
-Instead of typing your specimen codes in the text area below, you could select a Taxonset (provided that it has been set before (:ref:`create_taxonset`).
-This table will be ready to attach to a manuscript for publication.
-
-You can also change the way sequence information is displayed in the table by choosing between **number of bases** (displays number of bases - does not count questionmarks **?**), **accession numbers** (displays stored accession numbers instead of sequence length) or **X/-** (displays **X** if sequence is present and **-** if sequence is missing.
-
-**Display missing sequence beginnings/ends with star(*)?:** will show search for questionmarks (?) in the beginning or end of the sequences (when displayed by number of bases) and show if the sequence misses bases in those positions with an asterisk (*). Easy then to see during laboratory phase then where sequence information might be missing for your taxa.
-
-You may also change between comma (,) and tab-delimited table mode.
-
-.. image:: images/create_table.png
-   :align: center
-   :width: 819px
-
-
-
-
-
-.. _update_voucher:
-
-^^^^^^^^^^^^^^
-Update voucher
-^^^^^^^^^^^^^^
-
-When you **click on the code** of an already existing voucher in the **administrator interface** you will be transferred to it's **voucher information page**.
-
-Here you may make changes to all the fields - and these will be updated after pressing **Update record**.
-
-A changed **voucher code** will automaticly change the code in the connected fields for sequences and primer informations, so as to keep them connected.
-
-There is also a **record history** displayed for administrators that list what changes have been made to the voucher information previously, with time and the user responsible for the changes.
-
-.. image:: images/update_voucher.png
-   :align: center
-   :width: 836px
 
 
 
