@@ -26,3 +26,9 @@ Then you can login in VoSeq:
 .. image:: ../images/login.png
    :align: center
    :width: 581px
+
+In the administrative interface, you can manage user accounts:
+
+.. image:: ../images/admin_interface_users.png
+   :align: center
+   :width: 628px
