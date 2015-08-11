@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Adding vouchers &mdash; VoSeq 2.0.0-beta documentation</title>
+  <title>Create datasets &mdash; VoSeq 2.0.0-beta documentation</title>
   
 
   
@@ -33,8 +33,8 @@
 
   
     <link rel="top" title="VoSeq 2.0.0-beta documentation" href="../index.html"/>
-        <link rel="next" title="Adding genes" href="adding-genes.html"/>
-        <link rel="prev" title="Download to install VoSeq" href="../intro/install.html"/> 
+        <link rel="next" title="Search" href="search.html"/>
+        <link rel="prev" title="Create taxonset" href="create-taxonset.html"/> 
 
   
   <script src="static/js/modernizr.min.js"></script>
@@ -106,11 +106,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../intro/install.html#configure-voseq">Configure VoSeq</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Adding vouchers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="adding-vouchers.html">Adding vouchers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="adding-genes.html">Adding genes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="adding-sequences.html">Adding sequences</a></li>
 <li class="toctree-l1"><a class="reference internal" href="create-taxonset.html">Create taxonset</a></li>
-<li class="toctree-l1"><a class="reference internal" href="create-datasets.html">Create datasets</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Create datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="search.html">Search</a></li>
 <li class="toctree-l1"><a class="reference internal" href="upload-voucher-photos.html">Upload voucher photos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="create-excel-table.html">Create Excel table</a></li>
@@ -156,11 +156,11 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-    <li>Adding vouchers</li>
+    <li>Create datasets</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../_sources/usage/adding-vouchers.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/usage/create-datasets.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -169,13 +169,33 @@
 </div>
           <div role="main" class="document">
             
-  <div class="section" id="adding-vouchers">
-<span id="id1"></span><h1>Adding vouchers<a class="headerlink" href="#adding-vouchers" title="Permalink to this headline">¶</a></h1>
-<p>After successful installation, the first thing to do is to add records (vouchers, or specimens). You can add a single record by going to the <strong>Administrator interface</strong> and clicking on the link <strong>Add new record</strong>.</p>
-<a class="reference internal image-reference" href="../_images/add_new_record.png"><img alt="../_images/add_new_record.png" class="align-center" src="../_images/add_new_record.png" style="width: 452px;" /></a>
-<p>The most important information to enter is the <strong>code</strong> of voucher, which has to be unique. VoSeq will refuse to accept duplicate codes and will issue error message if this happens. Another necessary field is the <strong>Genus</strong> entry, while all other fields are optional.</p>
-<p>You can also upload a batch of records using the tool <strong>Upload batch sequences/vouchers</strong>. You will be shown a page to batch-upload sequences. By clicking the button <strong>Upload vouchers instead</strong> you will see instructions on how to upload specimen data. You can quickly import voucher data from a table in MS Excel by copying and pasting into the text area, provided that you use the right field headers.</p>
-<a class="reference internal image-reference" href="../_images/batch_record_upload.png"><img alt="../_images/batch_record_upload.png" class="align-center" src="../_images/batch_record_upload.png" style="width: 902px;" /></a>
+  <div class="section" id="create-datasets">
+<span id="id1"></span><h1>Create datasets<a class="headerlink" href="#create-datasets" title="Permalink to this headline">¶</a></h1>
+<p>We believe that one of VoSeq&#8217;s important features is the <strong>capability to create dataset files of molecular sequences that are ready-to-run in phylogenetic software</strong> such as <strong>MrBayes, TNT, PAUP, RaXML</strong>, etc.</p>
+<p>Now that you have voucher and sequence data in your installation of VoSeq, you might want to create datasets for analysis of sequences in phylogenetic software.</p>
+<p>In the <strong>user interface</strong>, you will find under the <strong>Tools</strong> section the link <strong>Create new dataset</strong>. You will be shown a page to select the sequences you want by entering the <strong>voucher codes</strong> and <strong>gene codes</strong>. You can select your data to be in several formats (FASTA, NEXUS, etc), choose between codon positions, as well as choosing what information your taxon names should include.</p>
+<p>This will create a <strong>ready-to-use</strong> data set for analyses!</p>
+<a class="reference internal image-reference" href="usage/images/create_dataset_new.png"><img alt="usage/images/create_dataset_new.png" class="align-center" src="usage/images/create_dataset_new.png" style="width: 534px;" /></a>
+<p>The <strong>Outgroup</strong> field, if needed, should include the voucher code for the chosen outgroup taxa.</p>
+<dl class="docutils">
+<dt>Codon positions</dt>
+<dd>Marking <strong>1st</strong>, <strong>2nd</strong> or <strong>3rd</strong> and unmarking <strong>all</strong> positions will create a dataset with only the chosen position(s) for all genes.
+<strong>Special</strong> will take you to a new page where you will be able to choose which codon positions to include for each gene.
+Marking <strong>amino acids</strong> will tranlate <strong>protein-coding</strong> genes with a set <strong>genetic code</strong> , the others will be treated as normal dna, i.e. making &#8220;mixed&#8221; datatype in Nexus for MrBayes, and setting partitions correctly in Nexus and PHYLIP format.
+Note that codon position choices as well as translation to aminoacids are only able to function if the user have specified a <strong>reading frame</strong> for the chosen gene(s) (see <a class="reference internal" href="adding-genes.html#adding-genes"><span>Adding genes</span></a>).</dd>
+<dt>Partition by (position)</dt>
+<dd>Here you can choose how to do partitioning for each gene.
+<strong>as one</strong> will create one partition per gene, regardless of which codon positions you include.
+<strong>each</strong> will create a partition per codon position, whereas <strong>1st-2nd, 3rd</strong> will create one combined partition for the 1st and 2nd positions and one separate for the 3rd codon positions.
+Note that <strong>each</strong> and <strong>all</strong> are only possible to process with a per gene specified <strong>reading frame</strong> (see <a class="reference internal" href="adding-genes.html#adding-genes"><span>Adding genes</span></a>).</dd>
+</dl>
+<p>You can also chose to <strong>omit taxa from a taxonset that contains less than a specific number sequences</strong>. Say you have a 10 gene data set and want to remove all taxa with 5 or less! Easy! Just eneter a minimum number of genes!</p>
+<p>If you have introns in your alignment you can choose to include or remove them from the output data set. If included they will be treated as separate data blocks and partitions for the Nexus and PHYLIP outputs!</p>
+<p>The voucher codes can be entered one by one (separated by return) in the text area or you could create a <a class="reference internal" href="create-taxonset.html#create-taxonset"><span>Create taxonset</span></a> (a list of voucher codes for a specific project).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">As of version 1.5.0, protein-coding ability, aligned or not, introns and genetic code will be set for each gene/alignment in the admin gene section!</p>
+</div>
 </div>
 
 
@@ -184,10 +204,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="adding-genes.html" class="btn btn-neutral float-right" title="Adding genes" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="search.html" class="btn btn-neutral float-right" title="Search" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../intro/install.html" class="btn btn-neutral" title="Download to install VoSeq" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="create-taxonset.html" class="btn btn-neutral" title="Create taxonset" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

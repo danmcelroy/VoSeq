@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to VoSeq 2.0.0-beta documentation! &mdash; VoSeq 2.0.0-beta documentation</title>
+  <title>How to update Voseq &mdash; VoSeq 2.0.0-beta documentation</title>
   
 
   
@@ -32,8 +32,9 @@
   
 
   
-    <link rel="top" title="VoSeq 2.0.0-beta documentation" href="#"/>
-        <link rel="next" title="News" href="news.html"/> 
+    <link rel="top" title="VoSeq 2.0.0-beta documentation" href="index.html"/>
+        <link rel="next" title="Plugins" href="plugins.html"/>
+        <link rel="prev" title="Update voucher" href="usage/update-voucher.html"/> 
 
   
   <script src="static/js/modernizr.min.js"></script>
@@ -50,7 +51,7 @@
         
 
         
-          <a href="#" class="icon icon-home"> VoSeq
+          <a href="index.html" class="icon icon-home"> VoSeq
         
 
         
@@ -91,7 +92,7 @@
 </ul>
 </li>
 </ul>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro/overview.html">VoSeq overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro/install.html">Download to install VoSeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro/install.html#installation-guide">Installation guide</a><ul>
@@ -114,8 +115,8 @@
 <li class="toctree-l1"><a class="reference internal" href="usage/upload-voucher-photos.html">Upload voucher photos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/create-excel-table.html">Create Excel table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/update-voucher.html">Update voucher</a></li>
-<li class="toctree-l1"><a class="reference internal" href="update-voseq.html">How to update Voseq</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="update-voseq.html#backup-your-mysql-database">Backup your MySQL database</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">How to update Voseq</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#backup-your-mysql-database">Backup your MySQL database</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins</a><ul>
@@ -144,7 +145,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="#">VoSeq</a>
+        <a href="index.html">VoSeq</a>
       </nav>
 
 
@@ -153,13 +154,13 @@
         <div class="rst-content">
           <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href="#">Docs</a> &raquo;</li>
+    <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Welcome to VoSeq 2.0.0-beta documentation!</li>
+    <li>How to update Voseq</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/index.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/update-voseq.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -168,93 +169,38 @@
 </div>
           <div role="main" class="document">
             
-  <div class="section" id="welcome-to-voseq-version-documentation">
-<h1>Welcome to VoSeq 2.0.0-beta documentation!<a class="headerlink" href="#welcome-to-voseq-version-documentation" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="getting-help">
-<h2>Getting help<a class="headerlink" href="#getting-help" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Try the <a class="reference internal" href="faq.html"><em>FAQ</em></a> &#8211; with answers to common questions.</li>
-<li>If you need help regarding installation or usage of th application, please
-contact <a class="reference external" href="mailto:mycalesis&#37;&#52;&#48;gmail&#46;com">Carlos Peña</a>.</li>
-<li>You can also subscribe to VoSeq&#8217;s discussion list on
-<a class="reference external" href="https://groups.google.com/d/forum/voseq-discussion-list">Google Groups</a>.</li>
+  <div class="section" id="how-to-update-voseq">
+<h1>How to update Voseq<a class="headerlink" href="#how-to-update-voseq" title="Permalink to this headline">¶</a></h1>
+<p>The easiest way to update VoSeq (that does not require new install of software or database):</p>
+<ul>
+<li><p class="first"><a class="reference external" href="https://github.com/carlosp420/VoSeq/tags">Download the new files from github</a>.</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Unpack</strong> the new files to your <strong>webserver directory</strong> (htdocs, webserver, etc).</li>
+<li><strong>Rename your old &#8220;in use&#8221; VoSeq folder</strong> something like, &#8216;VoSeq_old&#8217; or similar (e.g. &#8220;VoSeq-1.4.4&#8221; -&gt; &#8220;VoSeq_1.4.4_old&#8221;).</li>
+<li><strong>Give the newly downloaded VoSeq folder the same name as the old one had</strong> (e.g. &#8220;VoSeq-1.4.4&#8221;).</li>
+<li><strong>Copy the file &#8220;conf.php&#8221;</strong> (in main folder) from the old version (e.g. &#8220;VoSeq_1.4.4_old&#8221;) to the new version (e.g. &#8220;VoSeq_1.4.4&#8221;).</li>
 </ul>
-<div class="toctree-wrapper compound">
-</div>
-<p>Welcome to <strong>VoSeq</strong>, a database to store voucher and DNA sequence data for
-phylogenetic analysis. It&#8217;s a unique database that enables to digitize
-biological data of museum specimens and molecular data such as DNA sequences,
-primers and genes.</p>
-<p>VoSeq has tools that facilitate the batch upload of lots of voucher data and
-DNA sequences with a few clicks. It also has
-<a class="reference external" href="http://en.wikipedia.org/wiki/BLAST/">BLAST</a> capabilities, meaning that you
-can find out whether one particular
-DNA sequence is most similar to other sequence in <a class="reference external" href="http://www.ncbi.nlm.nih.gov/genbank/">NCBI GenBank</a>. You can also BLAST your sequence
-against all others in your VoSeq database (see <a class="reference internal" href="plugins.html#blast-plugin"><span>BLAST plugin</span></a> section for
-details).</p>
-<p>VoSeq is written in <a class="reference external" href="https://www.python.org/">Python</a>. It uses
-<a class="reference external" href="http://www.postgresql.org/">PostgreSQL</a> as database back-end and it is
-designed to run either locally in your own computer or on a remote (commercial)
-server service.</p>
-</div>
-<div class="section" id="start-here">
-<h2>Start here<a class="headerlink" href="#start-here" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-</div>
-<dl class="docutils">
-<dt><a class="reference internal" href="intro/overview.html"><em>VoSeq overview</em></a></dt>
-<dd>Find out what VoSeq can do. It might be right for you.</dd>
-<dt><a class="reference internal" href="intro/install.html"><em>Download to install VoSeq</em></a></dt>
-<dd>Install VoSeq on your computer or server.</dd>
-<dt><a class="reference internal" href="intro/install.html#configure"><span>Configure VoSeq</span></a></dt>
-<dd>Create a <code class="docutils literal"><span class="pre">conf.json</span></code> file to specify your settings.</dd>
-</dl>
-</div>
-<div class="section" id="how-to-cite-voseq">
-<h2>How to cite VoSeq<a class="headerlink" href="#how-to-cite-voseq" title="Permalink to this headline">¶</a></h2>
-<p>If you think VoSeq is useful and you happen to use it during your work, it
-would be great if you cite us as a source:</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Peña, C. &amp; Malm, T. <strong>2012</strong>. VoSeq: a Voucher and DNA Sequence Web Application.
-<em>PLOS ONE</em>, 7(6): e39071.
-<a class="reference external" href="http://dx.doi.org/10.1371/journal.pone.0039071">doi: 10.1371/journal.pone.0039071</a></p>
-</div>
-</div>
-<div class="section" id="using-voseq">
-<h2>Using VoSeq<a class="headerlink" href="#using-voseq" title="Permalink to this headline">¶</a></h2>
-<dl class="docutils">
-<dt><a class="reference internal" href="intro/administrate-server.html"><em>Administrate the server with your installation of VoSeq</em></a></dt>
-<dd>Learn how to maintain your installation of VoSeq</dd>
-<dt><a class="reference internal" href="usage/adding-vouchers.html"><em>Adding vouchers</em></a></dt>
-<dd>Learn how to create records for voucher specimens in VoSeq.</dd>
-<dt><a class="reference internal" href="usage/adding-genes.html"><em>Adding genes</em></a></dt>
-<dd>Learn how to add data about sequenced genes in VoSeq.</dd>
-<dt><a class="reference internal" href="usage/adding-sequences.html"><em>Adding sequences</em></a></dt>
-<dd>Learn how to upload DNA sequences to VoSeq.</dd>
-<dt><a class="reference internal" href="usage/create-taxonset.html"><em>Create taxonset</em></a></dt>
-<dd>Learn how to group set of vouchers in TaxonSets.</dd>
-<dt><a class="reference internal" href="usage/create-datasets.html"><em>Create datasets</em></a></dt>
-<dd>Learn how to create dataset files for phylogenetic software.</dd>
-<dt><a class="reference internal" href="usage/search.html"><em>Search</em></a></dt>
-<dd>Learn how to do simple and advanced searches.</dd>
-<dt><a class="reference internal" href="usage/upload-voucher-photos.html"><em>Upload voucher photos</em></a></dt>
-<dd>Learn how to upload voucher pictures in VoSeq.</dd>
-<dt><a class="reference internal" href="usage/create-excel-table.html"><em>Create Excel table</em></a></dt>
-<dd>Learn how to export data ready for Excel tables.</dd>
-<dt><a class="reference internal" href="usage/update-voucher.html"><em>Update voucher</em></a></dt>
-<dd>Learn how to update voucher and sequence data.</dd>
-</dl>
-</div>
-<div class="section" id="management-of-voseq">
-<h2>Management of VoSeq<a class="headerlink" href="#management-of-voseq" title="Permalink to this headline">¶</a></h2>
-<dl class="docutils">
-<dt><a class="reference internal" href="update-voseq.html"><em>How to update Voseq</em></a></dt>
-<dd>Upgrading VoSeq from versions 1.7.4 and greater can be done rather simply if you
-downloaded VoSeq using <code class="docutils literal"><span class="pre">git</span></code>.</dd>
-<dt><a class="reference internal" href="plugins.html"><em>Plugins</em></a></dt>
-<dd>Some tools in VoSeq can be enabled by setting up plugins.</dd>
-</dl>
+</div></blockquote>
+</li>
+</ul>
+<p>Also:</p>
+<ul>
+<li><p class="first">If you have used and installed blast files, make sure to copy the files <strong>Blastdb_aliastool</strong>, <strong>Blast</strong>, <strong>Makeblastdb</strong> and <strong>Makembindex</strong> (.exe for all in windows), from the old version (blast/bin folder) to the new version (same folder). Then <strong>set permissions</strong> to read, write, and execute on the folder &#8220;blast/bin&#8221; and its content, as well as the folder &#8220;include/blast&#8221; (e.g. <code class="docutils literal"><span class="pre">chmod</span> <span class="pre">777</span> <span class="pre">-R</span> <span class="pre">path_to/~VoSeq_folder/blast/bin</span></code>) .</p>
+<blockquote>
+<div><ul class="simple">
+<li>For Mac users it may work better to use the <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">chown</span> <span class="pre">-R</span> <span class="pre">_www</span> <span class="pre">VoSeq_folder</span></code> command instead, since files belong to user instead of root!</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>If you have voucher photos stored</strong>, transfer them from the old one to the new one also (in <code class="docutils literal"><span class="pre">pictures</span></code> folder).</p>
+</li>
+</ul>
+<div class="section" id="backup-your-mysql-database">
+<h2>Backup your MySQL database<a class="headerlink" href="#backup-your-mysql-database" title="Permalink to this headline">¶</a></h2>
+<p>You can make backup copies of your data by using a button in the administrator interface.
+You will get all your voucher info and sequences into a SQL file. If your server dies you can easily restore your database by importing one of your backups using the <strong>Import database</strong> button.</p>
+<a class="reference internal image-reference" href="_images/import_export_db.png"><img alt="_images/import_export_db.png" class="align-center" src="_images/import_export_db.png" style="width: 558px;" /></a>
 </div>
 </div>
 
@@ -264,8 +210,10 @@ downloaded VoSeq using <code class="docutils literal"><span class="pre">git</spa
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="news.html" class="btn btn-neutral float-right" title="News" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="plugins.html" class="btn btn-neutral float-right" title="Plugins" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
+      
+        <a href="usage/update-voucher.html" class="btn btn-neutral" title="Update voucher" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
