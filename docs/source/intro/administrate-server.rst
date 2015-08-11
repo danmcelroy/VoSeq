@@ -20,3 +20,9 @@ Open a terminal and type the following commands:
     make admin
 
 You will be asked for username, password and email accounts.
+
+Then you can login in VoSeq:
+
+.. image:: ../images/login.png
+   :align: center
+   :width: 581px
