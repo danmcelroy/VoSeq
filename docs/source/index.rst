@@ -94,6 +94,9 @@ would be great if you cite us as a source:
 Using VoSeq
 ===========
 
+:doc:`intro/administrate-server`
+    Learn how to maintain your installation of VoSeq
+
 :doc:`usage/adding-vouchers`
     Learn how to create records for voucher specimens in VoSeq.
 

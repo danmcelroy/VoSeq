@@ -3,7 +3,7 @@
 Frequently Asked Questions
 ==========================
 
-Version 1.7.3 and earlier
+Version 1.7.4 and earlier
 -------------------------
 
 Installation FAQ:
