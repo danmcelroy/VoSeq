@@ -8,7 +8,7 @@ After successful installation, the first thing to do is to add records (vouchers
 
 .. image:: ../images/add_new_record.png
    :align: center
-   :width: 446px
+   :width: 452px
 
 The most important information to enter is the **code** of voucher, which has to be unique. VoSeq will refuse to accept duplicate codes and will issue error message if this happens. Another necessary field is the **Genus** entry, while all other fields are optional.
 
