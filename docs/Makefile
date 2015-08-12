@@ -53,6 +53,7 @@ release:
 	@echo "Copying static files"
 	cp -r build/html/_static/* ../static/.
 	cp -r build/html/_images/* ../images/.
+	cp -r build/html/_sources/* ../sources/.
 	@echo
 	@echo "Replacing _static for static in html files"
 	sed -i 's/_static/static/g' build/html/*html
@@ -64,9 +65,18 @@ release:
 	sed -i 's/_images/images/g' build/html/intro/*html
 	sed -i 's/_images/images/g' build/html/usage/*html
 	@echo
+	@echo "Replacing _sources for sources in html files"
+	sed -i 's/_sources/sources/g' build/html/*html
+	sed -i 's/_sources/sources/g' build/html/intro/*html
+	sed -i 's/_sources/sources/g' build/html/usage/*html
+	@echo
 	@echo "Copying html files"
-	rm -rf build/html/_static
 	cp -r build/html/* ..
+	@echo
+	@echo "Removing _ folders"
+	rm -rf ../_static
+	rm -rf ../_images
+	rm -rf ../_sources
 
 dirhtml:
 	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
