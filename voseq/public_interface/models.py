@@ -236,7 +236,7 @@ class Sequences(models.Model):
     def clean(self):
         valid_letters = set(IUPAC.ambiguous_dna.letters.upper() + 'N?-')
         for nucleotide in str(self.sequences):
-            if valid_letters.issuperset(nucleotide):
+            if valid_letters.issuperset(nucleotide.upper()):
                 continue
             else:
                 raise InvalidNucleotidae("The character {} is not a valid. "
