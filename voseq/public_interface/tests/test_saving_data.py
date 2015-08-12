@@ -26,12 +26,3 @@ class TestViews(TestCase):
 
         sequence_model = Sequences.objects.get(code=self.voucher_model, gene_code='COI')
         self.assertEqual(sequence_model.number_ambiguous_bp, 9)
-
-    def test_reject_sequences_with_strange_characters(self):
-        sequence_model = Sequences(
-            code=self.voucher_model,
-            sequences='???---NNNATCTACTA~~',
-            gene_code='COI',
-            genbank=False,
-        )
-        self.assertRaises(InvalidNucleotidae, sequence_model.clean)

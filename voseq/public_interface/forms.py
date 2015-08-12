@@ -2,14 +2,28 @@ import datetime
 from functools import partial
 
 from django import forms
+from django.contrib import messages
 from haystack.forms import ModelSearchForm
 from haystack.query import SearchQuerySet
+from Bio.Alphabet import IUPAC
 
 from public_interface.models import Genes
+from core.exceptions import InvalidNucleotidae
 
 
 DateInput = partial(forms.DateInput, {'class': 'datepicker form-control',
                                       'placeholder': 'Type or pick a date'})
+
+
+class SequencesAdminForm(forms.ModelForm):
+    def clean_sequences(self):
+        valid_letters = set(IUPAC.ambiguous_dna.letters.upper() + 'N?-')
+        sequence = str(self.cleaned_data['sequences'])
+        for nucleotide in sequence:
+            if not valid_letters.issuperset(nucleotide.upper()):
+                raise InvalidNucleotidae("The character {} is not valid. "
+                                         "Cannot save this sequence".format(nucleotide))
+        return sequence
 
 
 class AdvancedSearchForm(ModelSearchForm):
