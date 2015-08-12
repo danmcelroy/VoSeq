@@ -52,6 +52,7 @@ release:
 	@echo
 	@echo "Copying static files"
 	cp -r build/html/_static/* ../static/.
+	cp -r build/html/_images/* ../images/.
 	@echo
 	@echo "Replacing _static for static in html files"
 	sed -i 's/_static/static/g' build/html/*html
