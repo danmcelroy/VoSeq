@@ -6,9 +6,6 @@ from django.db import models
 from django.db.models.signals import post_save
 
 import flickrapi
-from Bio.Alphabet import IUPAC
-
-from core.exceptions import InvalidNucleotidae
 
 
 # #####################################
@@ -232,15 +229,6 @@ class Sequences(models.Model):
 
     class Meta:
         verbose_name_plural = "Sequences"
-
-    def clean(self):
-        valid_letters = set(IUPAC.ambiguous_dna.letters.upper() + 'N?-')
-        for nucleotide in str(self.sequences):
-            if valid_letters.issuperset(nucleotide.upper()):
-                continue
-            else:
-                raise InvalidNucleotidae("The character {} is not a valid. "
-                                         "Cannot save this sequence".format(nucleotide))
 
     def save(self, *args, **kwargs):
         ambiguous_seq_length = self.sequences.count('?') + self.sequences.count('-')
