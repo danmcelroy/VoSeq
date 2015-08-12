@@ -59,6 +59,11 @@ release:
 	sed -i 's/_static/static/g' build/html/intro/*html
 	sed -i 's/_static/static/g' build/html/usage/*html
 	@echo
+	@echo "Replacing _images for images in html files"
+	sed -i 's/_images/images/g' build/html/*html
+	sed -i 's/_images/images/g' build/html/intro/*html
+	sed -i 's/_images/images/g' build/html/usage/*html
+	@echo
 	@echo "Copying html files"
 	rm -rf build/html/_static
 	cp -r build/html/* ..
