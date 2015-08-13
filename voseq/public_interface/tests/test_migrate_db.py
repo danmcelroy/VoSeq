@@ -383,3 +383,9 @@ class TestCustomCommand(TestCase):
         validation = migrate_script.validate_sequence(sequence)
         self.assertEqual(validation.is_valid, False)
         self.assertEqual(validation.invalid_character, '~')
+
+    def test_validate_sequence_false_null(self):
+        sequence = None
+        validation = migrate_script.validate_sequence(sequence)
+        self.assertEqual(validation.is_valid, False)
+        self.assertEqual(validation.invalid_character, 'Empty sequence')
