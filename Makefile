@@ -4,6 +4,8 @@ help:
 	@echo "docs - build documentation in HTML format"
 	@echo "serve - runserver for development"
 	@echo "test - use testing settings and SQlite3 database"
+	@echo "test_migrations - prepare SQLite3 database for testing based on models"
+	@echo "test_import - import test data to our SQLite3 database for testing"
 	@echo "migrations - prepare database for Django based on models"
 	@echo "import - import a MySQL database dump in XML format"
 	@echo "index - rebuild the database index. Required. Speeds up data retrieval"
@@ -44,8 +46,12 @@ migrations:
 import:
 	python voseq/manage.py migrate_db --dumpfile=dump.xml --settings=voseq.settings.local
 
+test_migrations:
+	python voseq/manage.py makemigrations --settings=voseq.settings.testing
+	python voseq/manage.py migrate --settings=voseq.settings.testing
+
 test_import:
-	python voseq/manage.py migrate_db --dumpfile=test_db_dump.xml --settings=voseq.settings.local
+	python voseq/manage.py migrate_db --dumpfile=test_db_dump.xml --settings=voseq.settings.testing
 
 index:
 	python voseq/manage.py rebuild_index --settings=voseq.settings.local
