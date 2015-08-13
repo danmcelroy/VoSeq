@@ -22,6 +22,13 @@ class CreateDataset(object):
     taxonset.
 
     Attributes:
+        ``seq_objs``: Ordered_dict by gene_code. Keys are gene_codes and values
+                      are tuples containing BioPython seq_record objects:
+                      seq=Seq('????CAGATAAAS'),
+                      id='CP13-01_Genus_Species',
+                      name='CAD',  # gene_code
+                      description='CP13-01',  # voucher code
+
         ``dataset_str``: output dataset to pass to users.
 
     """
