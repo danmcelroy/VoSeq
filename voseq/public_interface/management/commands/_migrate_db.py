@@ -4,6 +4,7 @@ Needs an XML file with the database dump from MySQL:
 
 > mysqldump --xml database > dump.xml
 """
+from collections import namedtuple
 import datetime
 from os.path import basename
 import pytz
@@ -11,6 +12,7 @@ import re
 from urllib import parse
 import xml.etree.ElementTree as ET
 
+from Bio.Alphabet import IUPAC
 import pyprind
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -352,7 +354,16 @@ class ParseXML(object):
 
         seqs_to_insert = []
         seqs_not_to_insert = []
+        seqs_invalid = []
         for i in self.table_sequences_items:
+            validation = validate_sequence(i['sequences'])
+            if validate_sequence(i['sequences']) is False:
+                ProblematicSequence = namedtuple('ProblematicSequence',
+                                                 ['code', 'gene_code', 'invalid_character'])
+                prob_seq = ProblematicSequence(i['code'], i['gene_code'])
+                seqs_invalid.append({})
+                continue
+
             if i['code_id'] in self.list_of_voucher_codes:
                 seqs_to_insert.append(i)
             else:
@@ -368,6 +379,7 @@ class ParseXML(object):
             item = seqs_to_insert[i]
             if item['sequences'] is None:
                 continue
+
             item = self.clean_value(item, 'labPerson')
             item = self.clean_value(item, 'notes')
             item = self.clean_value(item, 'sequences')
@@ -777,3 +789,17 @@ def parse_type_species(value):
     else:
         new_value = 'unknown'
     return new_value
+
+
+def validate_sequence(value):
+    Validation = namedtuple('Validation', ['is_valid', 'invalid_character'])
+
+    valid_letters = set(IUPAC.ambiguous_dna.letters.upper() + 'N?-')
+    sequence = str(value)
+    for nucleotide in sequence:
+        if nucleotide == ' ' or not valid_letters.issuperset(nucleotide.upper()):
+            validation = Validation(False, nucleotide)
+            return validation
+
+    validation = Validation(True, '')
+    return validation
