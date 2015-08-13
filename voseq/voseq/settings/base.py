@@ -176,16 +176,9 @@ FLICKR_API_SECRET = "fake api secret"
 
 # This VoSeq version
 def get_version():
-    if os.path.isfile('HISTORY.rst'):
-        with open('HISTORY.rst', 'r') as handle:
-            lines = handle.readlines()
-        for line in lines:
-            if 'xx' in line:
-                continue
-            elif 'Version' in line or 'release' in line.lower():
-                return re.sub('\(.+\)', '', line)
-    else:
-        return 'xyz'
+    import voseq
+    return voseq.__version__
+
 VERSION = get_version()
 
 
