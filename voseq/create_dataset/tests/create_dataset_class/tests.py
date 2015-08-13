@@ -29,6 +29,12 @@ class TestCreateDataset(TestCase):
             tmp.append(Vouchers(code=taxon))
         Vouchers.objects.bulk_create(tmp)
 
+        tmp = []
+        for gene in genes:
+            tmp.append(Genes(gene_code=gene, genetic_code=1, length=600,
+                             reading_frame=1))
+        Genes.objects.bulk_create(tmp)
+
         for gene in genes:
             for taxon in taxa:
                 voucher = Vouchers.objects.get(code=taxon)
