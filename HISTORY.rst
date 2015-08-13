@@ -4,6 +4,12 @@ HISTORY
 2.0.0 (2015-xx-xx)
 ++++++++++++++++++
 
+Fixed bugs
+""""""""""
+- Characters not in IUPAC (except '?-') will not be accepted when importing or
+  saving sequences.
+
+
 pre-release v2.0.0-beta (2015-08-06)
 ++++++++++++++++++++++++++++++++++++
 
