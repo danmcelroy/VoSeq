@@ -364,9 +364,8 @@ class TestCustomCommand(TestCase):
         self.assertEqual(expected, result)
 
     def test_avoid_importing_invalid_sequences(self):
-        result = Sequences.objects.get(code='CP100-15', gene_code='COII')
-        expected = 1
-        self.assertEqual(expected, result.sequences)
+        self.assertRaises(Sequences.DoesNotExist,
+                          Sequences.objects.get, code='CP100-15', gene_code='COII')
 
     def test_validate_sequence_true(self):
         sequence = 'ATCAGAN?-'
