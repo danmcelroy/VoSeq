@@ -360,8 +360,8 @@ class ParseXML(object):
             if validation.is_valid is False:
                 ProblematicSequence = namedtuple('ProblematicSequence',
                                                  ['code', 'gene_code', 'invalid_character'])
-                prob_seq = ProblematicSequence('', '', '')
-                seqs_invalid.append({})
+                prob_seq = ProblematicSequence(i['code_id'], i['gene_code'], validation.invalid_character)
+                seqs_invalid.append(prob_seq)
                 continue
 
             if i['code_id'] in self.list_of_voucher_codes:
