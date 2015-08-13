@@ -267,7 +267,6 @@ class Dataset(object):
         return sequence
 
     def get_codons_in_each_partition(self, codons):
-        print("===============codons", codons)
         partition_list = ()
         codon_descriptions = []
         codon_pos = []
