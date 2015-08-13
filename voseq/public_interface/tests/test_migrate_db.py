@@ -362,3 +362,30 @@ class TestCustomCommand(TestCase):
         expected = 1
         result = len(s)
         self.assertEqual(expected, result)
+
+    def test_avoid_importing_invalid_sequences(self):
+        self.assertRaises(Sequences.DoesNotExist,
+                          Sequences.objects.get, code='CP100-15', gene_code='COII')
+
+    def test_validate_sequence_true(self):
+        sequence = 'ATCAGAN?-'
+        validation = migrate_script.validate_sequence(sequence)
+        self.assertEqual(validation.is_valid, True)
+
+    def test_validate_sequence_false_whith_space(self):
+        sequence = 'ATCAGAN ?-'
+        validation = migrate_script.validate_sequence(sequence)
+        self.assertEqual(validation.is_valid, False)
+        self.assertEqual(validation.invalid_character, 'White space')
+
+    def test_validate_sequence_false_tilde(self):
+        sequence = 'ATCAGAN~?-'
+        validation = migrate_script.validate_sequence(sequence)
+        self.assertEqual(validation.is_valid, False)
+        self.assertEqual(validation.invalid_character, '~')
+
+    def test_validate_sequence_false_null(self):
+        sequence = None
+        validation = migrate_script.validate_sequence(sequence)
+        self.assertEqual(validation.is_valid, False)
+        self.assertEqual(validation.invalid_character, 'Empty sequence')

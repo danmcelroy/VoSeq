@@ -4,6 +4,7 @@ Needs an XML file with the database dump from MySQL:
 
 > mysqldump --xml database > dump.xml
 """
+from collections import namedtuple
 import datetime
 from os.path import basename
 import pytz
@@ -11,6 +12,7 @@ import re
 from urllib import parse
 import xml.etree.ElementTree as ET
 
+from Bio.Alphabet import IUPAC
 import pyprind
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -352,7 +354,16 @@ class ParseXML(object):
 
         seqs_to_insert = []
         seqs_not_to_insert = []
+        seqs_invalid = []
         for i in self.table_sequences_items:
+            validation = validate_sequence(i['sequences'])
+            if validation.is_valid is False:
+                ProblematicSequence = namedtuple('ProblematicSequence',
+                                                 ['code', 'gene_code', 'invalid_character'])
+                prob_seq = ProblematicSequence(i['code_id'], i['gene_code'], validation.invalid_character)
+                seqs_invalid.append(prob_seq)
+                continue
+
             if i['code_id'] in self.list_of_voucher_codes:
                 seqs_to_insert.append(i)
             else:
@@ -368,6 +379,7 @@ class ParseXML(object):
             item = seqs_to_insert[i]
             if item['sequences'] is None:
                 continue
+
             item = self.clean_value(item, 'labPerson')
             item = self.clean_value(item, 'notes')
             item = self.clean_value(item, 'sequences')
@@ -382,10 +394,16 @@ class ParseXML(object):
 
         if len(seqs_not_to_insert) > 0:
             if self.verbosity != 0:
-                print("Couldn't insert %i sequences due to lack of reference vouchers" % len(seqs_not_to_insert))
+                print("ERROR: Couldn't insert %i sequences due to lack of reference vouchers".format(len(seqs_not_to_insert)))
             for i in seqs_not_to_insert:
                 if self.verbosity != 0:
                     print(i['code_id'], i['gene_code'])
+
+        if len(seqs_invalid) > 0:
+            print("ERROR: Couldn't insert {} sequences due to having invalid characters".format(len(seqs_invalid)))
+            for i in seqs_invalid:
+                msg = "ERROR: Sequence code={}, gene_code={}, problem={}".format(i.code, i.gene_code, i.invalid_character)
+                print(msg)
 
     def parse_table_taxonsets(self, xml_string):
         our_data = False
@@ -777,3 +795,24 @@ def parse_type_species(value):
     else:
         new_value = 'unknown'
     return new_value
+
+
+def validate_sequence(value):
+    Validation = namedtuple('Validation', ['is_valid', 'invalid_character'])
+
+    valid_letters = set(IUPAC.ambiguous_dna.letters.upper() + 'N?-')
+    sequence = value
+    if sequence is None:
+        validation = Validation(False, 'Empty sequence')
+        return validation
+
+    for nucleotide in sequence:
+        if nucleotide == ' ':
+            validation = Validation(False, 'White space')
+            return validation
+        if not valid_letters.issuperset(nucleotide.upper()):
+            validation = Validation(False, nucleotide)
+            return validation
+
+    validation = Validation(True, '')
+    return validation
