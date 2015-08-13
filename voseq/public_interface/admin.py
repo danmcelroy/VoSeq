@@ -15,6 +15,7 @@ from public_interface.models import TaxonSets
 from public_interface.models import Sequences
 from public_interface.models import Vouchers
 from public_interface.views import change_selected
+from public_interface.forms import SequencesAdminForm
 
 
 class ImageInLine(admin.StackedInline):
@@ -108,6 +109,7 @@ class SequencesAdmin(admin.ModelAdmin):
     search_fields = ['=code__code', '=gene_code']
     list_display = ['code', 'gene_code', 'genbank', 'accession', 'labPerson', 'notes', 'time_edited', 'time_created']
     fields = ['code', 'gene_code', 'sequences', 'genbank', 'accession', 'labPerson', 'notes']
+    form = SequencesAdminForm
 
 
 class TaxonSetsAdmin(admin.ModelAdmin):
