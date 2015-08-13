@@ -357,10 +357,10 @@ class ParseXML(object):
         seqs_invalid = []
         for i in self.table_sequences_items:
             validation = validate_sequence(i['sequences'])
-            if validate_sequence(i['sequences']) is False:
+            if validation.is_valid is False:
                 ProblematicSequence = namedtuple('ProblematicSequence',
                                                  ['code', 'gene_code', 'invalid_character'])
-                prob_seq = ProblematicSequence(i['code'], i['gene_code'])
+                prob_seq = ProblematicSequence('', '', '')
                 seqs_invalid.append({})
                 continue
 
@@ -797,7 +797,10 @@ def validate_sequence(value):
     valid_letters = set(IUPAC.ambiguous_dna.letters.upper() + 'N?-')
     sequence = str(value)
     for nucleotide in sequence:
-        if nucleotide == ' ' or not valid_letters.issuperset(nucleotide.upper()):
+        if nucleotide == ' ':
+            validation = Validation(False, 'White space')
+            return validation
+        if not valid_letters.issuperset(nucleotide.upper()):
             validation = Validation(False, nucleotide)
             return validation
 
