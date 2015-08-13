@@ -3,7 +3,6 @@ from django.test import TestCase
 
 from public_interface.models import Sequences
 from public_interface.models import Vouchers
-from core.exceptions import InvalidNucleotidae
 
 
 class TestViews(TestCase):
