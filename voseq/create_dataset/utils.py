@@ -159,7 +159,7 @@ class CreateDataset(object):
 
         vouchers_not_found = set(self.voucher_codes) - vouchers_found
         for code in vouchers_not_found:
-            self.warnings += ['Could not find sequences for voucher %s' % code]
+            self.warnings += ['Could not find voucher %s' % code]
         self.gene_codes = sorted(list(gene_codes), key=str.lower)
 
     def get_all_sequences(self):
@@ -183,6 +183,7 @@ class CreateDataset(object):
         try:
             this_voucher_seqs = all_seqs[code]
         except KeyError:
+            self.warnings += ['Could not find sequences for voucher {} and gene_code {}'.format(code, gene_code)]
             this_voucher_seqs = '?'
 
         if this_voucher_seqs == '?':

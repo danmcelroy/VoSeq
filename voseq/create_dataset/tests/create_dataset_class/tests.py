@@ -75,3 +75,14 @@ class TestCreateDataset(TestCase):
         result = CreateDataset(cleaned_data)
 
         self.assertTrue(expected in result.dataset_str)
+
+    def test_warning_when_missing_seqs_for_voucher(self):
+        Vouchers(code='CP100-13').save()
+
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['voucher_codes'] = 'CP100-13'
+
+        expected = 'Could not find sequences for voucher CP100-13 and gene_code CC'
+        result = CreateDataset(cleaned_data)
+
+        self.assertTrue(expected in result.warnings)
