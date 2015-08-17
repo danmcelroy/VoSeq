@@ -145,7 +145,6 @@ class CreateDataset(object):
         all_seqs = self.get_all_sequences()
 
         gene_codes = set()
-        vouchers_found = set()
 
         for code in self.voucher_codes:
             for gene_code in sorted_gene_codes:
@@ -153,13 +152,13 @@ class CreateDataset(object):
                     self.seq_objs[gene_code] = tuple()
 
                 seq_obj = self.build_seq_obj(code, gene_code, our_taxon_names, all_seqs)
+                if seq_obj is None:
+                    self.warnings += ['Could not find voucher %s' % code]
+                    continue
+
                 self.seq_objs[gene_code] += (seq_obj,)
                 gene_codes.add(gene_code)
-                vouchers_found.add(code)
 
-        vouchers_not_found = set(self.voucher_codes) - vouchers_found
-        for code in vouchers_not_found:
-            self.warnings += ['Could not find voucher %s' % code]
         self.gene_codes = sorted(list(gene_codes), key=str.lower)
 
     def get_all_sequences(self):
@@ -188,14 +187,17 @@ class CreateDataset(object):
         else:
             seq_obj = self.create_seq_record(this_voucher_seqs)
 
-        seq_obj.id = flatten_taxon_names_dict(our_taxon_names[code])
-        if 'GENECODE' in self.taxon_names:
-            seq_obj.id += '_' + gene_code
-        seq_obj.name = gene_code
-        seq_obj.description = code
+        if code in our_taxon_names:
+            seq_obj.id = flatten_taxon_names_dict(our_taxon_names[code])
+            if 'GENECODE' in self.taxon_names:
+                seq_obj.id += '_' + gene_code
+            seq_obj.name = gene_code
+            seq_obj.description = code
 
-        self.voucher_codes_metadata[code] = seq_obj.id
-        return seq_obj
+            self.voucher_codes_metadata[code] = seq_obj.id
+            return seq_obj
+        else:
+            return None
 
     def extract_sequence_from_all_seqs_in_db(self, all_seqs, code, gene_code):
         try:
