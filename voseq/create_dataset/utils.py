@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
@@ -44,7 +46,7 @@ class CreateDataset(object):
             self.translations = None
 
         self.errors = []
-        self.seq_objs = dict()
+        self.seq_objs = OrderedDict()
         self.minimum_number_of_genes = cleaned_data['number_genes']
         self.aminoacids = cleaned_data['aminoacids']
         self.codon_positions = cleaned_data['positions']
@@ -139,12 +141,13 @@ class CreateDataset(object):
         """
         # We might need to update our list of vouches and genes
         gene_codes = set()
+        sorted_gene_codes = sorted(list(self.gene_codes), key=str.lower)
         vouchers_found = set()
         our_taxon_names = self.get_taxon_names_for_taxa()
         all_seqs = self.get_all_sequences()
 
         for code in self.voucher_codes:
-            for gene_code in self.gene_codes:
+            for gene_code in sorted_gene_codes:
                 try:
                     this_voucher_seqs = all_seqs[code]
                 except KeyError:
@@ -163,7 +166,7 @@ class CreateDataset(object):
         vouchers_not_found = set(self.voucher_codes) - vouchers_found
         for code in vouchers_not_found:
             self.warnings += ['Could not find sequences for voucher %s' % code]
-        self.gene_codes = list(gene_codes)
+        self.gene_codes = sorted(list(gene_codes), key=str.lower)
 
     def get_all_sequences(self):
         # Return sequences as dict of lists containing sequence and related data

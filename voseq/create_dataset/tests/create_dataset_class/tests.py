@@ -61,4 +61,5 @@ class TestCreateDataset(TestCase):
 
     def test_seq_objs_have_sorted_gene_codes(self):
         result = CreateDataset(self.cleaned_data)
-        self.assertEqual('', result.seq_objs)
+        self.assertEqual(['abc1', 'ABC2', 'BC1', 'CC', 'xaz', 'XYZ'],
+                         list(result.seq_objs))
