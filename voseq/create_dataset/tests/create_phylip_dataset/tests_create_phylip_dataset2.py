@@ -43,10 +43,18 @@ class CreatePhylipDatasetTest(TestCase):
         self.dataset_creator = CreateDataset(self.cleaned_data)
         self.maxDiff = None
 
-    def test_create_dataset(self):
+    def test_create_simple_dataset(self):
         dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
                                     'tests', 'create_phylip_dataset', 'dataset.phy')
         with open(dataset_file, "r") as handle:
             expected = handle.read()
         result = self.dataset_creator.dataset_str
+        self.assertEqual(expected, result)
+
+    def test_partition_file_of_simple_dataset(self):
+        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                    'tests', 'create_phylip_dataset', 'phylip_file.txt')
+        with open(dataset_file, "r") as handle:
+            expected = handle.read()
+        result = self.dataset_creator.charset_block
         self.assertEqual(expected, result)
