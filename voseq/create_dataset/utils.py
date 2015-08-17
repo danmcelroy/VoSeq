@@ -140,25 +140,19 @@ class CreateDataset(object):
         geneset.
         """
         # We might need to update our list of vouches and genes
-        gene_codes = set()
         sorted_gene_codes = sorted(list(self.gene_codes), key=str.lower)
-        vouchers_found = set()
         our_taxon_names = self.get_taxon_names_for_taxa()
         all_seqs = self.get_all_sequences()
 
+        gene_codes = set()
+        vouchers_found = set()
+
         for code in self.voucher_codes:
             for gene_code in sorted_gene_codes:
-                try:
-                    this_voucher_seqs = all_seqs[code]
-                except KeyError:
-                    continue
-
-                if gene_code not in this_voucher_seqs:
-                    this_voucher_seqs = '?'
-                seq_obj = self.build_seq_obj(code, gene_code, our_taxon_names, this_voucher_seqs)
-
                 if gene_code not in self.seq_objs:
                     self.seq_objs[gene_code] = tuple()
+
+                seq_obj = self.build_seq_obj(code, gene_code, our_taxon_names, all_seqs)
                 self.seq_objs[gene_code] += (seq_obj,)
                 gene_codes.add(gene_code)
                 vouchers_found.add(code)
@@ -185,12 +179,18 @@ class CreateDataset(object):
                 seqs_dict[code][gene_code] = seq
         return seqs_dict
 
-    def build_seq_obj(self, code, gene_code, our_taxon_names, this_voucher_seqs):
+    def build_seq_obj(self, code, gene_code, our_taxon_names, all_seqs):
+        try:
+            this_voucher_seqs = all_seqs[code]
+        except KeyError:
+            this_voucher_seqs = '?'
+
         if this_voucher_seqs == '?':
             seq = Seq('?' * self.gene_codes_metadata[gene_code])
             seq_obj = SeqRecord(seq)
         else:
             seq_obj = self.create_seq_record(this_voucher_seqs[gene_code])
+
         seq_obj.id = flatten_taxon_names_dict(our_taxon_names[code])
         if 'GENECODE' in self.taxon_names:
             seq_obj.id += '_' + gene_code
