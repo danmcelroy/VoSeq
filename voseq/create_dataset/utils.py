@@ -180,17 +180,13 @@ class CreateDataset(object):
         return seqs_dict
 
     def build_seq_obj(self, code, gene_code, our_taxon_names, all_seqs):
-        try:
-            this_voucher_seqs = all_seqs[code]
-        except KeyError:
-            self.warnings += ['Could not find sequences for voucher {} and gene_code {}'.format(code, gene_code)]
-            this_voucher_seqs = '?'
+        this_voucher_seqs = self.extract_sequence_from_all_seqs_in_db(all_seqs, code, gene_code)
 
         if this_voucher_seqs == '?':
             seq = Seq('?' * self.gene_codes_metadata[gene_code])
             seq_obj = SeqRecord(seq)
         else:
-            seq_obj = self.create_seq_record(this_voucher_seqs[gene_code])
+            seq_obj = self.create_seq_record(this_voucher_seqs)
 
         seq_obj.id = flatten_taxon_names_dict(our_taxon_names[code])
         if 'GENECODE' in self.taxon_names:
@@ -200,6 +196,20 @@ class CreateDataset(object):
 
         self.voucher_codes_metadata[code] = seq_obj.id
         return seq_obj
+
+    def extract_sequence_from_all_seqs_in_db(self, all_seqs, code, gene_code):
+        try:
+            voucher_sequences = all_seqs[code]
+        except KeyError:
+            self.warnings += ['Could not find sequences for voucher {} and gene_code {}'.format(code, gene_code)]
+            return '?'
+
+        try:
+            this_voucher_seqs = voucher_sequences[gene_code]
+        except KeyError:
+            self.warnings += ['Could not find sequences for voucher {} and gene_code {}'.format(code, gene_code)]
+            return '?'
+        return this_voucher_seqs
 
     def create_seq_record(self, s):
         """
