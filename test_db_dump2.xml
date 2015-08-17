@@ -1,8 +1,44 @@
 <?xml version="1.0"?>
 <mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <database name="filemaker">
-
-
+	<table_structure name="taxonsets">
+		<field Field="taxonset_name" Type="varchar(45)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="taxonset_creator" Type="varchar(75)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="taxonset_description" Type="varchar(100)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="taxonset_list" Type="text" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="taxonset_id" Type="int(11)" Null="NO" Key="PRI" Extra="auto_increment" Comment="" />
+		<key Table="taxonsets" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="taxonset_id" Collation="A" Cardinality="8" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<key Table="taxonsets" Non_unique="0" Key_name="id_taxonsets_UNIQUE" Seq_in_index="1" Column_name="taxonset_id" Collation="A" Cardinality="8" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<options Name="taxonsets" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="8" Avg_row_length="1415" Data_length="11320" Max_data_length="281474976710655" Index_length="3072" Data_free="0" Auto_increment="11" Create_time="2014-12-09 13:27:09" Update_time="2014-12-09 13:27:09" Collation="utf8_general_ci" Create_options="" Comment="" />
+	</table_structure>
+	<table_data name="taxonsets">
+	<row>
+		<field name="taxonset_name">all_vouchers</field>
+		<field name="taxonset_creator">Carlos Pena</field>
+		<field name="taxonset_description">for tests of dataset creation</field>
+		<field name="taxonset_list">CP100-10,CP100-11,CP100-12,CP100-13,CP100-14,CP100-15,CP100-16,CP100-17,CP100-18,CP100-19</field>
+		<field name="taxonset_id">1</field>
+	</row>
+	</table_data>
+	<table_structure name="genesets">
+		<field Field="geneset_name" Type="varchar(75)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="geneset_creator" Type="varchar(75)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="geneset_description" Type="varchar(100)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="geneset_list" Type="text" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="geneset_id" Type="int(11)" Null="NO" Key="PRI" Extra="auto_increment" Comment="" />
+		<key Table="genesets" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="geneset_id" Collation="A" Cardinality="2" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<key Table="genesets" Non_unique="0" Key_name="geneset_id_UNIQUE" Seq_in_index="1" Column_name="geneset_id" Collation="A" Cardinality="2" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<options Name="genesets" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="2" Avg_row_length="106" Data_length="212" Max_data_length="281474976710655" Index_length="3072" Data_free="0" Auto_increment="8" Create_time="2014-12-09 13:27:08" Update_time="2014-12-09 13:27:08" Collation="utf8_general_ci" Create_options="" Comment="" />
+	</table_structure>
+	<table_data name="genesets">
+	<row>
+		<field name="geneset_name">all_genes</field>
+		<field name="geneset_creator">carlos</field>
+		<field name="geneset_description">all standard genes for testing</field>
+		<field name="geneset_list">COI-begin,COI_end,ArgKin,EF1a,wingless,RpS2,RpS5</field>
+		<field name="geneset_id">1</field>
+	</row>
+    </table_data>
 	<table_structure name="vouchers">
 		<field Field="code" Type="varchar(255)" Null="NO" Key="UNI" Extra="" Comment="" />
 		<field Field="orden" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
@@ -46,7 +82,6 @@
 		<options Name="vouchers" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="11103" Avg_row_length="335" Data_length="3729664" Max_data_length="281474976710655" Index_length="288768" Data_free="0" Auto_increment="11492" Create_time="2014-12-09 13:27:10" Update_time="2014-12-09 13:27:10" Collation="utf8_general_ci" Create_options="" Comment="" />
 	</table_structure>
 	<table_data name="vouchers">
-
         <row>
             <field name="code">CP100-10</field>
             <field name="orden"></field>
