@@ -8,8 +8,9 @@ class CreatePhylip(Dataset):
 
         bp_count_start = 0
         bp_count_end = 0
-        self.gene_codes.sort()
-        for gene in gene_codes_and_lengths:
+        gene_codes_list = sorted(list(gene_codes_and_lengths), key=str.lower)
+
+        for gene in gene_codes_list:
             bp_count_end += gene_codes_and_lengths[gene]
             line = 'DNA, ' + gene + ' = ' + str(
                 bp_count_start + 1) + '-' + str(bp_count_end)
