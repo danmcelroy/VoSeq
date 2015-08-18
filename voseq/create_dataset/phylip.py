@@ -31,14 +31,32 @@ class CreatePhylip(Dataset):
     def make_in_12_3(self, gene_codes_and_lengths, gene_codes_list):
         """All codon positions in two partitions for gene. Positions 1,2 and 3.
         """
-        print(">>> gene_codes_and_lengths", gene_codes_and_lengths)
         bp_count_start = 0
         bp_count_end = 0
         charset_block = []
         for gene in gene_codes_list:
             bp_count_end += gene_codes_and_lengths[gene]
-            line = 'DNA, ' + gene + ' = ' + str(
-                bp_count_start + 1) + '-' + str(bp_count_end)
+            line = 'DNA, {}_pos12 = '.format(gene)
+
+            if self.reading_frames[gene] == 1:
+                line += '{}-{}\\3'.format(bp_count_start + 1, bp_count_end)
+                line += ', {}-{}\\3'.format(bp_count_start + 2, bp_count_end)
+            elif self.reading_frames[gene] == 2:
+                line += '{}-{}\\3'.format(bp_count_start + 2, bp_count_end)
+                line += ', {}-{}\\3'.format(bp_count_start + 3, bp_count_end)
+            elif self.reading_frames[gene] == 3:
+                line += '{}-{}\\3'.format(bp_count_start + 3, bp_count_end)
+                line += ', {}-{}\\3'.format(bp_count_start + 1, bp_count_end)
+
+            line += '\nDNA, {}_pos3 = '.format(gene)
+
+            if self.reading_frames[gene] == 1:
+                line += '{}-{}\\3'.format(bp_count_start + 3, bp_count_end)
+            elif self.reading_frames[gene] == 2:
+                line += '{}-{}\\3'.format(bp_count_start + 1, bp_count_end)
+            elif self.reading_frames[gene] == 3:
+                line += '{}-{}\\3'.format(bp_count_start + 2, bp_count_end)
+
             bp_count_start += gene_codes_and_lengths[gene]
             charset_block.append(line)
         return charset_block
