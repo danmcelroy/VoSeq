@@ -4,19 +4,44 @@ from public_interface.models import Genes
 
 class CreatePhylip(Dataset):
     def make_charset_block(self, gene_codes_and_lengths):
-        charset_block = []
-
-        bp_count_start = 0
-        bp_count_end = 0
         gene_codes_list = sorted(list(gene_codes_and_lengths), key=str.lower)
 
+        if self.partition_by_positions == 'ONE':
+            charset_block = self.make_in_one(gene_codes_and_lengths, gene_codes_list)
+        if self.partition_by_positions == '1st2nd_3rd':
+            charset_block = self.make_in_12_3(gene_codes_and_lengths, gene_codes_list)
+        print(">>>>>>>>", self.partition_by_positions)
+
+        self.charset_block = "\n".join(charset_block)
+
+    def make_in_one(self, gene_codes_and_lengths, gene_codes_list):
+        """Basic charset block. All codon positions and one partition for gene.
+        """
+        bp_count_start = 0
+        bp_count_end = 0
+        charset_block = []
         for gene in gene_codes_list:
             bp_count_end += gene_codes_and_lengths[gene]
             line = 'DNA, ' + gene + ' = ' + str(
                 bp_count_start + 1) + '-' + str(bp_count_end)
             bp_count_start += gene_codes_and_lengths[gene]
             charset_block.append(line)
-        self.charset_block = "\n".join(charset_block)
+        return charset_block
+
+    def make_in_12_3(self, gene_codes_and_lengths, gene_codes_list):
+        """All codon positions in two partitions for gene. Positions 1,2 and 3.
+        """
+        print(">>> gene_codes_and_lengths", gene_codes_and_lengths)
+        bp_count_start = 0
+        bp_count_end = 0
+        charset_block = []
+        for gene in gene_codes_list:
+            bp_count_end += gene_codes_and_lengths[gene]
+            line = 'DNA, ' + gene + ' = ' + str(
+                bp_count_start + 1) + '-' + str(bp_count_end)
+            bp_count_start += gene_codes_and_lengths[gene]
+            charset_block.append(line)
+        return charset_block
 
     def convert_lists_to_dataset(self, partitions):
         """
