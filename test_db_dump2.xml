@@ -522,17 +522,17 @@
 	</table_structure>
 	<table_data name="genes">
         <row>
-            <field name="genetype" xsi:nil="true" />
-            <field name="prot_code">yes</field>
-            <field name="intron" xsi:nil="true" />
-            <field name="aligned">yes</field>
-            <field name="timestamp" xsi:nil="true" />
-            <field name="notes" xsi:nil="true" />
-         <field name="geneCode">ArgKin</field>
-         <field name="length">596</field>
-         <field name="description">Arginie Kinase (ArgKin)</field>
-         <field name="readingframe">1</field>
-         <field name="genetic_code">1</field>
+             <field name="genetype" xsi:nil="true" />
+             <field name="prot_code">yes</field>
+             <field name="intron" xsi:nil="true" />
+             <field name="aligned">yes</field>
+             <field name="timestamp" xsi:nil="true" />
+             <field name="notes" xsi:nil="true" />
+             <field name="geneCode">ArgKin</field>
+             <field name="length">596</field>
+             <field name="description">Arginie Kinase (ArgKin)</field>
+             <field name="readingframe">1</field>
+             <field name="genetic_code">1</field>
         </row>
 
         <row>
@@ -542,11 +542,11 @@
             <field name="aligned">yes</field>
             <field name="timestamp" xsi:nil="true" />
             <field name="notes" xsi:nil="true" />
-         <field name="geneCode">COI-begin</field>
-         <field name="length">669</field>
-         <field name="description">cytochrome oxidase c subunit I</field>
-         <field name="readingframe">2</field>
-         <field name="genetic_code">5</field>
+            <field name="geneCode">COI-begin</field>
+            <field name="length">669</field>
+            <field name="description">cytochrome oxidase c subunit I</field>
+            <field name="readingframe">2</field>
+            <field name="genetic_code">5</field>
         </row>
 
         <row>
@@ -556,11 +556,11 @@
             <field name="aligned">yes</field>
             <field name="timestamp" xsi:nil="true" />
             <field name="notes" xsi:nil="true" />
-         <field name="geneCode">COI_end</field>
-         <field name="length">806</field>
-         <field name="description">cytochrome oxidase c subunit I</field>
-         <field name="readingframe">2</field>
-         <field name="genetic_code">5</field>
+            <field name="geneCode">COI_end</field>
+            <field name="length">806</field>
+            <field name="description">cytochrome oxidase c subunit I</field>
+            <field name="readingframe">2</field>
+            <field name="genetic_code">5</field>
         </row>
 
         <row>
@@ -570,11 +570,11 @@
             <field name="aligned">yes</field>
             <field name="timestamp" xsi:nil="true" />
             <field name="notes" xsi:nil="true" />
-         <field name="geneCode">ef1a</field>
-         <field name="length">1240</field>
-         <field name="description">Elongation factor 1 alpha</field>
-         <field name="readingframe">2</field>
-         <field name="genetic_code">1</field>
+            <field name="geneCode">ef1a</field>
+            <field name="length">1240</field>
+            <field name="description">Elongation factor 1 alpha</field>
+            <field name="readingframe">2</field>
+            <field name="genetic_code">1</field>
         </row>
 
         <row>
@@ -584,11 +584,11 @@
             <field name="aligned">yes</field>
             <field name="timestamp" xsi:nil="true" />
             <field name="notes" xsi:nil="true" />
-         <field name="geneCode">RpS2</field>
-         <field name="length">411</field>
-         <field name="description">Ribosomal Protein S2</field>
-         <field name="readingframe">3</field>
-         <field name="genetic_code">1</field>
+            <field name="geneCode">RpS2</field>
+            <field name="length">411</field>
+            <field name="description">Ribosomal Protein S2</field>
+            <field name="readingframe">3</field>
+            <field name="genetic_code">1</field>
         </row>
 
         <row>
@@ -598,11 +598,11 @@
             <field name="aligned">yes</field>
             <field name="timestamp" xsi:nil="true" />
             <field name="notes" xsi:nil="true" />
-         <field name="geneCode">RpS5</field>
-         <field name="length">617</field>
-         <field name="description">Ribosomal Protein S2</field>
-         <field name="readingframe">2</field>
-         <field name="genetic_code">1</field>
+            <field name="geneCode">RpS5</field>
+            <field name="length">617</field>
+            <field name="description">Ribosomal Protein S2</field>
+            <field name="readingframe">2</field>
+            <field name="genetic_code">1</field>
         </row>
 
         <row>
@@ -612,11 +612,11 @@
             <field name="aligned">yes</field>
             <field name="timestamp" xsi:nil="true" />
             <field name="notes" xsi:nil="true" />
-         <field name="geneCode">wingless</field>
-         <field name="length">400</field>
-         <field name="description">wingless (wgl)</field>
-         <field name="readingframe">2</field>
-         <field name="genetic_code">1</field>
+            <field name="geneCode">wingless</field>
+            <field name="length">400</field>
+            <field name="description">wingless (wgl)</field>
+            <field name="readingframe">2</field>
+            <field name="genetic_code">1</field>
         </row>
     </table_data>
 
@@ -645,9 +645,9 @@
     <field name="dateCreation" xsi:nil="true" />
     <field name="labPerson" xsi:nil="true" />
     <field name="accession" xsi:nil="true" />
-<field name="code">CP100-10</field>
-<field name="geneCode">wingless</field>
-<field name="sequences">???????????????????????????????????????????TCTGTAGGCGATGCCTTGAAGGACGGCTTCGACGGAGCGTCGCGGGTCATGATGCCCAATACGGAGTTAGAAGCGCCTGCTCAGCGAAACGACGCCGCCCCGCACAGAGTCCCGCGACGAGACCGATACAGATTTCAACTTCGGCCGCACAATCCTGACCACAAAACACCCGGA?TCAAGGACCTAGTGTACTTGGAATCATCGCCGGGTTTCTGCGAAAAGAACCCGCGGCTGGGCATTCCCGGCACGCACGGGCGTGCCTGCAACGACACGAGTATCGGCGTCGACGGCTGCGACCTCATGTGCTGCGGCCGTGGCTACCGGACCGAGACAATGTTCGTCGTGGAGCGATGCAAC</field>
+   <field name="code">CP100-10</field>
+   <field name="geneCode">wingless</field>
+   <field name="sequences">???????????????????????????????????????????TCTGTAGGCGATGCCTTGAAGGACGGCTTCGACGGAGCGTCGCGGGTCATGATGCCCAATACGGAGTTAGAAGCGCCTGCTCAGCGAAACGACGCCGCCCCGCACAGAGTCCCGCGACGAGACCGATACAGATTTCAACTTCGGCCGCACAATCCTGACCACAAAACACCCGGA?TCAAGGACCTAGTGTACTTGGAATCATCGCCGGGTTTCTGCGAAAAGAACCCGCGGCTGGGCATTCCCGGCACGCACGGGCGTGCCTGCAACGACACGAGTATCGGCGTCGACGGCTGCGACCTCATGTGCTGCGGCCGTGGCTACCGGACCGAGACAATGTTCGTCGTGGAGCGATGCAAC</field>
 </row>
 
 <row>
