@@ -491,27 +491,14 @@ class Dataset(object):
         if ('ALL' in self.codon_positions or
                 ('1st' in self.codon_positions and '2nd' in self.codon_positions and '3rd' in self.codon_positions)) \
                 and 'ONE' in self.partition_by_positions:
-            self.partition_list = ([],)
-            for gene_code in self.seq_objs:
-                this_gene = None
-                for seq_record in self.seq_objs[gene_code]:
-                    if this_gene is None:
-                        this_gene = seq_record.name
-
-                        seq_str = self.get_gene_divisor(this_gene)
-                        self.partition_list[0].append(seq_str)
-
-                    if self.file_format == 'GenbankFASTA':
-                        seq_str = self.format_record_id_and_seq_for_dataset(seq_record.description + ' ' +
-                                                                            this_gene + ' ' +
-                                                                            seq_record.id.replace(seq_record.description + '_', ''), seq_record.seq)
-                    else:
-                        seq_str = self.format_record_id_and_seq_for_dataset(seq_record.id, seq_record.seq)
-                    self.partition_list[0].append(seq_str)
+            self.get_all_codon_positions_in_one_partition()
             return self.convert_lists_to_dataset(self.partition_list)
 
-        if 'ALL' in self.codon_positions and \
-                '1st2nd_3rd' in self.partition_by_positions:
+        if 'ALL' in self.codon_positions and '1st2nd_3rd' in self.partition_by_positions and self.file_format == 'PHY':
+            self.get_all_codon_positions_in_one_partition()
+            return self.convert_lists_to_dataset(self.partition_list)
+
+        if 'ALL' in self.codon_positions and '1st2nd_3rd' in self.partition_by_positions and self.file_format != 'PHY':
             self.partition_list = ([], [],)
 
             for gene_code in self.seq_objs:
@@ -525,27 +512,17 @@ class Dataset(object):
                     if this_gene is None:
                         this_gene = seq_record.name
 
-                        if self.file_format == 'PHY':
-                            seq_str = '\n' + this_gene + '_1st_2nd_codons\n' + '--------------------'
-                            self.partition_list[0].append(seq_str)
-                        else:
-                            seq_str = '>' + this_gene + '_1st_2nd_codons\n' + '--------------------'
-                            self.partition_list[0].append(seq_str)
-                            seq_str = '>' + this_gene + '_3rd_codon\n' + '--------------------'
-                            self.partition_list[1].append(seq_str)
+                        seq_str = '>' + this_gene + '_1st_2nd_codons\n' + '--------------------'
+                        self.partition_list[0].append(seq_str)
+                        seq_str = '>' + this_gene + '_3rd_codon\n' + '--------------------'
+                        self.partition_list[1].append(seq_str)
 
                     codons = self.split_sequence_in_codon_positions(this_gene, seq_record.seq)
 
-                    if self.file_format == 'PHY':
-                        seq_str = seq_record.id + ' ' + str(utils.chain_and_flatten([codons[0], codons[1]]))
-                    else:
-                        seq_str = '>' + seq_record.id + '\n' + str(utils.chain_and_flatten([codons[0], codons[1]]))
+                    seq_str = '>' + seq_record.id + '\n' + str(utils.chain_and_flatten([codons[0], codons[1]]))
                     self.partition_list[0].append(seq_str)
 
-                    if self.file_format == 'PHY':
-                        seq_str = seq_record.id + ' ' + str(codons[2])
-                    else:
-                        seq_str = '>' + seq_record.id + '\n' + str(codons[2])
+                    seq_str = '>' + seq_record.id + '\n' + str(codons[2])
                     self.partition_list[1].append(seq_str)
             return self.convert_lists_to_dataset(self.partition_list)
 
@@ -623,6 +600,28 @@ class Dataset(object):
                     seq_str = '>' + seq_record.id + '\n' + str(codons[2])
                     self.partition_list[1].append(seq_str)
             return self.convert_lists_to_dataset(self.partition_list)
+
+    def get_all_codon_positions_in_one_partition(self):
+        self.partition_list = ([],)
+        for gene_code in self.seq_objs:
+            this_gene = None
+            for seq_record in self.seq_objs[gene_code]:
+                if this_gene is None:
+                    this_gene = seq_record.name
+
+                    seq_str = self.get_gene_divisor(this_gene)
+                    self.partition_list[0].append(seq_str)
+
+                if self.file_format == 'GenbankFASTA':
+                    seq_str = self.format_record_id_and_seq_for_dataset(
+                        seq_record.description + ' ' +
+                        this_gene + ' ' +
+                        seq_record.id.replace(seq_record.description + '_',
+                                              ''), seq_record.seq)
+                else:
+                    seq_str = self.format_record_id_and_seq_for_dataset(
+                        seq_record.id, seq_record.seq)
+                self.partition_list[0].append(seq_str)
 
 
 class CreateFasta(Dataset):
