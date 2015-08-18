@@ -54,9 +54,15 @@ class Genes(models.Model):
         null=True,
         help_text='Translation table',
     )
-    length = models.PositiveSmallIntegerField(blank=True, null=True)
+    length = models.PositiveSmallIntegerField(
+        blank=True,
+        null=True,
+    )
     description = models.CharField(max_length=255, blank=True)
-    reading_frame = models.PositiveSmallIntegerField(blank=True, null=True)
+    reading_frame = models.PositiveSmallIntegerField(
+        blank=True,
+        null=True,
+    )
     notes = models.TextField(blank=True)
     aligned = models.CharField(
         max_length=6, choices=(

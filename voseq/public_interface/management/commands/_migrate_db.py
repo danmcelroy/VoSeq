@@ -400,10 +400,12 @@ class ParseXML(object):
                     print(i['code_id'], i['gene_code'])
 
         if len(seqs_invalid) > 0:
-            print("ERROR: Couldn't insert {} sequences due to having invalid characters".format(len(seqs_invalid)))
+            if TESTING is False:
+                print("ERROR: Couldn't insert {} sequences due to having invalid characters".format(len(seqs_invalid)))
             for i in seqs_invalid:
-                msg = "ERROR: Sequence code={}, gene_code={}, problem={}".format(i.code, i.gene_code, i.invalid_character)
-                print(msg)
+                if TESTING is False:
+                    msg = "ERROR: Sequence code={}, gene_code={}, problem={}".format(i.code, i.gene_code, i.invalid_character)
+                    print(msg)
 
     def parse_table_taxonsets(self, xml_string):
         our_data = False
