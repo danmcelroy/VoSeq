@@ -3,7 +3,7 @@ from public_interface.models import Genes
 
 
 class CreatePhylip(Dataset):
-    def get_charset_block(self, gene_codes_and_lengths):
+    def make_charset_block(self, gene_codes_and_lengths):
         charset_block = []
 
         bp_count_start = 0
@@ -71,7 +71,7 @@ class CreatePhylip(Dataset):
 
         out = header + out
 
-        self.get_charset_block(gene_codes_and_lengths)
+        self.make_charset_block(gene_codes_and_lengths)
         dataset_str = ''.join(out)
         self.save_dataset_to_file(dataset_str)
         return dataset_str
