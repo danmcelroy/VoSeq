@@ -10,7 +10,6 @@ class CreatePhylip(Dataset):
             charset_block = self.make_in_one(gene_codes_and_lengths, gene_codes_list)
         if self.partition_by_positions == '1st2nd_3rd':
             charset_block = self.make_in_12_3(gene_codes_and_lengths, gene_codes_list)
-        print(">>>>>>>>", self.partition_by_positions)
 
         self.charset_block = "\n".join(charset_block)
 
@@ -22,8 +21,7 @@ class CreatePhylip(Dataset):
         charset_block = []
         for gene in gene_codes_list:
             bp_count_end += gene_codes_and_lengths[gene]
-            line = 'DNA, ' + gene + ' = ' + str(
-                bp_count_start + 1) + '-' + str(bp_count_end)
+            line = 'DNA, {} = {}-{}'.format(gene, bp_count_start + 1, bp_count_end)
             bp_count_start += gene_codes_and_lengths[gene]
             charset_block.append(line)
         return charset_block
