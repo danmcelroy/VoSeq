@@ -21,10 +21,16 @@ class CreatePhylip(Dataset):
         charset_block = []
         for gene in gene_codes_list:
             bp_count_end += gene_codes_and_lengths[gene]
-            line = 'DNA, {} = {}-{}'.format(gene, bp_count_start + 1, bp_count_end)
+
+            line = self.make_charset_line(bp_count_end, bp_count_start, gene)
+
             bp_count_start += gene_codes_and_lengths[gene]
             charset_block.append(line)
         return charset_block
+
+    def make_charset_line(self, bp_count_end, bp_count_start, gene):
+        line = 'DNA, {} = {}-{}'.format(gene, bp_count_start + 1, bp_count_end)
+        return line
 
     def make_in_12_3(self, gene_codes_and_lengths, gene_codes_list):
         """All codon positions in two partitions for gene. Positions 1,2 and 3.
