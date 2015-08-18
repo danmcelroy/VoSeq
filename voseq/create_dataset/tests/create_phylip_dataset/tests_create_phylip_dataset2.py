@@ -41,7 +41,7 @@ class CreatePhylipDatasetTest(TestCase):
 
         self.c = Client()
         self.dataset_creator = CreateDataset(self.cleaned_data)
-        self.maxDiff = None
+        # self.maxDiff = None
 
     def test_create_simple_dataset(self):
         dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
