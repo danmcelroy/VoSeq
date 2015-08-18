@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
@@ -6,10 +8,10 @@ from core.utils import get_gene_codes
 from core.utils import flatten_taxon_names_dict
 from .dataset import CreateGenbankFasta
 from .dataset import CreateFasta
-from .dataset import CreatePhylip
 from .dataset import CreateNEXUS
 from .dataset import CreateTNT
 from .dataset import CreateMEGA
+from .phylip import CreatePhylip
 from public_interface.models import Genes
 from public_interface.models import Sequences
 from public_interface.models import Vouchers
@@ -22,6 +24,13 @@ class CreateDataset(object):
     taxonset.
 
     Attributes:
+        ``seq_objs``: Ordered_dict by gene_code. Keys are gene_codes and values
+                      are tuples containing BioPython seq_record objects:
+                      seq=Seq('????CAGATAAAS'),
+                      id='CP13-01_Genus_Species',
+                      name='CAD',  # gene_code
+                      description='CP13-01',  # voucher code
+
         ``dataset_str``: output dataset to pass to users.
 
     """
@@ -37,7 +46,7 @@ class CreateDataset(object):
             self.translations = None
 
         self.errors = []
-        self.seq_objs = dict()
+        self.seq_objs = OrderedDict()
         self.minimum_number_of_genes = cleaned_data['number_genes']
         self.aminoacids = cleaned_data['aminoacids']
         self.codon_positions = cleaned_data['positions']
@@ -131,32 +140,26 @@ class CreateDataset(object):
         geneset.
         """
         # We might need to update our list of vouches and genes
-        gene_codes = set()
-        vouchers_found = set()
+        sorted_gene_codes = sorted(list(self.gene_codes), key=str.lower)
         our_taxon_names = self.get_taxon_names_for_taxa()
         all_seqs = self.get_all_sequences()
 
+        gene_codes = set()
+
         for code in self.voucher_codes:
-            for gene_code in self.gene_codes:
-                try:
-                    this_voucher_seqs = all_seqs[code]
-                except KeyError:
-                    continue
-
-                if gene_code not in this_voucher_seqs:
-                    this_voucher_seqs = '?'
-                seq_obj = self.build_seq_obj(code, gene_code, our_taxon_names, this_voucher_seqs)
-
+            for gene_code in sorted_gene_codes:
                 if gene_code not in self.seq_objs:
                     self.seq_objs[gene_code] = tuple()
+
+                seq_obj = self.build_seq_obj(code, gene_code, our_taxon_names, all_seqs)
+                if seq_obj is None:
+                    self.warnings += ['Could not find voucher %s' % code]
+                    continue
+
                 self.seq_objs[gene_code] += (seq_obj,)
                 gene_codes.add(gene_code)
-                vouchers_found.add(code)
 
-        vouchers_not_found = set(self.voucher_codes) - vouchers_found
-        for code in vouchers_not_found:
-            self.warnings += ['Could not find sequences for voucher %s' % code]
-        self.gene_codes = list(gene_codes)
+        self.gene_codes = sorted(list(gene_codes), key=str.lower)
 
     def get_all_sequences(self):
         # Return sequences as dict of lists containing sequence and related data
@@ -175,20 +178,40 @@ class CreateDataset(object):
                 seqs_dict[code][gene_code] = seq
         return seqs_dict
 
-    def build_seq_obj(self, code, gene_code, our_taxon_names, this_voucher_seqs):
+    def build_seq_obj(self, code, gene_code, our_taxon_names, all_seqs):
+        this_voucher_seqs = self.extract_sequence_from_all_seqs_in_db(all_seqs, code, gene_code)
+
         if this_voucher_seqs == '?':
             seq = Seq('?' * self.gene_codes_metadata[gene_code])
             seq_obj = SeqRecord(seq)
         else:
-            seq_obj = self.create_seq_record(this_voucher_seqs[gene_code])
-        seq_obj.id = flatten_taxon_names_dict(our_taxon_names[code])
-        if 'GENECODE' in self.taxon_names:
-            seq_obj.id += '_' + gene_code
-        seq_obj.name = gene_code
-        seq_obj.description = code
+            seq_obj = self.create_seq_record(this_voucher_seqs)
 
-        self.voucher_codes_metadata[code] = seq_obj.id
-        return seq_obj
+        if code in our_taxon_names:
+            seq_obj.id = flatten_taxon_names_dict(our_taxon_names[code])
+            if 'GENECODE' in self.taxon_names:
+                seq_obj.id += '_' + gene_code
+            seq_obj.name = gene_code
+            seq_obj.description = code
+
+            self.voucher_codes_metadata[code] = seq_obj.id
+            return seq_obj
+        else:
+            return None
+
+    def extract_sequence_from_all_seqs_in_db(self, all_seqs, code, gene_code):
+        try:
+            voucher_sequences = all_seqs[code]
+        except KeyError:
+            self.warnings += ['Could not find sequences for voucher {} and gene_code {}'.format(code, gene_code)]
+            return '?'
+
+        try:
+            this_voucher_seqs = voucher_sequences[gene_code]
+        except KeyError:
+            self.warnings += ['Could not find sequences for voucher {} and gene_code {}'.format(code, gene_code)]
+            return '?'
+        return this_voucher_seqs
 
     def create_seq_record(self, s):
         """
