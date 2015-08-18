@@ -1,35 +1,45 @@
+import os
+
 from django.test import TestCase
 from django.test.client import Client
+from django.conf import settings
 from django.core.management import call_command
 from django.contrib.auth.models import User
 
 from create_dataset.utils import CreateDataset
-from public_interface.models import Genes
+from public_interface.models import GeneSets
+from public_interface.models import Sequences
+from public_interface.models import TaxonSets
+from public_interface.models import Vouchers
 
 
 class CreatePhylipDatasetTest(TestCase):
     def setUp(self):
         args = []
-        opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
+        opts = {'dumpfile': 'test_db_dump2.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 
-        g1 = Genes.objects.get(gene_code='COI')
-        g2 = Genes.objects.get(gene_code='EF1a')
+        gene_set = GeneSets.objects.get(geneset_name='all_genes')
+        taxon_set = TaxonSets.objects.get(taxonset_name='all_taxa')
         self.cleaned_data = {
-            'gene_codes': [g1, g2],
-            'taxonset': None,
-            'voucher_codes': 'CP100-10\r\nCP100-11',
-            'geneset': None,
+            'gene_codes': '',
+            'taxonset': taxon_set,
+            'voucher_codes': '',
+            'geneset': gene_set,
             'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
             'number_genes': None,
             'degen_translations': None,
             'positions': ['ALL'],
             'partition_by_positions': 'ONE',
             'file_format': 'PHY',
-            'aminoacids': True,
+            'aminoacids': False,
             'outgroup': '',
         }
+        self.dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                         'tests', 'create_phylip_dataset', 'dataset.phy')
+        self.aa_dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                            'tests', 'create_phylip_dataset', 'aa_dataset.phy')
 
         self.user = User.objects.get(username='admin')
         self.user.set_password('pass')
@@ -39,86 +49,64 @@ class CreatePhylipDatasetTest(TestCase):
         self.dataset_creator = CreateDataset(self.cleaned_data)
         self.maxDiff = None
 
-    def test_create_dataset(self):
-        expected = '2 761\nCP100-10_Melitaea_diamina'
+    def test_create_simple_dataset(self):
+        with open(self.dataset_file, "r") as handle:
+            expected = handle.read()
         result = self.dataset_creator.dataset_str
-        self.assertTrue(expected in result)
+        self.assertEqual(expected, result)
 
-    def test_only_one_set_of_taxon_names(self):
-        expected = 1
-        dataset = self.dataset_creator.dataset_str
-        result = dataset.count('CP100-10_Melitaea_diamina')
+    def test_charset_block_file_of_simple_dataset(self):
+        charset_block_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                          'tests', 'create_phylip_dataset', 'charset_block_file.txt')
+        with open(charset_block_file, "r") as handle:
+            expected = handle.read()
+        result = self.dataset_creator.charset_block
+        self.assertEqual(expected, result)
+
+    def test_create_aa_dataset(self):
+        with open(self.aa_dataset_file, "r") as handle:
+            expected = handle.read()
+
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['aminoacids'] = True
+        dataset_creator = CreateDataset(cleaned_data)
+
+        result = dataset_creator.dataset_str
         self.assertEqual(expected, result)
 
     def test_stop_codon_warning(self):
-        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
-        c = self.c.post('/create_dataset/results/',
-                        {
-                            'voucher_codes': '',
-                            'gene_codes': [],
-                            'geneset': 1,
-                            'taxonset': 1,
-                            'translations': False,
-                            'introns': 'YES',
-                            'file_format': 'PHY',
-                            'degen_translations': 'NORMAL',
-                            'exclude': 'YES',
-                            'aminoacids': True,
-                            'special': False,
-                            'outgroup': '',
-                            'positions': 'ALL',
-                            'partition_by_positions': 'ONE',
-                            'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
-                        }
-                        )
-        expected = 'stop'
-        result = str(c.content)
+        voucher = Vouchers.objects.get(code='CP100-10')
+        sequence_with_stop_codon = 'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNtaaTCTGTAGGCGATGCCTTGAAGGACGGCTTCGACGGAGCGTCGCGGGTCATGATGCCCAATACGGAGTTAGAAGCGCCTGCTCAGCGAAACGACGCCGCCCCGCACAGAGTCCCGCGACGAGACCGATACAGATTTCAACTTCGGCCGCACAATCCTGACCACAAAACACCCGGANTCAAGGACCTAGTGTACTTGGAATCATCGCCGGGTTTCTGCGAAAAGAACCCGCGGCTGGGCATTCCCGGCACGCACGGGCGTGCCTGCAACGACACGAGTATCGGCGTCGACGGCTGCGACCTCATGTGCTGCGGCCGTGGCTACCGGACCGAGACAATGTTCGTCGTGGAGCGATGCAAC'
+        seq = Sequences.objects.get(code=voucher, gene_code='wingless')
+        seq.sequences = sequence_with_stop_codon
+        seq.save()
+
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['aminoacids'] = True
+        dataset_creator = CreateDataset(cleaned_data)
+
+        expected = 'Gene wingless, sequence CP100-10_Aus_aus contains stop codons "*"'
+        result = dataset_creator.warnings
         self.assertTrue(expected in result)
 
-    def test_numer_of_chars_for_aa_dataset(self):
-        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
-        c = self.c.post('/create_dataset/results/',
-                        {
-                            'voucher_codes': 'CP100-10',
-                            'gene_codes': 3,  # wingless
-                            'geneset': '',
-                            'taxonset': '',
-                            'translations': False,
-                            'introns': 'YES',
-                            'file_format': 'PHY',
-                            'degen_translations': 'NORMAL',
-                            'exclude': 'YES',
-                            'aminoacids': True,
-                            'special': False,
-                            'outgroup': '',
-                            'positions': 'ALL',
-                            'partition_by_positions': 'ONE',
-                            'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
-                        }
-                        )
-        expected = '1 137'
-        self.assertTrue(expected in str(c.content))
-
     def test_partitioned_1st2nd_3rd(self):
-        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
-        c = self.c.post('/create_dataset/results/',
-                        {
-                            'voucher_codes': 'CP100-10',
-                            'gene_codes': 3,  # wingless
-                            'geneset': '',
-                            'taxonset': '',
-                            'translations': False,
-                            'introns': 'YES',
-                            'file_format': 'PHY',
-                            'degen_translations': 'NORMAL',
-                            'exclude': 'YES',
-                            'aminoacids': False,
-                            'special': False,
-                            'outgroup': '',
-                            'positions': 'ALL',
-                            'partition_by_positions': '1st2nd_3rd',
-                            'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
-                        }
-                        )
-        expected = 'CAGTGATCGGAATCACACACGGCATTATT'
-        self.assertTrue(expected in str(c.content))
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        dataset_creator = CreateDataset(cleaned_data)
+        result = dataset_creator.dataset_str
+
+        with open(self.dataset_file, "r") as handle:
+            expected = handle.read()
+        self.assertEqual(expected, result)
+
+    def test_charset_block_partitioned_1st2nd_3rd(self):
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        dataset_creator = CreateDataset(cleaned_data)
+        result = dataset_creator.charset_block
+
+        charset_block_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                          'tests', 'create_phylip_dataset', 'charset_block_file_partitioned_1st2nd_3rd.txt')
+        with open(charset_block_file, "r") as handle:
+            expected = handle.read()
+        self.assertEqual(expected, result)
