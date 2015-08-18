@@ -24,8 +24,7 @@ class Dataset(object):
         self.codon_positions = codon_positions
         self.aminoacids = aminoacids
         self.partition_by_positions = partition_by_positions
-        # need to sort our seq_objs dictionary by gene_code
-        self.seq_objs = collections.OrderedDict(sorted(seq_objs.items(), key=lambda t: t[0]))
+        self.seq_objs = seq_objs
         self.gene_codes = gene_codes
         self.gene_code_descriptions = self.get_gene_code_descriptions()
         self.voucher_codes = voucher_codes
