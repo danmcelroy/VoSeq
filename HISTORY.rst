@@ -6,6 +6,8 @@ HISTORY
 
 Fixed bugs
 """"""""""
+- Create_dataset tool will produce gene partitions sorted regardless of letter case.
+  The same for Phylip charset_block.
 - Characters not in IUPAC (except '?-') will not be accepted when importing or
   saving sequences.
 
