@@ -8,7 +8,9 @@ from django.contrib.auth.models import User
 
 from create_dataset.utils import CreateDataset
 from public_interface.models import GeneSets
+from public_interface.models import Sequences
 from public_interface.models import TaxonSets
+from public_interface.models import Vouchers
 
 
 class CreatePhylipDatasetTest(TestCase):
@@ -73,26 +75,16 @@ class CreatePhylipDatasetTest(TestCase):
         self.assertEqual(expected, result)
 
     def test_stop_codon_warning(self):
-        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
-        c = self.c.post('/create_dataset/results/',
-                        {
-                            'voucher_codes': '',
-                            'gene_codes': [],
-                            'geneset': 1,
-                            'taxonset': 1,
-                            'translations': False,
-                            'introns': 'YES',
-                            'file_format': 'PHY',
-                            'degen_translations': 'NORMAL',
-                            'exclude': 'YES',
-                            'aminoacids': True,
-                            'special': False,
-                            'outgroup': '',
-                            'positions': 'ALL',
-                            'partition_by_positions': 'ONE',
-                            'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
-                        }
-                        )
-        expected = 'stop'
-        result = str(c.content)
-        self.assertEqual(expected, result)
+        voucher = Vouchers.objects.get(code='CP100-10')
+        sequence_with_stop_codon = 'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNtaaTCTGTAGGCGATGCCTTGAAGGACGGCTTCGACGGAGCGTCGCGGGTCATGATGCCCAATACGGAGTTAGAAGCGCCTGCTCAGCGAAACGACGCCGCCCCGCACAGAGTCCCGCGACGAGACCGATACAGATTTCAACTTCGGCCGCACAATCCTGACCACAAAACACCCGGANTCAAGGACCTAGTGTACTTGGAATCATCGCCGGGTTTCTGCGAAAAGAACCCGCGGCTGGGCATTCCCGGCACGCACGGGCGTGCCTGCAACGACACGAGTATCGGCGTCGACGGCTGCGACCTCATGTGCTGCGGCCGTGGCTACCGGACCGAGACAATGTTCGTCGTGGAGCGATGCAAC'
+        seq = Sequences.objects.get(code=voucher, gene_code='wingless')
+        seq.sequences = sequence_with_stop_codon
+        seq.save()
+
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['aminoacids'] = True
+        dataset_creator = CreateDataset(cleaned_data)
+
+        expected = 'Gene wingless, sequence CP100-10_Aus_aus contains stop codons "*"'
+        result = dataset_creator.warnings
+        self.assertTrue(expected in result)
