@@ -5,15 +5,10 @@ from public_interface.models import Genes
 class CreatePhylip(Dataset):
     def make_charset_block(self, gene_codes_and_lengths):
         gene_codes_list = sorted(list(gene_codes_and_lengths), key=str.lower)
-
-        if self.partition_by_positions == 'ONE':
-            charset_block = self.make_in_one(gene_codes_and_lengths, gene_codes_list)
-        if self.partition_by_positions == '1st2nd_3rd':
-            charset_block = self.make_in_12_3(gene_codes_and_lengths, gene_codes_list)
-
+        charset_block = self.generate_charset_block(gene_codes_and_lengths, gene_codes_list)
         self.charset_block = "\n".join(charset_block)
 
-    def make_in_one(self, gene_codes_and_lengths, gene_codes_list):
+    def generate_charset_block(self, gene_codes_and_lengths, gene_codes_list):
         """Basic charset block. All codon positions and one partition for gene.
         """
         bp_count_start = 0
@@ -29,17 +24,10 @@ class CreatePhylip(Dataset):
         return charset_block
 
     def make_charset_line(self, bp_count_end, bp_count_start, gene):
-        line = 'DNA, {} = {}-{}'.format(gene, bp_count_start + 1, bp_count_end)
-        return line
-
-    def make_in_12_3(self, gene_codes_and_lengths, gene_codes_list):
-        """All codon positions in two partitions for gene. Positions 1,2 and 3.
-        """
-        bp_count_start = 0
-        bp_count_end = 0
-        charset_block = []
-        for gene in gene_codes_list:
-            bp_count_end += gene_codes_and_lengths[gene]
+        if self.partition_by_positions == 'ONE':
+            line = 'DNA, {} = {}-{}'.format(gene, bp_count_start + 1, bp_count_end)
+            return line
+        elif self.partition_by_positions == '1st2nd_3rd':
             line = 'DNA, {}_pos12 = '.format(gene)
 
             if self.reading_frames[gene] == 1:
@@ -60,10 +48,7 @@ class CreatePhylip(Dataset):
                 line += '{}-{}\\3'.format(bp_count_start + 1, bp_count_end)
             elif self.reading_frames[gene] == 3:
                 line += '{}-{}\\3'.format(bp_count_start + 2, bp_count_end)
-
-            bp_count_start += gene_codes_and_lengths[gene]
-            charset_block.append(line)
-        return charset_block
+            return line
 
     def convert_lists_to_dataset(self, partitions):
         """
