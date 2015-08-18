@@ -24,8 +24,7 @@ class Dataset(object):
         self.codon_positions = codon_positions
         self.aminoacids = aminoacids
         self.partition_by_positions = partition_by_positions
-        # need to sort our seq_objs dictionary by gene_code
-        self.seq_objs = collections.OrderedDict(sorted(seq_objs.items(), key=lambda t: t[0]))
+        self.seq_objs = seq_objs
         self.gene_codes = gene_codes
         self.gene_code_descriptions = self.get_gene_code_descriptions()
         self.voucher_codes = voucher_codes
@@ -267,7 +266,6 @@ class Dataset(object):
         return sequence
 
     def get_codons_in_each_partition(self, codons):
-        print("===============codons", codons)
         partition_list = ()
         codon_descriptions = []
         codon_pos = []
@@ -738,81 +736,6 @@ class CreateGenbankFasta(Dataset):
         self.save_dataset_to_file(dataset_str)
         self.save_aa_dataset_to_file(aa_dataset_str)
         return dataset_str, aa_dataset_str
-
-
-class CreatePhylip(Dataset):
-    def get_charset_block(self, gene_codes_and_lengths):
-        charset_block = []
-
-        bp_count_start = 0
-        bp_count_end = 0
-        self.gene_codes.sort()
-        for gene in gene_codes_and_lengths:
-            bp_count_end += gene_codes_and_lengths[gene]
-            line = 'DNA, ' + gene + ' = ' + str(
-                bp_count_start + 1) + '-' + str(bp_count_end)
-            bp_count_start += gene_codes_and_lengths[gene]
-            charset_block.append(line)
-        self.charset_block = "\n".join(charset_block)
-
-    def convert_lists_to_dataset(self, partitions):
-        """
-        Overridden method from base class in order to add headers and footers depending
-        on needed dataset.
-        """
-        self.get_number_of_genes_for_taxa(partitions)
-        self.get_number_chars_from_partition_list(partitions)
-        out = []
-
-        gene_models = Genes.objects.all().values()
-
-        gene_codes_and_lengths = dict()
-
-        partitions_incorporated = 0
-        for partition in partitions:
-            for i in partition:
-                voucher_code = i.split(' ')[0]
-                if voucher_code.startswith('\n'):
-                    ThisGeneAndPartition = self.get_gene_for_current_partition(
-                        gene_models, out, partitions_incorporated, voucher_code
-                    )
-                    partitions_incorporated = ThisGeneAndPartition.partitions_incorporated
-                    out = ThisGeneAndPartition.out
-                elif voucher_code not in self.vouchers_to_drop:
-                    line = i.split(' ')
-                    if len(line) > 1:
-                        sequence = line[-1]
-
-                        if self.aminoacids is True:
-                            sequence = self.translate_this_sequence(
-                                sequence,
-                                ThisGeneAndPartition.this_gene_model,
-                                voucher_code
-                            )
-                        if self.aminoacids is not True:
-                            sequence = self.degenerate(sequence, ThisGeneAndPartition.this_gene_model)
-
-                        gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
-
-                        if partitions_incorporated == 1:
-                            out += [line[0].ljust(55, ' ') + sequence + '\n']
-                        else:
-                            out += [' ' * 55 + sequence + '\n']
-
-        number_chars = 0
-        for k in gene_codes_and_lengths.keys():
-            number_chars += gene_codes_and_lengths[k]
-
-        header = [
-            str(self.number_taxa - len(self.vouchers_to_drop)) + ' ' + str(number_chars),
-        ]
-
-        out = header + out
-
-        self.get_charset_block(gene_codes_and_lengths)
-        dataset_str = ''.join(out)
-        self.save_dataset_to_file(dataset_str)
-        return dataset_str
 
 
 class CreateTNT(Dataset):
