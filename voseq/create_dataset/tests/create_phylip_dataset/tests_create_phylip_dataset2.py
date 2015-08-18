@@ -51,7 +51,7 @@ class CreatePhylipDatasetTest(TestCase):
         result = self.dataset_creator.dataset_str
         self.assertEqual(expected, result)
 
-    def test_partition_file_of_simple_dataset(self):
+    def test_charset_block_file_of_simple_dataset(self):
         dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
                                     'tests', 'create_phylip_dataset', 'phylip_file.txt')
         with open(dataset_file, "r") as handle:
