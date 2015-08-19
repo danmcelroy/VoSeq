@@ -106,6 +106,15 @@ def get_username(request):
     return username
 
 
+def clean_positions(a_list):
+    if 'ALL' in a_list:
+        return ['ALL']
+    if '1st' in a_list and '2nd' in a_list and '3rd' in a_list:
+        return ['ALL']
+    if 'ALL' not in a_list:
+        return a_list
+
+
 def flatten_taxon_names_dict(dictionary):
     """Converts a dict to string suitable for FASTA object id
 
