@@ -122,9 +122,35 @@ class CreatePhylipDatasetTest(TestCase):
             expected = handle.read()
         self.assertEqual(expected, result)
 
+    def test_dataset_1st_codon_partitioned_one(self):
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['positions'] = ['1st']
+        dataset_creator = CreateDataset(cleaned_data)
+        result = dataset_creator.dataset_str
+
+        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                    'tests', 'create_phylip_dataset', 'dataset_1st_codon.phy')
+        with open(dataset_file, "r") as handle:
+            expected = handle.read()
+        self.assertEqual(expected, result)
+
     def test_charset_block_dataset_1st_codon_partitioned_each(self):
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['positions'] = ['1st']
+        dataset_creator = CreateDataset(cleaned_data)
+        result = dataset_creator.charset_block
+
+        charset_block_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                          'tests', 'create_phylip_dataset', 'charset_block_file_dataset_1st_codon.txt')
+        with open(charset_block_file, "r") as handle:
+            expected = handle.read()
+        self.assertEqual(expected, result)
+
+    def test_charset_block_dataset_1st_codon_partitioned_one(self):
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['partition_by_positions'] = 'ONE'
         cleaned_data['positions'] = ['1st']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.charset_block
