@@ -27,11 +27,36 @@ class CreatePhylip(Dataset):
         if self.partition_by_positions == 'ONE':
             line = 'DNA, {} = {}-{}'.format(gene, bp_count_start + 1, bp_count_end)
             return line
+
         elif self.partition_by_positions == '1st2nd_3rd':
             line = 'DNA, {}_pos12 = '.format(gene)
 
             if self.reading_frames[gene] == 1:
                 line += '{}-{}\\3'.format(bp_count_start + 1, bp_count_end)
+                line += ', {}-{}\\3'.format(bp_count_start + 2, bp_count_end)
+            elif self.reading_frames[gene] == 2:
+                line += '{}-{}\\3'.format(bp_count_start + 2, bp_count_end)
+                line += ', {}-{}\\3'.format(bp_count_start + 3, bp_count_end)
+            elif self.reading_frames[gene] == 3:
+                line += '{}-{}\\3'.format(bp_count_start + 3, bp_count_end)
+                line += ', {}-{}\\3'.format(bp_count_start + 1, bp_count_end)
+
+            line += '\nDNA, {}_pos3 = '.format(gene)
+
+            if self.reading_frames[gene] == 1:
+                line += '{}-{}\\3'.format(bp_count_start + 3, bp_count_end)
+            elif self.reading_frames[gene] == 2:
+                line += '{}-{}\\3'.format(bp_count_start + 1, bp_count_end)
+            elif self.reading_frames[gene] == 3:
+                line += '{}-{}\\3'.format(bp_count_start + 2, bp_count_end)
+            return line
+
+        elif self.partition_by_positions == 'EACH':
+            line = ''
+            if self.reading_frames[gene] == 1:
+                line = 'DNA, {}_pos1 = {}-{}\\3'.format(gene, bp_count_start + 1, bp_count_end)
+
+                line += '\nDNA, {}_pos2 = '.format(gene)
                 line += ', {}-{}\\3'.format(bp_count_start + 2, bp_count_end)
             elif self.reading_frames[gene] == 2:
                 line += '{}-{}\\3'.format(bp_count_start + 2, bp_count_end)
