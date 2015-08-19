@@ -25,8 +25,12 @@ class CreatePhylip(Dataset):
 
     def make_charset_line(self, count_start, count_end, gene):
         if self.partition_by_positions == 'ONE':
-            line = 'DNA, {} = {}-{}'.format(gene, count_start + 1, count_end)
-            return line
+            if 'ALL' in self.codon_positions:
+                line = 'DNA, {} = {}-{}'.format(gene, count_start + 1, count_end)
+                return line
+            if len(self.codon_positions) == 1 and '1st' in self.codon_positions:
+                line = 'DNA, {}_pos1 = {}-{}'.format(gene, count_start + 1, count_end)
+                return line
 
         elif self.partition_by_positions == '1st2nd_3rd':
             line = ''
