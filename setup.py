@@ -4,7 +4,8 @@ try:
 except ImportError:
     from distutils.core import setup
 
-import voseq
+from voseq import voseq
+
 
 version = voseq.__version__
 
