@@ -4,6 +4,7 @@ from django.test import TestCase
 from django.core.management import call_command
 
 from core import exceptions
+from core.utils import clean_positions
 from core.utils import get_gene_codes
 from core.utils import get_voucher_codes
 from core.utils import get_start_translation_index
@@ -174,3 +175,21 @@ class TestCoreUtils(TestCase):
         expected = 'NYTNTTYTGRTTYTTYG'
         result = _degenerate(gene_model, dna, degen_translation)
         self.assertEqual(expected, result)
+
+    def test_clean_positions(self):
+        self.assertEqual(clean_positions(['ALL', '1st']), ['ALL'], 'Has "ALL" in list.')
+        self.assertEqual(clean_positions(['ALL', '2nd']), ['ALL'], 'Has "ALL" in list.')
+        self.assertEqual(clean_positions(['ALL', '3rd']), ['ALL'], 'Has "ALL" in list.')
+        self.assertEqual(clean_positions(['ALL', '1st', '2nd']), ['ALL'], 'Has "ALL" in list.')
+        self.assertEqual(clean_positions(['ALL', '1st', '3rd']), ['ALL'], 'Has "ALL" in list.')
+        self.assertEqual(clean_positions(['ALL', '2nd', '3rd']), ['ALL'], 'Has "ALL" in list.')
+        self.assertEqual(clean_positions(['ALL', '1st', '2nd', '3rd']), ['ALL'], 'Has "ALL" in list.')
+
+        self.assertEqual(clean_positions(['1st', '2nd', '3rd']), ['ALL'], 'All codon positions were required.')
+        self.assertEqual(clean_positions(['1st', '2nd']), ['1st', '2nd'], 'Only some codon positions were required.')
+        self.assertEqual(clean_positions(['1st', '3rd']), ['1st', '3rd'], 'Only some codon positions were required.')
+        self.assertEqual(clean_positions(['2nd', '3rd']), ['2nd', '3rd'], 'Only some codon positions were required.')
+
+        self.assertEqual(clean_positions(['1st']), ['1st'], 'All codon positions were required.')
+        self.assertEqual(clean_positions(['2nd']), ['2nd'], 'All codon positions were required.')
+        self.assertEqual(clean_positions(['3rd']), ['3rd'], 'All codon positions were required.')

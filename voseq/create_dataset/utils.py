@@ -5,6 +5,7 @@ from Bio.SeqRecord import SeqRecord
 
 from core.utils import get_voucher_codes
 from core.utils import get_gene_codes
+from core.utils import clean_positions
 from core.utils import flatten_taxon_names_dict
 from .dataset import CreateGenbankFasta
 from .dataset import CreateFasta
@@ -24,6 +25,9 @@ class CreateDataset(object):
     taxonset.
 
     Attributes:
+        ``codon_positions``: For now is a list. It is cleaned to avoid redundant
+                      information such as having ['ALL', '1st'] in there as 'ALL'
+                      overrides '1st'.
         ``seq_objs``: Ordered_dict by gene_code. Keys are gene_codes and values
                       are tuples containing BioPython seq_record objects:
                       seq=Seq('????CAGATAAAS'),
@@ -49,7 +53,7 @@ class CreateDataset(object):
         self.seq_objs = OrderedDict()
         self.minimum_number_of_genes = cleaned_data['number_genes']
         self.aminoacids = cleaned_data['aminoacids']
-        self.codon_positions = cleaned_data['positions']
+        self.codon_positions = clean_positions(cleaned_data['positions'])
         self.file_format = cleaned_data['file_format']
         self.partition_by_positions = cleaned_data['partition_by_positions']
         self.cleaned_data = cleaned_data
