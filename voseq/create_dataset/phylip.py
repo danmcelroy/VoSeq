@@ -17,13 +17,13 @@ class CreatePhylip(Dataset):
         for gene in gene_codes_list:
             bp_count_end += gene_codes_and_lengths[gene]
 
-            line = self.make_charset_line(bp_count_end, bp_count_start, gene)
+            line = self.make_charset_line(bp_count_start, bp_count_end, gene)
 
             bp_count_start += gene_codes_and_lengths[gene]
             charset_block.append(line)
         return charset_block
 
-    def make_charset_line(self, count_end, count_start, gene):
+    def make_charset_line(self, count_start, count_end, gene):
         if self.partition_by_positions == 'ONE':
             line = 'DNA, {} = {}-{}'.format(gene, count_start + 1, count_end)
             return line
