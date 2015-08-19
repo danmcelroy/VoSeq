@@ -55,24 +55,17 @@ class CreatePhylip(Dataset):
             line = ''
             if self.reading_frames[gene] == 1:
                 line = 'DNA, {}_pos1 = {}-{}\\3'.format(gene, bp_count_start + 1, bp_count_end)
-
-                line += '\nDNA, {}_pos2 = '.format(gene)
-                line += ', {}-{}\\3'.format(bp_count_start + 2, bp_count_end)
+                line += '\nDNA, {}_pos2 = {}-{}\\3'.format(gene, bp_count_start + 2, bp_count_end)
+                line += '\nDNA, {}_pos3 = {}-{}\\3'.format(gene, bp_count_start + 3, bp_count_end)
             elif self.reading_frames[gene] == 2:
-                line += '{}-{}\\3'.format(bp_count_start + 2, bp_count_end)
-                line += ', {}-{}\\3'.format(bp_count_start + 3, bp_count_end)
+                line = 'DNA, {}_pos1 = {}-{}\\3'.format(gene, bp_count_start + 2, bp_count_end)
+                line += '\nDNA, {}_pos2 = {}-{}\\3'.format(gene, bp_count_start + 3, bp_count_end)
+                line += '\nDNA, {}_pos3 = {}-{}\\3'.format(gene, bp_count_start + 1, bp_count_end)
             elif self.reading_frames[gene] == 3:
-                line += '{}-{}\\3'.format(bp_count_start + 3, bp_count_end)
-                line += ', {}-{}\\3'.format(bp_count_start + 1, bp_count_end)
+                line = 'DNA, {}_pos1 = {}-{}\\3'.format(gene, bp_count_start + 3, bp_count_end)
+                line += '\nDNA, {}_pos2 = {}-{}\\3'.format(gene, bp_count_start + 1, bp_count_end)
+                line += '\nDNA, {}_pos3 = {}-{}\\3'.format(gene, bp_count_start + 2, bp_count_end)
 
-            line += '\nDNA, {}_pos3 = '.format(gene)
-
-            if self.reading_frames[gene] == 1:
-                line += '{}-{}\\3'.format(bp_count_start + 3, bp_count_end)
-            elif self.reading_frames[gene] == 2:
-                line += '{}-{}\\3'.format(bp_count_start + 1, bp_count_end)
-            elif self.reading_frames[gene] == 3:
-                line += '{}-{}\\3'.format(bp_count_start + 2, bp_count_end)
             return line
 
     def convert_lists_to_dataset(self, partitions):
