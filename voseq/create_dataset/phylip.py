@@ -33,27 +33,31 @@ class CreatePhylip(Dataset):
                 return line
 
         elif self.partition_by_positions == '1st2nd_3rd':
-            line = ''
-            if self.reading_frames[gene] == 1:
-                line = 'DNA, {}_pos12 = '.format(gene)
-                line += '{}-{}\\3'.format(count_start + 1, count_end)
-                line += ', {}-{}\\3'.format(count_start + 2, count_end)
-                line += '\nDNA, {}_pos3 = '.format(gene)
-                line += '{}-{}\\3'.format(count_start + 3, count_end)
-            elif self.reading_frames[gene] == 2:
-                line = 'DNA, {}_pos12 = '.format(gene)
-                line += '{}-{}\\3'.format(count_start + 2, count_end)
-                line += ', {}-{}\\3'.format(count_start + 3, count_end)
-                line += '\nDNA, {}_pos3 = '.format(gene)
-                line += '{}-{}\\3'.format(count_start + 1, count_end)
-            elif self.reading_frames[gene] == 3:
-                line = 'DNA, {}_pos12 = '.format(gene)
-                line += '{}-{}\\3'.format(count_start + 3, count_end)
-                line += ', {}-{}\\3'.format(count_start + 1, count_end)
-                line += '\nDNA, {}_pos3 = '.format(gene)
-                line += '{}-{}\\3'.format(count_start + 2, count_end)
+            if 'ALL' in self.codon_positions:
+                line = ''
+                if self.reading_frames[gene] == 1:
+                    line = 'DNA, {}_pos12 = '.format(gene)
+                    line += '{}-{}\\3'.format(count_start + 1, count_end)
+                    line += ', {}-{}\\3'.format(count_start + 2, count_end)
+                    line += '\nDNA, {}_pos3 = '.format(gene)
+                    line += '{}-{}\\3'.format(count_start + 3, count_end)
+                elif self.reading_frames[gene] == 2:
+                    line = 'DNA, {}_pos12 = '.format(gene)
+                    line += '{}-{}\\3'.format(count_start + 2, count_end)
+                    line += ', {}-{}\\3'.format(count_start + 3, count_end)
+                    line += '\nDNA, {}_pos3 = '.format(gene)
+                    line += '{}-{}\\3'.format(count_start + 1, count_end)
+                elif self.reading_frames[gene] == 3:
+                    line = 'DNA, {}_pos12 = '.format(gene)
+                    line += '{}-{}\\3'.format(count_start + 3, count_end)
+                    line += ', {}-{}\\3'.format(count_start + 1, count_end)
+                    line += '\nDNA, {}_pos3 = '.format(gene)
+                    line += '{}-{}\\3'.format(count_start + 2, count_end)
+                return line
 
-            return line
+            if len(self.codon_positions) == 1 and '1st' in self.codon_positions:
+                line = 'DNA, {}_pos1 = {}-{}'.format(gene, count_start + 1, count_end)
+                return line
 
         elif self.partition_by_positions == 'EACH':
             if 'ALL' in self.codon_positions:
