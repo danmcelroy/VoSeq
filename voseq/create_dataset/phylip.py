@@ -31,6 +31,9 @@ class CreatePhylip(Dataset):
             if len(self.codon_positions) == 1 and '1st' in self.codon_positions:
                 line = 'DNA, {}_pos1 = {}-{}'.format(gene, count_start + 1, count_end)
                 return line
+            if len(self.codon_positions) == 1 and '2nd' in self.codon_positions:
+                line = 'DNA, {}_pos2 = {}-{}'.format(gene, count_start + 1, count_end)
+                return line
 
         elif self.partition_by_positions == '1st2nd_3rd':
             if 'ALL' in self.codon_positions:
@@ -58,6 +61,9 @@ class CreatePhylip(Dataset):
             if len(self.codon_positions) == 1 and '1st' in self.codon_positions:
                 line = 'DNA, {}_pos1 = {}-{}'.format(gene, count_start + 1, count_end)
                 return line
+            if len(self.codon_positions) == 1 and '2nd' in self.codon_positions:
+                line = 'DNA, {}_pos2 = {}-{}'.format(gene, count_start + 1, count_end)
+                return line
 
         elif self.partition_by_positions == 'EACH':
             if 'ALL' in self.codon_positions:
@@ -78,6 +84,9 @@ class CreatePhylip(Dataset):
 
             if len(self.codon_positions) == 1 and '1st' in self.codon_positions:
                 line = 'DNA, {}_pos1 = {}-{}'.format(gene, count_start + 1, count_end)
+                return line
+            if len(self.codon_positions) == 1 and '2nd' in self.codon_positions:
+                line = 'DNA, {}_pos2 = {}-{}'.format(gene, count_start + 1, count_end)
                 return line
 
     def convert_lists_to_dataset(self, partitions):
