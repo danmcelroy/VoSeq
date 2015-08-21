@@ -155,28 +155,29 @@ class Dataset(object):
         return reading_frames
 
     def split_sequence_in_codon_positions(self, gene_code, seq):
-        """Puts the sequence in frame, by deleting base pairs at the beginning
-        of the sequence if the reading frame is not 1.
-
+        """
         Retuns tuple of nucleotides based on codon positions.
 
         :param gene_code: as lower case
         :param seq: as BioPython seq object.
         :return: tuple of seq strings.
-
-        Example:
-            If reading frame is 2: ATGGGG becomes TGGGG. Then the sequence is
-            processed to extract the codon positions requested by the user.
-
         """
-        reading_frame = int(self.reading_frames[gene_code]) - 1
-        seq = seq[reading_frame:]
+        reading_frame = int(self.reading_frames[gene_code])
 
         # This is the BioPython way to get codon positions
         # http://biopython.org/DIST/docs/tutorial/Tutorial.html#htoc19
-        first_position = seq[0::3]
-        second_position = seq[1::3]
-        third_position = seq[2::3]
+        if reading_frame == 1:
+            first_position = seq[::3]
+            second_position = seq[1::3]
+            third_position = seq[2::3]
+        elif reading_frame == 2:
+            first_position = seq[1::3]
+            second_position = seq[2::3]
+            third_position = seq[::3]
+        elif reading_frame == 3:
+            first_position = seq[2::3]
+            second_position = seq[::3]
+            third_position = seq[1::3]
         return first_position, second_position, third_position
 
     def convert_lists_to_dataset(self, partitions):
