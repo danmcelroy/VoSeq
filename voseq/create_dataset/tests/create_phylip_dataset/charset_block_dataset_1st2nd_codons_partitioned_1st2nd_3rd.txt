@@ -1,0 +1,7 @@
+DNA, ArgKin_pos12 = 1-398
+DNA, COI-begin_pos12 = 399-844
+DNA, COI_end_pos12 = 845-1381
+DNA, ef1a_pos12 = 1382-2207
+DNA, RpS2_pos12 = 2208-2481
+DNA, RpS5_pos12 = 2482-2892
+DNA, wingless_pos12 = 2893-3158
