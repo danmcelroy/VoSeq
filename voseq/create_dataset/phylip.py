@@ -79,8 +79,7 @@ class CreatePhylip(Dataset):
             if len(self.codon_positions) == 2 and \
                     '1st' in self.codon_positions and \
                     '2nd' in self.codon_positions:
-                line = 'DNA, {}_pos1 = {}-{}\\2'.format(gene, count_start + 1, count_end)
-                line += '\nDNA, {}_pos2 = {}-{}\\2'.format(gene, count_start + 2, count_end)
+                line = 'DNA, {}_pos12 = {}-{}'.format(gene, count_start + 1, count_end)
                 return line
 
         elif self.partition_by_positions == 'EACH':
