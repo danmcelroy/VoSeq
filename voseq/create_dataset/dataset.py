@@ -565,7 +565,15 @@ class Dataset(object):
 
         if '1st' in self.codon_positions and '2nd' in self.codon_positions and \
                 '3rd' not in self.codon_positions and \
-                '1st2nd_3rd' in self.partition_by_positions:
+                '1st2nd_3rd' in self.partition_by_positions and \
+                self.file_format == 'PHY':
+            self.partition_list = self.get_codons_in_one_partition(['1st', '2nd'])
+            return self.convert_lists_to_dataset(self.partition_list)
+
+        if '1st' in self.codon_positions and '2nd' in self.codon_positions and \
+                '3rd' not in self.codon_positions and \
+                '1st2nd_3rd' in self.partition_by_positions and \
+                self.file_format != 'PHY':
             self.partition_list = ([],)
             for gene_code in self.seq_objs:
                 this_gene = None
