@@ -92,27 +92,27 @@ CP100-19_Aus_jus                                       ?????????????????????????
 END;
 
 begin mrbayes;
-    charset ArgKin_pos1 = 1-596\3
-    charset ArgKin_pos2 = 2-596\3
-    charset ArgKin_pos3 = 3-596\3
-    charset COI-begin_pos1 = 598-1265\3
-    charset COI-begin_pos2 = 599-1265\3
-    charset COI-begin_pos3 = 597-1265\3
-    charset COI_end_pos1 = 1267-2071\3
-    charset COI_end_pos2 = 1268-2071\3
-    charset COI_end_pos3 = 1266-2071\3
-    charset ef1a_pos1 = 2073-3311\3
-    charset ef1a_pos2 = 2074-3311\3
-    charset ef1a_pos3 = 2072-3311\3
-    charset RpS2_pos1 = 3314-3722\3
-    charset RpS2_pos2 = 3312-3722\3
-    charset RpS2_pos3 = 3313-3722\3
-    charset RpS5_pos1 = 3724-4339\3
-    charset RpS5_pos2 = 3725-4339\3
-    charset RpS5_pos3 = 3723-4339\3
-    charset wingless_pos1 = 4341-4739\3
-    charset wingless_pos2 = 4342-4739\3
-    charset wingless_pos3 = 4340-4739\3
+    charset ArgKin_pos1 = 1-596\3;
+    charset ArgKin_pos2 = 2-596\3;
+    charset ArgKin_pos3 = 3-596\3;
+    charset COI-begin_pos1 = 598-1265\3;
+    charset COI-begin_pos2 = 599-1265\3;
+    charset COI-begin_pos3 = 597-1265\3;
+    charset COI_end_pos1 = 1267-2071\3;
+    charset COI_end_pos2 = 1268-2071\3;
+    charset COI_end_pos3 = 1266-2071\3;
+    charset ef1a_pos1 = 2073-3311\3;
+    charset ef1a_pos2 = 2074-3311\3;
+    charset ef1a_pos3 = 2072-3311\3;
+    charset RpS2_pos1 = 3314-3722\3;
+    charset RpS2_pos2 = 3312-3722\3;
+    charset RpS2_pos3 = 3313-3722\3;
+    charset RpS5_pos1 = 3724-4339\3;
+    charset RpS5_pos2 = 3725-4339\3;
+    charset RpS5_pos3 = 3723-4339\3;
+    charset wingless_pos1 = 4341-4739\3;
+    charset wingless_pos2 = 4342-4739\3;
+    charset wingless_pos3 = 4340-4739\3;
 partition GENES = 7: ArgKin_pos1, ArgKin_pos2, ArgKin_pos3, COI-begin_pos1, COI-begin_pos2, COI-begin_pos3, COI_end_pos1, COI_end_pos2, COI_end_pos3, ef1a_pos1,ef1a_pos2,ef1a_pos3, RpS2_pos1, RpS2_pos2, RpS2_pos3, RpS5_pos1, RpS5_pos2, RpS5_pos3, wingless_pos1, wingless_pos2, wingless_pos3;
 
 set partition = GENES;
