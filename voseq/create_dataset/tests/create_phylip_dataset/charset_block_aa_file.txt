@@ -1,0 +1,7 @@
+DNA, ArgKin = 1-198
+DNA, COI-begin = 199-420
+DNA, COI_end = 421-688
+DNA, ef1a = 689-1101
+DNA, RpS2 = 1102-1237
+DNA, RpS5 = 1238-1442
+DNA, wingless = 1443-1575
