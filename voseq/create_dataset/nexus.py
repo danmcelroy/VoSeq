@@ -5,20 +5,6 @@ from public_interface.models import Genes
 
 
 class CreateNEXUS(Dataset):
-    def get_charset_block(self):
-        charset_block = []
-
-        bp_count_start = 0
-        bp_count_end = 0
-        self.gene_codes.sort()
-        for gene in self.gene_codes_and_lengths:
-            bp_count_end += self.gene_codes_and_lengths[gene]
-            line = '    charset ' + gene + ' = ' + str(
-                bp_count_start + 1) + '-' + str(bp_count_end) + ';'
-            bp_count_start += self.gene_codes_and_lengths[gene]
-            charset_block.append(line)
-        return charset_block
-
     def get_partitions_block(self):
         line = 'partition GENES = ' + str(len(self.gene_codes_and_lengths))
         line += ': ' + ', '.join([i for i in self.gene_codes_and_lengths]) + ';\n'
@@ -109,11 +95,13 @@ END;
         if self.aminoacids is True:
             self.gene_codes_and_lengths = gene_codes_and_lengths
 
+        self.make_charset_block(self.gene_codes_and_lengths)
+
         out = header + out
 
         out += [';\nEND;']
         out += ['\nbegin mrbayes;']
-        out += self.get_charset_block()
+        out += [self.charset_block]
         out += self.get_partitions_block()
         out += self.get_final_block()
         dataset_str = '\n'.join(out)
