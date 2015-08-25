@@ -611,6 +611,26 @@ class Dataset(object):
                         seq_record.id, seq_record.seq)
                 self.partition_list[0].append(seq_str)
 
+    def make_charset_block(self, gene_codes_and_lengths):
+        gene_codes_list = sorted(list(gene_codes_and_lengths), key=str.lower)
+        charset_block = self.generate_charset_block(gene_codes_and_lengths, gene_codes_list)
+        self.charset_block = "\n".join(charset_block)
+
+    def generate_charset_block(self, gene_codes_and_lengths, gene_codes_list):
+        """Basic charset block. All codon positions and one partition for gene.
+        """
+        bp_count_start = 0
+        bp_count_end = 0
+        charset_block = []
+        for gene in gene_codes_list:
+            bp_count_end += gene_codes_and_lengths[gene]
+
+            line = self.make_charset_line(bp_count_start, bp_count_end, gene)
+
+            bp_count_start += gene_codes_and_lengths[gene]
+            charset_block.append(line)
+        return charset_block
+
     def make_charset_line(self, count_start, count_end, gene):
         """To be used when making the charset block. It writes one line per partition.
         """

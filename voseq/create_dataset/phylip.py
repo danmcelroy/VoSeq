@@ -3,26 +3,6 @@ from public_interface.models import Genes
 
 
 class CreatePhylip(Dataset):
-    def make_charset_block(self, gene_codes_and_lengths):
-        gene_codes_list = sorted(list(gene_codes_and_lengths), key=str.lower)
-        charset_block = self.generate_charset_block(gene_codes_and_lengths, gene_codes_list)
-        self.charset_block = "\n".join(charset_block)
-
-    def generate_charset_block(self, gene_codes_and_lengths, gene_codes_list):
-        """Basic charset block. All codon positions and one partition for gene.
-        """
-        bp_count_start = 0
-        bp_count_end = 0
-        charset_block = []
-        for gene in gene_codes_list:
-            bp_count_end += gene_codes_and_lengths[gene]
-
-            line = self.make_charset_line(bp_count_start, bp_count_end, gene)
-
-            bp_count_start += gene_codes_and_lengths[gene]
-            charset_block.append(line)
-        return charset_block
-
     def convert_lists_to_dataset(self, partitions):
         """
         Overridden method from base class in order to add headers and footers depending
