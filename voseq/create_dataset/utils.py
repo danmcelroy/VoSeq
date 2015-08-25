@@ -71,6 +71,17 @@ class CreateDataset(object):
         self.dataset_str = self.create_dataset()
 
     def create_dataset(self):
+        if len(self.codon_positions) == 2 and \
+                '1st' in self.codon_positions and '3rd' in self.codon_positions:
+            self.errors = ['Cannot create dataset for only codon positions 1 and 3.']
+            self.dataset_file = None
+            return ''
+        if len(self.codon_positions) == 2 and \
+                '2nd' in self.codon_positions and '3rd' in self.codon_positions:
+            self.errors = ['Cannot create dataset for only codon positions 2 and 3.']
+            self.dataset_file = None
+            return ''
+
         self.voucher_codes = get_voucher_codes(self.cleaned_data)
         self.gene_codes = get_gene_codes(self.cleaned_data)
         self.create_seq_objs()
