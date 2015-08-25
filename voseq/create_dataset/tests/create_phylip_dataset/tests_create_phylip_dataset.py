@@ -74,6 +74,19 @@ class CreatePhylipDatasetTest(TestCase):
         result = dataset_creator.dataset_str
         self.assertEqual(expected, result)
 
+    def test_create_aa_dataset_charset_block(self):
+        charset_block_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                          'tests', 'create_phylip_dataset', 'charset_block_aa_file.txt')
+        with open(charset_block_file, "r") as handle:
+            expected = handle.read()
+
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['aminoacids'] = True
+        dataset_creator = CreateDataset(cleaned_data)
+
+        result = dataset_creator.charset_block
+        self.assertEqual(expected, result)
+
     def test_stop_codon_warning(self):
         voucher = Vouchers.objects.get(code='CP100-10')
         sequence_with_stop_codon = 'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNtaaTCTGTAGGCGATGCCTTGAAGGACGGCTTCGACGGAGCGTCGCGGGTCATGATGCCCAATACGGAGTTAGAAGCGCCTGCTCAGCGAAACGACGCCGCCCCGCACAGAGTCCCGCGACGAGACCGATACAGATTTCAACTTCGGCCGCACAATCCTGACCACAAAACACCCGGANTCAAGGACCTAGTGTACTTGGAATCATCGCCGGGTTTCTGCGAAAAGAACCCGCGGCTGGGCATTCCCGGCACGCACGGGCGTGCCTGCAACGACACGAGTATCGGCGTCGACGGCTGCGACCTCATGTGCTGCGGCCGTGGCTACCGGACCGAGACAATGTTCGTCGTGGAGCGATGCAAC'
