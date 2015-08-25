@@ -19,6 +19,8 @@ class CreateNEXUS(Dataset):
             for i in self.gene_codes_and_lengths:
                 out += ['{}_pos1'.format(i), '{}_pos2'.format(i), '{}_pos3'.format(i)]
             return ': ' + ', '.join(out) + ';\n'
+        if self.partition_by_positions == '1st2nd_3rd':
+            return ': ' + ', '.join([i for i in self.gene_codes_and_lengths]) + ';\n'
 
     def get_final_block(self):
         block = "set autoclose=yes;"
