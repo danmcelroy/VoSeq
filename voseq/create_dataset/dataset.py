@@ -474,7 +474,8 @@ class Dataset(object):
             self.get_all_codon_positions_in_one_partition()
             return self.convert_lists_to_dataset(self.partition_list)
 
-        if 'ALL' in self.codon_positions and '1st2nd_3rd' in self.partition_by_positions and self.file_format == 'PHY':
+        if 'ALL' in self.codon_positions and '1st2nd_3rd' in self.partition_by_positions and \
+                self.file_format in ['PHY', 'NEXUS']:
             self.get_all_codon_positions_in_one_partition()
             return self.convert_lists_to_dataset(self.partition_list)
 
@@ -664,23 +665,23 @@ class Dataset(object):
             if 'ALL' in self.codon_positions:
                 line = ''
                 if self.reading_frames[gene] == 1:
-                    line = 'DNA, {}_pos12 = '.format(gene)
+                    line = '{} {}_pos12 = '.format(prefix, gene)
                     line += '{}-{}\\3'.format(count_start + 1, count_end)
-                    line += ', {}-{}\\3'.format(count_start + 2, count_end)
-                    line += '\nDNA, {}_pos3 = '.format(gene)
-                    line += '{}-{}\\3'.format(count_start + 3, count_end)
+                    line += ', {}-{}\\3{}'.format(count_start + 2, count_end, suffix)
+                    line += '\n{} {}_pos3 = '.format(prefix, gene)
+                    line += '{}-{}\\3{}'.format(count_start + 3, count_end, suffix)
                 elif self.reading_frames[gene] == 2:
-                    line = 'DNA, {}_pos12 = '.format(gene)
+                    line = '{} {}_pos12 = '.format(prefix, gene)
                     line += '{}-{}\\3'.format(count_start + 2, count_end)
-                    line += ', {}-{}\\3'.format(count_start + 3, count_end)
-                    line += '\nDNA, {}_pos3 = '.format(gene)
-                    line += '{}-{}\\3'.format(count_start + 1, count_end)
+                    line += ', {}-{}\\3{}'.format(count_start + 3, count_end, suffix)
+                    line += '\n{} {}_pos3 = '.format(prefix, gene)
+                    line += '{}-{}\\3{}'.format(count_start + 1, count_end, suffix)
                 elif self.reading_frames[gene] == 3:
-                    line = 'DNA, {}_pos12 = '.format(gene)
+                    line = '{} {}_pos12 = '.format(prefix, gene)
                     line += '{}-{}\\3'.format(count_start + 3, count_end)
-                    line += ', {}-{}\\3'.format(count_start + 1, count_end)
-                    line += '\nDNA, {}_pos3 = '.format(gene)
-                    line += '{}-{}\\3'.format(count_start + 2, count_end)
+                    line += ', {}-{}\\3{}'.format(count_start + 1, count_end, suffix)
+                    line += '\n{} {}_pos3 = '.format(prefix, gene)
+                    line += '{}-{}\\3{}'.format(count_start + 2, count_end, suffix)
                 return line
 
             if len(self.codon_positions) == 1 and '1st' in self.codon_positions:
