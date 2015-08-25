@@ -7,9 +7,18 @@ from public_interface.models import Genes
 class CreateNEXUS(Dataset):
     def get_partitions_block(self):
         line = 'partition GENES = ' + str(len(self.gene_codes_and_lengths))
-        line += ': ' + ', '.join([i for i in self.gene_codes_and_lengths]) + ';\n'
+        line += self.make_partition_line()
         line += '\nset partition = GENES;\n'
         return [line]
+
+    def make_partition_line(self):
+        if self.partition_by_positions == 'ONE':
+            return ': ' + ', '.join([i for i in self.gene_codes_and_lengths]) + ';\n'
+        if self.partition_by_positions == 'EACH':
+            out = []
+            for i in self.gene_codes_and_lengths:
+                out += ['{}_pos1'.format(i), '{}_pos2'.format(i), '{}_pos3'.format(i)]
+            return ': ' + ', '.join(out) + ';\n'
 
     def get_final_block(self):
         block = "set autoclose=yes;"
