@@ -99,7 +99,7 @@ class CreatePhylipDatasetTest(TestCase):
             expected = handle.read()
         self.assertEqual(expected, result)
 
-    def test_partitioned_1st_2nd_3rd(self):
+    def test_partitioned_each(self):
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['partition_by_positions'] = 'EACH'
         dataset_creator = CreateDataset(cleaned_data)
@@ -199,7 +199,7 @@ class CreatePhylipDatasetTest(TestCase):
             expected = handle.read()
         self.assertEqual(expected, result)
 
-    def test_charset_block_partitioned_1st_2nd_3rd(self):
+    def test_charset_block_partitioned_each(self):
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['partition_by_positions'] = 'EACH'
         dataset_creator = CreateDataset(cleaned_data)
@@ -446,4 +446,58 @@ class CreatePhylipDatasetTest(TestCase):
                                           'charset_block_dataset_1st2nd_codons_partitioned_1st2nd_3rd.txt')
         with open(charset_block_file, "r") as handle:
             expected = handle.read()
+        self.assertEqual(expected, result)
+
+    def test_dataset_1st3rd_codon_partitioned_one(self):
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['positions'] = ['1st', '3rd']
+        dataset_creator = CreateDataset(cleaned_data)
+        expected = ['Cannot create dataset for only codon positions 1 and 3.']
+        result = dataset_creator.errors
+        self.assertEqual(expected, result)
+
+    def test_dataset_1st3rd_codon_partitioned_each(self):
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['positions'] = ['1st', '3rd']
+        dataset_creator = CreateDataset(cleaned_data)
+        expected = ['Cannot create dataset for only codon positions 1 and 3.']
+        result = dataset_creator.errors
+        self.assertEqual(expected, result)
+
+    def test_dataset_1st3rd_codon_partitioned_1st2nd_3rd(self):
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['positions'] = ['1st', '3rd']
+        dataset_creator = CreateDataset(cleaned_data)
+        expected = ['Cannot create dataset for only codon positions 1 and 3.']
+        result = dataset_creator.errors
+        self.assertEqual(expected, result)
+
+    def test_dataset_2nd3rd_codon_partitioned_one(self):
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['positions'] = ['2nd', '3rd']
+        dataset_creator = CreateDataset(cleaned_data)
+        expected = ['Cannot create dataset for only codon positions 2 and 3.']
+        result = dataset_creator.errors
+        self.assertEqual(expected, result)
+
+    def test_dataset_2nd3rd_codon_partitioned_each(self):
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['positions'] = ['2nd', '3rd']
+        dataset_creator = CreateDataset(cleaned_data)
+        expected = ['Cannot create dataset for only codon positions 2 and 3.']
+        result = dataset_creator.errors
+        self.assertEqual(expected, result)
+
+    def test_dataset_2nd3rd_codon_partitioned_1st2nd_3rd(self):
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['positions'] = ['2nd', '3rd']
+        dataset_creator = CreateDataset(cleaned_data)
+        expected = ['Cannot create dataset for only codon positions 2 and 3.']
+        result = dataset_creator.errors
         self.assertEqual(expected, result)
