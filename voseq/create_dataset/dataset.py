@@ -634,6 +634,11 @@ class Dataset(object):
     def make_charset_line(self, count_start, count_end, gene):
         """To be used when making the charset block. It writes one line per partition.
         """
+        if self.file_format == 'PHY':
+            prefix = 'DNA,'
+        elif self.file_format == 'NEXUS':
+            prefix = '    charset'
+
         if self.partition_by_positions == 'ONE':
             if 'ALL' in self.codon_positions:
                 line = 'DNA, {} = {}-{}'.format(gene, count_start + 1, count_end)
@@ -696,17 +701,17 @@ class Dataset(object):
             if 'ALL' in self.codon_positions:
                 line = ''
                 if self.reading_frames[gene] == 1:
-                    line = 'DNA, {}_pos1 = {}-{}\\3'.format(gene, count_start + 1, count_end)
-                    line += '\nDNA, {}_pos2 = {}-{}\\3'.format(gene, count_start + 2, count_end)
-                    line += '\nDNA, {}_pos3 = {}-{}\\3'.format(gene, count_start + 3, count_end)
+                    line = '{} {}_pos1 = {}-{}\\3'.format(prefix, gene, count_start + 1, count_end)
+                    line += '\n{} {}_pos2 = {}-{}\\3'.format(prefix, gene, count_start + 2, count_end)
+                    line += '\n{} {}_pos3 = {}-{}\\3'.format(prefix, gene, count_start + 3, count_end)
                 elif self.reading_frames[gene] == 2:
-                    line = 'DNA, {}_pos1 = {}-{}\\3'.format(gene, count_start + 2, count_end)
-                    line += '\nDNA, {}_pos2 = {}-{}\\3'.format(gene, count_start + 3, count_end)
-                    line += '\nDNA, {}_pos3 = {}-{}\\3'.format(gene, count_start + 1, count_end)
+                    line = '{} {}_pos1 = {}-{}\\3'.format(prefix, gene, count_start + 2, count_end)
+                    line += '\n{} {}_pos2 = {}-{}\\3'.format(prefix, gene, count_start + 3, count_end)
+                    line += '\n{} {}_pos3 = {}-{}\\3'.format(prefix, gene, count_start + 1, count_end)
                 elif self.reading_frames[gene] == 3:
-                    line = 'DNA, {}_pos1 = {}-{}\\3'.format(gene, count_start + 3, count_end)
-                    line += '\nDNA, {}_pos2 = {}-{}\\3'.format(gene, count_start + 1, count_end)
-                    line += '\nDNA, {}_pos3 = {}-{}\\3'.format(gene, count_start + 2, count_end)
+                    line = '{} {}_pos1 = {}-{}\\3'.format(prefix, gene, count_start + 3, count_end)
+                    line += '\n{} {}_pos2 = {}-{}\\3'.format(prefix, gene, count_start + 1, count_end)
+                    line += '\n{} {}_pos3 = {}-{}\\3'.format(prefix, gene, count_start + 2, count_end)
                 return line
 
             if len(self.codon_positions) == 1 and '1st' in self.codon_positions:
