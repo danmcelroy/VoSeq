@@ -50,10 +50,13 @@ class CreateNEXUS(Dataset):
                     out += ['{}_pos1'.format(i), '{}_pos2'.format(i), '{}_pos3'.format(i)]
                 return ': ' + ', '.join(out) + ';\n'
         if self.partition_by_positions == '1st2nd_3rd':
-            out = []
-            for i in self.gene_codes_and_lengths:
-                out += ['{}_pos12'.format(i), '{}_pos3'.format(i)]
-            return ': ' + ', '.join(out) + ';\n'
+            if 'ALL' not in self.codon_positions:
+                return self.build_gene_line_for_one_codon_position()
+            else:
+                out = []
+                for i in self.gene_codes_and_lengths:
+                    out += ['{}_pos12'.format(i), '{}_pos3'.format(i)]
+                return ': ' + ', '.join(out) + ';\n'
 
     def build_gene_line_for_one_codon_position(self):
         out = []
