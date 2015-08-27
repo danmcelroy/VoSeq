@@ -6,7 +6,13 @@ from public_interface.models import Genes
 
 class CreateNEXUS(Dataset):
     def get_partitions_block(self):
-        line = 'partition GENES = ' + str(len(self.gene_codes_and_lengths))
+        line = 'partition GENES = '
+        if self.partition_by_positions == 'EACH':
+            line += str(len(self.gene_codes_and_lengths) * 3)
+        elif self.partition_by_positions == '1st2nd_3rd':
+            line += str(len(self.gene_codes_and_lengths) * 2)
+        else:
+            line += str(len(self.gene_codes_and_lengths))
         line += self.make_partition_line()
         line += '\nset partition = GENES;\n'
         return [line]
