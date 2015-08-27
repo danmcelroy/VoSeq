@@ -697,7 +697,7 @@ class Dataset(object):
             if len(self.codon_positions) == 2 and \
                     '1st' in self.codon_positions and \
                     '2nd' in self.codon_positions:
-                line = '{} {}_pos12 = {}-{}'.format(prefix, gene, count_start + 1, count_end)
+                line = '{} {}_pos12 = {}-{};'.format(prefix, gene, count_start + 1, count_end, suffix)
                 return line
 
         elif self.partition_by_positions == 'EACH':
