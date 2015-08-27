@@ -151,6 +151,20 @@ class CreateNexusDatasetTest(TestCase):
         result = dataset_creator.dataset_str
         self.assertEqual(expected.strip(), result)
 
+    def test_nexus_3rd_codon_as_each(self):
+        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                    'tests', 'create_nexus_dataset', 'dataset_3rd_codon.nex')
+        with open(dataset_file, 'r') as handle:
+            expected = handle.read()
+
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['positions'] = ['3rd']
+        cleaned_data['partition_by_positions'] = 'EACH'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        result = dataset_creator.dataset_str
+        self.assertEqual(expected.strip(), result)
+
     def test_nexus_with_outgroup(self):
         cleaned_data = self.cleaned_data
         cleaned_data['outgroup'] = 'CP100-11'
