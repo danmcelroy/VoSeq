@@ -685,19 +685,19 @@ class Dataset(object):
                 return line
 
             if len(self.codon_positions) == 1 and '1st' in self.codon_positions:
-                line = 'DNA, {}_pos1 = {}-{}'.format(gene, count_start + 1, count_end)
+                line = '{} {}_pos1 = {}-{}'.format(prefix, gene, count_start + 1, count_end)
                 return line
             if len(self.codon_positions) == 1 and '2nd' in self.codon_positions:
-                line = 'DNA, {}_pos2 = {}-{}'.format(gene, count_start + 1, count_end)
+                line = '{} {}_pos2 = {}-{}'.format(prefix, gene, count_start + 1, count_end)
                 return line
             if len(self.codon_positions) == 1 and '3rd' in self.codon_positions:
-                line = 'DNA, {}_pos3 = {}-{}'.format(gene, count_start + 1, count_end)
+                line = '{} {}_pos3 = {}-{}'.format(prefix, gene, count_start + 1, count_end)
                 return line
 
             if len(self.codon_positions) == 2 and \
                     '1st' in self.codon_positions and \
                     '2nd' in self.codon_positions:
-                line = 'DNA, {}_pos12 = {}-{}'.format(gene, count_start + 1, count_end)
+                line = '{} {}_pos12 = {}-{}'.format(prefix, gene, count_start + 1, count_end)
                 return line
 
         elif self.partition_by_positions == 'EACH':
@@ -718,13 +718,13 @@ class Dataset(object):
                 return line
 
             if len(self.codon_positions) == 1 and '1st' in self.codon_positions:
-                line = 'DNA, {}_pos1 = {}-{}{}'.format(gene, count_start + 1, count_end, suffix)
+                line = '{} {}_pos1 = {}-{}{}'.format(prefix, gene, count_start + 1, count_end, suffix)
                 return line
             if len(self.codon_positions) == 1 and '2nd' in self.codon_positions:
-                line = 'DNA, {}_pos2 = {}-{}{}'.format(gene, count_start + 1, count_end, suffix)
+                line = '{} {}_pos2 = {}-{}{}'.format(prefix, gene, count_start + 1, count_end, suffix)
                 return line
             if len(self.codon_positions) == 1 and '3rd' in self.codon_positions:
-                line = 'DNA, {}_pos3 = {}-{}{}'.format(gene, count_start + 1, count_end, suffix)
+                line = '{} {}_pos3 = {}-{}{}'.format(prefix, gene, count_start + 1, count_end, suffix)
                 return line
 
             if len(self.codon_positions) == 2 and \
