@@ -7,15 +7,32 @@ from public_interface.models import Genes
 class CreateNEXUS(Dataset):
     def get_partitions_block(self):
         line = 'partition GENES = '
+        number_of_codons = self.get_number_of_codons()
         if self.partition_by_positions == 'EACH':
-            line += str(len(self.gene_codes_and_lengths) * 3)
+            line += str(len(self.gene_codes_and_lengths) * number_of_codons)
         elif self.partition_by_positions == '1st2nd_3rd':
-            line += str(len(self.gene_codes_and_lengths) * 2)
+            line += str(len(self.gene_codes_and_lengths) * number_of_codons)
         else:
             line += str(len(self.gene_codes_and_lengths))
         line += self.make_partition_line()
         line += '\nset partition = GENES;\n'
         return [line]
+
+    def get_number_of_codons(self):
+        if 'ALL' in self.codon_positions and self.partition_by_positions == 'ONE':
+            return 1
+        elif 'ALL' in self.codon_positions and self.partition_by_positions == '1st2nd_3rd':
+            return 2
+        elif 'ALL' in self.codon_positions and self.partition_by_positions == 'EACH':
+            return 3
+        elif '1st' and '2nd' in self.codon_positions and self.partition_by_positions == 'ONE':
+            return 1
+        elif '1st' and '2nd' in self.codon_positions and self.partition_by_positions == '1st2nd_3rd':
+            return 2
+        elif '1st' and '2nd' in self.codon_positions and self.partition_by_positions == 'EACH':
+            return 2
+        else:
+            return 1
 
     def make_partition_line(self):
         if self.partition_by_positions == 'ONE':
