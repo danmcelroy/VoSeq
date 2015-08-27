@@ -92,13 +92,13 @@ CP100-19_Aus_jus                                       ?????????????????????????
 END;
 
 begin mrbayes;
-    charset ArgKin_pos12 = 1-198;
-    charset COI-begin_pos12 = 199-421;
-    charset COI_end_pos12 = 422-690;
-    charset ef1a_pos12 = 691-1104;
-    charset RpS2_pos12 = 1105-1241;
-    charset RpS5_pos12 = 1242-1447;
-    charset wingless_pos12 = 1448-1581;
+    charset ArgKin_pos12 = 1-398;
+    charset COI-begin_pos12 = 399-844;
+    charset COI_end_pos12 = 845-1381;
+    charset ef1a_pos12 = 1382-2207;
+    charset RpS2_pos12 = 2208-2481;
+    charset RpS5_pos12 = 2482-2892;
+    charset wingless_pos12 = 2893-3158;
 partition GENES = 7: ArgKin_pos12, COI-begin_pos12, COI_end_pos12, ef1a_pos12, RpS2_pos12, RpS5_pos12, wingless_pos12;
 
 set partition = GENES;
