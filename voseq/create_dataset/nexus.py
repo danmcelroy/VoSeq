@@ -25,11 +25,11 @@ class CreateNEXUS(Dataset):
             return 2
         elif 'ALL' in self.codon_positions and self.partition_by_positions == 'EACH':
             return 3
-        elif '1st' and '2nd' in self.codon_positions and self.partition_by_positions == 'ONE':
+        elif '1st' in self.codon_positions and '2nd' in self.codon_positions and self.partition_by_positions == 'ONE':
             return 1
-        elif '1st' and '2nd' in self.codon_positions and self.partition_by_positions == '1st2nd_3rd':
+        elif '1st' in self.codon_positions and '2nd' in self.codon_positions and self.partition_by_positions == '1st2nd_3rd':
             return 2
-        elif '1st' and '2nd' in self.codon_positions and self.partition_by_positions == 'EACH':
+        elif '1st' in self.codon_positions and '2nd' in self.codon_positions and self.partition_by_positions == 'EACH':
             return 2
         else:
             return 1
