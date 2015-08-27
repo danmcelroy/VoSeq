@@ -99,7 +99,7 @@ begin mrbayes;
     charset RpS2_pos2 = 1104-1240;
     charset RpS5_pos2 = 1241-1445;
     charset wingless_pos2 = 1446-1578;
-partition GENES = 7: ArgKin, COI-begin, COI_end, ef1a, RpS2, RpS5, wingless;
+partition GENES = 7: ArgKin_pos2, COI-begin_pos2, COI_end_pos2, ef1a_pos2, RpS2_pos2, RpS5_pos2, wingless_pos2;
 
 set partition = GENES;
 

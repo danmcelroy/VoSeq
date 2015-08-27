@@ -18,6 +18,11 @@ class CreateNEXUS(Dataset):
                 for i in self.gene_codes_and_lengths:
                     out += ['{}_pos1'.format(i)]
                 return ': ' + ', '.join(out) + ';\n'
+            elif len(self.codon_positions) == 1 and '2nd' in self.codon_positions:
+                out = []
+                for i in self.gene_codes_and_lengths:
+                    out += ['{}_pos2'.format(i)]
+                return ': ' + ', '.join(out) + ';\n'
             else:
                 return ': ' + ', '.join([i for i in self.gene_codes_and_lengths]) + ';\n'
         if self.partition_by_positions == 'EACH':
