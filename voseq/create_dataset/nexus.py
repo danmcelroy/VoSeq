@@ -36,8 +36,10 @@ class CreateNEXUS(Dataset):
 
     def make_partition_line(self):
         if self.partition_by_positions == 'ONE':
-            if 'ALL' not in self.codon_positions:
+            if 'ALL' not in self.codon_positions and len(self.codon_positions) == 1:
                 return self.build_gene_line_for_one_codon_position()
+            elif len(self.codon_positions) == 2:
+                return self.build_gene_line_for_two_codon_positions()
             else:
                 return ': ' + ', '.join([i for i in self.gene_codes_and_lengths]) + ';\n'
 
@@ -50,8 +52,10 @@ class CreateNEXUS(Dataset):
                     out += ['{}_pos1'.format(i), '{}_pos2'.format(i), '{}_pos3'.format(i)]
                 return ': ' + ', '.join(out) + ';\n'
         if self.partition_by_positions == '1st2nd_3rd':
-            if 'ALL' not in self.codon_positions:
+            if 'ALL' not in self.codon_positions and len(self.codon_positions) == 1:
                 return self.build_gene_line_for_one_codon_position()
+            elif len(self.codon_positions) == 2:
+                return self.build_gene_line_for_two_codon_positions()
             else:
                 out = []
                 for i in self.gene_codes_and_lengths:
@@ -61,12 +65,19 @@ class CreateNEXUS(Dataset):
     def build_gene_line_for_one_codon_position(self):
         out = []
         for i in self.gene_codes_and_lengths:
-            if len(self.codon_positions) == 1 and '1st' in self.codon_positions:
+            if '1st' in self.codon_positions:
                 out += ['{}_pos1'.format(i)]
-            elif len(self.codon_positions) == 1 and '2nd' in self.codon_positions:
+            elif '2nd' in self.codon_positions:
                 out += ['{}_pos2'.format(i)]
-            elif len(self.codon_positions) == 1 and '3rd' in self.codon_positions:
+            elif '3rd' in self.codon_positions:
                 out += ['{}_pos3'.format(i)]
+        return ': ' + ', '.join(out) + ';\n'
+
+    def build_gene_line_for_two_codon_positions(self):
+        out = []
+        for i in self.gene_codes_and_lengths:
+            if '1st' in self.codon_positions and '2nd' in self.codon_positions:
+                out += ['{}_pos12'.format(i)]
         return ': ' + ', '.join(out) + ';\n'
 
     def get_final_block(self):
