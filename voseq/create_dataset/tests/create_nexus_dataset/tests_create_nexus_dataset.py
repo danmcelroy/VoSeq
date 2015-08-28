@@ -81,6 +81,234 @@ class CreateNexusDatasetTest(TestCase):
         result = dataset_creator.dataset_str
         self.assertEqual(expected.strip(), result)
 
+    def test_nexus_1st_codon_as_one(self):
+        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                    'tests', 'create_nexus_dataset', 'dataset_1st_codon.nex')
+        with open(dataset_file, 'r') as handle:
+            expected = handle.read()
+
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['positions'] = ['1st']
+        cleaned_data['partition_by_positions'] = 'ONE'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        result = dataset_creator.dataset_str
+        self.assertEqual(expected.strip(), result)
+
+    def test_nexus_1st_codon_as_each(self):
+        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                    'tests', 'create_nexus_dataset', 'dataset_1st_codon.nex')
+        with open(dataset_file, 'r') as handle:
+            expected = handle.read()
+
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['positions'] = ['1st']
+        cleaned_data['partition_by_positions'] = 'EACH'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        result = dataset_creator.dataset_str
+        self.assertEqual(expected.strip(), result)
+
+    def test_nexus_1st_codon_as_1st2nd_3rd(self):
+        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                    'tests', 'create_nexus_dataset', 'dataset_1st_codon.nex')
+        with open(dataset_file, 'r') as handle:
+            expected = handle.read()
+
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['positions'] = ['1st']
+        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        result = dataset_creator.dataset_str
+        self.assertEqual(expected.strip(), result)
+
+    def test_nexus_2nd_codon_as_one(self):
+        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                    'tests', 'create_nexus_dataset', 'dataset_2nd_codon.nex')
+        with open(dataset_file, 'r') as handle:
+            expected = handle.read()
+
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['positions'] = ['2nd']
+        cleaned_data['partition_by_positions'] = 'ONE'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        result = dataset_creator.dataset_str
+        self.assertEqual(expected.strip(), result)
+
+    def test_nexus_2nd_codon_as_each(self):
+        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                    'tests', 'create_nexus_dataset', 'dataset_2nd_codon.nex')
+        with open(dataset_file, 'r') as handle:
+            expected = handle.read()
+
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['positions'] = ['2nd']
+        cleaned_data['partition_by_positions'] = 'EACH'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        result = dataset_creator.dataset_str
+        self.assertEqual(expected.strip(), result)
+
+    def test_nexus_2nd_codon_as_1st2nd_3rd(self):
+        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                    'tests', 'create_nexus_dataset', 'dataset_2nd_codon.nex')
+        with open(dataset_file, 'r') as handle:
+            expected = handle.read()
+
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['positions'] = ['2nd']
+        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        result = dataset_creator.dataset_str
+        self.assertEqual(expected.strip(), result)
+
+    def test_nexus_3rd_codon_as_one(self):
+        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                    'tests', 'create_nexus_dataset', 'dataset_3rd_codon.nex')
+        with open(dataset_file, 'r') as handle:
+            expected = handle.read()
+
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['positions'] = ['3rd']
+        cleaned_data['partition_by_positions'] = 'ONE'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        result = dataset_creator.dataset_str
+        self.assertEqual(expected.strip(), result)
+
+    def test_nexus_3rd_codon_as_each(self):
+        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                    'tests', 'create_nexus_dataset', 'dataset_3rd_codon.nex')
+        with open(dataset_file, 'r') as handle:
+            expected = handle.read()
+
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['positions'] = ['3rd']
+        cleaned_data['partition_by_positions'] = 'EACH'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        result = dataset_creator.dataset_str
+        self.assertEqual(expected.strip(), result)
+
+    def test_nexus_3rd_codon_as_1st2nd_3rd(self):
+        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                    'tests', 'create_nexus_dataset', 'dataset_3rd_codon.nex')
+        with open(dataset_file, 'r') as handle:
+            expected = handle.read()
+
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['positions'] = ['3rd']
+        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        result = dataset_creator.dataset_str
+        self.assertEqual(expected.strip(), result)
+
+    def test_nexus_1st_2nd_codon_as_one(self):
+        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                    'tests', 'create_nexus_dataset', 'dataset_1st2nd_codons.nex')
+        with open(dataset_file, 'r') as handle:
+            expected = handle.read()
+
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['positions'] = ['1st', '2nd']
+        cleaned_data['partition_by_positions'] = 'ONE'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        result = dataset_creator.dataset_str
+        self.assertEqual(expected.strip(), result)
+
+    def test_nexus_1st_2nd_codon_as_each(self):
+        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                    'tests', 'create_nexus_dataset', 'dataset_1st2nd_codons_partitioned_as_each.nex')
+        with open(dataset_file, 'r') as handle:
+            expected = handle.read()
+
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['positions'] = ['1st', '2nd']
+        cleaned_data['partition_by_positions'] = 'EACH'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        result = dataset_creator.dataset_str
+        self.assertEqual(expected.strip(), result)
+
+    def test_nexus_1st_2nd_codon_as_1st2nd_3rd(self):
+        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                    'tests', 'create_nexus_dataset', 'dataset_1st2nd_codons_partitioned_as_1st2nd_3rd.nex')
+        with open(dataset_file, 'r') as handle:
+            expected = handle.read()
+
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['positions'] = ['1st', '2nd']
+        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        result = dataset_creator.dataset_str
+        self.assertEqual(expected.strip(), result)
+
+    def test_nexus_1st_3rd_codon_as_one(self):
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['positions'] = ['1st', '3rd']
+        cleaned_data['partition_by_positions'] = 'ONE'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        expected = 'Cannot create dataset for only codon positions 1 and 3.'
+        result = dataset_creator.errors
+        self.assertTrue(expected in result)
+
+    def test_nexus_1st_3rd_codon_as_each(self):
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['positions'] = ['1st', '3rd']
+        cleaned_data['partition_by_positions'] = 'EACH'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        expected = 'Cannot create dataset for only codon positions 1 and 3.'
+        result = dataset_creator.errors
+        self.assertTrue(expected in result)
+
+    def test_nexus_1st_3rd_codon_as_1st2nd_3rd(self):
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['positions'] = ['1st', '3rd']
+        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        expected = 'Cannot create dataset for only codon positions 1 and 3.'
+        result = dataset_creator.errors
+        self.assertTrue(expected in result)
+
+    def test_nexus_2nd_3rd_codon_as_one(self):
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['positions'] = ['2nd', '3rd']
+        cleaned_data['partition_by_positions'] = 'ONE'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        expected = 'Cannot create dataset for only codon positions 2 and 3.'
+        result = dataset_creator.errors
+        self.assertTrue(expected in result)
+
+    def test_nexus_2nd_3rd_codon_as_each(self):
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['positions'] = ['2nd', '3rd']
+        cleaned_data['partition_by_positions'] = 'EACH'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        expected = 'Cannot create dataset for only codon positions 2 and 3.'
+        result = dataset_creator.errors
+        self.assertTrue(expected in result)
+
+    def test_nexus_2nd_3rd_codon_as_1st2nd_3rd(self):
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['positions'] = ['2nd', '3rd']
+        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        expected = 'Cannot create dataset for only codon positions 2 and 3.'
+        result = dataset_creator.errors
+        self.assertTrue(expected in result)
+
     def test_nexus_with_outgroup(self):
         cleaned_data = self.cleaned_data
         cleaned_data['outgroup'] = 'CP100-11'
