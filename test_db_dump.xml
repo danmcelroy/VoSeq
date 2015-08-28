@@ -75,6 +75,20 @@
 		<field name="prot_code">yes</field>
 		<field name="genetype">mitochondrial</field>
 	</row>
+	<row>
+		<field name="id">128</field>
+		<field name="geneCode">COII</field>
+		<field name="length">1047</field>
+		<field name="description">cytochrome oxidase c subunit II</field>
+		<field name="readingframe" xsi:nil="true" />
+		<field name="notes">DNA barcode part</field>
+		<field name="timestamp">2013-11-02 11:10:26</field>
+		<field name="genetic_code" xsi:nil="true" />
+		<field name="aligned" xsi:nil="true" />
+		<field name="intron" xsi:nil="true" />
+		<field name="prot_code" xsi:nil="true" />
+		<field name="genetype">mitochondrial</field>
+	</row>
     </table_data>
 	<table_structure name="genesets">
 		<field Field="geneset_name" Type="varchar(75)" Null="YES" Key="" Extra="" Comment="" />

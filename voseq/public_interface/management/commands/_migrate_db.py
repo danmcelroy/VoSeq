@@ -106,6 +106,12 @@ class ParseXML(object):
                 item['reading_frame'] = int(item['readingframe'])
             del item['readingframe']
 
+            if item['aligned'] is None:
+                item['aligned'] = ''
+
+            if item['prot_code'] is None:
+                item['prot_code'] = 'notset'
+
             item['gene_type'] = item['genetype']
             del item['genetype']
 

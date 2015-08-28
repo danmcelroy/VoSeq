@@ -11,6 +11,7 @@ from django.http import HttpRequest
 from public_interface.models import FlickrImages
 from public_interface.models import LocalImages
 from public_interface.models import GeneSets
+from public_interface.models import Genes
 from public_interface.models import TaxonSets
 from public_interface.models import Sequences
 from public_interface.models import Vouchers
@@ -120,8 +121,15 @@ class GeneSetsAdmin(admin.ModelAdmin):
     list_display = ['geneset_name', 'geneset_creator', 'geneset_description']
 
 
+class GenesAdmin(admin.ModelAdmin):
+    list_display = ['gene_code', 'description', 'genetic_code', 'length',
+                    'reading_frame', 'aligned', 'intron', 'prot_code',
+                    'gene_type', 'notes']
+
+
 # Register your models here.
 admin.site.register(Sequences, SequencesAdmin)
 admin.site.register(GeneSets, GeneSetsAdmin)
+admin.site.register(Genes, GenesAdmin)
 admin.site.register(TaxonSets, TaxonSetsAdmin)
 admin.site.register(Vouchers, VouchersAdmin)
