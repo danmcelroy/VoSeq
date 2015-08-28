@@ -235,6 +235,20 @@ class CreateNexusDatasetTest(TestCase):
         result = dataset_creator.dataset_str
         self.assertEqual(expected.strip(), result)
 
+    def test_nexus_1st_2nd_codon_as_1st2nd_3rd(self):
+        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+                                    'tests', 'create_nexus_dataset', 'dataset_1st2nd_codons_partitioned_as_1st2nd_3rd.nex')
+        with open(dataset_file, 'r') as handle:
+            expected = handle.read()
+
+        cleaned_data = self.cleaned_data.copy()
+        cleaned_data['positions'] = ['1st', '2nd']
+        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        dataset_creator = CreateDataset(cleaned_data)
+
+        result = dataset_creator.dataset_str
+        self.assertEqual(expected.strip(), result)
+
     def test_nexus_with_outgroup(self):
         cleaned_data = self.cleaned_data
         cleaned_data['outgroup'] = 'CP100-11'
