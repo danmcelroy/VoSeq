@@ -103,8 +103,9 @@ begin mrbayes;
     charset RpS2_pos1 = 2208-2481\2;
     charset RpS2_pos2 = 2209-2481\2;
     charset RpS5_pos1 = 2482-2892\2;
-    charset RpS5_pos2 = 2482-2892\2;
-    charset wingless_pos12 = 2893-3158;
+    charset RpS5_pos2 = 2483-2892\2;
+    charset wingless_pos1 = 2893-3158\2;
+    charset wingless_pos2 = 2894-3158\2;
 partition GENES = 14: ArgKin_pos1, ArgKin_pos2, COI-begin_pos1, COI-begin_pos2, COI_end_pos1, COI_end_pos2, ef1a_pos1, ef1a_pos2, RpS2_pos1, RpS2_pos2, RpS5_pos1, RpS5_pos2, wingless_pos1, wingless_pos2;
 
 set partition = GENES;
