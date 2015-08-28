@@ -437,7 +437,7 @@ class Dataset(object):
                 '3rd' not in self.codon_positions and \
                 'ALL' not in self.codon_positions and \
                 'EACH' in self.partition_by_positions and \
-                self.file_format == 'PHY':
+                self.file_format in ['PHY', 'NEXUS']:
             self.partition_list = self.get_codons_in_one_partition(['1st', '2nd'])
             return self.convert_lists_to_dataset(self.partition_list)
 
