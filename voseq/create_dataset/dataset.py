@@ -730,8 +730,8 @@ class Dataset(object):
             if len(self.codon_positions) == 2 and \
                     '1st' in self.codon_positions and \
                     '2nd' in self.codon_positions:
-                line = 'DNA, {}_pos1 = {}-{}\\2{}'.format(gene, count_start + 1, count_end, suffix)
-                line += '\nDNA, {}_pos2 = {}-{}\\2{}'.format(gene, count_start + 2, count_end, suffix)
+                line = '{} {}_pos1 = {}-{}\\2{}'.format(prefix, gene, count_start + 1, count_end, suffix)
+                line += '\n{} {}_pos2 = {}-{}\\2{}'.format(prefix, gene, count_start + 2, count_end, suffix)
                 return line
 
 

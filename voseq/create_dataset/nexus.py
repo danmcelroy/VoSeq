@@ -44,8 +44,10 @@ class CreateNEXUS(Dataset):
                 return ': ' + ', '.join([i for i in self.gene_codes_and_lengths]) + ';\n'
 
         if self.partition_by_positions == 'EACH':
-            if 'ALL' not in self.codon_positions:
+            if 'ALL' not in self.codon_positions and len(self.codon_positions) == 1:
                 return self.build_gene_line_for_one_codon_position()
+            elif len(self.codon_positions) == 2:
+                return self.build_gene_line_for_two_codon_positions_partitioned_each()
             else:
                 out = []
                 for i in self.gene_codes_and_lengths:
@@ -78,6 +80,14 @@ class CreateNEXUS(Dataset):
         for i in self.gene_codes_and_lengths:
             if '1st' in self.codon_positions and '2nd' in self.codon_positions:
                 out += ['{}_pos12'.format(i)]
+        return ': ' + ', '.join(out) + ';\n'
+
+    def build_gene_line_for_two_codon_positions_partitioned_each(self):
+        out = []
+        for i in self.gene_codes_and_lengths:
+            if '1st' in self.codon_positions and '2nd' in self.codon_positions:
+                out += ['{}_pos1'.format(i)]
+                out += ['{}_pos2'.format(i)]
         return ': ' + ', '.join(out) + ';\n'
 
     def get_final_block(self):
