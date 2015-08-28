@@ -11,6 +11,7 @@ from public_interface.models import FlickrImages
 from public_interface.models import LocalImages
 from public_interface.models import Primers
 from public_interface.models import GeneSets
+from public_interface.models import Genes
 from public_interface.models import TaxonSets
 from public_interface.management.commands import _migrate_db as migrate_script
 
@@ -274,6 +275,11 @@ class TestCustomCommand(TestCase):
         b = GeneSets.objects.get(geneset_name='4genes')
         expected = ['COI', 'EF1a', 'wingless', '16S']
         self.assertEqual(expected, b.geneset_list.splitlines())
+
+    def test_gene(self):
+        b = Genes.objects.get(gene_code='COII')
+        expected = None
+        self.assertEqual(expected, b.reading_frame)
 
     def test_taxonset_name(self):
         b = TaxonSets.objects.get(taxonset_name='Erebia')

@@ -50,18 +50,19 @@ class TimeStampedModel(models.Model):
 class Genes(models.Model):
     gene_code = models.CharField(max_length=100)
     genetic_code = models.PositiveSmallIntegerField(
-        blank=True,
         null=True,
-        help_text='Translation table',
+        help_text='Translation table (as number). '
+                  'See <a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi">http://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi</a>',
     )
     length = models.PositiveSmallIntegerField(
-        blank=True,
         null=True,
+        help_text='Number of base pairs',
     )
-    description = models.CharField(max_length=255, blank=True)
+    description = models.CharField(max_length=255, blank=True,
+                                   help_text='Long gene name.')
     reading_frame = models.PositiveSmallIntegerField(
-        blank=True,
         null=True,
+        help_text='Either 1, 2 or 3',
     )
     notes = models.TextField(blank=True)
     aligned = models.CharField(
@@ -81,11 +82,14 @@ class Genes(models.Model):
         ),
         default='notset',
     )
-    gene_type = models.CharField(max_length=255, blank=True)
+    gene_type = models.CharField(max_length=255, blank=True, help_text='Nuclear, mitochondrial.')
     time_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.gene_code
+
+    class Meta:
+        verbose_name_plural = "Genes"
 
 
 class GeneSets(models.Model):
