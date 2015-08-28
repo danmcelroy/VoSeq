@@ -30,7 +30,6 @@ class FlickImageInLine(admin.StackedInline):
 
 
 class BatchImportVouchersResource(resources.ModelResource):
-
     class Meta:
         model = Vouchers
         import_id_fields = ('code',)
@@ -42,6 +41,14 @@ class BatchImportVouchersResource(resources.ModelResource):
                   'voucherLocality', 'determinedBy', 'sex', 'extraction',
                   'extractionTube', 'dateExtraction', 'publishedIn', 'notes',
                   )
+
+
+class BatchImportSequencesResource(resources.ModelResource):
+    class Meta:
+        model = Sequences
+        import_id_fields = ('code', 'gene_code')
+        fields = ('code', 'gene_code', 'sequences', 'accession', 'labPerson', 'genbank',
+                  'notes')
 
 
 # Customize what and the way you show it
@@ -101,16 +108,16 @@ class VouchersAdmin(ImportExportModelAdmin):
         inlines.append(FlickImageInLine)
     else:
         inlines.append(ImageInLine)
-
     resource_class = BatchImportVouchersResource
 
 
-class SequencesAdmin(admin.ModelAdmin):
+class SequencesAdmin(ImportExportModelAdmin):
     # TODO let users know that code and genecode keywords act as AND boolean search
     search_fields = ['=code__code', '=gene_code']
     list_display = ['code', 'gene_code', 'genbank', 'accession', 'labPerson', 'notes', 'time_edited', 'time_created']
     fields = ['code', 'gene_code', 'sequences', 'genbank', 'accession', 'labPerson', 'notes']
     form = SequencesAdminForm
+    resource_class = BatchImportSequencesResource
 
 
 class TaxonSetsAdmin(admin.ModelAdmin):
