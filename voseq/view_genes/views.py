@@ -16,7 +16,10 @@ def index(request):
     result = []
     for i in queryset:
         gene_code = i['gene_code']
-        i['voucher_count'] = voucher_count[gene_code]
+        try:
+            i['voucher_count'] = voucher_count[gene_code]
+        except KeyError:
+            continue
         result.append(i)
 
     return render(request, 'view_genes/index.html',
