@@ -28,7 +28,7 @@ class CreateNEXUS(Dataset):
         elif '1st' in self.codon_positions and '2nd' in self.codon_positions and self.partition_by_positions == 'ONE':
             return 1
         elif '1st' in self.codon_positions and '2nd' in self.codon_positions and self.partition_by_positions == '1st2nd_3rd':
-            return 2
+            return 1
         elif '1st' in self.codon_positions and '2nd' in self.codon_positions and self.partition_by_positions == 'EACH':
             return 2
         else:
