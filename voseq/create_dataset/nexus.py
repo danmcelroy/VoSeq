@@ -6,24 +6,89 @@ from public_interface.models import Genes
 
 class CreateNEXUS(Dataset):
     def get_partitions_block(self):
-        line = 'partition GENES = ' + str(len(self.gene_codes_and_lengths))
+        line = 'partition GENES = '
+        number_of_codons = self.get_number_of_codons()
+        if self.partition_by_positions == 'EACH':
+            line += str(len(self.gene_codes_and_lengths) * number_of_codons)
+        elif self.partition_by_positions == '1st2nd_3rd':
+            line += str(len(self.gene_codes_and_lengths) * number_of_codons)
+        else:
+            line += str(len(self.gene_codes_and_lengths))
         line += self.make_partition_line()
         line += '\nset partition = GENES;\n'
         return [line]
 
+    def get_number_of_codons(self):
+        if 'ALL' in self.codon_positions and self.partition_by_positions == 'ONE':
+            return 1
+        elif 'ALL' in self.codon_positions and self.partition_by_positions == '1st2nd_3rd':
+            return 2
+        elif 'ALL' in self.codon_positions and self.partition_by_positions == 'EACH':
+            return 3
+        elif '1st' in self.codon_positions and '2nd' in self.codon_positions and self.partition_by_positions == 'ONE':
+            return 1
+        elif '1st' in self.codon_positions and '2nd' in self.codon_positions and self.partition_by_positions == '1st2nd_3rd':
+            return 1
+        elif '1st' in self.codon_positions and '2nd' in self.codon_positions and self.partition_by_positions == 'EACH':
+            return 2
+        else:
+            return 1
+
     def make_partition_line(self):
         if self.partition_by_positions == 'ONE':
-            return ': ' + ', '.join([i for i in self.gene_codes_and_lengths]) + ';\n'
+            if 'ALL' not in self.codon_positions and len(self.codon_positions) == 1:
+                return self.build_gene_line_for_one_codon_position()
+            elif len(self.codon_positions) == 2:
+                return self.build_gene_line_for_two_codon_positions()
+            else:
+                return ': ' + ', '.join([i for i in self.gene_codes_and_lengths]) + ';\n'
+
         if self.partition_by_positions == 'EACH':
-            out = []
-            for i in self.gene_codes_and_lengths:
-                out += ['{}_pos1'.format(i), '{}_pos2'.format(i), '{}_pos3'.format(i)]
-            return ': ' + ', '.join(out) + ';\n'
+            if 'ALL' not in self.codon_positions and len(self.codon_positions) == 1:
+                return self.build_gene_line_for_one_codon_position()
+            elif len(self.codon_positions) == 2:
+                return self.build_gene_line_for_two_codon_positions_partitioned_each()
+            else:
+                out = []
+                for i in self.gene_codes_and_lengths:
+                    out += ['{}_pos1'.format(i), '{}_pos2'.format(i), '{}_pos3'.format(i)]
+                return ': ' + ', '.join(out) + ';\n'
         if self.partition_by_positions == '1st2nd_3rd':
-            out = []
-            for i in self.gene_codes_and_lengths:
-                out += ['{}_pos12'.format(i), '{}_pos3'.format(i)]
-            return ': ' + ', '.join(out) + ';\n'
+            if 'ALL' not in self.codon_positions and len(self.codon_positions) == 1:
+                return self.build_gene_line_for_one_codon_position()
+            elif len(self.codon_positions) == 2:
+                return self.build_gene_line_for_two_codon_positions()
+            else:
+                out = []
+                for i in self.gene_codes_and_lengths:
+                    out += ['{}_pos12'.format(i), '{}_pos3'.format(i)]
+                return ': ' + ', '.join(out) + ';\n'
+
+    def build_gene_line_for_one_codon_position(self):
+        out = []
+        for i in self.gene_codes_and_lengths:
+            if '1st' in self.codon_positions:
+                out += ['{}_pos1'.format(i)]
+            elif '2nd' in self.codon_positions:
+                out += ['{}_pos2'.format(i)]
+            elif '3rd' in self.codon_positions:
+                out += ['{}_pos3'.format(i)]
+        return ': ' + ', '.join(out) + ';\n'
+
+    def build_gene_line_for_two_codon_positions(self):
+        out = []
+        for i in self.gene_codes_and_lengths:
+            if '1st' in self.codon_positions and '2nd' in self.codon_positions:
+                out += ['{}_pos12'.format(i)]
+        return ': ' + ', '.join(out) + ';\n'
+
+    def build_gene_line_for_two_codon_positions_partitioned_each(self):
+        out = []
+        for i in self.gene_codes_and_lengths:
+            if '1st' in self.codon_positions and '2nd' in self.codon_positions:
+                out += ['{}_pos1'.format(i)]
+                out += ['{}_pos2'.format(i)]
+        return ': ' + ', '.join(out) + ';\n'
 
     def get_final_block(self):
         block = "set autoclose=yes;"
