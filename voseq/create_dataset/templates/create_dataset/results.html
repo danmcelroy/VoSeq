@@ -20,15 +20,9 @@
         <div class="panel panel-warning" style="min-width: 790px;">
           <div class="panel-heading">
             <h3 class="panel-title"><b>During the processing of you dataset some issues were raised
-              <span class="badge"><b>{{ warnings|length }}</b></span>
+              <span class="badge"><b>{{ warnings|length }}.</b></span> See below for full list.
             </b></h3>
           </div>
-
-          <ul class="list-group">
-            {% for i in warnings %}
-            <li class="list-group-item">{{ i }}</li>
-            {% endfor %}
-          </ul>
         </div><!-- panel -->
         {% endif %}
 
@@ -83,6 +77,21 @@
               </td>
             </tr>
           </table>
+      {% endif %}
+
+
+      {% if warnings|length > 0 %}
+        <div class="panel panel-warning" style="min-width: 790px;">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Full list of warnings</b></h3>
+          </div>
+
+          <ul class="list-group">
+            {% for i in warnings %}
+            <li class="list-group-item">{{ i }}</li>
+            {% endfor %}
+          </ul>
+        </div><!-- panel -->
       {% endif %}
 
 
