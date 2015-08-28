@@ -233,7 +233,7 @@ class Sequences(models.Model):
     time_created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     time_edited = models.DateTimeField(auto_now=True, null=True, blank=True)
     notes = models.TextField(blank=True)
-    genbank = models.BooleanField()
+    genbank = models.NullBooleanField()
     total_number_bp = models.IntegerField(blank=True, null=True)
     number_ambiguous_bp = models.IntegerField(blank=True, null=True)
 
