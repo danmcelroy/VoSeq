@@ -11,8 +11,18 @@ Fixed bugs
 - Creating Phylip datasets for charset_block partitioned by codon position and
   1st2nd_3rd.
   The same for Phylip charset_block.
+- Fixed bugs for creation of Nexus files using partitions.
+  The same for Phylip charset_block.
 - Characters not in IUPAC (except '?-') will not be accepted when importing or
   saving sequences.
+- Added tool for batch import of sequences in admin interface.
+- Added tool to add genes in admin interface.
+- In dataset creation, moved warnings to bottom of page. There will be only a big
+  warning message on top.
+- Dataset creation tool will issue error messages when users wants datasets
+  containing only codons 1,3 and 2,3.
+- Dataset creation tool, genes will be sorted alphabetically, regardless of case.
+- Fixed version on footer.
 
 
 pre-release v2.0.0-beta (2015-08-06)
