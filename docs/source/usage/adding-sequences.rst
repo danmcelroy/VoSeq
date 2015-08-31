@@ -5,7 +5,7 @@ Adding sequences
 ^^^^^^^^^^^^^^^^
 
 In the **Administrator interface**, you can import batches of DNA sequences from
-MS Excel files under the path **Biological data > Sequences***
+MS Excel files under the path **Biological data » Sequences***
 the tool **Upload batch sequences/vouchers**.
 
 Along with the DNA sequences, you have to upload the required fields
