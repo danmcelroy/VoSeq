@@ -63,7 +63,7 @@ class CreateMEGADatasetTest(TestCase):
         cleaned_data['partition_by_positions'] = '1st2nd_3rd'
         dataset_creator = CreateDataset(cleaned_data)
 
-        expected = '?TGGCGGATATGGACTCCTAGCTATATCGACGATTGGAACCAGTTTTATGGGAGAC'
+        expected = ''
         result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
@@ -83,6 +83,6 @@ class CreateMEGADatasetTest(TestCase):
         cleaned_data['translations'] = True
         dataset_creator = CreateDataset(cleaned_data)
 
-        expected = '#MEGA\n!TITLE title;'
+        expected = ''
         result = dataset_creator.dataset_str.strip()
         self.assertEqual(expected, result)
