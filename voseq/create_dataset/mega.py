@@ -6,6 +6,11 @@ from public_interface.models import Genes
 
 class CreateMEGA(Dataset):
     def convert_lists_to_dataset(self, partitions):
+        if self.partition_by_positions != 'ONE':
+            self.errors += ['Cannot produce MEGA dataset with codon positions'
+                            ' in different partitions.']
+            return ''
+
         out = ''
         gene_code = ''
         for partition in partitions:
