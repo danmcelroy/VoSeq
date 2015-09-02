@@ -91,6 +91,7 @@ class CreateDataset(object):
                                self.file_format, aminoacids=self.aminoacids,
                                degen_translations=self.degen_translations, translations=self.translations)
             fasta_dataset = fasta.from_seq_objs_to_dataset()
+            self.errors += fasta.errors
             self.warnings += fasta.warnings
             self.dataset_file = fasta.dataset_file
             self.aa_dataset_file = fasta.aa_dataset_file
