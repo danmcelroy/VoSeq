@@ -1,4 +1,5 @@
 from collections import namedtuple
+from collections import OrderedDict
 
 from .dataset import Dataset
 from public_interface.models import Genes
@@ -11,14 +12,13 @@ class CreateMEGA(Dataset):
                             ' in different partitions.']
             return ''
 
-        out = ''
+        sequences_dict = OrderedDict()
         gene_code = ''
         for partition in partitions:
             for line in partition:
                 parsed_line = self.parse_line(line)
                 if parsed_line.gene_code != '':
                     gene_code = parsed_line.gene_code
-                    out += '\n[{}]\n'.format(gene_code['gene_code'])
 
                 if parsed_line.taxon:
                     taxon = parsed_line.taxon.replace('?', '')
@@ -36,11 +36,17 @@ class CreateMEGA(Dataset):
                             voucher_code,
                         )
 
-                    if self.aminoacids is not True and parsed_line.gene_code != '' and \
+                    if self.aminoacids is not True and gene_code != '' and \
                             self.translations is True:
                         sequence = self.degenerate(sequence, gene_code)
 
-                    out += '#' + taxon + '\n' + sequence + '\n'
+                    if taxon not in sequences_dict:
+                        sequences_dict[taxon] = ''
+                    sequences_dict[taxon] += sequence
+
+        out = ''
+        for taxon, sequences in sequences_dict.items():
+            out += '#{}\n{}\n'.format(taxon, sequences)
 
         dataset_str = '#MEGA\n!TITLE title;\n\n' + out.strip()
         self.save_dataset_to_file(dataset_str)
