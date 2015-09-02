@@ -33,6 +33,7 @@ class Dataset(object):
         self.reading_frames = self.get_reading_frames()
         self.voucher_codes_metadata = voucher_codes_metadata
         self.warnings = []
+        self.errors = []
         self.partition_list = None
 
         self.cwd = os.path.dirname(__file__)
