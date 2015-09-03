@@ -188,7 +188,7 @@ def filter_results_from_sequence_table(sqs):
     """
     facet_counts = sqs.facet_counts()
     voucher_codes_count = facet_counts['fields']['code']
-    if len(voucher_codes_count) > 0:
+    if voucher_codes_count:
         voucher_codes = [item[0] for item in voucher_codes_count]
         filtered_sqs = SearchQuerySet().using('vouchers').filter(code__in=voucher_codes)
         return filtered_sqs
