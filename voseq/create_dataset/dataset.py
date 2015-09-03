@@ -815,10 +815,9 @@ class CreateTNT(Dataset):
         for partition in partitions:
             for i in partition:
                 voucher = i.split(' ')[0]
-                if voucher not in self.vouchers_to_drop:
-                    if self.outgroup in voucher:
-                        outgroup_sequences.append(i)
-                        continue
+                if voucher not in self.vouchers_to_drop and self.outgroup in voucher:
+                    outgroup_sequences.append(i)
+                    continue
 
         partitions_incorporated = 0
         partition_count = 0

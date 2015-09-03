@@ -779,9 +779,9 @@ def get_sex(value):
     except AttributeError:
         return 'unknown'
 
-    if value == 'f' or value == 'female':
+    if value in ['f', 'female']:
         return 'female'
-    elif value == 'm' or value == 'male' or value == 'mae':
+    elif value in ['m', 'male', 'mae']:
         return 'male'
     elif value == 'larva':
         return 'larva'
