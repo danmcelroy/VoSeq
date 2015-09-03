@@ -236,7 +236,7 @@ def get_start_translation_index(gene_model, removed):
     return start_translation
 
 
-def _degenerate(gene_model, sequence, degen_translation):
+def degenerate(gene_model, sequence, degen_translation):
     translation_start_position = get_start_translation_index(gene_model, removed=0) + 1
     bases_to_remove = translation_start_position - 1
 
