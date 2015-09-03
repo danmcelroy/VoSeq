@@ -10,7 +10,7 @@ from core.utils import flatten_taxon_names_dict
 from .dataset import CreateGenbankFasta
 from .dataset import CreateFasta
 from .dataset import CreateTNT
-from .dataset import CreateMEGA
+from .mega import CreateMEGA
 from .nexus import CreateNEXUS
 from .phylip import CreatePhylip
 from public_interface.models import Genes
@@ -91,6 +91,7 @@ class CreateDataset(object):
                                self.file_format, aminoacids=self.aminoacids,
                                degen_translations=self.degen_translations, translations=self.translations)
             fasta_dataset = fasta.from_seq_objs_to_dataset()
+            self.errors += fasta.errors
             self.warnings += fasta.warnings
             self.dataset_file = fasta.dataset_file
             self.aa_dataset_file = fasta.aa_dataset_file
