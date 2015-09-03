@@ -69,7 +69,7 @@ class ParseXML(object):
                 break
 
         if our_data is False:
-            raise ValueError("Could not find table %s in database dump file." % this_table)
+            raise ValueError("Could not find table {} in database dump file.".format(this_table))
 
         self.table_genes_items = []
         for row in our_data.findall('row'):
@@ -271,7 +271,7 @@ class ParseXML(object):
             if {'gene_code': item['gene_code'], 'code': item['code']} in primers_queryset:
                 item['for_sequence'] = Sequences.objects.get(code=item['code'], gene_code=item['gene_code'])
             else:
-                print("Could not save primers for sequence: %s %s" % (item['code'], item['gene_code']))
+                print("Could not save primers for sequence: {0} {1}".format(item['code'], item['gene_code']))
                 continue
 
             primers = item['primers']
@@ -733,7 +733,7 @@ class ParseXML(object):
             date_obj = None
 
         if self.verbosity != 0:
-            print("WARNING:: Could not parse %s properly." % field)
+            print("WARNING:: Could not parse {} properly.".format(field))
         return date_obj
 
     def parse_timestamp(self, timestamp, field):
