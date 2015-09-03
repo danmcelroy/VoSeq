@@ -196,8 +196,8 @@ class Dataset(object):
                     this_gene = Genes.objects.filter(gene_code=this_gene_partition).values()
                     try:
                         this_gene = this_gene[0]
-                    except IndexError:
-                        pass
+                    except IndexError as e:
+                        print("There is no gene in this line: ".format(e))
                     out += '\n'
                     out += line
                 else:
@@ -239,7 +239,7 @@ class Dataset(object):
                     '1st' in self.codon_positions and
                     '2nd' in self.codon_positions and
                     '3rd' in self.codon_positions):
-                degenerated = utils._degenerate(gene_model, seq, self.degen_translations)
+                degenerated = utils.degenerate(gene_model, seq, self.degen_translations)
                 return degenerated
             else:
                 self.warnings.append(
@@ -815,10 +815,9 @@ class CreateTNT(Dataset):
         for partition in partitions:
             for i in partition:
                 voucher = i.split(' ')[0]
-                if voucher not in self.vouchers_to_drop:
-                    if self.outgroup in voucher:
-                        outgroup_sequences.append(i)
-                        continue
+                if voucher not in self.vouchers_to_drop and self.outgroup in voucher:
+                    outgroup_sequences.append(i)
+                    continue
 
         partitions_incorporated = 0
         partition_count = 0
@@ -870,7 +869,7 @@ class CreateTNT(Dataset):
                         gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
 
                         tmp_seq = sequence.replace('-', '')
-                        if len(tmp_seq) < 1:
+                        if not tmp_seq:
                             out = ['\n[{}]'.format(voucher_code)]
                         else:
                             if self.outgroup != '' and self.outgroup not in voucher_code:
