@@ -169,7 +169,7 @@ class CreateDataset(object):
 
                 seq_obj = self.build_seq_obj(code, gene_code, our_taxon_names, all_seqs)
                 if seq_obj is None:
-                    self.warnings += ['Could not find voucher %s' % code]
+                    self.warnings += ['Could not find voucher {0}'.format(code)]
                     continue
 
                 self.seq_objs[gene_code] += (seq_obj,)

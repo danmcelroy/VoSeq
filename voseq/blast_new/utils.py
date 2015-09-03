@@ -31,7 +31,7 @@ class BLASTNew(BLAST):
         else:
             self.mask = False
 
-        if len(gene_codes) > 0:
+        if gene_codes:
             gene_codes = [i.gene_code for i in gene_codes]
             gene_codes.sort()
             self.gene_codes = gene_codes
@@ -68,7 +68,7 @@ class BLASTNew(BLAST):
                                          'db',
                                          '_'.join(self.gene_codes) + "_seqs.fas",
                                          )
-            if len(self.gene_codes) > 0:
+            if self.gene_codes:
                 # Taken from http://stackoverflow.com/a/1239602
                 Qr = None
                 for gene_code in self.gene_codes:
