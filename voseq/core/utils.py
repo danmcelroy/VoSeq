@@ -232,7 +232,7 @@ def get_start_translation_index(gene_model, removed):
         if removed % 3 == 2:
             start_translation = 0
     else:
-        raise exceptions.MissingReadingFrameForGene("Gene %s" % gene_model['gene_code'])
+        raise exceptions.MissingReadingFrameForGene("Gene {0}".format(gene_model['gene_code']))
     return start_translation
 
 
