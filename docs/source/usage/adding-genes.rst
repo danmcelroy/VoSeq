@@ -13,7 +13,7 @@ clicking on the link **Biological data » Genes**, followed by
 
 .. image:: ../images/add-edit_gene.png
    :align: center
-   :width: 627px
+   :width: 600px
 
 The most important and the only field that is obligatory is the **gene code**
 field, this will be the name of your gene when using the database. This could

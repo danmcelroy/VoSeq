@@ -13,10 +13,10 @@ Simple taxon search:
 
 .. image:: ../images/simple_search.png
    :align: center
-   :width: 590px
+   :width: 600px
 
 Advanced search:
 
 .. image:: ../images/advanced_search.png
    :align: center
-   :width: 590px
+   :width: 600px

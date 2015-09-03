@@ -21,7 +21,7 @@ This will create a **ready-to-use** data set for analyses!
 
 .. image:: ../images/create_dataset.png
    :align: center
-   :width: 534px
+   :width: 600px
 
 The **Outgroup** field, if needed, should include the voucher code for the chosen outgroup taxa.
 
@@ -61,7 +61,7 @@ a specific project).
 
 .. image:: ../images/create_dataset2.png
    :align: center
-   :width: 534px
+   :width: 600px
 
 .. note:: As of version 1.5.0, protein-coding ability, aligned or not, introns
           and genetic code will be set for each gene/alignment in the admin gene section!

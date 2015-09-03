@@ -15,4 +15,4 @@ There is also a **record history** displayed for administrators that list what c
 
 .. image:: images/update_voucher.png
    :align: center
-   :width: 836px
+   :width: 600px

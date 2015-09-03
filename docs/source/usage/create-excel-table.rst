@@ -19,4 +19,4 @@ You may also change between comma (,) and tab-delimited table mode.
 
 .. image:: images/create_table.png
    :align: center
-   :width: 819px
+   :width: 600px

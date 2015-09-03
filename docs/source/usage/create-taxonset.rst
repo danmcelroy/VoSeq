@@ -21,13 +21,13 @@ You can create a **Taxonset** by entering a list of specimen codes, each separat
 
 .. image:: ../images/create_taxonset1.png
    :align: center
-   :width: 626px
+   :width: 600px
 
 .. Or by browsing the data in VoSeq and choosing the specimens you are interested in by marking them in the **X** field:
 
    .. image:: images/create_taxonset2.png
       :align: center
-      :width: 792px
+      :width: 600px
 
    Here you can sort the table according to choosen information (taxonomic level, code, X-marked or not), as well as choose genes to display information of.
    If you have choosen one or several genes, you can sort the table according to sequence availability for selected genes.

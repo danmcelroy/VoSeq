@@ -9,7 +9,7 @@ for your voucher records:
 
 .. image:: ../images/picture_missing.png
    :align: center
-   :width: 550px
+   :width: 600px
 
 If you want to replace an existing picture with another, you will need to
 click the **Choose File** button.

@@ -24,4 +24,4 @@ Each sequence and its related data goes into one line, with one data field for e
 
 .. image:: ../images/batch_seq_upload.png
    :align: center
-   :width: 628px
+   :width: 600px
