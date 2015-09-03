@@ -137,8 +137,8 @@ class GeneTable(object):
 
             try:
                 os.remove(in_file)
-            except OSError:
-                pass
+            except OSError as e:
+                print("There is no partition file to remove: ".format(e))
         return stats
 
     def make_guid(self):

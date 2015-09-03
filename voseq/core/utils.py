@@ -77,7 +77,7 @@ def get_gene_codes(cleaned_data):
             if i not in gene_codes:
                 gene_codes.append(i)
 
-    if len(cleaned_data['gene_codes']) > 0:
+    if cleaned_data['gene_codes']:
         for i in cleaned_data['gene_codes']:
             if i.gene_code not in gene_codes:
                 gene_codes.append(i.gene_code)
@@ -232,11 +232,11 @@ def get_start_translation_index(gene_model, removed):
         if removed % 3 == 2:
             start_translation = 0
     else:
-        raise exceptions.MissingReadingFrameForGene("Gene %s" % gene_model['gene_code'])
+        raise exceptions.MissingReadingFrameForGene("Gene {0}".format(gene_model['gene_code']))
     return start_translation
 
 
-def _degenerate(gene_model, sequence, degen_translation):
+def degenerate(gene_model, sequence, degen_translation):
     translation_start_position = get_start_translation_index(gene_model, removed=0) + 1
     bases_to_remove = translation_start_position - 1
 
@@ -257,7 +257,7 @@ def _degenerate(gene_model, sequence, degen_translation):
 
 def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_format=None):
     removed = 0
-    if file_format == 'FASTA' or file_format == 'GenbankFASTA':
+    if file_format in ['FASTA', 'GenbankFASTA']:
         sequence, removed = strip_question_marks(sequence)
     seq_seq = sequence.replace('?', 'N')
 
@@ -289,7 +289,7 @@ def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_for
     if 'J' in prot_sequence:
         prot_sequence = prot_sequence.replace('J', 'X')
 
-    if file_format == 'PHY' or file_format == 'GenbankFASTA':
+    if file_format in ['PHY', 'GenbankFASTA']:
         return prot_sequence, warning
 
     return prot_sequence, warning
