@@ -154,10 +154,10 @@ END;
                         gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
 
                         tmp_seq = sequence.replace('-', '')
-                        if len(tmp_seq) < 1:
-                            out = ['\n[{}]'.format(voucher_code)]
-                        else:
+                        if tmp_seq:
                             out += [line[0].ljust(55, ' ') + sequence]
+                        else:
+                            out = ['\n[{}]'.format(voucher_code)]
 
         number_chars = 0
         for k in gene_codes_and_lengths.keys():

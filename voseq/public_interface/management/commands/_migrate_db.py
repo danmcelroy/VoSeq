@@ -405,7 +405,7 @@ class ParseXML(object):
                 if self.verbosity != 0:
                     print(i['code_id'], i['gene_code'])
 
-        if len(seqs_invalid) > 0:
+        if seqs_invalid:
             if TESTING is False:
                 print("ERROR: Couldn't insert {} sequences due to having invalid characters".format(len(seqs_invalid)))
             for i in seqs_invalid:
@@ -536,7 +536,7 @@ class ParseXML(object):
                     altitude_int.append(i)
                 altitude_int.sort()
 
-                if len(altitude_int) > 0:
+                if altitude_int:
                     max_altitude = altitude_int[-1]
                     min_altitude = altitude_int[0]
                 else:

@@ -77,7 +77,7 @@ def get_gene_codes(cleaned_data):
             if i not in gene_codes:
                 gene_codes.append(i)
 
-    if len(cleaned_data['gene_codes']) > 0:
+    if cleaned_data['gene_codes']:
         for i in cleaned_data['gene_codes']:
             if i.gene_code not in gene_codes:
                 gene_codes.append(i.gene_code)
@@ -129,62 +129,62 @@ def flatten_taxon_names_dict(dictionary):
     try:
         out += dictionary['code'] + "_"
     except KeyError as e:
-        print("Converting to FASTA")
+        print("Converting to FASTA: no code for this obj. ".format(e))
 
     try:
         out += dictionary['orden'] + "_"
-    except KeyError:
-        pass
+    except KeyError as e:
+        print("Converting to FASTA: no orden for this obj. ".format(e))
 
     try:
         out += dictionary['superfamily'] + "_"
-    except KeyError:
-        pass
+    except KeyError as e:
+        print("Converting to FASTA: no superfamily for this obj. ".format(e))
 
     try:
         out += dictionary['family'] + "_"
-    except KeyError:
-        pass
+    except KeyError as e:
+        print("Converting to FASTA: no family for this obj. ".format(e))
 
     try:
         out += dictionary['subfamily'] + "_"
-    except KeyError:
-        pass
+    except KeyError as e:
+        print("Converting to FASTA: no subfamily for this obj. ".format(e))
 
     try:
         out += dictionary['tribe'] + "_"
-    except KeyError:
-        pass
+    except KeyError as e:
+        print("Converting to FASTA: no tribe for this obj. ".format(e))
 
     try:
         out += dictionary['subtribe'] + "_"
-    except KeyError:
-        pass
+    except KeyError as e:
+        print("Converting to FASTA: no subtribe for this obj. ".format(e))
 
     try:
         out += dictionary['genus'] + "_"
-    except KeyError:
-        pass
+    except KeyError as e:
+        print("Converting to FASTA: no genus for this obj. ".format(e))
 
     try:
         out += dictionary['species'] + "_"
-    except KeyError:
-        pass
+    except KeyError as e:
+        print("Converting to FASTA: no species for this obj. ".format(e))
 
     try:
         out += dictionary['subspecies'] + "_"
-    except KeyError:
-        pass
+    except KeyError as e:
+        print("Converting to FASTA: no subspecies for this obj. ".format(e))
 
     try:
         out += dictionary['author'] + "_"
-    except KeyError:
-        pass
+    except KeyError as e:
+        print("Converting to FASTA: no author for this obj. ".format(e))
 
     try:
         out += dictionary['hostorg'] + "_"
-    except KeyError:
-        pass
+    except KeyError as e:
+        print("Converting to FASTA: no hostorg for this obj. ".format(e))
 
     out_striped = re.sub('_+', '_', out)
     out_clean = re.sub('_$', '', out_striped)
