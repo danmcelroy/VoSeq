@@ -1,5 +1,4 @@
-|Waffle| |Dependency Status| |Coverage Status| |Landscape| |Docs|
-
+|Waffle| |Dependency Status| |Coverage Status| |Landscape| |Docs| |QuantifiedCode|
 |Chat|
 
 
@@ -568,3 +567,6 @@ Thus, every picture that you upload into your VoSeq installation will be uploade
 .. |Chat| image:: https://badges.gitter.im/Join%20Chat.svg
    :alt: Join the chat at https://gitter.im/carlosp420/VoSeq
    :target: https://gitter.im/carlosp420/VoSeq?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+.. |QuantifiedCode| image:: https://www.quantifiedcode.com/api/v1/project/8277ac101c0e4524a52b5ae6073bd62d/badge.svg
+   :alt: Code issues
+   :target: https://www.quantifiedcode.com/app/project/8277ac101c0e4524a52b5ae6073bd62d

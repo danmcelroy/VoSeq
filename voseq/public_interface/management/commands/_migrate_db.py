@@ -69,7 +69,7 @@ class ParseXML(object):
                 break
 
         if our_data is False:
-            raise ValueError("Could not find table %s in database dump file." % this_table)
+            raise ValueError("Could not find table {} in database dump file.".format(this_table))
 
         self.table_genes_items = []
         for row in our_data.findall('row'):
@@ -271,7 +271,7 @@ class ParseXML(object):
             if {'gene_code': item['gene_code'], 'code': item['code']} in primers_queryset:
                 item['for_sequence'] = Sequences.objects.get(code=item['code'], gene_code=item['gene_code'])
             else:
-                print("Could not save primers for sequence: %s %s" % (item['code'], item['gene_code']))
+                print("Could not save primers for sequence: {0} {1}".format(item['code'], item['gene_code']))
                 continue
 
             primers = item['primers']
@@ -405,7 +405,7 @@ class ParseXML(object):
                 if self.verbosity != 0:
                     print(i['code_id'], i['gene_code'])
 
-        if len(seqs_invalid) > 0:
+        if seqs_invalid:
             if TESTING is False:
                 print("ERROR: Couldn't insert {} sequences due to having invalid characters".format(len(seqs_invalid)))
             for i in seqs_invalid:
@@ -536,7 +536,7 @@ class ParseXML(object):
                     altitude_int.append(i)
                 altitude_int.sort()
 
-                if len(altitude_int) > 0:
+                if altitude_int:
                     max_altitude = altitude_int[-1]
                     min_altitude = altitude_int[0]
                 else:
@@ -733,7 +733,7 @@ class ParseXML(object):
             date_obj = None
 
         if self.verbosity != 0:
-            print("WARNING:: Could not parse %s properly." % field)
+            print("WARNING:: Could not parse {} properly.".format(field))
         return date_obj
 
     def parse_timestamp(self, timestamp, field):
@@ -779,9 +779,9 @@ def get_sex(value):
     except AttributeError:
         return 'unknown'
 
-    if value == 'f' or value == 'female':
+    if value in ['f', 'female']:
         return 'female'
-    elif value == 'm' or value == 'male' or value == 'mae':
+    elif value in ['m', 'male', 'mae']:
         return 'male'
     elif value == 'larva':
         return 'larva'

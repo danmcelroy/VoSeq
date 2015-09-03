@@ -191,4 +191,4 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = '/browse/'
 
 # Change this after obtaining VoSeq and before deployments to a production server
-SECRET_KEY = '65~55UJd9BRyFq_ota{IxlG9w=2ZO3'
+SECRET_KEY = 'test_key'

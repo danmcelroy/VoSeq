@@ -105,7 +105,7 @@ class VoucherTable(object):
 
     def get_delimiter(self):
         field_delimiter = self.cleaned_data['field_delimitor']
-        if field_delimiter == '' or field_delimiter == 'COMMA':
+        if field_delimiter in ['', 'COMMA']:
             return ','
         elif field_delimiter == 'TAB':
             return '\t'

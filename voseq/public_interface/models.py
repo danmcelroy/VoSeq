@@ -307,7 +307,7 @@ class FlickrImages(models.Model):
             farm = info['photo']['farm']
             server = info['photo']['server']
             secret = info['photo']['secret']
-            thumbnail_url = 'https://farm{}.staticflickr.com/{}/{}_{}_m_d.jpg'.format(farm, server, instance.flickr_id, secret)
+            thumbnail_url = 'https://farm{}.staticflickr.com/{0}/{1}_{2}_m_d.jpg'.format(farm, server, instance.flickr_id, secret)
             instance.thumbnail = thumbnail_url
             instance.save()
 
