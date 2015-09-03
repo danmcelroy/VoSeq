@@ -9,7 +9,7 @@ from core.utils import get_gene_codes
 from core.utils import get_voucher_codes
 from core.utils import get_start_translation_index
 from core.utils import strip_question_marks
-from core.utils import _degenerate
+from core.utils import degenerate
 from public_interface.models import TaxonSets
 from public_interface.models import GeneSets
 from public_interface.models import Genes
@@ -129,7 +129,7 @@ class TestCoreUtils(TestCase):
         dna = '?ACTTTATATTTTATTTTTGGAATTTGAGCAG'
         degen_translation = 'NORMAL'
         expected = 'NACNYTNTAYTTYATYTTYGGNATYTGRGCNG'
-        result = _degenerate(gene_model, dna, degen_translation)
+        result = degenerate(gene_model, dna, degen_translation)
         self.assertEqual(expected, result)
 
     def test_degenerate_incomplete_seq(self):
@@ -151,7 +151,7 @@ class TestCoreUtils(TestCase):
         dna = '?TTATTTTGATTTTTTGG'
         degen_translation = 'NORMAL'
         expected = 'NYTNTTYTGRTTYTTYGG'
-        result = _degenerate(gene_model, dna, degen_translation)
+        result = degenerate(gene_model, dna, degen_translation)
         self.assertEqual(expected, result)
 
     def test_degenerate_incomplete_seq2(self):
@@ -173,7 +173,7 @@ class TestCoreUtils(TestCase):
         dna = '?TTATTTTGATTTTTTG'
         degen_translation = 'NORMAL'
         expected = 'NYTNTTYTGRTTYTTYG'
-        result = _degenerate(gene_model, dna, degen_translation)
+        result = degenerate(gene_model, dna, degen_translation)
         self.assertEqual(expected, result)
 
     def test_clean_positions(self):

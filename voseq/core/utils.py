@@ -128,8 +128,8 @@ def flatten_taxon_names_dict(dictionary):
     out = ''
     try:
         out += dictionary['code'] + "_"
-    except KeyError:
-        pass
+    except KeyError as e:
+        print("Converting to FASTA")
 
     try:
         out += dictionary['orden'] + "_"
