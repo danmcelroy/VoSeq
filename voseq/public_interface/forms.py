@@ -174,7 +174,7 @@ class AdvancedSearchForm(ModelSearchForm):
                     sequence_keywords[k] = v.gene_code
                 if k == 'genbank' and v == 'y':
                     sequence_keywords[k] = 'true'
-                else:
+                elif k == 'genbank':
                     sequence_keywords[k] = 'false'
                 if k not in ['labPerson', 'accession', 'genbank', 'gene_code']:
                     keywords[k] = v
