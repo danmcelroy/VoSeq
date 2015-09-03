@@ -196,8 +196,8 @@ class Dataset(object):
                     this_gene = Genes.objects.filter(gene_code=this_gene_partition).values()
                     try:
                         this_gene = this_gene[0]
-                    except IndexError:
-                        pass
+                    except IndexError as e:
+                        print("There is no gene in this line: ".format(e))
                     out += '\n'
                     out += line
                 else:
@@ -870,7 +870,7 @@ class CreateTNT(Dataset):
                         gene_codes_and_lengths[ThisGeneAndPartition.this_gene] = len(sequence)
 
                         tmp_seq = sequence.replace('-', '')
-                        if len(tmp_seq) < 1:
+                        if not tmp_seq:
                             out = ['\n[{}]'.format(voucher_code)]
                         else:
                             if self.outgroup != '' and self.outgroup not in voucher_code:
