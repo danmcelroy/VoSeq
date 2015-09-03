@@ -13,6 +13,6 @@ A changed **voucher code** will automaticly change the code in the connected fie
 
 There is also a **record history** displayed for administrators that list what changes have been made to the voucher information previously, with time and the user responsible for the changes.
 
-.. image:: images/update_voucher.png
+.. image:: ../images/update_voucher.png
    :align: center
    :width: 600px
