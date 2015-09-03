@@ -239,7 +239,7 @@ class Dataset(object):
                     '1st' in self.codon_positions and
                     '2nd' in self.codon_positions and
                     '3rd' in self.codon_positions):
-                degenerated = utils._degenerate(gene_model, seq, self.degen_translations)
+                degenerated = utils.degenerate(gene_model, seq, self.degen_translations)
                 return degenerated
             else:
                 self.warnings.append(
