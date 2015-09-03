@@ -61,7 +61,7 @@ Start here
    usage/create-datasets
    usage/search
    usage/upload-voucher-photos
-   usage/create-excel-table
+   usage/create-voucher-table
    usage/update-voucher
 
    update-voseq
@@ -118,7 +118,7 @@ Using VoSeq
 :doc:`usage/upload-voucher-photos`
     Learn how to upload voucher pictures in VoSeq.
 
-:doc:`usage/create-excel-table`
+:doc:`usage/create-voucher-table`
     Learn how to export data ready for Excel tables.
 
 :doc:`usage/update-voucher`
