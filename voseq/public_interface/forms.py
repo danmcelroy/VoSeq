@@ -164,19 +164,18 @@ class AdvancedSearchForm(ModelSearchForm):
                 # remove after adding this to index
                 if v == 'Select':
                     continue
-                if k == 'dateCollection' or k == 'dateExtraction':
+                if k in ['dateCollection', 'dateExtraction']:
                     v = datetime.date.strftime(v, "%Y-%m-%d")
                 if k == 'models':
                     continue
-                if k == 'labPerson' or k == 'accession':
+                if k in ['labPerson', 'accession']:
                     sequence_keywords[k] = v
                 if k == 'gene_code':
                     sequence_keywords[k] = v.gene_code
-                if k == 'genbank':
-                    if v == 'y':
-                        sequence_keywords[k] = 'true'
-                    else:
-                        sequence_keywords[k] = 'false'
+                if k == 'genbank' and v == 'y':
+                    sequence_keywords[k] = 'true'
+                else:
+                    sequence_keywords[k] = 'false'
                 if k not in ['labPerson', 'accession', 'genbank', 'gene_code']:
                     keywords[k] = v
 

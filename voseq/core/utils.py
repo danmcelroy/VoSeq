@@ -257,7 +257,7 @@ def degenerate(gene_model, sequence, degen_translation):
 
 def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_format=None):
     removed = 0
-    if file_format == 'FASTA' or file_format == 'GenbankFASTA':
+    if file_format in ['FASTA', 'GenbankFASTA']:
         sequence, removed = strip_question_marks(sequence)
     seq_seq = sequence.replace('?', 'N')
 
@@ -289,7 +289,7 @@ def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_for
     if 'J' in prot_sequence:
         prot_sequence = prot_sequence.replace('J', 'X')
 
-    if file_format == 'PHY' or file_format == 'GenbankFASTA':
+    if file_format in ['PHY', 'GenbankFASTA']:
         return prot_sequence, warning
 
     return prot_sequence, warning
