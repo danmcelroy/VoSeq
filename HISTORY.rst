@@ -23,7 +23,7 @@ Fixed bugs
   containing only codons 1,3 and 2,3.
 - Dataset creation tool, genes will be sorted alphabetically, regardless of case.
 - Fixed version on footer.
-
+- MEGA datasets.
 
 pre-release v2.0.0-beta (2015-08-06)
 ++++++++++++++++++++++++++++++++++++
