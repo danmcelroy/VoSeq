@@ -7,7 +7,6 @@ from Bio.Seq import Seq
 from Bio.Alphabet import generic_dna
 from Bio.Data.CodonTable import TranslationError
 from degenerate_dna import Degenera
-from degenerate_dna.exceptions import WrongParameterError
 
 from stats.models import Stats
 from . import exceptions
@@ -126,65 +125,41 @@ def flatten_taxon_names_dict(dictionary):
 
     """
     out = ''
-    try:
+    if 'code' in dictionary:
         out += dictionary['code'] + "_"
-    except KeyError:
-        pass
 
-    try:
+    if 'orden' in dictionary:
         out += dictionary['orden'] + "_"
-    except KeyError:
-        pass
 
-    try:
+    if 'superfamily' in dictionary:
         out += dictionary['superfamily'] + "_"
-    except KeyError:
-        pass
 
-    try:
+    if 'family' in dictionary:
         out += dictionary['family'] + "_"
-    except KeyError:
-        pass
 
-    try:
+    if 'subfamily' in dictionary:
         out += dictionary['subfamily'] + "_"
-    except KeyError:
-        pass
 
-    try:
+    if 'tribe' in dictionary:
         out += dictionary['tribe'] + "_"
-    except KeyError:
-        pass
 
-    try:
+    if 'subtribe' in dictionary:
         out += dictionary['subtribe'] + "_"
-    except KeyError:
-        pass
 
-    try:
+    if 'genus' in dictionary:
         out += dictionary['genus'] + "_"
-    except KeyError:
-        pass
 
-    try:
+    if 'species' in dictionary:
         out += dictionary['species'] + "_"
-    except KeyError:
-        pass
 
-    try:
+    if 'subspecies' in dictionary:
         out += dictionary['subspecies'] + "_"
-    except KeyError:
-        pass
 
-    try:
+    if 'author' in dictionary:
         out += dictionary['author'] + "_"
-    except KeyError:
-        pass
 
-    try:
+    if 'hostorg' in dictionary:
         out += dictionary['hostorg'] + "_"
-    except KeyError:
-        pass
 
     out_striped = re.sub('_+', '_', out)
     out_clean = re.sub('_$', '', out_striped)
