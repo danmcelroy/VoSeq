@@ -113,12 +113,14 @@
 <li class="toctree-l1"><a class="reference internal" href="create-datasets.html">Create datasets</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Search</a></li>
 <li class="toctree-l1"><a class="reference internal" href="upload-voucher-photos.html">Upload voucher photos</a></li>
-<li class="toctree-l1"><a class="reference internal" href="create-excel-table.html">Create Excel table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-voucher-table.html">Create Voucher table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="update-voucher.html">Update voucher</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../update-voseq.html">How to update Voseq</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#backup-your-mysql-database">Backup your MySQL database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#versions-2-0-0-and-later">Versions 2.0.0 and later</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#versions-1-7-4-and-earlier">Versions 1.7.4 and earlier</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../migrate-mysql.html">Migrate VoSeq&#8217;s MySQL database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins.html">Plugins</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../plugins.html#yahoo-maps-plugin">Yahoo! Maps plugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins.html#flickr-plugin">Flickr plugin</a></li>
@@ -171,9 +173,14 @@
             
   <div class="section" id="search">
 <span id="my-search"></span><h1>Search<a class="headerlink" href="#search" title="Permalink to this headline">¶</a></h1>
-<p>You can search for records by queries using single fields or any combination of them. The autocomplete dropboxes will help you query existing data easily.
-This can be done in both the <strong>user interface</strong> and the <strong>administrator interface</strong> - where the latter have more options to search (e.g. record history).</p>
-<a class="reference internal image-reference" href="usage/images/search.png"><img alt="usage/images/search.png" class="align-center" src="usage/images/search.png" style="width: 590px;" /></a>
+<p>You can search for records by queries using single fields or any combination of
+them. The autocomplete dropboxes will help you query existing data easily.
+This can be done in both the <strong>user interface</strong> and the <strong>administrator
+interface</strong>.</p>
+<p>Simple taxon search:</p>
+<a class="reference internal image-reference" href="../images/simple_search.png"><img alt="../images/simple_search.png" class="align-center" src="../images/simple_search.png" style="width: 600px;" /></a>
+<p>Advanced search:</p>
+<a class="reference internal image-reference" href="../images/advanced_search.png"><img alt="../images/advanced_search.png" class="align-center" src="../images/advanced_search.png" style="width: 600px;" /></a>
 </div>
 
 
@@ -195,7 +202,7 @@ This can be done in both the <strong>user interface</strong> and the <strong>adm
   <div role="contentinfo">
     <p>
         &copy; Copyright 2013-2015, Carlos Peña, Tobias Malm.
-      Last updated on Aug 12, 2015.
+      Last updated on Sep 04, 2015.
     </p>
   </div>
   Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.

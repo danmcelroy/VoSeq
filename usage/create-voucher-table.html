@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Create taxonset &mdash; VoSeq 2.0.0-beta documentation</title>
+  <title>Create Voucher table &mdash; VoSeq 2.0.0-beta documentation</title>
   
 
   
@@ -33,8 +33,8 @@
 
   
     <link rel="top" title="VoSeq 2.0.0-beta documentation" href="../index.html"/>
-        <link rel="next" title="Create datasets" href="create-datasets.html"/>
-        <link rel="prev" title="Adding sequences" href="adding-sequences.html"/> 
+        <link rel="next" title="Update voucher" href="update-voucher.html"/>
+        <link rel="prev" title="Upload voucher photos" href="upload-voucher-photos.html"/> 
 
   
   <script src="static/js/modernizr.min.js"></script>
@@ -109,11 +109,11 @@
 <li class="toctree-l1"><a class="reference internal" href="adding-vouchers.html">Adding vouchers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="adding-genes.html">Adding genes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="adding-sequences.html">Adding sequences</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Create taxonset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-taxonset.html">Create taxonset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="create-datasets.html">Create datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="search.html">Search</a></li>
 <li class="toctree-l1"><a class="reference internal" href="upload-voucher-photos.html">Upload voucher photos</a></li>
-<li class="toctree-l1"><a class="reference internal" href="create-voucher-table.html">Create Voucher table</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Create Voucher table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="update-voucher.html">Update voucher</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../update-voseq.html">How to update Voseq</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#versions-2-0-0-and-later">Versions 2.0.0 and later</a></li>
@@ -158,11 +158,11 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-    <li>Create taxonset</li>
+    <li>Create Voucher table</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../sources/usage/create-taxonset.txt" rel="nofollow"> View page source</a>
+            <a href="../sources/usage/create-voucher-table.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -171,19 +171,22 @@
 </div>
           <div role="main" class="document">
             
-  <div class="section" id="create-taxonset">
-<span id="id1"></span><h1>Create taxonset<a class="headerlink" href="#create-taxonset" title="Permalink to this headline">¶</a></h1>
-<p>Taxonset is a way to make a list of taxa that are being used for a specific
-project or analysis. A Taxonset is just a list of voucher codes. By having
-Taxonsets, you can quickly create datasets and tables for them.</p>
-<p>If you have not set Taxonsets you will need to type specimen codes everytime
-you create a dataset. Instead, if you have a Taxonset for a particular project,
-you could select it when creating Tables for manuscripts.</p>
-<p>Go to the <strong>Administrator interface</strong> and click on the link <strong>Biological data »
-Taxon sets » Add taxon sets</strong>.</p>
-<p>A taxonset must have a name in order to be saved and usable later!</p>
-<p>You can create a <strong>Taxonset</strong> by entering a list of specimen codes, each separated by a return:</p>
-<a class="reference internal image-reference" href="../images/create_taxonset1.png"><img alt="../images/create_taxonset1.png" class="align-center" src="../images/create_taxonset1.png" style="width: 600px;" /></a>
+  <div class="section" id="create-voucher-table">
+<span id="id1"></span><h1>Create Voucher table<a class="headerlink" href="#create-voucher-table" title="Permalink to this headline">¶</a></h1>
+<p>You can create a CSV file ready to load in MS Excel with specimen codes, genus
+and species names, genes used in analysis along with their accession numbers.</p>
+<p>Go to the <strong>User interface</strong> and under the <strong>Toolbox</strong> click on the link
+<strong>Create Voucher table</strong></p>
+<p>Instead of typing your specimen codes in the text area below, you could select
+a Taxonset (provided that it has been set before (<a class="reference internal" href="create-taxonset.html#create-taxonset"><span>Create taxonset</span></a>).
+This table will be ready to attach to a manuscript for publication.</p>
+<p>You can also change the way sequence information is displayed in the table by
+choosing between <strong>number of bases</strong> (displays number of bases - does not count
+questionmarks <strong>?</strong>), <strong>accession numbers</strong> (displays stored accession numbers
+instead of sequence length) or <strong>X/-</strong> (displays <strong>X</strong> if sequence is present and
+<strong>-</strong> if sequence is missing.</p>
+<p>You may also change between comma (,) and tab-delimited table mode.</p>
+<a class="reference internal image-reference" href="../images/create_table.png"><img alt="../images/create_table.png" class="align-center" src="../images/create_table.png" style="width: 600px;" /></a>
 </div>
 
 
@@ -192,10 +195,10 @@ Taxon sets » Add taxon sets</strong>.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="create-datasets.html" class="btn btn-neutral float-right" title="Create datasets" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="update-voucher.html" class="btn btn-neutral float-right" title="Update voucher" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="adding-sequences.html" class="btn btn-neutral" title="Adding sequences" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="upload-voucher-photos.html" class="btn btn-neutral" title="Upload voucher photos" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

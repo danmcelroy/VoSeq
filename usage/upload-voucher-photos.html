@@ -33,7 +33,7 @@
 
   
     <link rel="top" title="VoSeq 2.0.0-beta documentation" href="../index.html"/>
-        <link rel="next" title="Create Excel table" href="create-excel-table.html"/>
+        <link rel="next" title="Create Voucher table" href="create-voucher-table.html"/>
         <link rel="prev" title="Search" href="search.html"/> 
 
   
@@ -113,12 +113,14 @@
 <li class="toctree-l1"><a class="reference internal" href="create-datasets.html">Create datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="search.html">Search</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Upload voucher photos</a></li>
-<li class="toctree-l1"><a class="reference internal" href="create-excel-table.html">Create Excel table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-voucher-table.html">Create Voucher table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="update-voucher.html">Update voucher</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../update-voseq.html">How to update Voseq</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#backup-your-mysql-database">Backup your MySQL database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#versions-2-0-0-and-later">Versions 2.0.0 and later</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#versions-1-7-4-and-earlier">Versions 1.7.4 and earlier</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../migrate-mysql.html">Migrate VoSeq&#8217;s MySQL database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins.html">Plugins</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../plugins.html#yahoo-maps-plugin">Yahoo! Maps plugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins.html#flickr-plugin">Flickr plugin</a></li>
@@ -171,28 +173,36 @@
             
   <div class="section" id="upload-voucher-photos">
 <span id="id1"></span><h1>Upload voucher photos<a class="headerlink" href="#upload-voucher-photos" title="Permalink to this headline">¶</a></h1>
-<p>In the <strong>Administrator interface</strong> you will see that some records have the link <strong>Picture missing</strong>. By clicking on this link, you will be able to upload a photo for that voucher.</p>
-<a class="reference internal image-reference" href="usage/images/picture_missing.png"><img alt="usage/images/picture_missing.png" class="align-center" src="usage/images/picture_missing.png" style="width: 376px;" /></a>
-<p>If you want to replace an existing picture with another, you will need to click the <strong>Change picture</strong> icon.</p>
-<p>After you upload your photo, VoSeq will automatically <strong>post the picture in Flickr</strong> and save the necessary URL addresses in the MySQL database. Thus, you will see your photo in the corresponding voucher page.</p>
-<p>If you have not enabled the <a class="reference internal" href="../plugins.html#flickr-plugin"><span>Flickr plugin</span></a>, VoSeq will instruct you how to do this.</p>
-<p><strong>If you don&#8217;t want to use Flickr</strong>, you can host your photos locally on your own server or computer. For this you will need to edit a line in your <code class="docutils literal"><span class="pre">conf.php</span></code> file:</p>
+<p>In the <strong>Administrator interface</strong> you will be able to upload one or more photos
+for your voucher records:</p>
+<a class="reference internal image-reference" href="../images/picture_missing.png"><img alt="../images/picture_missing.png" class="align-center" src="../images/picture_missing.png" style="width: 600px;" /></a>
+<p>If you want to replace an existing picture with another, you will need to
+click the <strong>Choose File</strong> button.</p>
+<p>If your have configured VoSeq to use Flickr as repository for your photos
+(see section <a class="reference internal" href="../intro/install.html#configure"><span>Configure VoSeq</span></a>), after you upload your photo, VoSeq will automatically <strong>post the picture in Flickr</strong>
+and save the necessary URL addresses in the postgreSQL database.
+Thus, you will see your photo in the corresponding voucher page.</p>
+<p><strong>If you don&#8217;t want to use Flickr</strong>, you can host your photos locally on your
+own server or computer. For this you will need to edit a line in your <code class="docutils literal"><span class="pre">conf.json</span></code> file:</p>
 <ul>
 <li><p class="first">Change the line:</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">$photos_repository</span> <span class="pre">=</span> <span class="pre">'flickr';</span></code> to this one:</li>
-<li><code class="docutils literal"><span class="pre">$photos_repository</span> <span class="pre">=</span> <span class="pre">'local';</span></code></li>
+<li><code class="docutils literal"><span class="pre">&quot;PHOTOS_REPOSITORY&quot;:</span> <span class="pre">&quot;flickr&quot;</span></code></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">to this one:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">&quot;PHOTOS_REPOSITORY&quot;:</span> <span class="pre">&quot;local&quot;</span></code></li>
 </ul>
 </div></blockquote>
 </li>
 </ul>
-<p>Starting with version 1.5.0, VoSeq can host many photos for each voucher. Photos can be added in the voucher page using the administrator interface of VoSeq. You can delete photos individually by clicking on it&#8217;s &#8220;trash&#8221; icon.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If you have more than two photos for voucher, all additional photos will appear at the bottom of the voucher page (see image below).</p>
-</div>
-<a class="reference internal image-reference" href="usage/images/additional_voucher_photos.png"><img alt="usage/images/additional_voucher_photos.png" class="align-center" src="usage/images/additional_voucher_photos.png" style="width: 433px;" /></a>
+<p>Starting with version 1.5.0, VoSeq can host many photos for each voucher. Photos
+can be added in the voucher page using the administrator interface of VoSeq.
+You can delete photos individually by clicking on &#8220;Delete&#8221; checkbox.</p>
 </div>
 
 
@@ -201,7 +211,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="create-excel-table.html" class="btn btn-neutral float-right" title="Create Excel table" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="create-voucher-table.html" class="btn btn-neutral float-right" title="Create Voucher table" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="search.html" class="btn btn-neutral" title="Search" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -214,7 +224,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2013-2015, Carlos Peña, Tobias Malm.
-      Last updated on Aug 12, 2015.
+      Last updated on Sep 04, 2015.
     </p>
   </div>
   Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.

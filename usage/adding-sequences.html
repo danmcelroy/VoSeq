@@ -113,12 +113,14 @@
 <li class="toctree-l1"><a class="reference internal" href="create-datasets.html">Create datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="search.html">Search</a></li>
 <li class="toctree-l1"><a class="reference internal" href="upload-voucher-photos.html">Upload voucher photos</a></li>
-<li class="toctree-l1"><a class="reference internal" href="create-excel-table.html">Create Excel table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-voucher-table.html">Create Voucher table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="update-voucher.html">Update voucher</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../update-voseq.html">How to update Voseq</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#backup-your-mysql-database">Backup your MySQL database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#versions-2-0-0-and-later">Versions 2.0.0 and later</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#versions-1-7-4-and-earlier">Versions 1.7.4 and earlier</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../migrate-mysql.html">Migrate VoSeq&#8217;s MySQL database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins.html">Plugins</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../plugins.html#yahoo-maps-plugin">Yahoo! Maps plugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins.html#flickr-plugin">Flickr plugin</a></li>
@@ -171,13 +173,23 @@
             
   <div class="section" id="adding-sequences">
 <span id="id1"></span><h1>Adding sequences<a class="headerlink" href="#adding-sequences" title="Permalink to this headline">¶</a></h1>
-<p>In the <strong>Administrator interface</strong>, the tool <strong>Upload batch sequences/vouchers</strong> allows you to upload DNA sequences into VoSeq. Along with the DNA sequences, you have to upload the required fields <strong>gene code</strong> and <strong>voucher code</strong>, optionalyl the primer names, laborator and creation date. Each sequence and its related data goes into one line, with fields separated by tabs. If you have your data in a spreadsheet such as MS Excel, you can copy and paste the data into the text area.</p>
+<p>In the <strong>Administrator interface</strong>, you can import batches of DNA sequences from
+MS Excel files under the path <strong>Biological data » Sequences*</strong>
+the tool <strong>Upload batch sequences/vouchers</strong>.</p>
+<p>Along with the DNA sequences, you have to upload the required fields
+<strong>gene code</strong> and <strong>code</strong>, optionally labperson, notes and &#8220;genbank&#8221;.
+The data value in <strong>genbank</strong> field should be either 0 or 1. Cero denotes that
+the sequence has not been uploaded to NCBI Genbank and 1 denotes that it has.
+Each sequence and its related data goes into one line, with one data field for each column.</p>
 <ul class="simple">
 <li>It is important to use the same headers provided in the text area.</li>
-<li>It is also necessary that that the <strong>code</strong> of each sequence matches the <strong>code</strong> of voucher specimens that had been uploaded into VoSeq. This is the unique identifier that is used to connect the voucher data and their sequences.</li>
+<li>It is also necessary that that the <strong>code</strong> of each sequence matches the <strong>code</strong>
+of voucher specimens that had been uploaded into VoSeq.
+This is the unique identifier that is used to connect the voucher data and
+their sequences.</li>
 </ul>
 <p>(Aligned sequences should for best use of the database have missing data coded as questionmark (?) and gaps as a dash (-))</p>
-<a class="reference internal image-reference" href="usage/images/batch_seq_upload.png"><img alt="usage/images/batch_seq_upload.png" class="align-center" src="usage/images/batch_seq_upload.png" style="width: 902px;" /></a>
+<a class="reference internal image-reference" href="../images/batch_seq_upload.png"><img alt="../images/batch_seq_upload.png" class="align-center" src="../images/batch_seq_upload.png" style="width: 600px;" /></a>
 </div>
 
 
@@ -199,7 +211,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2013-2015, Carlos Peña, Tobias Malm.
-      Last updated on Aug 12, 2015.
+      Last updated on Sep 04, 2015.
     </p>
   </div>
   Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.

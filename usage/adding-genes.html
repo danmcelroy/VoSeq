@@ -113,12 +113,14 @@
 <li class="toctree-l1"><a class="reference internal" href="create-datasets.html">Create datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="search.html">Search</a></li>
 <li class="toctree-l1"><a class="reference internal" href="upload-voucher-photos.html">Upload voucher photos</a></li>
-<li class="toctree-l1"><a class="reference internal" href="create-excel-table.html">Create Excel table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-voucher-table.html">Create Voucher table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="update-voucher.html">Update voucher</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../update-voseq.html">How to update Voseq</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#backup-your-mysql-database">Backup your MySQL database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#versions-2-0-0-and-later">Versions 2.0.0 and later</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#versions-1-7-4-and-earlier">Versions 1.7.4 and earlier</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../migrate-mysql.html">Migrate VoSeq&#8217;s MySQL database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins.html">Plugins</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../plugins.html#yahoo-maps-plugin">Yahoo! Maps plugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins.html#flickr-plugin">Flickr plugin</a></li>
@@ -171,17 +173,39 @@
             
   <div class="section" id="adding-genes">
 <span id="id1"></span><h1>Adding genes<a class="headerlink" href="#adding-genes" title="Permalink to this headline">¶</a></h1>
-<p>The second thing after adding vouchers that should be done is to create <strong>new genes</strong> or &#8220;alignments&#8221; for your database. This must be done in order to be able to <strong>add sequences</strong> to the database.
-You can add a single record by going to the <strong>Administrator interface</strong> and clicking on the link <strong>Add/edit/view gene information</strong>, followed by <strong>Add gene</strong>&#8216;.</p>
-<a class="reference internal image-reference" href="usage/images/add-edit_gene.png"><img alt="usage/images/add-edit_gene.png" class="align-center" src="usage/images/add-edit_gene.png" style="width: 540px;" /></a>
-<p>The most important and the only field that is obligatory is the <strong>gene code</strong> field, this will be the name of your gene when using the database. This could be a simple short version (e.g. <strong>COI</strong> for <strong>Cytochrome oxidase I</strong>) or any other name (no spaces allowed, but <strong>_</strong> are ok).
-You can for example create a gene code for aligned data, say the barcode version of COI of 658 bp could be named COI_658 or similar. Other genecodes could be made for unaligned sequences (e.g. COI_raw).</p>
-<p>First the gene/alignment have to be <strong>specified if aligned or not</strong>. For example may raw sequences be set to <strong>no</strong> (and these may be retrieved as FASTA-files, whereas if you want to build other datasets (Nexus, PHYLIP, TNT) they need to be set to aligned. If set to <strong>no</strong>, then other information regarding reading frames and such will be ignored!</p>
-<p>Then (if aligned) you should include the <strong>length</strong> of an aligned gene - this will be used for dataset creation and will there warn for sequences longer than the specified length.</p>
-<p>You may also add a <strong>description</strong> for the gene - these should be the <strong>full name of the gene</strong> (e.g. <strong>Cytochrome oxidase I</strong>) - as this field is used for example in creating tables to submit to <strong>GenBank</strong>.</p>
-<p>Aligned genes may be set as <strong>protein-coding</strong> for <strong>additional prot-coding gene functionality</strong> when retrieveing datasets for example (e.g. position choices, translation).</p>
-<p>For aligned protein coding (=yes) genes you may choose to specify the <strong>reading frame</strong> as well as the genetic code for translation - this will be used for dataset creation and is a must f you want to partition your genes according to <strong>codon positions</strong> or <strong>amino acids</strong>.</p>
-<p><strong>Introns</strong> may be added - enter number of introns in your alignment and click &#8216;update introns&#8217;, that will give new fields for entering starting and finsihing positions for your introns. (Remember that positions in an alignment here is counted from 1 and upwards).</p>
+<p>The second thing after adding vouchers that should be done is to create <strong>new genes</strong>
+or &#8220;alignments&#8221; for your database. This must be done in order to be able to
+<strong>add sequences</strong> to the database.
+You can add a single record by going to the <strong>Administrator interface</strong> and
+clicking on the link <strong>Biological data » Genes</strong>, followed by
+<strong>Add genes</strong>.</p>
+<a class="reference internal image-reference" href="../images/add-edit_gene.png"><img alt="../images/add-edit_gene.png" class="align-center" src="../images/add-edit_gene.png" style="width: 600px;" /></a>
+<p>The most important and the only field that is obligatory is the <strong>gene code</strong>
+field, this will be the name of your gene when using the database. This could
+be a simple short version (e.g. <strong>COI</strong> for <strong>Cytochrome oxidase I</strong>) or any
+other name (no spaces allowed, but underscores <strong>_</strong> are ok).
+For example, you can create a gene code for aligned data, say the barcode
+version of COI of 658 bp could be named COI_658 or similar. Other gene codes
+could be made for unaligned sequences (e.g. COI_raw).</p>
+<p>The gene/alignment have to be <strong>specified if aligned or not</strong>. For example,
+raw sequences be set to <strong>no</strong> (and these may be retrieved as FASTA-files,
+whereas if you want to build other datasets (Nexus, PHYLIP, TNT) they need to
+be set to aligned. If set to <strong>no</strong>, then other information regarding reading
+frames and such will be ignored!</p>
+<p>Then (if aligned) you should include the <strong>length</strong> of an aligned gene
+—this will be used for dataset creation and will there warn for sequences
+longer than the specified length.</p>
+<p>You may also add a <strong>description</strong> for the gene
+—these should be the <strong>full name of the gene</strong>
+(e.g. <strong>Cytochrome oxidase I</strong>)— as this field is used for example in creating
+tables to submit to <strong>GenBank</strong>.</p>
+<p>Aligned genes may be set as <strong>protein-coding</strong> for <strong>additional prot-coding
+gene functionality</strong> when retrieveing datasets for example (e.g. position
+choices, translation).</p>
+<p>For aligned protein coding (=yes) genes you may choose to specify the
+<strong>reading frame</strong> as well as the genetic code for translation —this will be
+used for dataset creation and is a must f you want to partition your genes
+according to <strong>codon positions</strong> or <strong>amino acids</strong>.</p>
 </div>
 
 
@@ -203,7 +227,7 @@ You can for example create a gene code for aligned data, say the barcode version
   <div role="contentinfo">
     <p>
         &copy; Copyright 2013-2015, Carlos Peña, Tobias Malm.
-      Last updated on Aug 12, 2015.
+      Last updated on Sep 04, 2015.
     </p>
   </div>
   Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.

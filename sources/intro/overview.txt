@@ -20,7 +20,7 @@ Here is a quick overview on how to use VoSeq with your data.
 #. :ref:`create_datasets`
 #. :ref:`my_search`
 #. :ref:`upload_voucher_photos`
-#. :ref:`create_excel_table`
+#. :ref:`create_voucher_table`
 #. :ref:`update_voucher`
 
 VoSeq comes with an administrative interface that allows you to create user accounts

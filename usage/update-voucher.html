@@ -34,7 +34,7 @@
   
     <link rel="top" title="VoSeq 2.0.0-beta documentation" href="../index.html"/>
         <link rel="next" title="How to update Voseq" href="../update-voseq.html"/>
-        <link rel="prev" title="Create Excel table" href="create-excel-table.html"/> 
+        <link rel="prev" title="Create Voucher table" href="create-voucher-table.html"/> 
 
   
   <script src="static/js/modernizr.min.js"></script>
@@ -113,12 +113,14 @@
 <li class="toctree-l1"><a class="reference internal" href="create-datasets.html">Create datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="search.html">Search</a></li>
 <li class="toctree-l1"><a class="reference internal" href="upload-voucher-photos.html">Upload voucher photos</a></li>
-<li class="toctree-l1"><a class="reference internal" href="create-excel-table.html">Create Excel table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-voucher-table.html">Create Voucher table</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Update voucher</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../update-voseq.html">How to update Voseq</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#backup-your-mysql-database">Backup your MySQL database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#versions-2-0-0-and-later">Versions 2.0.0 and later</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#versions-1-7-4-and-earlier">Versions 1.7.4 and earlier</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../migrate-mysql.html">Migrate VoSeq&#8217;s MySQL database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins.html">Plugins</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../plugins.html#yahoo-maps-plugin">Yahoo! Maps plugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins.html#flickr-plugin">Flickr plugin</a></li>
@@ -171,11 +173,14 @@
             
   <div class="section" id="update-voucher">
 <span id="id1"></span><h1>Update voucher<a class="headerlink" href="#update-voucher" title="Permalink to this headline">¶</a></h1>
-<p>When you <strong>click on the code</strong> of an already existing voucher in the <strong>administrator interface</strong> you will be transferred to it&#8217;s <strong>voucher information page</strong>.</p>
-<p>Here you may make changes to all the fields - and these will be updated after pressing <strong>Update record</strong>.</p>
-<p>A changed <strong>voucher code</strong> will automaticly change the code in the connected fields for sequences and primer informations, so as to keep them connected.</p>
+<p>When you <strong>click on the code</strong> of an already existing voucher in the
+<strong>administrator interface</strong> you will be transferred to it&#8217;s <strong>voucher information page</strong>.</p>
+<p>Here you may make changes to all the fields - and these will be updated after
+pressing the <strong>Save</strong>, <strong>Save and continue editing</strong> or <strong>Save and add another</strong>
+buttons.</p>
+<a class="reference internal image-reference" href="../images/save_buttons.png"><img alt="../images/save_buttons.png" class="align-center" src="../images/save_buttons.png" style="width: 600px;" /></a>
 <p>There is also a <strong>record history</strong> displayed for administrators that list what changes have been made to the voucher information previously, with time and the user responsible for the changes.</p>
-<a class="reference internal image-reference" href="usage/images/update_voucher.png"><img alt="usage/images/update_voucher.png" class="align-center" src="usage/images/update_voucher.png" style="width: 836px;" /></a>
+<a class="reference internal image-reference" href="../images/update_voucher.png"><img alt="../images/update_voucher.png" class="align-center" src="../images/update_voucher.png" style="width: 600px;" /></a>
 </div>
 
 
@@ -187,7 +192,7 @@
         <a href="../update-voseq.html" class="btn btn-neutral float-right" title="How to update Voseq" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="create-excel-table.html" class="btn btn-neutral" title="Create Excel table" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="create-voucher-table.html" class="btn btn-neutral" title="Create Voucher table" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -197,7 +202,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2013-2015, Carlos Peña, Tobias Malm.
-      Last updated on Aug 12, 2015.
+      Last updated on Sep 04, 2015.
     </p>
   </div>
   Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.

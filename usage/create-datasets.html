@@ -113,12 +113,14 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="">Create datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="search.html">Search</a></li>
 <li class="toctree-l1"><a class="reference internal" href="upload-voucher-photos.html">Upload voucher photos</a></li>
-<li class="toctree-l1"><a class="reference internal" href="create-excel-table.html">Create Excel table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-voucher-table.html">Create Voucher table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="update-voucher.html">Update voucher</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../update-voseq.html">How to update Voseq</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#backup-your-mysql-database">Backup your MySQL database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#versions-2-0-0-and-later">Versions 2.0.0 and later</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#versions-1-7-4-and-earlier">Versions 1.7.4 and earlier</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../migrate-mysql.html">Migrate VoSeq&#8217;s MySQL database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins.html">Plugins</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../plugins.html#yahoo-maps-plugin">Yahoo! Maps plugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins.html#flickr-plugin">Flickr plugin</a></li>
@@ -171,30 +173,55 @@
             
   <div class="section" id="create-datasets">
 <span id="id1"></span><h1>Create datasets<a class="headerlink" href="#create-datasets" title="Permalink to this headline">¶</a></h1>
-<p>We believe that one of VoSeq&#8217;s important features is the <strong>capability to create dataset files of molecular sequences that are ready-to-run in phylogenetic software</strong> such as <strong>MrBayes, TNT, PAUP, RaXML</strong>, etc.</p>
-<p>Now that you have voucher and sequence data in your installation of VoSeq, you might want to create datasets for analysis of sequences in phylogenetic software.</p>
-<p>In the <strong>user interface</strong>, you will find under the <strong>Tools</strong> section the link <strong>Create new dataset</strong>. You will be shown a page to select the sequences you want by entering the <strong>voucher codes</strong> and <strong>gene codes</strong>. You can select your data to be in several formats (FASTA, NEXUS, etc), choose between codon positions, as well as choosing what information your taxon names should include.</p>
+<p>We believe that one of VoSeq&#8217;s important features is the <strong>capability to create
+dataset files of molecular sequences that are ready-to-run in phylogenetic
+software</strong> such as <strong>MrBayes, TNT, PAUP, NEXUS</strong>, etc.</p>
+<p>Now that you have voucher and sequence data in your installation of VoSeq,
+you might want to create datasets for analysis of sequences in phylogenetic software.</p>
+<p>In the <strong>user interface</strong>, you will find under the <strong>Tools</strong> section the link
+<strong>Create new dataset</strong>. You will be shown a page to select the sequences you
+want by entering the <strong>voucher codes</strong> and <strong>gene codes</strong>. You can select your
+data to be in several formats (FASTA, NEXUS, etc), choose between codon positions,
+as well as choosing what information your taxon names should include.</p>
 <p>This will create a <strong>ready-to-use</strong> data set for analyses!</p>
-<a class="reference internal image-reference" href="usage/images/create_dataset_new.png"><img alt="usage/images/create_dataset_new.png" class="align-center" src="usage/images/create_dataset_new.png" style="width: 534px;" /></a>
+<a class="reference internal image-reference" href="../images/create_dataset.png"><img alt="../images/create_dataset.png" class="align-center" src="../images/create_dataset.png" style="width: 600px;" /></a>
 <p>The <strong>Outgroup</strong> field, if needed, should include the voucher code for the chosen outgroup taxa.</p>
 <dl class="docutils">
 <dt>Codon positions</dt>
-<dd>Marking <strong>1st</strong>, <strong>2nd</strong> or <strong>3rd</strong> and unmarking <strong>all</strong> positions will create a dataset with only the chosen position(s) for all genes.
-<strong>Special</strong> will take you to a new page where you will be able to choose which codon positions to include for each gene.
-Marking <strong>amino acids</strong> will tranlate <strong>protein-coding</strong> genes with a set <strong>genetic code</strong> , the others will be treated as normal dna, i.e. making &#8220;mixed&#8221; datatype in Nexus for MrBayes, and setting partitions correctly in Nexus and PHYLIP format.
-Note that codon position choices as well as translation to aminoacids are only able to function if the user have specified a <strong>reading frame</strong> for the chosen gene(s) (see <a class="reference internal" href="adding-genes.html#adding-genes"><span>Adding genes</span></a>).</dd>
+<dd>Marking <strong>1st</strong>, <strong>2nd</strong> or <strong>3rd</strong> and unmarking <strong>all</strong> positions will
+create a dataset with only the chosen position(s) for all genes.
+<strong>Special</strong> will take you to a new page where you will be able to choose
+which codon positions to include for each gene.
+Marking <strong>amino acids</strong> will tranlate <strong>protein-coding</strong> genes with a set
+<strong>genetic code</strong> , the others will be treated as normal dna, i.e. making
+&#8220;mixed&#8221; datatype in Nexus for MrBayes, and setting partitions correctly in Nexus and PHYLIP format.
+Note that codon position choices as well as translation to aminoacids are
+only able to function if the user have specified a <strong>reading frame</strong> for
+the chosen gene(s) (see <a class="reference internal" href="adding-genes.html#adding-genes"><span>Adding genes</span></a>).</dd>
 <dt>Partition by (position)</dt>
 <dd>Here you can choose how to do partitioning for each gene.
-<strong>as one</strong> will create one partition per gene, regardless of which codon positions you include.
-<strong>each</strong> will create a partition per codon position, whereas <strong>1st-2nd, 3rd</strong> will create one combined partition for the 1st and 2nd positions and one separate for the 3rd codon positions.
-Note that <strong>each</strong> and <strong>all</strong> are only possible to process with a per gene specified <strong>reading frame</strong> (see <a class="reference internal" href="adding-genes.html#adding-genes"><span>Adding genes</span></a>).</dd>
+<strong>as one</strong> will create one partition per gene, regardless of which codon
+positions you include.
+<strong>each</strong> will create a partition per codon position, whereas <strong>1st-2nd,
+3rd</strong> will create one combined partition for the 1st and 2nd positions and
+one separate for the 3rd codon positions.
+Note that <strong>each</strong> and <strong>all</strong> are only possible to process with a per gene
+specified <strong>reading frame</strong> (see <a class="reference internal" href="adding-genes.html#adding-genes"><span>Adding genes</span></a>).</dd>
 </dl>
-<p>You can also chose to <strong>omit taxa from a taxonset that contains less than a specific number sequences</strong>. Say you have a 10 gene data set and want to remove all taxa with 5 or less! Easy! Just eneter a minimum number of genes!</p>
-<p>If you have introns in your alignment you can choose to include or remove them from the output data set. If included they will be treated as separate data blocks and partitions for the Nexus and PHYLIP outputs!</p>
-<p>The voucher codes can be entered one by one (separated by return) in the text area or you could create a <a class="reference internal" href="create-taxonset.html#create-taxonset"><span>Create taxonset</span></a> (a list of voucher codes for a specific project).</p>
+<p>You can also chose to <strong>omit taxa from a taxonset that contains less than a
+specific number sequences</strong>. Say you have a 10 gene data set and want to remove
+all taxa with 5 or less! Easy! Just eneter a minimum number of genes!</p>
+<p>If you have introns in your alignment you can choose to include or remove them
+from the output data set. If included they will be treated as separate data
+blocks and partitions for the Nexus and PHYLIP outputs!</p>
+<p>The voucher codes can be entered one by one (separated by return) in the text
+area or you could create a <a class="reference internal" href="create-taxonset.html#create-taxonset"><span>Create taxonset</span></a> (a list of voucher codes for
+a specific project).</p>
+<a class="reference internal image-reference" href="../images/create_dataset2.png"><img alt="../images/create_dataset2.png" class="align-center" src="../images/create_dataset2.png" style="width: 600px;" /></a>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">As of version 1.5.0, protein-coding ability, aligned or not, introns and genetic code will be set for each gene/alignment in the admin gene section!</p>
+<p class="last">As of version 1.5.0, protein-coding ability, aligned or not, introns
+and genetic code will be set for each gene/alignment in the admin gene section!</p>
 </div>
 </div>
 
@@ -217,7 +244,7 @@ Note that <strong>each</strong> and <strong>all</strong> are only possible to pr
   <div role="contentinfo">
     <p>
         &copy; Copyright 2013-2015, Carlos Peña, Tobias Malm.
-      Last updated on Aug 12, 2015.
+      Last updated on Sep 04, 2015.
     </p>
   </div>
   Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.

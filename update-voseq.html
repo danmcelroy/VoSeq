@@ -33,7 +33,7 @@
 
   
     <link rel="top" title="VoSeq 2.0.0-beta documentation" href="index.html"/>
-        <link rel="next" title="Plugins" href="plugins.html"/>
+        <link rel="next" title="Migrate VoSeq’s MySQL database" href="migrate-mysql.html"/>
         <link rel="prev" title="Update voucher" href="usage/update-voucher.html"/> 
 
   
@@ -113,12 +113,14 @@
 <li class="toctree-l1"><a class="reference internal" href="usage/create-datasets.html">Create datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/search.html">Search</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/upload-voucher-photos.html">Upload voucher photos</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/create-excel-table.html">Create Excel table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/create-voucher-table.html">Create Voucher table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/update-voucher.html">Update voucher</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">How to update Voseq</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#backup-your-mysql-database">Backup your MySQL database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#versions-2-0-0-and-later">Versions 2.0.0 and later</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#versions-1-7-4-and-earlier">Versions 1.7.4 and earlier</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="migrate-mysql.html">Migrate VoSeq&#8217;s MySQL database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="plugins.html#yahoo-maps-plugin">Yahoo! Maps plugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plugins.html#flickr-plugin">Flickr plugin</a></li>
@@ -171,36 +173,28 @@
             
   <div class="section" id="how-to-update-voseq">
 <h1>How to update Voseq<a class="headerlink" href="#how-to-update-voseq" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="versions-2-0-0-and-later">
+<h2>Versions 2.0.0 and later<a class="headerlink" href="#versions-2-0-0-and-later" title="Permalink to this headline">¶</a></h2>
 <p>The easiest way to update VoSeq (that does not require new install of software or database):</p>
 <ul>
 <li><p class="first"><a class="reference external" href="https://github.com/carlosp420/VoSeq/tags">Download the new files from github</a>.</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>Unpack</strong> the new files to your <strong>webserver directory</strong> (htdocs, webserver, etc).</li>
-<li><strong>Rename your old &#8220;in use&#8221; VoSeq folder</strong> something like, &#8216;VoSeq_old&#8217; or similar (e.g. &#8220;VoSeq-1.4.4&#8221; -&gt; &#8220;VoSeq_1.4.4_old&#8221;).</li>
-<li><strong>Give the newly downloaded VoSeq folder the same name as the old one had</strong> (e.g. &#8220;VoSeq-1.4.4&#8221;).</li>
-<li><strong>Copy the file &#8220;conf.php&#8221;</strong> (in main folder) from the old version (e.g. &#8220;VoSeq_1.4.4_old&#8221;) to the new version (e.g. &#8220;VoSeq_1.4.4&#8221;).</li>
+<li>Unpack the new files to your <strong>webserver directory</strong> (htdocs, webserver, etc).</li>
+<li>Rename your old &#8220;in use&#8221; VoSeq folder something like, <code class="docutils literal"><span class="pre">VoSeq_old</span></code> or similar (e.g. <code class="docutils literal"><span class="pre">VoSeq</span></code> -&gt; <code class="docutils literal"><span class="pre">VoSeq_old</span></code>).</li>
+<li>Give the newly downloaded VoSeq folder the same name as the old one had (e.g. <code class="docutils literal"><span class="pre">VoSeq</span></code>).</li>
+<li>Copy the file <code class="docutils literal"><span class="pre">conf.json</span></code> (in main folder) from the old version (e.g. <code class="docutils literal"><span class="pre">VoSeq_old</span></code>) to the new version (e.g. <code class="docutils literal"><span class="pre">VoSeq</span></code>).</li>
 </ul>
 </div></blockquote>
 </li>
 </ul>
-<p>Also:</p>
-<ul>
-<li><p class="first">If you have used and installed blast files, make sure to copy the files <strong>Blastdb_aliastool</strong>, <strong>Blast</strong>, <strong>Makeblastdb</strong> and <strong>Makembindex</strong> (.exe for all in windows), from the old version (blast/bin folder) to the new version (same folder). Then <strong>set permissions</strong> to read, write, and execute on the folder &#8220;blast/bin&#8221; and its content, as well as the folder &#8220;include/blast&#8221; (e.g. <code class="docutils literal"><span class="pre">chmod</span> <span class="pre">777</span> <span class="pre">-R</span> <span class="pre">path_to/~VoSeq_folder/blast/bin</span></code>) .</p>
-<blockquote>
-<div><ul class="simple">
-<li>For Mac users it may work better to use the <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">chown</span> <span class="pre">-R</span> <span class="pre">_www</span> <span class="pre">VoSeq_folder</span></code> command instead, since files belong to user instead of root!</li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first"><strong>If you have voucher photos stored</strong>, transfer them from the old one to the new one also (in <code class="docutils literal"><span class="pre">pictures</span></code> folder).</p>
-</li>
-</ul>
-<div class="section" id="backup-your-mysql-database">
-<h2>Backup your MySQL database<a class="headerlink" href="#backup-your-mysql-database" title="Permalink to this headline">¶</a></h2>
-<p>You can make backup copies of your data by using a button in the administrator interface.
-You will get all your voucher info and sequences into a SQL file. If your server dies you can easily restore your database by importing one of your backups using the <strong>Import database</strong> button.</p>
-<a class="reference internal image-reference" href="images/import_export_db.png"><img alt="images/import_export_db.png" class="align-center" src="images/import_export_db.png" style="width: 558px;" /></a>
+</div>
+<div class="section" id="versions-1-7-4-and-earlier">
+<h2>Versions 1.7.4 and earlier<a class="headerlink" href="#versions-1-7-4-and-earlier" title="Permalink to this headline">¶</a></h2>
+<p>As VoSeq has been rewritten completely you will need to download the source code
+and install it from scratch (See <a class="reference internal" href="intro/install.html#intro-install"><span>Download to install VoSeq</span></a>).</p>
+<p>If you have been using versions 1.7.4 and earlier you need to migrate your data
+from MySQL to postgreSQL (See <a class="reference internal" href="migrate-mysql.html#migrate-mysql"><span>Migrate VoSeq&#8217;s MySQL database</span></a>).</p>
 </div>
 </div>
 
@@ -210,7 +204,7 @@ You will get all your voucher info and sequences into a SQL file. If your server
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="plugins.html" class="btn btn-neutral float-right" title="Plugins" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="migrate-mysql.html" class="btn btn-neutral float-right" title="Migrate VoSeq’s MySQL database" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="usage/update-voucher.html" class="btn btn-neutral" title="Update voucher" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -223,7 +217,7 @@ You will get all your voucher info and sequences into a SQL file. If your server
   <div role="contentinfo">
     <p>
         &copy; Copyright 2013-2015, Carlos Peña, Tobias Malm.
-      Last updated on Aug 12, 2015.
+      Last updated on Sep 04, 2015.
     </p>
   </div>
   Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.

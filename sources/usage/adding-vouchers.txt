@@ -10,7 +10,7 @@ or specimens). You can add a single record by going to the
 
 .. image:: ../images/add_new_record.png
    :align: center
-   :width: 452px
+   :width: 600px
 
 The most important information to enter is the **code** of voucher, which has to
 be unique. VoSeq will refuse to accept duplicate codes and will issue error message
@@ -26,4 +26,4 @@ A similar procedure can be executed for uploading batches of sequences.
 
 .. image:: ../images/batch_record_upload.png
    :align: center
-   :width: 517px
+   :width: 600px

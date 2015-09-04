@@ -113,12 +113,14 @@
 <li class="toctree-l1"><a class="reference internal" href="create-datasets.html">Create datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="search.html">Search</a></li>
 <li class="toctree-l1"><a class="reference internal" href="upload-voucher-photos.html">Upload voucher photos</a></li>
-<li class="toctree-l1"><a class="reference internal" href="create-excel-table.html">Create Excel table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create-voucher-table.html">Create Voucher table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="update-voucher.html">Update voucher</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../update-voseq.html">How to update Voseq</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#backup-your-mysql-database">Backup your MySQL database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#versions-2-0-0-and-later">Versions 2.0.0 and later</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update-voseq.html#versions-1-7-4-and-earlier">Versions 1.7.4 and earlier</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../migrate-mysql.html">Migrate VoSeq&#8217;s MySQL database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins.html">Plugins</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../plugins.html#yahoo-maps-plugin">Yahoo! Maps plugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plugins.html#flickr-plugin">Flickr plugin</a></li>
@@ -174,7 +176,7 @@
 <p>After successful installation, the first thing to do is to add records (vouchers,
 or specimens). You can add a single record by going to the
 <strong>Administrator interface</strong> and clicking on the link <strong>Add new record</strong>.</p>
-<a class="reference internal image-reference" href="../images/add_new_record.png"><img alt="../images/add_new_record.png" class="align-center" src="../images/add_new_record.png" style="width: 452px;" /></a>
+<a class="reference internal image-reference" href="../images/add_new_record.png"><img alt="../images/add_new_record.png" class="align-center" src="../images/add_new_record.png" style="width: 600px;" /></a>
 <p>The most important information to enter is the <strong>code</strong> of voucher, which has to
 be unique. VoSeq will refuse to accept duplicate codes and will issue error message
 if this happens. Another necessary field is the <strong>Genus</strong> entry, while all other
@@ -185,7 +187,7 @@ how to upload specimen data.
 You can quickly import voucher data from a table in MS Excel by uploading the file
 into VoSeq, provided that you use the right field headers.
 A similar procedure can be executed for uploading batches of sequences.</p>
-<a class="reference internal image-reference" href="../images/batch_record_upload.png"><img alt="../images/batch_record_upload.png" class="align-center" src="../images/batch_record_upload.png" style="width: 517px;" /></a>
+<a class="reference internal image-reference" href="../images/batch_record_upload.png"><img alt="../images/batch_record_upload.png" class="align-center" src="../images/batch_record_upload.png" style="width: 600px;" /></a>
 </div>
 
 
@@ -207,7 +209,7 @@ A similar procedure can be executed for uploading batches of sequences.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2013-2015, Carlos Peña, Tobias Malm.
-      Last updated on Aug 12, 2015.
+      Last updated on Sep 04, 2015.
     </p>
   </div>
   Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
