@@ -81,7 +81,7 @@ import test data:
 
 
 Set up an administrator account by using the command ``make admin``
-(see :ref:`Administrate the server`).
+(see :ref:`administrate-server`).
 
 It is necessary to index your imported data:
 

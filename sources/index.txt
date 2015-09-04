@@ -7,23 +7,6 @@
 Welcome to VoSeq |version| documentation!
 #########################################
 
-============
-Getting help
-============
-
-* Try the :doc:`FAQ <faq>` -- with answers to common questions.
-* If you need help regarding installation or usage of th application, please
-  contact `Carlos Peña <mycalesis@gmail.com>`_.
-* You can also subscribe to VoSeq's discussion list on
-  `Google Groups <https://groups.google.com/d/forum/voseq-discussion-list>`_.
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-
-   news
-   faq
-
 
 Welcome to **VoSeq**, a database to store voucher and DNA sequence data for
 phylogenetic analysis. It's a unique database that enables to digitize
@@ -43,6 +26,27 @@ VoSeq is written in `Python <https://www.python.org/>`_. It uses
 `PostgreSQL <http://www.postgresql.org/>`_ as database back-end and it is
 designed to run either locally in your own computer or on a remote (commercial)
 server service.
+
+* Source code: https://github.com/carlosp420/VoSeq
+* Chat: https://gitter.im/carlosp420/VoSeq
+
+============
+Getting help
+============
+
+* Try the :doc:`FAQ <faq>` -- with answers to common questions.
+* If you need help regarding installation or usage of th application, please
+  contact `Carlos Peña <mycalesis@gmail.com>`_.
+* You can also subscribe to VoSeq's discussion list on
+  `Google Groups <https://groups.google.com/d/forum/voseq-discussion-list>`_.
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+
+   news
+   faq
+
 
 ==========
 Start here
@@ -68,6 +72,8 @@ Start here
    update-voseq
    migrate-mysql
    plugins
+   authors
+   thanks
 
 :doc:`intro/overview`
    Find out what VoSeq can do. It might be right for you.

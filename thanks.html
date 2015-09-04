@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Migrate VoSeq’s MySQL database &mdash; VoSeq 2.0.0-beta documentation</title>
+  <title>Thanks &mdash; VoSeq 2.0.0-beta documentation</title>
   
 
   
@@ -33,8 +33,7 @@
 
   
     <link rel="top" title="VoSeq 2.0.0-beta documentation" href="index.html"/>
-        <link rel="next" title="Plugins" href="plugins.html"/>
-        <link rel="prev" title="How to update Voseq" href="update-voseq.html"/> 
+        <link rel="prev" title="Authors" href="authors.html"/> 
 
   
   <script src="static/js/modernizr.min.js"></script>
@@ -124,7 +123,7 @@
 <li class="toctree-l2"><a class="reference internal" href="update-voseq.html#versions-1-7-4-and-earlier">Versions 1.7.4 and earlier</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Migrate VoSeq&#8217;s MySQL database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="migrate-mysql.html">Migrate VoSeq&#8217;s MySQL database</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="plugins.html#google-maps-plugin">Google Maps plugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plugins.html#flickr-plugin">Flickr plugin</a></li>
@@ -141,9 +140,9 @@
 <li class="toctree-l2"><a class="reference internal" href="authors.html#contributors">Contributors</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="thanks.html">Thanks</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="thanks.html#libraries">Libraries:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="thanks.html#beta-testers">Beta Testers:</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Thanks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#libraries">Libraries:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#beta-testers">Beta Testers:</a></li>
 </ul>
 </li>
 </ul>
@@ -170,11 +169,11 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Migrate VoSeq&#8217;s MySQL database</li>
+    <li>Thanks</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="sources/migrate-mysql.txt" rel="nofollow"> View page source</a>
+            <a href="sources/thanks.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -183,31 +182,24 @@
 </div>
           <div role="main" class="document">
             
-  <div class="section" id="migrate-voseq-s-mysql-database">
-<span id="migrate-mysql"></span><h1>Migrate VoSeq&#8217;s MySQL database<a class="headerlink" href="#migrate-voseq-s-mysql-database" title="Permalink to this headline">¶</a></h1>
-<p>VoSeq&#8217;s versions 1.7.4 and earlier used the MySQL database to store data.
-Starting with version 2.0.0 the database to be used is postgreSQL.</p>
-<p>Migrating the data can be easily done from the command line:</p>
+  <div class="section" id="thanks">
+<span id="id1"></span><h1>Thanks<a class="headerlink" href="#thanks" title="Permalink to this headline">¶</a></h1>
+<p>VoSeq is possible because of great libraries and people.</p>
+<div class="section" id="libraries">
+<h2>Libraries:<a class="headerlink" href="#libraries" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Step 1. Export your data in MySQL as an XML formatted file:</li>
+<li>Django</li>
+<li>Pycopg</li>
+<li>postgreSQL</li>
+<li>NCBI BLAST</li>
 </ul>
-<div class="highlight-shell"><div class="highlight"><pre>mysqldump --xml voseq_database -u user &gt; dump.xml
-</pre></div>
 </div>
+<div class="section" id="beta-testers">
+<h2>Beta Testers:<a class="headerlink" href="#beta-testers" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Step 2. After you have downloaded the source code of VoSeq (versions 2.0.0 and later)
-and configured your postgreSQL installation (See <a class="reference internal" href="intro/install.html#intro-install"><span>Download to install VoSeq</span></a>), you can
-import your data with the following commands:</li>
+<li><a class="reference external" href="https://github.com/cdoorenweerd">&#64;cdoorenweerd</a></li>
+<li><a class="reference external" href="https://github.com/niklas-w">&#64;niklas-w</a></li>
 </ul>
-<div class="highlight-shell"><div class="highlight"><pre><span class="nb">cd</span> /path/to/VoSeq/
-make migrations
-python voseq/manage.py migrate_db --dumpfile<span class="o">=</span>/path/to/dump.xml --settings<span class="o">=</span>voseq.settings.local
-</pre></div>
-</div>
-<p>If you have used a prefix for your tables in the old VoSeq, you can optionally
-input this as an argument for the import script:</p>
-<div class="highlight-shell"><div class="highlight"><pre>python voseq/manage.py migrate_db --dumpfile<span class="o">=</span>dump.xml --prefix<span class="o">=</span>voseq_ --settings<span class="o">=</span>voseq.settings.local
-</pre></div>
 </div>
 </div>
 
@@ -217,10 +209,8 @@ input this as an argument for the import script:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="plugins.html" class="btn btn-neutral float-right" title="Plugins" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="update-voseq.html" class="btn btn-neutral" title="How to update Voseq" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="authors.html" class="btn btn-neutral" title="Authors" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
