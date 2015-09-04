@@ -2,26 +2,30 @@
 Plugins
 -------
 
+.. _google_maps_plugin:
 
 ^^^^^^^^^^^^^^^^^^
-Yahoo! Maps plugin
+Google Maps plugin
 ^^^^^^^^^^^^^^^^^^
 
-**VoSeq** is able to interact with Yahoo! Maps to create on-the-fly maps for vouchers when geographic coordinates are present in voucher pages.
-After installing VoSeq, you can enable this capability by getting a **Yahoo! Maps API key** from them and writing them in your ``conf.php`` file:
+**VoSeq** is able to interact with Google Maps to create on-the-fly maps for
+vouchers when geographic coordinates are present in voucher pages.
+After installing VoSeq, you can enable this capability by getting a
+**Google Maps API key** from them and writing them in your ``conf.json`` file:
 
-#. Get an API key from http://developer.yahoo.com/maps/simple/
-#. After filling in the required information you will be given a **Consumer Key** consisting of a long string of seemingly random characters that end with two dashes:
+1. Go to https://developers.google.com/maps/documentation/javascript/tutorial and
+   get a **Google Maps JavaScript API** key for yourself.
+2. Open your ``conf.json`` file in any text editor and write your API key by
+   replacing the value in the line:
 
-    * ``MwRGV2Jm1zbWNHbmnM9Y2Q9WVdrOVVHdj0yzlNQS0tJ9uc3VtZXJzZWNyZXQmeD1iMw--``
+.. code-block:: javascript
 
-#. Remove the two dashes from the end and copy your key into the ``conf.php`` file as a value for the variable ``$yahoo_key``. Like the example below, including quotations and semicolon:
+   "GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key"
 
-    * ``$yahoo_key = "MwRGV2Jm1zbWNHbmnM9Y2Q9WVdrOVVHdj0yzlNQS0tJ9uc3VtZXJzZWNyZXQmeD1iMw";``
-
-#. Save the file and exit.
-
-After doing this, VoSeq will be able to pull maps from Yahoo! whenever there is geographic information in your database. Note that you need to enter the geographic coordinates into VoSeq converted into decimal format, using the sign minus for the Southern and Western hemispheres.
+3. Save the file, exit and VoSeq will be able to pull maps from Google whenever
+   there is geographic information in your database.
+   Note that you need to enter the geographic coordinates into VoSeq converted
+   into decimal format, using the sign minus for the Southern and Western hemispheres.
 
 
 
@@ -31,26 +35,26 @@ After doing this, VoSeq will be able to pull maps from Yahoo! whenever there is 
 Flickr plugin
 ^^^^^^^^^^^^^
 
-**VoSeq** hosts all the specimen photos in `Flickr <http://www.flickr.com/>`_. If you have a free account you can host up to 200 photos. The Pro account allows you hosting unlimited number of photos for a yearly fee (25 USD).
+VoSeq is able to host all the specimen photos in Flickr. If you have a free
+account you can host up to 200 photos. The Pro account allows you hosting
+unlimited number of photos for a yearly fee (25 USD).
 
-#. You need to get an API key from Flickr.
-#. Create and account in `Flickr <http://www.flickr.com/>`_ (if you don't own one already)
-#. Go to http://nymphalidae.utu.fi/cpena/VoSeq/
-#. Follow the instructions to get an **API key**, **Secret key** and **Token key**.
-#. After submitting you will get your **Key**, **Secret** and **Token**. Write down those keys.
-#. From a text editor software, edit the file ``conf.php`` by copying your keys in it.
-#. For example [these are not real keys and will not work if you use them]:
+You need to get `API keys from Flickr <https://www.flickr.com/services/api/keys/>`__
+and place them in the ``config.json`` configuration file of VoSeq:
 
-    * ``$flickr_api_key = "2d7f59f9aaa2d5c0a2782d7f5d9083a6";``
-    * ``$flickr_api_secret = "ef0def0f3d5f3f15f1";``
-    * ``$flickr_api_token = "61607157718372495-f5524ead33b43129";``
+* Create and account in Flickr (if you don't own one already)
+* Follow the instructions to get an API key and Secret key.
+* After submitting you will get your Key and Secret. Write down those keys.
+* Using a text editor software, edit the file ``config.json`` by copying your keys in it.
 
-#. Save and exit.
+* For example [these are not real keys and will not work if you use them]:
 
-Thus, every picture that you upload into your VoSeq installation will be uploaded into your Flickr account.
+.. code-block:: javascript
 
-.. note:: You can share your voucher photos with the Encyclopedia or Life. :ref:`sharing_photos_with_eol`
+    "FLICKR_API_KEY": "2d7f59f9aaa2d5c0a2782d7f5d9083a6",
+    "FLICKR_API_SECRET": "ef0def0f3d5f3f15f1"
 
+* Save and exit.
 
 
 
@@ -59,77 +63,19 @@ Thus, every picture that you upload into your VoSeq installation will be uploade
 ^^^^^^^^^^^^
 BLAST plugin
 ^^^^^^^^^^^^
+You can blast your sequences within VoSeq provided that the BLAST software from
+NCBI is installed in your computer or server.
+If you have a Ubuntu server you can easily install BLAST with the following command:
 
-VoSeq has `BLAST capabilities <http://en.wikipedia.org/wiki/BLAST>`_.
+.. code-block:: shell
 
-You can search for homologous sequences of your markers in GenBank. If you have a VoSeq installation in your work computer (or your server provider allows you to run the BLAST executable files), you do local BLASTs. For example, BLAST any or your sequences against all sequences of the same gene, or against all your sequences (full BLAST). Click on the "BLAST" icons in your voucher's pages:
+    sudo apt-get install ncbi-blast+
 
-.. image:: images/voseq01.png
-   :align: center
-   :width: 800px
-
-You can also copy and paste any new sequence into VoSeq's **Blast new sequence** tool and see whether there are any similar sequence in your data (this tool is located on the sidebar on the right).
-
-Remember that you need to download from NCBI the stand alone BLAST executable files and copy/install them in one of VoSeq's folders:
-
-* In Mac OS X: when you install from the .DMG package, the executable files will be written in the folder: ``/usr/local/ncbi/blast/bin``. You just need to copy them to the right folder in VoSeq:
-
-    * ``mkdir ~/Sites/VoSeq/blast/bin``
-    * ``cp /usr/local/ncbi/blast/bin/*   ~/Sites/VoSeq/blast/bin/.``
-
-* In Linux: ``/path/to/your/VoSeq/blast/bin/``
-* In Windows: ``C:\Program Files\Apache Software Foundation\Apache2.2\htdocs\VoSeq\blast\bin\``
-* It is important that the executable files are placed inside the folder **bin**.
-
-
-^^^^^^^^^^^^^^^^^^^^
-Integration with EOL
-^^^^^^^^^^^^^^^^^^^^
-
-#. VoSeq makes it easy to share your voucher photos with EOL. More information here :ref:`sharing_photos_with_eol`.
-#. VoSeq makes automated calls to EOL's web services for pulling information on authors and date of description for species. VoSeq sends genus and species names and waits for a response. If EOL response is positive, the full species name will be included in voucher pages:
-
-.. image:: images/authority_from_eol.png
-   :align: center
-   :width: 574px
+After this the BLAST tools in VoSeq should work right away.
 
 
 
-.. _sharing_photos_with_eol:
-
-^^^^^^^^^^^^^^^^^^^^^^^
-Sharing Photos with EOL
-^^^^^^^^^^^^^^^^^^^^^^^
-
-VoSeq makes it easy to share your voucher photos with EOL. You can submit your best photos to EOL from VoSeq with just one click.
-
-If you haven't done it already, you need to create an account in Flickr. Then log in to Flickr with your account and join the EOL group:
-
-#. Go to http://www.flickr.com/groups/encyclopedia_of_life
-#. Click **"Join This Group"**
-
-Be aware that EOL requires that your photo is under any of the following licenses:
-
-* Creative Commons Attribution (`CC-BY <http://www.flickr.com/creativecommons/>`_)
-* Creative Commons Non-Commercial (`CC-BY-NC <http://www.flickr.com/creativecommons/>`_)
-* Creative Commons Share-Alike (`CC-BY-SA <http://www.flickr.com/creativecommons/>`_)
-* Creative Commons Non-Commercial Share Alike (`CC-BY-NC-SA <http://www.flickr.com/creativecommons/>`_)
-
-In your VoSeq installation, you will see a button:
-
-.. image:: images/share_with_eol.png
-   :align: left
-   :width: 158px
-
-under your voucher photos. If you click this button, VoSeq will add a "machine tag" to the corresponding page in Flickr so that in can be harvested by EOL.
-
-Thus you will be able to see your photo in EOL's pool of photos in their Flickr account http://www.flickr.com/groups/encyclopedia_of_life/pool/with/4096153224/
-
-EOL harvests the photos quite frequently, so in one day or two, you will be able to find your photo in the respective page in EOL.
-
-
-
-
+.. _gbif:
 
 ^^^^^^^^^^^^^^^^^^^^^
 Integration with GBIF
@@ -171,3 +117,5 @@ Create a dump file and use in an IPT installation
 .. image:: images/ipt02.png
    :align: center
    :width: 625px
+
+
