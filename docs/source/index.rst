@@ -65,6 +65,7 @@ Start here
    usage/update-voucher
 
    update-voseq
+   migrate-mysql
    plugins
 
 :doc:`intro/overview`

@@ -70,7 +70,7 @@ Edit or create a ``conf.json`` file to specify your settings. See
 :ref:`configure`.
 
 Additionally, you can import your old VoSeq database from a MySQL dump (see
-:ref:`Migrate VoSeq database`). If you don't import anything your VoSeq
+:ref:`migrate-mysql`). If you don't import anything your VoSeq
 installation will be usable, but empty. In such a case, you might want to
 import test data:
 
