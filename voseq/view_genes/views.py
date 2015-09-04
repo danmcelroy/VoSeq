@@ -46,10 +46,10 @@ def gene(request, gene_code):
     username = get_username(request)
 
     queryset = Genes.objects.filter(gene_code=gene_code)
-    if len(queryset) < 1:
-        item = ''
-    else:
+    if queryset:
         item = queryset[0]
+    else:
+        item = ''
 
         if ';' in item.intron:
             introns = item.intron.split(';')
