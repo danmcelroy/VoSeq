@@ -14,19 +14,6 @@ The easiest way to update VoSeq (that does not require new install of software o
     * Copy the file ``conf.json`` (in main folder) from the old version (e.g. ``VoSeq_old``) to the new version (e.g. ``VoSeq``).
 
 
-* **If you have voucher photos stored**, transfer them from the old one to the new one also (in ``pictures`` folder).
-
-
-Backup your MySQL database
---------------------------
-
-You can make backup copies of your data by using a button in the administrator interface.
-You will get all your voucher info and sequences into a SQL file. If your server dies you can easily restore your database by importing one of your backups using the **Import database** button.
-
-.. image:: images/import_export_db.png
-:align: center
-   :width: 558px
-
 Versions 1.7.4 and earlier
 """"""""""""""""""""""""""
 

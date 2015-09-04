@@ -53,6 +53,7 @@ Start here
 
    intro/overview
    intro/install
+   intro/administrate-server
 
    usage/adding-vouchers
    usage/adding-genes
@@ -79,6 +80,7 @@ Start here
 
 
 .. _citing-voseq:
+
 =================
 How to cite VoSeq
 =================
