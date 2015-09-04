@@ -398,7 +398,7 @@ class ParseXML(object):
             print("Uploading table `public_interface_sequences`")
         Sequences.objects.bulk_create(seqs_objects)
 
-        if len(seqs_not_to_insert) > 0:
+        if seqs_not_to_insert:
             if self.verbosity != 0:
                 print("ERROR: Couldn't insert %i sequences due to lack of reference vouchers".format(len(seqs_not_to_insert)))
             for i in seqs_not_to_insert:
