@@ -251,9 +251,8 @@ class Dataset(object):
         aa_sequence = ''
         if this_gene_model['genetic_code'] is None or this_gene_model['reading_frame'] is None:
             self.warnings.append(
-                "Cannot translate gene %s sequences into aminoacids."
-                " You need to define reading_frame and/or genetic_code." %
-                this_gene_model['gene_code'])
+                "Cannot translate gene {} sequences into aminoacids."
+                " You need to define reading_frame and/or genetic_code.".format(this_gene_model['gene_code']))
         else:
             aa_sequence, warning = utils.translate_to_protein(this_gene_model,
                                                               sequence, '',
@@ -287,8 +286,8 @@ class Dataset(object):
 
             for seq_record in self.seq_objs[gene_code]:
                 if self.reading_frames[gene_code] is None:
-                    self.warnings.append("Reading frame for gene %s hasn't been specified so "
-                                         "it cannot be included in your dataset." % gene_code)
+                    self.warnings.append("Reading frame for gene {} hasn't been specified so "
+                                         "it cannot be included in your dataset.".format(gene_code))
                     continue
 
                 if this_gene is None:
@@ -313,19 +312,19 @@ class Dataset(object):
             seq_str += '\n' + '--------------------'
 
         if self.file_format == 'MEGA':
-            seq_str = '\n[%s]' % this_gene
+            seq_str = '\n[{}]'.format(this_gene)
 
         if self.file_format == 'GenbankFASTA':
-            seq_str = '\n[%s]' % this_gene
+            seq_str = '\n[{}]'.format(this_gene)
 
         if self.file_format == 'PHY':
-            seq_str = '\n[%s]' % this_gene
+            seq_str = '\n[{}]'.format(this_gene)
 
         if self.file_format == 'TNT':
-            seq_str = '\n[%s]' % this_gene
+            seq_str = '\n[{}]'.format(this_gene)
 
         if self.file_format == 'NEXUS':
-            seq_str = '\n[%s]' % this_gene
+            seq_str = '\n[{}]'.format(this_gene)
         return seq_str
 
     def format_record_id_and_seq_for_dataset(self, seq_record_id, seq_record_seq):
@@ -362,8 +361,8 @@ class Dataset(object):
 
             for seq_record in self.seq_objs[gene_code]:
                 if self.reading_frames[gene_code] is None:
-                    self.warnings.append("Reading frame for gene %s hasn't been specified so "
-                                         "it cannot be included in your dataset." % gene_code)
+                    self.warnings.append("Reading frame for gene {} hasn't been specified so "
+                                         "it cannot be included in your dataset.".format(gene_code))
                     continue
 
                 if this_gene is None:
@@ -485,8 +484,8 @@ class Dataset(object):
 
             for gene_code in self.seq_objs:
                 if self.reading_frames[gene_code] is None:
-                    self.warnings.append("Reading frame for gene %s hasn't been specified so "
-                                         "it cannot be included in your dataset." % gene_code)
+                    self.warnings.append("Reading frame for gene {} hasn't been specified so "
+                                         "it cannot be included in your dataset.".format(gene_code))
                     continue
 
                 this_gene = None
@@ -545,8 +544,8 @@ class Dataset(object):
                 this_gene = None
                 for seq_record in self.seq_objs[gene_code]:
                     if self.reading_frames[gene_code] is None:
-                        self.warnings.append("Reading frame for gene %s hasn't been specified so "
-                                             "it cannot be included in your dataset." % gene_code)
+                        self.warnings.append("Reading frame for gene {} hasn't been specified so "
+                                             "it cannot be included in your dataset.".format(gene_code))
                         continue
 
                     if this_gene is None:
@@ -569,8 +568,8 @@ class Dataset(object):
                 this_gene = None
                 for seq_record in self.seq_objs[gene_code]:
                     if self.reading_frames[gene_code] is None:
-                        self.warnings.append("Reading frame for gene %s hasn't been specified so "
-                                             "it cannot be included in your dataset." % gene_code)
+                        self.warnings.append("Reading frame for gene {} hasn't been specified so "
+                                             "it cannot be included in your dataset.".format(gene_code))
                         continue
 
                     if this_gene is None:
@@ -775,8 +774,8 @@ class CreateGenbankFasta(Dataset):
                             sequence = line[-1]
 
                             if this_gene_model['genetic_code'] is None or this_gene_model['reading_frame'] is None:
-                                self.warnings.append("Cannot translate gene %s sequences into aminoacids."
-                                                     " You need to define reading_frame and/or genetic_code." % this_gene_model['gene_code'])
+                                self.warnings.append("Cannot translate gene {} sequences into aminoacids."
+                                                     " You need to define reading_frame and/or genetic_code.".format(this_gene_model['gene_code']))
                                 continue
                             else:
                                 aa_sequence, warning = utils.translate_to_protein(this_gene_model, sequence, '', voucher_code, self.file_format)
@@ -784,7 +783,7 @@ class CreateGenbankFasta(Dataset):
                                     self.warnings.append(warning)
 
                             if aa_sequence.strip() == '':
-                                self.warnings.append("Sequence for %s %s was empty" % (voucher_code, this_gene))
+                                self.warnings.append("Sequence for {0} {1} was empty".format(voucher_code, this_gene))
 
                             sequence = utils.strip_question_marks(sequence)[0]
                             out += [line[0] + '\n' + sequence.replace('?', 'N') + '\n']
