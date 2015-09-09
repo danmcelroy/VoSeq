@@ -244,13 +244,13 @@ def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_for
         try:
             prot_sequence = gapped_translation(seq_obj, gene_model['genetic_code'])
         except TranslationError as e:
-            print("Error %s" % e)
+            print("Error {}".format(e))
             return "", ""
     else:
         try:
             prot_sequence = seq_obj.translate(table=gene_model['genetic_code'])
         except TranslationError as e:
-            print("Error %s" % e)
+            print("Error {}".format(e))
             return "", ""
 
     if '*' in prot_sequence:
