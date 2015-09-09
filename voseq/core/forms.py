@@ -61,6 +61,6 @@ class BaseDatasetForm(forms.Form):
             raise forms.ValidationError("You need to enter at least some "
                                         "voucher codes or select a taxonset.")
 
-        if geneset is None and len(gene_codes) < 1:
+        if geneset is None and not gene_codes:
             raise forms.ValidationError("You need to enter at least some "
                                         "gene codes or select a geneset.")
