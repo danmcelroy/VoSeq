@@ -140,7 +140,7 @@ class ParseXML(object):
                 break
 
         if our_data is False:
-            raise ValueError("Could not find table %s in database dump file." % this_table)
+            raise ValueError("Could not find table {} in database dump file.".format(this_table))
 
         self.table_genesets_items = []
         for row in our_data.findall('row'):
@@ -184,7 +184,7 @@ class ParseXML(object):
                 break
 
         if our_data is False:
-            raise ValueError("Could not find table %s in database dump file." % this_table)
+            raise ValueError("Could not find table {} in database dump file.".format(this_table))
 
         self.table_members_items = []
         for row in our_data.findall('row'):
@@ -231,7 +231,7 @@ class ParseXML(object):
                 break
 
         if our_data is False:
-            raise ValueError("Could not find table %s in database dump file." % this_table)
+            raise ValueError("Could not find table {} in database dump file.".format(this_table))
 
         self.table_primers_items = []
         for row in our_data.findall('row'):
@@ -298,7 +298,7 @@ class ParseXML(object):
                 break
 
         if our_data is False:
-            raise ValueError("Could not find table %s in database dump file." % this_table)
+            raise ValueError("Could not find table {} in database dump file.".format(this_table))
 
         self.table_sequences_items = []
         for row in our_data.findall('row'):
@@ -400,7 +400,7 @@ class ParseXML(object):
 
         if seqs_not_to_insert:
             if self.verbosity != 0:
-                print("ERROR: Couldn't insert %i sequences due to lack of reference vouchers".format(len(seqs_not_to_insert)))
+                print("ERROR: Couldn't insert {} sequences due to lack of reference vouchers".format(len(seqs_not_to_insert)))
             for i in seqs_not_to_insert:
                 if self.verbosity != 0:
                     print(i['code_id'], i['gene_code'])
@@ -424,7 +424,7 @@ class ParseXML(object):
                 break
 
         if our_data is False:
-            raise ValueError("Could not find table %s in database dump file." % this_table)
+            raise ValueError("Could not find table {} in database dump file.".format(this_table))
 
         self.table_taxonsets_items = []
         for row in our_data.findall('row'):
@@ -466,7 +466,7 @@ class ParseXML(object):
                 break
 
         if our_data is False:
-            raise ValueError("Could not find table %s in database dump file." % this_table)
+            raise ValueError("Could not find table {} in database dump file.".format(this_table))
 
         self.table_vouchers_items = []
         for row in our_data.findall('row'):
@@ -746,7 +746,7 @@ class ParseXML(object):
             date_obj = None
 
         if self.verbosity != 0:
-            print("WARNING:: Could not parse %s properly." % field)
+            print("WARNING:: Could not parse {} properly.".format(field))
         return date_obj
 
 
