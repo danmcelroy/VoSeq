@@ -9,8 +9,8 @@ Libraries:
 ----------
 
 * Django
-* Pycopg
-* postgreSQL
+* psycopg
+* PostgreSQL
 * NCBI BLAST
 
 Beta Testers:
