@@ -254,7 +254,7 @@ def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_for
             return "", ""
 
     if '*' in prot_sequence:
-        warning = 'Gene %s, sequence %s contains stop codons "*"' % (gene_model['gene_code'], seq_id)
+        warning = 'Gene {0}, sequence {1} contains stop codons "*"'.format(gene_model['gene_code'], seq_id)
     else:
         warning = ''
 
