@@ -39,7 +39,7 @@
     var marker = new google.maps.Marker({
         position: myLatlng,
         map: map,
-        title: "{{ voucher.specificLocality }}"
+        title: "{{ voucher.specific_locality }}"
     });
   }
   google.maps.event.addDomListener(window, 'load', initialize);
@@ -125,7 +125,7 @@
             </tr>
             <tr>
                 <td colspan="2"><b>Specific Locality:</b></td>
-                <td colspan="2">{{ voucher.specificLocality }}</td>
+                <td colspan="2">{{ voucher.specific_locality }}</td>
             </tr>
 
             <tr>
