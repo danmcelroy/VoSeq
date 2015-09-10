@@ -29,10 +29,10 @@ class VoucherTableForm(BaseDatasetForm):
         label='Locality and collector info:',
         choices=[
             ('country', 'Country'),
-            ('specificLocality', 'Locality'),
+            ('specific_locality', 'Locality'),
             ('collector', 'Collector'),
-            ('dateCollection', 'Coll. date'),
-            ('determinedBy', 'Determined by'),
+            ('date_collection', 'Coll. date'),
+            ('determined_by', 'Determined by'),
             ('altitude', 'Altitude'),
             ('latitude', 'Latitude'),
             ('longitude', 'Longitude'),

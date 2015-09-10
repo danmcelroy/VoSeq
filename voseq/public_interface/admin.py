@@ -21,7 +21,7 @@ from public_interface.forms import SequencesAdminForm
 
 class ImageInLine(admin.StackedInline):
     model = LocalImages
-    fields = ['voucherImage']
+    fields = ['voucher_image']
 
 
 class FlickImageInLine(admin.StackedInline):
@@ -35,11 +35,11 @@ class BatchImportVouchersResource(resources.ModelResource):
         import_id_fields = ('code',)
         fields = ('code', 'orden', 'superfamily', 'family', 'subfamily', 'tribe',
                   'subtribe', 'genus', 'species', 'subspecies', 'author',
-                  'hostorg', 'typeSpecies', 'country', 'specificLocality',
-                  'collector', 'dateCollection', 'latitude', 'longitude',
-                  'max_altitude', 'min_altitude', 'voucherCode', 'voucher',
-                  'voucherLocality', 'determinedBy', 'sex', 'extraction',
-                  'extractionTube', 'dateExtraction', 'publishedIn', 'notes',
+                  'hostorg', 'type_species', 'country', 'specific_locality',
+                  'collector', 'date_collection', 'latitude', 'longitude',
+                  'max_altitude', 'min_altitude', 'voucher_code', 'voucher',
+                  'voucher_locality', 'determined_by', 'sex', 'extraction',
+                  'extraction_tube', 'date_extraction', 'published_in', 'notes',
                   )
 
 
@@ -47,7 +47,7 @@ class BatchImportSequencesResource(resources.ModelResource):
     class Meta:
         model = Sequences
         import_id_fields = ('code', 'gene_code')
-        fields = ('code', 'gene_code', 'sequences', 'accession', 'labPerson', 'genbank',
+        fields = ('code', 'gene_code', 'sequences', 'accession', 'lab_person', 'genbank',
                   'notes')
 
 
@@ -63,26 +63,26 @@ class VouchersAdmin(ImportExportModelAdmin):
 
     actions = ['batch_changes']
 
-    fieldsets = [('Voucher Information', {'fields': ['code', 'voucher', 'voucherLocality',
-                                                     'voucherCode']}
+    fieldsets = [('Voucher Information', {'fields': ['code', 'voucher', 'voucher_locality',
+                                                     'voucher_code']}
                   ),
 
                  ('Specimen Information', {'fields': ['orden', 'superfamily', 'family',
                                                       'subfamily', 'tribe', 'subtribe',
                                                       'genus', 'species', 'subspecies',
-                                                      'hostorg', 'author', 'typeSpecies',
+                                                      'hostorg', 'author', 'type_species',
                                                       ],
                                            'classes': ['collapse']}),
 
-                 ('Collection Information', {'fields': ['country', 'specificLocality',
+                 ('Collection Information', {'fields': ['country', 'specific_locality',
                                                         'latitude', 'longitude',
                                                         'max_altitude', 'min_altitude',
                                                         'collector', 'code_bold',
-                                                        'dateCollection', 'determinedBy',
+                                                        'date_collection', 'determined_by',
                                                         'sex', 'extractor', 'extraction',
-                                                        'extractionTube', 'notes',
-                                                        'publishedIn', 'dateExtraction',
-                                                        'edits', 'latesteditor',
+                                                        'extraction_tube', 'notes',
+                                                        'published_in', 'date_extraction',
+                                                        'edits', 'latest_editor',
                                                         ],
                                              'classes': ['collapse']}),
                  ]
@@ -114,8 +114,8 @@ class VouchersAdmin(ImportExportModelAdmin):
 class SequencesAdmin(ImportExportModelAdmin):
     # TODO let users know that code and genecode keywords act as AND boolean search
     search_fields = ['=code__code', '=gene_code']
-    list_display = ['code', 'gene_code', 'genbank', 'accession', 'labPerson', 'notes', 'time_edited', 'time_created']
-    fields = ['code', 'gene_code', 'sequences', 'genbank', 'accession', 'labPerson', 'notes']
+    list_display = ['code', 'gene_code', 'genbank', 'accession', 'lab_person', 'notes', 'time_edited', 'time_created']
+    fields = ['code', 'gene_code', 'sequences', 'genbank', 'accession', 'lab_person', 'notes']
     form = SequencesAdminForm
     resource_class = BatchImportSequencesResource
 
