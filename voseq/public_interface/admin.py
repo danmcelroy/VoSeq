@@ -38,7 +38,7 @@ class BatchImportVouchersResource(resources.ModelResource):
                   'hostorg', 'typeSpecies', 'country', 'specificLocality',
                   'collector', 'dateCollection', 'latitude', 'longitude',
                   'max_altitude', 'min_altitude', 'voucherCode', 'voucher',
-                  'voucherLocality', 'determinedBy', 'sex', 'extraction',
+                  'voucher_locality', 'determinedBy', 'sex', 'extraction',
                   'extractionTube', 'dateExtraction', 'published_in', 'notes',
                   )
 
@@ -63,7 +63,7 @@ class VouchersAdmin(ImportExportModelAdmin):
 
     actions = ['batch_changes']
 
-    fieldsets = [('Voucher Information', {'fields': ['code', 'voucher', 'voucherLocality',
+    fieldsets = [('Voucher Information', {'fields': ['code', 'voucher', 'voucher_locality',
                                                      'voucherCode']}
                   ),
 
