@@ -207,7 +207,7 @@ class BatchChangesForm(forms.Form):
                   'determinedBy', 'published_in', 'country', 'specificLocality', 'latitude',
                   'longitude', 'max_altitude', 'min_altitude', 'dateCollection', 'collector',
                   'hostorg', 'dateExtraction', 'extractor', 'extraction', 'extractionTube',
-                  'voucher', 'voucherLocality', 'latesteditor', 'edits', 'notes']
+                  'voucher', 'voucher_locality', 'latesteditor', 'edits', 'notes']
     '''
 
     NULL = None
