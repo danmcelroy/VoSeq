@@ -322,8 +322,8 @@ class FlickrImages(models.Model):
     def make_description(self, instance):
         description = '{}. {}. {}'.format(
             instance.voucher.country,
-            instance.voucher.specificLocality,
-            instance.voucher.publishedIn,
+            instance.voucher.specific_locality,
+            instance.voucher.published_in,
         )
         return description
 
