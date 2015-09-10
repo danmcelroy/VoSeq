@@ -98,7 +98,7 @@ class VouchersIndex(indexes.SearchIndex, indexes.Indexable):
     extraction = indexes.CharField(model_attr='extraction', null=True)
     extractionTube = indexes.CharField(model_attr='extractionTube', null=True)
     extractor = indexes.CharField(model_attr='extractor', null=True)
-    dateExtraction = indexes.DateField(model_attr='dateExtraction', null=True)
+    dateExtraction = indexes.DateField(model_attr='date_extraction', null=True)
 
     publishedIn = indexes.EdgeNgramField(model_attr='published_in', null=True)
     notes = indexes.EdgeNgramField(model_attr='notes', null=True)

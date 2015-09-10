@@ -495,7 +495,7 @@ class ParseXML(object):
             item['voucherImage'] = row.find("./field/[@name='voucherImage']").text
             item['thumbnail'] = row.find("./field/[@name='thumbnail']").text
             item['extraction'] = row.find("./field/[@name='extraction']").text
-            item['dateExtraction'] = row.find("./field/[@name='dateExtraction']").text
+            item['date_extraction'] = row.find("./field/[@name='dateExtraction']").text
             item['extractor'] = row.find("./field/[@name='extractor']").text
             item['voucher_locality'] = row.find("./field/[@name='voucherLocality']").text
             item['published_in'] = row.find("./field/[@name='publishedIn']").text
@@ -556,7 +556,7 @@ class ParseXML(object):
                 item['longitude'] = float(item['longitude'])
 
             item['dateCollection'] = self.parse_date(item['dateCollection'], 'dateCollection')
-            item['dateExtraction'] = self.parse_date(item['dateExtraction'], 'dateExtraction')
+            item['date_extraction'] = self.parse_date(item['date_extraction'], 'date_extraction')
             item['created'] = self.parse_timestamp(item['created'], 'created')
 
             is_flickr, image_info = self.parse_image_info(item)
