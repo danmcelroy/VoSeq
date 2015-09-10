@@ -103,7 +103,7 @@ class VouchersIndex(indexes.SearchIndex, indexes.Indexable):
     publishedIn = indexes.EdgeNgramField(model_attr='published_in', null=True)
     notes = indexes.EdgeNgramField(model_attr='notes', null=True)
     hostorg = indexes.CharField(model_attr='hostorg', null=True)
-    typeSpecies = indexes.CharField(model_attr='type_species', null=True)
+    type_species = indexes.CharField(model_attr='type_species', null=True)
 
     def get_model(self):
         return Vouchers

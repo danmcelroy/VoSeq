@@ -60,11 +60,11 @@
             <tr>
               <td><b>Type Species:</b></td>
               <td>
-                {% if voucher.typeSpecies == 'd' %}
+                {% if voucher.type_species == 'd' %}
                   don't know
-                {% elif voucher.typeSpecies == 'y' %}
+                {% elif voucher.type_species == 'y' %}
                   yes
-                {% elif voucher.typeSpecies == 'n' %}
+                {% elif voucher.type_species == 'n' %}
                   no
                 {% endif %}
               </td>
