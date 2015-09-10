@@ -49,7 +49,7 @@ class CreateTNTDatasetTest(TestCase):
         result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
-    def test_create_dataset_ALL_codons(self):
+    def test_create_dataset_all_codons(self):
         cleaned_data = self.cleaned_data
         cleaned_data['positions'] = ['ALL']
         dataset_creator = CreateDataset(cleaned_data)
