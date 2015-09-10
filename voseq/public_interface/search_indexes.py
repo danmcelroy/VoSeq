@@ -53,7 +53,7 @@ class AutoCompleteIndex(SimpleSearchIndex):
     determinedBy = indexes.EdgeNgramField(model_attr='determinedBy', null=True)
 
     extraction = indexes.EdgeNgramField(model_attr='extraction', null=True)
-    extractionTube = indexes.EdgeNgramField(model_attr='extraction_tube', null=True)
+    extraction_tube = indexes.EdgeNgramField(model_attr='extraction_tube', null=True)
     extractor = indexes.EdgeNgramField(model_attr='extractor', null=True)
 
     publishedIn = indexes.EdgeNgramField(model_attr='published_in', null=True)
@@ -96,7 +96,7 @@ class VouchersIndex(indexes.SearchIndex, indexes.Indexable):
     sex = indexes.CharField(model_attr='sex', null=True)
 
     extraction = indexes.CharField(model_attr='extraction', null=True)
-    extractionTube = indexes.CharField(model_attr='extraction_tube', null=True)
+    extraction_tube = indexes.CharField(model_attr='extraction_tube', null=True)
     extractor = indexes.CharField(model_attr='extractor', null=True)
     dateExtraction = indexes.DateField(model_attr='date_extraction', null=True)
 
