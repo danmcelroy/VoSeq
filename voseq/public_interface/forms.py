@@ -204,7 +204,7 @@ class BatchChangesForm(forms.Form):
         model = Vouchers
         fields = ['orden', 'superfamily', 'family', 'subfamily', 'tribe', 'subtribe',
                   'genus', 'species', 'subspecies', 'typeSpecies', 'sex', 'author',
-                  'determinedBy', 'publishedIn', 'country', 'specificLocality', 'latitude',
+                  'determinedBy', 'published_in', 'country', 'specificLocality', 'latitude',
                   'longitude', 'max_altitude', 'min_altitude', 'dateCollection', 'collector',
                   'hostorg', 'dateExtraction', 'extractor', 'extraction', 'extractionTube',
                   'voucher', 'voucherLocality', 'latesteditor', 'edits', 'notes']
@@ -275,7 +275,7 @@ class BatchChangesForm(forms.Form):
     dateExtraction = forms.DateField(label="Date extraction", required=False)
     extractor = forms.CharField(label="Extractor", max_length=100, required=False)
     voucherLocality = forms.CharField(label="Voucher locality", max_length=200, required=False)
-    publishedIn = forms.CharField(label="Published in", required=False)
+    published_in = forms.CharField(label="Published in", required=False)
     notes = forms.CharField(label="Notes", required=False)
     latesteditor = forms.CharField(label="Latest editor", required=False)
     hostorg = forms.CharField(label="Host organism", max_length=200, help_text="Hostplant or other host.", required=False)

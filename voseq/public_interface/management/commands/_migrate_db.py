@@ -498,7 +498,7 @@ class ParseXML(object):
             item['dateExtraction'] = row.find("./field/[@name='dateExtraction']").text
             item['extractor'] = row.find("./field/[@name='extractor']").text
             item['voucherLocality'] = row.find("./field/[@name='voucherLocality']").text
-            item['publishedIn'] = row.find("./field/[@name='publishedIn']").text
+            item['published_in'] = row.find("./field/[@name='published_in']").text
             item['notes'] = row.find("./field/[@name='notes']").text
             item['edits'] = row.find("./field/[@name='edits']").text
             item['latesteditor'] = row.find("./field/[@name='latesteditor']").text
@@ -654,7 +654,7 @@ class ParseXML(object):
             item = self.clean_value(item, 'determinedBy')
             item = self.clean_value(item, 'sex')
 
-            item = self.clean_value(item, 'publishedIn')
+            item = self.clean_value(item, 'published_in')
             item = self.clean_value(item, 'notes')
 
             item = self.clean_value(item, 'extraction')
