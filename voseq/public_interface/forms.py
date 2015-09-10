@@ -85,8 +85,8 @@ class AdvancedSearchForm(ModelSearchForm):
     subspecies = forms.CharField(label="Subspecies", max_length=100, required=False)
     country = forms.CharField(label="Country", max_length=100, required=False)
     specificLocality = forms.CharField(label="Specific Locality", max_length=250, required=False)
-    typeSpecies = forms.ChoiceField(label="Type species", choices=TYPE_SPECIES_CHOICES,
-                                    widget=forms.Select(attrs={'class': 'form-control'}), required=False)
+    type_species = forms.ChoiceField(label="Type species", choices=TYPE_SPECIES_CHOICES,
+                                     widget=forms.Select(attrs={'class': 'form-control'}), required=False)
     latitude = forms.FloatField(label="Latitude", required=False)
     longitude = forms.FloatField(label="Longitude", required=False)
     max_altitude = forms.IntegerField(label="Maximum altitude", required=False)
@@ -263,7 +263,7 @@ class BatchChangesForm(forms.Form):
     subspecies = forms.CharField(label="Subspecies", max_length=100, required=False)
     country = forms.CharField(label="Country", max_length=100, required=False)
     specificLocality = forms.CharField(label="Specific Locality", max_length=250, required=False)
-    typeSpecies = forms.ChoiceField(label="Type species", choices=TYPE_SPECIES_CHOICES, widget=forms.Select, required=False)
+    type_species = forms.ChoiceField(label="Type species", choices=TYPE_SPECIES_CHOICES, widget=forms.Select, required=False)
     latitude = forms.FloatField(label="Latitude", required=False)
     longitude = forms.FloatField(label="Longitude", required=False)
     max_altitude = forms.IntegerField(label="Maximum altitude", required=False)
