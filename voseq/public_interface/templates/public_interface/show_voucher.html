@@ -216,12 +216,12 @@
           <div class="panel-body">
             {% for image in images %}
               {% if 'staticflickr' in image.thumbnail %}
-                <a href="{{ image.voucherImage }}">
+                <a href="{{ image.voucher_image }}">
                   <img class="img-thumbnail" src="{{ image.thumbnail }}" />
                 </a>
               {% else %}
-                <a href="/media/{{ image.voucherImage }}">
-                  <img class="img-thumbnail" src="{{ image.voucherImage|thumbnail_url:'thumb' }}" />
+                <a href="/media/{{ image.voucher_image }}">
+                  <img class="img-thumbnail" src="{{ image.voucher_image|thumbnail_url:'thumb' }}" />
                 </a>
               {% endif %}
             {% endfor %}
