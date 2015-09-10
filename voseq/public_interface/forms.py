@@ -84,35 +84,35 @@ class AdvancedSearchForm(ModelSearchForm):
     species = forms.CharField(label="Species", max_length=100, required=False)
     subspecies = forms.CharField(label="Subspecies", max_length=100, required=False)
     country = forms.CharField(label="Country", max_length=100, required=False)
-    specificLocality = forms.CharField(label="Specific Locality", max_length=250, required=False)
-    typeSpecies = forms.ChoiceField(label="Type species", choices=TYPE_SPECIES_CHOICES,
-                                    widget=forms.Select(attrs={'class': 'form-control'}), required=False)
+    specific_locality = forms.CharField(label="Specific Locality", max_length=250, required=False)
+    type_species = forms.ChoiceField(label="Type species", choices=TYPE_SPECIES_CHOICES,
+                                     widget=forms.Select(attrs={'class': 'form-control'}), required=False)
     latitude = forms.FloatField(label="Latitude", required=False)
     longitude = forms.FloatField(label="Longitude", required=False)
     max_altitude = forms.IntegerField(label="Maximum altitude", required=False)
     min_altitude = forms.IntegerField(label="Minimum altitude", required=False)
     collector = forms.CharField(label="Collector", max_length=100, required=False)
-    dateCollection = forms.DateField(label="Date of collection", required=False, widget=DateInput(),
-                                     error_messages={'invalid': 'Enter valid date: YYYY-mm-dd'})
+    date_collection = forms.DateField(label="Date of collection", required=False, widget=DateInput(),
+                                      error_messages={'invalid': 'Enter valid date: YYYY-mm-dd'})
     extraction = forms.CharField(label="Extraction", max_length=50, help_text="Number of extraction event.", required=False)
-    extractionTube = forms.CharField(label="Extraction tube", max_length=50, help_text="Tube containing DNA extract.", required=False)
-    dateExtraction = forms.DateField(label="Date of extraction", required=False, widget=DateInput(),
-                                     error_messages={'invalid': 'Enter valid date: YYYY-mm-dd'})
+    extraction_tube = forms.CharField(label="Extraction tube", max_length=50, help_text="Tube containing DNA extract.", required=False)
+    date_extraction = forms.DateField(label="Date of extraction", required=False, widget=DateInput(),
+                                      error_messages={'invalid': 'Enter valid date: YYYY-mm-dd'})
     extractor = forms.CharField(label="Extractor", max_length=100, required=False)
-    voucherLocality = forms.CharField(label="Voucher locality", max_length=200, required=False)
-    publishedIn = forms.CharField(label="Published in", required=False)
+    voucher_locality = forms.CharField(label="Voucher locality", max_length=200, required=False)
+    published_in = forms.CharField(label="Published in", required=False)
     notes = forms.CharField(label="Notes", required=False)
-    latesteditor = forms.CharField(label="Latest editor", required=False)
+    latest_editor = forms.CharField(label="Latest editor", required=False)
     hostorg = forms.CharField(label="Host organism", max_length=200, help_text="Hostplant or other host.", required=False)
     sex = forms.ChoiceField(label="Sex", choices=SEX_CHOICES, required=False,
                             widget=forms.Select(attrs={'class': 'form-control'}))
     voucher = forms.ChoiceField(label="Voucher", choices=VOUCHER_CHOICES, required=False,
                                 widget=forms.Select(attrs={'class': 'form-control'}))
-    voucherCode = forms.CharField(label="Alternative voucher code", max_length=100, help_text="Original code of voucher specimen.", required=False)
+    voucher_code = forms.CharField(label="Alternative voucher code", max_length=100, help_text="Original code of voucher specimen.", required=False)
     code_bold = forms.CharField(label="Code in BOLD database", max_length=100, help_text="Optional code for specimens kept in the BOLD database.",
                                 required=False)
-    determinedBy = forms.CharField(label="Determined by", max_length=100, help_text="Person that identified the taxon for this specimen.",
-                                   required=False)
+    determined_by = forms.CharField(label="Determined by", max_length=100, help_text="Person that identified the taxon for this specimen.",
+                                    required=False)
     author = forms.CharField(label="Author", max_length=100,
                              help_text="Person that described this taxon.", required=False)
 
@@ -131,7 +131,7 @@ class AdvancedSearchForm(ModelSearchForm):
     )
     genbank = forms.ChoiceField(widget=forms.RadioSelect, choices=GENBANK_CHOICES, required=False)
     accession = forms.CharField(max_length=100, required=False)
-    labPerson = forms.CharField(max_length=100, required=False)
+    lab_person = forms.CharField(max_length=100, required=False)
 
     def no_query_found(self):
         sqs = SearchQuerySet.none
@@ -164,11 +164,11 @@ class AdvancedSearchForm(ModelSearchForm):
                 # remove after adding this to index
                 if v == 'Select':
                     continue
-                if k in ['dateCollection', 'dateExtraction']:
+                if k in ['date_collection', 'date_extraction']:
                     v = datetime.date.strftime(v, "%Y-%m-%d")
                 if k == 'models':
                     continue
-                if k in ['labPerson', 'accession']:
+                if k in ['lab_person', 'accession']:
                     sequence_keywords[k] = v
                 if k == 'gene_code':
                     sequence_keywords[k] = v.gene_code
@@ -176,7 +176,7 @@ class AdvancedSearchForm(ModelSearchForm):
                     sequence_keywords[k] = 'true'
                 elif k == 'genbank':
                     sequence_keywords[k] = 'false'
-                if k not in ['labPerson', 'accession', 'genbank', 'gene_code']:
+                if k not in ['lab_person', 'accession', 'genbank', 'gene_code']:
                     keywords[k] = v
 
         return keywords, sequence_keywords
@@ -203,11 +203,11 @@ class BatchChangesForm(forms.Form):
     class Meta:
         model = Vouchers
         fields = ['orden', 'superfamily', 'family', 'subfamily', 'tribe', 'subtribe',
-                  'genus', 'species', 'subspecies', 'typeSpecies', 'sex', 'author',
-                  'determinedBy', 'publishedIn', 'country', 'specificLocality', 'latitude',
-                  'longitude', 'max_altitude', 'min_altitude', 'dateCollection', 'collector',
-                  'hostorg', 'dateExtraction', 'extractor', 'extraction', 'extractionTube',
-                  'voucher', 'voucherLocality', 'latesteditor', 'edits', 'notes']
+                  'genus', 'species', 'subspecies', 'type_species', 'sex', 'author',
+                  'determined_by', 'published_in', 'country', 'specific_locality', 'latitude',
+                  'longitude', 'max_altitude', 'min_altitude', 'date_collection', 'collector',
+                  'hostorg', 'date_extraction', 'extractor', 'extraction', 'extraction_tube',
+                  'voucher', 'voucher_locality', 'latest_editor', 'edits', 'notes']
     '''
 
     NULL = None
@@ -262,28 +262,28 @@ class BatchChangesForm(forms.Form):
     species = forms.CharField(label="Species", max_length=100, required=False)
     subspecies = forms.CharField(label="Subspecies", max_length=100, required=False)
     country = forms.CharField(label="Country", max_length=100, required=False)
-    specificLocality = forms.CharField(label="Specific Locality", max_length=250, required=False)
-    typeSpecies = forms.ChoiceField(label="Type species", choices=TYPE_SPECIES_CHOICES, widget=forms.Select, required=False)
+    specific_locality = forms.CharField(label="Specific Locality", max_length=250, required=False)
+    type_species = forms.ChoiceField(label="Type species", choices=TYPE_SPECIES_CHOICES, widget=forms.Select, required=False)
     latitude = forms.FloatField(label="Latitude", required=False)
     longitude = forms.FloatField(label="Longitude", required=False)
     max_altitude = forms.IntegerField(label="Maximum altitude", required=False)
     min_altitude = forms.IntegerField(label="Minimum altitude", required=False)
     collector = forms.CharField(label="Collector", max_length=100, required=False)
-    dateCollection = forms.DateField(label="Date of collection", required=False)
+    date_collection = forms.DateField(label="Date of collection", required=False)
     extraction = forms.CharField(label="Extraction", max_length=50, help_text="Number of extraction event.", required=False)
-    extractionTube = forms.CharField(label="Extraction tube", max_length=50, help_text="Tube containing DNA extract.", required=False)
-    dateExtraction = forms.DateField(label="Date extraction", required=False)
+    extraction_tube = forms.CharField(label="Extraction tube", max_length=50, help_text="Tube containing DNA extract.", required=False)
+    date_extraction = forms.DateField(label="Date extraction", required=False)
     extractor = forms.CharField(label="Extractor", max_length=100, required=False)
-    voucherLocality = forms.CharField(label="Voucher locality", max_length=200, required=False)
-    publishedIn = forms.CharField(label="Published in", required=False)
+    voucher_locality = forms.CharField(label="Voucher locality", max_length=200, required=False)
+    published_in = forms.CharField(label="Published in", required=False)
     notes = forms.CharField(label="Notes", required=False)
-    latesteditor = forms.CharField(label="Latest editor", required=False)
+    latest_editor = forms.CharField(label="Latest editor", required=False)
     hostorg = forms.CharField(label="Host organism", max_length=200, help_text="Hostplant or other host.", required=False)
     sex = forms.ChoiceField(label="Sex", choices=SEX_CHOICES, required=False)
     voucher = forms.ChoiceField(label="Voucher", choices=VOUCHER_CHOICES, required=False)
-    voucherCode = forms.CharField(label="Alternative voucher code", max_length=100, help_text="Original code of voucher specimen.", required=False)
+    voucher_code = forms.CharField(label="Alternative voucher code", max_length=100, help_text="Original code of voucher specimen.", required=False)
     code_bold = forms.CharField(label="Code in BOLD database", max_length=100, help_text="Optional code for specimens kept in the BOLD database.",
                                 required=False)
-    determinedBy = forms.CharField(label="Determined by", max_length=100, help_text="Person that identified the taxon for this specimen.",
-                                   required=False)
+    determined_by = forms.CharField(label="Determined by", max_length=100, help_text="Person that identified the taxon for this specimen.",
+                                    required=False)
     author = forms.CharField(label="Author", max_length=100, help_text="Person that described this taxon.", required=False)
