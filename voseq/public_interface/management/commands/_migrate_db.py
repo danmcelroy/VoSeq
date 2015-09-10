@@ -312,7 +312,6 @@ class ParseXML(object):
             item['time_edited'] = row.find("./field/[@name='dateModification']").text
             item['notes'] = row.find("./field/[@name='notes']").text
             item['genbank'] = row.find("./field/[@name='genbank']").text
-            item['timestamp'] = row.find("./field/[@name='timestamp']").text
             self.table_sequences_items.append(item)
 
     def import_table_sequences(self):
