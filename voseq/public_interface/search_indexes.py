@@ -44,19 +44,19 @@ class AutoCompleteIndex(SimpleSearchIndex):
     author = indexes.EdgeNgramField(model_attr='author', null=True)
 
     country = indexes.EdgeNgramField(model_attr='country', null=True)
-    specificLocality = indexes.EdgeNgramField(model_attr='specificLocality', null=True)
+    specific_locality = indexes.EdgeNgramField(model_attr='specific_locality', null=True)
 
-    voucherLocality = indexes.EdgeNgramField(model_attr='voucherLocality', null=True)
+    voucher_locality = indexes.EdgeNgramField(model_attr='voucher_locality', null=True)
     collector = indexes.EdgeNgramField(model_attr='collector', null=True)
     code_bold = indexes.EdgeNgramField(model_attr='code_bold', null=True)
-    voucherCode = indexes.EdgeNgramField(model_attr='voucherCode', null=True)
-    determinedBy = indexes.EdgeNgramField(model_attr='determinedBy', null=True)
+    voucher_code = indexes.EdgeNgramField(model_attr='voucher_code', null=True)
+    determined_by = indexes.EdgeNgramField(model_attr='determined_by', null=True)
 
     extraction = indexes.EdgeNgramField(model_attr='extraction', null=True)
-    extractionTube = indexes.EdgeNgramField(model_attr='extractionTube', null=True)
+    extraction_tube = indexes.EdgeNgramField(model_attr='extraction_tube', null=True)
     extractor = indexes.EdgeNgramField(model_attr='extractor', null=True)
 
-    publishedIn = indexes.EdgeNgramField(model_attr='publishedIn', null=True)
+    published_in = indexes.EdgeNgramField(model_attr='published_in', null=True)
     notes = indexes.EdgeNgramField(model_attr='notes', null=True)
 
     def get_updated_field(self):
@@ -84,26 +84,26 @@ class VouchersIndex(indexes.SearchIndex, indexes.Indexable):
     author = indexes.CharField(model_attr='author', null=True)
 
     country = indexes.CharField(model_attr='country', null=True)
-    specificLocality = indexes.EdgeNgramField(model_attr='specificLocality', null=True)
+    specific_locality = indexes.EdgeNgramField(model_attr='specific_locality', null=True)
 
-    voucherLocality = indexes.CharField(model_attr='voucherLocality', null=True)
+    voucher_locality = indexes.CharField(model_attr='voucher_locality', null=True)
     collector = indexes.CharField(model_attr='collector', null=True)
     code_bold = indexes.CharField(model_attr='code_bold', null=True)
-    voucherCode = indexes.CharField(model_attr='voucherCode', null=True)
-    determinedBy = indexes.CharField(model_attr='determinedBy', null=True)
+    voucher_code = indexes.CharField(model_attr='voucher_code', null=True)
+    determined_by = indexes.CharField(model_attr='determined_by', null=True)
     voucher = indexes.CharField(model_attr='voucher', null=True)
-    dateCollection = indexes.DateField(model_attr='dateCollection', null=True)
+    date_collection = indexes.DateField(model_attr='date_collection', null=True)
     sex = indexes.CharField(model_attr='sex', null=True)
 
     extraction = indexes.CharField(model_attr='extraction', null=True)
-    extractionTube = indexes.CharField(model_attr='extractionTube', null=True)
+    extraction_tube = indexes.CharField(model_attr='extraction_tube', null=True)
     extractor = indexes.CharField(model_attr='extractor', null=True)
-    dateExtraction = indexes.DateField(model_attr='dateExtraction', null=True)
+    date_extraction = indexes.DateField(model_attr='date_extraction', null=True)
 
-    publishedIn = indexes.EdgeNgramField(model_attr='publishedIn', null=True)
+    published_in = indexes.EdgeNgramField(model_attr='published_in', null=True)
     notes = indexes.EdgeNgramField(model_attr='notes', null=True)
     hostorg = indexes.CharField(model_attr='hostorg', null=True)
-    typeSpecies = indexes.CharField(model_attr='typeSpecies', null=True)
+    type_species = indexes.CharField(model_attr='type_species', null=True)
 
     def get_model(self):
         return Vouchers
@@ -122,7 +122,7 @@ class AdvancedSearchIndex(indexes.SearchIndex, indexes.Indexable):
     # text = indexes.EdgeNgramField(document=True, use_template=True)
     text = indexes.CharField(document=True, use_template=True)
     code = indexes.CharField(model_attr='code__code', faceted=True)
-    labPerson = indexes.EdgeNgramField(model_attr='labPerson', null=True)
+    lab_person = indexes.EdgeNgramField(model_attr='lab_person', null=True)
     accession = indexes.EdgeNgramField(model_attr='accession', null=True)
     gene_code = indexes.CharField(model_attr='gene_code', null=True)
     genbank = indexes.BooleanField(model_attr='genbank', null=True)
