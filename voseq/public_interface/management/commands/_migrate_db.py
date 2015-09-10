@@ -303,13 +303,13 @@ class ParseXML(object):
         self.table_sequences_items = []
         for row in our_data.findall('row'):
             item = dict()
-            item['code'] = row.find("./field/[@name='code']").text
+            item['code_id'] = row.find("./field/[@name='code']").text
             item['gene_code'] = row.find("./field/[@name='geneCode']").text
             item['sequences'] = row.find("./field/[@name='sequences']").text
             item['accession'] = row.find("./field/[@name='accession']").text
             item['lab_person'] = row.find("./field/[@name='labPerson']").text
-            item['date_creation'] = row.find("./field/[@name='dateCreation']").text
-            item['date_modification'] = row.find("./field/[@name='dateModification']").text
+            item['time_created'] = row.find("./field/[@name='dateCreation']").text
+            item['time_edited'] = row.find("./field/[@name='dateModification']").text
             item['notes'] = row.find("./field/[@name='notes']").text
             item['genbank'] = row.find("./field/[@name='genbank']").text
             item['timestamp'] = row.find("./field/[@name='timestamp']").text
@@ -320,19 +320,6 @@ class ParseXML(object):
             self.parse_table_sequences(self.dump_string)
 
         for item in self.table_sequences_items:
-            item['code_id'] = item['code']
-            del item['code']
-
-            item['time_created'] = item['dateCreation']
-            del item['dateCreation']
-
-            item['time_edited'] = item['dateModification']
-            del item['dateModification']
-            del item['timestamp']
-
-            item['gene_code'] = item['geneCode']
-            del item['geneCode']
-
             item['time_created'] = self.parse_timestamp(item['time_created'], 'time_created')
             item['time_edited'] = self.parse_timestamp(item['time_edited'], 'time_edited')
 
