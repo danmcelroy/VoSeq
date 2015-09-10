@@ -302,7 +302,7 @@ class FlickrImages(models.Model):
 
             info = flickr.photos.getInfo(photo_id=instance.flickr_id, format="json")
             info = json.loads(info.decode('utf-8'))
-            instance.voucherImage = info['photo']['urls']['url'][0]['_content']
+            instance.voucher_image = info['photo']['urls']['url'][0]['_content']
 
             farm = info['photo']['farm']
             server = info['photo']['server']

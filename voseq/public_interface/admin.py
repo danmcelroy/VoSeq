@@ -21,7 +21,7 @@ from public_interface.forms import SequencesAdminForm
 
 class ImageInLine(admin.StackedInline):
     model = LocalImages
-    fields = ['voucherImage']
+    fields = ['voucher_image']
 
 
 class FlickImageInLine(admin.StackedInline):
