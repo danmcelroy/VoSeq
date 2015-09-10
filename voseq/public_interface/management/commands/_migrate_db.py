@@ -59,41 +59,37 @@ class ParseXML(object):
         self.verbosity = int(verbosity)
 
     def parse_image_info(self, item):
-        got_flickr = self.test_if_photo_in_flickr(item)
-        if item['voucher_image'] == 'na.gif':
-            return None, None
-        elif item['voucher_image'] is not None:
-            item['voucher_image'] = self.get_as_tuple(item['voucher_image'], got_flickr)
+        """
+        Returns tuple (is in Flickr, image data,)
 
-        if item['thumbnail'] == '':
-            item['thumbnail'] = None
-        elif item['thumbnail'] is not None:
-            item['thumbnail'] = self.get_as_tuple(item['thumbnail'], got_flickr)
+        :param item:
+        :return:
+        """
+        got_flickr = self.test_if_photo_in_flickr(item)
+        if item['voucher_image'] == 'na.gif' or item['thumbnail'] == 'na.gif':
+            return None, None
+
+        item['voucher_image'] = self.get_as_tuple(item['voucher_image'], got_flickr)
+        item['thumbnail'] = self.get_as_tuple(item['thumbnail'], got_flickr)
 
         imgs = []
-        if got_flickr is True:
-            if item['flickr_id'] == '':
-                item['flickr_id'] = None
-            elif item['flickr_id'] is not None:
-                item['flickr_id'] = self.get_as_tuple(item['flickr_id'], got_flickr)
+        if got_flickr is True and item['flickr_id']:
+            item['flickr_id'] = self.get_as_tuple(item['flickr_id'], got_flickr)
 
-            if item['voucher_image'] is not None and item['thumbnail'] is not None \
-                    and item['flickr_id'] is not None:
-                for i in range(0, len(item['voucher_image']), 1):
-                    imgs.append({
-                        'voucher_id': item['code'],
-                        'voucher_image': item['voucher_image'][i],
-                        'thumbnail': item['thumbnail'][i],
-                        'flickr_id': item['flickr_id'][i],
-                    })
+            for i in range(0, len(item['voucher_image']), 1):
+                imgs.append({
+                    'voucher_id': item['code'],
+                    'voucher_image': item['voucher_image'][i],
+                    'thumbnail': item['thumbnail'][i],
+                    'flickr_id': item['flickr_id'][i],
+                })
             return True, imgs
-        elif got_flickr is False:
-            if item['voucher_image'] is not None and item['thumbnail'] is not None:
-                for i in range(0, len(item['voucher_image']), 1):
-                    imgs.append({
-                        'voucher_id': item['code'],
-                        'voucher_image': item['voucher_image'][i],
-                    })
+        else:
+            for i in range(0, len(item['voucher_image']), 1):
+                imgs.append({
+                    'voucher_id': item['code'],
+                    'voucher_image': item['voucher_image'][i],
+                })
             return False, imgs
 
     def parse_table_genes(self, xml_string):
@@ -501,8 +497,8 @@ class ParseXML(object):
                 user.is_superuser = True
             user.save()
 
-        if self.verbosity != 0:
-            print("Uploading table `public_interface_members`")
+        if not TESTING:
+            print("\nUploading table `public_interface_members`")
 
     def save_table_primers_to_db(self):
         if self.table_primers_items is None:
@@ -527,8 +523,8 @@ class ParseXML(object):
                 primers_objs.append(Primers(**item))
         Primers.objects.bulk_create(primers_objs)
 
-        if self.verbosity != 0:
-            print("Uploading table `public_interface_primers`")
+        if not TESTING:
+            print("\nUploading table `public_interface_primers`")
 
     def save_table_sequences_to_db(self):
         if self.table_sequences_items is None:
@@ -551,7 +547,9 @@ class ParseXML(object):
             else:
                 seqs_not_to_insert.append(i)
 
-        print("Uploading table `public_interface_sequences`")
+        if not TESTING:
+            print("\nUploading table `public_interface_sequences`")
+
         n = len(seqs_to_insert)
         if TESTING is False:
             bar = pyprind.ProgBar(n, width=70)
@@ -570,22 +568,22 @@ class ParseXML(object):
             if TESTING is False:
                 bar.update()
 
-        if self.verbosity != 0:
-            print("Uploading table `public_interface_sequences`")
+        if not TESTING:
+            print("\nUploading table `public_interface_sequences`")
+
         Sequences.objects.bulk_create(seqs_objects)
 
         if seqs_not_to_insert:
-            if self.verbosity != 0:
-                print("ERROR: Couldn't insert {} sequences due to lack of reference vouchers".format(len(seqs_not_to_insert)))
+            print("ERROR: Couldn't insert {} sequences due to lack of reference vouchers".format(len(seqs_not_to_insert)))
             for i in seqs_not_to_insert:
-                if self.verbosity != 0:
-                    print(i['code_id'], i['gene_code'])
+                print(i['code_id'], i['gene_code'])
 
         if seqs_invalid:
-            if TESTING is False:
-                print("ERROR: Couldn't insert {} sequences due to having invalid characters".format(len(seqs_invalid)))
+            if not TESTING:
+                print("ERROR: Couldn't insert {} sequences due to invalid characters".format(len(seqs_invalid)))
+
             for i in seqs_invalid:
-                if TESTING is False:
+                if not TESTING:
                     msg = "ERROR: Sequence code={}, gene_code={}, problem={}".format(i.code, i.gene_code, i.invalid_character)
                     print(msg)
 
@@ -608,7 +606,8 @@ class ParseXML(object):
         if self.table_vouchers_items is None:
             self.parse_table_vouchers(self.dump_string)
 
-        print("Uploading table `public_interface_vouchers`")
+        if not TESTING:
+            print("\nUploading table `public_interface_vouchers`")
 
         voucher_objs = []
         n = len(self.table_vouchers_items)
@@ -660,8 +659,8 @@ class ParseXML(object):
             image_objs.append(LocalImages(**item))
         LocalImages.objects.bulk_create(image_objs)
 
-        if self.verbosity != 0:
-            print("Uploading table `public_interface_flickrimages`")
+        if not TESTING:
+            print("\nUploading table `public_interface_flickrimages`")
 
     def clean_value(self, item, key):
         if key in item:
@@ -715,7 +714,7 @@ class ParseXML(object):
         except TypeError:
             date_obj = None
 
-        if self.verbosity != 0:
+        if self.verbosity > 1:
             print("WARNING:: Could not parse {} properly.".format(field))
         return date_obj
 
@@ -728,7 +727,7 @@ class ParseXML(object):
         except TypeError:
             date_obj = None
 
-        if self.verbosity != 0:
+        if self.verbosity > 1:
             print("WARNING:: Could not parse {} properly.".format(field))
         return date_obj
 
