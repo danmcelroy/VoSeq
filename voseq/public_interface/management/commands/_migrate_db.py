@@ -58,6 +58,44 @@ class ParseXML(object):
         self.list_of_voucher_codes = []
         self.verbosity = int(verbosity)
 
+    def parse_image_info(self, item):
+        got_flickr = self.test_if_photo_in_flickr(item)
+        if item['voucher_image'] == 'na.gif':
+            return None, None
+        elif item['voucher_image'] is not None:
+            item['voucher_image'] = self.get_as_tuple(item['voucher_image'], got_flickr)
+
+        if item['thumbnail'] == '':
+            item['thumbnail'] = None
+        elif item['thumbnail'] is not None:
+            item['thumbnail'] = self.get_as_tuple(item['thumbnail'], got_flickr)
+
+        imgs = []
+        if got_flickr is True:
+            if item['flickr_id'] == '':
+                item['flickr_id'] = None
+            elif item['flickr_id'] is not None:
+                item['flickr_id'] = self.get_as_tuple(item['flickr_id'], got_flickr)
+
+            if item['voucher_image'] is not None and item['thumbnail'] is not None \
+                    and item['flickr_id'] is not None:
+                for i in range(0, len(item['voucher_image']), 1):
+                    imgs.append({
+                        'voucher_id': item['code'],
+                        'voucher_image': item['voucher_image'][i],
+                        'thumbnail': item['thumbnail'][i],
+                        'flickr_id': item['flickr_id'][i],
+                    })
+            return True, imgs
+        elif got_flickr is False:
+            if item['voucher_image'] is not None and item['thumbnail'] is not None:
+                for i in range(0, len(item['voucher_image']), 1):
+                    imgs.append({
+                        'voucher_id': item['code'],
+                        'voucher_image': item['voucher_image'][i],
+                    })
+            return False, imgs
+
     def parse_table_genes(self, xml_string):
         our_data = False
         this_table = self.tables_prefix + "genes"
@@ -77,7 +115,7 @@ class ParseXML(object):
             item['gene_code'] = row.find("./field/[@name='geneCode']").text
             item['length'] = row.find("./field/[@name='length']").text
             item['description'] = row.find("./field/[@name='description']").text
-            item['readingframe'] = row.find("./field/[@name='readingframe']").text
+            item['reading_frame'] = row.find("./field/[@name='readingframe']").text
             item['notes'] = row.find("./field/[@name='notes']").text
             item['timestamp'] = row.find("./field/[@name='timestamp']").text
             item['genetic_code'] = row.find("./field/[@name='genetic_code']").text
@@ -86,48 +124,6 @@ class ParseXML(object):
             item['prot_code'] = row.find("./field/[@name='prot_code']").text
             item['genetype'] = row.find("./field/[@name='genetype']").text
             self.table_genes_items.append(item)
-
-    def import_table_genes(self):
-        if self.table_genes_items is None:
-            self.parse_table_genes(self.dump_string)
-
-        for item in self.table_genes_items:
-            date_obj = self.parse_timestamp(item['timestamp'], 'timestamp')
-
-            item['time_created'] = date_obj
-            del item['timestamp']
-            item['gene_code'] = item['geneCode']
-            del item['geneCode']
-
-            if item['length'] is not None:
-                item['length'] = int(item['length'])
-
-            if item['readingframe'] is not None:
-                item['reading_frame'] = int(item['readingframe'])
-            del item['readingframe']
-
-            if item['aligned'] is None:
-                item['aligned'] = ''
-
-            if item['prot_code'] is None:
-                item['prot_code'] = 'notset'
-
-            item['gene_type'] = item['genetype']
-            del item['genetype']
-
-    def save_table_genes_to_db(self):
-        if self.table_genes_items is None:
-            self.import_table_genes()
-
-        for item in self.table_genes_items:
-            item = self.clean_value(item, 'notes')
-            item = self.clean_value(item, 'intron')
-            item = self.clean_value(item, 'gene_type')
-            item = self.clean_value(item, 'genetic_code')
-            if item['genetic_code'] == '':
-                item['genetic_code'] = None
-            item = self.clean_value(item, 'description')
-            Genes.objects.create(**item)
 
     def parse_table_genesets(self, xml_string):
         our_data = False
@@ -154,24 +150,6 @@ class ParseXML(object):
             if item['geneset_creator'] is None:
                 item['geneset_creator'] = 'dummy'
             self.table_genesets_items.append(item)
-
-    def import_table_genesets(self):
-        if self.table_genesets_items is None:
-            self.parse_table_genesets(self.dump_string)
-
-    def save_table_genesets_to_db(self):
-        if self.table_genesets_items is None:
-            self.import_table_genesets()
-
-        for item in self.table_genesets_items:
-            if item['geneset_description'] is None:
-                item['geneset_description'] = ''
-            item['geneset_list'] = item['geneset_list'].replace(',', '\n')
-            GeneSets.objects.create(**item)
-
-    def import_table_members(self):
-        if self.table_members_items is None:
-            self.parse_table_members(self.dump_string)
 
     def parse_table_members(self, xml_string):
         our_data = False
@@ -202,23 +180,6 @@ class ParseXML(object):
             item['is_staff'] = True
             item['is_active'] = True
             self.table_members_items.append(item)
-
-    def save_table_members_to_db(self):
-        if self.table_members_items is None:
-            self.import_table_members()
-
-        for item in self.table_members_items:
-            user = User.objects.create_user(item['username'], email=None, first_name=item['first_name'],
-                                            last_name=item['last_name'])
-            user.is_staff = True
-            if item['is_superuser'] is False:
-                user.is_superuser = False
-            else:
-                user.is_superuser = True
-            user.save()
-
-        if self.verbosity != 0:
-            print("Uploading table `public_interface_members`")
 
     def parse_table_primers(self, xml_string):
         our_data = False
@@ -254,39 +215,6 @@ class ParseXML(object):
 
             self.table_primers_items.append(item)
 
-    def import_table_primers(self):
-        if self.table_primers_items is None:
-            self.parse_table_primers(self.dump_string)
-
-        for item in self.table_primers_items:
-            item['primers'] = [(i[0], i[1]) for i in item['primers'] if i[0] is not None and i[1] is not None]
-
-    def save_table_primers_to_db(self):
-        if self.table_primers_items is None:
-            self.import_table_primers()
-
-        primers_queryset = Sequences.objects.all().values('code', 'gene_code')
-        primers_objs = []
-        for item in self.table_primers_items:
-            if {'gene_code': item['gene_code'], 'code': item['code']} in primers_queryset:
-                item['for_sequence'] = Sequences.objects.get(code=item['code'], gene_code=item['gene_code'])
-            else:
-                print("Could not save primers for sequence: {0} {1}".format(item['code'], item['gene_code']))
-                continue
-
-            primers = item['primers']
-            del item['primers']
-            del item['code']
-            del item['gene_code']
-            for i in primers:
-                item['primer_f'] = i[0]
-                item['primer_r'] = i[1]
-                primers_objs.append(Primers(**item))
-        Primers.objects.bulk_create(primers_objs)
-
-        if self.verbosity != 0:
-            print("Uploading table `public_interface_primers`")
-
     def parse_table_sequences(self, xml_string):
         our_data = False
         this_table = self.tables_prefix + "sequences"
@@ -314,91 +242,6 @@ class ParseXML(object):
             item['genbank'] = row.find("./field/[@name='genbank']").text
             self.table_sequences_items.append(item)
 
-    def import_table_sequences(self):
-        if self.table_sequences_items is None:
-            self.parse_table_sequences(self.dump_string)
-
-        for item in self.table_sequences_items:
-            item['time_created'] = self.parse_timestamp(item['time_created'], 'time_created')
-            item['time_edited'] = self.parse_timestamp(item['time_edited'], 'time_edited')
-
-            if item['sequences'] is not None:
-                ambiguous_chars = item['sequences'].count('?') + item['sequences'].count('-')
-                ambiguous_chars += item['sequences'].count('N') + item['sequences'].count('n')
-                item['number_ambiguous_bp'] = ambiguous_chars
-                item['total_number_bp'] = len(item['sequences'])
-            else:
-                item['number_ambiguous_bp'] = None
-                item['total_number_bp'] = None
-
-            if item['genbank'] == '0':
-                item['genbank'] = False
-            elif item['genbank'] == '1':
-                item['genbank'] = True
-            elif item['genbank'] is None:
-                item['genbank'] = False
-            else:
-                item['genbank'] = False
-
-    def save_table_sequences_to_db(self):
-        if self.table_sequences_items is None:
-            self.import_table_sequences()
-
-        seqs_to_insert = []
-        seqs_not_to_insert = []
-        seqs_invalid = []
-        for i in self.table_sequences_items:
-            validation = validate_sequence(i['sequences'])
-            if validation.is_valid is False:
-                ProblematicSequence = namedtuple('ProblematicSequence',
-                                                 ['code', 'gene_code', 'invalid_character'])
-                prob_seq = ProblematicSequence(i['code_id'], i['gene_code'], validation.invalid_character)
-                seqs_invalid.append(prob_seq)
-                continue
-
-            if i['code_id'] in self.list_of_voucher_codes:
-                seqs_to_insert.append(i)
-            else:
-                seqs_not_to_insert.append(i)
-
-        print("Uploading table `public_interface_sequences`")
-        n = len(seqs_to_insert)
-        if TESTING is False:
-            bar = pyprind.ProgBar(n, width=70)
-
-        seqs_objects = []
-        for i in range(n):
-            item = seqs_to_insert[i]
-            if item['sequences'] is None:
-                continue
-
-            item = self.clean_value(item, 'lab_person')
-            item = self.clean_value(item, 'notes')
-            item = self.clean_value(item, 'sequences')
-            item = self.clean_value(item, 'accession')
-            seqs_objects.append(Sequences(**item))
-            if TESTING is False:
-                bar.update()
-
-        if self.verbosity != 0:
-            print("Uploading table `public_interface_sequences`")
-        Sequences.objects.bulk_create(seqs_objects)
-
-        if seqs_not_to_insert:
-            if self.verbosity != 0:
-                print("ERROR: Couldn't insert {} sequences due to lack of reference vouchers".format(len(seqs_not_to_insert)))
-            for i in seqs_not_to_insert:
-                if self.verbosity != 0:
-                    print(i['code_id'], i['gene_code'])
-
-        if seqs_invalid:
-            if TESTING is False:
-                print("ERROR: Couldn't insert {} sequences due to having invalid characters".format(len(seqs_invalid)))
-            for i in seqs_invalid:
-                if TESTING is False:
-                    msg = "ERROR: Sequence code={}, gene_code={}, problem={}".format(i.code, i.gene_code, i.invalid_character)
-                    print(msg)
-
     def parse_table_taxonsets(self, xml_string):
         our_data = False
         this_table = self.tables_prefix + "taxonsets"
@@ -421,25 +264,6 @@ class ParseXML(object):
             item['taxonset_list'] = row.find("./field/[@name='taxonset_list']").text
             # item['taxonset_id'] = row.find("./field/[@name='taxonset_id']").text
             self.table_taxonsets_items.append(item)
-
-    def import_table_taxonsets(self):
-        if self.table_taxonsets_items is None:
-            self.parse_table_taxonsets(self.dump_string)
-
-        for item in self.table_taxonsets_items:
-            if item['taxonset_description'] is None:
-                item['taxonset_description'] = ''
-            if item['taxonset_creator'] is None:
-                item['taxonset_creator'] = ''
-            if item['taxonset_list'] is not None:
-                item['taxonset_list'] = item['taxonset_list'].replace(',', '\n')
-
-    def save_table_taxonsets_to_db(self):
-        if self.table_taxonsets_items is None:
-            self.import_table_taxonsets()
-
-        for item in self.table_taxonsets_items:
-            TaxonSets.objects.create(**item)
 
     def parse_table_vouchers(self, xml_string):
         our_data = False
@@ -503,6 +327,84 @@ class ParseXML(object):
             item['created'] = row.find("./field/[@name='timestamp']").text
             self.table_vouchers_items.append(item)
 
+    def import_table_genes(self):
+        if self.table_genes_items is None:
+            self.parse_table_genes(self.dump_string)
+
+        for item in self.table_genes_items:
+            date_obj = self.parse_timestamp(item['timestamp'], 'timestamp')
+
+            item['time_created'] = date_obj
+            del item['timestamp']
+
+            if item['length'] is not None:
+                item['length'] = int(item['length'])
+
+            if item['reading_frame'] is not None:
+                item['reading_frame'] = int(item['reading_frame'])
+
+            if item['aligned'] is None:
+                item['aligned'] = ''
+
+            if item['prot_code'] is None:
+                item['prot_code'] = 'notset'
+
+            item['gene_type'] = item['genetype']
+            del item['genetype']
+
+    def import_table_genesets(self):
+        if self.table_genesets_items is None:
+            self.parse_table_genesets(self.dump_string)
+
+    def import_table_members(self):
+        if self.table_members_items is None:
+            self.parse_table_members(self.dump_string)
+
+    def import_table_primers(self):
+        if self.table_primers_items is None:
+            self.parse_table_primers(self.dump_string)
+
+        for item in self.table_primers_items:
+            item['primers'] = [(i[0], i[1]) for i in item['primers'] if i[0] is not None and i[1] is not None]
+
+    def import_table_sequences(self):
+        if self.table_sequences_items is None:
+            self.parse_table_sequences(self.dump_string)
+
+        for item in self.table_sequences_items:
+            item['time_created'] = self.parse_timestamp(item['time_created'], 'time_created')
+            item['time_edited'] = self.parse_timestamp(item['time_edited'], 'time_edited')
+
+            if item['sequences'] is not None:
+                ambiguous_chars = item['sequences'].count('?') + item['sequences'].count('-')
+                ambiguous_chars += item['sequences'].count('N') + item['sequences'].count('n')
+                item['number_ambiguous_bp'] = ambiguous_chars
+                item['total_number_bp'] = len(item['sequences'])
+            else:
+                item['number_ambiguous_bp'] = None
+                item['total_number_bp'] = None
+
+            if item['genbank'] == '0':
+                item['genbank'] = False
+            elif item['genbank'] == '1':
+                item['genbank'] = True
+            elif item['genbank'] is None:
+                item['genbank'] = False
+            else:
+                item['genbank'] = False
+
+    def import_table_taxonsets(self):
+        if self.table_taxonsets_items is None:
+            self.parse_table_taxonsets(self.dump_string)
+
+        for item in self.table_taxonsets_items:
+            if item['taxonset_description'] is None:
+                item['taxonset_description'] = ''
+            if item['taxonset_creator'] is None:
+                item['taxonset_creator'] = ''
+            if item['taxonset_list'] is not None:
+                item['taxonset_list'] = item['taxonset_list'].replace(',', '\n')
+
     def import_table_vouchers(self):
         if self.table_vouchers_items is None:
             self.parse_table_vouchers(self.dump_string)
@@ -561,43 +463,138 @@ class ParseXML(object):
             item['type_species'] = parse_type_species(item['type_species'])
             self.list_of_voucher_codes.append(item['code'])
 
-    def parse_image_info(self, item):
-        got_flickr = self.test_if_photo_in_flickr(item)
-        if item['voucher_image'] == 'na.gif':
-            return None, None
-        elif item['voucher_image'] is not None:
-            item['voucher_image'] = self.get_as_tuple(item['voucher_image'], got_flickr)
+    def save_table_genes_to_db(self):
+        if self.table_genes_items is None:
+            self.import_table_genes()
 
-        if item['thumbnail'] == '':
-            item['thumbnail'] = None
-        elif item['thumbnail'] is not None:
-            item['thumbnail'] = self.get_as_tuple(item['thumbnail'], got_flickr)
+        for item in self.table_genes_items:
+            item = self.clean_value(item, 'notes')
+            item = self.clean_value(item, 'intron')
+            item = self.clean_value(item, 'gene_type')
+            item = self.clean_value(item, 'genetic_code')
+            if item['genetic_code'] == '':
+                item['genetic_code'] = None
+            item = self.clean_value(item, 'description')
+            Genes.objects.create(**item)
 
-        imgs = []
-        if got_flickr is True:
-            if item['flickr_id'] == '':
-                item['flickr_id'] = None
-            elif item['flickr_id'] is not None:
-                item['flickr_id'] = self.get_as_tuple(item['flickr_id'], got_flickr)
+    def save_table_genesets_to_db(self):
+        if self.table_genesets_items is None:
+            self.import_table_genesets()
 
-            if item['voucher_image'] is not None and item['thumbnail'] is not None \
-                    and item['flickr_id'] is not None:
-                for i in range(0, len(item['voucher_image']), 1):
-                    imgs.append({
-                        'voucher_id': item['code'],
-                        'voucher_image': item['voucher_image'][i],
-                        'thumbnail': item['thumbnail'][i],
-                        'flickr_id': item['flickr_id'][i],
-                    })
-            return True, imgs
-        elif got_flickr is False:
-            if item['voucher_image'] is not None and item['thumbnail'] is not None:
-                for i in range(0, len(item['voucher_image']), 1):
-                    imgs.append({
-                        'voucher_id': item['code'],
-                        'voucher_image': item['voucher_image'][i],
-                    })
-            return False, imgs
+        for item in self.table_genesets_items:
+            if item['geneset_description'] is None:
+                item['geneset_description'] = ''
+            item['geneset_list'] = item['geneset_list'].replace(',', '\n')
+            GeneSets.objects.create(**item)
+
+    def save_table_members_to_db(self):
+        if self.table_members_items is None:
+            self.import_table_members()
+
+        for item in self.table_members_items:
+            user = User.objects.create_user(item['username'], email=None, first_name=item['first_name'],
+                                            last_name=item['last_name'])
+            user.is_staff = True
+            if item['is_superuser'] is False:
+                user.is_superuser = False
+            else:
+                user.is_superuser = True
+            user.save()
+
+        if self.verbosity != 0:
+            print("Uploading table `public_interface_members`")
+
+    def save_table_primers_to_db(self):
+        if self.table_primers_items is None:
+            self.import_table_primers()
+
+        primers_queryset = Sequences.objects.all().values('code', 'gene_code')
+        primers_objs = []
+        for item in self.table_primers_items:
+            if {'gene_code': item['gene_code'], 'code': item['code']} in primers_queryset:
+                item['for_sequence'] = Sequences.objects.get(code=item['code'], gene_code=item['gene_code'])
+            else:
+                print("Could not save primers for sequence: {0} {1}".format(item['code'], item['gene_code']))
+                continue
+
+            primers = item['primers']
+            del item['primers']
+            del item['code']
+            del item['gene_code']
+            for i in primers:
+                item['primer_f'] = i[0]
+                item['primer_r'] = i[1]
+                primers_objs.append(Primers(**item))
+        Primers.objects.bulk_create(primers_objs)
+
+        if self.verbosity != 0:
+            print("Uploading table `public_interface_primers`")
+
+    def save_table_sequences_to_db(self):
+        if self.table_sequences_items is None:
+            self.import_table_sequences()
+
+        seqs_to_insert = []
+        seqs_not_to_insert = []
+        seqs_invalid = []
+        for i in self.table_sequences_items:
+            validation = validate_sequence(i['sequences'])
+            if validation.is_valid is False:
+                ProblematicSequence = namedtuple('ProblematicSequence',
+                                                 ['code', 'gene_code', 'invalid_character'])
+                prob_seq = ProblematicSequence(i['code_id'], i['gene_code'], validation.invalid_character)
+                seqs_invalid.append(prob_seq)
+                continue
+
+            if i['code_id'] in self.list_of_voucher_codes:
+                seqs_to_insert.append(i)
+            else:
+                seqs_not_to_insert.append(i)
+
+        print("Uploading table `public_interface_sequences`")
+        n = len(seqs_to_insert)
+        if TESTING is False:
+            bar = pyprind.ProgBar(n, width=70)
+
+        seqs_objects = []
+        for i in range(n):
+            item = seqs_to_insert[i]
+            if item['sequences'] is None:
+                continue
+
+            item = self.clean_value(item, 'lab_person')
+            item = self.clean_value(item, 'notes')
+            item = self.clean_value(item, 'sequences')
+            item = self.clean_value(item, 'accession')
+            seqs_objects.append(Sequences(**item))
+            if TESTING is False:
+                bar.update()
+
+        if self.verbosity != 0:
+            print("Uploading table `public_interface_sequences`")
+        Sequences.objects.bulk_create(seqs_objects)
+
+        if seqs_not_to_insert:
+            if self.verbosity != 0:
+                print("ERROR: Couldn't insert {} sequences due to lack of reference vouchers".format(len(seqs_not_to_insert)))
+            for i in seqs_not_to_insert:
+                if self.verbosity != 0:
+                    print(i['code_id'], i['gene_code'])
+
+        if seqs_invalid:
+            if TESTING is False:
+                print("ERROR: Couldn't insert {} sequences due to having invalid characters".format(len(seqs_invalid)))
+            for i in seqs_invalid:
+                if TESTING is False:
+                    msg = "ERROR: Sequence code={}, gene_code={}, problem={}".format(i.code, i.gene_code, i.invalid_character)
+                    print(msg)
+
+    def save_table_taxonsets_to_db(self):
+        if self.table_taxonsets_items is None:
+            self.import_table_taxonsets()
+
+        for item in self.table_taxonsets_items:
+            TaxonSets.objects.create(**item)
 
     def test_if_photo_in_flickr(self, item):
         value = item['voucher_image']
