@@ -89,7 +89,8 @@ class Genes(models.Model):
         return self.gene_code
 
     class Meta:
-        verbose_name_plural = "Genes"
+        verbose_name_plural = 'Genes'
+        app_label = 'public_interface'
 
 
 class GeneSets(models.Model):
@@ -107,15 +108,8 @@ class GeneSets(models.Model):
         return self.geneset_name
 
     class Meta:
-        verbose_name_plural = "Gene sets"
-
-
-class Members(models.Model):
-    firstname = models.CharField(max_length=100)
-    lastname = models.CharField(max_length=100)
-    login = models.CharField(max_length=100)
-    passwd = models.CharField(max_length=100)
-    admin = models.BinaryField(default=None)
+        verbose_name_plural = 'Gene sets'
+        app_label = 'public_interface'
 
 
 class TaxonSets(models.Model):
@@ -133,7 +127,8 @@ class TaxonSets(models.Model):
         return self.taxonset_name
 
     class Meta:
-        verbose_name_plural = "Taxon sets"
+        verbose_name_plural = 'Taxon sets'
+        app_label = 'public_interface'
 
 
 class Vouchers(TimeStampedModel):
@@ -218,7 +213,8 @@ class Vouchers(TimeStampedModel):
     author = models.TextField(help_text="Person that described this taxon.", blank=True)
 
     class Meta:
-        verbose_name_plural = "Vouchers"
+        verbose_name_plural = 'Vouchers'
+        app_label = 'public_interface'
 
     def __str__(self):
         return self.code
@@ -238,7 +234,8 @@ class Sequences(models.Model):
     number_ambiguous_bp = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        verbose_name_plural = "Sequences"
+        verbose_name_plural = 'Sequences'
+        app_label = 'public_interface'
 
     def save(self, *args, **kwargs):
         ambiguous_seq_length = self.sequences.count('?') + self.sequences.count('-')
@@ -257,6 +254,9 @@ class Primers(models.Model):
     primer_f = models.CharField(max_length=100, blank=True)
     primer_r = models.CharField(max_length=100, blank=True)
 
+    class Meta:
+        app_label = 'public_interface'
+
 
 class FlickrImages(models.Model):
     voucher = models.ForeignKey(
@@ -271,6 +271,7 @@ class FlickrImages(models.Model):
 
     class Meta:
         verbose_name_plural = 'Flickr Images'
+        app_label = 'public_interface'
 
     def save(self, *args, **kwargs):
         post_save.connect(self.update_flickr_image, sender=FlickrImages, dispatch_uid="update_flickr_image_count")
@@ -351,3 +352,4 @@ class LocalImages(models.Model):
 
     class Meta:
         verbose_name_plural = 'Local Images'
+        app_label = 'public_interface'
