@@ -62,7 +62,7 @@ class ParseXML(object):
         got_flickr = self.test_if_photo_in_flickr(item)
         if item['voucher_image'] == 'na.gif':
             return None, None
-        elif item['voucher_image'] is not None:
+        else:
             item['voucher_image'] = self.get_as_tuple(item['voucher_image'], got_flickr)
 
         if item['thumbnail'] == '':
@@ -501,7 +501,8 @@ class ParseXML(object):
                 user.is_superuser = True
             user.save()
 
-        print("\nUploading table `public_interface_members`")
+        if not TESTING:
+            print("\nUploading table `public_interface_members`")
 
     def save_table_primers_to_db(self):
         if self.table_primers_items is None:
@@ -526,7 +527,8 @@ class ParseXML(object):
                 primers_objs.append(Primers(**item))
         Primers.objects.bulk_create(primers_objs)
 
-        print("\nUploading table `public_interface_primers`")
+        if not TESTING:
+            print("\nUploading table `public_interface_primers`")
 
     def save_table_sequences_to_db(self):
         if self.table_sequences_items is None:
@@ -549,7 +551,9 @@ class ParseXML(object):
             else:
                 seqs_not_to_insert.append(i)
 
-        print("\nUploading table `public_interface_sequences`")
+        if not TESTING:
+            print("\nUploading table `public_interface_sequences`")
+
         n = len(seqs_to_insert)
         if TESTING is False:
             bar = pyprind.ProgBar(n, width=70)
@@ -568,7 +572,9 @@ class ParseXML(object):
             if TESTING is False:
                 bar.update()
 
-        print("\nUploading table `public_interface_sequences`")
+        if not TESTING:
+            print("\nUploading table `public_interface_sequences`")
+
         Sequences.objects.bulk_create(seqs_objects)
 
         if seqs_not_to_insert:
@@ -577,10 +583,11 @@ class ParseXML(object):
                 print(i['code_id'], i['gene_code'])
 
         if seqs_invalid:
-            if TESTING is False:
+            if not TESTING:
                 print("ERROR: Couldn't insert {} sequences due to invalid characters".format(len(seqs_invalid)))
+
             for i in seqs_invalid:
-                if TESTING is False:
+                if not TESTING:
                     msg = "ERROR: Sequence code={}, gene_code={}, problem={}".format(i.code, i.gene_code, i.invalid_character)
                     print(msg)
 
@@ -603,7 +610,8 @@ class ParseXML(object):
         if self.table_vouchers_items is None:
             self.parse_table_vouchers(self.dump_string)
 
-        print("\nUploading table `public_interface_vouchers`")
+        if not TESTING:
+            print("\nUploading table `public_interface_vouchers`")
 
         voucher_objs = []
         n = len(self.table_vouchers_items)
@@ -655,7 +663,8 @@ class ParseXML(object):
             image_objs.append(LocalImages(**item))
         LocalImages.objects.bulk_create(image_objs)
 
-        print("\nUploading table `public_interface_flickrimages`")
+        if not TESTING:
+            print("\nUploading table `public_interface_flickrimages`")
 
     def clean_value(self, item, key):
         if key in item:
