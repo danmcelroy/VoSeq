@@ -492,7 +492,7 @@ class ParseXML(object):
             item['altitude'] = row.find("./field/[@name='altitude']").text
             item['collector'] = row.find("./field/[@name='collector']").text
             item['date_collection'] = row.find("./field/[@name='dateCollection']").text
-            item['voucherImage'] = row.find("./field/[@name='voucherImage']").text
+            item['voucher_image'] = row.find("./field/[@name='voucherImage']").text
             item['thumbnail'] = row.find("./field/[@name='thumbnail']").text
             item['extraction'] = row.find("./field/[@name='extraction']").text
             item['date_extraction'] = row.find("./field/[@name='dateExtraction']").text
@@ -506,13 +506,13 @@ class ParseXML(object):
             item['sex'] = row.find("./field/[@name='sex']").text
             item['extraction_tube'] = row.find("./field/[@name='extractionTube']").text
             item['voucher'] = row.find("./field/[@name='voucher']").text
-            item['voucherCode'] = row.find("./field/[@name='voucherCode']").text
+            item['voucher_code'] = row.find("./field/[@name='voucherCode']").text
             try:
                 item['code_bold'] = row.find("./field/[@name='code_bold']").text
             except AttributeError:
                 item['code_bold'] = None
             item['flickr_id'] = row.find("./field/[@name='flickr_id']").text
-            item['determinedBy'] = row.find("./field/[@name='determinedBy']").text
+            item['determined_by'] = row.find("./field/[@name='determinedBy']").text
             item['author'] = row.find("./field/[@name='auctor']").text
             item['created'] = row.find("./field/[@name='timestamp']").text
             self.table_vouchers_items.append(item)
@@ -649,9 +649,9 @@ class ParseXML(object):
             item = self.clean_value(item, 'specific_locality')
             item = self.clean_value(item, 'voucher_locality')
             item = self.clean_value(item, 'collector')
-            item = self.clean_value(item, 'voucherCode')
+            item = self.clean_value(item, 'voucher_code')
             item = self.clean_value(item, 'code_bold')
-            item = self.clean_value(item, 'determinedBy')
+            item = self.clean_value(item, 'determined_by')
             item = self.clean_value(item, 'sex')
 
             item = self.clean_value(item, 'published_in')

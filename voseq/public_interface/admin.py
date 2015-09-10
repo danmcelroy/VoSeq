@@ -37,8 +37,8 @@ class BatchImportVouchersResource(resources.ModelResource):
                   'subtribe', 'genus', 'species', 'subspecies', 'author',
                   'hostorg', 'type_species', 'country', 'specific_locality',
                   'collector', 'date_collection', 'latitude', 'longitude',
-                  'max_altitude', 'min_altitude', 'voucherCode', 'voucher',
-                  'voucher_locality', 'determinedBy', 'sex', 'extraction',
+                  'max_altitude', 'min_altitude', 'voucher_code', 'voucher',
+                  'voucher_locality', 'determined_by', 'sex', 'extraction',
                   'extraction_tube', 'date_extraction', 'published_in', 'notes',
                   )
 
@@ -64,7 +64,7 @@ class VouchersAdmin(ImportExportModelAdmin):
     actions = ['batch_changes']
 
     fieldsets = [('Voucher Information', {'fields': ['code', 'voucher', 'voucher_locality',
-                                                     'voucherCode']}
+                                                     'voucher_code']}
                   ),
 
                  ('Specimen Information', {'fields': ['orden', 'superfamily', 'family',
@@ -78,7 +78,7 @@ class VouchersAdmin(ImportExportModelAdmin):
                                                         'latitude', 'longitude',
                                                         'max_altitude', 'min_altitude',
                                                         'collector', 'code_bold',
-                                                        'date_collection', 'determinedBy',
+                                                        'date_collection', 'determined_by',
                                                         'sex', 'extractor', 'extraction',
                                                         'extraction_tube', 'notes',
                                                         'published_in', 'date_extraction',
