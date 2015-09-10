@@ -164,7 +164,7 @@ class AdvancedSearchForm(ModelSearchForm):
                 # remove after adding this to index
                 if v == 'Select':
                     continue
-                if k in ['dateCollection', 'dateExtraction']:
+                if k in ['dateCollection', 'date_extraction']:
                     v = datetime.date.strftime(v, "%Y-%m-%d")
                 if k == 'models':
                     continue
@@ -206,7 +206,7 @@ class BatchChangesForm(forms.Form):
                   'genus', 'species', 'subspecies', 'typeSpecies', 'sex', 'author',
                   'determinedBy', 'published_in', 'country', 'specificLocality', 'latitude',
                   'longitude', 'max_altitude', 'min_altitude', 'dateCollection', 'collector',
-                  'hostorg', 'dateExtraction', 'extractor', 'extraction', 'extractionTube',
+                  'hostorg', 'date_extraction', 'extractor', 'extraction', 'extractionTube',
                   'voucher', 'voucher_locality', 'latesteditor', 'edits', 'notes']
     '''
 
