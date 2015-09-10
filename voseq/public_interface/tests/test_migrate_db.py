@@ -333,7 +333,7 @@ class TestCustomCommand(TestCase):
     def test_date_collection(self):
         expected = datetime.date(1996, 3, 25)
         b = Vouchers.objects.get(code='CP100-12')
-        self.assertEqual(expected, b.dateCollection)
+        self.assertEqual(expected, b.date_collection)
 
     def test_member_superuser_true(self):
         result = User.objects.get(username='admin').is_superuser
