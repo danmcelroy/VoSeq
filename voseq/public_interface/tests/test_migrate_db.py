@@ -158,13 +158,13 @@ class TestCustomCommand(TestCase):
     def test_voucher_image(self):
         b = Vouchers.objects.get(code='CP100-09')
         c = FlickrImages.objects.all().filter(voucher=b)
-        results = [i.voucherImage for i in c]
+        results = [i.voucher_image for i in c]
         self.assertTrue('https://www.flickr.com/photos/nsg_db/15728978251/' in results)
 
     def test_voucher_image_none(self):
         b = Vouchers.objects.get(code='CP100-18')
         c = FlickrImages.objects.all().filter(voucher=b)
-        results = [i.voucherImage for i in c]
+        results = [i.voucher_image for i in c]
         self.assertEqual([], results)
 
     def test_country(self):
@@ -355,12 +355,12 @@ class TestCustomCommand(TestCase):
 
     def test_voucher_image_in_local_folder(self):
         v = Vouchers.objects.get(code='CP100-10')
-        expected = {'voucherImage': 'kitten1.jpg'}
-        result = LocalImages.objects.filter(voucher=v).values('voucherImage')
+        expected = {'voucher_image': 'kitten1.jpg'}
+        result = LocalImages.objects.filter(voucher=v).values('voucher_image')
         self.assertTrue(expected in result)
 
-        expected = {'voucherImage': 'kitten3.jpg'}
-        result = LocalImages.objects.filter(voucher=v).values('voucherImage')
+        expected = {'voucher_image': 'kitten3.jpg'}
+        result = LocalImages.objects.filter(voucher=v).values('voucher_image')
         self.assertTrue(expected in result)
 
     def test_avoid_importing_null_sequences(self):
