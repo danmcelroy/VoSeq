@@ -35,11 +35,11 @@ class BatchImportVouchersResource(resources.ModelResource):
         import_id_fields = ('code',)
         fields = ('code', 'orden', 'superfamily', 'family', 'subfamily', 'tribe',
                   'subtribe', 'genus', 'species', 'subspecies', 'author',
-                  'hostorg', 'typeSpecies', 'country', 'specificLocality',
-                  'collector', 'dateCollection', 'latitude', 'longitude',
+                  'hostorg', 'type_species', 'country', 'specific_locality',
+                  'collector', 'date_collection', 'latitude', 'longitude',
                   'max_altitude', 'min_altitude', 'voucherCode', 'voucher',
                   'voucher_locality', 'determinedBy', 'sex', 'extraction',
-                  'extractionTube', 'date_extraction', 'published_in', 'notes',
+                  'extraction_tube', 'date_extraction', 'published_in', 'notes',
                   )
 
 
@@ -70,19 +70,19 @@ class VouchersAdmin(ImportExportModelAdmin):
                  ('Specimen Information', {'fields': ['orden', 'superfamily', 'family',
                                                       'subfamily', 'tribe', 'subtribe',
                                                       'genus', 'species', 'subspecies',
-                                                      'hostorg', 'author', 'typeSpecies',
+                                                      'hostorg', 'author', 'type_species',
                                                       ],
                                            'classes': ['collapse']}),
 
-                 ('Collection Information', {'fields': ['country', 'specificLocality',
+                 ('Collection Information', {'fields': ['country', 'specific_locality',
                                                         'latitude', 'longitude',
                                                         'max_altitude', 'min_altitude',
                                                         'collector', 'code_bold',
-                                                        'dateCollection', 'determinedBy',
+                                                        'date_collection', 'determinedBy',
                                                         'sex', 'extractor', 'extraction',
-                                                        'extractionTube', 'notes',
+                                                        'extraction_tube', 'notes',
                                                         'published_in', 'date_extraction',
-                                                        'edits', 'latesteditor',
+                                                        'edits', 'latest_editor',
                                                         ],
                                              'classes': ['collapse']}),
                  ]

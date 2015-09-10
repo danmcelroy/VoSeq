@@ -187,24 +187,24 @@ class Vouchers(TimeStampedModel):
     species = models.TextField(blank=True)
     subspecies = models.TextField(blank=True)
     country = models.TextField(blank=True)
-    specificLocality = models.TextField(help_text="Locality of origin for this specimen.", blank=True)
-    typeSpecies = models.CharField(max_length=100, choices=TYPE_SPECIES_CHOICES,
-                                   help_text="Is this a type species?")
+    specific_locality = models.TextField(help_text="Locality of origin for this specimen.", blank=True)
+    type_species = models.CharField(max_length=100, choices=TYPE_SPECIES_CHOICES,
+                                    help_text="Is this a type species?")
     latitude = models.FloatField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     max_altitude = models.IntegerField(blank=True, null=True, help_text="Enter altitude in meters above sea level.")
     min_altitude = models.IntegerField(blank=True, null=True, help_text="Enter altitude in meters above sea level.")
     collector = models.TextField(blank=True)
-    dateCollection = models.DateField(null=True)  # TODO check if better blank null rather than null true
+    date_collection = models.DateField(null=True)  # TODO check if better blank null rather than null true
     extraction = models.TextField(help_text="Number of extraction event.", blank=True)
-    extractionTube = models.TextField(help_text="Tube containing DNA extract.", blank=True)
+    extraction_tube = models.TextField(help_text="Tube containing DNA extract.", blank=True)
     date_extraction = models.DateField(null=True)
     extractor = models.TextField(blank=True)
     voucher_locality = models.TextField(blank=True)
     published_in = models.TextField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
     edits = models.TextField(blank=True, null=True)
-    latesteditor = models.TextField(blank=True, null=True)
+    latest_editor = models.TextField(blank=True, null=True)
     hostorg = models.TextField(help_text="Hostplant or other host.", blank=True)
     sex = models.CharField(max_length=100, choices=SEX_CHOICES, blank=True)
     voucher = models.CharField(max_length=100, choices=VOUCHER_CHOICES, blank=True,
