@@ -187,7 +187,7 @@ class TestAdvancedSearch(TestCase):
         self.assertTrue('CP100-17' in content)
 
     def test_advanced_search_by_voucher_locality(self):
-        response = self.client.get('/search/advanced/?voucherLocality=NSG coll')
+        response = self.client.get('/search/advanced/?voucher_locality=NSG coll')
         content = response.content.decode('utf-8')
         self.assertTrue('CP100-16' in content)
 

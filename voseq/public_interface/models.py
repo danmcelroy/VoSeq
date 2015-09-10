@@ -200,7 +200,7 @@ class Vouchers(TimeStampedModel):
     extractionTube = models.TextField(help_text="Tube containing DNA extract.", blank=True)
     dateExtraction = models.DateField(null=True)
     extractor = models.TextField(blank=True)
-    voucherLocality = models.TextField(blank=True)
+    voucher_locality = models.TextField(blank=True)
     published_in = models.TextField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
     edits = models.TextField(blank=True, null=True)
