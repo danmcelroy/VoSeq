@@ -158,13 +158,13 @@ class TestCustomCommand(TestCase):
     def test_voucher_image(self):
         b = Vouchers.objects.get(code='CP100-09')
         c = FlickrImages.objects.all().filter(voucher=b)
-        results = [i.voucherImage for i in c]
+        results = [i.voucher_image for i in c]
         self.assertTrue('https://www.flickr.com/photos/nsg_db/15728978251/' in results)
 
     def test_voucher_image_none(self):
         b = Vouchers.objects.get(code='CP100-18')
         c = FlickrImages.objects.all().filter(voucher=b)
-        results = [i.voucherImage for i in c]
+        results = [i.voucher_image for i in c]
         self.assertEqual([], results)
 
     def test_country(self):
@@ -323,17 +323,17 @@ class TestCustomCommand(TestCase):
     def test_determined_by(self):
         expected = 'R. Núñez'
         b = Vouchers.objects.get(code='CP100-11')
-        self.assertEqual(expected, b.determinedBy)
+        self.assertEqual(expected, b.determined_by)
 
     def test_determined_by_null(self):
         expected = ''
         b = Vouchers.objects.get(code='CP100-12')
-        self.assertEqual(expected, b.determinedBy)
+        self.assertEqual(expected, b.determined_by)
 
     def test_date_collection(self):
         expected = datetime.date(1996, 3, 25)
         b = Vouchers.objects.get(code='CP100-12')
-        self.assertEqual(expected, b.dateCollection)
+        self.assertEqual(expected, b.date_collection)
 
     def test_member_superuser_true(self):
         result = User.objects.get(username='admin').is_superuser
@@ -355,12 +355,12 @@ class TestCustomCommand(TestCase):
 
     def test_voucher_image_in_local_folder(self):
         v = Vouchers.objects.get(code='CP100-10')
-        expected = {'voucherImage': 'kitten1.jpg'}
-        result = LocalImages.objects.filter(voucher=v).values('voucherImage')
+        expected = {'voucher_image': 'kitten1.jpg'}
+        result = LocalImages.objects.filter(voucher=v).values('voucher_image')
         self.assertTrue(expected in result)
 
-        expected = {'voucherImage': 'kitten3.jpg'}
-        result = LocalImages.objects.filter(voucher=v).values('voucherImage')
+        expected = {'voucher_image': 'kitten3.jpg'}
+        result = LocalImages.objects.filter(voucher=v).values('voucher_image')
         self.assertTrue(expected in result)
 
     def test_avoid_importing_null_sequences(self):

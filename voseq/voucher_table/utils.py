@@ -116,7 +116,7 @@ class VoucherTable(object):
         row = tuple()
 
         for i in self.voucher_info_values:
-            if i == 'specificLocality':
+            if i == 'specific_locality':
                 row += ('Specific Locality',)
                 continue
             row += (i.capitalize(),)

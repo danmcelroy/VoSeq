@@ -610,7 +610,7 @@ TGGAAGATCACAACAGTGACATTAGGGCATAAAGAGCGTAAATTAGACAAAGGTGATCGCTATGGCGAGTCCAATAATTT
         result = dataset_creator.dataset_str
         self.assertEqual(expected.strip(), result)
 
-    def test_dataset_ALL_1st_2nd_3rd_each(self):
+    def test_dataset_all_1st_2nd_3rd_each(self):
         g1 = Genes.objects.get(gene_code='COI')
         cleaned_data = self.cleaned_data
         cleaned_data['gene_codes'] = [g1]
@@ -668,7 +668,7 @@ TGGAAGATCACAACAGTGACATTAGGGCATAAAGAGCGTAAATTAGACAAAGGTGATCGCTATGGCGAGTCCAATAATTT
         result = dataset_creator.dataset_str
         self.assertEqual(expected.strip(), result)
 
-    def test_dataset_ALL_1st2nd_3rd_using_geneset_and_taxonset(self):
+    def test_dataset_all_1st2nd_3rd_using_geneset_and_taxonset(self):
         cleaned_data = self.cleaned_data
         cleaned_data['gene_codes'] = []
         cleaned_data['positions'] = ['ALL']
@@ -848,7 +848,7 @@ TGGAAGATCACAACAGTGACATTAGGGCATAAAGAGCGTAAATTAGACAAAGGTGATCGCTATGGCGAGTCCAATAATTT
         result = dataset_creator.dataset_str
         self.assertEqual(expected.strip(), result)
 
-    def test_dataset_ALL_1st_codons_1st2nd_3rd(self):
+    def test_dataset_all_1st_codons_1st2nd_3rd(self):
         g1 = Genes.objects.get(gene_code='COI')
         cleaned_data = self.cleaned_data
         cleaned_data['gene_codes'] = [g1]
