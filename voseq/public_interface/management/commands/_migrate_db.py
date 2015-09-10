@@ -304,12 +304,12 @@ class ParseXML(object):
         for row in our_data.findall('row'):
             item = dict()
             item['code'] = row.find("./field/[@name='code']").text
-            item['geneCode'] = row.find("./field/[@name='geneCode']").text
+            item['gene_code'] = row.find("./field/[@name='geneCode']").text
             item['sequences'] = row.find("./field/[@name='sequences']").text
             item['accession'] = row.find("./field/[@name='accession']").text
-            item['labPerson'] = row.find("./field/[@name='labPerson']").text
-            item['dateCreation'] = row.find("./field/[@name='dateCreation']").text
-            item['dateModification'] = row.find("./field/[@name='dateModification']").text
+            item['lab_person'] = row.find("./field/[@name='labPerson']").text
+            item['date_creation'] = row.find("./field/[@name='dateCreation']").text
+            item['date_modification'] = row.find("./field/[@name='dateModification']").text
             item['notes'] = row.find("./field/[@name='notes']").text
             item['genbank'] = row.find("./field/[@name='genbank']").text
             item['timestamp'] = row.find("./field/[@name='timestamp']").text
@@ -386,7 +386,7 @@ class ParseXML(object):
             if item['sequences'] is None:
                 continue
 
-            item = self.clean_value(item, 'labPerson')
+            item = self.clean_value(item, 'lab_person')
             item = self.clean_value(item, 'notes')
             item = self.clean_value(item, 'sequences')
             item = self.clean_value(item, 'accession')
