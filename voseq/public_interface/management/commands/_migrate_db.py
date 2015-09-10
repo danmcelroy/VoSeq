@@ -501,7 +501,7 @@ class ParseXML(object):
                 user.is_superuser = True
             user.save()
 
-        print("Uploading table `public_interface_members`")
+        print("\nUploading table `public_interface_members`")
 
     def save_table_primers_to_db(self):
         if self.table_primers_items is None:
@@ -526,7 +526,7 @@ class ParseXML(object):
                 primers_objs.append(Primers(**item))
         Primers.objects.bulk_create(primers_objs)
 
-        print("Uploading table `public_interface_primers`")
+        print("\nUploading table `public_interface_primers`")
 
     def save_table_sequences_to_db(self):
         if self.table_sequences_items is None:
@@ -549,7 +549,7 @@ class ParseXML(object):
             else:
                 seqs_not_to_insert.append(i)
 
-        print("Uploading table `public_interface_sequences`")
+        print("\nUploading table `public_interface_sequences`")
         n = len(seqs_to_insert)
         if TESTING is False:
             bar = pyprind.ProgBar(n, width=70)
@@ -568,7 +568,7 @@ class ParseXML(object):
             if TESTING is False:
                 bar.update()
 
-        print("Uploading table `public_interface_sequences`")
+        print("\nUploading table `public_interface_sequences`")
         Sequences.objects.bulk_create(seqs_objects)
 
         if seqs_not_to_insert:
@@ -578,7 +578,7 @@ class ParseXML(object):
 
         if seqs_invalid:
             if TESTING is False:
-                print("ERROR: Couldn't insert {} sequences due to having invalid characters".format(len(seqs_invalid)))
+                print("ERROR: Couldn't insert {} sequences due to invalid characters".format(len(seqs_invalid)))
             for i in seqs_invalid:
                 if TESTING is False:
                     msg = "ERROR: Sequence code={}, gene_code={}, problem={}".format(i.code, i.gene_code, i.invalid_character)
@@ -603,7 +603,7 @@ class ParseXML(object):
         if self.table_vouchers_items is None:
             self.parse_table_vouchers(self.dump_string)
 
-        print("Uploading table `public_interface_vouchers`")
+        print("\nUploading table `public_interface_vouchers`")
 
         voucher_objs = []
         n = len(self.table_vouchers_items)
@@ -655,7 +655,7 @@ class ParseXML(object):
             image_objs.append(LocalImages(**item))
         LocalImages.objects.bulk_create(image_objs)
 
-        print("Uploading table `public_interface_flickrimages`")
+        print("\nUploading table `public_interface_flickrimages`")
 
     def clean_value(self, item, key):
         if key in item:
