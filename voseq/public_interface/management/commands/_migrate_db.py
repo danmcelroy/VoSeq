@@ -59,41 +59,37 @@ class ParseXML(object):
         self.verbosity = int(verbosity)
 
     def parse_image_info(self, item):
-        got_flickr = self.test_if_photo_in_flickr(item)
-        if item['voucher_image'] == 'na.gif':
-            return None, None
-        else:
-            item['voucher_image'] = self.get_as_tuple(item['voucher_image'], got_flickr)
+        """
+        Returns tuple (is in Flickr, image data,)
 
-        if item['thumbnail'] == '':
-            item['thumbnail'] = None
-        elif item['thumbnail'] is not None:
-            item['thumbnail'] = self.get_as_tuple(item['thumbnail'], got_flickr)
+        :param item:
+        :return:
+        """
+        got_flickr = self.test_if_photo_in_flickr(item)
+        if item['voucher_image'] == 'na.gif' or item['thumbnail'] == 'na.gif':
+            return None, None
+
+        item['voucher_image'] = self.get_as_tuple(item['voucher_image'], got_flickr)
+        item['thumbnail'] = self.get_as_tuple(item['thumbnail'], got_flickr)
 
         imgs = []
-        if got_flickr is True:
-            if item['flickr_id'] == '':
-                item['flickr_id'] = None
-            elif item['flickr_id'] is not None:
-                item['flickr_id'] = self.get_as_tuple(item['flickr_id'], got_flickr)
+        if got_flickr is True and item['flickr_id']:
+            item['flickr_id'] = self.get_as_tuple(item['flickr_id'], got_flickr)
 
-            if item['voucher_image'] is not None and item['thumbnail'] is not None \
-                    and item['flickr_id'] is not None:
-                for i in range(0, len(item['voucher_image']), 1):
-                    imgs.append({
-                        'voucher_id': item['code'],
-                        'voucher_image': item['voucher_image'][i],
-                        'thumbnail': item['thumbnail'][i],
-                        'flickr_id': item['flickr_id'][i],
-                    })
+            for i in range(0, len(item['voucher_image']), 1):
+                imgs.append({
+                    'voucher_id': item['code'],
+                    'voucher_image': item['voucher_image'][i],
+                    'thumbnail': item['thumbnail'][i],
+                    'flickr_id': item['flickr_id'][i],
+                })
             return True, imgs
-        elif got_flickr is False:
-            if item['voucher_image'] is not None and item['thumbnail'] is not None:
-                for i in range(0, len(item['voucher_image']), 1):
-                    imgs.append({
-                        'voucher_id': item['code'],
-                        'voucher_image': item['voucher_image'][i],
-                    })
+        else:
+            for i in range(0, len(item['voucher_image']), 1):
+                imgs.append({
+                    'voucher_id': item['code'],
+                    'voucher_image': item['voucher_image'][i],
+                })
             return False, imgs
 
     def parse_table_genes(self, xml_string):
