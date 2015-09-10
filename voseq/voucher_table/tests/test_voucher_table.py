@@ -17,7 +17,7 @@ class TestVoucherTable(TestCase):
         geneset = GeneSets.objects.all()[0]
 
         self.cleaned_data = {
-            'collector_info': ['country', 'specificLocality', 'collector'],
+            'collector_info': ['country', 'specific_locality', 'collector'],
             'gene_codes': [],
             'gene_info': 'NUMBER OF BASES',
             'voucher_info': ['code', 'genus', 'species'],

@@ -485,13 +485,13 @@ class ParseXML(object):
             item['species'] = row.find("./field/[@name='species']").text
             item['subspecies'] = row.find("./field/[@name='subspecies']").text
             item['country'] = row.find("./field/[@name='country']").text
-            item['specificLocality'] = row.find("./field/[@name='specificLocality']").text
-            item['typeSpecies'] = row.find("./field/[@name='typeSpecies']").text
+            item['specific_locality'] = row.find("./field/[@name='specificLocality']").text
+            item['type_species'] = row.find("./field/[@name='typeSpecies']").text
             item['latitude'] = row.find("./field/[@name='latitude']").text
             item['longitude'] = row.find("./field/[@name='longitude']").text
             item['altitude'] = row.find("./field/[@name='altitude']").text
             item['collector'] = row.find("./field/[@name='collector']").text
-            item['dateCollection'] = row.find("./field/[@name='dateCollection']").text
+            item['date_collection'] = row.find("./field/[@name='dateCollection']").text
             item['voucherImage'] = row.find("./field/[@name='voucherImage']").text
             item['thumbnail'] = row.find("./field/[@name='thumbnail']").text
             item['extraction'] = row.find("./field/[@name='extraction']").text
@@ -501,10 +501,10 @@ class ParseXML(object):
             item['published_in'] = row.find("./field/[@name='publishedIn']").text
             item['notes'] = row.find("./field/[@name='notes']").text
             item['edits'] = row.find("./field/[@name='edits']").text
-            item['latesteditor'] = row.find("./field/[@name='latesteditor']").text
+            item['latest_editor'] = row.find("./field/[@name='latesteditor']").text
             item['hostorg'] = row.find("./field/[@name='hostorg']").text
             item['sex'] = row.find("./field/[@name='sex']").text
-            item['extractionTube'] = row.find("./field/[@name='extractionTube']").text
+            item['extraction_tube'] = row.find("./field/[@name='extractionTube']").text
             item['voucher'] = row.find("./field/[@name='voucher']").text
             item['voucherCode'] = row.find("./field/[@name='voucherCode']").text
             try:
@@ -555,7 +555,7 @@ class ParseXML(object):
             if item['longitude'] is not None:
                 item['longitude'] = float(item['longitude'])
 
-            item['dateCollection'] = self.parse_date(item['dateCollection'], 'dateCollection')
+            item['date_collection'] = self.parse_date(item['date_collection'], 'date_collection')
             item['date_extraction'] = self.parse_date(item['date_extraction'], 'date_extraction')
             item['created'] = self.parse_timestamp(item['created'], 'created')
 
@@ -572,7 +572,7 @@ class ParseXML(object):
 
             item['sex'] = get_sex(item['sex'])
             item['voucher'] = get_voucher(item['voucher'])
-            item['typeSpecies'] = parse_type_species(item['typeSpecies'])
+            item['type_species'] = parse_type_species(item['type_species'])
             self.list_of_voucher_codes.append(item['code'])
 
     def parse_image_info(self, item):
@@ -646,7 +646,7 @@ class ParseXML(object):
             item = self.clean_value(item, 'author')
 
             item = self.clean_value(item, 'country')
-            item = self.clean_value(item, 'specificLocality')
+            item = self.clean_value(item, 'specific_locality')
             item = self.clean_value(item, 'voucher_locality')
             item = self.clean_value(item, 'collector')
             item = self.clean_value(item, 'voucherCode')
@@ -658,7 +658,7 @@ class ParseXML(object):
             item = self.clean_value(item, 'notes')
 
             item = self.clean_value(item, 'extraction')
-            item = self.clean_value(item, 'extractionTube')
+            item = self.clean_value(item, 'extraction_tube')
             item = self.clean_value(item, 'extractor')
 
             voucher_objs.append(Vouchers(**item))
