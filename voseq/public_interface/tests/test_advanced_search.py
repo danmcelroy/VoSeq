@@ -161,6 +161,11 @@ class TestAdvancedSearch(TestCase):
         content = response.content.decode('utf-8')
         self.assertTrue('CP100-09' in content)
 
+    def test_advanced_search_by_extraction_tube(self):
+        response = self.client.get('/search/advanced/?extraction_tube=09')
+        content = response.content.decode('utf-8')
+        self.assertTrue('CP100-09' in content)
+
     def test_advanced_search_by_gene_code(self):
         response = self.client.get('/search/advanced/?gene_code=1')  # gene 16S
         content = response.content.decode('utf-8')

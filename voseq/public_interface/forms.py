@@ -95,7 +95,7 @@ class AdvancedSearchForm(ModelSearchForm):
     dateCollection = forms.DateField(label="Date of collection", required=False, widget=DateInput(),
                                      error_messages={'invalid': 'Enter valid date: YYYY-mm-dd'})
     extraction = forms.CharField(label="Extraction", max_length=50, help_text="Number of extraction event.", required=False)
-    extractionTube = forms.CharField(label="Extraction tube", max_length=50, help_text="Tube containing DNA extract.", required=False)
+    extraction_tube = forms.CharField(label="Extraction tube", max_length=50, help_text="Tube containing DNA extract.", required=False)
     dateExtraction = forms.DateField(label="Date of extraction", required=False, widget=DateInput(),
                                      error_messages={'invalid': 'Enter valid date: YYYY-mm-dd'})
     extractor = forms.CharField(label="Extractor", max_length=100, required=False)
@@ -271,7 +271,7 @@ class BatchChangesForm(forms.Form):
     collector = forms.CharField(label="Collector", max_length=100, required=False)
     dateCollection = forms.DateField(label="Date of collection", required=False)
     extraction = forms.CharField(label="Extraction", max_length=50, help_text="Number of extraction event.", required=False)
-    extractionTube = forms.CharField(label="Extraction tube", max_length=50, help_text="Tube containing DNA extract.", required=False)
+    extraction_tube = forms.CharField(label="Extraction tube", max_length=50, help_text="Tube containing DNA extract.", required=False)
     dateExtraction = forms.DateField(label="Date extraction", required=False)
     extractor = forms.CharField(label="Extractor", max_length=100, required=False)
     voucher_locality = forms.CharField(label="Voucher locality", max_length=200, required=False)
