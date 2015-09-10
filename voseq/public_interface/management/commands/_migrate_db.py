@@ -501,8 +501,7 @@ class ParseXML(object):
                 user.is_superuser = True
             user.save()
 
-        if self.verbosity != 0:
-            print("Uploading table `public_interface_members`")
+        print("Uploading table `public_interface_members`")
 
     def save_table_primers_to_db(self):
         if self.table_primers_items is None:
@@ -527,8 +526,7 @@ class ParseXML(object):
                 primers_objs.append(Primers(**item))
         Primers.objects.bulk_create(primers_objs)
 
-        if self.verbosity != 0:
-            print("Uploading table `public_interface_primers`")
+        print("Uploading table `public_interface_primers`")
 
     def save_table_sequences_to_db(self):
         if self.table_sequences_items is None:
@@ -570,16 +568,13 @@ class ParseXML(object):
             if TESTING is False:
                 bar.update()
 
-        if self.verbosity != 0:
-            print("Uploading table `public_interface_sequences`")
+        print("Uploading table `public_interface_sequences`")
         Sequences.objects.bulk_create(seqs_objects)
 
         if seqs_not_to_insert:
-            if self.verbosity != 0:
-                print("ERROR: Couldn't insert {} sequences due to lack of reference vouchers".format(len(seqs_not_to_insert)))
+            print("ERROR: Couldn't insert {} sequences due to lack of reference vouchers".format(len(seqs_not_to_insert)))
             for i in seqs_not_to_insert:
-                if self.verbosity != 0:
-                    print(i['code_id'], i['gene_code'])
+                print(i['code_id'], i['gene_code'])
 
         if seqs_invalid:
             if TESTING is False:
@@ -660,8 +655,7 @@ class ParseXML(object):
             image_objs.append(LocalImages(**item))
         LocalImages.objects.bulk_create(image_objs)
 
-        if self.verbosity != 0:
-            print("Uploading table `public_interface_flickrimages`")
+        print("Uploading table `public_interface_flickrimages`")
 
     def clean_value(self, item, key):
         if key in item:
@@ -715,7 +709,7 @@ class ParseXML(object):
         except TypeError:
             date_obj = None
 
-        if self.verbosity != 0:
+        if self.verbosity > 1:
             print("WARNING:: Could not parse {} properly.".format(field))
         return date_obj
 
@@ -728,7 +722,7 @@ class ParseXML(object):
         except TypeError:
             date_obj = None
 
-        if self.verbosity != 0:
+        if self.verbosity > 1:
             print("WARNING:: Could not parse {} properly.".format(field))
         return date_obj
 
