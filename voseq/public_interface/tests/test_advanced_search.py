@@ -68,7 +68,7 @@ class TestAdvancedSearch(TestCase):
         self.client = Client()
 
     def test_advanced_search_combined(self):
-        response = self.client.get('/search/advanced/?orden=Lepidoptera&labPerson=Niklas+Wahlberg')
+        response = self.client.get('/search/advanced/?orden=Lepidoptera&lab_person=Niklas+Wahlberg')
         content = response.content.decode('utf-8')
         self.assertTrue('/p/CP100-11' in content)
         self.assertFalse('/p/CP100-10' in content)
@@ -79,12 +79,12 @@ class TestAdvancedSearch(TestCase):
         several sequences belonging to the same voucher. Need to get only
         one.
         """
-        response = self.client.get('/search/advanced/?labPerson=Niklas+Wahlberg')
+        response = self.client.get('/search/advanced/?lab_person=Niklas+Wahlberg')
         content = response.content.decode('utf-8')
         self.assertEqual(1, content.count('/p/CP100-10'))
 
     def test_advanced_search_dont_show_duplicate_records2(self):
-        response = self.client.get('/search/advanced/?labPerson=Fulano+Sutano')
+        response = self.client.get('/search/advanced/?lab_person=Fulano+Sutano')
         content = response.content.decode('utf-8')
         self.assertEqual(0, content.count('/p/CP100-10'))
 
@@ -109,17 +109,17 @@ class TestAdvancedSearch(TestCase):
         self.assertTrue('Enter a number.' in content)
 
     def test_advanced_search_no_result(self):
-        response = self.client.get('/search/advanced/?orden=Coleoptera&labPerson=Niklas+Wahlberg')
+        response = self.client.get('/search/advanced/?orden=Coleoptera&lab_person=Niklas+Wahlberg')
         content = response.content.decode('utf-8')
         self.assertTrue('No results found' in content)
 
     def test_advanced_search_sequence_objs(self):
-        response = self.client.get('/search/advanced/?labPerson=Niklas')
+        response = self.client.get('/search/advanced/?lab_person=Niklas')
         content = response.content.decode('utf-8')
         self.assertTrue('Melitaea' in content)
 
     def test_advanced_search_sequence_table_only(self):
-        response = self.client.get('/search/advanced/?labPerson=Niklas+Wahlberg')
+        response = self.client.get('/search/advanced/?lab_person=Niklas+Wahlberg')
         content = response.content.decode('utf-8')
         self.assertTrue('/p/CP100-10' in content)
         self.assertTrue('/p/CP100-11' in content)
