@@ -87,7 +87,7 @@
         <div class="panel panel-default">
           <div class="panel-body">
             {% for image in images %}
-            <a href="{{ image.voucherImage }}"><img class="img-thumbnail" src="{{ image.thumbnail }}" /></a>
+            <a href="{{ image.voucher_image }}"><img class="img-thumbnail" src="{{ image.thumbnail }}" /></a>
             {% endfor %}
           </div>
         </div><!-- panel -->
@@ -99,7 +99,7 @@
           <table class="table table-condensed table-striped">
             <tr>
               <td><b>Lab Person:</b></td>
-              <td>{{ sequence.labPerson }}</td>
+              <td>{{ sequence.lab_person }}</td>
             </tr>
             <tr>
               <td><b>Gene code:</b></td>

@@ -47,7 +47,7 @@ class BatchImportSequencesResource(resources.ModelResource):
     class Meta:
         model = Sequences
         import_id_fields = ('code', 'gene_code')
-        fields = ('code', 'gene_code', 'sequences', 'accession', 'labPerson', 'genbank',
+        fields = ('code', 'gene_code', 'sequences', 'accession', 'lab_person', 'genbank',
                   'notes')
 
 
@@ -114,8 +114,8 @@ class VouchersAdmin(ImportExportModelAdmin):
 class SequencesAdmin(ImportExportModelAdmin):
     # TODO let users know that code and genecode keywords act as AND boolean search
     search_fields = ['=code__code', '=gene_code']
-    list_display = ['code', 'gene_code', 'genbank', 'accession', 'labPerson', 'notes', 'time_edited', 'time_created']
-    fields = ['code', 'gene_code', 'sequences', 'genbank', 'accession', 'labPerson', 'notes']
+    list_display = ['code', 'gene_code', 'genbank', 'accession', 'lab_person', 'notes', 'time_edited', 'time_created']
+    fields = ['code', 'gene_code', 'sequences', 'genbank', 'accession', 'lab_person', 'notes']
     form = SequencesAdminForm
     resource_class = BatchImportSequencesResource
 

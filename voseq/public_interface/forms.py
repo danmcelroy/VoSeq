@@ -168,7 +168,7 @@ class AdvancedSearchForm(ModelSearchForm):
                     v = datetime.date.strftime(v, "%Y-%m-%d")
                 if k == 'models':
                     continue
-                if k in ['labPerson', 'accession']:
+                if k in ['lab_person', 'accession']:
                     sequence_keywords[k] = v
                 if k == 'gene_code':
                     sequence_keywords[k] = v.gene_code
