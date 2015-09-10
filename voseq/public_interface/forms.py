@@ -99,7 +99,7 @@ class AdvancedSearchForm(ModelSearchForm):
     dateExtraction = forms.DateField(label="Date of extraction", required=False, widget=DateInput(),
                                      error_messages={'invalid': 'Enter valid date: YYYY-mm-dd'})
     extractor = forms.CharField(label="Extractor", max_length=100, required=False)
-    voucherLocality = forms.CharField(label="Voucher locality", max_length=200, required=False)
+    voucher_locality = forms.CharField(label="Voucher locality", max_length=200, required=False)
     publishedIn = forms.CharField(label="Published in", required=False)
     notes = forms.CharField(label="Notes", required=False)
     latesteditor = forms.CharField(label="Latest editor", required=False)
@@ -274,7 +274,7 @@ class BatchChangesForm(forms.Form):
     extractionTube = forms.CharField(label="Extraction tube", max_length=50, help_text="Tube containing DNA extract.", required=False)
     dateExtraction = forms.DateField(label="Date extraction", required=False)
     extractor = forms.CharField(label="Extractor", max_length=100, required=False)
-    voucherLocality = forms.CharField(label="Voucher locality", max_length=200, required=False)
+    voucher_locality = forms.CharField(label="Voucher locality", max_length=200, required=False)
     published_in = forms.CharField(label="Published in", required=False)
     notes = forms.CharField(label="Notes", required=False)
     latesteditor = forms.CharField(label="Latest editor", required=False)

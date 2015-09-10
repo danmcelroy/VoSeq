@@ -46,7 +46,7 @@ class AutoCompleteIndex(SimpleSearchIndex):
     country = indexes.EdgeNgramField(model_attr='country', null=True)
     specificLocality = indexes.EdgeNgramField(model_attr='specific_locality', null=True)
 
-    voucherLocality = indexes.EdgeNgramField(model_attr='voucher_locality', null=True)
+    voucher_locality = indexes.EdgeNgramField(model_attr='voucher_locality', null=True)
     collector = indexes.EdgeNgramField(model_attr='collector', null=True)
     code_bold = indexes.EdgeNgramField(model_attr='code_bold', null=True)
     voucherCode = indexes.EdgeNgramField(model_attr='voucherCode', null=True)
@@ -86,7 +86,7 @@ class VouchersIndex(indexes.SearchIndex, indexes.Indexable):
     country = indexes.CharField(model_attr='country', null=True)
     specificLocality = indexes.EdgeNgramField(model_attr='specific_locality', null=True)
 
-    voucherLocality = indexes.CharField(model_attr='voucher_locality', null=True)
+    voucher_locality = indexes.CharField(model_attr='voucher_locality', null=True)
     collector = indexes.CharField(model_attr='collector', null=True)
     code_bold = indexes.CharField(model_attr='code_bold', null=True)
     voucherCode = indexes.CharField(model_attr='voucherCode', null=True)
