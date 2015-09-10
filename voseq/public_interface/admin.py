@@ -39,7 +39,7 @@ class BatchImportVouchersResource(resources.ModelResource):
                   'collector', 'dateCollection', 'latitude', 'longitude',
                   'max_altitude', 'min_altitude', 'voucherCode', 'voucher',
                   'voucherLocality', 'determinedBy', 'sex', 'extraction',
-                  'extractionTube', 'dateExtraction', 'publishedIn', 'notes',
+                  'extractionTube', 'dateExtraction', 'published_in', 'notes',
                   )
 
 
@@ -81,7 +81,7 @@ class VouchersAdmin(ImportExportModelAdmin):
                                                         'dateCollection', 'determinedBy',
                                                         'sex', 'extractor', 'extraction',
                                                         'extractionTube', 'notes',
-                                                        'publishedIn', 'dateExtraction',
+                                                        'published_in', 'dateExtraction',
                                                         'edits', 'latesteditor',
                                                         ],
                                              'classes': ['collapse']}),
