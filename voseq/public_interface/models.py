@@ -201,7 +201,7 @@ class Vouchers(TimeStampedModel):
     dateExtraction = models.DateField(null=True)
     extractor = models.TextField(blank=True)
     voucherLocality = models.TextField(blank=True)
-    publishedIn = models.TextField(blank=True, null=True)
+    published_in = models.TextField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
     edits = models.TextField(blank=True, null=True)
     latesteditor = models.TextField(blank=True, null=True)
