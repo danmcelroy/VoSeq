@@ -54,7 +54,7 @@ def create_excel_file():
         row.append(voucher.hostorg)
         row.append(get_sex(voucher.sex))
         row.append(get_voucher_state(voucher.voucher))
-        row.append(voucher.voucherCode)
+        row.append(voucher.voucher_code)
         row.append(voucher.code_bold)
         row.append(voucher.date_extraction)
         row.append(voucher.extractor)

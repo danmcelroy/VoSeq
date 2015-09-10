@@ -13,12 +13,12 @@
 {{ object.type_species }}
 {{ object.country }}
 {{ object.voucher }}
-{{ object.determinedBy }}
-{{ object.voucherCode }}
+{{ object.determined_by }}
+{{ object.voucher_code }}
 {{ object.extraction }}
-{{ object.extractiontube }}
+{{ object.extraction_tube }}
 {{ object.publishedIn }}
 {{ object.notes }}
-{{ object.dateCollection }}
-{{ object.dateExtraction }}
+{{ object.date_collection }}
+{{ object.date_extraction }}
 {{ object.sex }}
