@@ -209,12 +209,12 @@ class Vouchers(TimeStampedModel):
     sex = models.CharField(max_length=100, choices=SEX_CHOICES, blank=True)
     voucher = models.CharField(max_length=100, choices=VOUCHER_CHOICES, blank=True,
                                help_text="Voucher status.")
-    voucherCode = models.TextField(help_text="Alternative code of voucher specimen.",
-                                   blank=True)
+    voucher_code = models.TextField(help_text="Alternative code of voucher specimen.",
+                                    blank=True)
     code_bold = models.TextField(help_text="Optional code for specimens kept in the BOLD database.",
                                  blank=True)
-    determinedBy = models.TextField(help_text="Person that identified the taxon for this specimen.",
-                                    blank=True)
+    determined_by = models.TextField(help_text="Person that identified the taxon for this specimen.",
+                                     blank=True)
     author = models.TextField(help_text="Person that described this taxon.", blank=True)
 
     class Meta:
@@ -229,7 +229,7 @@ class Sequences(models.Model):
     gene_code = models.CharField(max_length=100)
     sequences = models.TextField(blank=True)
     accession = models.CharField(max_length=100, blank=True)
-    labPerson = models.CharField(max_length=100, blank=True)
+    lab_person = models.CharField(max_length=100, blank=True)
     time_created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     time_edited = models.DateTimeField(auto_now=True, null=True, blank=True)
     notes = models.TextField(blank=True)
@@ -263,7 +263,7 @@ class FlickrImages(models.Model):
         Vouchers,
         help_text='Relation with id of voucher. Save as lower case.',
     )
-    voucherImage = models.URLField(help_text="URLs of the Flickr page.")
+    voucher_image = models.URLField(help_text="URLs of the Flickr page.")
     thumbnail = models.URLField(help_text="URLs for the small sized image from Flickr.")
     flickr_id = models.CharField(max_length=100, help_text="ID numbers from Flickr for our photo.")
     image_file = models.ImageField(help_text="Placeholder for image file so we can send it to Flickr. "
@@ -347,7 +347,7 @@ class LocalImages(models.Model):
         Vouchers,
         help_text='Relation with id of voucher.',
     )
-    voucherImage = models.ImageField(help_text="voucher photo.")
+    voucher_image = models.ImageField(help_text="voucher photo.")
 
     class Meta:
         verbose_name_plural = 'Local Images'

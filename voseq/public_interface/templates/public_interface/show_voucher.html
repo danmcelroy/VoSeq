@@ -173,7 +173,7 @@
               </td>
 
               <td>{{ voucher.voucher }}</td>
-              <td>{{ voucher.dateCollection }}</td>
+              <td>{{ voucher.date_collection }}</td>
             </tr>
             <tr>
               <td><b>Alternative voucher code:</b></td>
@@ -181,8 +181,8 @@
               <td><b>Sex:</b></td>
             </tr>
             <tr>
-              <td>{{ voucher.voucherCode }}</td>
-              <td>{{ voucher.determinedBy }}</td>
+              <td>{{ voucher.voucher_code }}</td>
+              <td>{{ voucher.determined_by }}</td>
               <td>{{ voucher.sex }}</td>
 
             </tr>
@@ -201,7 +201,7 @@
               <td><b>Notes:</b></td>
             </tr>
             <tr>
-              <td>{{ voucher.publishedIn }}</td>
+              <td>{{ voucher.published_in }}</td>
               <td>{{ voucher.notes }}</td>
             </tr>
           </table>
@@ -253,7 +253,7 @@
             </tr>
             <tr>
               <td>{{ voucher.extractor }}</td>
-              <td>{{ voucher.dateExtraction }}</td>
+              <td>{{ voucher.date_extraction }}</td>
             </tr>
           </table>
         </div><!-- panel -->
@@ -278,7 +278,7 @@
               <td><a href="/s/{{ item.code }}/{{ item.gene_code }}/">{{ item.gene_code }}</a></td>
               <td>{{ item.sequence_length }}</td>
               <td>{{ item.number_ambiguous_bp }}</td>
-              <td>{{ item.labPerson }}</td>
+              <td>{{ item.lab_person }}</td>
               <td><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Search&db=nucleotide&term={{ item.accession }}[accn]&doptcmdl=GenBank">{{ item.accession }}</a></td>
               <td class="text-center">
                 <a title="Blast this sequence against all sequences of the same gene code" href="/blast_local/{{ voucher.code }}/{{ item.gene_code }}/"><i class="fa fa-bomb"></i></a>
