@@ -32,7 +32,7 @@ class VoucherTableForm(BaseDatasetForm):
             ('specific_locality', 'Locality'),
             ('collector', 'Collector'),
             ('date_collection', 'Coll. date'),
-            ('determinedBy', 'Determined by'),
+            ('determined_by', 'Determined by'),
             ('altitude', 'Altitude'),
             ('latitude', 'Latitude'),
             ('longitude', 'Longitude'),

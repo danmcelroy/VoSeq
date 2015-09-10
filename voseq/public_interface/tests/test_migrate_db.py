@@ -323,12 +323,12 @@ class TestCustomCommand(TestCase):
     def test_determined_by(self):
         expected = 'R. Núñez'
         b = Vouchers.objects.get(code='CP100-11')
-        self.assertEqual(expected, b.determinedBy)
+        self.assertEqual(expected, b.determined_by)
 
     def test_determined_by_null(self):
         expected = ''
         b = Vouchers.objects.get(code='CP100-12')
-        self.assertEqual(expected, b.determinedBy)
+        self.assertEqual(expected, b.determined_by)
 
     def test_date_collection(self):
         expected = datetime.date(1996, 3, 25)
