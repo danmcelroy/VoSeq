@@ -147,17 +147,17 @@ class TestAdvancedSearch(TestCase):
         self.assertTrue('CP100-10' in content)
 
     def test_advanced_search_by_type_species_negative(self):
-        response = self.client.get('/search/advanced/?typeSpecies=yes&code=CP100-09')
+        response = self.client.get('/search/advanced/?type_species=yes&code=CP100-09')
         content = response.content.decode('utf-8')
         self.assertTrue('No results found' in content)
 
     def test_advanced_search_by_type_species_unknown(self):
-        response = self.client.get('/search/advanced/?typeSpecies=unknown')
+        response = self.client.get('/search/advanced/?type_species=unknown')
         content = response.content.decode('utf-8')
         self.assertTrue('CP100-09' in content)
 
     def test_advanced_search_by_type_species_positive(self):
-        response = self.client.get('/search/advanced/?typeSpecies=yes')
+        response = self.client.get('/search/advanced/?type_species=yes')
         content = response.content.decode('utf-8')
         self.assertTrue('CP100-10' in content)
 
