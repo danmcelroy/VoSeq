@@ -1,12 +1,14 @@
-|Waffle| |Dependency Status| |Coverage Status| |Landscape| |Docs| |QuantifiedCode|
+.. list-table::
+    :stub-columns: 1
+
+    * - tests
+      - | |Build Status| |requires| |Coverage Status|
+      - | |QuantifiedCode|
+    * - package
+      - |version| |Docs| |supported-implementations|
+
 |Chat|
 
-
-+------------------+------------------+
-| Windows          | Linux            |
-+==================+==================+
-| |Build status|   | |Build Status|   |
-+------------------+------------------+
 
 Contents
 ========
@@ -547,20 +549,10 @@ and place them in the ``config.json`` configuration file of VoSeq:
 
 Thus, every picture that you upload into your VoSeq installation will be uploaded into your Flickr account.
 
-.. |Waffle| image:: https://badge.waffle.io/carlosp420/voseq.png?label=in%20progress&title=In%20Progress
-   :target: https://waffle.io/carlosp420/voseq
-   :alt: 'Stories in Progress'
-.. |Dependency Status| image:: https://gemnasium.com/carlosp420/VoSeq.svg
-   :target: https://gemnasium.com/carlosp420/VoSeq
 .. |Coverage Status| image:: https://img.shields.io/coveralls/carlosp420/VoSeq.svg
    :target: https://coveralls.io/r/carlosp420/VoSeq?branch=master
-.. |Build status| image:: https://ci.appveyor.com/api/projects/status/0ba440vjw8811845/branch/master?svg=true
-   :target: https://ci.appveyor.com/project/carlosp420/voseq/branch/master
 .. |Build Status| image:: https://travis-ci.org/carlosp420/VoSeq.svg
    :target: https://travis-ci.org/carlosp420/VoSeq
-.. |Landscape| image:: https://landscape.io/github/carlosp420/VoSeq/master/landscape.svg
-   :target: https://landscape.io/github/carlosp420/VoSeq/master
-   :alt: Code Health
 .. |Docs| image:: https://readthedocs.org/projects/voseq/badge/?version=latest
    :target: http://voseq.readthedocs.org/en/latest/
    :alt: Documentation Status
