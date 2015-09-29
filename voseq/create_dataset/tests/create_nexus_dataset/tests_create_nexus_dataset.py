@@ -37,7 +37,7 @@ class CreateNexusDatasetTest(TestCase):
 
         self.c = Client()
         self.dataset_creator = CreateDataset(self.cleaned_data)
-        self.maxDiff = None
+        #  self.maxDiff = None
 
     def test_nexus_all_codons_as_one(self):
         dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
