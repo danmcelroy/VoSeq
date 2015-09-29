@@ -147,6 +147,8 @@ class CreateDataset(object):
                 self.partition_by_positions = 'by gene'
             elif self.partition_by_positions == 'EACH':
                 self.partition_by_positions = 'by codon position'
+            elif self.partition_by_positions == '1st2nd_3rd':
+                self.partition_by_positions = '1st-2nd, 3rd'
 
             try:
                 dataset = Dataset(self.seq_objs, format='NEXUS', partitioning=self.partition_by_positions,
