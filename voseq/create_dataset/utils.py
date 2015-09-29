@@ -144,9 +144,18 @@ class CreateDataset(object):
 
         if self.file_format == 'NEXUS':
             if self.partition_by_positions == 'ONE':
-                partitioning = 'by gene'
-            dataset = Dataset(self.seq_objs, format='NEXUS', partitioning=partitioning,
-                              codon_positions=self.codon_positions[0])
+                self.partition_by_positions = 'by gene'
+            elif self.partition_by_positions == 'EACH':
+                self.partition_by_positions = 'by codon position'
+
+            try:
+                dataset = Dataset(self.seq_objs, format='NEXUS', partitioning=self.partition_by_positions,
+                                  codon_positions=self.codon_positions[0])
+            except ValueError:
+                msg = 'You need to specify the reading frame of all genes to do the partitioning by codon positions'
+                self.errors.append(msg)
+                return ''
+
             dataset_handler = DatasetHandler(dataset.dataset_str, self.file_format)
             self.dataset_file = dataset_handler.dataset_file
             print(dataset.dataset_str)
