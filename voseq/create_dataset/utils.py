@@ -150,6 +150,11 @@ class CreateDataset(object):
             elif self.partition_by_positions == '1st2nd_3rd':
                 self.partition_by_positions = '1st-2nd, 3rd'
 
+            if self.codon_positions == ['1st', '2nd']:
+                self.codon_positions = ['1st-2nd']
+
+            print("##############")
+            print("> partitionig, codonpostions", self.partition_by_positions, self.codon_positions)
             try:
                 dataset = Dataset(self.seq_objs, format='NEXUS', partitioning=self.partition_by_positions,
                                   codon_positions=self.codon_positions[0], aminoacids=self.aminoacids)

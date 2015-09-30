@@ -330,7 +330,8 @@ class CreateNexusDatasetTest(TestCase):
         cleaned_data['geneset'] = GeneSets.objects.get(geneset_name='all_genes')
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
-        self.assertTrue('ArgKin' not in result)
+        #self.assertTrue('ArgKin' not in result)
+        self.assertEqual('ArgKin', result)
 
     """
     def test_nexus_gene_excluding_taxa(self):
