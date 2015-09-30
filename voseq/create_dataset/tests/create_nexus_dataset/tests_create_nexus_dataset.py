@@ -319,7 +319,7 @@ class CreateNexusDatasetTest(TestCase):
         self.assertTrue(expected in result)
 
     def test_nexus_gene_no_reading_frame(self):
-        # For this test we will drop ArgKin
+        # For this test we will set the reading frame of ArgKin to None
         argkin = Genes.objects.get(gene_code='ArgKin')
         argkin.reading_frame = None
         argkin.save()
@@ -330,8 +330,9 @@ class CreateNexusDatasetTest(TestCase):
         cleaned_data['geneset'] = GeneSets.objects.get(geneset_name='all_genes')
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
-        #self.assertTrue('ArgKin' not in result)
-        self.assertEqual('ArgKin', result)
+        self.assertEqual('', result)
+        self.assertEqual('You need to specify the reading frame of all genes '
+                         'to do the partitioning by codon positions', dataset_creator.errors[0])
 
     """
     def test_nexus_gene_excluding_taxa(self):
