@@ -152,7 +152,7 @@ class CreateDataset(object):
 
             try:
                 dataset = Dataset(self.seq_objs, format='NEXUS', partitioning=self.partition_by_positions,
-                                  codon_positions=self.codon_positions[0])
+                                  codon_positions=self.codon_positions[0], aminoacids=self.aminoacids)
             except ValueError:
                 msg = 'You need to specify the reading frame of all genes to do the partitioning by codon positions'
                 self.errors.append(msg)
@@ -160,7 +160,6 @@ class CreateDataset(object):
 
             dataset_handler = DatasetHandler(dataset.dataset_str, self.file_format)
             self.dataset_file = dataset_handler.dataset_file
-            print(dataset.dataset_str)
             return dataset.dataset_str
 
     def create_seq_objs(self):
