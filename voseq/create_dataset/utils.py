@@ -3,6 +3,7 @@ from collections import OrderedDict
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from seqrecord_expanded import SeqRecordExpanded
+from seqrecord_expanded.exceptions import MissingParameterError
 from dataset_creator import Dataset
 
 from core.utils import get_voucher_codes
@@ -153,12 +154,10 @@ class CreateDataset(object):
             if self.codon_positions == ['1st', '2nd']:
                 self.codon_positions = ['1st-2nd']
 
-            print("##############")
-            print("> partitionig, codonpostions", self.partition_by_positions, self.codon_positions)
             try:
                 dataset = Dataset(self.seq_objs, format='NEXUS', partitioning=self.partition_by_positions,
                                   codon_positions=self.codon_positions[0], aminoacids=self.aminoacids)
-            except ValueError:
+            except MissingParameterError:
                 msg = 'You need to specify the reading frame of all genes to do the partitioning by codon positions'
                 self.errors.append(msg)
                 return ''
