@@ -29,6 +29,7 @@ class CreateDatasetViewsTest(TestCase):
         self.user = User.objects.get(username='admin')
         self.user.set_password('pass')
         self.user.save()
+        self.maxDiff = None
 
     def test_view_index(self):
         self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
@@ -98,5 +99,5 @@ class CreateDatasetViewsTest(TestCase):
         html_page = res.content.decode('utf-8')
         file_name = re.search('FASTA_\w+\.txt', html_page).group()
         file_content = self.c.get('/create_dataset/results/' + file_name, follow=True)
-        expected = ">CP100-10_Melitaea_diamina\n????CGTGGTATCACTATTGATATTGCTSTATGG"
+        expected = ">CP100_11_Melitaea_diamina\n?NNNAGYMGNTAYAAY"
         self.assertTrue(expected in file_content.content.decode('utf-8'))
