@@ -32,7 +32,7 @@ class CreateNexusDatasetTest(TestCase):
             'partition_by_positions': 'ONE',
             'file_format': 'NEXUS',
             'aminoacids': False,
-            'outgroup': '',
+            'outgroup': None,
         }
 
         self.c = Client()
