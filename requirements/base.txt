@@ -17,7 +17,7 @@ django-haystack==2.4.0
 easy-thumbnails==2.2
 flickrapi==2.0
 
-dataset-creator==0.1.1
+dataset-creator==0.2.0
 seqrecord-expanded==0.2.2
 degenerate-dna==0.0.9
 

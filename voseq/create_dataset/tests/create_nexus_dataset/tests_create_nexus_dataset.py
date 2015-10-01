@@ -392,8 +392,5 @@ CP100-19_Aus_jus                                       ?????????????????????????
         cleaned_data['translations'] = True
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
-        expected = "DIMENSIONS NTAX=10 NCHAR=0;"
+        expected = "DIMENSIONS NTAX=10 NCHAR=4732;"
         self.assertTrue(expected in result)
-
-        self.assertTrue('Cannot degenerate codons if they go to different partitions.' in
-                        dataset_creator.warnings)
