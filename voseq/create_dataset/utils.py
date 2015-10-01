@@ -161,7 +161,8 @@ class CreateDataset(object):
 
             try:
                 dataset = Dataset(self.seq_objs, format='NEXUS', partitioning=self.partition_by_positions,
-                                  codon_positions=self.codon_positions[0], aminoacids=self.aminoacids, degenerate=degenerate)
+                                  codon_positions=self.codon_positions[0], aminoacids=self.aminoacids,
+                                  degenerate=degenerate, outgroup=self.outgroup)
             except MissingParameterError:
                 msg = 'You need to specify the reading frame of all genes to do the partitioning by codon positions'
                 self.errors.append(msg)
