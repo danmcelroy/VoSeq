@@ -110,16 +110,6 @@ class CreateDataset(object):
             self.aa_dataset_file = fasta.aa_dataset_file
             return fasta_dataset
 
-        if self.file_format == 'FASTA':
-            fasta = CreateFasta(self.codon_positions, self.partition_by_positions,
-                                self.seq_objs, self.gene_codes, self.voucher_codes,
-                                self.file_format, degen_translations=self.degen_translations,
-                                translations=self.translations, aminoacids=self.aminoacids)
-            fasta_dataset = fasta.from_seq_objs_to_dataset()
-            self.warnings += fasta.warnings
-            self.dataset_file = fasta.dataset_file
-            return fasta_dataset
-
         if self.file_format == 'PHY':
             phy = CreatePhylip(self.codon_positions, self.partition_by_positions,
                                self.seq_objs, self.gene_codes, self.voucher_codes,
@@ -143,7 +133,7 @@ class CreateDataset(object):
             self.dataset_file = tnt.dataset_file
             return tnt_dataset
 
-        if self.file_format == 'NEXUS':
+        if self.file_format in ['NEXUS', 'FASTA']:
             if self.partition_by_positions == 'ONE':
                 self.partition_by_positions = 'by gene'
             elif self.partition_by_positions == 'EACH':
@@ -160,7 +150,7 @@ class CreateDataset(object):
                 degenerate = None
 
             try:
-                dataset = Dataset(self.seq_objs, format='NEXUS', partitioning=self.partition_by_positions,
+                dataset = Dataset(self.seq_objs, format=self.file_format, partitioning=self.partition_by_positions,
                                   codon_positions=self.codon_positions[0], aminoacids=self.aminoacids,
                                   degenerate=degenerate, outgroup=self.outgroup)
             except MissingParameterError:
