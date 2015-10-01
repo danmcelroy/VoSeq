@@ -154,9 +154,14 @@ class CreateDataset(object):
             if self.codon_positions == ['1st', '2nd']:
                 self.codon_positions = ['1st-2nd']
 
+            if self.degen_translations == 'NORMAL':
+                degenerate = 'normal'
+            else:
+                degenerate = None
+
             try:
                 dataset = Dataset(self.seq_objs, format='NEXUS', partitioning=self.partition_by_positions,
-                                  codon_positions=self.codon_positions[0], aminoacids=self.aminoacids)
+                                  codon_positions=self.codon_positions[0], aminoacids=self.aminoacids, degenerate=degenerate)
             except MissingParameterError:
                 msg = 'You need to specify the reading frame of all genes to do the partitioning by codon positions'
                 self.errors.append(msg)
