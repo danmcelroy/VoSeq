@@ -10,12 +10,12 @@ from public_interface.models import Genes
 class CreateFASTADatasetTest(TestCase):
     def setUp(self):
         args = []
-        opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
+        opts = {'dumpfile': 'test_db_dump2.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 
-        g1 = Genes.objects.get(gene_code='COI')
-        g2 = Genes.objects.get(gene_code='EF1a')
+        g1 = Genes.objects.get(gene_code='COI-begin')
+        g2 = Genes.objects.get(gene_code='ef1a')
         self.cleaned_data = {
             'gene_codes': [g1, g2],
             'taxonset': None,
@@ -26,7 +26,7 @@ class CreateFASTADatasetTest(TestCase):
             'degen_translations': None,
             'positions': ['ALL'],
             'partition_by_positions': 'ONE',
-            'file_format': 'PHY',
+            'file_format': 'FASTA',
             'aminoacids': True,
             'outgroup': '',
         }
@@ -60,7 +60,7 @@ class CreateFASTADatasetTest(TestCase):
                             'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
                         }
                         )
-        expected = 'ACAYGTNGAYTCNGGNAARTCNACNACNACNGG'
+        expected = 'TNGGNTTYATHGTNTGAGCNCAYCAYATHTTYACN'
         self.assertTrue(expected in str(c.content))
 
     def test_create_dataset_degenerated_warning_data_cannot_be_partitioned(self):
@@ -132,5 +132,5 @@ class CreateFASTADatasetTest(TestCase):
                             'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
                         }
                         )
-        expected = 'GKSTTTGHLIYKCGGIDKRTIEKFEKEAQEM'
+        expected = 'IYAMLAIGLLGFIVWAHHM'
         self.assertTrue(expected in str(c.content))
