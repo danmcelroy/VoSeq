@@ -30,7 +30,7 @@ class CreateDatasetUtilsTest(TestCase):
             'number_genes': None,
             'file_format': 'FASTA',
             'aminoacids': False,
-            'outgroup': '',
+            'outgroup': None,
         }
 
         self.c = Client()
@@ -45,7 +45,7 @@ class CreateDatasetUtilsTest(TestCase):
     def test_create_dataset_with_gene_code(self):
         self.cleaned_data['taxon_names'] = ['CODE', 'GENECODE']
         dataset_creator = CreateDataset(self.cleaned_data)
-        expected = ">CP100-10_COI\n"
+        expected = ">CP100_10\n"
         result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
@@ -60,7 +60,7 @@ class CreateDatasetUtilsTest(TestCase):
     def test_create_dataset_drop_voucher(self):
         cleaned_data = self.cleaned_data
         cleaned_data['voucher_codes'] = 'CP100-10\r\n--CP100-11'
-        cleaned_data['taxonset'] = TaxonSets.objects.get(taxonset_name='Erebia')
+        cleaned_data['taxonset'] = TaxonSets.objects.get(taxonset_name='all_taxa')
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
         self.assertTrue('CP100-11' not in result)
