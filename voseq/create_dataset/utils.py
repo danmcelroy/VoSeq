@@ -157,6 +157,10 @@ class CreateDataset(object):
                 msg = 'You need to specify the reading frame of all genes to do the partitioning by codon positions'
                 self.errors.append(msg)
                 return ''
+            except ValueError:
+                msg = 'You need to specify the reading frame of all genes to do the partitioning by codon positions'
+                self.errors.append(msg)
+                return ''
 
             dataset_handler = DatasetHandler(dataset.dataset_str, self.file_format)
             self.dataset_file = dataset_handler.dataset_file
