@@ -144,10 +144,20 @@ class CreateDataset(object):
             if self.codon_positions == ['1st', '2nd']:
                 self.codon_positions = ['1st-2nd']
 
-            if self.degen_translations == 'NORMAL':
-                degenerate = 'normal'
-            else:
-                degenerate = None
+            # Check if we can degenerate the sequences
+            degenerate = None
+            if self.translations is not False:
+                if self.degen_translations == 'NORMAL':
+                    degenerate = 'normal'
+
+            if self.codon_positions != ['ALL'] and degenerate is not None:
+                msg = 'Cannot degenerate codons if they you have not selected all codon positions'
+                self.errors.append(msg)
+                return ''
+            elif degenerate is not None and self.partition_by_positions != 'by gene':
+                msg = 'Cannot degenerate codons if they go to different partitions'
+                self.errors.append(msg)
+                return ''
 
             try:
                 dataset = Dataset(self.seq_objs, format=self.file_format, partitioning=self.partition_by_positions,
