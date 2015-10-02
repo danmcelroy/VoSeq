@@ -388,7 +388,7 @@ CP100-19_Aus_jus                                       ?????????????????????????
         cleaned_data = self.cleaned_data
         cleaned_data['voucher_codes'] = 'CP100-10'
         cleaned_data['degen_translations'] = 'NORMAL'
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = 'by gene'
         cleaned_data['translations'] = True
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
