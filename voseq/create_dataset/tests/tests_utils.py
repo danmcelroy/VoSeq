@@ -598,7 +598,7 @@ CTTCCTCCGTTTGCGGGCATACATCTCTACGAcGAATTAAaCTcT?TTgaC?????????
         self.assertEqual(expected, result)
 
     def test_dataset_1st_3rd_codon_one_partition(self):
-        g1 = Genes.objects.get(gene_code='COI')
+        g1 = Genes.objects.get(gene_code='COI-begin')
         cleaned_data = self.cleaned_data
         cleaned_data['gene_codes'] = [g1]
         del cleaned_data['positions']
