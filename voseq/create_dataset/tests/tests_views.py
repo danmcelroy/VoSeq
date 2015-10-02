@@ -99,5 +99,5 @@ class CreateDatasetViewsTest(TestCase):
         html_page = res.content.decode('utf-8')
         file_name = re.search('FASTA_\w+\.txt', html_page).group()
         file_content = self.c.get('/create_dataset/results/' + file_name, follow=True)
-        expected = ">CP100_11_Melitaea_diamina\n?NNNAGYMGNTAYAAY"
+        expected = ">CP100_10_Melitaea_diamina\n????CGTGGTATCACTA"
         self.assertTrue(expected in file_content.content.decode('utf-8'))
