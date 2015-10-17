@@ -66,7 +66,7 @@ stats:
 	python voseq/manage.py create_stats --settings=voseq.settings.local
 
 collectstatic:
-	python voseq/manage.py collectstatic --settings=voseq.settings.production
+	python voseq/manage.py collectstatic --noinput --settings=voseq.settings.production
 
 coverage: travis_test
 	coverage report -m
