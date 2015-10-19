@@ -134,11 +134,6 @@ class CreateDataset(object):
             return tnt_dataset
 
         if self.file_format in ['NEXUS', 'FASTA']:
-            if self.partition_by_positions == 'EACH' or 'EACH' in self.partition_by_positions:
-                self.partition_by_positions = 'by codon position'
-            elif self.partition_by_positions == '1st2nd_3rd':
-                self.partition_by_positions = '1st-2nd, 3rd'
-
             if self.codon_positions == ['1st', '2nd']:
                 self.codon_positions = ['1st-2nd']
 

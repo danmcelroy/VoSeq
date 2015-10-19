@@ -43,8 +43,8 @@ class CreateDatasetForm(BaseDatasetForm):
         label='Partition by positions',
         choices=[
             ('by gene', 'by gene'),
-            ('EACH', 'each'),
-            ('1st2nd_3rd', '1st-2nd, 3rd'),
+            ('by codon position', 'by codon position'),
+            ('1st-2nd, 3rd', '1st-2nd, 3rd'),
         ],
         widget=forms.RadioSelect(),
         initial='by gene',
