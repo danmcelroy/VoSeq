@@ -42,12 +42,12 @@ class CreateDatasetForm(BaseDatasetForm):
     partition_by_positions = forms.ChoiceField(
         label='Partition by positions',
         choices=[
-            ('ONE', 'as one'),
+            ('by gene', 'by gene'),
             ('EACH', 'each'),
             ('1st2nd_3rd', '1st-2nd, 3rd'),
         ],
         widget=forms.RadioSelect(),
-        initial='ONE',
+        initial='by gene',
         required=True,
     )
 
