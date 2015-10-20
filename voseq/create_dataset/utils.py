@@ -37,15 +37,10 @@ class CreateDataset(object):
 
     """
     def __init__(self, cleaned_data):
-        try:
-            self.degen_translations = cleaned_data['degen_translations']
-        except KeyError:
-            self.degen_translations = None
-
-        try:
-            self.translations = cleaned_data['translations']
-        except KeyError:
-            self.translations = None
+        self.cleaned_data = cleaned_data
+        self.translations = None
+        self.degen_translations = None
+        self.clean_translations()
 
         self.errors = []
         self.seq_objs = []
@@ -60,7 +55,6 @@ class CreateDataset(object):
 
         self.file_format = cleaned_data['file_format']
         self.partition_by_positions = cleaned_data['partition_by_positions']
-        self.cleaned_data = cleaned_data
         self.voucher_codes = get_voucher_codes(cleaned_data)
         self.gene_codes = get_gene_codes(cleaned_data)
         self.gene_codes_and_lengths = None
@@ -73,6 +67,13 @@ class CreateDataset(object):
         self.aa_dataset_file = None
         self.charset_block = None
         self.dataset_str = self.create_dataset()
+
+    def clean_translations(self):
+        if self.cleaned_data['translations'] is False:
+            # No need to do degen translation
+            self.degen_translations = None
+        else:
+            self.degen_translations = self.cleaned_data['degen_translations']
 
     def create_dataset(self):
         if not self.codon_positions:
@@ -127,17 +128,11 @@ class CreateDataset(object):
             return tnt_dataset
 
         if self.file_format in ['NEXUS', 'FASTA']:
-            # Check if we can degenerate the sequences
-            degenerate = None
-            if self.translations is not False:
-                if self.degen_translations == 'NORMAL':
-                    degenerate = 'normal'
-
-            if self.codon_positions != ['ALL'] and degenerate is not None:
+            if self.codon_positions != ['ALL'] and self.degen_translations is not None:
                 msg = 'Cannot degenerate codons if they you have not selected all codon positions'
                 self.errors.append(msg)
                 return ''
-            elif degenerate is not None and self.partition_by_positions != 'by gene':
+            elif self.degen_translations is not None and self.partition_by_positions != 'by gene':
                 msg = 'Cannot degenerate codons if they go to different partitions'
                 self.errors.append(msg)
                 return ''
@@ -145,7 +140,7 @@ class CreateDataset(object):
             try:
                 dataset = Dataset(self.seq_objs, format=self.file_format, partitioning=self.partition_by_positions,
                                   codon_positions=self.codon_positions[0], aminoacids=self.aminoacids,
-                                  degenerate=degenerate, outgroup=self.outgroup)
+                                  degenerate=self.degen_translations, outgroup=self.outgroup)
             except MissingParameterError:
                 msg = 'You need to specify the reading frame of all genes to do the partitioning by codon positions'
                 self.errors.append(msg)
