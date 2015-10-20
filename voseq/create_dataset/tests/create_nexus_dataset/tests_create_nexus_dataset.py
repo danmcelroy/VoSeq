@@ -255,9 +255,9 @@ class CreateNexusDatasetTest(TestCase):
         cleaned_data['partition_by_positions'] = 'by gene'
         dataset_creator = CreateDataset(cleaned_data)
 
-        expected = 'Cannot create dataset for only codon positions 1 and 3.'
+        expected = 'Cannot create dataset for only codon positions 1st and 3rd.'
         result = dataset_creator.errors
-        self.assertTrue(expected in result)
+        self.assertTrue(expected in ''.join([str(i) for i in result]))
 
     def test_nexus_1st_3rd_codon_as_each(self):
         cleaned_data = self.cleaned_data.copy()
@@ -265,19 +265,18 @@ class CreateNexusDatasetTest(TestCase):
         cleaned_data['partition_by_positions'] = 'by codon position'
         dataset_creator = CreateDataset(cleaned_data)
 
-        expected = 'Cannot create dataset for only codon positions 1 and 3.'
+        expected = 'Cannot create dataset for only codon positions 1st and 3rd.'
         result = dataset_creator.errors
-        self.assertTrue(expected in result)
+        self.assertTrue(expected in ''.join([str(i) for i in result]))
 
     def test_nexus_1st_3rd_codon_as_1st2nd_3rd(self):
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['1st', '3rd']
         cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         dataset_creator = CreateDataset(cleaned_data)
-
-        expected = 'Cannot create dataset for only codon positions 1 and 3.'
+        expected = 'Cannot create dataset for only codon positions 1st and 3rd.'
         result = dataset_creator.errors
-        self.assertTrue(expected in result)
+        self.assertTrue(expected in ''.join([str(i) for i in result]))
 
     def test_nexus_2nd_3rd_codon_as_one(self):
         cleaned_data = self.cleaned_data.copy()
@@ -285,9 +284,9 @@ class CreateNexusDatasetTest(TestCase):
         cleaned_data['partition_by_positions'] = 'by gene'
         dataset_creator = CreateDataset(cleaned_data)
 
-        expected = 'Cannot create dataset for only codon positions 2 and 3.'
+        expected = 'Cannot create dataset for only codon positions 2nd and 3rd.'
         result = dataset_creator.errors
-        self.assertTrue(expected in result)
+        self.assertTrue(expected in ''.join([str(i) for i in result]))
 
     def test_nexus_2nd_3rd_codon_as_each(self):
         cleaned_data = self.cleaned_data.copy()
@@ -295,9 +294,9 @@ class CreateNexusDatasetTest(TestCase):
         cleaned_data['partition_by_positions'] = 'by codon position'
         dataset_creator = CreateDataset(cleaned_data)
 
-        expected = 'Cannot create dataset for only codon positions 2 and 3.'
+        expected = 'Cannot create dataset for only codon positions 2nd and 3rd.'
         result = dataset_creator.errors
-        self.assertTrue(expected in result)
+        self.assertTrue(expected in ''.join([str(i) for i in result]))
 
     def test_nexus_2nd_3rd_codon_as_1st2nd_3rd(self):
         cleaned_data = self.cleaned_data.copy()
@@ -305,9 +304,9 @@ class CreateNexusDatasetTest(TestCase):
         cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         dataset_creator = CreateDataset(cleaned_data)
 
-        expected = 'Cannot create dataset for only codon positions 2 and 3.'
+        expected = 'Cannot create dataset for only codon positions 2nd and 3rd.'
         result = dataset_creator.errors
-        self.assertTrue(expected in result)
+        self.assertTrue(expected in ''.join([str(i) for i in result]))
 
     def test_nexus_with_outgroup(self):
         cleaned_data = self.cleaned_data
