@@ -79,6 +79,15 @@ class CreateDataset(object):
         if not self.codon_positions:
             return ''
 
+        if self.degen_translations is not None and self.codon_positions != ['ALL']:
+            msg = 'Cannot degenerate codons if you have not selected all codon positions'
+            self.errors.append(msg)
+            return ''
+        elif self.degen_translations is not None and self.partition_by_positions != 'by gene':
+            msg = 'Cannot degenerate codons if they go to different partitions'
+            self.errors.append(msg)
+            return ''
+
         self.voucher_codes = get_voucher_codes(self.cleaned_data)
         self.gene_codes = get_gene_codes(self.cleaned_data)
         self.create_seq_objs()
@@ -128,15 +137,6 @@ class CreateDataset(object):
             return tnt_dataset
 
         if self.file_format in ['NEXUS', 'FASTA']:
-            if self.codon_positions != ['ALL'] and self.degen_translations is not None:
-                msg = 'Cannot degenerate codons if they you have not selected all codon positions'
-                self.errors.append(msg)
-                return ''
-            elif self.degen_translations is not None and self.partition_by_positions != 'by gene':
-                msg = 'Cannot degenerate codons if they go to different partitions'
-                self.errors.append(msg)
-                return ''
-
             try:
                 dataset = Dataset(self.seq_objs, format=self.file_format, partitioning=self.partition_by_positions,
                                   codon_positions=self.codon_positions[0], aminoacids=self.aminoacids,
