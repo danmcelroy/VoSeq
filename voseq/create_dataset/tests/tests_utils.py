@@ -5,7 +5,6 @@ from django.core.management import call_command
 from create_dataset.utils import CreateDataset
 from create_dataset.views import guess_file_extension
 from public_interface.models import Genes
-from public_interface.models import GeneSets
 from public_interface.models import TaxonSets
 
 
@@ -25,7 +24,8 @@ class CreateDatasetUtilsTest(TestCase):
             'geneset': None,
             'taxon_names': ['CODE', 'SUPERFAMILY', 'GENUS', 'SPECIES'],
             'positions': ['ALL'],
-            'partition_by_positions': 'ONE',
+            'translations': False,
+            'partition_by_positions': 'by gene',
             'degen_translations': None,
             'number_genes': None,
             'file_format': 'FASTA',
@@ -305,10 +305,10 @@ CaCcTcTT?TTTTgaTC???????????????????????????????????????????
         g1 = Genes.objects.get(gene_code='COI-begin')
         g1.reading_frame = None
         g1.save()
-        cleaned_data = self.cleaned_data
+        cleaned_data = self.cleaned_data.copy()
         cleaned_data['gene_codes'] = [g1]
         cleaned_data['positions'] = list(['1st', '2nd', '3rd'],)
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
 
         dataset_creator = CreateDataset(cleaned_data)
         expected = ""
@@ -318,10 +318,10 @@ CaCcTcTT?TTTTgaTC???????????????????????????????????????????
     def test_dataset_all_codons_partitions_each(self):
         # TODO: fix test after fixing dataset-creator issue #26
         g1 = Genes.objects.get(gene_code='COI-begin')
-        cleaned_data = self.cleaned_data
+        cleaned_data = self.cleaned_data.copy()
         cleaned_data['gene_codes'] = [g1]
         cleaned_data['positions'] = list(['ALL'],)
-        cleaned_data['partition_by_positions'] = 'EACH',
+        cleaned_data['partition_by_positions'] = 'by gene',
 
         dataset_creator = CreateDataset(cleaned_data)
         expected = """
@@ -360,7 +360,7 @@ CaCcTcTT?TTTTgaTC???????????????????????????????????????????
         cleaned_data = self.cleaned_data
         cleaned_data['gene_codes'] = [g1]
         cleaned_data['positions'] = list(['ALL', '1st'],)
-        cleaned_data['partition_by_positions'] = 'EACH',
+        cleaned_data['partition_by_positions'] = 'by gene',
 
         dataset_creator = CreateDataset(cleaned_data)
         expected = """
@@ -399,7 +399,7 @@ CaCcTcTT?TTTTgaTC???????????????????????????????????????????
         cleaned_data = self.cleaned_data
         cleaned_data['gene_codes'] = [g1]
         cleaned_data['positions'] = list(['ALL', '1st', '2nd'],)
-        cleaned_data['partition_by_positions'] = 'EACH',
+        cleaned_data['partition_by_positions'] = 'by gene',
 
         dataset_creator = CreateDataset(cleaned_data)
         expected = """
@@ -438,7 +438,7 @@ CaCcTcTT?TTTTgaTC???????????????????????????????????????????
         cleaned_data = self.cleaned_data
         cleaned_data['gene_codes'] = [g1]
         cleaned_data['positions'] = list(['ALL', '1st', '2nd', '3rd'],)
-        cleaned_data['partition_by_positions'] = 'EACH',
+        cleaned_data['partition_by_positions'] = 'by gene'
 
         dataset_creator = CreateDataset(cleaned_data)
         expected = """
@@ -580,9 +580,9 @@ CTTCCTCCGTTTGCGGGCATACATCTCTACGAcGAATTAAaCTcT?TTgaC?????????
         cleaned_data['positions'] = ['2nd', '3rd']
 
         dataset_creator = CreateDataset(cleaned_data)
-        expected = ['Cannot create dataset for only codon positions 2 and 3.']
+        expected = 'Cannot create dataset for only codon positions 2nd and 3rd.'
         result = dataset_creator.errors
-        self.assertEqual(expected, result)
+        self.assertTrue(expected in ''.join(str(i) for i in result))
 
     def test_dataset_1st_3rd_codon_one_partition(self):
         g1 = Genes.objects.get(gene_code='COI-begin')
@@ -592,9 +592,9 @@ CTTCCTCCGTTTGCGGGCATACATCTCTACGAcGAATTAAaCTcT?TTgaC?????????
         cleaned_data['positions'] = ['1st', '3rd']
 
         dataset_creator = CreateDataset(cleaned_data)
-        expected = ['Cannot create dataset for only codon positions 1 and 3.']
+        expected = 'Cannot create dataset for only codon positions 1st and 3rd.'
         result = dataset_creator.errors
-        self.assertEqual(expected, result)
+        self.assertTrue(expected in ''.join(str(i) for i in result))
 
     def test_dataset_1st_3rd_codon_partition_1st2nd_3rd_gene_with_no_reading_frame(self):
         g1 = Genes.objects.get(gene_code='COI-begin')
@@ -602,7 +602,7 @@ CTTCCTCCGTTTGCGGGCATACATCTCTACGAcGAATTAAaCTcT?TTgaC?????????
         cleaned_data['gene_codes'] = [g1]
         del cleaned_data['positions']
         cleaned_data['positions'] = ['1st', '3rd']
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
 
         dataset_creator = CreateDataset(cleaned_data)
         expected = ""
@@ -615,7 +615,7 @@ CTTCCTCCGTTTGCGGGCATACATCTCTACGAcGAATTAAaCTcT?TTgaC?????????
         cleaned_data['gene_codes'] = [g1]
         del cleaned_data['positions']
         cleaned_data['positions'] = ['1st']
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by gene'
 
         dataset_creator = CreateDataset(cleaned_data)
         expected = """
@@ -639,7 +639,7 @@ CTCCGTGGGAAACCAGcATAaTTTgC?????????????????
         cleaned_data['gene_codes'] = [g1]
         del cleaned_data['positions']
         cleaned_data['positions'] = ['2nd']
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by gene'
 
         dataset_creator = CreateDataset(cleaned_data)
         expected = """
@@ -663,7 +663,7 @@ TCTCTTCGCTCTTTCAGATACc?Ta??????????????????
         cleaned_data['gene_codes'] = [g1]
         del cleaned_data['positions']
         cleaned_data['positions'] = ['3rd']
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by gene'
 
         dataset_creator = CreateDataset(cleaned_data)
         expected = """
@@ -688,7 +688,7 @@ ACTATAATATTAATTATATACcTTTT?????????????????
         cleaned_data['gene_codes'] = [g1]
         del cleaned_data['positions']
         cleaned_data['positions'] = ['1st', '2nd']
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by gene'
 
         dataset_creator = CreateDataset(cleaned_data)
         expected = """
@@ -720,12 +720,12 @@ CTTCCTCCGTTTGCGGGCATACATCTCTACGAcGAATTAAaCTcT?TTgaC?????????
         cleaned_data['gene_codes'] = [g1]
         del cleaned_data['positions']
         cleaned_data['positions'] = ['1st', '3rd']
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by gene'
 
         dataset_creator = CreateDataset(cleaned_data)
-        expected = ['Cannot create dataset for only codon positions 1 and 3.']
+        expected = 'Cannot create dataset for only codon positions 1st and 3rd.'
         result = dataset_creator.errors
-        self.assertEqual(expected, result)
+        self.assertTrue(expected in ''.join(str(i) for i in result))
 
     def test_dataset_2nd_3rd_each(self):
         g1 = Genes.objects.get(gene_code='COI-begin')
@@ -733,12 +733,12 @@ CTTCCTCCGTTTGCGGGCATACATCTCTACGAcGAATTAAaCTcT?TTgaC?????????
         cleaned_data['gene_codes'] = [g1]
         del cleaned_data['positions']
         cleaned_data['positions'] = ['2nd', '3rd']
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by gene'
 
         dataset_creator = CreateDataset(cleaned_data)
-        expected = ['Cannot create dataset for only codon positions 2 and 3.']
+        expected = 'Cannot create dataset for only codon positions 2nd and 3rd.'
         result = dataset_creator.errors
-        self.assertEqual(expected, result)
+        self.assertTrue(expected in ''.join(str(i) for i in result))
 
     def test_dataset_2nd_3rd_paritions_1st2nd_3rd_gene_with_no_reading_frame(self):
         g1 = Genes.objects.get(gene_code='COI-begin')
@@ -746,7 +746,7 @@ CTTCCTCCGTTTGCGGGCATACATCTCTACGAcGAATTAAaCTcT?TTgaC?????????
         cleaned_data['gene_codes'] = [g1]
         del cleaned_data['positions']
         cleaned_data['positions'] = ['2nd', '3rd']
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
 
         dataset_creator = CreateDataset(cleaned_data)
         expected = ""
@@ -760,7 +760,7 @@ CTTCCTCCGTTTGCGGGCATACATCTCTACGAcGAATTAAaCTcT?TTgaC?????????
         cleaned_data['gene_codes'] = [g1]
         del cleaned_data['positions']
         cleaned_data['positions'] = ['1st', '2nd', '3rd']
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by gene'
 
         dataset_creator = CreateDataset(cleaned_data)
         expected = """
@@ -801,7 +801,7 @@ CaCcTcTT?TTTTgaTC???????????????????????????????????????????
         cleaned_data['gene_codes'] = [g1]
         del cleaned_data['positions']
         cleaned_data['positions'] = ['ALL', '1st', '2nd', '3rd']
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by gene'
 
         dataset_creator = CreateDataset(cleaned_data)
         expected = """
@@ -841,7 +841,7 @@ CaCcTcTT?TTTTgaTC???????????????????????????????????????????
         cleaned_data['gene_codes'] = [g1]
         del cleaned_data['positions']
         cleaned_data['positions'] = ['1st']
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
 
         dataset_creator = CreateDataset(cleaned_data)
         expected = """
@@ -865,7 +865,7 @@ CTCCGTGGGAAACCAGcATAaTTTgC?????????????????
         cleaned_data['gene_codes'] = [g1]
         del cleaned_data['positions']
         cleaned_data['positions'] = ['2nd']
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
 
         dataset_creator = CreateDataset(cleaned_data)
         expected = """
@@ -889,7 +889,7 @@ TCTCTTCGCTCTTTCAGATACc?Ta??????????????????
         cleaned_data['gene_codes'] = [g1]
         del cleaned_data['positions']
         cleaned_data['positions'] = ['3rd']
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
 
         dataset_creator = CreateDataset(cleaned_data)
         expected = """
@@ -913,7 +913,7 @@ ACTATAATATTAATTATATACcTTTT?????????????????
         cleaned_data['gene_codes'] = [g1]
         del cleaned_data['positions']
         cleaned_data['positions'] = ['1st', '2nd']
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
 
         dataset_creator = CreateDataset(cleaned_data)
         expected = """
@@ -946,7 +946,7 @@ CTTCCTCCGTTTGCGGGCATACATCTCTACGAcGAATTAAaCTcT?TTgaC?????????
         cleaned_data['gene_codes'] = [g1]
         del cleaned_data['positions']
         cleaned_data['positions'] = ['1st', '2nd', '3rd']
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
 
         dataset_creator = CreateDataset(cleaned_data)
         expected = """
@@ -986,7 +986,7 @@ CaCcTcTT?TTTTgaTC???????????????????????????????????????????
         cleaned_data['gene_codes'] = [g1]
         del cleaned_data['positions']
         cleaned_data['positions'] = ['ALL', '1st']
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
 
         dataset_creator = CreateDataset(cleaned_data)
         expected = """
