@@ -1,17 +1,12 @@
-from collections import OrderedDict
-
-from Bio.Seq import Seq
-from Bio.SeqRecord import SeqRecord
 from seqrecord_expanded import SeqRecordExpanded
 from seqrecord_expanded.exceptions import MissingParameterError
 from dataset_creator import Dataset
 
+from core import exceptions
 from core.utils import get_voucher_codes
 from core.utils import get_gene_codes
 from core.utils import clean_positions
-from core.utils import flatten_taxon_names_dict
 from .dataset import CreateGenbankFasta
-from .dataset import CreateFasta
 from .dataset import CreateTNT
 from .mega import CreateMEGA
 from .nexus import DatasetHandler
@@ -56,7 +51,13 @@ class CreateDataset(object):
         self.seq_objs = []
         self.minimum_number_of_genes = cleaned_data['number_genes']
         self.aminoacids = cleaned_data['aminoacids']
-        self.codon_positions = clean_positions(cleaned_data['positions'])
+
+        try:
+            self.codon_positions = clean_positions(cleaned_data['positions'])
+        except exceptions.InadequateCodonPositions as e:
+            self.codon_positions = None
+            self.errors = [e]
+
         self.file_format = cleaned_data['file_format']
         self.partition_by_positions = cleaned_data['partition_by_positions']
         self.cleaned_data = cleaned_data
@@ -74,15 +75,7 @@ class CreateDataset(object):
         self.dataset_str = self.create_dataset()
 
     def create_dataset(self):
-        if len(self.codon_positions) == 2 and \
-                '1st' in self.codon_positions and '3rd' in self.codon_positions:
-            self.errors = ['Cannot create dataset for only codon positions 1 and 3.']
-            self.dataset_file = None
-            return ''
-        if len(self.codon_positions) == 2 and \
-                '2nd' in self.codon_positions and '3rd' in self.codon_positions:
-            self.errors = ['Cannot create dataset for only codon positions 2 and 3.']
-            self.dataset_file = None
+        if not self.codon_positions:
             return ''
 
         self.voucher_codes = get_voucher_codes(self.cleaned_data)
@@ -134,9 +127,6 @@ class CreateDataset(object):
             return tnt_dataset
 
         if self.file_format in ['NEXUS', 'FASTA']:
-            if self.codon_positions == ['1st', '2nd']:
-                self.codon_positions = ['1st-2nd']
-
             # Check if we can degenerate the sequences
             degenerate = None
             if self.translations is not False:
