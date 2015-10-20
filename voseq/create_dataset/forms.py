@@ -66,13 +66,13 @@ class CreateDatasetForm(BaseDatasetForm):
     degen_translations = forms.ChoiceField(
         label='Degenerated translations)',
         choices=[
-            ('NORMAL', 'normal'),
+            ('normal', 'normal'),
             ('S', 'S'),
             ('Z', 'Z'),
             ('SZ', 'SZ'),
         ],
         widget=forms.RadioSelect(),
-        initial='NORMAL',
+        initial='normal',
         required=True,
     )
 
