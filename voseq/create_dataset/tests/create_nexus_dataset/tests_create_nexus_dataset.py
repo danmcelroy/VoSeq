@@ -26,7 +26,8 @@ class CreateNexusDatasetTest(TestCase):
             'voucher_codes': '',
             'geneset': gene_set,
             'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
-            'degen_translations': None,
+            'translations': False,
+            'degen_translations': 'normal',
             'number_genes': None,
             'positions': ['ALL'],
             'partition_by_positions': 'by gene',
@@ -386,7 +387,7 @@ CP100-19_Aus_jus                                       ?????????????????????????
     def test_try_dataset_degenerated_in_partitions(self):
         cleaned_data = self.cleaned_data
         cleaned_data['voucher_codes'] = 'CP100-10'
-        cleaned_data['degen_translations'] = 'NORMAL'
+        cleaned_data['degen_translations'] = 'normal'
         cleaned_data['partition_by_positions'] = 'by gene'
         cleaned_data['translations'] = True
         dataset_creator = CreateDataset(cleaned_data)
