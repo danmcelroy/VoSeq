@@ -47,7 +47,7 @@ class TestCreateDataset(TestCase):
             'positions': ['ALL'],
             'introns': 'YES',
             'gene_codes': [],
-            'partition_by_positions': 'ONE',
+            'partition_by_positions': 'by gene',
             'number_genes': None,
             'geneset': GeneSets.objects.get(geneset_name='6genes'),
             'file_format': 'PHY',
@@ -63,7 +63,7 @@ class TestCreateDataset(TestCase):
     def test_seq_objs_have_sorted_gene_codes(self):
         result = CreateDataset(self.cleaned_data)
         self.assertEqual(['abc1', 'ABC2', 'BC1', 'CC', 'xaz', 'XYZ'],
-                         list(result.seq_objs))
+                         list(result.gene_codes))
 
     def test_sequence_full_of_question_marks_when_voucher_is_missing(self):
         Vouchers(code='CP100-13').save()
