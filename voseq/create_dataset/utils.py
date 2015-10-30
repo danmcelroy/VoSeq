@@ -113,18 +113,7 @@ class CreateDataset(object):
             self.charset_block = phy.charset_block
             return phylip_dataset
 
-        if self.file_format == 'TNT':
-            tnt = CreateTNT(self.codon_positions, self.partition_by_positions,
-                            self.seq_objs, self.gene_codes, self.voucher_codes,
-                            self.file_format, self.outgroup, self.voucher_codes_metadata,
-                            self.minimum_number_of_genes, self.aminoacids,
-                            degen_translations=self.degen_translations, translations=self.translations)
-            tnt_dataset = tnt.from_seq_objs_to_dataset()
-            self.warnings += tnt.warnings
-            self.dataset_file = tnt.dataset_file
-            return tnt_dataset
-
-        if self.file_format in ['NEXUS', 'FASTA', 'MEGA']:
+        if self.file_format in ['NEXUS', 'FASTA', 'MEGA', 'TNT']:
             try:
                 dataset = Dataset(self.seq_objs, format=self.file_format, partitioning=self.partition_by_positions,
                                   codon_positions=self.codon_positions[0], aminoacids=self.aminoacids,
