@@ -9,12 +9,12 @@ from public_interface.models import Genes
 class CreateMEGADatasetTest(TestCase):
     def setUp(self):
         args = []
-        opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
+        opts = {'dumpfile': 'test_db_dump2.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 
-        g1 = Genes.objects.get(gene_code='COI')
-        g2 = Genes.objects.get(gene_code='EF1a')
+        g1 = Genes.objects.get(gene_code='COI-begin')
+        g2 = Genes.objects.get(gene_code='ef1a')
         self.cleaned_data = {
             'gene_codes': [g1, g2],
             'taxonset': None,
@@ -24,7 +24,8 @@ class CreateMEGADatasetTest(TestCase):
             'number_genes': None,
             'positions': ['ALL'],
             'degen_translations': None,
-            'partition_by_positions': 'ONE',
+            'translations': False,
+            'partition_by_positions': 'by gene',
             'file_format': 'MEGA',
             'aminoacids': False,
             'outgroup': '',
@@ -40,12 +41,12 @@ class CreateMEGADatasetTest(TestCase):
         self.assertTrue(expected in result)
 
     def test_sequence_line_breaks(self):
-        expected = '#CP100-10_Melitaea_diamina\n?????????????????????????TGAGCCGGTATAATTGGTACAT'
+        expected = '#CP100-10_Aus_aus\n?????????????????????????'
         result = self.dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
     def test_sequence_concatenation(self):
-        expected = '??????????????????????????CAAGT'
+        expected = 'TTATTTTGATTTTTTGG???????????'
         result = self.dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
@@ -54,13 +55,13 @@ class CreateMEGADatasetTest(TestCase):
         cleaned_data['aminoacids'] = True
         dataset_creator = CreateDataset(cleaned_data)
 
-        expected = 'PSFLIGDDQIYNTIVTAHAFIMIFFMVMPIMIGGFGNWLVPLMLG'
+        expected = 'MVGTSLSLIIRTELGNPGSLIGDDQIYNTIVTAHAFIMIF'
         result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
     def test_dataset_with_partitions(self):
         cleaned_data = self.cleaned_data
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         dataset_creator = CreateDataset(cleaned_data)
 
         expected = ''
@@ -69,18 +70,19 @@ class CreateMEGADatasetTest(TestCase):
 
     def test_dataset_with_degen_tranlations(self):
         cleaned_data = self.cleaned_data
-        cleaned_data['degen_translations'] = 'NORMAL'
+        cleaned_data['degen_translations'] = 'S'
         cleaned_data['translations'] = True
         dataset_creator = CreateDataset(cleaned_data)
 
-        expected = 'NTGRGCNGGNATRATYGGNA'
+        expected = 'ATHATHGGNGGNTTYGGNAAYTGAYTNATHCCNYTNATHYTNGGNGCNC'
         result = dataset_creator.dataset_str.strip()
         self.assertTrue(expected in result)
 
     def test_dataset_with_partitions_and_degen_tranlations(self):
         cleaned_data = self.cleaned_data
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         cleaned_data['translations'] = True
+        cleaned_data['degen_translations'] = 'normal'
         dataset_creator = CreateDataset(cleaned_data)
 
         expected = ''

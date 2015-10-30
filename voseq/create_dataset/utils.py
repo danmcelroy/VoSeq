@@ -91,18 +91,6 @@ class CreateDataset(object):
         self.voucher_codes = get_voucher_codes(self.cleaned_data)
         self.gene_codes = get_gene_codes(self.cleaned_data)
         self.create_seq_objs()
-        if self.file_format == 'MEGA':
-            fasta = CreateMEGA(self.codon_positions, self.partition_by_positions,
-                               self.seq_objs, self.gene_codes, self.voucher_codes,
-                               self.file_format, aminoacids=self.aminoacids,
-                               degen_translations=self.degen_translations, translations=self.translations)
-            fasta_dataset = fasta.from_seq_objs_to_dataset()
-            self.errors += fasta.errors
-            self.warnings += fasta.warnings
-            self.dataset_file = fasta.dataset_file
-            self.aa_dataset_file = fasta.aa_dataset_file
-            return fasta_dataset
-
         if self.file_format == 'GenbankFASTA':
             fasta = CreateGenbankFasta(self.codon_positions, self.partition_by_positions,
                                        self.seq_objs, self.gene_codes, self.voucher_codes,
@@ -136,7 +124,7 @@ class CreateDataset(object):
             self.dataset_file = tnt.dataset_file
             return tnt_dataset
 
-        if self.file_format in ['NEXUS', 'FASTA']:
+        if self.file_format in ['NEXUS', 'FASTA', 'MEGA']:
             try:
                 dataset = Dataset(self.seq_objs, format=self.file_format, partitioning=self.partition_by_positions,
                                   codon_positions=self.codon_positions[0], aminoacids=self.aminoacids,
