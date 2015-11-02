@@ -11,12 +11,12 @@ from public_interface.models import Genes
 class CreateDatasetViewsTest(TestCase):
     def setUp(self):
         args = []
-        opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
+        opts = {'dumpfile': 'test_db_dump2.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 
-        g1 = Genes.objects.get(gene_code='COI')
-        g2 = Genes.objects.get(gene_code='EF1a')
+        g1 = Genes.objects.get(gene_code='COI-begin')
+        g2 = Genes.objects.get(gene_code='ef1a')
         self.cleaned_data = {
             'gene_codes': [g1, g2],
             'taxonset': None,
@@ -86,10 +86,10 @@ class CreateDatasetViewsTest(TestCase):
                               'introns': 'YES',
                               'positions': 'ALL',
                               'translations': False,
-                              'partition_by_positions': 'ONE',
+                              'partition_by_positions': 'by gene',
                               'file_format': 'FASTA',
                               'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
-                              'degen_translations': 'NORMAL',
+                              'degen_translations': 'normal',
                               'exclude': 'YES',
                               'aminoacids': False,
                               'special': False,
@@ -99,5 +99,5 @@ class CreateDatasetViewsTest(TestCase):
         html_page = res.content.decode('utf-8')
         file_name = re.search('FASTA_\w+\.txt', html_page).group()
         file_content = self.c.get('/create_dataset/results/' + file_name, follow=True)
-        expected = ">CP100_10_Melitaea_diamina\n????CGTGGTATCACTA"
+        expected = ">CP100_10_Aus_aus\n????????????????????????????????????????????????????????????"
         self.assertTrue(expected in file_content.content.decode('utf-8'))
