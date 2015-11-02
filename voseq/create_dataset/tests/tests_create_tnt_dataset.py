@@ -46,7 +46,7 @@ class CreateTNTDatasetTest(TestCase):
         cleaned_data = self.cleaned_data
         cleaned_data['outgroup'] = 'CP100-11'
         dataset_creator = CreateDataset(cleaned_data)
-        expected = 'nstates dna;\nxread\n1524 2\n\n&[dna]\nCP100-11_Aus_bus'
+        expected = 'nstates dna;\nxread\n1909 2\n\n&[dna]\nCP100-11_Aus_bus'
         result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
@@ -54,25 +54,25 @@ class CreateTNTDatasetTest(TestCase):
         cleaned_data = self.cleaned_data
         cleaned_data['positions'] = ['ALL']
         dataset_creator = CreateDataset(cleaned_data)
-        expected = 'nstates dna;\nxread\n2287 2\n\n&[dna]\nCP100-10_Aus_aus'
+        expected = 'nstates dna;\nxread\n1909 2\n\n&[dna]\nCP100-10_Aus_aus'
         result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
-        expected = '?????????????????????????TGAGCCGGTATAATTGGTACATCCCTAAGTCTTATTATTCGAACCGAATTAGGAAATCCTAGTTTTTTAATTGGAGATGATCAAATTTATAATACCATTGTAACAGCTCATGCTTTTATTATAATTTTTTTTATAGTTATGCCAATTATAATTGGAGGATTTGGTAATTGACTTGTACCATTAATATTGGGAGCCCCAGATATAGCTTTCCCCCGAATAAATTATATAAGATTTTGATTATTGCCTCCATCCTTAATTCTTTTAATTTCAAGTAGAATTGTAGAAAATGGGGCAGGAACTGGATGAACAGTTTACCCCCCACTTTCATCTAATATTGCCCATAGAGGAGCTTCAGTGGATTTAGCTATTTTTTCTTTACATTTAGCTGGGATTTCCTCTATCTTAGGAGCTATTAATTTTATTACTACAATTATTAATATACGAATTAATAATATATCTTATGATCAAATACCTTTATTTGTATGAGCAGTAGGAATTACAGCATTACTTCTCTTATTATCTTTACCAGTTTTAGCTGGAGCTATTACTATACTTTTAACGGATCGAAATCTTAATACCTCATTTTTTGATTCCTGCGGAGGAGGAGATCC?????????????????????????????????'
+        expected = '??????????????????????????????????????????????????????????ATTATTCGAACAGAATTAAGTACCCCTGGATCATTAATCGGAGATGATCAAATTTATAATACTATTGTTACAGCTCATGCTTTTATTATAATTTTTTTTATGGTTATACCTATTATAATTGGAGGATTTGGTAATTGACTTATTCCCCTTATATTAGGAGCCCCTGATATAGCTTTTCCACGAATAAATAATATAAGATTTTGACTTCTCCCACCCTCTTTAATTTTATTAATTTCGAGTAGTATAGTAGAAAATGGTGCTGGCACAGGATGAACGGTCTATCCCCCCCTCTCATCTAATATTGCCCATAGAGGATCCTCAGTTGATTTAGCAATCTTTTCCTTACATTTAGCTGGAATCTCATCAATTCTTGGAGCAATTAATTTTATTACAACAATTATTAATATACGAATTAATAAAATATCTTATGATCAAATACCTTTATTTGTTTGAGCTGTAGGAATTACCGCATTATTATTATTACTTTCTTTACCTGTATTAGCTGGAGCTATCACAATACTACTCACAGATCGAAACTTAAATACATCTTTTTTTGACCCAGCAGGAGGTGGAGATCCTATTTTATATCAACATTTATTTTGATTTTTTGG'
         self.assertTrue(expected in result)
 
-        expected = 'CP100-11_Melitaea_diamina                              ????????????????????????'
+        expected = 'CP100-11_Aus_bus                                       ????????????????????????'
         self.assertTrue(expected in result)
 
     def test_create_dataset_1st_codon(self):
         cleaned_data = self.cleaned_data
         cleaned_data['positions'] = ['1st']
         dataset_creator = CreateDataset(cleaned_data)
-        expected = 'nstates dna;\nxread\n762 2\n\n&[dna]\nCP100-10_Aus_aus'
+        expected = 'nstates dna;\nxread\n636 2\n\n&[dna]\nCP100-10_Aus_aus'
         result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
-        expected = '????????TGGAAGATCACAACAGTGACATTAGGGCATAAAGAGCGTAAATTAGACAAAGGTGATCGCTATGGCGAGTCCAATAATTTTCCTTACTATAAAGGAGGGAGTAGTCCCTTAAGCAGGTGGTGATTTCTGGATTATGGAATAAAAAAACAAAATTGCACTTGTGGGAAGTCCTTTTCGTGGGAAACTAGCACAATTTGTTGGGGC???????????'
+        expected = '???????????????????AACAGTAACGTTAGGGCATAAAGAGCGTAAATTAGACAAAGGTGATCACCATG'
         self.assertTrue(expected in result)
 
     def test_fill_seqs_with_missing_chars(self):
@@ -80,7 +80,7 @@ class CreateTNTDatasetTest(TestCase):
         cleaned_data['positions'] = ['ALL']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
-        expected = 'CP100-10_Melitaea_diamina                              ???????????????CAAGTCCACCACCACCGGCCACTTGATTTACAAATGTGGTGGTATCGACAAACGTACCATCGAGAAGTTCGAGAAGGAAGCCCAGGAAATGGGCAAGGGTTCCTTCAAGTACGCTTGGGTGTTGGACAAACTTAAGGCTGAGCGCGAGCGTGGTATCACTATTGATATTGCTCTGTGGAAGTTCGAGACTGCCAAATACTATGTAACCATCATCGATGCTCCCGGACACAGAGATTTCATCAAGAACATGATCACCGGAACATCACAAGCCGATTGCGCCGTACTTATCGTCGCCGCCGGTACTGGTGAGTTCGAAGCCGGTATCTCAAAGAACGGTCAGACCCGTGAGCACGCTCTGCTCGCCTTCACATTAGGTGTAAAGCAGCTGATTGTAGGAGTCAACAAAATGGACTCCACTGAGCCCCCATACAATGAGGGACGTTTCGAGGAAATCAAAAAGGAAGTGTCCTCTTACATCAAGAAGATCGGTTACAACCCAGCTGCCGTCGCTTTCGTACCCATTTCTGGCTGGCACGGAGACAACATGCTGGAGCCATCTACCAAAATGTCCCGGTTCAAGGGATGGCAAGTGGAGCGCAAAGAAGGCAAGG???AAGGTAAATGCCTCATTGAAGCTC???ACGCCATCCTTCCTCCGG?????CCCAC????????????????????????????????????????????????TATTGGTACAGTGCCCGTAGGCAGAGTAGAAACTGGTATCCTCAAACCAGGTACCATTGTTGTTTTCGCTCCCGCCAACATCACCACTGAAGTCAAATCTGTGGAGATGCACCACGAAGCTCTCCAAGAGGCTGTACCTGGAGACAATGTAGGTTTCAACGTCAAGAACGTTTCCGTCAAGGAATTACGTCGTGGTTATGTAGCTGGTGACTCCAAGAACAACCCACCCAAGGGAGCTGCTGACTTCACCGCACAAGTCATTGTGCTCAACCACCCCGGTCAAATCTCCAATGGCTACACACCTGTGCTCGATTGCCACACAGCTCACATTGCCTGCAAATTCGCCGAAATCAAAGAAAAGGTTGACCGTCGTTCCGGTAAATCYACTGAGGACAATCCTAAATCTATCAAATCTGGTGATGCTGCCATTGTGAACTTGGTACCTTCCAAACCCCTCTGTGTGGAGGCCTTCCAAGAATTCCCACCTCTTGGTCG????????????'
+        expected = "CP100-10_Aus_aus                                       ??????????????????????????????????????????????????????????ATTATTCGAACAGAATTAAGTAC"
         self.assertTrue(expected in result)
 
     def test_create_dataset_aa(self):
@@ -88,11 +88,11 @@ class CreateTNTDatasetTest(TestCase):
         cleaned_data['positions'] = ['ALL']
         cleaned_data['aminoacids'] = True
         dataset_creator = CreateDataset(cleaned_data)
-        expected = 'XXXXXXXXWAGMIGTSLSLIIRTELGNPSFLIGDDQIYNTIVTAHAFIMIFFMVM'
+        expected = 'XXXXXXXXXXXXXXXXXXXIIRTELSTPGSLI'
         result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
-        expected = 'xread\n761 2\n'
+        expected = 'xread\n635 2\n'
         result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
@@ -102,18 +102,18 @@ class CreateTNTDatasetTest(TestCase):
         cleaned_data['outgroup'] = 'CP100-11'
         cleaned_data['aminoacids'] = True
         dataset_creator = CreateDataset(cleaned_data)
-        expected = '[&dna]\nCP100-11_Melitaea_diamina                              XSRYNWYIPKSYY'
+        expected = '&[protein]\nCP100-11_Aus_bus                                       TLYFIFGIWAGM'
         result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
     def test_create_dataset_try_with_degen_translation_and_paritioned_by_codon(self):
         cleaned_data = self.cleaned_data
         cleaned_data['positions'] = ['ALL']
-        cleaned_data['degen_translations'] = 'NORMAL'
+        cleaned_data['degen_translations'] = 'normal'
         cleaned_data['translations'] = True
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         dataset_creator = CreateDataset(cleaned_data)
-        expected = 'nstates dna;\nxread\n0 2\n\n[CP100-11_Melitaea_diamina]\n\n;\nproc/;'
+        expected = ''
 
         result = dataset_creator.dataset_str
         self.assertEqual(expected, result)
