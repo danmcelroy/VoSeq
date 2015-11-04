@@ -115,6 +115,10 @@ class CreateDataset(object):
             self.warnings += dataset.warnings
             dataset_handler = DatasetHandler(dataset.dataset_str, self.file_format)
             self.dataset_file = dataset_handler.dataset_file
+
+            if self.file_format == 'PHYLIP':
+                self.charset_block = dataset.extra_dataset_str
+
             return dataset.dataset_str
 
     def create_seq_objs(self):
