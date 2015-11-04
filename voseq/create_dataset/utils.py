@@ -103,13 +103,11 @@ class CreateDataset(object):
                 dataset = Dataset(self.seq_objs, format=self.file_format, partitioning=self.partition_by_positions,
                                   codon_positions=self.codon_positions[0], aminoacids=self.aminoacids,
                                   degenerate=self.degen_translations, outgroup=self.outgroup)
-            except MissingParameterError:
-                msg = 'You need to specify the reading frame of all genes to do the partitioning by codon positions'
-                self.errors.append(msg)
+            except MissingParameterError as e:
+                self.errors.append(e)
                 return ''
-            except ValueError:
-                msg = 'You need to specify the reading frame of all genes to do the partitioning by codon positions'
-                self.errors.append(msg)
+            except ValueError as e:
+                self.errors.append(e)
                 return ''
 
             self.warnings += dataset.warnings
