@@ -331,8 +331,8 @@ class CreateNexusDatasetTest(TestCase):
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
         self.assertEqual('', result)
-        self.assertEqual('You need to specify the reading frame of all genes '
-                         'to do the partitioning by codon positions', dataset_creator.errors[0])
+        self.assertEqual('reading_frame attribute for gene ArgKin should be either '
+                         '1, 2 or 3.', str(dataset_creator.errors[0]))
 
     """
     def test_nexus_gene_excluding_taxa(self):
