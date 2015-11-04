@@ -186,9 +186,9 @@ class TestCoreUtils(TestCase):
         self.assertEqual(clean_positions(['ALL', '1st', '2nd', '3rd']), ['ALL'], 'Has "ALL" in list.')
 
         self.assertEqual(clean_positions(['1st', '2nd', '3rd']), ['ALL'], 'All codon positions were required.')
-        self.assertEqual(clean_positions(['1st', '2nd']), ['1st', '2nd'], 'Only some codon positions were required.')
-        self.assertEqual(clean_positions(['1st', '3rd']), ['1st', '3rd'], 'Only some codon positions were required.')
-        self.assertEqual(clean_positions(['2nd', '3rd']), ['2nd', '3rd'], 'Only some codon positions were required.')
+        self.assertEqual(clean_positions(['1st', '2nd']), ['1st-2nd'], 'Only some codon positions were required.')
+        self.assertRaises(exceptions.InadequateCodonPositions, clean_positions, ['1st', '3rd'])
+        self.assertRaises(exceptions.InadequateCodonPositions, clean_positions, ['2nd', '3rd'])
 
         self.assertEqual(clean_positions(['1st']), ['1st'], 'All codon positions were required.')
         self.assertEqual(clean_positions(['2nd']), ['2nd'], 'All codon positions were required.')
