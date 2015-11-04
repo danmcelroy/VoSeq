@@ -21,6 +21,7 @@ class TestGeneTable(TestCase):
                                     {
                                         'taxonset': 1,
                                         'geneset': 1,
+                                        'translations': False,
                                     })
         self.assertTrue(expected in str(response.content))
 
@@ -28,6 +29,7 @@ class TestGeneTable(TestCase):
         response = self.client.post('/create_gene_table/results/', {
             'taxonset': 1000,
             'geneset': 1000,
+            'translations': False,
         })
         expected = 'Erebia'
         self.assertTrue(expected in str(response.content))
