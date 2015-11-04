@@ -31,7 +31,8 @@ class CreatePhylipDatasetTest(TestCase):
             'number_genes': None,
             'degen_translations': None,
             'positions': ['ALL'],
-            'partition_by_positions': 'ONE',
+            'translations': False,
+            'partition_by_positions': 'by gene',
             'file_format': 'PHY',
             'aminoacids': False,
             'outgroup': '',
@@ -98,9 +99,9 @@ class CreatePhylipDatasetTest(TestCase):
         cleaned_data['aminoacids'] = True
         dataset_creator = CreateDataset(cleaned_data)
 
-        expected = 'Gene wingless, sequence CP100-10_Aus_aus contains stop codons "*"'
+        expected = "Gene wingless, sequence CP100-10 contains stop codons '*'"
         result = dataset_creator.warnings
-        self.assertTrue(expected in result)
+        self.assertEqual(expected, result[0])
 
     def test_partitioned_1st2nd_3rd(self):
         cleaned_data = self.cleaned_data.copy()
