@@ -59,17 +59,6 @@ class TestCreateDataset(TestCase):
         self.assertEqual(['abc1', 'ABC2', 'BC1', 'CC', 'xaz', 'XYZ'],
                          list(result.gene_codes))
 
-    def test_sequence_full_of_question_marks_when_voucher_is_missing(self):
-        Vouchers(code='CP100-13').save()
-
-        cleaned_data = self.cleaned_data.copy()
-        cleaned_data['voucher_codes'] = 'CP100-13'
-
-        expected = 'CP100-13                                               ????????????'
-        result = CreateDataset(cleaned_data)
-
-        self.assertTrue(expected in result.dataset_str)
-
     def test_warning_when_missing_seqs_for_voucher(self):
         Vouchers(code='CP100-13').save()
 
