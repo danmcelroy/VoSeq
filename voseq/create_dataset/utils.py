@@ -98,7 +98,7 @@ class CreateDataset(object):
             self.aa_dataset_file = fasta.aa_dataset_file
             return fasta_dataset
 
-        if self.file_format in ['NEXUS', 'FASTA', 'MEGA', 'TNT', 'PHY']:
+        if self.file_format in ['NEXUS', 'FASTA', 'MEGA', 'TNT', 'PHYLIP']:
             try:
                 dataset = Dataset(self.seq_objs, format=self.file_format, partitioning=self.partition_by_positions,
                                   codon_positions=self.codon_positions[0], aminoacids=self.aminoacids,
