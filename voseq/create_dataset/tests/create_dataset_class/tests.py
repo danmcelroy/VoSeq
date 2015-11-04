@@ -11,12 +11,6 @@ from create_dataset.utils import CreateDataset
 class TestCreateDataset(TestCase):
     def setUp(self):
         self.maxDiff = None
-        """
-        genes = []
-        for i in ['abc1', 'BC1', 'ABC2', 'CC', 'xaz', 'XYZ']:
-            genes.append(Genes(gene_code=i))
-        Genes.objects.bulk_create(genes)
-        """
         genes = ['abc1', 'BC1', 'ABC2', 'CC', 'xaz', 'XYZ']
         GeneSets(geneset_name='6genes', geneset_creator='Carlos Pena',
                  geneset_list="\n".join(genes)).save()
