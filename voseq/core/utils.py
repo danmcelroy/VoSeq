@@ -67,7 +67,7 @@ def get_gene_codes(cleaned_data):
         * `form.cleaned_data`: taken from a Form class
 
     Returns:
-        set of gene codes, no dupes.
+        set of gene codes, sorted, no duplicates.
     """
     gene_codes = []
     if cleaned_data['geneset'] is not None:
@@ -81,8 +81,7 @@ def get_gene_codes(cleaned_data):
             if i.gene_code not in gene_codes:
                 gene_codes.append(i.gene_code)
 
-    gene_codes.sort()
-    return tuple(gene_codes)
+    return tuple(sorted(gene_codes, key=str.lower))
 
 
 def get_version_stats():

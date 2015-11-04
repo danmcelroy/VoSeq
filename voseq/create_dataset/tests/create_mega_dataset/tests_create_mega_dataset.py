@@ -29,7 +29,8 @@ class CreateMegaDatasetTest(TestCase):
             'degen_translations': None,
             'number_genes': None,
             'positions': ['ALL'],
-            'partition_by_positions': 'ONE',
+            'translations': False,
+            'partition_by_positions': 'by gene',
             'file_format': 'MEGA',
             'aminoacids': False,
             'outgroup': '',
@@ -47,7 +48,7 @@ class CreateMegaDatasetTest(TestCase):
 
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['ALL']
-        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['partition_by_positions'] = 'by gene'
         dataset_creator = CreateDataset(cleaned_data)
 
         result = dataset_creator.dataset_str
@@ -56,7 +57,7 @@ class CreateMegaDatasetTest(TestCase):
     def test_all_codons_partitioned_as_each(self):
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['ALL']
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by codon position'
         dataset_creator = CreateDataset(cleaned_data)
         expected = 'Cannot produce MEGA dataset with codon positions in different partitions.'
         result = dataset_creator.errors
