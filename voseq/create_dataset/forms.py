@@ -9,7 +9,7 @@ class CreateDatasetForm(BaseDatasetForm):
         choices=[
             ('TNT', 'TNT format'),
             ('NEXUS', 'NEXUS format'),
-            ('PHY', 'PHYLIP format'),
+            ('PHYLIP', 'PHYLIP format'),
             ('MEGA', 'MEGA format'),
             ('FASTA', 'Unaligned FASTA format'),
         ],
