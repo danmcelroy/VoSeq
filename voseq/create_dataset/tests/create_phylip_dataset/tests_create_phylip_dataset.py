@@ -105,7 +105,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_partitioned_1st2nd_3rd(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
 
@@ -115,7 +115,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_partitioned_each(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by codon position'
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
 
@@ -125,7 +125,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_dataset_1st_codon_partitioned_each(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by codon position'
         cleaned_data['positions'] = ['1st']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
@@ -138,7 +138,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_dataset_1st_codon_partitioned_one(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['partition_by_positions'] = 'by gene'
         cleaned_data['positions'] = ['1st']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
@@ -151,7 +151,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_dataset_1st_codon_partitioned_1st2nd_3rd(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         cleaned_data['positions'] = ['1st']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
@@ -164,7 +164,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_charset_block_dataset_1st_codon_partitioned_each(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by codon position'
         cleaned_data['positions'] = ['1st']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.charset_block
@@ -177,7 +177,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_charset_block_dataset_1st_codon_partitioned_one(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['partition_by_positions'] = 'by gene'
         cleaned_data['positions'] = ['1st']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.charset_block
@@ -190,7 +190,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_charset_block_dataset_1st_codon_partitioned_1st2nd_3rd(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         cleaned_data['positions'] = ['1st']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.charset_block
@@ -203,7 +203,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_charset_block_partitioned_1st2nd_3rd(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.charset_block
 
@@ -215,7 +215,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_charset_block_partitioned_each(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by codon position'
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.charset_block
 
@@ -227,7 +227,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_dataset_2nd_codon_partitioned_each(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by codon position'
         cleaned_data['positions'] = ['2nd']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
@@ -240,7 +240,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_dataset_2nd_codon_partitioned_one(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['partition_by_positions'] = 'by gene'
         cleaned_data['positions'] = ['2nd']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
@@ -253,7 +253,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_dataset_2nd_codon_partitioned_1st2nd_3rd(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         cleaned_data['positions'] = ['2nd']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
@@ -266,7 +266,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_charset_block_dataset_2nd_codon_partitioned_each(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by codon position'
         cleaned_data['positions'] = ['2nd']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.charset_block
@@ -279,7 +279,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_charset_block_dataset_2nd_codon_partitioned_one(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['partition_by_positions'] = 'by gene'
         cleaned_data['positions'] = ['2nd']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.charset_block
@@ -292,7 +292,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_charset_block_dataset_2nd_codon_partitioned_1st2nd_3rd(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         cleaned_data['positions'] = ['2nd']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.charset_block
@@ -305,7 +305,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_dataset_3rd_codon_partitioned_each(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by codon position'
         cleaned_data['positions'] = ['3rd']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
@@ -318,7 +318,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_dataset_3rd_codon_partitioned_one(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['partition_by_positions'] = 'by gene'
         cleaned_data['positions'] = ['3rd']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
@@ -331,7 +331,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_dataset_3rd_codon_partitioned_1st2nd_3rd(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         cleaned_data['positions'] = ['3rd']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
@@ -344,7 +344,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_charset_block_dataset_3rd_codon_partitioned_each(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by codon position'
         cleaned_data['positions'] = ['3rd']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.charset_block
@@ -357,7 +357,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_charset_block_dataset_3rd_codon_partitioned_one(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['partition_by_positions'] = 'by gene'
         cleaned_data['positions'] = ['3rd']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.charset_block
@@ -370,7 +370,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_charset_block_dataset_3rd_codon_partitioned_1st2nd_3rd(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         cleaned_data['positions'] = ['3rd']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.charset_block
@@ -383,7 +383,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_dataset_1st2nd_codon_partitioned_one(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['partition_by_positions'] = 'by gene'
         cleaned_data['positions'] = ['1st', '2nd']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
@@ -396,7 +396,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_dataset_1st2nd_codon_partitioned_each(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by codon position'
         cleaned_data['positions'] = ['1st', '2nd']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
@@ -409,7 +409,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_dataset_1st2nd_codon_partitioned_1st2nd_3rd(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         cleaned_data['positions'] = ['1st', '2nd']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
@@ -422,7 +422,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_charset_block_dataset_1st2nd_codon_partitioned_one(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['partition_by_positions'] = 'by gene'
         cleaned_data['positions'] = ['1st', '2nd']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.charset_block
@@ -436,7 +436,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_charset_block_dataset_1st2nd_codon_partitioned_each(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by codon position'
         cleaned_data['positions'] = ['1st', '2nd']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.charset_block
@@ -450,7 +450,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_charset_block_dataset_1st2nd_codon_partitioned_1st2nd_3rd(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         cleaned_data['positions'] = ['1st', '2nd']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.charset_block
@@ -464,7 +464,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_dataset_1st3rd_codon_partitioned_one(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['partition_by_positions'] = 'by gene'
         cleaned_data['positions'] = ['1st', '3rd']
         dataset_creator = CreateDataset(cleaned_data)
         expected = 'Cannot create dataset for only codon positions 1st and 3rd.'
@@ -473,7 +473,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_dataset_1st3rd_codon_partitioned_each(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by codon position'
         cleaned_data['positions'] = ['1st', '3rd']
         dataset_creator = CreateDataset(cleaned_data)
         expected = 'Cannot create dataset for only codon positions 1st and 3rd.'
@@ -482,7 +482,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_dataset_1st3rd_codon_partitioned_1st2nd_3rd(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         cleaned_data['positions'] = ['1st', '3rd']
         dataset_creator = CreateDataset(cleaned_data)
         expected = 'Cannot create dataset for only codon positions 1st and 3rd.'
@@ -491,7 +491,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_dataset_2nd3rd_codon_partitioned_one(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['partition_by_positions'] = 'by gene'
         cleaned_data['positions'] = ['2nd', '3rd']
         dataset_creator = CreateDataset(cleaned_data)
         expected = 'Cannot create dataset for only codon positions 2nd and 3rd.'
@@ -500,7 +500,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_dataset_2nd3rd_codon_partitioned_each(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by codon position'
         cleaned_data['positions'] = ['2nd', '3rd']
         dataset_creator = CreateDataset(cleaned_data)
         expected = 'Cannot create dataset for only codon positions 2nd and 3rd.'
@@ -509,7 +509,7 @@ class CreatePhylipDatasetTest(TestCase):
 
     def test_dataset_2nd3rd_codon_partitioned_1st2nd_3rd(self):
         cleaned_data = self.cleaned_data.copy()
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd,3rd'
         cleaned_data['positions'] = ['2nd', '3rd']
         dataset_creator = CreateDataset(cleaned_data)
         expected = 'Cannot create dataset for only codon positions 2nd and 3rd.'
