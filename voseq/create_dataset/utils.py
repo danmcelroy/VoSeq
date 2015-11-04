@@ -7,10 +7,7 @@ from core.utils import get_voucher_codes
 from core.utils import get_gene_codes
 from core.utils import clean_positions
 from .dataset import CreateGenbankFasta
-from .dataset import CreateTNT
-from .mega import CreateMEGA
 from .nexus import DatasetHandler
-from .phylip import CreatePhylip
 from public_interface.models import Genes
 from public_interface.models import Sequences
 from public_interface.models import Vouchers
@@ -101,19 +98,7 @@ class CreateDataset(object):
             self.aa_dataset_file = fasta.aa_dataset_file
             return fasta_dataset
 
-        if self.file_format == 'PHY':
-            phy = CreatePhylip(self.codon_positions, self.partition_by_positions,
-                               self.seq_objs, self.gene_codes, self.voucher_codes,
-                               self.file_format, self.outgroup, self.voucher_codes_metadata,
-                               self.minimum_number_of_genes, self.aminoacids,
-                               degen_translations=self.degen_translations, translations=self.translations)
-            phylip_dataset = phy.from_seq_objs_to_dataset()
-            self.warnings += phy.warnings
-            self.dataset_file = phy.dataset_file
-            self.charset_block = phy.charset_block
-            return phylip_dataset
-
-        if self.file_format in ['NEXUS', 'FASTA', 'MEGA', 'TNT']:
+        if self.file_format in ['NEXUS', 'FASTA', 'MEGA', 'TNT', 'PHY']:
             try:
                 dataset = Dataset(self.seq_objs, format=self.file_format, partitioning=self.partition_by_positions,
                                   codon_positions=self.codon_positions[0], aminoacids=self.aminoacids,
@@ -127,6 +112,7 @@ class CreateDataset(object):
                 self.errors.append(msg)
                 return ''
 
+            self.warnings += dataset.warnings
             dataset_handler = DatasetHandler(dataset.dataset_str, self.file_format)
             self.dataset_file = dataset_handler.dataset_file
             return dataset.dataset_str
