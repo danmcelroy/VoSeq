@@ -43,37 +43,42 @@ def results(request):
             cleaned_data = form.cleaned_data
             cleaned_data['file_format'] = 'GenbankFASTA'
             cleaned_data['number_genes'] = ''
-            cleaned_data['aminoacids'] = True
+            cleaned_data['translations'] = False
+            cleaned_data['aminoacids'] = False
             cleaned_data['positions'] = 'ALL'
-            cleaned_data['partition_by_positions'] = 'ONE'
+            cleaned_data['partition_by_positions'] = 'by gene'
             cleaned_data['taxon_names'] = ['CODE', 'GENUS', 'SPECIES']
             cleaned_data['outgroup'] = ''
 
             dataset_creator = CreateDataset(cleaned_data)
-            dataset, aa_dataset = dataset_creator.dataset_str
-            dataset = dataset[0:1500] + '\n...\n\n\n' + '#######\nComplete dataset file available for download.\n#######'
-            aa_dataset = aa_dataset[0:1500] + '\n...\n\n\n' + '#######\nComplete dataset file available for download.\n#######'
+            dataset = dataset_creator.dataset_str
+            dataset_short = dataset[0:1500] + '\n...\n\n\n' + '#######\nComplete dataset file available for download.\n#######'
             errors = dataset_creator.errors
             warnings = dataset_creator.warnings
-
             dataset_file_abs = dataset_creator.dataset_file
-            aa_dataset_file_abs = dataset_creator.aa_dataset_file
+
+            # Uncommend aa datasets after Biopython accepts translation of gapped seqs.
+            # cleaned_data['aminoacids'] = True
+            # dataset_creator = CreateDataset(cleaned_data)
+            # aa_dataset = dataset_creator.dataset_str
+            # aa_dataset_file_abs = dataset_creator.dataset_file
+
             if dataset_file_abs is not None:
                 dataset_file = re.search('([a-zA-Z]+_[a-z0-9]+\.txt)', dataset_file_abs).groups()[0]
-                aa_dataset_file = re.search('([a-zA-Z]+_aa_[a-z0-9]+\.txt)', aa_dataset_file_abs).groups()[0]
+                # aa_dataset_file = re.search('([a-zA-Z]+_aa_[a-z0-9]+\.txt)', aa_dataset_file_abs).groups()[0]
             else:
                 dataset_file = False
-                aa_dataset_file = False
+                # aa_dataset_file = False
 
             return render(request, 'genbank_fasta/results.html',
                           {
                               'username': username,
                               'items_with_accession': '',
-                              'dataset': dataset,
+                              'dataset': dataset_short,
                               'fasta_file': dataset_file,
-                              'protein': aa_dataset,
+                              # 'protein': aa_dataset,
                               'errors': errors,
-                              'protein_file': aa_dataset_file,
+                              # 'protein_file': aa_dataset_file,
                               'warnings': warnings,
                               'version': version,
                               'stats': stats,
