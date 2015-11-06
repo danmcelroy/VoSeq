@@ -26,13 +26,14 @@ class CreateNexusDatasetTest(TestCase):
             'voucher_codes': '',
             'geneset': gene_set,
             'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
-            'degen_translations': None,
+            'translations': False,
+            'degen_translations': 'normal',
             'number_genes': None,
             'positions': ['ALL'],
-            'partition_by_positions': 'ONE',
+            'partition_by_positions': 'by gene',
             'file_format': 'NEXUS',
             'aminoacids': False,
-            'outgroup': '',
+            'outgroup': None,
         }
 
         self.c = Client()
@@ -47,7 +48,7 @@ class CreateNexusDatasetTest(TestCase):
 
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['ALL']
-        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['partition_by_positions'] = 'by gene'
         dataset_creator = CreateDataset(cleaned_data)
 
         result = dataset_creator.dataset_str
@@ -61,7 +62,7 @@ class CreateNexusDatasetTest(TestCase):
 
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['ALL']
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by codon position'
         dataset_creator = CreateDataset(cleaned_data)
 
         result = dataset_creator.dataset_str
@@ -75,7 +76,7 @@ class CreateNexusDatasetTest(TestCase):
 
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['ALL']
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         dataset_creator = CreateDataset(cleaned_data)
 
         result = dataset_creator.dataset_str
@@ -89,7 +90,7 @@ class CreateNexusDatasetTest(TestCase):
 
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['1st']
-        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['partition_by_positions'] = 'by gene'
         dataset_creator = CreateDataset(cleaned_data)
 
         result = dataset_creator.dataset_str
@@ -103,7 +104,7 @@ class CreateNexusDatasetTest(TestCase):
 
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['1st']
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by codon position'
         dataset_creator = CreateDataset(cleaned_data)
 
         result = dataset_creator.dataset_str
@@ -117,7 +118,7 @@ class CreateNexusDatasetTest(TestCase):
 
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['1st']
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         dataset_creator = CreateDataset(cleaned_data)
 
         result = dataset_creator.dataset_str
@@ -131,7 +132,7 @@ class CreateNexusDatasetTest(TestCase):
 
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['2nd']
-        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['partition_by_positions'] = 'by gene'
         dataset_creator = CreateDataset(cleaned_data)
 
         result = dataset_creator.dataset_str
@@ -145,7 +146,7 @@ class CreateNexusDatasetTest(TestCase):
 
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['2nd']
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by codon position'
         dataset_creator = CreateDataset(cleaned_data)
 
         result = dataset_creator.dataset_str
@@ -159,7 +160,7 @@ class CreateNexusDatasetTest(TestCase):
 
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['2nd']
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         dataset_creator = CreateDataset(cleaned_data)
 
         result = dataset_creator.dataset_str
@@ -173,7 +174,7 @@ class CreateNexusDatasetTest(TestCase):
 
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['3rd']
-        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['partition_by_positions'] = 'by gene'
         dataset_creator = CreateDataset(cleaned_data)
 
         result = dataset_creator.dataset_str
@@ -187,7 +188,7 @@ class CreateNexusDatasetTest(TestCase):
 
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['3rd']
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by codon position'
         dataset_creator = CreateDataset(cleaned_data)
 
         result = dataset_creator.dataset_str
@@ -201,7 +202,7 @@ class CreateNexusDatasetTest(TestCase):
 
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['3rd']
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         dataset_creator = CreateDataset(cleaned_data)
 
         result = dataset_creator.dataset_str
@@ -215,7 +216,7 @@ class CreateNexusDatasetTest(TestCase):
 
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['1st', '2nd']
-        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['partition_by_positions'] = 'by gene'
         dataset_creator = CreateDataset(cleaned_data)
 
         result = dataset_creator.dataset_str
@@ -229,7 +230,7 @@ class CreateNexusDatasetTest(TestCase):
 
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['1st', '2nd']
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by codon position'
         dataset_creator = CreateDataset(cleaned_data)
 
         result = dataset_creator.dataset_str
@@ -243,7 +244,7 @@ class CreateNexusDatasetTest(TestCase):
 
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['1st', '2nd']
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         dataset_creator = CreateDataset(cleaned_data)
 
         result = dataset_creator.dataset_str
@@ -252,62 +253,61 @@ class CreateNexusDatasetTest(TestCase):
     def test_nexus_1st_3rd_codon_as_one(self):
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['1st', '3rd']
-        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['partition_by_positions'] = 'by gene'
         dataset_creator = CreateDataset(cleaned_data)
 
-        expected = 'Cannot create dataset for only codon positions 1 and 3.'
+        expected = 'Cannot create dataset for only codon positions 1st and 3rd.'
         result = dataset_creator.errors
-        self.assertTrue(expected in result)
+        self.assertTrue(expected in ''.join([str(i) for i in result]))
 
     def test_nexus_1st_3rd_codon_as_each(self):
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['1st', '3rd']
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by codon position'
         dataset_creator = CreateDataset(cleaned_data)
 
-        expected = 'Cannot create dataset for only codon positions 1 and 3.'
+        expected = 'Cannot create dataset for only codon positions 1st and 3rd.'
         result = dataset_creator.errors
-        self.assertTrue(expected in result)
+        self.assertTrue(expected in ''.join([str(i) for i in result]))
 
     def test_nexus_1st_3rd_codon_as_1st2nd_3rd(self):
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['1st', '3rd']
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         dataset_creator = CreateDataset(cleaned_data)
-
-        expected = 'Cannot create dataset for only codon positions 1 and 3.'
+        expected = 'Cannot create dataset for only codon positions 1st and 3rd.'
         result = dataset_creator.errors
-        self.assertTrue(expected in result)
+        self.assertTrue(expected in ''.join([str(i) for i in result]))
 
     def test_nexus_2nd_3rd_codon_as_one(self):
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['2nd', '3rd']
-        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['partition_by_positions'] = 'by gene'
         dataset_creator = CreateDataset(cleaned_data)
 
-        expected = 'Cannot create dataset for only codon positions 2 and 3.'
+        expected = 'Cannot create dataset for only codon positions 2nd and 3rd.'
         result = dataset_creator.errors
-        self.assertTrue(expected in result)
+        self.assertTrue(expected in ''.join([str(i) for i in result]))
 
     def test_nexus_2nd_3rd_codon_as_each(self):
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['2nd', '3rd']
-        cleaned_data['partition_by_positions'] = 'EACH'
+        cleaned_data['partition_by_positions'] = 'by codon position'
         dataset_creator = CreateDataset(cleaned_data)
 
-        expected = 'Cannot create dataset for only codon positions 2 and 3.'
+        expected = 'Cannot create dataset for only codon positions 2nd and 3rd.'
         result = dataset_creator.errors
-        self.assertTrue(expected in result)
+        self.assertTrue(expected in ''.join([str(i) for i in result]))
 
     def test_nexus_2nd_3rd_codon_as_1st2nd_3rd(self):
         cleaned_data = self.cleaned_data.copy()
         cleaned_data['positions'] = ['2nd', '3rd']
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         dataset_creator = CreateDataset(cleaned_data)
 
-        expected = 'Cannot create dataset for only codon positions 2 and 3.'
+        expected = 'Cannot create dataset for only codon positions 2nd and 3rd.'
         result = dataset_creator.errors
-        self.assertTrue(expected in result)
+        self.assertTrue(expected in ''.join([str(i) for i in result]))
 
     def test_nexus_with_outgroup(self):
         cleaned_data = self.cleaned_data
@@ -319,7 +319,7 @@ class CreateNexusDatasetTest(TestCase):
         self.assertTrue(expected in result)
 
     def test_nexus_gene_no_reading_frame(self):
-        # For this test we will drop ArgKin
+        # For this test we will set the reading frame of ArgKin to None
         argkin = Genes.objects.get(gene_code='ArgKin')
         argkin.reading_frame = None
         argkin.save()
@@ -330,7 +330,9 @@ class CreateNexusDatasetTest(TestCase):
         cleaned_data['geneset'] = GeneSets.objects.get(geneset_name='all_genes')
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
-        self.assertTrue('ArgKin' not in result)
+        self.assertEqual('', result)
+        self.assertEqual('reading_frame attribute for gene ArgKin should be either '
+                         '1, 2 or 3.', str(dataset_creator.errors[0]))
 
     """
     def test_nexus_gene_excluding_taxa(self):
@@ -385,13 +387,10 @@ CP100-19_Aus_jus                                       ?????????????????????????
     def test_try_dataset_degenerated_in_partitions(self):
         cleaned_data = self.cleaned_data
         cleaned_data['voucher_codes'] = 'CP100-10'
-        cleaned_data['degen_translations'] = 'NORMAL'
-        cleaned_data['partition_by_positions'] = '1st2nd_3rd'
+        cleaned_data['degen_translations'] = 'normal'
+        cleaned_data['partition_by_positions'] = 'by gene'
         cleaned_data['translations'] = True
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
-        expected = "DIMENSIONS NTAX=10 NCHAR=0;"
+        expected = "DIMENSIONS NTAX=10 NCHAR=4732;"
         self.assertTrue(expected in result)
-
-        self.assertTrue('Cannot degenerate codons if they go to different partitions.' in
-                        dataset_creator.warnings)

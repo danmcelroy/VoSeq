@@ -10,12 +10,12 @@ from public_interface.models import Genes
 class CreateFASTADatasetTest(TestCase):
     def setUp(self):
         args = []
-        opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
+        opts = {'dumpfile': 'test_db_dump2.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 
-        g1 = Genes.objects.get(gene_code='COI')
-        g2 = Genes.objects.get(gene_code='EF1a')
+        g1 = Genes.objects.get(gene_code='COI-begin')
+        g2 = Genes.objects.get(gene_code='ef1a')
         self.cleaned_data = {
             'gene_codes': [g1, g2],
             'taxonset': None,
@@ -23,10 +23,11 @@ class CreateFASTADatasetTest(TestCase):
             'geneset': None,
             'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
             'number_genes': None,
-            'degen_translations': None,
+            'translations': False,
+            'degen_translations': 'normal',
             'positions': ['ALL'],
-            'partition_by_positions': 'ONE',
-            'file_format': 'PHY',
+            'partition_by_positions': 'by gene',
+            'file_format': 'FASTA',
             'aminoacids': True,
             'outgroup': '',
         }
@@ -50,17 +51,17 @@ class CreateFASTADatasetTest(TestCase):
                             'translations': True,
                             'introns': 'YES',
                             'file_format': 'FASTA',
-                            'degen_translations': 'NORMAL',
+                            'degen_translations': 'normal',
                             'exclude': 'YES',
                             'aminoacids': False,
                             'special': False,
                             'outgroup': '',
                             'positions': 'ALL',
-                            'partition_by_positions': 'ONE',
+                            'partition_by_positions': 'by gene',
                             'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
                         }
                         )
-        expected = 'ACAYGTNGAYTCNGGNAARTCNACNACNACNGG'
+        expected = 'TNGGNTTYATHGTNTGAGCNCAYCAYATHTTYACN'
         self.assertTrue(expected in str(c.content))
 
     def test_create_dataset_degenerated_warning_data_cannot_be_partitioned(self):
@@ -71,16 +72,16 @@ class CreateFASTADatasetTest(TestCase):
                             'gene_codes': 4,
                             'geneset': '',
                             'taxonset': '',
-                            'translations': True,
                             'introns': 'YES',
                             'file_format': 'FASTA',
-                            'degen_translations': 'NORMAL',
+                            'translations': True,
+                            'degen_translations': 'normal',
                             'exclude': 'YES',
                             'aminoacids': False,
                             'special': False,
                             'outgroup': '',
                             'positions': 'ALL',
-                            'partition_by_positions': 'EACH',
+                            'partition_by_positions': 'by codon position',
                             'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
                         }
                         )
@@ -95,20 +96,20 @@ class CreateFASTADatasetTest(TestCase):
                             'gene_codes': 4,
                             'geneset': '',
                             'taxonset': '',
-                            'translations': True,
                             'introns': 'YES',
                             'file_format': 'FASTA',
-                            'degen_translations': 'NORMAL',
+                            'translations': True,
+                            'degen_translations': 'normal',
                             'exclude': 'YES',
                             'aminoacids': False,
                             'special': False,
                             'outgroup': '',
                             'positions': '1st',
-                            'partition_by_positions': 'ONE',
+                            'partition_by_positions': 'by gene',
                             'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
                         }
                         )
-        expected = 'Cannot degenerate codons if they you have not selected all codon positions'
+        expected = 'Cannot degenerate codons if you have not selected all codon positions'
         self.assertTrue(expected in str(c.content))
 
     def test_fasta_as_aminoacids(self):
@@ -122,15 +123,15 @@ class CreateFASTADatasetTest(TestCase):
                             'translations': True,
                             'introns': 'YES',
                             'file_format': 'FASTA',
-                            'degen_translations': 'NORMAL',
+                            'degen_translations': 'normal',
                             'exclude': 'YES',
                             'aminoacids': True,
                             'special': False,
                             'outgroup': '',
                             'positions': 'ALL',
-                            'partition_by_positions': 'ONE',
+                            'partition_by_positions': 'by gene',
                             'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
                         }
                         )
-        expected = 'GKSTTTGHLIYKCGGIDKRTIEKFEKEAQEM'
+        expected = 'IYAMLAIGLLGFIVWAHHM'
         self.assertTrue(expected in str(c.content))

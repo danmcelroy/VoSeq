@@ -1,18 +1,13 @@
-from collections import OrderedDict
+from seqrecord_expanded import SeqRecordExpanded
+from seqrecord_expanded.exceptions import MissingParameterError
+from dataset_creator import Dataset
 
-from Bio.Seq import Seq
-from Bio.SeqRecord import SeqRecord
-
+from core import exceptions
 from core.utils import get_voucher_codes
 from core.utils import get_gene_codes
 from core.utils import clean_positions
-from core.utils import flatten_taxon_names_dict
 from .dataset import CreateGenbankFasta
-from .dataset import CreateFasta
-from .dataset import CreateTNT
-from .mega import CreateMEGA
-from .nexus import CreateNEXUS
-from .phylip import CreatePhylip
+from .nexus import DatasetHandler
 from public_interface.models import Genes
 from public_interface.models import Sequences
 from public_interface.models import Vouchers
@@ -39,24 +34,24 @@ class CreateDataset(object):
 
     """
     def __init__(self, cleaned_data):
-        try:
-            self.degen_translations = cleaned_data['degen_translations']
-        except KeyError:
-            self.degen_translations = None
-
-        try:
-            self.translations = cleaned_data['translations']
-        except KeyError:
-            self.translations = None
+        self.cleaned_data = cleaned_data
+        self.translations = None
+        self.degen_translations = None
+        self.clean_translations()
 
         self.errors = []
-        self.seq_objs = OrderedDict()
+        self.seq_objs = []
         self.minimum_number_of_genes = cleaned_data['number_genes']
         self.aminoacids = cleaned_data['aminoacids']
-        self.codon_positions = clean_positions(cleaned_data['positions'])
+
+        try:
+            self.codon_positions = clean_positions(cleaned_data['positions'])
+        except exceptions.InadequateCodonPositions as e:
+            self.codon_positions = None
+            self.errors = [e]
+
         self.file_format = cleaned_data['file_format']
         self.partition_by_positions = cleaned_data['partition_by_positions']
-        self.cleaned_data = cleaned_data
         self.voucher_codes = get_voucher_codes(cleaned_data)
         self.gene_codes = get_gene_codes(cleaned_data)
         self.gene_codes_and_lengths = None
@@ -70,112 +65,65 @@ class CreateDataset(object):
         self.charset_block = None
         self.dataset_str = self.create_dataset()
 
+    def clean_translations(self):
+        if self.cleaned_data['translations'] is False:
+            # No need to do degen translation
+            self.degen_translations = None
+        else:
+            self.degen_translations = self.cleaned_data['degen_translations']
+
     def create_dataset(self):
-        if len(self.codon_positions) == 2 and \
-                '1st' in self.codon_positions and '3rd' in self.codon_positions:
-            self.errors = ['Cannot create dataset for only codon positions 1 and 3.']
-            self.dataset_file = None
+        if not self.codon_positions:
             return ''
-        if len(self.codon_positions) == 2 and \
-                '2nd' in self.codon_positions and '3rd' in self.codon_positions:
-            self.errors = ['Cannot create dataset for only codon positions 2 and 3.']
-            self.dataset_file = None
+
+        if self.degen_translations is not None and self.codon_positions != ['ALL']:
+            msg = 'Cannot degenerate codons if you have not selected all codon positions'
+            self.errors.append(msg)
+            return ''
+        elif self.degen_translations is not None and self.partition_by_positions != 'by gene':
+            msg = 'Cannot degenerate codons if they go to different partitions'
+            self.errors.append(msg)
             return ''
 
         self.voucher_codes = get_voucher_codes(self.cleaned_data)
         self.gene_codes = get_gene_codes(self.cleaned_data)
         self.create_seq_objs()
-        if self.file_format == 'MEGA':
-            fasta = CreateMEGA(self.codon_positions, self.partition_by_positions,
-                               self.seq_objs, self.gene_codes, self.voucher_codes,
-                               self.file_format, aminoacids=self.aminoacids,
-                               degen_translations=self.degen_translations, translations=self.translations)
-            fasta_dataset = fasta.from_seq_objs_to_dataset()
-            self.errors += fasta.errors
-            self.warnings += fasta.warnings
-            self.dataset_file = fasta.dataset_file
-            self.aa_dataset_file = fasta.aa_dataset_file
-            return fasta_dataset
 
-        if self.file_format == 'GenbankFASTA':
-            fasta = CreateGenbankFasta(self.codon_positions, self.partition_by_positions,
-                                       self.seq_objs, self.gene_codes, self.voucher_codes,
-                                       self.file_format)
-            fasta_dataset = fasta.from_seq_objs_to_dataset()
-            self.warnings += fasta.warnings
-            self.dataset_file = fasta.dataset_file
-            self.aa_dataset_file = fasta.aa_dataset_file
-            return fasta_dataset
+        if self.file_format in ['NEXUS', 'GenBankFASTA', 'FASTA', 'MEGA', 'TNT', 'PHYLIP']:
+            try:
+                dataset = Dataset(self.seq_objs, format=self.file_format, partitioning=self.partition_by_positions,
+                                  codon_positions=self.codon_positions[0], aminoacids=self.aminoacids,
+                                  degenerate=self.degen_translations, outgroup=self.outgroup)
+            except MissingParameterError as e:
+                self.errors.append(e)
+                return ''
+            except ValueError as e:
+                self.errors.append(e)
+                return ''
 
-        if self.file_format == 'FASTA':
-            fasta = CreateFasta(self.codon_positions, self.partition_by_positions,
-                                self.seq_objs, self.gene_codes, self.voucher_codes,
-                                self.file_format, degen_translations=self.degen_translations,
-                                translations=self.translations, aminoacids=self.aminoacids)
-            fasta_dataset = fasta.from_seq_objs_to_dataset()
-            self.warnings += fasta.warnings
-            self.dataset_file = fasta.dataset_file
-            return fasta_dataset
+            self.warnings += dataset.warnings
+            dataset_handler = DatasetHandler(dataset.dataset_str, self.file_format)
+            self.dataset_file = dataset_handler.dataset_file
 
-        if self.file_format == 'PHY':
-            phy = CreatePhylip(self.codon_positions, self.partition_by_positions,
-                               self.seq_objs, self.gene_codes, self.voucher_codes,
-                               self.file_format, self.outgroup, self.voucher_codes_metadata,
-                               self.minimum_number_of_genes, self.aminoacids,
-                               degen_translations=self.degen_translations, translations=self.translations)
-            phylip_dataset = phy.from_seq_objs_to_dataset()
-            self.warnings += phy.warnings
-            self.dataset_file = phy.dataset_file
-            self.charset_block = phy.charset_block
-            return phylip_dataset
+            if self.file_format == 'PHYLIP':
+                self.charset_block = dataset.extra_dataset_str
 
-        if self.file_format == 'TNT':
-            tnt = CreateTNT(self.codon_positions, self.partition_by_positions,
-                            self.seq_objs, self.gene_codes, self.voucher_codes,
-                            self.file_format, self.outgroup, self.voucher_codes_metadata,
-                            self.minimum_number_of_genes, self.aminoacids,
-                            degen_translations=self.degen_translations, translations=self.translations)
-            tnt_dataset = tnt.from_seq_objs_to_dataset()
-            self.warnings += tnt.warnings
-            self.dataset_file = tnt.dataset_file
-            return tnt_dataset
-
-        if self.file_format == 'NEXUS':
-            nexus = CreateNEXUS(self.codon_positions, self.partition_by_positions,
-                                self.seq_objs, self.gene_codes, self.voucher_codes,
-                                self.file_format, self.outgroup, self.voucher_codes_metadata,
-                                self.minimum_number_of_genes, self.aminoacids,
-                                degen_translations=self.degen_translations, translations=self.translations)
-            nexus_dataset = nexus.from_seq_objs_to_dataset()
-            self.warnings += nexus.warnings
-            self.dataset_file = nexus.dataset_file
-            return nexus_dataset
+            return dataset.dataset_str
 
     def create_seq_objs(self):
-        """Generate a dictionary of sequence objects. Also takes into account the genes passed as
-        geneset.
+        """Generate a list of SeqRecord-expanded objects.
         """
-        # We might need to update our list of vouches and genes
         sorted_gene_codes = sorted(list(self.gene_codes), key=str.lower)
         our_taxon_names = self.get_taxon_names_for_taxa()
         all_seqs = self.get_all_sequences()
 
-        gene_codes = set()
-
-        for code in self.voucher_codes:
-            for gene_code in sorted_gene_codes:
-                if gene_code not in self.seq_objs:
-                    self.seq_objs[gene_code] = tuple()
-
+        for gene_code in sorted_gene_codes:
+            for code in self.voucher_codes:
                 seq_obj = self.build_seq_obj(code, gene_code, our_taxon_names, all_seqs)
                 if seq_obj is None:
                     self.warnings += ['Could not find voucher {0}'.format(code)]
                     continue
-
-                self.seq_objs[gene_code] += (seq_obj,)
-                gene_codes.add(gene_code)
-
-        self.gene_codes = sorted(list(gene_codes), key=str.lower)
+                self.seq_objs.append(seq_obj)
 
     def get_all_sequences(self):
         # Return sequences as dict of lists containing sequence and related data
@@ -195,23 +143,25 @@ class CreateDataset(object):
         return seqs_dict
 
     def build_seq_obj(self, code, gene_code, our_taxon_names, all_seqs):
+        """
+        Builds a SeqRecordExpanded object. I cannot be built, returns None.
+        """
         this_voucher_seqs = self.extract_sequence_from_all_seqs_in_db(all_seqs, code, gene_code)
 
         if this_voucher_seqs == '?':
-            seq = Seq('?' * self.gene_codes_metadata[gene_code])
-            seq_obj = SeqRecord(seq)
+            seq = '?' * self.gene_codes_metadata[gene_code]['length']
         else:
-            seq_obj = self.create_seq_record(this_voucher_seqs)
+            seq = self.create_seq_record(this_voucher_seqs)
+
+        seq_record = SeqRecordExpanded(seq)
 
         if code in our_taxon_names:
-            seq_obj.id = flatten_taxon_names_dict(our_taxon_names[code])
-            if 'GENECODE' in self.taxon_names:
-                seq_obj.id += '_' + gene_code
-            seq_obj.name = gene_code
-            seq_obj.description = code
-
-            self.voucher_codes_metadata[code] = seq_obj.id
-            return seq_obj
+            seq_record.voucher_code = code
+            seq_record.taxonomy = our_taxon_names[code]
+            seq_record.gene_code = gene_code
+            seq_record.reading_frame = self.gene_codes_metadata[gene_code]['reading_frame']
+            seq_record.table = self.gene_codes_metadata[gene_code]['genetic_code']
+            return seq_record
         else:
             return None
 
@@ -233,17 +183,15 @@ class CreateDataset(object):
         """
         Adds ? if the sequence is not long enough
         :param s:
-        :return:
+        :return: str.
         """
         gene_code = s['gene_code']
-        length = self.gene_codes_metadata[gene_code]
+        length = self.gene_codes_metadata[gene_code]['length']
         sequence = s['sequences']
         length_difference = length - len(sequence)
 
         sequence += '?' * length_difference
-        seq = Seq(sequence)
-        seq_obj = SeqRecord(seq)
-        return seq_obj
+        return sequence
 
     def get_taxon_names_for_taxa(self):
         """Returns dict: {'CP100-10': {'taxon': 'name'}}
@@ -276,9 +224,13 @@ class CreateDataset(object):
         """
         :return: dictionary with genecode and base pair number.
         """
-        queryset = Genes.objects.all().values('gene_code', 'length')
+        queryset = Genes.objects.all().values('gene_code', 'length', 'reading_frame', 'genetic_code')
         gene_codes_metadata = dict()
         for i in queryset:
             gene_code = i['gene_code']
-            gene_codes_metadata[gene_code] = i['length']
+            gene_codes_metadata[gene_code] = {
+                'length': i['length'],
+                'reading_frame': i['reading_frame'],
+                'genetic_code': i['genetic_code'],
+            }
         return gene_codes_metadata
