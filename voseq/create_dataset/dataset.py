@@ -735,67 +735,6 @@ class Dataset(object):
                 return line
 
 
-class CreateFasta(Dataset):
-    pass
-
-
-class CreateGenbankFasta(Dataset):
-    def convert_lists_to_dataset(self, partitions):
-        """
-        Overridden method from base class in order to add headers and footers depending
-        on needed dataset.
-        """
-        self.get_number_of_genes_for_taxa(partitions)
-        self.get_number_chars_from_partition_list(partitions)
-
-        out = []
-        aa_out = []
-
-        gene_models = Genes.objects.all().values()
-
-        partitions_incorporated = 0
-        for partition in partitions:
-            for i in partition:
-                i = i.strip()
-                if i.startswith('['):
-                    this_gene = i.replace('[', '').replace(']', '').strip()
-                    this_gene_model = self.get_gene_model_from_gene_id(this_gene, gene_models)
-                    partitions_incorporated += 1
-                    out += ['\n']
-                elif i.startswith('>'):
-                    try:
-                        voucher_code = re.search('specimen-voucher=(.+)]', i).groups()[0]
-                    except AttributeError:
-                        continue
-
-                    if voucher_code not in self.vouchers_to_drop:
-                        line = i.split('\n')
-                        if len(line) > 1:
-                            sequence = line[-1]
-
-                            if this_gene_model['genetic_code'] is None or this_gene_model['reading_frame'] is None:
-                                self.warnings.append("Cannot translate gene {} sequences into aminoacids."
-                                                     " You need to define reading_frame and/or genetic_code.".format(this_gene_model['gene_code']))
-                                continue
-                            else:
-                                aa_sequence, warning = utils.translate_to_protein(this_gene_model, sequence, '', voucher_code, self.file_format)
-                                if warning != '':
-                                    self.warnings.append(warning)
-
-                            if aa_sequence.strip() == '':
-                                self.warnings.append("Sequence for {0} {1} was empty".format(voucher_code, this_gene))
-
-                            sequence = utils.strip_question_marks(sequence)[0]
-                            out += [line[0] + '\n' + sequence.replace('?', 'N') + '\n']
-                            aa_out += [line[0] + '\n' + aa_sequence + '\n']
-
-        dataset_str = ''.join(out)
-        aa_dataset_str = ''.join(aa_out)
-        self.save_dataset_to_file(dataset_str)
-        self.save_aa_dataset_to_file(aa_dataset_str)
-        return dataset_str, aa_dataset_str
-
-
 class CreateTNT(Dataset):
     def convert_lists_to_dataset(self, partitions):
         """
