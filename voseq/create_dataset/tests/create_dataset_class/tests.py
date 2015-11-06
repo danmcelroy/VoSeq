@@ -11,12 +11,6 @@ from create_dataset.utils import CreateDataset
 class TestCreateDataset(TestCase):
     def setUp(self):
         self.maxDiff = None
-        """
-        genes = []
-        for i in ['abc1', 'BC1', 'ABC2', 'CC', 'xaz', 'XYZ']:
-            genes.append(Genes(gene_code=i))
-        Genes.objects.bulk_create(genes)
-        """
         genes = ['abc1', 'BC1', 'ABC2', 'CC', 'xaz', 'XYZ']
         GeneSets(geneset_name='6genes', geneset_creator='Carlos Pena',
                  geneset_list="\n".join(genes)).save()
@@ -47,7 +41,7 @@ class TestCreateDataset(TestCase):
             'positions': ['ALL'],
             'introns': 'YES',
             'gene_codes': [],
-            'partition_by_positions': 'ONE',
+            'partition_by_positions': 'by gene',
             'number_genes': None,
             'geneset': GeneSets.objects.get(geneset_name='6genes'),
             'file_format': 'PHY',
@@ -63,18 +57,7 @@ class TestCreateDataset(TestCase):
     def test_seq_objs_have_sorted_gene_codes(self):
         result = CreateDataset(self.cleaned_data)
         self.assertEqual(['abc1', 'ABC2', 'BC1', 'CC', 'xaz', 'XYZ'],
-                         list(result.seq_objs))
-
-    def test_sequence_full_of_question_marks_when_voucher_is_missing(self):
-        Vouchers(code='CP100-13').save()
-
-        cleaned_data = self.cleaned_data.copy()
-        cleaned_data['voucher_codes'] = 'CP100-13'
-
-        expected = 'CP100-13                                               ????????????'
-        result = CreateDataset(cleaned_data)
-
-        self.assertTrue(expected in result.dataset_str)
+                         list(result.gene_codes))
 
     def test_warning_when_missing_seqs_for_voucher(self):
         Vouchers(code='CP100-13').save()

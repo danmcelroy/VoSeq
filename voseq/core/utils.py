@@ -67,7 +67,7 @@ def get_gene_codes(cleaned_data):
         * `form.cleaned_data`: taken from a Form class
 
     Returns:
-        set of gene codes, no dupes.
+        set of gene codes, sorted, no duplicates.
     """
     gene_codes = []
     if cleaned_data['geneset'] is not None:
@@ -81,8 +81,7 @@ def get_gene_codes(cleaned_data):
             if i.gene_code not in gene_codes:
                 gene_codes.append(i.gene_code)
 
-    gene_codes.sort()
-    return tuple(gene_codes)
+    return tuple(sorted(gene_codes, key=str.lower))
 
 
 def get_version_stats():
@@ -108,9 +107,15 @@ def get_username(request):
 def clean_positions(a_list):
     if 'ALL' in a_list:
         return ['ALL']
-    if '1st' in a_list and '2nd' in a_list and '3rd' in a_list:
+    elif '1st' in a_list and '2nd' in a_list and '3rd' in a_list:
         return ['ALL']
-    if 'ALL' not in a_list:
+    elif '1st' in a_list and '2nd' in a_list and '3rd' not in a_list:
+        return ['1st-2nd']
+    elif len(a_list) == 2:  # 1st and 3rd, or 2nd and 3rd
+        raise exceptions.InadequateCodonPositions(
+            "Cannot create dataset for only codon positions {0} and {1}.".format(a_list[0], a_list[1])
+        )
+    else:
         return a_list
 
 

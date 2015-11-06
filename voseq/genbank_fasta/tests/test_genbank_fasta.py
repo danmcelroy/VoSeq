@@ -17,6 +17,7 @@ class TestGenBankFasta(TestCase):
         self.user = User.objects.get(username='admin')
         self.user.set_password('pass')
         self.user.save()
+        self.maxDiff = None
 
     def test_index(self):
         self.client.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
@@ -45,10 +46,10 @@ class TestGenBankFasta(TestCase):
                                  'taxonset': '',
                              }
                              )
-        expected = "organism=Melitaea diamina"
-        self.assertTrue(expected.strip() in str(c.content))
-        expected = "TGAGCCGGTATAATTGGTACATCCCTAAGTCTTATTATTCGAACCGAATTAGGAAATCCTAGTTTTTTAATTGGAGATGATCAAATTTATAATACCATTGTAACAGCTCATGCTTTTATTATAATTTTTTTTATAGTTATGCCAATTATAATTGGAGGATTTGGTAATTGACTTGTACCATTAATATTGGGAGCCCCAGATATAGCTTTCCCCCGAATAAATTATATAAGATTTTGATTATTGCCTCCATCCTTAATTCTTTTAATTTCAAGTAGAATTGTAGAAAATGGGGCAGGAACTGGATGAACAGTTTACCCCCCACTTTCATCTAATATTGCCCATAGAGGAGCTTCAGTGGATTTAGCTATTTTTTCTTTACATTTAGCTGGGATTTCCTCTATCTTAGGAGCTATTAATTTTATTACTACAATTATTAATATACGAATTAATAATATATCTTATGATCAAATACCTTTATTTGTATGAGCAGTAGGAATTACAGCATTACTTCTCTTATTATCTTTACCAGTTTTAGCTGGAGCTATTACTATACTTTTAACGGATCGAAATCTTAATACCTCATTTTTTGATTCCTGCGGAGGAGGAGATCC"
-        self.assertTrue(expected.strip() in str(c.content))
+        expected = "org=Melitaea diamina"
+        self.assertTrue(expected in str(c.content))
+        expected = "?????????????????????????TGAGCCGGTATAATTGGTACA"
+        self.assertTrue(expected in str(c.content))
 
     def test_results_valid_form(self):
         self.client.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
@@ -84,7 +85,7 @@ class TestGenBankFasta(TestCase):
                                  'taxonset': 1,
                              }
                              )
-        res = re.search('(GenbankFASTA_[0-9a-z]+\.txt)', str(c.content))
+        res = re.search('(GenBankFASTA_[0-9a-z]+\.txt)', str(c.content))
         fasta_filename = res.groups()[0]
         d = self.client.get('/genbank_fasta/results/' + fasta_filename + '/')
         self.assertEqual(200, d.status_code)
