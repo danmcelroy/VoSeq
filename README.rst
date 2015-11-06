@@ -2,14 +2,7 @@
 VoSeq
 =====
 
-.. list-table::
-    :stub-columns: 1
-
-    * - tests
-      - | |BuildStatus| |Requires| |CoverageStatus|
-      - | |QuantifiedCode|
-    * - package
-      - |Docs| |Chat|
+|BuildStatus| |Requires| |CoverageStatus| |QuantifiedCode| |Docs| |Chat|
 
 .. |BuildStatus| image:: https://travis-ci.org/carlosp420/VoSeq.svg
     :target: https://travis-ci.org/carlosp420/VoSeq
