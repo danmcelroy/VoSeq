@@ -263,11 +263,11 @@ class FlickrImages(models.Model):
         Vouchers,
         help_text='Relation with id of voucher. Save as lower case.',
     )
-    voucher_image = models.URLField(help_text="URLs of the Flickr page.")
+    voucher_image = models.URLField(help_text="URLs of the Flickr page.", blank=True)
     thumbnail = models.URLField(help_text="URLs for the small sized image from Flickr.")
     flickr_id = models.CharField(max_length=100, help_text="ID numbers from Flickr for our photo.")
     image_file = models.ImageField(help_text="Placeholder for image file so we can send it to Flickr. "
-                                             "The file has been deleted right after upload.")
+                                             "The file has been deleted right after upload.", blank=True)
 
     class Meta:
         verbose_name_plural = 'Flickr Images'
@@ -308,7 +308,7 @@ class FlickrImages(models.Model):
             farm = info['photo']['farm']
             server = info['photo']['server']
             secret = info['photo']['secret']
-            thumbnail_url = 'https://farm{}.staticflickr.com/{0}/{1}_{2}_m_d.jpg'.format(farm, server, instance.flickr_id, secret)
+            thumbnail_url = 'https://farm{0}.staticflickr.com/{1}/{2}_{3}_m_d.jpg'.format(farm, server, instance.flickr_id, secret)
             instance.thumbnail = thumbnail_url
             instance.save()
 
@@ -348,7 +348,7 @@ class LocalImages(models.Model):
         Vouchers,
         help_text='Relation with id of voucher.',
     )
-    voucher_image = models.ImageField(help_text="voucher photo.")
+    voucher_image = models.ImageField(help_text="voucher photo.", blank=True)
 
     class Meta:
         verbose_name_plural = 'Local Images'
