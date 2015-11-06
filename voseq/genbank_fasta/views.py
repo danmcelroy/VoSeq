@@ -56,19 +56,19 @@ def results(request):
             errors = dataset_creator.errors
             warnings = dataset_creator.warnings
             dataset_file_abs = dataset_creator.dataset_file
-
-            # Uncommend aa datasets after Biopython accepts translation of gapped seqs.
-            # cleaned_data['aminoacids'] = True
-            # dataset_creator = CreateDataset(cleaned_data)
-            # aa_dataset = dataset_creator.dataset_str
-            # aa_dataset_file_abs = dataset_creator.dataset_file
-
             if dataset_file_abs is not None:
-                dataset_file = re.search('([a-zA-Z]+_[a-z0-9]+\.txt)', dataset_file_abs).groups()[0]
-                # aa_dataset_file = re.search('([a-zA-Z]+_aa_[a-z0-9]+\.txt)', aa_dataset_file_abs).groups()[0]
+                dataset_file = os.path.basename(dataset_file_abs)
             else:
                 dataset_file = False
-                # aa_dataset_file = False
+
+            cleaned_data['aminoacids'] = True
+            dataset_creator = CreateDataset(cleaned_data)
+            aa_dataset = dataset_creator.dataset_str
+            aa_dataset_file_abs = dataset_creator.dataset_file
+            if aa_dataset_file_abs is not None:
+                aa_dataset_file = os.path.basename(aa_dataset_file_abs)
+            else:
+                aa_dataset_file = False
 
             return render(request, 'genbank_fasta/results.html',
                           {
@@ -76,9 +76,9 @@ def results(request):
                               'items_with_accession': '',
                               'dataset': dataset_short,
                               'fasta_file': dataset_file,
-                              # 'protein': aa_dataset,
+                              'protein': aa_dataset,
                               'errors': errors,
-                              # 'protein_file': aa_dataset_file,
+                              'protein_file': aa_dataset_file,
                               'warnings': warnings,
                               'version': version,
                               'stats': stats,
