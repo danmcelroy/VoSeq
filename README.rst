@@ -1,13 +1,37 @@
+=====
+VoSeq
+=====
+
 .. list-table::
     :stub-columns: 1
 
     * - tests
-      - | |Build Status| |requires| |Coverage Status|
+      - | |BuildStatus| |Requires| |CoverageStatus|
       - | |QuantifiedCode|
     * - package
-      - |version| |Docs| |supported-implementations|
+      - |Docs| |Chat|
 
-|Chat|
+.. |BuildStatus| image:: https://travis-ci.org/carlosp420/VoSeq.svg
+    :target: https://travis-ci.org/carlosp420/VoSeq
+
+.. |Requires| image:: https://requires.io/github/carlosp420/VoSeq/requirements.svg?branch=master
+     :target: https://requires.io/github/carlosp420/VoSeq/requirements/?branch=master
+     :alt: Requirements Status
+
+.. |CoverageStatus| image:: https://img.shields.io/coveralls/carlosp420/VoSeq.svg
+    :target: https://coveralls.io/r/carlosp420/VoSeq?branch=master
+
+.. |QuantifiedCode| image:: https://www.quantifiedcode.com/api/v1/project/8277ac101c0e4524a52b5ae6073bd62d/badge.svg
+    :alt: Code issues
+    :target: https://www.quantifiedcode.com/app/project/8277ac101c0e4524a52b5ae6073bd62d
+
+.. |Docs| image:: https://readthedocs.org/projects/voseq/badge/?version=latest
+    :target: http://voseq.readthedocs.org/en/latest/
+    :alt: Documentation Status
+
+.. |Chat| image:: https://badges.gitter.im/Join%20Chat.svg
+    :alt: Join the chat at https://gitter.im/carlosp420/VoSeq
+    :target: https://gitter.im/carlosp420/VoSeq?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 
 
 Contents
@@ -548,17 +572,3 @@ and place them in the ``config.json`` configuration file of VoSeq:
     * Save and exit.
 
 Thus, every picture that you upload into your VoSeq installation will be uploaded into your Flickr account.
-
-.. |Coverage Status| image:: https://img.shields.io/coveralls/carlosp420/VoSeq.svg
-   :target: https://coveralls.io/r/carlosp420/VoSeq?branch=master
-.. |Build Status| image:: https://travis-ci.org/carlosp420/VoSeq.svg
-   :target: https://travis-ci.org/carlosp420/VoSeq
-.. |Docs| image:: https://readthedocs.org/projects/voseq/badge/?version=latest
-   :target: http://voseq.readthedocs.org/en/latest/
-   :alt: Documentation Status
-.. |Chat| image:: https://badges.gitter.im/Join%20Chat.svg
-   :alt: Join the chat at https://gitter.im/carlosp420/VoSeq
-   :target: https://gitter.im/carlosp420/VoSeq?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
-.. |QuantifiedCode| image:: https://www.quantifiedcode.com/api/v1/project/8277ac101c0e4524a52b5ae6073bd62d/badge.svg
-   :alt: Code issues
-   :target: https://www.quantifiedcode.com/app/project/8277ac101c0e4524a52b5ae6073bd62d
