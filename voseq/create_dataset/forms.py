@@ -9,7 +9,7 @@ class CreateDatasetForm(BaseDatasetForm):
         choices=[
             ('TNT', 'TNT format'),
             ('NEXUS', 'NEXUS format'),
-            ('PHY', 'PHYLIP format'),
+            ('PHYLIP', 'PHYLIP format'),
             ('MEGA', 'MEGA format'),
             ('FASTA', 'Unaligned FASTA format'),
         ],
@@ -42,12 +42,12 @@ class CreateDatasetForm(BaseDatasetForm):
     partition_by_positions = forms.ChoiceField(
         label='Partition by positions',
         choices=[
-            ('ONE', 'as one'),
-            ('EACH', 'each'),
-            ('1st2nd_3rd', '1st-2nd, 3rd'),
+            ('by gene', 'by gene'),
+            ('by codon position', 'by codon position'),
+            ('1st-2nd, 3rd', '1st-2nd, 3rd'),
         ],
         widget=forms.RadioSelect(),
-        initial='ONE',
+        initial='by gene',
         required=True,
     )
 
@@ -66,13 +66,13 @@ class CreateDatasetForm(BaseDatasetForm):
     degen_translations = forms.ChoiceField(
         label='Degenerated translations)',
         choices=[
-            ('NORMAL', 'normal'),
+            ('normal', 'normal'),
             ('S', 'S'),
             ('Z', 'Z'),
             ('SZ', 'SZ'),
         ],
         widget=forms.RadioSelect(),
-        initial='NORMAL',
+        initial='normal',
         required=True,
     )
 

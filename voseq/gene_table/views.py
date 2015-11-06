@@ -1,4 +1,5 @@
 from collections import OrderedDict
+import copy
 import csv
 import os
 import uuid
@@ -56,40 +57,30 @@ class GeneTable(object):
         self.cleaned_data = self.populate_cleaned_data_form(cleaned_data)
         self.voucher_codes = get_voucher_codes(cleaned_data)
         self.gene_codes = get_gene_codes(cleaned_data)
-        self.fasta_dataset = self.get_fasta_dataset()
-        self.fasta_partitions = self.split_in_partitions()
+        self.fasta_datasets = self.get_fasta_datasets()
         self.genes_type = self.get_genes_type()
-        self.stats = self.get_stats_from_partitions()
+        self.stats = self.get_stats_from_datasets()
 
     def populate_cleaned_data_form(self, cleaned_data):
         cleaned_data['number_genes'] = None
         cleaned_data['aminoacids'] = False
+        cleaned_data['translations'] = False
         cleaned_data['positions'] = ['ALL']
         cleaned_data['file_format'] = 'FASTA'
-        cleaned_data['partition_by_positions'] = 'ONE'
+        cleaned_data['partition_by_positions'] = 'by gene'
         cleaned_data['taxon_names'] = ['CODE', 'GENUS', 'SPECIES']
         cleaned_data['outgroup'] = ''
         return cleaned_data
 
-    def get_fasta_dataset(self):
-        fasta = CreateDataset(self.cleaned_data)
-        return fasta.dataset_str
-
-    def split_in_partitions(self):
-        partitions = OrderedDict()
-
-        lines = self.fasta_dataset.split('\n')
-        for line in lines:
-            this_line = line.replace('>', '')
-            if this_line in self.gene_codes:
-                this_gene = this_line
-                partitions[this_gene] = ''
-            elif this_line.startswith('---------------'):
-                continue
-            else:
-                partitions[this_gene] += line + '\n'
-
-        return partitions
+    def get_fasta_datasets(self):
+        fasta_datasets = []
+        for gene_code in self.gene_codes:
+            cleaned_data = copy.copy(self.cleaned_data)
+            cleaned_data['geneset'] = None
+            cleaned_data['gene_codes'] = [Genes.objects.get(gene_code=gene_code)]
+            fasta = CreateDataset(cleaned_data)
+            fasta_datasets.append(fasta)
+        return fasta_datasets
 
     def get_genes_type(self):
         genes = Genes.objects.all().values('gene_code', 'gene_type')
@@ -100,15 +91,16 @@ class GeneTable(object):
             genes_dict[gene_code] = gene_type
         return genes_dict
 
-    def get_stats_from_partitions(self):
+    def get_stats_from_datasets(self):
         """These are the stats headers of AMAS v0.2
         """
         stats = {}
         in_file = self.make_guid() + '.fas'
 
-        for code, partition in self.fasta_partitions.items():
+        for dataset in self.fasta_datasets:
+            code = dataset.gene_codes[0]
             with open(in_file, 'w') as handle:
-                handle.write(partition)
+                handle.write(dataset.dataset_str)
 
             aln = AMAS.DNAAlignment(in_file, 'fasta', 'dna')
             aln_stats = aln.summarize_alignment()
