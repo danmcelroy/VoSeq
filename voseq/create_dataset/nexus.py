@@ -1,9 +1,5 @@
 import uuid
 import os
-import collections
-
-from .dataset import Dataset
-from public_interface.models import Genes
 
 
 class DatasetHandler(object):
