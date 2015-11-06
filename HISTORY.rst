@@ -25,6 +25,7 @@ Fixed bugs
 - Fixed version on footer.
 - MEGA datasets.
 - Refactoring of ``create_dataset`` module.
+- Editing vouchers in Admin interface: adding photos is optionall not mandatory.
 
 pre-release v2.0.0-beta (2015-08-06)
 ++++++++++++++++++++++++++++++++++++
