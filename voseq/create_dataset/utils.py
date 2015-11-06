@@ -6,7 +6,6 @@ from core import exceptions
 from core.utils import get_voucher_codes
 from core.utils import get_gene_codes
 from core.utils import clean_positions
-from .dataset import CreateGenbankFasta
 from .nexus import DatasetHandler
 from public_interface.models import Genes
 from public_interface.models import Sequences
