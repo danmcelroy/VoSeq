@@ -89,7 +89,7 @@ class CreateDataset(object):
         self.gene_codes = get_gene_codes(self.cleaned_data)
         self.create_seq_objs()
 
-        if self.file_format in ['NEXUS', 'GenbankFASTA', 'FASTA', 'MEGA', 'TNT', 'PHYLIP']:
+        if self.file_format in ['NEXUS', 'GenBankFASTA', 'FASTA', 'MEGA', 'TNT', 'PHYLIP']:
             try:
                 dataset = Dataset(self.seq_objs, format=self.file_format, partitioning=self.partition_by_positions,
                                   codon_positions=self.codon_positions[0], aminoacids=self.aminoacids,

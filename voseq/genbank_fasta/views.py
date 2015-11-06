@@ -41,7 +41,7 @@ def results(request):
 
         if form.is_valid():
             cleaned_data = form.cleaned_data
-            cleaned_data['file_format'] = 'GenbankFASTA'
+            cleaned_data['file_format'] = 'GenBankFASTA'
             cleaned_data['number_genes'] = ''
             cleaned_data['translations'] = False
             cleaned_data['aminoacids'] = False
