@@ -102,12 +102,11 @@ class VouchersAdmin(ImportExportModelAdmin):
         models.TextField: {'widget': forms.TextInput}
     }
 
-    inlines = []
-
     if settings.PHOTOS_REPOSITORY == 'flickr':
-        inlines.append(FlickImageInLine)
+        inlines = [FlickImageInLine, ]
     else:
-        inlines.append(ImageInLine)
+        inlines = [ImageInLine, ]
+
     resource_class = BatchImportVouchersResource
 
 
