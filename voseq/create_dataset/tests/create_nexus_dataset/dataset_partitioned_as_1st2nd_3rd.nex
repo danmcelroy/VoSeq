@@ -92,19 +92,19 @@ CP100-19_Aus_jus                                       ?????????????????????????
 END;
 
 begin mrbayes;
-    charset ArgKin_pos12 = 1-596\3, 2-596\3;
+    charset ArgKin_pos12 = 1-596\3 2-596\3;
     charset ArgKin_pos3 = 3-596\3;
-    charset COI-begin_pos12 = 598-1265\3, 599-1265\3;
+    charset COI-begin_pos12 = 598-1265\3 599-1265\3;
     charset COI-begin_pos3 = 597-1265\3;
-    charset COI_end_pos12 = 1267-2071\3, 1268-2071\3;
+    charset COI_end_pos12 = 1267-2071\3 1268-2071\3;
     charset COI_end_pos3 = 1266-2071\3;
-    charset ef1a_pos12 = 2073-3311\3, 2074-3311\3;
+    charset ef1a_pos12 = 2073-3311\3 2074-3311\3;
     charset ef1a_pos3 = 2072-3311\3;
-    charset RpS2_pos12 = 3314-3722\3, 3312-3722\3;
+    charset RpS2_pos12 = 3314-3722\3 3312-3722\3;
     charset RpS2_pos3 = 3313-3722\3;
-    charset RpS5_pos12 = 3724-4339\3, 3725-4339\3;
+    charset RpS5_pos12 = 3724-4339\3 3725-4339\3;
     charset RpS5_pos3 = 3723-4339\3;
-    charset wingless_pos12 = 4341-4739\3, 4342-4739\3;
+    charset wingless_pos12 = 4341-4739\3 4342-4739\3;
     charset wingless_pos3 = 4340-4739\3;
 partition GENES = 14: ArgKin_pos12, ArgKin_pos3, COI-begin_pos12, COI-begin_pos3, COI_end_pos12, COI_end_pos3, ef1a_pos12, ef1a_pos3, RpS2_pos12, RpS2_pos3, RpS5_pos12, RpS5_pos3, wingless_pos12, wingless_pos3;
 
