@@ -24,6 +24,7 @@ Fixed bugs
 - Dataset creation tool, genes will be sorted alphabetically, regardless of case.
 - Fixed version on footer.
 - MEGA datasets.
+- Refactoring of ``create_dataset`` module.
 
 pre-release v2.0.0-beta (2015-08-06)
 ++++++++++++++++++++++++++++++++++++
