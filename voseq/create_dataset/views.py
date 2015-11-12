@@ -102,4 +102,4 @@ def guess_file_extension(file_name):
         return file_name
 
     name = file_name.replace('.txt', '')
-    return '{}.{}'.format(name, extension)
+    return '{0}.{1}'.format(name, extension)
