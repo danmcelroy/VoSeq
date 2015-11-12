@@ -8,6 +8,10 @@ from .base import *
 DEBUG = True
 TEMPLATE_DEBUG = True
 
+MANAGERS = ()
+
+ADMINS = ()
+
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, '..', 'templates'),
     os.path.join(BASE_DIR, '..', 'core', 'templates'),
