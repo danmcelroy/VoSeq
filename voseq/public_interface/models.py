@@ -8,7 +8,7 @@ from django.db.models.signals import post_save
 import flickrapi
 
 
-# #####################################
+# ####################################
 # Overriding method for django Haystack
 def get_model_ct_tuple(model):
     return (model._meta.app_label, model._meta.model_name)
@@ -32,13 +32,13 @@ def get_identifier(obj_or_string):
         return obj_or_string
 
     return u"%s.%s" % (get_model_ct(obj_or_string), obj_or_string._get_pk_val())
-# #####################################
+# ####################################
 
 
 class TimeStampedModel(models.Model):
-    """
-    Abstract base class model to provide self-updating ``created`` and
-    ``modified`` fields. Taken from the 'Two scoops of django' book (v1.8).
+    """Abstract base class for self-updating ``created`` and ``modified`` fields.
+
+    Taken from the 'Two scoops of django' book (v1.8).
     """
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -257,6 +257,9 @@ class Primers(models.Model):
     class Meta:
         app_label = 'public_interface'
 
+    def __str__(self):
+        return "{0} -> <- {1}".format(self.primer_f, self.primer_r)
+
 
 class FlickrImages(models.Model):
     voucher = models.ForeignKey(
@@ -341,6 +344,9 @@ class FlickrImages(models.Model):
         tags = '"' + '" "'.join(tags) + '"'
         return tags
 
+    def __str__(self):
+        return "{0} {1}".format(self.voucher, self.voucher_image)
+
 
 class LocalImages(models.Model):
     """Voucher images saved in local system."""
@@ -353,3 +359,6 @@ class LocalImages(models.Model):
     class Meta:
         verbose_name_plural = 'Local Images'
         app_label = 'public_interface'
+
+    def __str__(self):
+        return "{0} {1}".format(self.voucher, self.voucher_image)
