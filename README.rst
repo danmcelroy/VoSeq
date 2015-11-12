@@ -20,7 +20,7 @@ VoSeq
 
 .. |Docs| image:: https://readthedocs.org/projects/voseq/badge/?version=latest
     :target: http://voseq.readthedocs.org/en/latest/
-    :alt: Documentation Status
+    :alt: Documentation
 
 .. |Chat| image:: https://badges.gitter.im/Join%20Chat.svg
     :alt: Join the chat at https://gitter.im/carlosp420/VoSeq
