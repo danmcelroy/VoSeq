@@ -82,7 +82,7 @@ class VoucherTable(object):
             try:
                 self.voucher_info[voucher_code]
             except KeyError:
-                warning = 'We don\'t have voucher {} in our database.'.format(voucher_code)
+                warning = 'We don\'t have voucher {0} in our database.'.format(voucher_code)
                 self.warnings.append(warning)
                 continue
 
@@ -96,7 +96,7 @@ class VoucherTable(object):
                 try:
                     row.append(self.sequences_info[voucher_code][gene_code])
                 except KeyError:
-                    warning = "We don't have sequences for {} and {}".format(gene_code, voucher_code)
+                    warning = "We don't have sequences for {0} and {1}".format(gene_code, voucher_code)
                     self.warnings.append(warning)
                     row.append('-')
 

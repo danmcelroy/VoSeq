@@ -230,7 +230,7 @@ def degenerate(gene_model, sequence, degen_translation):
 
     # put back the base that was excluded from the degeneration
     missing = sequence[:bases_to_remove].replace('?', 'N').upper()
-    out = '{}{}'.format(missing, res.degenerated)
+    out = '{0}{1}'.format(missing, res.degenerated)
 
     return out
 

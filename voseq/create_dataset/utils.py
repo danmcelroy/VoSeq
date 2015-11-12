@@ -168,13 +168,13 @@ class CreateDataset(object):
         try:
             voucher_sequences = all_seqs[code]
         except KeyError:
-            self.warnings += ['Could not find sequences for voucher {} and gene_code {}'.format(code, gene_code)]
+            self.warnings += ['Could not find sequences for voucher {0} and gene_code {1}'.format(code, gene_code)]
             return '?'
 
         try:
             this_voucher_seqs = voucher_sequences[gene_code]
         except KeyError:
-            self.warnings += ['Could not find sequences for voucher {} and gene_code {}'.format(code, gene_code)]
+            self.warnings += ['Could not find sequences for voucher {0} and gene_code {1}'.format(code, gene_code)]
             return '?'
         return this_voucher_seqs
 
