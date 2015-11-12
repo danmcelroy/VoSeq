@@ -574,7 +574,7 @@ class ParseXML(object):
         Sequences.objects.bulk_create(seqs_objects)
 
         if seqs_not_to_insert:
-            print("ERROR: Couldn't insert {} sequences due to lack of reference vouchers".format(len(seqs_not_to_insert)))
+            print("ERROR: Couldn't insert {0} sequences due to lack of reference vouchers".format(len(seqs_not_to_insert)))
             for i in seqs_not_to_insert:
                 print(i['code_id'], i['gene_code'])
 
@@ -584,7 +584,7 @@ class ParseXML(object):
 
             for i in seqs_invalid:
                 if not TESTING:
-                    msg = "ERROR: Sequence code={}, gene_code={}, problem={}".format(i.code, i.gene_code, i.invalid_character)
+                    msg = "ERROR: Sequence code={0}, gene_code={1}, problem={2}".format(i.code, i.gene_code, i.invalid_character)
                     print(msg)
 
     def save_table_taxonsets_to_db(self):
