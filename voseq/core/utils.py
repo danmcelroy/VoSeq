@@ -230,49 +230,9 @@ def degenerate(gene_model, sequence, degen_translation):
 
     # put back the base that was excluded from the degeneration
     missing = sequence[:bases_to_remove].replace('?', 'N').upper()
-    out = '{0}{1}'.format(missing, res.degenerated)
+    out = '{}{}'.format(missing, res.degenerated)
 
     return out
-
-
-def translate_to_protein(gene_model, sequence, seq_description, seq_id, file_format=None):
-    removed = 0
-    if file_format in ['FASTA', 'GenbankFASTA']:
-        sequence, removed = strip_question_marks(sequence)
-    seq_seq = sequence.replace('?', 'N')
-
-    translation_start = get_start_translation_index(gene_model, removed)
-
-    seq_obj = Seq(seq_seq[translation_start:], generic_dna)
-
-    if '---' in seq_seq:  # we have gaps
-        try:
-            prot_sequence = gapped_translation(seq_obj, gene_model['genetic_code'])
-        except TranslationError as e:
-            print("Error {}".format(e))
-            return "", ""
-    else:
-        try:
-            prot_sequence = seq_obj.translate(table=gene_model['genetic_code'])
-        except TranslationError as e:
-            print("Error {}".format(e))
-            return "", ""
-
-    if '*' in prot_sequence:
-        warning = 'Gene {0}, sequence {1} contains stop codons "*"'.format(gene_model['gene_code'], seq_id)
-    else:
-        warning = ''
-
-    # 'J' is used in the extended IUPAC codes and means either Leucine or Isoleucine
-    # too bad that RaXML does not accept it as valid aminoacid. So we replace it with 'X'
-    prot_sequence = str(prot_sequence)
-    if 'J' in prot_sequence:
-        prot_sequence = prot_sequence.replace('J', 'X')
-
-    if file_format in ['PHY', 'GenbankFASTA']:
-        return prot_sequence, warning
-
-    return prot_sequence, warning
 
 
 def gapped_translation(seq_obj, genetic_code):
