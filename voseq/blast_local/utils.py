@@ -16,22 +16,24 @@ from public_interface.models import Sequences
 
 
 class BLAST(object):
-    """
-    Class to handle duties related to local blast against sequences of one gene,
-    and full blast against all sequences in our database.
+    """Handle duties related to local blasts.
+
+    Blasts against sequences of one gene, and full blast against all sequences
+    in our database.
 
     The database is `masked` by default, to eliminate low-complexity regions
     from the sequences.
 
     Use `mask=False` to create unmasked blast databases.
+
     """
     def __init__(self, blast_type, voucher_code, gene_code, mask=None):
-        """
-        Type of blast to do: local, full, remote
+        """Type of blast to do: local, full, remote.
 
         :param blast_type: local, full, remote.
         :param voucher_code:
         :param gene_code:
+
         """
         self.e_value = 0.001
         self.blast_type = blast_type
@@ -45,28 +47,23 @@ class BLAST(object):
         else:
             self.mask = False
 
-        self.path = os.path.join(self.cwd,
-                                 'db',
-                                 self.gene_code + '_seqs.fas.n*',
-                                 )
-        self.db = os.path.join(self.cwd,
-                               'db',
-                               self.gene_code + '_seqs.fas',
-                               )
-        self.query_file = os.path.join(self.cwd,
-                                       'db',
-                                       'query_' + uuid.uuid4().hex + '.fas',
-                                       )
-        self.output_file = os.path.join(self.cwd,
-                                        'db',
-                                        'output_' + uuid.uuid4().hex + '.xml',
-                                        )
+        self.path = os.path.join(self.cwd, 'db',
+                                 "{0}_seqs.fas.n*".format(self.gene_code))
+
+        self.db = os.path.join(self.cwd, 'db',
+                               "{0}_seqs.fas".format(self.gene_code))
+
+        self.query_file = os.path.join(self.cwd, 'db',
+                                       "query_{0}.fas".format(uuid.uuid4().hex))
+
+        self.output_file = os.path.join(self.cwd, 'db',
+                                        "output_{0}.xml".format(uuid.uuid4().hex))
 
     def have_blast_db(self):
-        """
-        Finds out whether we already have a blast db with our sequences.
+        """Finds out whether we already have a blast db with our sequences.
 
         :return: True or False
+
         """
         files = glob.glob(self.db + '.*')
         if files:
@@ -75,10 +72,10 @@ class BLAST(object):
             return False
 
     def is_blast_db_up_to_date(self):
-        """
-        Finds out whether our blast db contains all our sequences. In other
-        words, it finds out whether there are sequences in our postgres db with
-        time_created or time_edited more recent than our blast db files.
+        """Finds out whether our blast db contains all our sequences.
+
+        In other words, it finds out whether there are sequences in our postgres
+        db with time_created or time_edited more recent than our blast db files.
 
         :return: True or False
         """
@@ -107,18 +104,16 @@ class BLAST(object):
             return True
 
     def save_seqs_to_file(self):
-        """
-        Query sequences for each gene from our database and save them to local
-        disk.
+        """Query sequences for each gene from database and save them to local disk.
 
         Sets attribute `self.seq_file` containing necessary sequences from our
         database.
+
         """
         if self.blast_type == 'local':
             self.seq_file = os.path.join(self.cwd,
                                          'db',
-                                         self.gene_code + "_seqs.fas",
-                                         )
+                                         "{0}_seqs.fas".format(self.gene_code))
             queryset = Sequences.objects.all().filter(gene_code=self.gene_code)
 
             my_records = []
@@ -131,11 +126,10 @@ class BLAST(object):
             SeqIO.write(my_records, self.seq_file, "fasta")
 
     def create_blast_db(self):
-        """
-        Creates a BLAST database from our sequences file in FASTA format.
+        """Creates a BLAST database from our sequences file in FASTA format.
+
         Optionally eliminates low-complexity regions from the sequences.
 
-        :return:
         """
         print("Creating blast db")
         if self.mask is True:
@@ -169,10 +163,10 @@ class BLAST(object):
         return self.output_file
 
     def parse_blast_output(self):
-        """
-        Returns list of dictionaries with data:
+        """Returns list of dictionaries with data:
 
         match_description, max_score, total_score, query_cover, e_value, % ident, accession number
+
         """
         handle = open(self.output_file, 'r')
         blast_record = NCBIXML.read(handle)
