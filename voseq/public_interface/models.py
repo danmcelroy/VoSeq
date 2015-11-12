@@ -313,7 +313,7 @@ class FlickrImages(models.Model):
             instance.save()
 
     def make_title(self, instance):
-        title = '{} {} {}'.format(
+        title = '{0} {1} {2}'.format(
             instance.voucher.code,
             instance.voucher.genus,
             instance.voucher.species,
@@ -321,7 +321,7 @@ class FlickrImages(models.Model):
         return title
 
     def make_description(self, instance):
-        description = '{}. {}. {}'.format(
+        description = '{0}. {1}. {2}'.format(
             instance.voucher.country,
             instance.voucher.specific_locality,
             instance.voucher.published_in,
