@@ -11,7 +11,7 @@ version = voseq.__version__
 
 requirements = [
     'biopython',
-    'Django',
+    'Django==1.8.6',
     'pyprind',
     'elasticsearch',
     'Unipath',
