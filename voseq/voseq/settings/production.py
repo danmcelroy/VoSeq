@@ -8,6 +8,9 @@ MEDIA_ROOT = "/var/www/VoSeq/media/"
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+MANAGERS = ()
+ADMINS = ()
+
 ALLOWED_HOSTS = [
     '33.33.33.10',  # Your Domain or IP address
 ]
