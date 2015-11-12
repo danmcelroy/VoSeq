@@ -5,8 +5,6 @@ from Bio.Seq import Seq
 from Bio.Alphabet import generic_dna
 
 from core import utils
-from public_interface.models import Genes
-from public_interface.models import Sequences
 
 
 class TestCore(TestCase):
@@ -15,76 +13,6 @@ class TestCore(TestCase):
         opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
-
-    def test_translation_to_protein(self):
-        gene_model = Genes.objects.filter(gene_code='COI').values()[0]
-        sequence = '?????????????????????????TGAGCCGGTATAATTGGTACATCCCTAAGTCTTATTATTCGAACCGAATTAGGAAATCCTAGTTTTTTAATTGGAGATGATCAAATTTATAATACCATTGTAACAGCTCATGCTTTTATTATAATTTTTTTTATAGTTATGCCAATTATAATTGGAGGATTTGGTAATTGACTTGTACCATTAATATTGGGAGCCCCAGATATAGCTTTCCCCCGAATAAATTATATAAGATTTTGATTATTGCCTCCATCCTTAATTCTTTTAATTTCAAGTAGAATTGTAGAAAATGGGGCAGGAACTGGATGAACAGTTTACCCCCCACTTTCATCTAATATTGCCCATAGAGGAGCTTCAGTGGATTTAGCTATTTTTTCTTTACATTTAGCTGGGATTTCCTCTATCTTAGGAGCTATTAATTTTATTACTACAATTATTAATATACGAATTAATAATATATCTTATGATCAAATACCTTTATTTGTATGAGCAGTAGGAATTACAGCATTACTTCTCTTATTATCTTTACCAGTTTTAGCTGGAGCTATTACTATACTTTTAACGGATCGAAATCTTAATACCTCATTTTTTGATTCCTGCGGAGGAGGAGATCC?????????????????????????????????'
-        seq_description = 'COI test sequence_description'
-        seq_id = 'COI test seq_id'
-
-        expected = "XXXXXXXXWAGMIGTSLS"
-        results, warning = utils.translate_to_protein(gene_model, sequence, seq_description, seq_id)
-        self.assertTrue(expected in results)
-
-    def test_translation_to_protein_return_empty1(self):
-        gene_model = Genes.objects.filter(gene_code='COI').values()[0]
-        sequence = '1234'
-        seq_description = 'COI test sequence_description'
-        seq_id = 'COI test seq_id'
-
-        expected = ''
-        results, warning = utils.translate_to_protein(gene_model, sequence, seq_description, seq_id)
-        self.assertEqual(expected, results)
-
-    def test_translation_to_protein_return_empty2(self):
-        gene_model = Genes.objects.filter(gene_code='COI').values()[0]
-        sequence = '123---4'
-        seq_description = 'COI test sequence_description'
-        seq_id = 'COI test seq_id'
-
-        expected = ''
-        results, warning = utils.translate_to_protein(gene_model, sequence, seq_description, seq_id)
-        self.assertEqual(expected, results)
-
-    def test_translation_ambiguous_leucine(self):
-        """We are assuming only one symbol for leucine or isoleucine as RaXML rejects the symbol for
-        aminoacid J.
-        """
-        gene_model = Genes.objects.filter(gene_code='COI').values()[0]
-        sequence = 'AMTTCCC'
-        seq_description = 'COI test sequence_description'
-        seq_id = 'COI test seq_id'
-
-        expected = 'XP'
-        results, warning = utils.translate_to_protein(gene_model, sequence, seq_description, seq_id)
-        self.assertEqual(expected, results)
-
-    def test_translation_to_protein_invalid_codons(self):
-        """Catch exceptions when input has invalid codons due to ?"""
-        gene_model = Genes.objects.filter(gene_code='COI').values()[0]
-        sequence_model = Sequences.objects.get(gene_code='COI', code='CP100-10')
-        seq = sequence_model.sequences
-        new_seq = []
-        count = 1
-        for i in seq:
-            if count % 10 == 0:
-                i = '?'
-            new_seq.append(i)
-            count += 1
-        sequence_model.sequences = ''.join(new_seq)
-        seq_description = 'seq_description'
-        seq_id = 'seq_id'
-        expected = 'GMXGTSXSLXIRTELGXPSXLIGDDQXYNXIVTAHAXIMXFF'
-        results, warning = utils.translate_to_protein(gene_model, sequence_model.sequences,
-                                                      seq_description, seq_id)
-        self.assertTrue(expected in results)
-
-    def test_translate_to_protein_missing_with_nucleotides(self):
-        gene_model = {'genetic_code': 5, 'reading_frame': 1}
-        sequence = '?TTCGAAAAATACATCCTATTATTAAAATTATTAATAATTCATTAATTGATCTACCTACCCCATCAAATATTTCATCTTGATGAAATTTTGGATCTTTATTAGGATTATGTTTAATTATTCAAATCATTACTGGGTTATTTTTAACTATACATTATTCAGCTAATATTGATCTAGCTTTTTATAGAGTAAATCATATTTGTCGAAATGTAAATTATGGGTGATTAATTCGAACATTACATGCAAATGGTGCTTCATTTTTTTTTATTTGTATTTATATACATATTGGACGAGGTATTTATTATGAATCTTTTCTATATAAATATACTTGAATAGTTGGAGTATTAATTTTATTCCTATTAATAGCAACAGCTTTTATAGGATATGTTCTACCTTGAGGACAAATATCTTTTTGAGGAGCAACTGTTATTACTAATTTATTATCAGCAATTCCTTATTTAGGTTCTATATTAGTTAACTGAATTTGAGGGGGATTTGCTGTAGATAATGCAACATTAACTCGATTTTATACTTTTCATTTTTTATTACCATTTATTTTAGCAATAATAACTATAATTCATTTATTATTTTTACATCAATATGGATCAAATAACCCATTAGGAATTAATAGAAACCTAGATAAAATTCCTTTTCATCCTTATTTTTCATTTAAAGATTTATTTGGATTTATTATTATATTAATAATTTTAA---TATTAACATTATGAAATCCATATATTTTAGGAGATCCTGATAATTTTATTCCAGCAAATCCTTTAGTAACCCCAATTCATATTCAACCAGAATGATATTTTTTATTTGCTTATGCAATTTTACGATCAATCCCTAATAAATTAGGGGGTGTAATTGCATTAATTATATCTATTGCTATCTTATTTATTTTACCATTTACTTTTAATAAAAAAATTCAAGGAAATCAATTTTATCCTATTAATAAAATTTTATTTTGAAATATAATTATTATTATTATTTTATTAACATGAATTGGCGCTCGTCCAGTTGAAGATCCTTATATTATTACAGGACAAATTCTAACTATTTTATATTTTATATATTATATTTTAACCCCAATCTTTAGAATTTTATGAGATAAA'
-        expected = 'XRKMHPIIKIINNSLIDLPTPSNISSWWNFGSLLGLCLIIQIITGLFLTMHYSANIDLAFYSVNHICRNVNYGWLIRTLHANGASFFFICIYMHIGRGIYYESFLYKYTWMVGVLILFLLMATAFMGYVLPWGQMSFWGATVITNLLSAIPYLGSMLVNWIWGGFAVDNATLTRFYTFHFLLPFILAMMTMIHLLFLHQYGSNNPLGINSNLDKIPFHPYFSFKDLFGFIIMLMILXXLTLWNPYILGDPDNFIPANPLVTPIHIQPEWYFLFAYAILRSIPNKLGGVIALIMSIAILFILPFTFNKKIQGNQFYPINKILFWNMIIIIILLTWIGARPVEDPYIITGQILTILYFMYYILTPIFSILWDK'
-        result = utils.translate_to_protein(gene_model, sequence, '', '')
-        self.assertEqual(expected, result[0])
 
     def test_flatten_taxon_names_dict(self):
         dictionary = {'code': 'CP100-10', 'orden': 'Lepidoptera',
