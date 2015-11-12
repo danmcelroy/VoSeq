@@ -38,30 +38,21 @@ class BLASTNew(BLAST):
         else:
             self.gene_codes = []
 
-        self.path = os.path.join(self.cwd,
-                                 'db',
-                                 '_'.join(self.gene_codes) + '_seqs.fas.n*',
-                                 )
-        self.db = os.path.join(self.cwd,
-                               'db',
-                               '_'.join(self.gene_codes) + '_seqs.fas',
-                               )
-        self.query_file = os.path.join(self.cwd,
-                                       'db',
-                                       'query_' + uuid.uuid4().hex + '.fas',
-                                       )
-        self.output_file = os.path.join(self.cwd,
-                                        'db',
-                                        'output_' + uuid.uuid4().hex + '.xml',
-                                        )
+        self.path = os.path.join(self.cwd, 'db',
+                                 '_'.join(self.gene_codes) + '_seqs.fas.n*')
+        self.db = os.path.join(self.cwd, 'db',
+                               '_'.join(self.gene_codes) + '_seqs.fas')
+        self.query_file = os.path.join(self.cwd, 'db',
+                                       "query_{0}.fas".format(uuid.uuid4().hex))
+        self.output_file = os.path.join(self.cwd, 'db',
+                                        "output_{0}.xml".format(uuid.uuid4().hex))
 
     def save_seqs_to_file(self):
-        """
-        Query sequences for each gene from our database and save them to local
-        disk.
+        """Query sequences for each gene from database and save to local disk.
 
         Sets attribute `self.seq_file` containing necessary sequences from our
         database.
+
         """
         if self.blast_type == 'new':
             self.seq_file = os.path.join(self.cwd,
