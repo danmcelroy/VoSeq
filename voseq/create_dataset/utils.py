@@ -65,11 +65,11 @@ class CreateDataset(object):
         self.dataset_str = self.create_dataset()
 
     def clean_translations(self):
-        if self.cleaned_data['translations'] is False:
+        if self.cleaned_data['translations']:
+            self.degen_translations = self.cleaned_data['degen_translations']
+        else:
             # No need to do degen translation
             self.degen_translations = None
-        else:
-            self.degen_translations = self.cleaned_data['degen_translations']
 
     def create_dataset(self):
         if not self.codon_positions:
