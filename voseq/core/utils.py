@@ -1,12 +1,6 @@
-import itertools
 import re
 
 from django.conf import settings
-
-from Bio.Seq import Seq
-from Bio.Alphabet import generic_dna
-from Bio.Data.CodonTable import TranslationError
-from degenerate_dna import Degenera
 
 from stats.models import Stats
 from . import exceptions
@@ -85,8 +79,8 @@ def get_gene_codes(cleaned_data):
 
 
 def get_version_stats():
-    """
-    Returns version and database statistics for page footer.
+    """Returns version and database statistics for page footer.
+
     """
     version = settings.VERSION
     try:
@@ -117,69 +111,3 @@ def clean_positions(a_list):
         )
     else:
         return a_list
-
-
-def get_start_translation_index(gene_model, removed):
-    start_translation = 0
-    if int(gene_model['reading_frame']) == 1:
-        if removed % 3 == 0:
-            start_translation = 0
-        if removed % 3 == 1:
-            start_translation = 2
-        if removed % 3 == 2:
-            start_translation = 1
-    elif int(gene_model['reading_frame']) == 2:
-        if removed % 3 == 0:
-            start_translation = 1
-        if removed % 3 == 1:
-            start_translation = 0
-        if removed % 3 == 2:
-            start_translation = 2
-    elif int(gene_model['reading_frame']) == 3:
-        if removed % 3 == 0:
-            start_translation = 2
-        if removed % 3 == 1:
-            start_translation = 1
-        if removed % 3 == 2:
-            start_translation = 0
-    else:
-        raise exceptions.MissingReadingFrameForGene("Gene {0}".format(gene_model['gene_code']))
-    return start_translation
-
-
-def degenerate(gene_model, sequence, degen_translation):
-    translation_start_position = get_start_translation_index(gene_model, removed=0) + 1
-    bases_to_remove = translation_start_position - 1
-
-    my_type = degen_translation
-    if my_type.upper() == 'NORMAL':
-        my_type = 'normal'
-
-    dna = sequence[bases_to_remove:]
-    res = Degenera(dna.upper(), gene_model['genetic_code'], my_type)
-    res.degenerate()
-
-    # put back the base that was excluded from the degeneration
-    missing = sequence[:bases_to_remove].replace('?', 'N').upper()
-    out = '{0}{1}'.format(missing, res.degenerated)
-
-    return out
-
-
-def strip_question_marks(seq):
-    removed = 0
-    seq = seq.upper()
-
-    res = re.search('^(\?+)', seq)
-    if res:
-        removed += len(res.groups()[0])
-    seq = re.sub('^\?+', '', seq)
-
-    res = re.search('^(N+)', seq)
-    if res:
-        removed += len(res.groups()[0])
-    seq = re.sub('^N+', '', seq)
-
-    seq = re.sub('\?+$', '', seq)
-    seq = re.sub('N+$', '', seq)
-    return seq, removed
