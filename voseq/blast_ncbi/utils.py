@@ -1,6 +1,3 @@
-import os
-import uuid
-
 from Bio.Blast import NCBIWWW
 
 from blast_local.utils import BLAST
@@ -10,18 +7,6 @@ class BLASTNcbi(BLAST):
     """Handles duties related to blast against sequences in NCBI GenBank.
 
     """
-    def __init__(self, voucher_code, gene_code):
-        self.voucher_code = voucher_code
-        self.gene_code = gene_code
-        self.e_value = 0.001
-        self.cwd = os.path.dirname(__file__)
-        self.query_file = os.path.join(self.cwd,
-                                       'db',
-                                       "query_{0}.fas".format(uuid.uuid4().hex))
-        self.output_file = os.path.join(self.cwd,
-                                        'db',
-                                        "output_{0}.xml".format(uuid.uuid4().hex))
-
     def do_blast(self):
         """Blasts against NCBI and saves returned XML file to local disk.
 
