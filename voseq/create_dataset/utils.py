@@ -13,10 +13,10 @@ from public_interface.models import Vouchers
 
 
 class CreateDataset(object):
-    """
-    Accepts form input to create a dataset in several formats, codon positions,
-    for list of codes and genes. Also takes into account the vouchers passed as
-    taxonset.
+    """Accepts form input to create a dataset in several formats.
+
+    Also codon positions, for list of codes and genes. Takes into account the
+    vouchers passed as taxonset.
 
     Attributes:
         ``codon_positions``: For now is a list. It is cleaned to avoid redundant
@@ -111,6 +111,7 @@ class CreateDataset(object):
 
     def create_seq_objs(self):
         """Generate a list of SeqRecord-expanded objects.
+
         """
         sorted_gene_codes = sorted(list(self.gene_codes), key=str.lower)
         our_taxon_names = self.get_taxon_names_for_taxa()
@@ -125,7 +126,9 @@ class CreateDataset(object):
                 self.seq_objs.append(seq_obj)
 
     def get_all_sequences(self):
-        # Return sequences as dict of lists containing sequence and related data
+        """Return sequences as dict of lists containing sequence and related data.
+
+        """
         seqs_dict = {}
 
         all_seqs = Sequences.objects.all().values('code_id',
@@ -142,8 +145,8 @@ class CreateDataset(object):
         return seqs_dict
 
     def build_seq_obj(self, code, gene_code, our_taxon_names, all_seqs):
-        """
-        Builds a SeqRecordExpanded object. I cannot be built, returns None.
+        """Builds a SeqRecordExpanded object. I cannot be built, returns None.
+
         """
         this_voucher_seqs = self.extract_sequence_from_all_seqs_in_db(all_seqs, code, gene_code)
 
