@@ -22,7 +22,8 @@ class TestNcbiBlast(TestCase):
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 
-        self.blast = BLASTNcbi(voucher_code="CP100-10", gene_code="COI-begin")
+        self.blast = BLASTNcbi(blast_type="remote", voucher_code="CP100-10",
+                               gene_code="COI-begin")
 
     @patch("Bio.Blast.NCBIWWW.qblast", return_value=ncbi_return_handle1)
     def test_blast_with_accession_number_in_header(self, mock_qblast):
