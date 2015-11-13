@@ -9,7 +9,7 @@ def index(request, voucher_code, gene_code):
     version, stats = get_version_stats()
     username = get_username(request)
 
-    blast = BLASTNcbi(voucher_code, gene_code)
+    blast = BLASTNcbi(voucher_code=voucher_code, gene_code=gene_code)
     blast.save_query_to_file()
 
     blast.do_blast()
