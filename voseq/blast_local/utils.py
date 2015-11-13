@@ -148,12 +148,11 @@ class BLAST(object):
 
     def save_query_to_file(self):
         b = Sequences.objects.get(code_id=self.voucher_code, gene_code=self.gene_code)
-        this_id = b.code_id + '|' + b.gene_code
+        this_id = '{0}|{1}'.format(b.code_id, b.gene_code)
         seq = self.strip_question_marks(b.sequences)
 
-        if seq != '':
-            seq_record = SeqRecord(Seq(seq),
-                                   id=this_id)
+        if seq:
+            seq_record = SeqRecord(Seq(seq), id=this_id)
             SeqIO.write(seq_record, self.query_file, "fasta")
 
     def do_blast(self):
