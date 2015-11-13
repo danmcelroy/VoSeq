@@ -68,7 +68,7 @@ stats:
 collectstatic:
 	python voseq/manage.py collectstatic --noinput --settings=voseq.settings.production
 
-coverage: travis_test
+coverage: test
 	coverage report -m
 	coverage html
 
@@ -80,12 +80,3 @@ test:
 	    core create_dataset genbank_fasta public_interface stats view_genes genbank_fasta gene_table \
 	    voucher_table gbif overview_table \
 	    --settings=voseq.settings.testing
-
-travis_test:
-	python voseq/manage.py makemigrations --settings=voseq.settings.testing
-	python voseq/manage.py migrate --settings=voseq.settings.testing
-	rm -rf htmlcov .coverage
-	coverage run --source voseq voseq/manage.py test -v 2 blast_local blast_local_full blast_ncbi blast_new \
-	    core create_dataset genbank_fasta public_interface stats view_genes genbank_fasta gene_table \
-	    voucher_table gbif overview_table \
-	    --settings=voseq.settings.travis
