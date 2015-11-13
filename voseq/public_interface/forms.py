@@ -140,11 +140,10 @@ class AdvancedSearchForm(ModelSearchForm):
     def search(self):
         keywords, sequence_keywords = self.clean_search_keywords()
         sqs = ''
-        if bool(sequence_keywords) is True:
+        if sequence_keywords:
             sqs = SearchQuerySet().using('advanced_search').filter(**sequence_keywords).facet('code')
             sqs = filter_results_from_sequence_table(sqs)
-        if bool(keywords) is True:
-            print(keywords)
+        if keywords:
             if sqs != '':
                 sqs = sqs.filter(**keywords)
             else:
