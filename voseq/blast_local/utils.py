@@ -79,7 +79,7 @@ class BLAST(object):
 
         :return: True or False
         """
-        if self.have_blast_db() is False:
+        if not self.have_blast_db():
             return False
 
         # get time creation blast database files
@@ -132,7 +132,7 @@ class BLAST(object):
 
         """
         print("Creating blast db")
-        if self.mask is True:
+        if self.mask:
             command = 'dustmasker -in ' + self.seq_file + ' -infmt fasta '
             command += '-outfmt maskinfo_asn1_bin -out ' + self.seq_file + '_dust.asnb'
             subprocess.check_output(command, shell=True)  # identifying low-complexity regions.

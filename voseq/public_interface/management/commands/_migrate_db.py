@@ -29,7 +29,7 @@ from public_interface.models import TaxonSets
 
 TZINFO = pytz.utc
 
-if settings.TESTING is True:
+if settings.TESTING:
     TESTING = True
 else:
     TESTING = False
@@ -73,7 +73,7 @@ class ParseXML(object):
         item['thumbnail'] = self.get_as_tuple(item['thumbnail'], got_flickr)
 
         imgs = []
-        if got_flickr is True and item['flickr_id']:
+        if got_flickr and item['flickr_id']:
             item['flickr_id'] = self.get_as_tuple(item['flickr_id'], got_flickr)
 
             for i in range(0, len(item['voucher_image']), 1):
@@ -102,7 +102,7 @@ class ParseXML(object):
                 our_data = i
                 break
 
-        if our_data is False:
+        if not our_data:
             raise ValueError("Could not find table {} in database dump file.".format(this_table))
 
         self.table_genes_items = []
@@ -131,7 +131,7 @@ class ParseXML(object):
                 our_data = i
                 break
 
-        if our_data is False:
+        if not our_data:
             raise ValueError("Could not find table {} in database dump file.".format(this_table))
 
         self.table_genesets_items = []
@@ -157,7 +157,7 @@ class ParseXML(object):
                 our_data = i
                 break
 
-        if our_data is False:
+        if not our_data:
             raise ValueError("Could not find table {} in database dump file.".format(this_table))
 
         self.table_members_items = []
@@ -187,7 +187,7 @@ class ParseXML(object):
                 our_data = i
                 break
 
-        if our_data is False:
+        if not our_data:
             raise ValueError("Could not find table {} in database dump file.".format(this_table))
 
         self.table_primers_items = []
@@ -221,7 +221,7 @@ class ParseXML(object):
                 our_data = i
                 break
 
-        if our_data is False:
+        if not our_data:
             raise ValueError("Could not find table {} in database dump file.".format(this_table))
 
         self.table_sequences_items = []
@@ -248,7 +248,7 @@ class ParseXML(object):
                 our_data = i
                 break
 
-        if our_data is False:
+        if not our_data:
             raise ValueError("Could not find table {} in database dump file.".format(this_table))
 
         self.table_taxonsets_items = []
@@ -271,7 +271,7 @@ class ParseXML(object):
                 our_data = i
                 break
 
-        if our_data is False:
+        if not our_data:
             raise ValueError("Could not find table {} in database dump file.".format(this_table))
 
         self.table_vouchers_items = []
@@ -491,10 +491,10 @@ class ParseXML(object):
             user = User.objects.create_user(item['username'], email=None, first_name=item['first_name'],
                                             last_name=item['last_name'])
             user.is_staff = True
-            if item['is_superuser'] is False:
-                user.is_superuser = False
-            else:
+            if item['is_superuser']:
                 user.is_superuser = True
+            else:
+                user.is_superuser = False
             user.save()
 
         if not TESTING:
@@ -535,7 +535,7 @@ class ParseXML(object):
         seqs_invalid = []
         for i in self.table_sequences_items:
             validation = validate_sequence(i['sequences'])
-            if validation.is_valid is False:
+            if not validation.is_valid:
                 ProblematicSequence = namedtuple('ProblematicSequence',
                                                  ['code', 'gene_code', 'invalid_character'])
                 prob_seq = ProblematicSequence(i['code_id'], i['gene_code'], validation.invalid_character)
@@ -551,7 +551,7 @@ class ParseXML(object):
             print("\nUploading table `public_interface_sequences`")
 
         n = len(seqs_to_insert)
-        if TESTING is False:
+        if not TESTING:
             bar = pyprind.ProgBar(n, width=70)
 
         seqs_objects = []
@@ -565,7 +565,7 @@ class ParseXML(object):
             item = self.clean_value(item, 'sequences')
             item = self.clean_value(item, 'accession')
             seqs_objects.append(Sequences(**item))
-            if TESTING is False:
+            if not TESTING:
                 bar.update()
 
         if not TESTING:
@@ -611,7 +611,7 @@ class ParseXML(object):
 
         voucher_objs = []
         n = len(self.table_vouchers_items)
-        if TESTING is False:
+        if not TESTING:
             bar = pyprind.ProgBar(n, width=70)
         for i in range(n):
             item = self.table_vouchers_items[i]
@@ -645,7 +645,7 @@ class ParseXML(object):
 
             voucher_objs.append(Vouchers(**item))
 
-            if TESTING is False:
+            if not TESTING:
                 bar.update()
         Vouchers.objects.bulk_create(voucher_objs)
 
@@ -689,10 +689,10 @@ class ParseXML(object):
         return as_tupple
 
     def strip_domain_from_filename(self, item, got_flickr=None):
-        if got_flickr is False:
+        if not got_flickr:
             disassembled = parse.urlsplit(item)
             return basename(disassembled.path)
-        elif got_flickr is True:
+        elif got_flickr:
             return item
         else:
             return None
