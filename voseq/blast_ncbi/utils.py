@@ -7,7 +7,8 @@ from blast_local.utils import BLAST
 
 
 class BLASTNcbi(BLAST):
-    """Handles duties related to blast against sequences in NCBI Genbank.
+    """Handles duties related to blast against sequences in NCBI GenBank.
+
     """
     def __init__(self, voucher_code, gene_code):
         self.voucher_code = voucher_code
@@ -22,7 +23,8 @@ class BLASTNcbi(BLAST):
                                         "output_{0}.xml".format(uuid.uuid4().hex))
 
     def do_blast(self):
-        """Does a blast against NCBI and saves returned XML file to local disk.
+        """Blasts against NCBI and saves returned XML file to local disk.
+
         """
         with open(self.query_file) as handle:
             fasta_string = handle.read()
