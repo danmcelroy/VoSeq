@@ -1,6 +1,6 @@
 from Bio.Blast import NCBIWWW
 
-from blast_local.utils import BLAST
+from core.utils import BLAST
 
 
 class BLASTNcbi(BLAST):
