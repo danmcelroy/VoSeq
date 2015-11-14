@@ -5,7 +5,7 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
-from blast_local.utils import BLAST
+from core.utils import BLAST
 from public_interface.models import Sequences
 
 

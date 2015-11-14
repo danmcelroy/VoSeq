@@ -6,7 +6,7 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from django.db.models import Q
 
-from blast_local.utils import BLAST
+from core.utils import BLAST
 from public_interface.models import Sequences
 
 

@@ -6,7 +6,7 @@ from django.core.management import call_command
 from django.test import TestCase
 from django.conf import settings
 
-from blast_local.utils import BLAST
+from core.utils import BLAST
 from public_interface.models import Vouchers
 from public_interface.models import Sequences
 
@@ -27,7 +27,7 @@ class BlastLocalTest(TestCase):
     def remove_blast_data_files(self):
         path = os.path.join(settings.BASE_DIR,
                             '..',
-                            'blast_local',
+                            'core',
                             'db',
                             '*',
                             )
@@ -52,7 +52,7 @@ class BlastLocalTest(TestCase):
         self.blast.save_seqs_to_file()
         self.seq_file = os.path.join(settings.BASE_DIR,
                                      '..',
-                                     'blast_local',
+                                     'core',
                                      'db',
                                      'COI_seqs.fas',
                                      )
@@ -70,7 +70,7 @@ class BlastLocalTest(TestCase):
         files = glob.glob(
             os.path.join(settings.BASE_DIR,
                          '..',
-                         'blast_local',
+                         'core',
                          'db',
                          'COI_seqs.fas.n*')
         )
@@ -87,7 +87,7 @@ class BlastLocalTest(TestCase):
         files = glob.glob(
             os.path.join(settings.BASE_DIR,
                          '..',
-                         'blast_local',
+                         'core',
                          'db',
                          'COI_seqs.fas.n*')
         )
