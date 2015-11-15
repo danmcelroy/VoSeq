@@ -1,11 +1,10 @@
 import os
-import uuid
 
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
-from blast_local.utils import BLAST
+from core.utils import BLAST
 from public_interface.models import Sequences
 
 
@@ -18,26 +17,10 @@ class BLASTFull(BLAST):
     Use `mask=False` to create unmasked blast databases.
 
     """
-    def __init__(self, blast_type, voucher_code, gene_code, mask=None):
-        self.e_value = 0.001
-        self.blast_type = blast_type
-        self.voucher_code = voucher_code
-        self.gene_code = gene_code
-        self.cwd = os.path.dirname(__file__)
-
-        if mask is not False:
-            self.mask = True
-        else:
-            self.mask = False
-
+    def __init__(self, *args, **kwargs):
+        super(BLASTFull, self).__init__(*args, **kwargs)
         self.path = os.path.join(self.cwd, 'db', 'full_db_seqs.fas.n*')
         self.db = os.path.join(self.cwd, 'db', 'full_db_seqs.fas')
-        self.query_file = os.path.join(self.cwd,
-                                       'db',
-                                       "query_{0}.fas".format(uuid.uuid4().hex))
-        self.output_file = os.path.join(self.cwd,
-                                        'db',
-                                        "output_{0}.xml".format(uuid.uuid4().hex))
 
     def save_seqs_to_file(self):
         """Query all sequences from our database and save them to local disk.
@@ -47,10 +30,7 @@ class BLASTFull(BLAST):
 
         """
         if self.blast_type == 'full':
-            self.seq_file = os.path.join(self.cwd,
-                                         'db',
-                                         'full_db_seqs.fas',
-                                         )
+            self.seq_file = os.path.join(self.cwd, 'db', 'full_db_seqs.fas')
             queryset = Sequences.objects.all()
 
             my_records = []
