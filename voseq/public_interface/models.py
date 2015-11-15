@@ -46,6 +46,9 @@ class TimeStampedModel(models.Model):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return "Time created"
+
 
 class Genes(models.Model):
     gene_code = models.CharField(max_length=100)
