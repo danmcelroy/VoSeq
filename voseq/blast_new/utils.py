@@ -1,5 +1,4 @@
 import os
-import uuid
 
 from Bio import SeqIO
 from Bio.Seq import Seq
@@ -19,17 +18,9 @@ class BLASTNew(BLAST):
         :param gene_codes: list of gene_codes to blast against
         :param mask:
         """
-        self.e_value = 0.001
-        self.blast_type = blast_type
+        super(BLASTNew, self).__init__(blast_type, name, sequence, gene_codes)
         self.name = name
         self.sequence = sequence
-        self.cwd = os.path.dirname(__file__)
-        self.seq_file = ""
-
-        if mask is not False:
-            self.mask = True
-        else:
-            self.mask = False
 
         if gene_codes:
             gene_codes = [i.gene_code for i in gene_codes]
@@ -42,10 +33,6 @@ class BLASTNew(BLAST):
                                  '_'.join(self.gene_codes) + '_seqs.fas.n*')
         self.db = os.path.join(self.cwd, 'db',
                                '_'.join(self.gene_codes) + '_seqs.fas')
-        self.query_file = os.path.join(self.cwd, 'db',
-                                       "query_{0}.fas".format(uuid.uuid4().hex))
-        self.output_file = os.path.join(self.cwd, 'db',
-                                        "output_{0}.xml".format(uuid.uuid4().hex))
 
     def save_seqs_to_file(self):
         """Query sequences for each gene from database and save to local disk.
