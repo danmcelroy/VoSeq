@@ -10,7 +10,7 @@ from public_interface.models import Sequences
 
 
 class BLASTNew(BLAST):
-    def __init__(self, blast_type, name, sequence, gene_codes, mask=None):
+    def __init__(self, blast_type, name, sequence, gene_codes):
         """
         :param blast_type: new
         :param name: name given to query sequence
