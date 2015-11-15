@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from core.utils import get_version_stats
 from core.utils import get_username
-from .utils import BLAST
+from core.utils import BLAST
 
 
 def index(request, voucher_code, gene_code):
