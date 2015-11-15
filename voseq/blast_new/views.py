@@ -32,8 +32,9 @@ def results(request):
         if form.is_valid():
             cleaned_data = form.cleaned_data
 
-            blast = BLASTNew('new', cleaned_data['name'], cleaned_data['sequence'],
-                             cleaned_data['gene_codes'])
+            blast = BLASTNew(blast_type='new', name=cleaned_data['name'],
+                             sequence=cleaned_data['sequence'],
+                             gene_codes=cleaned_data['gene_codes'])
             blast.save_seqs_to_file()
 
             if not blast.is_blast_db_up_to_date():
