@@ -98,6 +98,7 @@ def results(request):
 
 @login_required
 def serve_file(request, file_name):
+    print("Requested file by user: {0}".format(request.user))
     cwd = os.path.dirname(__file__)
     fasta_file = os.path.join(cwd,
                               '..',
