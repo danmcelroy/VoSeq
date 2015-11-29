@@ -1,6 +1,6 @@
 amas==0.2
 biopython==1.66
-Django==1.8.6
+Django==1.8.7
 Pillow==3.0.0
 pyprind==2.9.3
 elasticsearch==1.4
@@ -18,6 +18,6 @@ easy-thumbnails==2.2
 flickrapi==2.0
 
 dataset-creator==0.3.9
-seqrecord-expanded==0.2.2
+seqrecord-expanded==0.2.3
 degenerate-dna==0.0.9
 
