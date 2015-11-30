@@ -4,7 +4,7 @@ from django.core.management import call_command
 from django.contrib.auth.models import User
 
 from create_dataset.utils import CreateDataset
-from public_interface.models import Genes
+from public_interface.models import Genes, Sequences
 
 
 class CreateFASTADatasetTest(TestCase):
@@ -134,4 +134,33 @@ class CreateFASTADatasetTest(TestCase):
                         }
                         )
         expected = 'IYAMLAIGLLGFIVWAHHM'
+        self.assertTrue(expected in str(c.content))
+
+    def test_fasta_with_seqs_of_different_sizes(self):
+        """Test that an error message is shown to the users GUI."""
+        seq = Sequences.objects.get(code="CP100-10", gene_code="COI-begin")
+        seq.sequences += 'AAAAAAAAAA'
+        seq.save()
+
+        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
+        c = self.c.post('/create_dataset/results/',
+                        {
+                            'voucher_codes': '',
+                            'gene_codes': 2,
+                            'geneset': '',
+                            'taxonset': '1',
+                            'introns': 'YES',
+                            'file_format': 'FASTA',
+                            'translations': False,
+                            'degen_translations': 'normal',
+                            'exclude': 'YES',
+                            'aminoacids': False,
+                            'special': False,
+                            'outgroup': '',
+                            'positions': 'ALL',
+                            'partition_by_positions': 'by gene',
+                            'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
+                        }
+                        )
+        expected = "Matrix Nchar 679 does not match data length (669) for taxon"
         self.assertTrue(expected in str(c.content))
