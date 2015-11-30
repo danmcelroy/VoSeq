@@ -1,5 +1,6 @@
 from seqrecord_expanded import SeqRecordExpanded
 from seqrecord_expanded.exceptions import MissingParameterError
+from seqrecord_expanded.exceptions import TranslationErrorMixedGappedSeq
 from dataset_creator import Dataset
 
 from core import exceptions
@@ -97,6 +98,9 @@ class CreateDataset(object):
                 self.errors.append(e)
                 return ''
             except ValueError as e:
+                self.errors.append(e)
+                return ''
+            except TranslationErrorMixedGappedSeq as e:
                 self.errors.append(e)
                 return ''
 
