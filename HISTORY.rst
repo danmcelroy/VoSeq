@@ -25,7 +25,8 @@ Fixed bugs
 - Fixed version on footer.
 - MEGA datasets.
 - Refactoring of ``create_dataset`` module.
-- Editing vouchers in Admin interface: adding photos is optionall not mandatory.
+- Editing vouchers in Admin interface: adding photos is optional not mandatory.
+- Error message will be shown when attempting to translate bad codon such as "N--".
 
 pre-release v2.0.0-beta (2015-08-06)
 ++++++++++++++++++++++++++++++++++++
