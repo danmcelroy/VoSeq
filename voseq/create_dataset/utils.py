@@ -2,6 +2,7 @@ from seqrecord_expanded import SeqRecordExpanded
 from seqrecord_expanded.exceptions import MissingParameterError
 from seqrecord_expanded.exceptions import TranslationErrorMixedGappedSeq
 from dataset_creator import Dataset
+from Bio.Nexus.Nexus import NexusError
 
 from core import exceptions
 from core.utils import get_voucher_codes
@@ -102,6 +103,9 @@ class CreateDataset(object):
                 return ''
             except TranslationErrorMixedGappedSeq as e:
                 self.errors.append(e)
+                return ''
+            except NexusError as e:
+                self.errors.append(e.__str__())
                 return ''
 
             self.warnings += dataset.warnings
