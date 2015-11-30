@@ -1,9 +1,10 @@
 from django.test import TestCase
 from django.test.client import Client
 from django.core.management import call_command
+from seqrecord_expanded.exceptions import TranslationErrorMixedGappedSeq
 
 from create_dataset.utils import CreateDataset
-from public_interface.models import Genes
+from public_interface.models import Genes, Sequences, Vouchers
 
 
 class CreateTNTDatasetTest(TestCase):
@@ -93,6 +94,19 @@ class CreateTNTDatasetTest(TestCase):
         expected = 'xread\n635 2\n'
         result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
+
+    def test_create_dataset_aa_with_bad_codon(self):
+        """Test error when trying to translate 'N--' codon."""
+        v = Vouchers.objects.get(code="CP100-10")
+        seq = Sequences.objects.get(code=v, gene_code="COI-begin")
+        seq.sequences = "TCAN--CGTCCC"
+        seq.save()
+
+        cleaned_data = self.cleaned_data
+        cleaned_data['positions'] = ['ALL']
+        cleaned_data['aminoacids'] = True
+        with self.assertRaises(TranslationErrorMixedGappedSeq):
+            CreateDataset(cleaned_data)
 
     def test_create_dataset_aa_with_outgroup(self):
         cleaned_data = self.cleaned_data
