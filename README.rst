@@ -2,7 +2,7 @@
 VoSeq
 =====
 
-|BuildStatus| |Requires| |CoverageStatus| |QuantifiedCode| |Docs| |Chat|
+|BuildStatus| |Requires| |CoverageStatus| |QuantifiedCode| |Chat|
 
 .. |BuildStatus| image:: https://travis-ci.org/carlosp420/VoSeq.svg
     :target: https://travis-ci.org/carlosp420/VoSeq
@@ -17,10 +17,6 @@ VoSeq
 .. |QuantifiedCode| image:: https://www.quantifiedcode.com/api/v1/project/8277ac101c0e4524a52b5ae6073bd62d/badge.svg
     :alt: Code issues
     :target: https://www.quantifiedcode.com/app/project/8277ac101c0e4524a52b5ae6073bd62d
-
-.. |Docs| image:: https://readthedocs.org/projects/voseq/badge/?version=latest
-    :target: http://voseq.readthedocs.org/en/latest/
-    :alt: Documentation
 
 .. |Chat| image:: https://badges.gitter.im/Join%20Chat.svg
     :alt: Join the chat at https://gitter.im/carlosp420/VoSeq
@@ -43,6 +39,7 @@ Contents
 * `Upgrade VoSeq's software`_
 * `Database backups`_
 
+`Full documentation <http://carlosp420.github.io/VoSeq/>`__.
 
 VoSeq is being rewritten
 ========================
