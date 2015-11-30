@@ -28,14 +28,26 @@
    reinforces proposed molecular phylogenetic affinities: a revised 
    classification for Gelechioidea (Lepidoptera). *Cladistics*, 30(6), 563–589.
    [doi: 10.1111/cla.12064](http://dx.doi.org/10.1111/cla.12064)
-
+   
+1. Heikkilä, M., Mutanen, M., Wahlberg, N., Sihvonen, P., & Kaila, L. (**2015**).
+   Elusive ditrysian phylogeny: an account of combining systematized morphology
+   with molecular data (Lepidoptera). *BMC evolutionary biology*, 15(1), 260.
+   [doi: 10.1186/s12862-015-0520-0](http://dx.doi.org/10.1186/s12862-015-0520-0)
+   
 1. Hoyt, C. A. (**2014**). The Spotless Comma (*Polygonia haroldii*): a new species 
    for the United States.  *News of the Lepidopterists' Society*, 56(1): 14-15, 33.
    
 1. Kaila, L., Epstein, M. E., Heikkilä, M., & Mutanen, M. (**2013**). The
    assignment of Prodidactidae to Hyblaeoidea, with remarks on Thyridoidea
    (Lepidoptera). *Zootaxa*, 3682(3), 485-494. 
-  
+   
+1. Kaminski, L. A., Soares, G. R., Seraphim, N., Wahlberg, N., Marini-Filho, 
+   O. J., & Freitas, A. V. Natural history and systematic position of
+   *Rhetus belphegor* (n. comb.) (Lepidoptera: Riodinidae), an endangered butterfly 
+   with narrow distribution in Southeast Brazil. *Journal of Insect Conservation*,
+   19(6): 1141-1151. 
+   [doi: 10.1007/s10841-015-9829-7](http://dx.doi.org/10.1007/s10841-015-9829-7)
+   
 1. Karsholt, O., Mutanen, M., Lee, S., & Kaila, L. (**2013**). A molecular 
    analysis of the Gelechiidae (Lepidoptera, Gelechioidea) with an 
    interpretative grouping of its taxa. *Systematic Entomology*, 38(2), 
@@ -71,7 +83,13 @@
    Towards a  better understanding of Neotropical biogeography. *Molecular 
    phylogenetics and evolution*, 66(1), 54-68.
    [doi: 10.1016/j.ympev.2012.09.005](http://dx.doi.org/10.1016/j.ympev.2012.09.005)
-
+   
+3. Pellinen, M. J., & Wahlberg, N. (**2015**). A new species of *Niganda* Moore,
+   1879 from Thailand, with descriptions of variation in male genitalia and 
+   female facies of *N. radialis* Moore (Lepidoptera: Notodontidae, Ceirinae).
+   *Zootaxa*, 4033(1): 94-102.
+   [doi: 10.11646/zootaxa.4033.1.4](http://dx.doi.org/10.11646/zootaxa.4033.1.4)
+  
 3. Peña, C., Witthauer, H., Klečková, I., Fric, Z. & Wahlberg, N. (**2015**). Adaptive
    Radiations in Butterflies: Evolutionary History of the Genus Erebia (Nymphalidae:
    Satyrinae). *Biological Journal of the Linnean Society*,
@@ -86,10 +104,20 @@
 4. Rey Fraile, I. (**2014**). La conservación del patrimonio genético: 
    Colecciones de ADN y tejidos. UNIVERSIDAD COMPLUTENSE DE MADRID. PhD thesis.
   
-4. Rota, J., & Miller, S. E. (2013). A new genus of metalmark moths 
+4. Rota, J., & Miller, S. E. (**2013**). A new genus of metalmark moths 
    (Lepidoptera, Choreutidae) with Afrotropical and Australasian distribution.
    ZooKeys, (355), 29.
+  
+1. Stigenberg, J., Boring, C. A., & Ronquist, F. (**2015**). Phylogeny of the 
+   parasitic wasp subfamily Euphorinae (Braconidae) and evolution of its host 
+   preferences. *Systematic Entomology*, 40(3): 570-591. 
+   [doi: 10.1111/syen.12122](http://dx.doi.org/10.1111/syen.12122)
    
+1. Talaga, S., Murienne, J., Dejean, A., & Leroy, C. (**2015**). Online database
+   for mosquito (Diptera, Culicidae) occurrence records in French Guiana. 
+   *ZooKeys*, 532: 107-115. 
+   [doi: 10.3897/zookeys.532.6176](http://dx.doi.org/10.3897/zookeys.532.6176)
+
 1. Toth, J. P., Bereczki, J., Varga, Z., Rota, J., Sramko, G., & Wahlberg, 
    N. (**2014**). Relationships within the *Melitaea phoebe* species group 
    (Lepidoptera: Nymphalidae): new insights from molecular and morphometric 
