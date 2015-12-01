@@ -27,6 +27,17 @@
         {% endif %}
 
 
+        {% if dataset_format == 'FASTA' %}
+        <div class="panel panel-warning" style="min-width: 790px;">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Note that in FASTA datasets all the sequences
+              have been concatenated.
+            </b></h3>
+          </div>
+        </div><!-- panel -->
+        {% endif %}
+
+
         {% if errors|length > 0 %}
         <div class="panel panel-danger" style="min-width: 790px;">
           <div class="panel-heading">
