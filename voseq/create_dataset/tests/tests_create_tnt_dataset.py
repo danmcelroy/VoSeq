@@ -36,7 +36,7 @@ class CreateTNTDatasetTest(TestCase):
         self.maxDiff = None
 
     def test_create_dataset(self):
-        expected = 'nstates dna;\nxread\n1909 2\n\n&[dna]\nCP100-10_Aus_aus'
+        expected = 'nstates dna;\nxread\n1909 2\n\n&[dna]\nCP100_10_Aus_aus'
         result = self.dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
@@ -44,7 +44,7 @@ class CreateTNTDatasetTest(TestCase):
         cleaned_data = self.cleaned_data
         cleaned_data['outgroup'] = 'CP100-11'
         dataset_creator = CreateDataset(cleaned_data)
-        expected = 'nstates dna;\nxread\n1909 2\n\n&[dna]\nCP100-11_Aus_bus'
+        expected = 'nstates dna;\nxread\n1909 2\n\n&[dna]\nCP100_11_Aus_bus'
         result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
@@ -52,21 +52,21 @@ class CreateTNTDatasetTest(TestCase):
         cleaned_data = self.cleaned_data
         cleaned_data['positions'] = ['ALL']
         dataset_creator = CreateDataset(cleaned_data)
-        expected = 'nstates dna;\nxread\n1909 2\n\n&[dna]\nCP100-10_Aus_aus'
+        expected = 'nstates dna;\nxread\n1909 2\n\n&[dna]\nCP100_10_Aus_aus'
         result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
         expected = '??????????????????????????????????????????????????????????ATTATTCGAACAGAATTAAGTACCCCTGGATCATTAATCGGAGATGATCAAATTTATAATACTATTGTTACAGCTCATGCTTTTATTATAATTTTTTTTATGGTTATACCTATTATAATTGGAGGATTTGGTAATTGACTTATTCCCCTTATATTAGGAGCCCCTGATATAGCTTTTCCACGAATAAATAATATAAGATTTTGACTTCTCCCACCCTCTTTAATTTTATTAATTTCGAGTAGTATAGTAGAAAATGGTGCTGGCACAGGATGAACGGTCTATCCCCCCCTCTCATCTAATATTGCCCATAGAGGATCCTCAGTTGATTTAGCAATCTTTTCCTTACATTTAGCTGGAATCTCATCAATTCTTGGAGCAATTAATTTTATTACAACAATTATTAATATACGAATTAATAAAATATCTTATGATCAAATACCTTTATTTGTTTGAGCTGTAGGAATTACCGCATTATTATTATTACTTTCTTTACCTGTATTAGCTGGAGCTATCACAATACTACTCACAGATCGAAACTTAAATACATCTTTTTTTGACCCAGCAGGAGGTGGAGATCCTATTTTATATCAACATTTATTTTGATTTTTTGG'
         self.assertTrue(expected in result)
 
-        expected = 'CP100-11_Aus_bus                                       ????????????????????????'
+        expected = 'CP100_11_Aus_bus                                       ????????????????????????'
         self.assertTrue(expected in result)
 
     def test_create_dataset_1st_codon(self):
         cleaned_data = self.cleaned_data
         cleaned_data['positions'] = ['1st']
         dataset_creator = CreateDataset(cleaned_data)
-        expected = 'nstates dna;\nxread\n636 2\n\n&[dna]\nCP100-10_Aus_aus'
+        expected = 'nstates dna;\nxread\n636 2\n\n&[dna]\nCP100_10_Aus_aus'
         result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
@@ -78,7 +78,7 @@ class CreateTNTDatasetTest(TestCase):
         cleaned_data['positions'] = ['ALL']
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
-        expected = "CP100-10_Aus_aus                                       ??????????????????????????????????????????????????????????ATTATTCGAACAGAATTAAGTAC"
+        expected = "CP100_10_Aus_aus                                       ??????????????????????????????????????????????????????????ATTATTCGAACAGAATTAAGTAC"
         self.assertTemplateNotUsed(expected in result)
 
     def test_create_dataset_aa(self):
@@ -100,7 +100,7 @@ class CreateTNTDatasetTest(TestCase):
         cleaned_data['outgroup'] = 'CP100-11'
         cleaned_data['aminoacids'] = True
         dataset_creator = CreateDataset(cleaned_data)
-        expected = '&[protein]\nCP100-11_Aus_bus                                       TLYFIFGIWAGM'
+        expected = '&[protein]\nCP100_11_Aus_bus                                       TLYFIFGIWAGM'
         result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
