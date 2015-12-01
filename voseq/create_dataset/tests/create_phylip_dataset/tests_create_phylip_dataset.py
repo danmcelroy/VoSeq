@@ -99,7 +99,7 @@ class CreatePhylipDatasetTest(TestCase):
         cleaned_data['aminoacids'] = True
         dataset_creator = CreateDataset(cleaned_data)
 
-        expected = "Gene wingless, sequence CP100-10 contains stop codons '*'"
+        expected = "Gene wingless, sequence CP100_10 contains stop codons '*'"
         result = dataset_creator.warnings
         self.assertEqual(expected, result[0])
 

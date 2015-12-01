@@ -40,6 +40,36 @@ class CreateFASTADatasetTest(TestCase):
         self.dataset_creator = CreateDataset(self.cleaned_data)
         self.maxDiff = None
 
+    def test_create_dataset(self):
+        """Test that gaps have not been converted to underscores."""
+        seq = Sequences.objects.get(code="CP100-10", gene_code="COI-begin")
+        this_seq = list(seq.sequences)
+        this_seq[-3:] = '---'
+        seq.sequences = "".join(this_seq)
+        seq.save()
+
+        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
+        c = self.c.post('/create_dataset/results/',
+                        {
+                            'voucher_codes': 'CP100-10',
+                            'gene_codes': 2,  # COI-begin
+                            'geneset': '',
+                            'taxonset': '',
+                            'translations': False,
+                            'introns': 'YES',
+                            'file_format': 'FASTA',
+                            'degen_translations': 'normal',
+                            'exclude': 'YES',
+                            'aminoacids': False,
+                            'special': False,
+                            'outgroup': '',
+                            'positions': 'ALL',
+                            'partition_by_positions': 'by gene',
+                            'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
+                        }
+                        )
+        self.assertFalse("___" in str(c.content))
+
     def test_create_dataset_degenerated(self):
         self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
         c = self.c.post('/create_dataset/results/',
