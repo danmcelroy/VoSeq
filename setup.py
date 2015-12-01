@@ -10,17 +10,27 @@ from voseq import voseq
 version = voseq.__version__
 
 requirements = [
-    'biopython',
+    'amas==0.2',
+    'biopython==1.66',
     'Django==1.8.7',
-    'pyprind',
-    'elasticsearch',
-    'Unipath',
-    'psycopg2',
-    'dataset',
-    'django-haystack',
-    'django-debug-toolbar',
-    'pytz',
-    'django-suit',
+    'Pillow==3.0.0',
+    'pyprind==2.9.3',
+    'elasticsearch==1.4',
+    'Unipath==1.1',
+    'psycopg2==2.6.1',
+    'dataset>=0.5.6',
+    'pytz>=2015.4',
+    'django-crispy-forms==1.4.0',
+    'django-import-export==0.3.1',
+    'django-registration-redux==1.2',
+    'django-debug-toolbar>=1.3.2',
+    'django-suit>=0.2.13',
+    'django-haystack==2.4.0',
+    'easy-thumbnails==2.2',
+    'flickrapi==2.0',
+    'dataset-creator==0.3.10',
+    'seqrecord-expanded==0.2.4',
+    'degenerate-dna==0.0.9',
 ]
 
 test_requirements = [
