@@ -8,33 +8,6 @@ from django.db.models.signals import post_save
 import flickrapi
 
 
-# ####################################
-# Overriding method for django Haystack
-def get_model_ct_tuple(model):
-    return (model._meta.app_label, model._meta.model_name)
-
-
-def get_model_ct(model):
-    return "%s.%s" % get_model_ct_tuple(model)
-
-
-def get_identifier(obj_or_string):
-    """
-    Haystack uses pk as default. We run in problems when our models use custom fields
-    as primary key.
-
-    This can be fixed by setting a custom HAYSTACK_IDENTIFIER_METHOD. See
-    http://django-haystack.readthedocs.org/en/v2.4.0/settings.html?highlight=haystack_identifier_method#haystack-identifier-method
-
-    :return:
-    """
-    if isinstance(obj_or_string, str):
-        return obj_or_string
-
-    return u"%s.%s" % (get_model_ct(obj_or_string), obj_or_string._get_pk_val())
-# ####################################
-
-
 class TimeStampedModel(models.Model):
     """Abstract base class for self-updating ``created`` and ``modified`` fields.
 
