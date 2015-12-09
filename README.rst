@@ -2,7 +2,7 @@
 VoSeq
 =====
 
-|BuildStatus| |Requires| |CoverageStatus| |QuantifiedCode| |Chat|
+|BuildStatus| |Requires| |CoverageStatus| |QuantifiedCode| |Python_versions| |Chat|
 
 .. |BuildStatus| image:: https://travis-ci.org/carlosp420/VoSeq.svg
     :target: https://travis-ci.org/carlosp420/VoSeq
@@ -21,6 +21,9 @@ VoSeq
 .. |Chat| image:: https://badges.gitter.im/Join%20Chat.svg
     :alt: Join the chat at https://gitter.im/carlosp420/VoSeq
     :target: https://gitter.im/carlosp420/VoSeq?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+
+.. |Python_versions| image:: https://img.shields.io/badge/python-3.3%2C%203.4%2C%203.5-blue.svg
+    :alt: Python versions
 
 
 Contents
