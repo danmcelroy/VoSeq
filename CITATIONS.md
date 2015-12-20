@@ -108,6 +108,9 @@
    (Lepidoptera, Choreutidae) with Afrotropical and Australasian distribution.
    ZooKeys, (355), 29.
   
+1. Sorger, D. M. (**2015**). On ants, islands and evolution. NORTH CAROLINA
+   STATE UNIVERSITY. PhD thesis.
+
 1. Stigenberg, J., Boring, C. A., & Ronquist, F. (**2015**). Phylogeny of the 
    parasitic wasp subfamily Euphorinae (Braconidae) and evolution of its host 
    preferences. *Systematic Entomology*, 40(3): 570-591. 
