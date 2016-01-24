@@ -79,7 +79,19 @@ You need both `Vagrant <http://www.vagrantup.com/downloads.html>`__ and
 `VirtualBox <https://www.virtualbox.org/wiki/Downloads>`__ installed in your
 computer or server.
 
-Just go to the VoSeq's directory and execute the following command:
+Assuming that you have installed [GIT](https://git-scm.com/downloads), you need to get a copy of VoSeq into your hard-disk. From a console or terminal type the following command:
+
+.. code:: shell
+
+	git clone https://github.com/carlosp420/VoSeq.git
+
+Just go to the VoSeq's directory:
+
+.. code:: shell
+
+	cd VoSeq
+
+And execute the following command:
 
 .. code:: shell
 
