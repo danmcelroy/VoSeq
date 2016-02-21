@@ -459,6 +459,12 @@ your database index more often. Let us try every three hours:
 
     0 */3 * * * /path/to/python /path/to/voseq/manage.py update_index --age=3 --remove --settings=voseq.settings.production
 
+If you installed VoSeq using Vagrant, then your cronjob command with the correct paths should be this:
+
+.. code:: shell
+
+	0 */3 * * * /home/vagrant/.virtualenvs/voseq/bin/python /vagrant/voseq/manage.py update_index --settings=voseq.settings.production
+
 Update some voucher and gene statistics for your installation of VoSeq:
 
 .. code:: shell
