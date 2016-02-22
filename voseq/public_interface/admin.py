@@ -41,6 +41,26 @@ class BatchImportVouchersResource(resources.ModelResource):
                   'voucher_locality', 'determined_by', 'sex', 'extraction',
                   'extraction_tube', 'date_extraction', 'published_in', 'notes',
                   )
+    def save_instance(self, instance, dry_run=False):
+        if dry_run:
+            if not coordinates_validated(instance):
+                raise Exception("Latitude or Longitude are in wrong format: {!r}. "
+                                "Use decimal point.".format(instance.latitude))
+        else:
+            instance.save()
+
+
+def coordinates_validated(instance):
+    """Sometimes user inputs coordinates with comma."""
+    try:
+        float(instance.latitude)
+    except ValueError:
+        return False
+    try:
+        float(instance.longitude)
+    except ValueError:
+        return False
+    return True
 
 
 class BatchImportSequencesResource(resources.ModelResource):
@@ -54,7 +74,6 @@ class BatchImportSequencesResource(resources.ModelResource):
 # Customize what and the way you show it
 class VouchersAdmin(ImportExportModelAdmin):
     import_template_name = 'admin/public_interface/vouchers/batch_import.html'
-
     list_display = ['code', 'genus', 'species', 'sex', 'voucher', 'country', 'collector']
     ordering = ['code']
     search_fields = ['=code', '=genus', '=species']
