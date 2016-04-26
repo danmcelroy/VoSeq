@@ -43,7 +43,10 @@ class BatchImportVouchersResource(resources.ModelResource):
                   )
     def save_instance(self, instance, dry_run=False):
         if dry_run:
-            if not coordinates_validated(instance):
+            if coordinates_validated(instance) is None:
+                instance.latitude = ""
+                instance.longitude = ""
+            elif not coordinates_validated(instance):
                 raise Exception("Latitude or Longitude are in wrong format: {!r}. "
                                 "Use decimal point.".format(instance.latitude))
         else:
@@ -56,10 +59,14 @@ def coordinates_validated(instance):
         float(instance.latitude)
     except ValueError:
         return False
+    except TypeError:
+        return None
     try:
         float(instance.longitude)
     except ValueError:
         return False
+    except TypeError:
+        return None
     return True
 
 
