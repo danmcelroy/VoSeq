@@ -229,12 +229,18 @@ class ParseXML(object):
             item = dict()
             item['code_id'] = row.find("./field/[@name='code']").text
             item['gene_code'] = row.find("./field/[@name='geneCode']").text
-            item['sequences'] = row.find("./field/[@name='sequences']").text
+            try:
+                item['sequences'] = row.find("./field/[@name='sequences']").text
+            except AttributeError:
+                item['sequences'] = ""
             item['accession'] = row.find("./field/[@name='accession']").text
             item['lab_person'] = row.find("./field/[@name='labPerson']").text
             item['time_created'] = row.find("./field/[@name='dateCreation']").text
             item['time_edited'] = row.find("./field/[@name='dateModification']").text
-            item['notes'] = row.find("./field/[@name='notes']").text
+            try:
+                item['notes'] = row.find("./field/[@name='notes']").text
+            except AttributeError:
+                item['notes'] = ""
             item['genbank'] = row.find("./field/[@name='genbank']").text
             self.table_sequences_items.append(item)
 
@@ -306,9 +312,15 @@ class ParseXML(object):
             item['voucher_locality'] = row.find("./field/[@name='voucherLocality']").text
             item['published_in'] = row.find("./field/[@name='publishedIn']").text
             item['notes'] = row.find("./field/[@name='notes']").text
-            item['edits'] = row.find("./field/[@name='edits']").text
+            try:
+                item['edits'] = row.find("./field/[@name='edits']").text
+            except AttributeError:
+                item['edits'] = None
             item['latest_editor'] = row.find("./field/[@name='latesteditor']").text
-            item['hostorg'] = row.find("./field/[@name='hostorg']").text
+            try:
+                item['hostorg'] = row.find("./field/[@name='hostorg']").text
+            except AttributeError:
+                item['hostorg'] = None
             item['sex'] = row.find("./field/[@name='sex']").text
             item['extraction_tube'] = row.find("./field/[@name='extractionTube']").text
             item['voucher'] = row.find("./field/[@name='voucher']").text
@@ -318,8 +330,14 @@ class ParseXML(object):
             except AttributeError:
                 item['code_bold'] = None
             item['flickr_id'] = row.find("./field/[@name='flickr_id']").text
-            item['determined_by'] = row.find("./field/[@name='determinedBy']").text
-            item['author'] = row.find("./field/[@name='auctor']").text
+            try:
+                item['determined_by'] = row.find("./field/[@name='determinedBy']").text
+            except AttributeError:
+                item['determined_by'] = None
+            try:
+                item['author'] = row.find("./field/[@name='auctor']").text
+            except AttributeError:
+                item['author'] = None
             item['created'] = row.find("./field/[@name='timestamp']").text
             self.table_vouchers_items.append(item)
 
@@ -681,7 +699,10 @@ class ParseXML(object):
         as_tupple = ()
         if string == 'na.gif':
             return None
-        list1 = string.split("|")
+        try:
+            list1 = string.split("|")
+        except AttributeError:
+            list1 = []
         for item in list1:
             if item.strip() != '':
                 item = self.strip_domain_from_filename(item, got_flickr)
