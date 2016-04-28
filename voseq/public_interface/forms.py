@@ -142,7 +142,8 @@ class AdvancedSearchForm(ModelSearchForm):
         sqs = ''
         if sequence_keywords:
             sqs = SearchQuerySet().using('advanced_search').filter(**sequence_keywords).facet('code')
-            sqs = filter_results_from_sequence_table(sqs)
+            if sqs:
+                sqs = filter_results_from_sequence_table(sqs)
         if keywords:
             if sqs != '':
                 sqs = sqs.filter(**keywords)
@@ -184,6 +185,7 @@ class AdvancedSearchForm(ModelSearchForm):
 def filter_results_from_sequence_table(sqs):
     """Need to avoid returning duplicated voucher results.
     """
+    print("#### SQS", sqs)
     facet_counts = sqs.facet_counts()
     voucher_codes_count = facet_counts['fields']['code']
     if voucher_codes_count:
