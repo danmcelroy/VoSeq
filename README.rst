@@ -198,6 +198,8 @@ Exit the virtual environment for now to continue from the shell:
     deactivate
 
 **Step 3: download and install elasticsearch.**
+Use elasticsearch versions 1.7.3 or below. The newer versions 2.0+ currently
+do not work with VoSeq.
 For elasticsearch, java needs to be installed. Mac users can download and install ``elasticsearch`` from here:
 http://www.elasticsearch.org/overview/elkdownloads/. In Linux, you can do:
 
