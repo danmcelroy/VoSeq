@@ -140,17 +140,19 @@ class AdvancedSearchForm(ModelSearchForm):
     def search(self):
         keywords, sequence_keywords = self.clean_search_keywords()
         sqs = ''
+        sqs_list = []
         if sequence_keywords:
-            sqs = SearchQuerySet().using('advanced_search').filter(**sequence_keywords).facet('code')
+            sqs = SearchQuerySet().using('advanced_search').filter(**sequence_keywords)
             if sqs:
-                sqs = filter_results_from_sequence_table(sqs)
+                sqs_list = filter_results_from_sequence_table(sqs)
         if keywords:
-            if sqs != '':
-                sqs = sqs.filter(**keywords)
+            if sqs_list:
+                sqs = sqs_list[0].filter(**keywords)
+                for elements in sqs_list[1:]:
+                    elements = elements.filter(**keywords)
+                    sqs = sqs | elements
             else:
                 sqs = SearchQuerySet().using('vouchers').filter(**keywords)
-                print(sqs)
-
         if sqs:
             return sqs
         else:
@@ -185,15 +187,20 @@ class AdvancedSearchForm(ModelSearchForm):
 def filter_results_from_sequence_table(sqs):
     """Need to avoid returning duplicated voucher results.
     """
-    print("#### SQS", sqs)
-    facet_counts = sqs.facet_counts()
+    facet_counts = sqs.facet('code', size=90000).facet_counts()
     voucher_codes_count = facet_counts['fields']['code']
     if voucher_codes_count:
         voucher_codes = [item[0] for item in voucher_codes_count]
-        filtered_sqs = SearchQuerySet().using('vouchers').filter(code__in=voucher_codes)
-        return filtered_sqs
+
+        # Elasticsearch has a limit of 1024 items to use in the following filtering
+        chunks = [voucher_codes[x:x + 1000] for x in range(0, len(voucher_codes), 1000)]
+        new_sqs = []
+        for chunk in chunks:
+            filtered_sqs = SearchQuerySet().using('vouchers').filter(code__in=chunk)
+            new_sqs.append(filtered_sqs)
+        return new_sqs
     else:
-        return sqs
+        return [sqs]
 
 
 # The following form is for the admin site bacth_changes action
