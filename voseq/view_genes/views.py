@@ -21,6 +21,7 @@ def index(request):
         except KeyError:
             continue
         result.append(i)
+    result = sorted(result, key=lambda k: k['gene_code'].lower())
 
     return render(request, 'view_genes/index.html',
                   {
