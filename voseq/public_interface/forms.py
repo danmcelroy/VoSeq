@@ -140,19 +140,12 @@ class AdvancedSearchForm(ModelSearchForm):
     def search(self):
         keywords, sequence_keywords = self.clean_search_keywords()
         sqs = ''
-        sqs_list = []
-        if sequence_keywords:
-            sqs = SearchQuerySet().using('advanced_search').filter(**sequence_keywords)
-            if sqs:
-                sqs_list = filter_results_from_sequence_table(sqs)
         if keywords:
-            if sqs_list:
-                sqs = sqs_list[0].filter(**keywords)
-                for elements in sqs_list[1:]:
-                    elements = elements.filter(**keywords)
-                    sqs = sqs | elements
-            else:
-                sqs = SearchQuerySet().using('vouchers').filter(**keywords)
+            sqs = SearchQuerySet().using('vouchers').filter(**keywords)
+        if sequence_keywords:
+            voucher_code_list = get_list_of_codes(sqs)
+            sqs = SearchQuerySet().using('advanced_search').filter(
+                    **sequence_keywords).filter(code__in=voucher_code_list)
         if sqs:
             return sqs
         else:
@@ -182,6 +175,14 @@ class AdvancedSearchForm(ModelSearchForm):
                     keywords[k] = v
 
         return keywords, sequence_keywords
+
+
+def get_list_of_codes(sqs):
+    voucher_codes = []
+    for item in sqs:
+        if item not in voucher_codes:
+            voucher_codes.append(item.code)
+    return voucher_codes
 
 
 def filter_results_from_sequence_table(sqs):
