@@ -161,6 +161,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     BASE_DIR,
     os.path.join(BASE_DIR, '..', 'public_interface'),
+    os.path.join(BASE_DIR, '..', 'create_dataset'),
 )
 
 THUMBNAIL_ALIASES = {
