@@ -111,6 +111,7 @@ SOCKFILE=/home/vagrant/run/gunicorn.sock           # we will communicte using th
 USER=vagrant                                        # the user to run as
 GROUP=vagrant                                     # the group to run as
 NUM_WORKERS=3                                     # how many worker processes should Gunicorn spawn
+TIMEOUT=120000
 DJANGO_SETTINGS_MODULE=voseq.settings.production             # which settings file should Django use
 DJANGO_WSGI_MODULE=voseq.wsgi                     # WSGI module name
 
@@ -131,6 +132,7 @@ exec /home/vagrant/.virtualenvs/voseq/bin/gunicorn ${DJANGO_WSGI_MODULE}:applica
     --workers $NUM_WORKERS \
     --user=$USER --group=$GROUP \
     --bind=unix:$SOCKFILE \
+    --timeout=$TIMEOUT \
     --log-level=debug \
     --log-file=-
 ' > /home/vagrant/bin/gunicorn_start
@@ -184,7 +186,9 @@ echo '
         location /media/ {
             alias   /vagrant/www/VoSeq/media/;
         }
-    
+
+        proxy_read_timeout 120000;
+        
         location / {
             # an HTTP header important enough to have its own Wikipedia entry:
             #   http://en.wikipedia.org/wiki/X-Forwarded-For
