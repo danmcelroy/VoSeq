@@ -150,6 +150,7 @@ class AdvancedSearchForm(ModelSearchForm):
         elif sequence_keywords:
             sqs = SearchQuerySet().using('advanced_search').filter(
                 **sequence_keywords)
+            sqs = filter_results_from_sequence_table(sqs)
 
         if sqs:
             return sqs
@@ -191,22 +192,15 @@ def get_list_of_codes(sqs):
 
 
 def filter_results_from_sequence_table(sqs):
-    """Need to avoid returning duplicated voucher results.
-    """
+    """Need to avoid returning duplicated voucher results"""
     facet_counts = sqs.facet('code', size=90000).facet_counts()
     voucher_codes_count = facet_counts['fields']['code']
     if voucher_codes_count:
         voucher_codes = [item[0] for item in voucher_codes_count]
-
-        # Elasticsearch has a limit of 1024 items to use in the following filtering
-        chunks = [voucher_codes[x:x + 1000] for x in range(0, len(voucher_codes), 1000)]
-        new_sqs = []
-        for chunk in chunks:
-            filtered_sqs = SearchQuerySet().using('vouchers').filter(code__in=chunk)
-            new_sqs.append(filtered_sqs)
-        return new_sqs
+        filtered_sqs = SearchQuerySet().using("vouchers").filter(code__in=voucher_codes)
+        return filtered_sqs
     else:
-        return [sqs]
+        return sqs
 
 
 # The following form is for the admin site bacth_changes action
