@@ -136,7 +136,7 @@ def search_advanced(request):
                 url_encoded_query=request.GET.urlencode(),
                 template='public_interface/search_results.html',
                 searchqueryset=sqs,
-                form_class=AdvancedSearchForm
+                form_class=AdvancedSearchForm,
             )
 
             if sqs is not None:
