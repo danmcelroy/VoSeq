@@ -124,6 +124,11 @@ class TestAdvancedSearch(TestCase):
         self.assertTrue('/p/CP100-10' in content)
         self.assertTrue('/p/CP100-11' in content)
 
+    def test_advanced_search_sequence_table_only_check_genus(self):
+        response = self.client.get('/search/advanced/?lab_person=Niklas+Wahlberg')
+        content = response.content.decode('utf-8')
+        self.assertTrue('Melitaea' in content)
+
     def test_advanced_search_voucher_objs(self):
         response = self.client.get('/search/advanced/?orden=Hymenoptera')
         content = response.content.decode('utf-8')
