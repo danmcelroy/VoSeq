@@ -142,10 +142,15 @@ class AdvancedSearchForm(ModelSearchForm):
         sqs = ''
         if keywords:
             sqs = SearchQuerySet().using('vouchers').filter(**keywords)
-        if sequence_keywords:
+
+        if sequence_keywords and sqs:
             voucher_code_list = get_list_of_codes(sqs)
             sqs = SearchQuerySet().using('advanced_search').filter(
                     **sequence_keywords).filter(code__in=voucher_code_list)
+        elif sequence_keywords:
+            sqs = SearchQuerySet().using('advanced_search').filter(
+                **sequence_keywords)
+
         if sqs:
             return sqs
         else:
