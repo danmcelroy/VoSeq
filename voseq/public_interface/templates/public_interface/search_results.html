@@ -35,17 +35,17 @@
       {% for result in page.object_list %}
         <li><i class="fa-li fa fa-circle"></i>
           <a href="/p/{{ result.code }}">{{ result.code }}</a>
-             <i>{{ result.genus}}</i>
-             <i>{{ result.species}}</i>
+             <i>{{ result.object.code.genus }}</i>
+             <i>{{ result.object.code.species}}</i>
 
           <br />
 
           <small>
-            {% if result.object.extractor != '' %}
-              By {{ result.object.extractor }} on
+            {% if result.object.code.extractor != '' %}
+              By {{ result.object.code.extractor }} on
             {% endif %}
 
-            {{ result.object.modified|date }}
+            {{ result.object.code.modified|date }}
           </small>
 
         </li>
