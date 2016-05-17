@@ -131,9 +131,6 @@ class ParseXML(object):
                 our_data = i
                 break
 
-        if not our_data:
-            raise ValueError("Could not find table {} in database dump file.".format(this_table))
-
         self.table_genesets_items = []
         for row in our_data.findall('row'):
             item = dict()
