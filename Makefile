@@ -51,7 +51,7 @@ test_migrations:
 	python voseq/manage.py migrate --settings=voseq.settings.testing
 
 test_import:
-	python voseq/manage.py migrate_db --dumpfile=test_db_dump.xml --settings=voseq.settings.testing
+	python voseq/manage.py migrate_db --dumpfile=test_db_dump.xml --settings=voseq.settings.local
 
 index:
 	python voseq/manage.py rebuild_index --settings=voseq.settings.local
