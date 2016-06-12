@@ -41,10 +41,8 @@ fi
 
 # elasticsearch
 apt-get install -y openjdk-7-jdk openjdk-7-jre
-if [[ ! -f /etc/init.d/elasticsearch ]]; then
-    wget -q https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.6.0.deb && \
-        dpkg -i elasticsearch-1.6.0.deb
-fi
+wget -q https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.3.deb && \
+        dpkg -i elasticsearch-1.7.3.deb
 
 if [[ ! -e /var/run/elasticsearch ]]; then
     mkdir -p /var/run/elasticsearch && /etc/init.d/elasticsearch start
@@ -229,7 +227,10 @@ echo '
     }
 ' > /etc/nginx/sites-available/voseq
 
-ln -s /etc/nginx/sites-available/voseq /etc/nginx/sites-enabled/voseq
+
+if [[ ! /etc/nginx/sites-enabled/voseq ]]; then
+    ln -s /etc/nginx/sites-available/voseq /etc/nginx/sites-enabled/voseq
+fi
 rm -rf /etc/nginx/sites-enabled/default
 rm -rf /etc/nginx/sites-available/default
 
