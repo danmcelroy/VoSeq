@@ -228,7 +228,7 @@ echo '
 ' > /etc/nginx/sites-available/voseq
 
 
-if [[ ! /etc/nginx/sites-enabled/voseq ]]; then
+if [[ ! -f /etc/nginx/sites-enabled/voseq ]]; then
     ln -s /etc/nginx/sites-available/voseq /etc/nginx/sites-enabled/voseq
 fi
 rm -rf /etc/nginx/sites-enabled/default
