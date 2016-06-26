@@ -18,7 +18,6 @@ requirements = [
     'elasticsearch==1.4',
     'Unipath==1.1',
     'psycopg2==2.6.1',
-    'dataset>=0.5.6',
     'pytz>=2015.4',
     'django-crispy-forms==1.4.0',
     'django-import-export==0.4.2',
