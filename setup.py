@@ -11,7 +11,7 @@ version = voseq.__version__
 
 requirements = [
     'amas==0.2',
-    'biopython==1.66',
+    'biopython==1.67',
     'Django==1.8.13',
     'Pillow==3.2.0',
     'pyprind==2.9.3',
@@ -28,8 +28,8 @@ requirements = [
     'django-haystack==2.4.0',
     'easy-thumbnails==2.2',
     'flickrapi==2.0',
-    'dataset-creator==0.3.10',
-    'seqrecord-expanded==0.2.4',
+    'dataset-creator==0.3.12',
+    'seqrecord-expanded==0.2.5',
     'degenerate-dna==0.0.9',
 ]
 
