@@ -186,13 +186,14 @@ def show_voucher(request, voucher_code):
     seqs_queryset = Sequences.objects.filter(code=voucher_code).values('code', 'gene_code',
                                                                        'number_ambiguous_bp',
                                                                        'accession', 'lab_person')
+    sorted_seqs_queryset = sorted(seqs_queryset, key=lambda x: x['gene_code'].lower())
 
     return render(request, 'public_interface/show_voucher.html',
                   {
                       'username': username,
                       'voucher': voucher_queryset,
                       'images': images_queryset,
-                      'sequences': seqs_queryset,
+                      'sequences': sorted_seqs_queryset,
                       'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
                       'version': version,
                       'stats': stats,
