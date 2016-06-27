@@ -29,6 +29,7 @@ Fixed bugs
 - Error message will be shown when attempting to translate bad codon such as "N--".
 - Shown error message if sequence is longer than specified nchar value.
 - Show message that FASTA datasets have all the sequences concatenated.
+- Sorted list of gene codes in voucher page.
 
 pre-release v2.0.0-beta (2015-08-06)
 ++++++++++++++++++++++++++++++++++++
