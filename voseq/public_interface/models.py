@@ -169,7 +169,7 @@ class Vouchers(TimeStampedModel):
     date_collection = models.DateField(null=True)  # TODO check if better blank null rather than null true
     extraction = models.TextField(help_text="Number of extraction event.", blank=True)
     extraction_tube = models.TextField(help_text="Tube containing DNA extract.", blank=True)
-    date_extraction = models.DateField(null=True)
+    date_extraction = models.DateField(blank=True, null=True)
     extractor = models.TextField(blank=True)
     voucher_locality = models.TextField(blank=True)
     published_in = models.TextField(blank=True, null=True)
