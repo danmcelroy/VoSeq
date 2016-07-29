@@ -183,9 +183,15 @@ def show_voucher(request, voucher_code):
     local_images_queryset = LocalImages.objects.filter(voucher=voucher_code)
     images_queryset = list(chain(flickr_images_queryset, local_images_queryset))
 
-    seqs_queryset = Sequences.objects.filter(code=voucher_code).values('code', 'gene_code',
-                                                                       'number_ambiguous_bp',
-                                                                       'accession', 'lab_person')
+    seqs_queryset = Sequences.objects.filter(code=voucher_code).values(
+        'code',
+        'gene_code',
+        'number_ambiguous_bp',
+        'accession',
+        'lab_person',
+        'total_number_bp',
+    )
+    print(seqs_queryset)
     sorted_seqs_queryset = sorted(seqs_queryset, key=lambda x: x['gene_code'].lower())
 
     return render(request, 'public_interface/show_voucher.html',
