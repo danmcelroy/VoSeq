@@ -276,7 +276,7 @@
             {% for item in sequences %}
             <tr>
               <td><a href="/s/{{ item.code }}/{{ item.gene_code }}/">{{ item.gene_code }}</a></td>
-              <td>{{ item.sequence_length }}</td>
+              <td>{{ item.total_number_bp }}</td>
               <td>{{ item.number_ambiguous_bp }}</td>
               <td>{{ item.lab_person }}</td>
               <td><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Search&db=nucleotide&term={{ item.accession }}[accn]&doptcmdl=GenBank">{{ item.accession }}</a></td>
