@@ -30,6 +30,8 @@ Fixed bugs
 - Shown error message if sequence is longer than specified nchar value.
 - Show message that FASTA datasets have all the sequences concatenated.
 - Sorted list of gene codes in voucher page.
+- Corrected path for media files in nginx so uploaded images will be shown in
+  voucher pages.
 
 pre-release v2.0.0-beta (2015-08-06)
 ++++++++++++++++++++++++++++++++++++
