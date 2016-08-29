@@ -185,8 +185,12 @@ echo '
             alias   /var/www/VoSeq/media/;
         }
 
+       	location /create_dataset/dataset_files/ {
+	        alias  /vagrant/voseq/create_dataset/dataset_files/;
+	    }
+
         proxy_read_timeout 120000;
-        
+
         location / {
             # an HTTP header important enough to have its own Wikipedia entry:
             #   http://en.wikipedia.org/wiki/X-Forwarded-For
