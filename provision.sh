@@ -182,7 +182,7 @@ echo '
         }
         
         location /media/ {
-            alias   /vagrant/www/VoSeq/media/;
+            alias   /var/www/VoSeq/media/;
         }
 
         proxy_read_timeout 120000;
