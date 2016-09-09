@@ -36,10 +36,11 @@ class BatchImportVouchersResource(resources.ModelResource):
         fields = ('code', 'orden', 'superfamily', 'family', 'subfamily', 'tribe',
                   'subtribe', 'genus', 'species', 'subspecies', 'author',
                   'hostorg', 'type_species', 'country', 'specific_locality',
-                  'collector', 'date_collection', 'latitude', 'longitude',
-                  'max_altitude', 'min_altitude', 'voucher_code', 'voucher',
-                  'voucher_locality', 'determined_by', 'sex', 'extraction',
-                  'extraction_tube', 'date_extraction', 'published_in', 'notes',
+                  'collector', 'date_collection', 'date_collection_end',
+                  'latitude', 'longitude', 'max_altitude', 'min_altitude',
+                  'voucher_code', 'voucher', 'voucher_locality',
+                  'determined_by', 'sex', 'extraction', 'extraction_tube',
+                  'date_extraction', 'published_in', 'notes',
                   )
     def save_instance(self, instance, dry_run=False):
         if dry_run:
@@ -104,7 +105,9 @@ class VouchersAdmin(ImportExportModelAdmin):
                                                         'latitude', 'longitude',
                                                         'max_altitude', 'min_altitude',
                                                         'collector', 'code_bold',
-                                                        'date_collection', 'determined_by',
+                                                        'date_collection',
+                                                        'date_collection_end',
+                                                        'determined_by',
                                                         'sex', 'extractor', 'extraction',
                                                         'extraction_tube', 'notes',
                                                         'published_in', 'date_extraction',
