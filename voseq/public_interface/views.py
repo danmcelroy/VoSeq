@@ -191,7 +191,6 @@ def show_voucher(request, voucher_code):
         'lab_person',
         'total_number_bp',
     )
-    print(seqs_queryset)
     sorted_seqs_queryset = sorted(seqs_queryset, key=lambda x: x['gene_code'].lower())
 
     return render(request, 'public_interface/show_voucher.html',
