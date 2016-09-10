@@ -520,10 +520,7 @@ class ParseXML(object):
                                             first_name=first_name,
                                             last_name=last_name)
             user.is_staff = True
-            if item['is_superuser']:
-                user.is_superuser = True
-            else:
-                user.is_superuser = False
+            user.is_superuser = bool(item['is_superuser'])
             user.save()
 
         if not TESTING:
