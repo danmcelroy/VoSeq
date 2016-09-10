@@ -454,8 +454,14 @@ class ParseXML(object):
             if item['longitude'] is not None:
                 item['longitude'] = float(item['longitude'])
 
-            item['date_collection'] = self.parse_date(item['date_collection'], 'date_collection')
-            item['date_extraction'] = self.parse_date(item['date_extraction'], 'date_extraction')
+            item['date_collection'] = self.parse_collection_date(
+                item['date_collection'],
+                'date_collection',
+            )
+            item['date_extraction'] = self.parse_date(
+                item['date_extraction'],
+                'date_extraction',
+            )
             item['created'] = self.parse_timestamp(item['created'], 'created')
 
             is_flickr, image_info = self.parse_image_info(item)
@@ -732,6 +738,23 @@ class ParseXML(object):
             string = None
         return string
 
+    def parse_collection_date(self, mydate, field):
+        try:
+            date_obj = datetime.datetime.strptime(
+                mydate,
+                '%Y-%m-%d',
+            ).replace(tzinfo=TZINFO)
+        except ValueError:
+            date_obj = None
+        except TypeError:
+            date_obj = None
+
+        if self.verbosity > 1 and not date_obj:
+            print("WARNING:: Could not parse {} properly.".format(field))
+        elif date_obj:
+            return date_obj.strftime("%Y-%m-%d")
+        return date_obj
+
     def parse_date(self, mydate, field):
         try:
             date_obj = datetime.datetime.strptime(mydate, '%Y-%m-%d').replace(tzinfo=TZINFO)
@@ -740,7 +763,7 @@ class ParseXML(object):
         except TypeError:
             date_obj = None
 
-        if self.verbosity > 1:
+        if self.verbosity > 1 and not date_obj:
             print("WARNING:: Could not parse {} properly.".format(field))
         return date_obj
 
