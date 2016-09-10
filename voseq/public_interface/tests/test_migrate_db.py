@@ -1,5 +1,3 @@
-import datetime
-
 from django.core.management import call_command
 from django.core.management import CommandError
 from django.contrib.auth.models import User
