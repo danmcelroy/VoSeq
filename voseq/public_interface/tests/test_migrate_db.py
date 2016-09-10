@@ -331,7 +331,7 @@ class TestCustomCommand(TestCase):
         self.assertEqual(expected, b.determined_by)
 
     def test_date_collection(self):
-        expected = datetime.date(1996, 3, 25)
+        expected = "1996-03-25"
         b = Vouchers.objects.get(code='CP100-12')
         self.assertEqual(expected, b.date_collection)
 

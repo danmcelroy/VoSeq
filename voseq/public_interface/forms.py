@@ -92,8 +92,18 @@ class AdvancedSearchForm(ModelSearchForm):
     max_altitude = forms.IntegerField(label="Maximum altitude", required=False)
     min_altitude = forms.IntegerField(label="Minimum altitude", required=False)
     collector = forms.CharField(label="Collector", max_length=100, required=False)
-    date_collection = forms.DateField(label="Date of collection", required=False, widget=DateInput(),
-                                      error_messages={'invalid': 'Enter valid date: YYYY-mm-dd'})
+    date_collection = forms.DateField(
+        label="Date of collection start",
+        required=False,
+        widget=DateInput(),
+        error_messages={'invalid': 'Enter valid date: YYYY-mm-dd'},
+    )
+    date_collection_end = forms.DateField(
+        label="Date of collection end",
+        required=False,
+        widget=DateInput(),
+        error_messages={'invalid': 'Enter valid date: YYYY-mm-dd'},
+    )
     extraction = forms.CharField(label="Extraction", max_length=50, help_text="Number of extraction event.", required=False)
     extraction_tube = forms.CharField(label="Extraction tube", max_length=50, help_text="Tube containing DNA extract.", required=False)
     date_extraction = forms.DateField(label="Date of extraction", required=False, widget=DateInput(),
@@ -169,7 +179,7 @@ class AdvancedSearchForm(ModelSearchForm):
                 # remove after adding this to index
                 if v == 'Select':
                     continue
-                if k in ['date_collection', 'date_extraction']:
+                if k in ['date_collection', 'date_collection_end', 'date_extraction']:
                     v = datetime.date.strftime(v, "%Y-%m-%d")
                 if k == 'models':
                     continue
@@ -217,7 +227,8 @@ class BatchChangesForm(forms.Form):
         fields = ['orden', 'superfamily', 'family', 'subfamily', 'tribe', 'subtribe',
                   'genus', 'species', 'subspecies', 'type_species', 'sex', 'author',
                   'determined_by', 'published_in', 'country', 'specific_locality', 'latitude',
-                  'longitude', 'max_altitude', 'min_altitude', 'date_collection', 'collector',
+                  'longitude', 'max_altitude', 'min_altitude', 'date_collection',
+                  'date_collection_end', 'collector',
                   'hostorg', 'date_extraction', 'extractor', 'extraction', 'extraction_tube',
                   'voucher', 'voucher_locality', 'latest_editor', 'edits', 'notes']
     '''
@@ -281,7 +292,8 @@ class BatchChangesForm(forms.Form):
     max_altitude = forms.IntegerField(label="Maximum altitude", required=False)
     min_altitude = forms.IntegerField(label="Minimum altitude", required=False)
     collector = forms.CharField(label="Collector", max_length=100, required=False)
-    date_collection = forms.DateField(label="Date of collection", required=False)
+    date_collection = forms.DateField(label="Date of collection start", required=False)
+    date_collection_end = forms.DateField(label="Date of collection end", required=False)
     extraction = forms.CharField(label="Extraction", max_length=50, help_text="Number of extraction event.", required=False)
     extraction_tube = forms.CharField(label="Extraction tube", max_length=50, help_text="Tube containing DNA extract.", required=False)
     date_extraction = forms.DateField(label="Date extraction", required=False)

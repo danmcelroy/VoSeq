@@ -33,6 +33,12 @@ Fixed bugs
 - Corrected path for media files in nginx so uploaded images will be shown in
   voucher pages.
 
+Features
+""""""""
+- date collection is flexible. Added a start and end collection dates which
+  can be complete (YYYY-mm-dd) or incomplete (only year, or only year and month).
+  
+
 pre-release v2.0.0-beta (2015-08-06)
 ++++++++++++++++++++++++++++++++++++
 
