@@ -173,10 +173,7 @@ class BLAST(object):
 
         """
         files = glob.glob(self.db + '.*')
-        if files:
-            return True
-        else:
-            return False
+        return bool(files)
 
     def is_blast_db_up_to_date(self):
         """Finds out whether our blast db contains all our sequences.
