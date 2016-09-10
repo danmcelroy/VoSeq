@@ -29,10 +29,7 @@ from public_interface.models import TaxonSets
 
 TZINFO = pytz.utc
 
-if settings.TESTING:
-    TESTING = True
-else:
-    TESTING = False
+TESTING = bool(settings.TESTING)
 
 
 class ParseXML(object):
