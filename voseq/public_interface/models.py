@@ -166,7 +166,17 @@ class Vouchers(TimeStampedModel):
     max_altitude = models.IntegerField(blank=True, null=True, help_text="Enter altitude in meters above sea level.")
     min_altitude = models.IntegerField(blank=True, null=True, help_text="Enter altitude in meters above sea level.")
     collector = models.TextField(blank=True)
-    date_collection = models.DateField(null=True)  # TODO check if better blank null rather than null true
+    date_collection = models.CharField(
+        verbose_name="Date collection start",
+        max_length=10,
+        blank=True,
+        help_text="Enter date in format YYYY-mm-dd",
+    )
+    date_collection_end = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="Optional. Enter date in format YYYY-mm-dd",
+    )
     extraction = models.TextField(help_text="Number of extraction event.", blank=True)
     extraction_tube = models.TextField(help_text="Tube containing DNA extract.", blank=True)
     date_extraction = models.DateField(blank=True, null=True)

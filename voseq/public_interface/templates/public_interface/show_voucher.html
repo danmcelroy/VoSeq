@@ -173,7 +173,12 @@
               </td>
 
               <td>{{ voucher.voucher }}</td>
-              <td>{{ voucher.date_collection }}</td>
+              <td>
+                {{ voucher.date_collection }}
+                {% if voucher.date_collection_end %}
+                  / {{ voucher.date_collection_end }}
+                {% endif %}
+              </td>
             </tr>
             <tr>
               <td><b>Alternative voucher code:</b></td>

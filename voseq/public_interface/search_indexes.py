@@ -72,38 +72,41 @@ class VouchersIndex(indexes.SearchIndex, indexes.Indexable):
     """
     text = indexes.CharField(document=True, use_template=True)
     code = indexes.CharField(model_attr='code')
-    orden = indexes.CharField(model_attr='orden', null=True)
-    superfamily = indexes.CharField(model_attr='superfamily', null=True)
-    family = indexes.CharField(model_attr='family', null=True)
-    subfamily = indexes.CharField(model_attr='subfamily', null=True)
-    tribe = indexes.CharField(model_attr='tribe', null=True)
-    subtribe = indexes.CharField(model_attr='subtribe', null=True)
-    genus = indexes.CharField(model_attr='genus', null=True)
-    species = indexes.CharField(model_attr='species', null=True)
-    subspecies = indexes.CharField(model_attr='subspecies', null=True)
-    author = indexes.CharField(model_attr='author', null=True)
+    orden = indexes.CharField(model_attr='orden')
+    superfamily = indexes.CharField(model_attr='superfamily')
+    family = indexes.CharField(model_attr='family')
+    subfamily = indexes.CharField(model_attr='subfamily')
+    tribe = indexes.CharField(model_attr='tribe')
+    subtribe = indexes.CharField(model_attr='subtribe')
+    genus = indexes.CharField(model_attr='genus')
+    species = indexes.CharField(model_attr='species')
+    subspecies = indexes.CharField(model_attr='subspecies')
+    author = indexes.CharField(model_attr='author')
 
-    country = indexes.CharField(model_attr='country', null=True)
-    specific_locality = indexes.EdgeNgramField(model_attr='specific_locality', null=True)
+    country = indexes.CharField(model_attr='country')
+    specific_locality = indexes.EdgeNgramField(
+        model_attr='specific_locality',
+        null=True,
+    )
 
-    voucher_locality = indexes.CharField(model_attr='voucher_locality', null=True)
-    collector = indexes.CharField(model_attr='collector', null=True)
-    code_bold = indexes.CharField(model_attr='code_bold', null=True)
-    voucher_code = indexes.CharField(model_attr='voucher_code', null=True)
-    determined_by = indexes.CharField(model_attr='determined_by', null=True)
-    voucher = indexes.CharField(model_attr='voucher', null=True)
-    date_collection = indexes.DateField(model_attr='date_collection', null=True)
-    sex = indexes.CharField(model_attr='sex', null=True)
+    voucher_locality = indexes.CharField(model_attr='voucher_locality')
+    collector = indexes.CharField(model_attr='collector')
+    code_bold = indexes.CharField(model_attr='code_bold')
+    voucher_code = indexes.CharField(model_attr='voucher_code')
+    determined_by = indexes.CharField(model_attr='determined_by')
+    voucher = indexes.CharField(model_attr='voucher')
+    date_collection = indexes.CharField(model_attr='date_collection')
+    sex = indexes.CharField(model_attr='sex')
 
-    extraction = indexes.CharField(model_attr='extraction', null=True)
-    extraction_tube = indexes.CharField(model_attr='extraction_tube', null=True)
-    extractor = indexes.CharField(model_attr='extractor', null=True)
+    extraction = indexes.CharField(model_attr='extraction')
+    extraction_tube = indexes.CharField(model_attr='extraction_tube')
+    extractor = indexes.CharField(model_attr='extractor')
     date_extraction = indexes.DateField(model_attr='date_extraction', null=True)
 
     published_in = indexes.EdgeNgramField(model_attr='published_in', null=True)
     notes = indexes.EdgeNgramField(model_attr='notes', null=True)
-    hostorg = indexes.CharField(model_attr='hostorg', null=True)
-    type_species = indexes.CharField(model_attr='type_species', null=True)
+    hostorg = indexes.CharField(model_attr='hostorg')
+    type_species = indexes.CharField(model_attr='type_species')
 
     def get_model(self):
         return Vouchers
@@ -124,7 +127,7 @@ class AdvancedSearchIndex(indexes.SearchIndex, indexes.Indexable):
     code = indexes.CharField(model_attr='code__code', faceted=True)
     lab_person = indexes.EdgeNgramField(model_attr='lab_person', null=True)
     accession = indexes.EdgeNgramField(model_attr='accession', null=True)
-    gene_code = indexes.CharField(model_attr='gene_code', null=True)
+    gene_code = indexes.CharField(model_attr='gene_code')
     genbank = indexes.BooleanField(model_attr='genbank', null=True)
 
     def get_model(self):

@@ -152,11 +152,7 @@ class BLAST(object):
         self.gene_code = gene_code
         self.cwd = os.path.dirname(__file__)
         self.seq_file = ""
-
-        if mask is not False:
-            self.mask = True
-        else:
-            self.mask = False
+        self.mask = bool(mask)
 
         self.path = os.path.join(self.cwd, 'db',
                                  "{0}_seqs.fas.n*".format(self.gene_code))
