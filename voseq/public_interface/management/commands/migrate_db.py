@@ -1,5 +1,4 @@
 import codecs
-from optparse import make_option
 
 from django.core.management.base import BaseCommand, CommandError
 
@@ -10,18 +9,22 @@ class Command(BaseCommand):
     """
     Runs the _migrate_db.py script.
     """
-    option_list = BaseCommand.option_list + (
-        make_option('--dumpfile',
-                    dest='dumpfile',
-                    help='Enter name of database dump file as argument.'
-                         'This file can be obtained from your MySQL database using this command:'
-                         '\t"mysqdump --xml database > dump.xml"',
-                    ),
-        make_option('--prefix',
-                    dest='prefix',
-                    help='If your tables of VoSeq have been prefixed you can specify it here.',
-                    ),
-    )
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--dumpfile',
+            action='store',
+            dest='dumpfile',
+            help='Enter name of database dump file as argument.'
+                 'This file can be obtained from your MySQL database using this '
+                 ' command:\t"mysqdump --xml database > dump.xml"',
+        )
+        parser.add_argument(
+            '--prefix',
+            action='store',
+            dest='prefix',
+            help='If your tables of VoSeq have been prefixed you can specify it '
+                 'here.',
+        )
 
     def handle(self, *args, **options):
         if options['dumpfile'] is None:
