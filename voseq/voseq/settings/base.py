@@ -14,7 +14,6 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
 MANAGERS = ()
 ADMINS = ()
@@ -76,11 +75,23 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.messages.context_processors.messages',
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.request',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            'voseq/public_interface/templates/public_interface',
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+            'debug': False,
+        }
+    },
+]
 
 ROOT_URLCONF = 'voseq.urls'
 
