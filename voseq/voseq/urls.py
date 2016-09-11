@@ -28,5 +28,5 @@ urlpatterns = patterns(
 
 if settings.DEBUG:
     urlpatterns += [
-        url(r'^/media/(?P<path>.*)$', views.serve)
+        url(r'^media/(?P<path>.*)$', views.serve)
     ]
