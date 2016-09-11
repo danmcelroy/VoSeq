@@ -12,7 +12,7 @@ version = voseq.__version__
 requirements = [
     'amas==0.2',
     'biopython==1.67',
-    'Django==1.8.13',
+    'Django==1.10.1',
     'Pillow==3.2.0',
     'pyprind==2.9.3',
     'elasticsearch==1.4',
@@ -58,8 +58,8 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
     ],
     zip_safe=False,
     scripts=['voseq/manage.py'],
