@@ -6,17 +6,11 @@ from .base import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-TEMPLATE_DEBUG = True
+TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 
 MANAGERS = ()
 
 ADMINS = ()
-
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, '..', 'templates'),
-    os.path.join(BASE_DIR, '..', 'core', 'templates'),
-)
-
 
 SECRETS_FILE = os.path.join(BASE_DIR, '..', '..', 'config.json')
 
