@@ -1,10 +1,9 @@
-from django.conf.urls import patterns
 from django.conf.urls import url
 
 from . import views
 
 
-urlpatterns = patterns(
+urlpatterns = [
     '',
     url(r'^$', views.index, name='index'),
     url(r'^browse/$', views.browse, name='browse'),
@@ -16,4 +15,4 @@ urlpatterns = patterns(
 
     # for admin purposes
     url(r'^admin/public_interface/vouchers/batch_changes/ids=(?P<selected>.+)/$', views.change_selected, name='change_selected'),
-)
+]
