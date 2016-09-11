@@ -6,6 +6,6 @@ from . import views
 
 urlpatterns = patterns(
     '',
-    url(r'^/$', views.index, name='index'),
-    url(r'^/(?P<gene_code>.+)/$', views.gene, name='gene'),
+    url(r'^$', views.index, name='index'),
+    url(r'^(?P<gene_code>.+)/$', views.gene, name='gene'),
 )
