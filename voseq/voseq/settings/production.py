@@ -6,7 +6,6 @@ MEDIA_ROOT = "/var/www/VoSeq/media/"
 
 
 DEBUG = False
-TEMPLATE_DEBUG = DEBUG
 
 MANAGERS = ()
 ADMINS = ()
