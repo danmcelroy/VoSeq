@@ -92,9 +92,15 @@ class CreateDataset(object):
 
         if self.file_format in ['NEXUS', 'GenBankFASTA', 'FASTA', 'MEGA', 'TNT', 'PHYLIP']:
             try:
-                dataset = Dataset(self.seq_objs, format=self.file_format, partitioning=self.partition_by_positions,
-                                  codon_positions=self.codon_positions[0], aminoacids=self.aminoacids,
-                                  degenerate=self.degen_translations, outgroup=self.outgroup)
+                dataset = Dataset(
+                    self.seq_objs,
+                    format=self.file_format,
+                    partitioning=self.partition_by_positions,
+                    codon_positions=self.codon_positions[0],
+                    aminoacids=self.aminoacids,
+                    degenerate=self.degen_translations,
+                    outgroup=self.outgroup,
+                )
             except MissingParameterError as e:
                 self.errors.append(e)
                 return ''
@@ -163,14 +169,15 @@ class CreateDataset(object):
         else:
             seq = self.create_seq_record(this_voucher_seqs)
 
-        seq_record = SeqRecordExpanded(seq)
-
         if code in our_taxon_names:
-            seq_record.voucher_code = code
-            seq_record.taxonomy = our_taxon_names[code]
-            seq_record.gene_code = gene_code
-            seq_record.reading_frame = self.gene_codes_metadata[gene_code]['reading_frame']
-            seq_record.table = self.gene_codes_metadata[gene_code]['genetic_code']
+            seq_record = SeqRecordExpanded(
+                seq,
+                voucher_code=code.replace(" ", "_"),
+                taxonomy=our_taxon_names[code],
+                gene_code=gene_code,
+                reading_frame=self.gene_codes_metadata[gene_code]['reading_frame'],
+                table=self.gene_codes_metadata[gene_code]['genetic_code'],
+            )
             return seq_record
         else:
             return None
