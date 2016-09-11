@@ -32,6 +32,8 @@ Fixed bugs
 - Sorted list of gene codes in voucher page.
 - Corrected path for media files in nginx so uploaded images will be shown in
   voucher pages.
+- Convert symbols and white spaces of code and taxon names to underscore to
+  avoid choking Biopython when creating datasets.
 
 Features
 """"""""
