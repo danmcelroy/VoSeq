@@ -4,7 +4,6 @@ from . import views
 
 
 urlpatterns = [
-    '',
     url(r'^$', views.index, name='index'),
     url(r'^browse/$', views.browse, name='browse'),
     url(r'^autocomplete/$', views.autocomplete, name='autocomplete'),

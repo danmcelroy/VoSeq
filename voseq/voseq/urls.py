@@ -6,7 +6,6 @@ from django.contrib.staticfiles import views
 
 
 urlpatterns = [
-    '',
     url(r'^create_gene_table', include('gene_table.urls', namespace='gene_table')),
     url(r'^create_voucher_table', include('voucher_table.urls', namespace='voucher_table')),
     url(r'^create_dataset', include('create_dataset.urls', namespace='create_dataset')),
