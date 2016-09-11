@@ -79,7 +79,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            'templates',
+            'voseq/public_interface/templates/public_interface',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
