@@ -170,6 +170,7 @@ class Vouchers(TimeStampedModel):
         verbose_name="Date collection start",
         max_length=10,
         blank=True,
+        default="",
         help_text="Enter date in format YYYY-mm-dd",
     )
     date_collection_end = models.CharField(
