@@ -73,12 +73,16 @@ class ParseXML(object):
         if got_flickr and item['flickr_id']:
             item['flickr_id'] = self.get_as_tuple(item['flickr_id'], got_flickr)
 
-            for i in range(0, len(item['voucher_image']), 1):
+            for idx, i in enumerate(item['voucher_image']):
+                try:
+                    thumbnail = item['thumbnail'][idx]
+                except IndexError:
+                    thumbnail = ""
                 imgs.append({
                     'voucher_id': item['code'],
-                    'voucher_image': item['voucher_image'][i],
-                    'thumbnail': item['thumbnail'][i],
-                    'flickr_id': item['flickr_id'][i],
+                    'voucher_image': item['voucher_image'][idx],
+                    'thumbnail': thumbnail,
+                    'flickr_id': item['flickr_id'][idx],
                 })
             return True, imgs
         else:
@@ -263,7 +267,7 @@ class ParseXML(object):
 
     def parse_table_vouchers(self, xml_string):
         our_data = False
-        this_table = self.tables_prefix + "vouchers"
+        this_table = "{}vouchers".format(self.tables_prefix)
 
         root = ET.fromstring(xml_string)
         for i in root.iter('table_data'):
@@ -333,6 +337,8 @@ class ParseXML(object):
             except AttributeError:
                 item['author'] = None
             item['created'] = row.find("./field/[@name='timestamp']").text
+            if not item['date_collection']:
+                item['date_collection'] = ""
             self.table_vouchers_items.append(item)
 
     def import_table_genes(self):
@@ -619,9 +625,8 @@ class ParseXML(object):
 
     def test_if_photo_in_flickr(self, item):
         value = item['voucher_image']
-        if value is not None:
-            value = value.replace('|', '').strip()
-            if value.startswith('https://www.flickr'):
+        if value:
+            if "flickr" in value:
                 return True
         return False
 
@@ -743,11 +748,13 @@ class ParseXML(object):
         except TypeError:
             date_obj = None
 
-        if self.verbosity > 1 and not date_obj:
-            print("WARNING:: Could not parse {} properly.".format(field))
-        elif date_obj:
+        if date_obj:
             return date_obj.strftime("%Y-%m-%d")
-        return date_obj
+        elif self.verbosity > 1 and not date_obj:
+            print("WARNING:: Could not parse {} properly.".format(field))
+            return ""
+        else:
+            return ""
 
     def parse_date(self, mydate, field):
         try:
