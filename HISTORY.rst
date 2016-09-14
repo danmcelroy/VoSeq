@@ -34,6 +34,8 @@ Fixed bugs
   voucher pages.
 - Convert symbols and white spaces of code and taxon names to underscore to
   avoid choking Biopython when creating datasets.
+- Fixed method to import flickr images.
+- Fixed template to show thumbnail of flickr images.
 
 Features
 """"""""

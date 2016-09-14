@@ -220,7 +220,7 @@
         <div class="panel panel-default">
           <div class="panel-body">
             {% for image in images %}
-              {% if 'staticflickr' in image.thumbnail %}
+              {% if 'static.flickr.com/' in image.thumbnail or 'staticflickr.com/' in image.thumbnail %}
                 <a href="{{ image.voucher_image }}">
                   <img class="img-thumbnail" src="{{ image.thumbnail }}" />
                 </a>
