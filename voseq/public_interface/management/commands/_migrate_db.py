@@ -72,7 +72,6 @@ class ParseXML(object):
         imgs = []
         if got_flickr and item['flickr_id']:
             item['flickr_id'] = self.get_as_tuple(item['flickr_id'], got_flickr)
-            print(item['flickr_id'], item['voucher_image'], item['thumbnail'])
 
             for idx, i in enumerate(item['voucher_image']):
                 try:
