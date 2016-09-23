@@ -33,7 +33,7 @@ docs:
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 
-serve: index stats
+serve: stats
 	python voseq/manage.py runserver --settings=voseq.settings.local
 
 admin:
