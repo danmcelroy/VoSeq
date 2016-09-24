@@ -8,26 +8,36 @@ from core.utils import get_username
 
 
 def index(request):
-    version, stats = get_version_stats()
-    username = get_username(request)
-    form = VoucherTableForm()
-
-    return render(request, 'voucher_table/index.html',
-                  {
-                      'username': username,
-                      'version': version,
-                      'stats': stats,
-                      'form': form,
-                  },
-                  )
+    VERSION, STATS = get_version_stats()
+    return render(
+        request,
+        'voucher_table/index.html',
+        {
+            'username': get_username(request),
+            'version': VERSION,
+            'stats': STATS,
+            'form': VoucherTableForm(),
+        },
+    )
 
 
 def results(request):
+    VERSION, STATS = get_version_stats()
     if request.method == 'POST':
         form = VoucherTableForm(request.POST)
         if form.is_valid():
             table = VoucherTable(form.cleaned_data)
             response = table.create_csv_file()
             return response
-
+        else:
+            return render(
+                request,
+                'voucher_table/index.html',
+                {
+                    'username': get_username(request),
+                    'version': VERSION,
+                    'stats': STATS,
+                    'form': form,
+                }
+            )
     return HttpResponseRedirect('/create_voucher_table/')
