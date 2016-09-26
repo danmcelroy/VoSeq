@@ -254,24 +254,24 @@ class TestCustomCommand(TestCase):
         self.assertEqual(['lep1'], primers_f)
 
     def test_geneset_name(self):
-        b = GeneSets.objects.get(geneset_name='4genes')
-        self.assertEqual(b.geneset_name, '4genes')
+        b = GeneSets.objects.get(geneset_name='3genes')
+        self.assertEqual(b.geneset_name, '3genes')
 
     def test_geneset_creator(self):
-        b = GeneSets.objects.get(geneset_name='4genes')
+        b = GeneSets.objects.get(geneset_name='3genes')
         self.assertEqual(b.geneset_creator, 'Niklas')
 
     def test_geneset_description(self):
-        b = GeneSets.objects.get(geneset_name='4genes')
-        self.assertEqual(b.geneset_description, '4 standard genes')
+        b = GeneSets.objects.get(geneset_name='3genes')
+        self.assertEqual(b.geneset_description, '3 standard genes')
 
     def test_geneset_description_empty(self):
         b = GeneSets.objects.get(geneset_name='2genes')
         self.assertEqual(b.geneset_description, '')
 
     def test_geneset_list(self):
-        b = GeneSets.objects.get(geneset_name='4genes')
-        expected = ['COI', 'EF1a', 'wingless', '16S']
+        b = GeneSets.objects.get(geneset_name='3genes')
+        expected = ['COI', 'EF1a', 'wingless']
         self.assertEqual(expected, b.geneset_list.splitlines())
 
     def test_gene(self):

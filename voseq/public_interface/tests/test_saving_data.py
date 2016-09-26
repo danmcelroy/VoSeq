@@ -12,7 +12,7 @@ class TestViews(TestCase):
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 
-        self.voucher_model = Vouchers.objects.get(code='CP100-18')
+        self.voucher_model = Vouchers.objects.filter(code='CP100-18')[0]
 
     def test_save_sequences_ambiguous_characters(self):
         sequence_model = Sequences(
@@ -23,5 +23,8 @@ class TestViews(TestCase):
         )
         sequence_model.save()
 
-        sequence_model = Sequences.objects.get(code=self.voucher_model, gene_code='COI')
-        self.assertEqual(sequence_model.number_ambiguous_bp, 9)
+        sequence_model = Sequences.objects.filter(
+            code=self.voucher_model,
+            gene_code='COI',
+        )[0]
+        self.assertEqual(sequence_model.number_ambiguous_bp, 25)

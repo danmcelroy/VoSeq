@@ -104,7 +104,7 @@
 	<row>
 		<field name="geneset_name">3genes</field>
 		<field name="geneset_creator">Niklas</field>
-		<field name="geneset_description">4 standard genes</field>
+		<field name="geneset_description">3 standard genes</field>
 		<field name="geneset_list">COI,EF1a,wingless</field>
 		<field name="geneset_id">1</field>
 	</row>
@@ -135,6 +135,14 @@
 		<field name="passwd">a72bd08fb0f60fa5ea658d0fa24b55ea58f90b62</field>
 		<field name="admin">1</field>
 	</row>
+		<row>
+			<field name="member_id">1</field>
+			<field name="firstname">Carlos</field>
+			<field name="lastname">Pena</field>
+			<field name="login">carlosp420</field>
+			<field name="passwd">a72bd08fb0f60fa5ea658d0fa24b55ea58f90b62</field>
+			<field name="admin">0</field>
+		</row>
 	</table_data>
 	<table_structure name="primers">
 		<field Field="id" Type="smallint(5) unsigned" Null="NO" Key="PRI" Extra="auto_increment" Comment="" />
