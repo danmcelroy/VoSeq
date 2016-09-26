@@ -2,21 +2,13 @@
 VoSeq
 =====
 
-|BuildStatus| |Requires| |CoverageStatus| |QuantifiedCode| |Python_versions| |Chat|
+|BuildStatus| |CoverageStatus| |Python_versions| |Chat|
 
 .. |BuildStatus| image:: https://travis-ci.org/VoSeq/VoSeq.svg
     :target: https://travis-ci.org/VoSeq/VoSeq
 
-.. |Requires| image:: https://requires.io/github/VoSeq/VoSeq/requirements.svg?branch=master
-     :target: https://requires.io/github/VoSeq/VoSeq/requirements/?branch=master
-     :alt: Requirements Status
-
 .. |CoverageStatus| image:: https://img.shields.io/coveralls/VoSeq/VoSeq.svg
     :target: https://coveralls.io/r/VoSeq/VoSeq?branch=master
-
-.. |QuantifiedCode| image:: https://www.quantifiedcode.com/api/v1/project/8277ac101c0e4524a52b5ae6073bd62d/badge.svg
-    :alt: Code issues
-    :target: https://www.quantifiedcode.com/app/project/8277ac101c0e4524a52b5ae6073bd62d
 
 .. |Chat| image:: https://badges.gitter.im/Join%20Chat.svg
     :alt: Join the chat at https://gitter.im/VoSeq/VoSeq
