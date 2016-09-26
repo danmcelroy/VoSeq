@@ -30,7 +30,7 @@ class TestVoucherTable(TestCase):
         self.maxDiff = None
 
     def test_header_csv_file(self):
-        expected = ('Code', 'Genus', 'Species', 'Country', 'Specific Locality', 'Collector', '16S',
+        expected = ('Code', 'Genus', 'Species', 'Country', 'Specific Locality', 'Collector',
                     'COI', 'EF1a', 'wingless')
         result = self.table.get_headers()
         self.assertEqual(expected, result)
@@ -42,7 +42,7 @@ class TestVoucherTable(TestCase):
         self.assertTrue(expected in result.decode('utf-8'))
 
     def test_create_csv_file_genes(self):
-        expected = '515,669,1227,412'
+        expected = ',669,1227,412'
         response = self.table.create_csv_file()
         result = response.content.decode('utf-8')
         self.assertTrue(expected in result)
@@ -58,14 +58,14 @@ class TestVoucherTable(TestCase):
 
     def test_create_csv_missing_sequence(self):
         self.table.create_csv_file()
-        expected = "We don't have sequences for 16S and CP100-11"
+        expected = "We don't have sequences for EF1a and CP100-11"
         self.assertTrue(expected in self.table.warnings)
 
     def test_create_csv_number_bases_by_default(self):
         cleaned_data = self.cleaned_data
         cleaned_data['gene_info'] = ''
         table = VoucherTable(cleaned_data)
-        expected = '515,669,1227,412'
+        expected = ',669,1227,412'
         response = table.create_csv_file()
         result = response.content.decode('utf-8')
         self.assertTrue(expected in result)
@@ -74,7 +74,7 @@ class TestVoucherTable(TestCase):
         cleaned_data = self.cleaned_data
         cleaned_data['gene_info'] = 'ACCESSION NUMBER'
         table = VoucherTable(cleaned_data)
-        expected = 'AY218254,X'
+        expected = 'AY218269,AY218260'
         response = table.create_csv_file()
         result = response.content.decode('utf-8')
         self.assertTrue(expected in result)
@@ -83,7 +83,7 @@ class TestVoucherTable(TestCase):
         cleaned_data = self.cleaned_data
         cleaned_data['gene_info'] = 'EXIST OR EMPTY'
         table = VoucherTable(cleaned_data)
-        expected = '-,X,-,-'
+        expected = ',X,-,-'
         response = table.create_csv_file()
         result = response.content.decode('utf-8')
         self.assertTrue(expected in result)
@@ -92,7 +92,7 @@ class TestVoucherTable(TestCase):
         cleaned_data = self.cleaned_data
         cleaned_data['field_delimitor'] = 'TAB'
         table = VoucherTable(cleaned_data)
-        expected = '-\t646\t-'
+        expected = 'Wahlberg\t646\t-'
         response = table.create_csv_file()
         result = response.content.decode('utf-8')
         self.assertTrue(expected in result)
@@ -101,7 +101,7 @@ class TestVoucherTable(TestCase):
         cleaned_data = self.cleaned_data
         cleaned_data['field_delimitor'] = 'other symbol'
         table = VoucherTable(cleaned_data)
-        expected = '-,646,-'
+        expected = 'Wahlberg,646,-'
         response = table.create_csv_file()
         result = response.content.decode('utf-8')
         self.assertTrue(expected in result)

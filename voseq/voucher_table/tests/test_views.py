@@ -22,7 +22,7 @@ class TestViews(TestCase):
         self.assertEqual(302, response.status_code)
 
     def test_results(self):
-        expected = 'CP100-10,515,669'
+        expected = 'CP100-10,669,1227,412'
         response = self.client.post('/create_voucher_table/results/',
                                     {
                                         'voucher_info': 'code',
