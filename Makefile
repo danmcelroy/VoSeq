@@ -85,3 +85,4 @@ test:
 test_installation: migrations test_import stats
 	sed -i 's/<\/h1>/<br \/><small>Write <b>user<\/b> and <b>pass<\/b> as username and password<\/small><\/h1>/g' voseq/public_interface/templates/registration/login.html
 	make collectstatic
+	cp -r /var/www/VoSeq/static/media/* /var/www/VoSeq/media/.
