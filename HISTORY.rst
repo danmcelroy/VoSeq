@@ -43,6 +43,7 @@ Features
   can be complete (YYYY-mm-dd) or incomplete (only year, or only year and month).
 - added alert message when user attempts to generate voucher table without
   specifying the gene codes or taxon sets.
+- added optional deployment for test installations.
   
 
 pre-release v2.0.0-beta (2015-08-06)

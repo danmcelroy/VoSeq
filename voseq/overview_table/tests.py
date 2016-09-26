@@ -15,7 +15,7 @@ class TestOverviewTable(TestCase):
 
     def test_utils(self):
         o = OverviewTableMaker()
-        expected = 3
+        expected = 6
         result = len(o.items)
         self.assertEqual(expected, result)
 
