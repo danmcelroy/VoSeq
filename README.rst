@@ -4,23 +4,23 @@ VoSeq
 
 |BuildStatus| |Requires| |CoverageStatus| |QuantifiedCode| |Python_versions| |Chat|
 
-.. |BuildStatus| image:: https://travis-ci.org/carlosp420/VoSeq.svg
-    :target: https://travis-ci.org/carlosp420/VoSeq
+.. |BuildStatus| image:: https://travis-ci.org/VoSeq/VoSeq.svg
+    :target: https://travis-ci.org/VoSeq/VoSeq
 
-.. |Requires| image:: https://requires.io/github/carlosp420/VoSeq/requirements.svg?branch=master
-     :target: https://requires.io/github/carlosp420/VoSeq/requirements/?branch=master
+.. |Requires| image:: https://requires.io/github/VoSeq/VoSeq/requirements.svg?branch=master
+     :target: https://requires.io/github/VoSeq/VoSeq/requirements/?branch=master
      :alt: Requirements Status
 
-.. |CoverageStatus| image:: https://img.shields.io/coveralls/carlosp420/VoSeq.svg
-    :target: https://coveralls.io/r/carlosp420/VoSeq?branch=master
+.. |CoverageStatus| image:: https://img.shields.io/coveralls/VoSeq/VoSeq.svg
+    :target: https://coveralls.io/r/VoSeq/VoSeq?branch=master
 
 .. |QuantifiedCode| image:: https://www.quantifiedcode.com/api/v1/project/8277ac101c0e4524a52b5ae6073bd62d/badge.svg
     :alt: Code issues
     :target: https://www.quantifiedcode.com/app/project/8277ac101c0e4524a52b5ae6073bd62d
 
 .. |Chat| image:: https://badges.gitter.im/Join%20Chat.svg
-    :alt: Join the chat at https://gitter.im/carlosp420/VoSeq
-    :target: https://gitter.im/carlosp420/VoSeq?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+    :alt: Join the chat at https://gitter.im/VoSeq/VoSeq
+    :target: https://gitter.im/VoSeq/VoSeq?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 
 .. |Python_versions| image:: https://img.shields.io/badge/python-3.4%203.5-blue.svg
     :alt: Python versions
@@ -29,7 +29,7 @@ VoSeq
 Contents
 ========
 
-* `VoSeq is being rewritten`_
+* `The new VoSeq is here`_
 * `New features`_
 * `Quick install of VoSeq using Vagrant (Recommended)`_
 * `Installation instructions`_
@@ -42,32 +42,32 @@ Contents
 * `Upgrade VoSeq's software`_
 * `Database backups`_
 
-`Full documentation <http://carlosp420.github.io/VoSeq/>`__.
+`Full documentation <http://voseq.github.io/VoSeq/>`__.
 
-VoSeq is being rewritten
-========================
+The new VoSeq is here
+=====================
 
-We are rebuilding VoSeq from scratch. We decided to migrate from PHP to
+We have rebuilt VoSeq from scratch. We decided to migrate from PHP to
 Python by using the framework Django. We also moved from MySQL to
 PostgreSQL.
 
 You can still download the old VoSeq v1.7.4 from
-`here <https://github.com/carlosp420/VoSeq/releases/tag/v1.7.4>`__. But
+`here <https://github.com/VoSeq/VoSeq/releases/tag/v1.7.4>`__. But
 be aware that we will not be doing major maintenance of that code.
-
-Here is a test installation of the old VoSeq (v1.7.0)
-http://www.nymphalidae.net/VoSeq/
 
 More details about the migration can be found in our `discussion
 list <https://groups.google.com/forum/#!topic/voseq-discussion-list/wQ-E0Xcimgw>`__.
 
 VoSeq 2.0.0 is the future!
+Here is a test installation of the new VoSeq (v2.0)
+http://try.voseq.com/
+
 
 New Features
 ============
 Query suggestions for simple taxon searches:
 
-.. image:: https://raw.githubusercontent.com/carlosp420/VoSeq/master/imgs/simple_search_suggestion.png
+.. image:: https://raw.githubusercontent.com/VoSeq/VoSeq/master/imgs/simple_search_suggestion.png
 
 Quick install of VoSeq using Vagrant (Recommended)
 ==================================================
@@ -83,7 +83,7 @@ Assuming that you have installed [GIT](https://git-scm.com/downloads), you need 
 
 .. code:: shell
 
-	git clone https://github.com/carlosp420/VoSeq.git
+	git clone https://github.com/VoSeq/VoSeq.git
 
 Just go to the VoSeq's directory:
 
@@ -164,14 +164,14 @@ These instructions assume that your libraries are up to date and that you have P
 virtual environments installed. Python3 is recommended.
 
 **Step 1: get VoSeq.**
-Clone or `download <https://github.com/carlosp420/VoSeq/releases>`__ VoSeq to your preferred directory.
+Clone or `download <https://github.com/VoSeq/VoSeq/releases>`__ VoSeq to your preferred directory.
 We recommend cloning VoSeq as it will be easier to do software upgrades with on single command:
 
 * To clone VoSeq:
 
 .. code:: shell
 
-    git clone https://github.com/carlosp420/VoSeq.git
+    git clone https://github.com/VoSeq/VoSeq.git
 
 
 * To upgrade VoSeq to newer versions:
