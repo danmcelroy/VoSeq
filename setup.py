@@ -44,7 +44,7 @@ setup(
     name='VoSeq',
     version=version,
     author='Carlos Pena, Tobias Malm, Victor Mezarino',
-    author_email='carlosp420@gmail.com',
+    author_email='mycalesis@gmail.com',
     packages=[
         'voseq',
     ],
@@ -52,8 +52,8 @@ setup(
     install_requires=requirements,
     license='BSD',
     classifiers=[
-        'Development Status :: 4 - Beta',
-        'Intended Audience :: Developers',
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Molecular Biologists',
         'Natural Language :: English',
         'License :: OSI Approved :: BSD License',
         'Programming Language :: Python',
