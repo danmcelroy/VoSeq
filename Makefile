@@ -1,4 +1,4 @@
-.PHONY: docs serve test migrations import index collectstatic admin
+.PHONY: docs serve test migrations import index collectstatic admin test_installation
 
 help:
 	@echo "docs - build documentation in HTML format"
@@ -12,6 +12,7 @@ help:
 	@echo "update_index - update the database index. Required. Syncs the data and its index"
 	@echo "update_index_production - update the production (deployed) database index. Required. Syncs the data and its index"
 	@echo "admin - create administrator user for your VoSeq installation"
+	@echo "test_installation - additional configuration steps for test installation"
 
 clean: clean-build clean-pyc
 
@@ -80,3 +81,8 @@ test:
 	    core create_dataset genbank_fasta public_interface stats view_genes genbank_fasta gene_table \
 	    voucher_table gbif overview_table \
 	    --settings=voseq.settings.testing
+
+test_installation: migrations test_import stats
+	sed -i 's/<\/h1>/<br \/><small>Write <b>user<\/b> and <b>pass<\/b> as username and password<\/small><\/h1>/g' voseq/public_interface/templates/registration/login.html
+	make collectstatic
+	cp -r /var/www/VoSeq/static/media/* /var/www/VoSeq/media/.

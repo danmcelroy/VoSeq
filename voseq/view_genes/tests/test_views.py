@@ -20,7 +20,7 @@ class TestViews(TestCase):
 
     def test_genes_with_number_of_vouchers(self):
         response = self.client.get('/genes/')
-        expected = '3 vouchers'
+        expected = '6 vouchers'
         result = str(response.content)
         self.assertTrue(expected in result)
 
