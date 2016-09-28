@@ -8,7 +8,7 @@ Unipath==1.1
 psycopg2==2.6.1
 pytz>=2015.4
 django-crispy-forms==1.6.0
-django-import-export==0.4.2
+git+https://github.com/carlosp420/django-import-export.git@save_instance-bug
 django-registration-redux==1.4
 django-debug-toolbar>=1.3.2
 django-suit==0.2.21
