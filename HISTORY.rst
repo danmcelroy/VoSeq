@@ -1,6 +1,13 @@
 HISTORY
 -------
 
+2.0.1 (2016-09-28)
+++++++++++++++++++
+
+- Temporal fix for django-import-export that issued errors for the function
+  `self.save_instance` when importing vouchers.
+
+
 2.0 (2016-09-26)
 ++++++++++++++++
 

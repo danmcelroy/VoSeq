@@ -20,7 +20,7 @@ requirements = [
     'psycopg2==2.6.1',
     'pytz>=2015.4',
     'django-crispy-forms==1.4.0',
-    'django-import-export==0.4.2',
+    'django-import-export==0.5.0',
     'django-registration-redux==1.2',
     'django-debug-toolbar>=1.3.2',
     'django-suit>=0.2.13',
