@@ -42,7 +42,7 @@ class BatchImportVouchersResource(resources.ModelResource):
                   'determined_by', 'sex', 'extraction', 'extraction_tube',
                   'date_extraction', 'published_in', 'notes',
                   )
-    def save_instance(self, instance, dry_run=False):
+    def save_instance(self, instance, using_transactions, dry_run=False):
         if dry_run:
             if coordinates_validated(instance) is None:
                 instance.latitude = ""
@@ -142,8 +142,10 @@ class VouchersAdmin(ImportExportModelAdmin):
 class SequencesAdmin(ImportExportModelAdmin):
     # TODO let users know that code and genecode keywords act as AND boolean search
     search_fields = ['=code__code', '=gene_code']
-    list_display = ['code', 'gene_code', 'genbank', 'accession', 'lab_person', 'notes', 'time_edited', 'time_created']
-    fields = ['code', 'gene_code', 'sequences', 'genbank', 'accession', 'lab_person', 'notes']
+    list_display = ['code', 'gene_code', 'genbank', 'accession', 'lab_person',
+                    'notes', 'time_edited', 'time_created']
+    fields = ['code', 'gene_code', 'sequences', 'genbank', 'accession',
+              'lab_person', 'notes']
     form = SequencesAdminForm
     resource_class = BatchImportSequencesResource
 
