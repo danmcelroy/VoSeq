@@ -12,8 +12,8 @@ version = voseq.__version__
 requirements = [
     'amas==0.2',
     'biopython==1.68',
-    'Django==1.10.1',
-    'Pillow==3.2.0',
+    'Django==1.10.2',
+    'Pillow==3.3.1',
     'pyprind==2.9.3',
     'elasticsearch==1.4',
     'Unipath==1.1',

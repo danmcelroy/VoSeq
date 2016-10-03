@@ -2,16 +2,13 @@
 VoSeq
 =====
 
-|BuildStatus| |CoverageStatus| |Dependency Status| |Python_versions| |Chat|
+|BuildStatus| |CoverageStatus| |Python_versions| |Chat|
 
 .. |BuildStatus| image:: https://travis-ci.org/VoSeq/VoSeq.svg
     :target: https://travis-ci.org/VoSeq/VoSeq
 
 .. |CoverageStatus| image:: https://img.shields.io/coveralls/VoSeq/VoSeq.svg
     :target: https://coveralls.io/r/VoSeq/VoSeq?branch=master
-
-.. |Dependency Status| image:: https://gemnasium.com/badges/github.com/carlosp420/VoSeq.svg
-    :target: https://gemnasium.com/github.com/carlosp420/VoSeq
 
 .. |Chat| image:: https://badges.gitter.im/Join%20Chat.svg
     :alt: Join the chat at https://gitter.im/VoSeq/VoSeq
