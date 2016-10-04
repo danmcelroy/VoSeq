@@ -1,6 +1,11 @@
 HISTORY
 -------
 
+2.0.4 (2016-10-04)
+++++++++++++++++++
+
+- Fixed bug when validating coordinates during import. Fixes #357
+
 2.0.3 (2016-10-03)
 ++++++++++++++++++
 
