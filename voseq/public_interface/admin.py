@@ -44,30 +44,24 @@ class BatchImportVouchersResource(resources.ModelResource):
                   )
     def save_instance(self, instance, using_transactions, dry_run=False):
         if dry_run:
-            if coordinates_validated(instance) is None:
-                instance.latitude = ""
-                instance.longitude = ""
-            elif not coordinates_validated(instance):
-                raise Exception("Latitude or Longitude are in wrong format: {!r}. "
+            if instance.latitude and not coordinate_validated(instance.latitude):
+                raise Exception("Latitude is in wrong format: {!r}. "
+                                "Use decimal point.".format(instance.latitude))
+            if instance.longitude and not coordinate_validated(instance.longitude):
+                raise Exception("Longitude is in wrong format: {!r}. "
                                 "Use decimal point.".format(instance.latitude))
         else:
             instance.save()
 
 
-def coordinates_validated(instance):
+def coordinate_validated(coord):
     """Sometimes user inputs coordinates with comma."""
     try:
-        float(instance.latitude)
+        float(coord)
     except ValueError:
         return False
     except TypeError:
-        return None
-    try:
-        float(instance.longitude)
-    except ValueError:
         return False
-    except TypeError:
-        return None
     return True
 
 
