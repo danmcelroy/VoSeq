@@ -69,8 +69,11 @@ class BatchImportSequencesResource(resources.ModelResource):
     class Meta:
         model = Sequences
         import_id_fields = ('code', 'gene_code')
-        fields = ('code', 'gene_code', 'sequences', 'accession', 'lab_person', 'genbank',
-                  'notes')
+        fields = (
+            'code', 'gene_code', 'accession', 'lab_person', 'genbank', 'notes',
+            'sequences',
+        )
+
 
 
 # Customize what and the way you show it
