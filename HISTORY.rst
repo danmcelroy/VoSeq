@@ -1,6 +1,11 @@
 HISTORY
 -------
 
+2.0.5 (2016-12-21)
+++++++++++++++++++
+
+- Fixed that did not allow batch upload of sequences.
+
 2.0.4 (2016-10-04)
 ++++++++++++++++++
 
