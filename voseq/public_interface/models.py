@@ -232,7 +232,7 @@ class Sequences(models.Model):
         super(Sequences, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.code.code + ' ' + self.gene_code
+        return "sequence"
 
 
 class Primers(models.Model):
