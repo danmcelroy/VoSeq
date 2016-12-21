@@ -20,5 +20,5 @@ class TestModels(TestCase):
     def test_sequences_str(self):
         voucher_model = Vouchers.objects.get(code='CP100-10')
         sequences_model = Sequences.objects.get(code=voucher_model, gene_code='COI')
-        expected = 'CP100-10 COI'
+        expected = 'sequence'
         self.assertEqual(expected, sequences_model.__str__())
