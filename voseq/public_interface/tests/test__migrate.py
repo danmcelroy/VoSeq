@@ -7,4 +7,5 @@ class Test_Migrate(unittest.TestCase):
     def test_get_as_tuple(self):
         my_string = "|14799231204"
         result = get_as_tuple(my_string)
-        self.assertEqual("", result)
+        expected = ("14799231204",)
+        self.assertEqual(expected, result)
