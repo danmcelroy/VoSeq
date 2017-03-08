@@ -10,6 +10,7 @@ from os.path import basename
 import pytz
 import re
 from urllib import parse
+import sys
 import xml.etree.ElementTree as ET
 
 from Bio.Alphabet import IUPAC
@@ -66,12 +67,12 @@ class ParseXML(object):
         if item['voucher_image'] == 'na.gif' or item['thumbnail'] == 'na.gif':
             return None, None
 
-        item['voucher_image'] = self.get_as_tuple(item['voucher_image'], got_flickr)
-        item['thumbnail'] = self.get_as_tuple(item['thumbnail'], got_flickr)
+        item['voucher_image'] = get_as_tuple(item['voucher_image'], got_flickr)
+        item['thumbnail'] = get_as_tuple(item['thumbnail'], got_flickr)
 
         imgs = []
         if got_flickr and item['flickr_id']:
-            item['flickr_id'] = self.get_as_tuple(item['flickr_id'], got_flickr)
+            item['flickr_id'] = get_as_tuple(item['flickr_id'], got_flickr)
 
             for idx, i in enumerate(item['voucher_image']):
                 try:
@@ -452,9 +453,9 @@ class ParseXML(object):
                 item['min_altitude'] = None
             del item['altitude']
 
-            if item['latitude'] is not None:
+            if item['latitude'] is not None and item['latitude'] != "NULL":
                 item['latitude'] = float(item['latitude'])
-            if item['longitude'] is not None:
+            if item['longitude'] is not None and item['longitude'] != "NULL":
                 item['longitude'] = float(item['longitude'])
 
             item['date_collection'] = self.parse_collection_date(
@@ -537,7 +538,17 @@ class ParseXML(object):
         primers_objs = []
         for item in self.table_primers_items:
             if {'gene_code': item['gene_code'], 'code': item['code']} in primers_queryset:
-                item['for_sequence'] = Sequences.objects.get(code=item['code'], gene_code=item['gene_code'])
+                try:
+                    item['for_sequence'] = Sequences.objects.get(
+                        code=item['code'],
+                        gene_code=item['gene_code'],
+                    )
+                except Sequences.MultipleObjectsReturned:
+                    print("Multiple sequences for {} {}".format(
+                        item['code'],
+                        item['gene_code'],
+                    ))
+                    continue
             else:
                 print("Could not save primers for sequence: {0} {1}".format(item['code'], item['gene_code']))
                 continue
@@ -656,6 +667,10 @@ class ParseXML(object):
             item = self.clean_value(item, 'author')
 
             item = self.clean_value(item, 'country')
+            item = self.clean_value(item, 'latitude')
+            item = self.clean_value(item, 'longitude')
+            item = self.clean_value(item, 'min_altitude')
+            item = self.clean_value(item, 'max_altitude')
             item = self.clean_value(item, 'specific_locality')
             item = self.clean_value(item, 'voucher_locality')
             item = self.clean_value(item, 'collector')
@@ -671,11 +686,18 @@ class ParseXML(object):
             item = self.clean_value(item, 'extraction_tube')
             item = self.clean_value(item, 'extractor')
 
-            voucher_objs.append(Vouchers(**item))
+            # voucher_objs.append(Vouchers(**item))
+            try:
+                Vouchers.objects.create(**item)
+            except ValueError as e:
+                print("Error {}".format(e))
+                for key, value in item.items():
+                    print(key, value, type(value))
+                sys.exit(1)
 
             if not TESTING:
                 bar.update()
-        Vouchers.objects.bulk_create(voucher_objs)
+        # Vouchers.objects.bulk_create(voucher_objs)
 
         flickr_objs = []
         for item in self.table_flickr_images_items:
@@ -691,6 +713,20 @@ class ParseXML(object):
             print("\nUploading table `public_interface_flickrimages`")
 
     def clean_value(self, item, key):
+        if key in ['latitude', 'longitude']:
+            try:
+                item[key] = float(item[key])
+                return item
+            except (TypeError, ValueError):
+                item[key] = None
+                return item
+        if key in ['max_altitude', 'min_altitude']:
+            try:
+                item[key] = int(item[key])
+                return item
+            except (TypeError, ValueError):
+                item[key] = None
+                return item
         if key in item:
             if item[key] is None:
                 item[key] = ''
@@ -703,30 +739,6 @@ class ParseXML(object):
         else:
             item[key] = ''
         return item
-
-    def get_as_tuple(self, string, got_flickr=None):
-        # http://www.nymphalidae.net/VoSeq/pictures/kitten1.jpg
-        as_tupple = ()
-        if string == 'na.gif':
-            return None
-        try:
-            list1 = string.split("|")
-        except AttributeError:
-            list1 = []
-        for item in list1:
-            if item.strip() != '':
-                item = self.strip_domain_from_filename(item, got_flickr)
-                as_tupple += (item,)
-        return as_tupple
-
-    def strip_domain_from_filename(self, item, got_flickr=None):
-        if not got_flickr:
-            disassembled = parse.urlsplit(item)
-            return basename(disassembled.path)
-        elif got_flickr:
-            return item
-        else:
-            return None
 
     def convert_to_int(self, string):
         try:
@@ -856,3 +868,30 @@ def validate_sequence(value):
 
     validation = Validation(True, '')
     return validation
+    
+    
+def get_as_tuple(string, got_flickr=None):
+    # http://www.nymphalidae.net/VoSeq/pictures/kitten1.jpg
+    as_tupple = ()
+    if string == 'na.gif':
+        return None
+    try:
+        list1 = string.split("|")
+    except AttributeError:
+        list1 = []
+    for item in list1:
+        if item.strip() != '':
+            item = strip_domain_from_filename(item, got_flickr)
+            as_tupple += (item,)
+    return as_tupple
+
+
+def strip_domain_from_filename(item, got_flickr=None):
+    if not got_flickr:
+        disassembled = parse.urlsplit(item)
+        return basename(disassembled.path)
+    elif got_flickr:
+        return item
+    else:
+        return None
+
