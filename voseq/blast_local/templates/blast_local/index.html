@@ -7,12 +7,19 @@
 
 {% block content %}
 
+{% if result.error %}
+<div class="alert alert-warning" role="alert">
+  <b>{{ result.error }}</b>
+</div>
+{% endif %}
+
 <div class="panel panel-primary">
   <div class="panel-heading">
     <div class="panel-title">
      <h3 class="panel-title">Blast results:</h3>
     </div>
   </div>
+
 
     <table class="table table-condensed table-striped">
       <tr>
