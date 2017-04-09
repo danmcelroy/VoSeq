@@ -15,6 +15,8 @@
   
     <link rel="shortcut icon" href="static/favicon.ico"/>
   
+  
+  
 
   
 
@@ -32,6 +34,9 @@
   
 
   
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="VoSeq 2.0.0-beta documentation" href="#"/>
         <link rel="next" title="News" href="news.html"/> 
 
@@ -42,21 +47,32 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-        
-          <a href="#" class="icon icon-home"> VoSeq
-        
+          
+            <a href="#" class="icon icon-home"> VoSeq
+          
 
-        
-        </a>
+          
+          </a>
 
-        
+          
+            
+            
+              <div class="version">
+                2.0.0-beta
+              </div>
+            
+          
+
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -65,50 +81,25 @@
   </form>
 </div>
 
-        
-      </div>
+          
+        </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
-          
+            
+            
+              
+            
+            
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="news.html">News</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="news.html#aug-2015">07 Aug 2015</a></li>
-<li class="toctree-l2"><a class="reference internal" href="news.html#mar-2013">28 Mar 2013</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="faq.html#version-1-7-4-and-earlier">Version 1.7.4 and earlier</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#installation-faq">Installation FAQ:</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#post-request-error">POST request error</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#execution-time-error">Execution time error</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#too-many-variables-problem">Too many variables problem</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#mac-permission-problem">Mac permission problem</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#how-to-find-php-ini-and-see-your-php-settings">How to find php.ini and see your PHP settings</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="news.html">News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="intro/overview.html">VoSeq overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro/install.html">Download to install VoSeq</a></li>
-<li class="toctree-l1"><a class="reference internal" href="intro/install.html#installation-guide">Installation guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="intro/install.html#easy-and-quick-install-recommended">Easy and quick install (recommended)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="intro/install.html#long-and-arduous-install">Long and arduous install</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="intro/install.html#create-a-virtual-environment-and-install-dependencies">Create a virtual environment and install dependencies</a></li>
-<li class="toctree-l3"><a class="reference internal" href="intro/install.html#download-and-install-elasticsearch">Download and install elasticsearch</a></li>
-<li class="toctree-l3"><a class="reference internal" href="intro/install.html#download-install-and-configure-postgresql">Download, install and configure PostgreSQL</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="intro/install.html#configure-voseq">Configure VoSeq</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="intro/administrate-server.html">Administrate the server with your installation of VoSeq</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="intro/administrate-server.html#create-an-administrator-account-for-your-voseq-installation">Create an administrator account for your VoSeq installation</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="intro/install.html#installation-guide">Installation guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro/administrate-server.html">Administrate the server with your installation of VoSeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/adding-vouchers.html">Adding vouchers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/adding-genes.html">Adding genes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/adding-sequences.html">Adding sequences</a></li>
@@ -118,69 +109,74 @@
 <li class="toctree-l1"><a class="reference internal" href="usage/upload-voucher-photos.html">Upload voucher photos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/create-voucher-table.html">Create Voucher table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage/update-voucher.html">Update voucher</a></li>
-<li class="toctree-l1"><a class="reference internal" href="update-voseq.html">How to update Voseq</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="update-voseq.html#versions-2-0-0-and-later">Versions 2.0.0 and later</a></li>
-<li class="toctree-l2"><a class="reference internal" href="update-voseq.html#versions-1-7-4-and-earlier">Versions 1.7.4 and earlier</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="update-voseq.html">How to update Voseq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="migrate-mysql.html">Migrate VoSeq&#8217;s MySQL database</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="plugins.html#google-maps-plugin">Google Maps plugin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plugins.html#flickr-plugin">Flickr plugin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plugins.html#blast-plugin">BLAST plugin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plugins.html#integration-with-gbif">Integration with GBIF</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="plugins.html#you-can-share-your-information-hosted-in-voseq-with-gbif">You can share your information hosted in VoSeq with GBIF</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plugins.html#create-a-dump-file-and-use-in-an-ipt-installation">Create a dump file and use in an IPT installation</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="authors.html#development-lead">Development Lead</a></li>
-<li class="toctree-l2"><a class="reference internal" href="authors.html#contributors">Contributors</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="thanks.html">Thanks</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="thanks.html#libraries">Libraries:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="thanks.html#beta-testers">Beta Testers:</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="thanks.html">Thanks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev/development.html">Development of VoSeq</a></li>
 </ul>
 
+            
           
-        
+        </div>
       </div>
-      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="#">VoSeq</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">VoSeq</a>
+        
       </nav>
 
 
       
       <div class="wy-nav-content">
         <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="#">Docs</a> &raquo;</li>
-      
-    <li>Welcome to VoSeq 2.0.0-beta documentation!</li>
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Welcome to VoSeq 2.0.0-beta documentation!</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="sources/index.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
-          <div role="main" class="document">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="welcome-to-voseq-version-documentation">
 <h1>Welcome to VoSeq 2.0.0-beta documentation!<a class="headerlink" href="#welcome-to-voseq-version-documentation" title="Permalink to this headline">¶</a></h1>
@@ -193,7 +189,7 @@ DNA sequences with a few clicks. It also has
 <a class="reference external" href="http://en.wikipedia.org/wiki/BLAST/">BLAST</a> capabilities, meaning that you
 can find out whether one particular
 DNA sequence is most similar to other sequence in <a class="reference external" href="http://www.ncbi.nlm.nih.gov/genbank/">NCBI GenBank</a>. You can also BLAST your sequence
-against all others in your VoSeq database (see <a class="reference internal" href="plugins.html#blast-plugin"><span>BLAST plugin</span></a> section for
+against all others in your VoSeq database (see <a class="reference internal" href="plugins.html#blast-plugin"><span class="std std-ref">BLAST plugin</span></a> section for
 details).</p>
 <p>VoSeq is written in <a class="reference external" href="https://www.python.org/">Python</a>. It uses
 <a class="reference external" href="http://www.postgresql.org/">PostgreSQL</a> as database back-end and it is
@@ -206,7 +202,7 @@ server service.</p>
 <div class="section" id="getting-help">
 <h2>Getting help<a class="headerlink" href="#getting-help" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Try the <a class="reference internal" href="faq.html"><em>FAQ</em></a> &#8211; with answers to common questions.</li>
+<li>Try the <a class="reference internal" href="faq.html"><span class="doc">FAQ</span></a> &#8211; with answers to common questions.</li>
 <li>If you need help regarding installation or usage of th application, please
 contact <a class="reference external" href="mailto:mycalesis&#37;&#52;&#48;gmail&#46;com">Carlos Peña</a>.</li>
 <li>You can also subscribe to VoSeq&#8217;s discussion list on
@@ -220,11 +216,11 @@ contact <a class="reference external" href="mailto:mycalesis&#37;&#52;&#48;gmail
 <div class="toctree-wrapper compound">
 </div>
 <dl class="docutils">
-<dt><a class="reference internal" href="intro/overview.html"><em>VoSeq overview</em></a></dt>
+<dt><a class="reference internal" href="intro/overview.html"><span class="doc">VoSeq overview</span></a></dt>
 <dd>Find out what VoSeq can do. It might be right for you.</dd>
-<dt><a class="reference internal" href="intro/install.html"><em>Download to install VoSeq</em></a></dt>
+<dt><a class="reference internal" href="intro/install.html"><span class="doc">Download to install VoSeq</span></a></dt>
 <dd>Install VoSeq on your computer or server.</dd>
-<dt><a class="reference internal" href="intro/install.html#configure"><span>Configure VoSeq</span></a></dt>
+<dt><a class="reference internal" href="intro/install.html#configure"><span class="std std-ref">Configure VoSeq</span></a></dt>
 <dd>Create a <code class="docutils literal"><span class="pre">conf.json</span></code> file to specify your settings.</dd>
 </dl>
 </div>
@@ -242,47 +238,58 @@ would be great if you cite us as a source:</p>
 <div class="section" id="using-voseq">
 <h2>Using VoSeq<a class="headerlink" href="#using-voseq" title="Permalink to this headline">¶</a></h2>
 <dl class="docutils">
-<dt><a class="reference internal" href="intro/administrate-server.html"><em>Administrate the server with your installation of VoSeq</em></a></dt>
+<dt><a class="reference internal" href="intro/administrate-server.html"><span class="doc">Administrate the server with your installation of VoSeq</span></a></dt>
 <dd>Learn how to maintain your installation of VoSeq</dd>
-<dt><a class="reference internal" href="usage/adding-vouchers.html"><em>Adding vouchers</em></a></dt>
+<dt><a class="reference internal" href="usage/adding-vouchers.html"><span class="doc">Adding vouchers</span></a></dt>
 <dd>Learn how to create records for voucher specimens in VoSeq.</dd>
-<dt><a class="reference internal" href="usage/adding-genes.html"><em>Adding genes</em></a></dt>
+<dt><a class="reference internal" href="usage/adding-genes.html"><span class="doc">Adding genes</span></a></dt>
 <dd>Learn how to add data about sequenced genes in VoSeq.</dd>
-<dt><a class="reference internal" href="usage/adding-sequences.html"><em>Adding sequences</em></a></dt>
+<dt><a class="reference internal" href="usage/adding-sequences.html"><span class="doc">Adding sequences</span></a></dt>
 <dd>Learn how to upload DNA sequences to VoSeq.</dd>
-<dt><a class="reference internal" href="usage/create-taxonset.html"><em>Create taxonset</em></a></dt>
+<dt><a class="reference internal" href="usage/create-taxonset.html"><span class="doc">Create taxonset</span></a></dt>
 <dd>Learn how to group set of vouchers in TaxonSets.</dd>
-<dt><a class="reference internal" href="usage/create-datasets.html"><em>Create datasets</em></a></dt>
+<dt><a class="reference internal" href="usage/create-datasets.html"><span class="doc">Create datasets</span></a></dt>
 <dd>Learn how to create dataset files for phylogenetic software.</dd>
-<dt><a class="reference internal" href="usage/search.html"><em>Search</em></a></dt>
+<dt><a class="reference internal" href="usage/search.html"><span class="doc">Search</span></a></dt>
 <dd>Learn how to do simple and advanced searches.</dd>
-<dt><a class="reference internal" href="usage/upload-voucher-photos.html"><em>Upload voucher photos</em></a></dt>
+<dt><a class="reference internal" href="usage/upload-voucher-photos.html"><span class="doc">Upload voucher photos</span></a></dt>
 <dd>Learn how to upload voucher pictures in VoSeq.</dd>
-<dt><a class="reference internal" href="usage/create-voucher-table.html"><em>Create Voucher table</em></a></dt>
+<dt><a class="reference internal" href="usage/create-voucher-table.html"><span class="doc">Create Voucher table</span></a></dt>
 <dd>Learn how to export data ready for Excel tables.</dd>
-<dt><a class="reference internal" href="usage/update-voucher.html"><em>Update voucher</em></a></dt>
+<dt><a class="reference internal" href="usage/update-voucher.html"><span class="doc">Update voucher</span></a></dt>
 <dd>Learn how to update voucher and sequence data.</dd>
 </dl>
 </div>
 <div class="section" id="management-of-voseq">
 <h2>Management of VoSeq<a class="headerlink" href="#management-of-voseq" title="Permalink to this headline">¶</a></h2>
 <dl class="docutils">
-<dt><a class="reference internal" href="update-voseq.html"><em>How to update Voseq</em></a></dt>
+<dt><a class="reference internal" href="update-voseq.html"><span class="doc">How to update Voseq</span></a></dt>
 <dd>Upgrading VoSeq from versions 1.7.4 and greater can be done rather simply if you
 downloaded VoSeq using <code class="docutils literal"><span class="pre">git</span></code>.</dd>
-<dt><a class="reference internal" href="plugins.html"><em>Plugins</em></a></dt>
+<dt><a class="reference internal" href="plugins.html"><span class="doc">Plugins</span></a></dt>
 <dd>Some tools in VoSeq can be enabled by setting up plugins.</dd>
+</dl>
+</div>
+<div class="section" id="development-of-voseq">
+<h2>Development of VoSeq<a class="headerlink" href="#development-of-voseq" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><a class="reference internal" href="dev/development.html"><span class="doc">Development of VoSeq</span></a></dt>
+<dd>How to develop VoSeq.</dd>
 </dl>
 </div>
 </div>
 
 
+           </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="news.html" class="btn btn-neutral float-right" title="News" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="news.html" class="btn btn-neutral float-right" title="News" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>
@@ -293,10 +300,11 @@ downloaded VoSeq using <code class="docutils literal"><span class="pre">git</spa
   <div role="contentinfo">
     <p>
         &copy; Copyright 2013-2015, Carlos Peña, Tobias Malm.
-      Last updated on Sep 09, 2015.
+      Last updated on Apr 09, 2017.
+
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -317,7 +325,8 @@ downloaded VoSeq using <code class="docutils literal"><span class="pre">git</spa
             VERSION:'2.0.0-beta',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: ''
         };
     </script>
       <script type="text/javascript" src="static/jquery.js"></script>

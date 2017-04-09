@@ -48,7 +48,7 @@ html:
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 
-release:
+release: text
 	@echo
 	@echo "Copying static files"
 	cp -r build/html/_static/* ../static/.
@@ -144,6 +144,7 @@ text:
 	$(SPHINXBUILD) -b text $(ALLSPHINXOPTS) $(BUILDDIR)/text
 	@echo
 	@echo "Build finished. The text files are in $(BUILDDIR)/text."
+	cp -r $(BUILDDIR)/text/* ../sources/
 
 man:
 	$(SPHINXBUILD) -b man $(ALLSPHINXOPTS) $(BUILDDIR)/man

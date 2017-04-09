@@ -132,13 +132,15 @@ Exit the virtual environment for now to continue from the shell:
 Download and install elasticsearch
 """"""""""""""""""""""""""""""""""
 
-For elasticsearch, java needs to be installed. Mac users can download and install ``elasticsearch`` from here:
+For elasticsearch, java needs to be installed. Mac users can download and install ``elasticsearch``
+from here:
+
 http://www.elasticsearch.org/overview/elkdownloads/. In Linux, you can do:
 
 .. code:: shell
 
-    wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.5.2.deb
-    sudo dpkg -i elasticsearch-1.5.2.deb
+    wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.3.deb
+    sudo dpkg -i elasticsearch-1.7.3.deb
 
 The bin directory of elasticsearch should be added automatically to your PATH. If not, add the following
 line to your ``.profile`` (Linux) or ``.bash_profile`` (macOSX) file:
@@ -212,7 +214,8 @@ and write in the following content:
     "DB_PORT": "5432",
     "DB_HOST": "localhost",
     "GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key",
-    "PHOTOS_REPOSITORY": "local"
+    "PHOTOS_REPOSITORY": "local",
+    "ELASTICSEARCH": "true"
     }
 
 If you want to host your photos in Flickr you need to change the last parameter

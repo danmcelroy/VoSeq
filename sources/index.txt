@@ -74,6 +74,7 @@ Start here
    plugins
    authors
    thanks
+   dev/development
 
 :doc:`intro/overview`
    Find out what VoSeq can do. It might be right for you.
@@ -144,3 +145,11 @@ Management of VoSeq
 
 :doc:`plugins`
     Some tools in VoSeq can be enabled by setting up plugins.
+
+
+====================
+Development of VoSeq
+====================
+
+:doc:`dev/development`
+    How to develop VoSeq.
