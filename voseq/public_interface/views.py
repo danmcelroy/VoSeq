@@ -2,6 +2,7 @@ from itertools import chain
 import json
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.http import Http404
 from django.http import HttpResponse
@@ -74,17 +75,29 @@ def search(request):
         return redirect('/')
 
     form = SearchForm(request.GET)
-    sqs = form.search()
-    sqs.spelling_suggestion()
-
-    search_view = VoSeqSearchView(
-        template='public_interface/search_results.html',
-        searchqueryset=sqs,
-        form_class=SearchForm,
-        url_encoded_query=request.GET.urlencode(),
-    )
-    search_view.__call__(request)
-    return search_view.create_response()
+    if settings.ELASTICSEARCH is True:
+        sqs = form.search()
+        sqs.spelling_suggestion()
+        search_view = VoSeqSearchView(
+            template='public_interface/search_results.html',
+            searchqueryset=sqs,
+            form_class=SearchForm,
+            url_encoded_query=request.GET.urlencode(),
+        )
+        search_view.__call__(request)
+        return search_view.create_response()
+    else:
+        sqs = Vouchers.objects.filter(
+            Q(genus__icontains=query) | Q(species__icontains=query) | Q(code__icontains=query),
+        )
+        return render(
+            request,
+            'public_interface/search_results.html',
+            {
+                'result_count': len(sqs),
+                'page': {'object_list': sqs},
+            },
+        )
 
 
 def autocomplete(request):
