@@ -86,7 +86,8 @@ if [[ ! -f /vagrant/config.json ]]; then
         "DB_PORT": "5432",
         "DB_HOST": "localhost",
         "GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key",
-        "PHOTOS_REPOSITORY": "local"
+        "PHOTOS_REPOSITORY": "local",
+        "ELASTICSEARCH": "true"
     }
     ' >  /vagrant/config.json
 fi
