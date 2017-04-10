@@ -1,6 +1,6 @@
 import sys
 
-from .base import *
+from .local import *
 
 PHOTOS_REPOSITORY = "local"
 ELASTICSEARCH = True
