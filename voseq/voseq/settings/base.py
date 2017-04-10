@@ -98,52 +98,6 @@ ROOT_URLCONF = 'voseq.urls'
 
 WSGI_APPLICATION = 'voseq.wsgi.application'
 
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'haystack',
-        'INCLUDE_SPELLING': True,
-        'EXCLUDED_INDEXES': [
-            'public_interface.search_indexes.AdvancedSearchIndex',
-            'public_interface.search_indexes.AutoCompleteIndex',
-            'public_interface.search_indexes.VouchersIndex',
-        ],
-    },
-    'autocomplete': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'autocomplete',
-        'INCLUDE_SPELLING': False,
-        'EXCLUDED_INDEXES': [
-            'public_interface.search_indexes.SimpleSearchIndex',
-            'public_interface.search_indexes.VouchersIndex',
-        ],
-    },
-    'vouchers': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'vouchers',
-        'INCLUDE_SPELLING': False,
-        'EXCLUDED_INDEXES': [
-            'public_interface.search_indexes.SimpleSearchIndex',
-            'public_interface.search_indexes.AdvancedSearchIndex',
-            'public_interface.search_indexes.AutoCompleteIndex',
-        ],
-    },
-    'advanced_search': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'advanced_search',
-        'INCLUDE_SPELLING': False,
-        'EXCLUDED_INDEXES': [
-            'public_interface.search_indexes.SimpleSearchIndex',
-            'public_interface.search_indexes.VouchersIndex',
-        ],
-    },
-}
-HAYSTACK_DEFAULT_OPERATOR = 'AND'
-# HAYSTACK_IDENTIFIER_METHOD = 'public_interface.models.get_identifier'
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
