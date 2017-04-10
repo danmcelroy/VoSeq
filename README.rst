@@ -190,6 +190,10 @@ Exit the virtual environment for now to continue from the shell:
     deactivate
 
 **Step 3: download and install elasticsearch.**
+Elasticsearch is needed to enable the advanced search tool and auto suggestions. By default, the
+elasticsearch is enabled. You can disable it in the `config.json` file by using the key:value
+`"ELASTICSEARCH": "false"`. In such case, only the general search will work.
+
 Use elasticsearch versions 1.7.3 or below. The newer versions 2.0+ currently
 do not work with VoSeq.
 For elasticsearch, java needs to be installed. Mac users can download and install ``elasticsearch`` from here:
@@ -262,7 +266,8 @@ and write in the following content:
     "DB_PORT": "5432",
     "DB_HOST": "localhost",
     "GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key",
-    "PHOTOS_REPOSITORY": "local"
+    "PHOTOS_REPOSITORY": "local",
+    "ELASTICSEARCH": "true"
     }
 
 If you want to host your photos in Flickr you need to change the last parameter
