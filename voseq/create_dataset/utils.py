@@ -145,17 +145,18 @@ class CreateDataset(object):
         """
         seqs_dict = {}
 
-        all_seqs = Sequences.objects.all().values('code_id',
-                                                  'gene_code',
-                                                  'sequences').order_by('code_id')
+        all_seqs = Sequences.objects.filter(
+            code__in=self.voucher_codes,
+            gene_code__in=self.gene_codes,
+        ).values('code_id', 'gene_code', 'sequences').order_by('code_id')
+
         for seq in all_seqs:
             code = seq['code_id']
             gene_code = seq['gene_code']
 
-            if code in self.voucher_codes and gene_code in self.gene_codes:
-                if code not in seqs_dict:
-                    seqs_dict[code] = {gene_code: ''}
-                seqs_dict[code][gene_code] = seq
+            if code not in seqs_dict:
+                seqs_dict[code] = {gene_code: ''}
+            seqs_dict[code][gene_code] = seq
         return seqs_dict
 
     def build_seq_obj(self, code, gene_code, our_taxon_names, all_seqs):
@@ -221,10 +222,12 @@ class CreateDataset(object):
         """
         vouchers_with_taxon_names = {}
 
-        all_vouchers = Vouchers.objects.all().order_by('code').values('code', 'orden', 'superfamily',
-                                                                      'family', 'subfamily', 'tribe',
-                                                                      'subtribe', 'genus', 'species',
-                                                                      'subspecies', 'author', 'hostorg',)
+        # TODO: add gene_code. drop it for now
+        taxon_names = [i.lower() for i in self.taxon_names]
+        taxon_names.remove("genecode")
+        all_vouchers = Vouchers.objects.filter(
+            code__in=self.voucher_codes,
+        ).order_by('code').values(*taxon_names)
         for voucher in all_vouchers:
             code = voucher['code']
             if code in self.voucher_codes:
