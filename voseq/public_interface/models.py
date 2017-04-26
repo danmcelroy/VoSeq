@@ -147,7 +147,8 @@ class Vouchers(TimeStampedModel):
         (LOST, 'lost'),
         (UNKNOWN, 'unknown'),
     )
-    code = models.CharField(max_length=300, unique=True, primary_key=True, help_text="Voucher code.")
+    code = models.CharField(
+        max_length=300, unique=True, primary_key=True, db_index=True, help_text="Voucher code.")
     orden = models.TextField(blank=True)
     superfamily = models.TextField(blank=True)
     family = models.TextField(blank=True)
@@ -208,8 +209,8 @@ class Vouchers(TimeStampedModel):
 
 
 class Sequences(models.Model):
-    code = models.ForeignKey(Vouchers, help_text='This is your voucher code.')
-    gene_code = models.CharField(max_length=100)
+    code = models.ForeignKey(Vouchers, db_index=True, help_text='This is your voucher code.')
+    gene_code = models.CharField(max_length=100, db_index=True)
     sequences = models.TextField(blank=True)
     accession = models.CharField(max_length=100, blank=True)
     lab_person = models.CharField(max_length=100, blank=True)
