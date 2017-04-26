@@ -229,14 +229,12 @@ class CreateDataset(object):
             code__in=self.voucher_codes,
         ).order_by('code').values(*taxon_names)
         for voucher in all_vouchers:
+            print(voucher)
             code = voucher['code']
-            if code in self.voucher_codes:
-                obj = dict()
-                for taxon_name in self.taxon_names:
-                    if taxon_name != 'GENECODE':
-                        taxon_name = taxon_name.lower()
-                        obj[taxon_name] = voucher[taxon_name]
-                vouchers_with_taxon_names[code] = obj
+            obj = dict()
+            for taxon_name in taxon_names:
+                obj[taxon_name] = voucher[taxon_name]
+            vouchers_with_taxon_names[code] = obj
 
         return vouchers_with_taxon_names
 
