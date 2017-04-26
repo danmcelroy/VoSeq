@@ -224,18 +224,17 @@ class CreateDataset(object):
 
         # TODO: add gene_code. drop it for now
         taxon_names = [i.lower() for i in self.taxon_names]
-        taxon_names.remove("genecode")
+        try:
+            taxon_names.remove("genecode")
+        except ValueError:
+            pass
         all_vouchers = Vouchers.objects.filter(
             code__in=self.voucher_codes,
         ).order_by('code').values(*taxon_names)
         for voucher in all_vouchers:
-            print(voucher)
             code = voucher['code']
-            obj = dict()
-            for taxon_name in taxon_names:
-                obj[taxon_name] = voucher[taxon_name]
-            vouchers_with_taxon_names[code] = obj
-
+            vouchers_with_taxon_names[code] = voucher
+        print(vouchers_with_taxon_names)
         return vouchers_with_taxon_names
 
     def get_gene_codes_metadata(self):
