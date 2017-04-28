@@ -208,7 +208,6 @@ def get_list_of_codes(sqs):
 def filter_results_from_sequence_table(sqs):
     """Need to avoid returning duplicated voucher results"""
     facet_counts = sqs.facet('code', size=90000).facet_counts()
-    print(facet_counts)
     voucher_codes_count = facet_counts['fields']['code']
     if voucher_codes_count:
         voucher_codes = [item[0] for item in voucher_codes_count]
