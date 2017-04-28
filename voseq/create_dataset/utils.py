@@ -160,7 +160,7 @@ class CreateDataset(object):
         return seqs_dict
 
     def build_seq_obj(self, code, gene_code, our_taxon_names, all_seqs):
-        """Builds a SeqRecordExpanded object. I cannot be built, returns None.
+        """Builds a SeqRecordExpanded object. If cannot be built, returns None.
 
         """
         this_voucher_seqs = self.extract_sequence_from_all_seqs_in_db(all_seqs, code, gene_code)
@@ -233,8 +233,8 @@ class CreateDataset(object):
         ).order_by('code').values(*taxon_names)
         for voucher in all_vouchers:
             code = voucher['code']
+            del voucher['code']
             vouchers_with_taxon_names[code] = voucher
-        print(vouchers_with_taxon_names)
         return vouchers_with_taxon_names
 
     def get_gene_codes_metadata(self):
