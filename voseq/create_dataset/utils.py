@@ -224,6 +224,8 @@ class CreateDataset(object):
 
         # TODO: add gene_code. drop it for now
         taxon_names = [i.lower() for i in self.taxon_names]
+        if "code" not in taxon_names:
+            taxon_names.append("code")
         try:
             taxon_names.remove("genecode")
         except ValueError:
