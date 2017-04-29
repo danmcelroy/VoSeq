@@ -19,7 +19,7 @@ class TestCustomCommand(TestCase):
         self.assertEqual("10 vouchers", str(res))
 
     def test_model_voucherspergene_str(self):
-        res = VouchersPerGene.objects.get(id=2)
+        res = VouchersPerGene.objects.get(gene_code="wingless")
         self.assertEqual("10 vouchers in gene wingless", str(res))
 
         for code in ['CP100-11', 'CP100-12', 'CP100-13', 'CP100-14', 'CP100-15',
