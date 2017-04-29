@@ -69,8 +69,8 @@ class CreateDatasetUtilsTest(TestCase):
         self.cleaned_data['taxon_names'] = ['SUPERFAMILY']
         dataset_creator = CreateDataset(self.cleaned_data)
         expected = {
-            'CP100-10': {'superfamily': 'Papilionoidea'},
-            'CP100-11': {'superfamily': 'Papilionoidea'},
+            'CP100-10': {'code': 'CP100-10', 'superfamily': 'Papilionoidea'},
+            'CP100-11': {'code': 'CP100-11', 'superfamily': 'Papilionoidea'},
         }
         result = dataset_creator.get_taxon_names_for_taxa()
         self.assertEqual(expected, result)
