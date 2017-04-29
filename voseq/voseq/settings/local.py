@@ -100,3 +100,6 @@ HAYSTACK_CONNECTIONS = {
 }
 HAYSTACK_DEFAULT_OPERATOR = 'AND'
 # HAYSTACK_IDENTIFIER_METHOD = 'public_interface.models.get_identifier'
+
+if DEBUG is True:
+    INTERNAL_IPS = ["127.0.0.1"]

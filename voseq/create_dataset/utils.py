@@ -145,21 +145,22 @@ class CreateDataset(object):
         """
         seqs_dict = {}
 
-        all_seqs = Sequences.objects.all().values('code_id',
-                                                  'gene_code',
-                                                  'sequences').order_by('code_id')
+        all_seqs = Sequences.objects.filter(
+            code__in=self.voucher_codes,
+            gene_code__in=self.gene_codes,
+        ).values('code_id', 'gene_code', 'sequences').order_by('code_id')
+
         for seq in all_seqs:
             code = seq['code_id']
             gene_code = seq['gene_code']
 
-            if code in self.voucher_codes and gene_code in self.gene_codes:
-                if code not in seqs_dict:
-                    seqs_dict[code] = {gene_code: ''}
-                seqs_dict[code][gene_code] = seq
+            if code not in seqs_dict:
+                seqs_dict[code] = {gene_code: ''}
+            seqs_dict[code][gene_code] = seq
         return seqs_dict
 
     def build_seq_obj(self, code, gene_code, our_taxon_names, all_seqs):
-        """Builds a SeqRecordExpanded object. I cannot be built, returns None.
+        """Builds a SeqRecordExpanded object. If cannot be built, returns None.
 
         """
         this_voucher_seqs = self.extract_sequence_from_all_seqs_in_db(all_seqs, code, gene_code)
@@ -221,20 +222,20 @@ class CreateDataset(object):
         """
         vouchers_with_taxon_names = {}
 
-        all_vouchers = Vouchers.objects.all().order_by('code').values('code', 'orden', 'superfamily',
-                                                                      'family', 'subfamily', 'tribe',
-                                                                      'subtribe', 'genus', 'species',
-                                                                      'subspecies', 'author', 'hostorg',)
+        # TODO: add gene_code. drop it for now
+        taxon_names = [i.lower() for i in self.taxon_names]
+        if "code" not in taxon_names:
+            taxon_names.append("code")
+        try:
+            taxon_names.remove("genecode")
+        except ValueError:
+            pass
+        all_vouchers = Vouchers.objects.filter(
+            code__in=self.voucher_codes,
+        ).order_by('code').values(*taxon_names)
         for voucher in all_vouchers:
             code = voucher['code']
-            if code in self.voucher_codes:
-                obj = dict()
-                for taxon_name in self.taxon_names:
-                    if taxon_name != 'GENECODE':
-                        taxon_name = taxon_name.lower()
-                        obj[taxon_name] = voucher[taxon_name]
-                vouchers_with_taxon_names[code] = obj
-
+            vouchers_with_taxon_names[code] = voucher
         return vouchers_with_taxon_names
 
     def get_gene_codes_metadata(self):
