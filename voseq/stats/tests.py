@@ -28,7 +28,7 @@ class TestCustomCommand(TestCase):
             s = Sequences.objects.get(code=v, gene_code="wingless")
             s.delete()
         call_command('create_stats')
-        res = VouchersPerGene.objects.get(id=1)
+        res = VouchersPerGene.objects.get(gene_code="wingless")
         self.assertEqual("1 voucher in gene wingless", str(res))
 
     def test_create_stats(self):
