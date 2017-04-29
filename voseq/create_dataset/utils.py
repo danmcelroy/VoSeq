@@ -235,7 +235,6 @@ class CreateDataset(object):
         ).order_by('code').values(*taxon_names)
         for voucher in all_vouchers:
             code = voucher['code']
-            del voucher['code']
             vouchers_with_taxon_names[code] = voucher
         return vouchers_with_taxon_names
 
