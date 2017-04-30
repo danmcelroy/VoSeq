@@ -1,6 +1,11 @@
 HISTORY
 -------
 
+2.0.X (201X-XX-XX)
+++++++++++++++++++
+
+- Datasets now include taxon names if required.
+
 2.0.5 (2016-12-21)
 ++++++++++++++++++
 
