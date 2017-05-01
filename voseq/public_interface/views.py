@@ -7,17 +7,18 @@ from django.http import HttpResponseRedirect
 from django.http import Http404
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_protect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.core.paginator import Paginator
 from django.conf import settings
-from django.views.generic.list import ListView
 
 from haystack.forms import SearchForm
 from haystack.query import ValuesSearchQuerySet
 
 from core.utils import get_version_stats
 from core.utils import get_username
-from .utils import VoSeqSearchView
+from .utils import VoSeqSearchView, get_simple_query
 from .models import Vouchers
 from .models import FlickrImages
 from .models import LocalImages
@@ -144,8 +145,18 @@ def search_advanced(request):
     if request.method == 'GET' and bool(request.GET) is not False:
         form = AdvancedSearchForm(request.GET)
 
+        page = request.GET.get('page')
         if form.is_valid():
             sqs = form.search()
+            paginator = Paginator(sqs, 25)
+            try:
+                results = paginator.page(page)
+            except PageNotAnInteger:
+                # If page is not an integer, deliver first page.
+                results = paginator.page(1)
+            except EmptyPage:
+                # If page is out of range (e.g. 9999), deliver last page of results.
+                results = paginator.page(paginator.num_pages)
             """
             search_view = VoSeqSearchView(
                 url_encoded_query=request.GET.urlencode(),
@@ -161,8 +172,9 @@ def search_advanced(request):
                     'public_interface/search_results.html',
                     {
                         'username': username,
-                        'voucher_code_list': sqs,
-                        'simple_query': "self.simple_query",
+                        'results': results,
+                        'voucher_code_list': results,
+                        'simple_query': get_simple_query(request),
                         'url_encoded_query': "self.url_encoded_query",
                         'result_count': len(sqs),
                         'version': version,
