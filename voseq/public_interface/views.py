@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.conf import settings
+from django.views.generic.list import ListView
 
 from haystack.forms import SearchForm
 from haystack.query import ValuesSearchQuerySet
@@ -145,17 +146,28 @@ def search_advanced(request):
 
         if form.is_valid():
             sqs = form.search()
+            """
             search_view = VoSeqSearchView(
                 url_encoded_query=request.GET.urlencode(),
                 template='public_interface/search_results.html',
                 searchqueryset=sqs,
                 form_class=AdvancedSearchForm,
             )
+            """
 
             if sqs is not None:
-                search_view.__call__(request)
-                search_view.query = sqs.query
-                return search_view.create_response()
+                return render(
+                    request,
+                    'public_interface/search_results.html',
+                    {
+                        'username': username,
+                        'voucher_code_list': sqs,
+                        'simple_query': "self.simple_query",
+                        'url_encoded_query': "self.url_encoded_query",
+                        'result_count': len(sqs),
+                        'version': version,
+                        'stats': stats,
+                })
             else:
                 return render(request, 'public_interface/search_results.html',
                               {
