@@ -1,9 +1,37 @@
 import re
 
 from haystack.views import SearchView
+from django.views.generic.list import ListView
 
 from core.utils import get_version_stats
 from core.utils import get_username
+
+
+def get_simple_query(request):
+    url_encoded_query = get_correct_url_query(request.GET.urlencode())
+    simple_query = recover_keyword(url_encoded_query)
+    return simple_query
+
+
+def strip_page(url_encoded_query):
+    this_query = re.sub('page=[0-2]+', '', url_encoded_query)
+    this_query = this_query.replace('&&', '&')
+    this_query = re.sub('^&', '', this_query)
+    this_query = re.sub('&$', '', this_query)
+    return this_query
+
+
+def get_correct_url_query(url_encoded_query):
+    this_query = strip_page(url_encoded_query)
+    return this_query
+
+
+def recover_keyword(url_encoded_query):
+    this_query = re.sub('\w+=Select', ' ', url_encoded_query)
+    this_query = re.sub('\w+=', ' ', this_query)
+    this_query = this_query.replace('&', ' ')
+    this_query = re.sub('\s+', ' ', this_query)
+    return this_query.strip()
 
 
 class VoSeqSearchView(SearchView):
