@@ -139,15 +139,18 @@ def search_advanced(request):
         page = request.GET.get('page')
         if form.is_valid():
             sqs = form.search()
-            paginator = Paginator(sqs, 25)
-            try:
-                results = paginator.page(page)
-            except PageNotAnInteger:
-                # If page is not an integer, deliver first page.
-                results = paginator.page(1)
-            except EmptyPage:
-                # If page is out of range (e.g. 9999), deliver last page of results.
-                results = paginator.page(paginator.num_pages)
+            results = ""
+            paginator = ""
+            if sqs:
+                paginator = Paginator(sqs, 25)
+                try:
+                    results = paginator.page(page)
+                except PageNotAnInteger:
+                    # If page is not an integer, deliver first page.
+                    results = paginator.page(1)
+                except EmptyPage:
+                    # If page is out of range (e.g. 9999), deliver last page of results.
+                    results = paginator.page(paginator.num_pages)
             """
             search_view = VoSeqSearchView(
                 url_encoded_query=request.GET.urlencode(),
