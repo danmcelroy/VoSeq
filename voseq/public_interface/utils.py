@@ -1,7 +1,7 @@
 import re
+from urllib.parse import parse_qs
 
 from haystack.views import SearchView
-from django.views.generic.list import ListView
 
 from core.utils import get_version_stats
 from core.utils import get_username
@@ -27,11 +27,20 @@ def get_correct_url_query(url_encoded_query):
 
 
 def recover_keyword(url_encoded_query):
-    this_query = re.sub('\w+=Select', ' ', url_encoded_query)
-    this_query = re.sub('\w+=', ' ', this_query)
-    this_query = this_query.replace('&', ' ')
-    this_query = re.sub('\s+', ' ', this_query)
-    return this_query.strip()
+    simple_query = ""
+    for key, value in parse_qs(url_encoded_query).items():
+        if value[0] != "Select" and key != "page":
+            simple_query += value[0] + " "
+    return simple_query.strip()
+
+
+def get_voucher_code_list(sqs):
+    if sqs is None:
+        return None
+    code_list = ''
+    for i in sqs:
+        code_list += i.code + '\n'
+    return code_list
 
 
 class VoSeqSearchView(SearchView):

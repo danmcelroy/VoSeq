@@ -3,27 +3,18 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import HttpResponseRedirect
-from django.http import Http404
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.views.decorators.csrf import csrf_protect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render
-from django.shortcuts import redirect
-from django.core.paginator import Paginator
+from django.shortcuts import render, redirect
 from django.conf import settings
 
 from haystack.forms import SearchForm
 from haystack.query import ValuesSearchQuerySet
 
-from core.utils import get_version_stats
-from core.utils import get_username
-from .utils import VoSeqSearchView, get_simple_query
-from .models import Vouchers
-from .models import FlickrImages
-from .models import LocalImages
-from .models import Sequences
-from .models import Primers
+from core.utils import get_version_stats, get_username
+from .utils import VoSeqSearchView, get_simple_query, get_correct_url_query, get_voucher_code_list
+from .models import Vouchers, FlickrImages, LocalImages, Sequences, Primers
 from .forms import AdvancedSearchForm, BatchChangesForm
 
 
@@ -171,11 +162,13 @@ def search_advanced(request):
                     request,
                     'public_interface/search_results.html',
                     {
+                        'page': results,
+                        'paginator': paginator,
                         'username': username,
                         'results': results,
-                        'voucher_code_list': results,
+                        'voucher_code_list': get_voucher_code_list(sqs),
                         'simple_query': get_simple_query(request),
-                        'url_encoded_query': "self.url_encoded_query",
+                        'url_encoded_query': get_correct_url_query(request.GET.urlencode()),
                         'result_count': len(sqs),
                         'version': version,
                         'stats': stats,
