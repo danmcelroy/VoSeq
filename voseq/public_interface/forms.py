@@ -154,16 +154,17 @@ class AdvancedSearchForm(ModelSearchForm):
             sqs = Vouchers.objects.filter(**keywords)
         elif sequence_keywords and not keywords:
             sqs = Sequences.objects.filter(**sequence_keywords)
-            #sqs = filter_results_from_sequence_table(sqs)
         elif sequence_keywords and keywords:
-            sqs = SearchQuerySet().using('vouchers').filter(**keywords)
+            sqs = Vouchers.objects.filter(**keywords)
             if sqs:
-                voucher_code_list = get_list_of_codes(sqs)
-                sqs = SearchQuerySet().using("advanced_search").filter(
-                    **sequence_keywords).filter(code__in=voucher_code_list)
+                voucher_list = sqs
+                sqs = Sequences.objects.filter(
+                    **sequence_keywords,
+                ).filter(
+                    code__in=voucher_list,
+                )
             else:
                 self.no_query_found()
-            sqs = filter_results_from_sequence_table(sqs)
 
         if sqs:
             return sqs
@@ -173,6 +174,7 @@ class AdvancedSearchForm(ModelSearchForm):
     def clean_search_keywords(self):
         keywords = {}
         sequence_keywords = {}
+        print(self.cleaned_data)
         for k, v in self.cleaned_data.items():
             if v != '' and v is not None:
                 # remove after adding this to index
@@ -187,33 +189,13 @@ class AdvancedSearchForm(ModelSearchForm):
                 if k == 'gene_code':
                     sequence_keywords[k] = v.gene_code
                 if k == 'genbank' and v == 'y':
-                    sequence_keywords[k] = 'true'
+                    sequence_keywords[k] = True
                 elif k == 'genbank':
-                    sequence_keywords[k] = 'false'
+                    sequence_keywords[k] = False
                 if k not in ['lab_person', 'accession', 'genbank', 'gene_code']:
                     keywords[k] = v
 
         return keywords, sequence_keywords
-
-
-def get_list_of_codes(sqs):
-    voucher_codes = []
-    for item in sqs:
-        if item not in voucher_codes:
-            voucher_codes.append(item.code)
-    return voucher_codes
-
-
-def filter_results_from_sequence_table(sqs):
-    """Need to avoid returning duplicated voucher results"""
-    facet_counts = sqs.facet('code', size=90000).facet_counts()
-    voucher_codes_count = facet_counts['fields']['code']
-    if voucher_codes_count:
-        voucher_codes = [item[0] for item in voucher_codes_count]
-        filtered_sqs = SearchQuerySet().using("vouchers").filter(code__in=voucher_codes)
-        return filtered_sqs
-    else:
-        return sqs
 
 
 # The following form is for the admin site bacth_changes action

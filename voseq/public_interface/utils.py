@@ -40,10 +40,10 @@ def get_voucher_code_list(sqs):
     try:
         # this is voucher queryset
         code = sqs[0].code
-        code_list = "\n".join(sqs.values_list("code", flat=True))
+        code_list = "\n".join(set(list(sqs.values_list("code", flat=True))))
     except TypeError:
         # this is sequences queryset
-        code_list = "\n".join(sqs.values_list("code__code", flat=True))
+        code_list = "\n".join(set(list(sqs.values_list("code__code", flat=True))))
     return code_list
 
 
