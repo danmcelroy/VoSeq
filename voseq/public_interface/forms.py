@@ -6,7 +6,7 @@ from haystack.forms import ModelSearchForm
 from haystack.query import SearchQuerySet
 from Bio.Alphabet import IUPAC
 
-from public_interface.models import Genes, Vouchers
+from public_interface.models import Genes, Vouchers, Sequences
 
 
 DateInput = partial(forms.DateInput, {'class': 'datepicker form-control',
@@ -152,12 +152,9 @@ class AdvancedSearchForm(ModelSearchForm):
         sqs = ''
         if keywords and not sequence_keywords:
             sqs = Vouchers.objects.filter(**keywords)
-            # print(results)
-            # sqs = SearchQuerySet().using('vouchers').filter(**keywords)
         elif sequence_keywords and not keywords:
-            sqs = SearchQuerySet().using('advanced_search').filter(
-                **sequence_keywords)
-            sqs = filter_results_from_sequence_table(sqs)
+            sqs = Sequences.objects.filter(**sequence_keywords)
+            #sqs = filter_results_from_sequence_table(sqs)
         elif sequence_keywords and keywords:
             sqs = SearchQuerySet().using('vouchers').filter(**keywords)
             if sqs:

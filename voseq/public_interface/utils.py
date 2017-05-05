@@ -37,9 +37,13 @@ def recover_keyword(url_encoded_query):
 def get_voucher_code_list(sqs):
     if sqs is None:
         return None
-    code_list = ''
-    for i in sqs:
-        code_list += i.code + '\n'
+    try:
+        # this is voucher queryset
+        code = sqs[0].code
+        code_list = "\n".join(sqs.values_list("code", flat=True))
+    except TypeError:
+        # this is sequences queryset
+        code_list = "\n".join(sqs.values_list("code__code", flat=True))
     return code_list
 
 
