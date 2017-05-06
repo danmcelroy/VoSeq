@@ -181,9 +181,11 @@ class AdvancedSearchForm(ModelSearchForm):
                 if k == 'models':
                     continue
                 if k in ['lab_person', 'accession']:
-                    sequence_keywords[k] = v
+                    key = "{}__icontains".format(k)
+                    sequence_keywords[key] = v
                 if k == 'gene_code':
-                    sequence_keywords[k] = v.gene_code
+                    key = "{}__icontains".format(k)
+                    sequence_keywords[key] = v.gene_code
                 if k == 'genbank' and v == 'y':
                     sequence_keywords[k] = True
                 elif k == 'genbank':
