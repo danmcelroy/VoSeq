@@ -151,14 +151,15 @@ class AdvancedSearchForm(ModelSearchForm):
         keywords, sequence_keywords = self.clean_search_keywords()
         sqs = ''
         if keywords and not sequence_keywords:
-            sqs = Vouchers.objects.filter(**keywords)
+            sqs = Vouchers.objects.filter(**keywords).distinct("code")
         elif sequence_keywords and not keywords:
-            sqs = Sequences.objects.filter(**sequence_keywords)
+            sqs = Sequences.objects.filter(**sequence_keywords).distinct("code")
         elif sequence_keywords and keywords:
-            sqs = Vouchers.objects.filter(**keywords)
+            sqs = Vouchers.objects.filter(**keywords).distinct("code")
             if sqs:
                 voucher_list = sqs
-                sqs = Sequences.objects.filter(**sequence_keywords).filter(code__in=voucher_list)
+                sqs = Sequences.objects.filter(**sequence_keywords).filter(
+                    code__in=voucher_list).distinct("code")
             else:
                 self.no_query_found()
 
