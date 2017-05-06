@@ -170,7 +170,6 @@ class AdvancedSearchForm(ModelSearchForm):
     def clean_search_keywords(self):
         keywords = {}
         sequence_keywords = {}
-        print(self.cleaned_data)
         for k, v in self.cleaned_data.items():
             if v != '' and v is not None:
                 # remove after adding this to index
@@ -189,7 +188,8 @@ class AdvancedSearchForm(ModelSearchForm):
                 elif k == 'genbank':
                     sequence_keywords[k] = False
                 if k not in ['lab_person', 'accession', 'genbank', 'gene_code']:
-                    keywords[k] = v
+                    key = "{}__icontains".format(k)
+                    keywords[key] = v
 
         return keywords, sequence_keywords
 
