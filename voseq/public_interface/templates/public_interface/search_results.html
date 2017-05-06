@@ -39,28 +39,28 @@
             {% if result.genus %}
                <i>{{ result.genus }}</i>
             {% else %}
-               <i>{{ result.object.code.genus }}</i>
+               <i>{{ result.code.genus }}</i>
             {% endif %}
 
             {% if result.species %}
                <i>{{ result.species}}</i>
             {% else %}
-               <i>{{ result.object.code.species}}</i>
+               <i>{{ result.code.species}}</i>
             {% endif %}
 
           <br />
 
           <small>
-            {% if result.object.code.extractor != None %}
-              By {{ result.object.code.extractor }} on
+            {% if result.code.extractor != None %}
+              By {{ result.code.extractor }} on
             {% else %}
-              By {{ result.object.extractor }} on
+              By {{ result.extractor }} on
             {% endif %}
 
-            {% if result.object.modified != None %}
-               {{ result.object.modified|date }}
+            {% if result.modified != None %}
+               {{ result.modified|date }}
             {% else %}
-               {{ result.object.code.modified|date }}
+               {{ result.code.modified|date }}
             {% endif %}
           </small>
 
