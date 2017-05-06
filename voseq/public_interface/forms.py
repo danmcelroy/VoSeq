@@ -158,11 +158,7 @@ class AdvancedSearchForm(ModelSearchForm):
             sqs = Vouchers.objects.filter(**keywords)
             if sqs:
                 voucher_list = sqs
-                sqs = Sequences.objects.filter(
-                    **sequence_keywords,
-                ).filter(
-                    code__in=voucher_list,
-                )
+                sqs = Sequences.objects.filter(**sequence_keywords).filter(code__in=voucher_list)
             else:
                 self.no_query_found()
 
