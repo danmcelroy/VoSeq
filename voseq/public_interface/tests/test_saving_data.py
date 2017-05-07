@@ -1,4 +1,5 @@
 from django.core.management import call_command
+from django.db import connection
 from django.test import TestCase
 
 from public_interface.models import Sequences
@@ -7,6 +8,8 @@ from public_interface.models import Vouchers
 
 class TestViews(TestCase):
     def setUp(self):
+        with connection.cursor() as cursor:
+            cursor.execute("alter sequence public_interface_vouchers_id_seq restart with 1")
         args = []
         opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
         cmd = 'migrate_db'

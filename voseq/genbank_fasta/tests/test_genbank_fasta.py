@@ -10,8 +10,7 @@ from django.test import Client
 class TestGenBankFasta(TestCase):
     def setUp(self):
         with connection.cursor() as cursor:
-            cursor.execute("alter sequence public_interface_genesets_id_seq restart with 1")
-            cursor.execute("alter sequence public_interface_taxonsets_id_seq restart with 1")
+            cursor.execute("alter sequence public_interface_genes_id_seq restart with 1")
         args = []
         opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
         cmd = 'migrate_db'
