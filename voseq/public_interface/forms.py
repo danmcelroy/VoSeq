@@ -6,7 +6,7 @@ from haystack.forms import ModelSearchForm
 from haystack.query import SearchQuerySet
 from Bio.Alphabet import IUPAC
 
-from public_interface.models import Genes
+from public_interface.models import Genes, Vouchers, Sequences
 
 
 DateInput = partial(forms.DateInput, {'class': 'datepicker form-control',
@@ -151,20 +151,17 @@ class AdvancedSearchForm(ModelSearchForm):
         keywords, sequence_keywords = self.clean_search_keywords()
         sqs = ''
         if keywords and not sequence_keywords:
-            sqs = SearchQuerySet().using('vouchers').filter(**keywords)
+            sqs = Vouchers.objects.filter(**keywords).distinct("code")
         elif sequence_keywords and not keywords:
-            sqs = SearchQuerySet().using('advanced_search').filter(
-                **sequence_keywords)
-            sqs = filter_results_from_sequence_table(sqs)
+            sqs = Sequences.objects.filter(**sequence_keywords).distinct("code")
         elif sequence_keywords and keywords:
-            sqs = SearchQuerySet().using('vouchers').filter(**keywords)
+            sqs = Vouchers.objects.filter(**keywords).distinct("code")
             if sqs:
-                voucher_code_list = get_list_of_codes(sqs)
-                sqs = SearchQuerySet().using("advanced_search").filter(
-                    **sequence_keywords).filter(code__in=voucher_code_list)
+                voucher_list = sqs
+                sqs = Sequences.objects.filter(**sequence_keywords).filter(
+                    code__in=voucher_list).distinct("code")
             else:
                 self.no_query_found()
-            sqs = filter_results_from_sequence_table(sqs)
 
         if sqs:
             return sqs
@@ -184,37 +181,20 @@ class AdvancedSearchForm(ModelSearchForm):
                 if k == 'models':
                     continue
                 if k in ['lab_person', 'accession']:
-                    sequence_keywords[k] = v
+                    key = "{}__icontains".format(k)
+                    sequence_keywords[key] = v
                 if k == 'gene_code':
-                    sequence_keywords[k] = v.gene_code
+                    key = "{}__icontains".format(k)
+                    sequence_keywords[key] = v.gene_code
                 if k == 'genbank' and v == 'y':
-                    sequence_keywords[k] = 'true'
+                    sequence_keywords[k] = True
                 elif k == 'genbank':
-                    sequence_keywords[k] = 'false'
+                    sequence_keywords[k] = False
                 if k not in ['lab_person', 'accession', 'genbank', 'gene_code']:
-                    keywords[k] = v
+                    key = "{}__icontains".format(k)
+                    keywords[key] = v
 
         return keywords, sequence_keywords
-
-
-def get_list_of_codes(sqs):
-    voucher_codes = []
-    for item in sqs:
-        if item not in voucher_codes:
-            voucher_codes.append(item.code)
-    return voucher_codes
-
-
-def filter_results_from_sequence_table(sqs):
-    """Need to avoid returning duplicated voucher results"""
-    facet_counts = sqs.facet('code', size=90000).facet_counts()
-    voucher_codes_count = facet_counts['fields']['code']
-    if voucher_codes_count:
-        voucher_codes = [item[0] for item in voucher_codes_count]
-        filtered_sqs = SearchQuerySet().using("vouchers").filter(code__in=voucher_codes)
-        return filtered_sqs
-    else:
-        return sqs
 
 
 # The following form is for the admin site bacth_changes action

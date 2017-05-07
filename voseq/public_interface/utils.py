@@ -1,9 +1,57 @@
 import re
+from urllib.parse import parse_qs
 
+from haystack.query import SearchQuerySet
 from haystack.views import SearchView
 
 from core.utils import get_version_stats
 from core.utils import get_username
+from public_interface.models import Vouchers
+
+
+def get_simple_query(request):
+    url_encoded_query = get_correct_url_query(request.GET.urlencode())
+    simple_query = recover_keyword(url_encoded_query)
+    return simple_query
+
+
+def strip_page(url_encoded_query):
+    this_query = re.sub('page=[0-2]+', '', url_encoded_query)
+    this_query = this_query.replace('&&', '&')
+    this_query = re.sub('^&', '', this_query)
+    this_query = re.sub('&$', '', this_query)
+    return this_query
+
+
+def get_correct_url_query(url_encoded_query):
+    this_query = strip_page(url_encoded_query)
+    return this_query
+
+
+def recover_keyword(url_encoded_query):
+    simple_query = ""
+    for key, value in parse_qs(url_encoded_query).items():
+        if value[0] != "Select" and key != "page":
+            simple_query += value[0] + " "
+    return simple_query.strip()
+
+
+def get_voucher_code_list(sqs):
+    if sqs is None:
+        return None
+    if isinstance(sqs, SearchQuerySet):
+        ids = sqs.values_list("code", flat=True)
+        sqs = Vouchers.objects.filter(code__in=ids)
+
+    try:
+        # this is voucher queryset
+        code = sqs[0].code
+        code_list = "\n".join(list(sqs.distinct("code").values_list("code", flat=True)))
+    except TypeError:
+        # this is sequences queryset
+        code_list = "\n".join(list(sqs.distinct("code").values_list("code__code", flat=True)))
+    return code_list
+
 
 
 class VoSeqSearchView(SearchView):
