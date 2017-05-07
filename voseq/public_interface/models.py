@@ -149,56 +149,59 @@ class Vouchers(TimeStampedModel):
     )
     code = models.CharField(
         max_length=300, unique=True, primary_key=True, db_index=True, help_text="Voucher code.")
-    orden = models.TextField(blank=True)
-    superfamily = models.TextField(blank=True)
-    family = models.TextField(blank=True)
-    subfamily = models.TextField(blank=True)
-    tribe = models.TextField(blank=True)
-    subtribe = models.TextField(blank=True)
-    genus = models.TextField(blank=True)
-    species = models.TextField(blank=True)
-    subspecies = models.TextField(blank=True)
-    country = models.TextField(blank=True)
-    specific_locality = models.TextField(help_text="Locality of origin for this specimen.", blank=True)
-    type_species = models.CharField(max_length=100, choices=TYPE_SPECIES_CHOICES,
-                                    help_text="Is this a type species?")
-    latitude = models.FloatField(blank=True, null=True)
-    longitude = models.FloatField(blank=True, null=True)
-    max_altitude = models.IntegerField(blank=True, null=True, help_text="Enter altitude in meters above sea level.")
-    min_altitude = models.IntegerField(blank=True, null=True, help_text="Enter altitude in meters above sea level.")
-    collector = models.TextField(blank=True)
+    orden = models.TextField(blank=True, db_index=True)
+    superfamily = models.TextField(blank=True, db_index=True)
+    family = models.TextField(blank=True, db_index=True)
+    subfamily = models.TextField(blank=True, db_index=True)
+    tribe = models.TextField(blank=True, db_index=True)
+    subtribe = models.TextField(blank=True, db_index=True)
+    genus = models.TextField(blank=True, db_index=True)
+    species = models.TextField(blank=True, db_index=True)
+    subspecies = models.TextField(blank=True, db_index=True)
+    country = models.TextField(blank=True, db_index=True)
+    specific_locality = models.TextField(
+        help_text="Locality of origin for this specimen.", blank=True, db_index=True)
+    type_species = models.CharField(
+        max_length=100, choices=TYPE_SPECIES_CHOICES, help_text="Is this a type species?",
+        db_index=True)
+    latitude = models.FloatField(blank=True, null=True, db_index=True)
+    longitude = models.FloatField(blank=True, null=True, db_index=True)
+    max_altitude = models.IntegerField(
+        blank=True, null=True, help_text="Enter altitude in meters above sea level.", db_index=True)
+    min_altitude = models.IntegerField(
+        blank=True, null=True, help_text="Enter altitude in meters above sea level.", db_index=True)
+    collector = models.TextField(blank=True, db_index=True)
     date_collection = models.CharField(
-        verbose_name="Date collection start",
-        max_length=10,
-        blank=True,
-        default="",
-        help_text="Enter date in format YYYY-mm-dd",
-    )
+        verbose_name="Date collection start", max_length=10, blank=True, db_index=True, default="",
+        help_text="Enter date in format YYYY-mm-dd")
     date_collection_end = models.CharField(
-        max_length=10,
-        blank=True,
-        help_text="Optional. Enter date in format YYYY-mm-dd",
-    )
-    extraction = models.TextField(help_text="Number of extraction event.", blank=True)
-    extraction_tube = models.TextField(help_text="Tube containing DNA extract.", blank=True)
-    date_extraction = models.DateField(blank=True, null=True)
-    extractor = models.TextField(blank=True)
-    voucher_locality = models.TextField(blank=True)
-    published_in = models.TextField(blank=True, null=True)
-    notes = models.TextField(blank=True, null=True)
-    edits = models.TextField(blank=True, null=True)
-    latest_editor = models.TextField(blank=True, null=True)
-    hostorg = models.TextField(help_text="Hostplant or other host.", blank=True)
-    sex = models.CharField(max_length=100, choices=SEX_CHOICES, blank=True)
-    voucher = models.CharField(max_length=100, choices=VOUCHER_CHOICES, blank=True,
-                               help_text="Voucher status.")
-    voucher_code = models.TextField(help_text="Alternative code of voucher specimen.",
-                                    blank=True)
-    code_bold = models.TextField(help_text="Optional code for specimens kept in the BOLD database.",
-                                 blank=True)
-    determined_by = models.TextField(help_text="Person that identified the taxon for this specimen.",
-                                     blank=True)
-    author = models.TextField(help_text="Person that described this taxon.", blank=True)
+        max_length=10, blank=True, help_text="Optional. Enter date in format YYYY-mm-dd",
+        db_index=True)
+    extraction = models.TextField(
+        help_text="Number of extraction event.", blank=True, db_index=True)
+    extraction_tube = models.TextField(
+        help_text="Tube containing DNA extract.", blank=True, db_index=True)
+    date_extraction = models.DateField(blank=True, null=True, db_index=True)
+    extractor = models.TextField(blank=True, db_index=True)
+    voucher_locality = models.TextField(blank=True, db_index=True)
+    published_in = models.TextField(blank=True, null=True, db_index=True)
+    notes = models.TextField(blank=True, null=True, db_index=True)
+    edits = models.TextField(blank=True, null=True, db_index=True)
+    latest_editor = models.TextField(blank=True, null=True, db_index=True)
+    hostorg = models.TextField(help_text="Hostplant or other host.", blank=True, db_index=True)
+    sex = models.CharField(max_length=100, choices=SEX_CHOICES, blank=True, db_index=True)
+    voucher = models.CharField(
+        max_length=100, choices=VOUCHER_CHOICES, blank=True, help_text="Voucher status.",
+        db_index=True)
+    voucher_code = models.TextField(
+        help_text="Alternative code of voucher specimen.", blank=True, db_index=True)
+    code_bold = models.TextField(
+        help_text="Optional code for specimens kept in the BOLD database.", blank=True,
+        db_index=True)
+    determined_by = models.TextField(
+        help_text="Person that identified the taxon for this specimen.", blank=True, db_index=True)
+    author = models.TextField(
+        help_text="Person that described this taxon.", blank=True, db_index=True)
 
     class Meta:
         verbose_name_plural = 'Vouchers'
@@ -212,14 +215,14 @@ class Sequences(models.Model):
     code = models.ForeignKey(Vouchers, db_index=True, help_text='This is your voucher code.')
     gene_code = models.CharField(max_length=100, db_index=True)
     sequences = models.TextField(blank=True)
-    accession = models.CharField(max_length=100, blank=True)
-    lab_person = models.CharField(max_length=100, blank=True)
-    time_created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    time_edited = models.DateTimeField(auto_now=True, null=True, blank=True)
-    notes = models.TextField(blank=True)
-    genbank = models.NullBooleanField()
-    total_number_bp = models.IntegerField(blank=True, null=True)
-    number_ambiguous_bp = models.IntegerField(blank=True, null=True)
+    accession = models.CharField(max_length=100, blank=True, db_index=True)
+    lab_person = models.CharField(max_length=100, blank=True, db_index=True)
+    time_created = models.DateTimeField(auto_now_add=True, null=True, blank=True, db_index=True)
+    time_edited = models.DateTimeField(auto_now=True, null=True, blank=True, db_index=True)
+    notes = models.TextField(blank=True, db_index=True)
+    genbank = models.NullBooleanField(db_index=True)
+    total_number_bp = models.IntegerField(blank=True, null=True, db_index=True)
+    number_ambiguous_bp = models.IntegerField(blank=True, null=True, db_index=True)
 
     class Meta:
         verbose_name_plural = 'Sequences'
@@ -253,6 +256,7 @@ class FlickrImages(models.Model):
     voucher = models.ForeignKey(
         Vouchers,
         help_text='Relation with id of voucher. Save as lower case.',
+        db_index=True,
     )
     voucher_image = models.URLField(help_text="URLs of the Flickr page.", blank=True)
     thumbnail = models.URLField(help_text="URLs for the small sized image from Flickr.")
@@ -341,6 +345,7 @@ class LocalImages(models.Model):
     voucher = models.ForeignKey(
         Vouchers,
         help_text='Relation with id of voucher.',
+        db_index=True,
     )
     voucher_image = models.ImageField(help_text="voucher photo.", blank=True)
 
