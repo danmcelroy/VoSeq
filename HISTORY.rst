@@ -1,6 +1,13 @@
 HISTORY
 -------
 
+2.1.0 (2017-05-07)
+++++++++++++++++++
+
+- Datasets now include taxon names if required.
+- Dropped using Haystack for advanced search results, but autosuggestion still using haystack.
+- Added indexes to speed up queries.
+
 2.0.5 (2016-12-21)
 ++++++++++++++++++
 

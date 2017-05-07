@@ -1,4 +1,5 @@
 from django.core.management import call_command
+from django.db import connection
 from django.test import Client
 from django.test import TestCase
 from django.test.utils import override_settings
@@ -55,6 +56,8 @@ TEST_INDEX = {
 @override_settings(HAYSTACK_CONNECTIONS=TEST_INDEX)
 class TestAdvancedSearch(TestCase):
     def setUp(self):
+        with connection.cursor() as cursor:
+            cursor.execute("alter sequence public_interface_genes_id_seq restart with 1")
         args = []
         opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
         cmd = 'migrate_db'

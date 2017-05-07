@@ -1,7 +1,8 @@
-from django.test import TestCase
-from django.test.client import Client
 from django.core.management import call_command
 from django.contrib.auth.models import User
+from django.db import connection
+from django.test import TestCase
+from django.test.client import Client
 
 from create_dataset.utils import CreateDataset
 from public_interface.models import Genes, Sequences
@@ -9,6 +10,9 @@ from public_interface.models import Genes, Sequences
 
 class CreateFASTADatasetTest(TestCase):
     def setUp(self):
+        with connection.cursor() as cursor:
+            cursor.execute("alter sequence public_interface_genes_id_seq restart with 1")
+            cursor.execute("alter sequence public_interface_taxonsets_id_seq restart with 1")
         args = []
         opts = {'dumpfile': 'test_db_dump2.xml', 'verbosity': 0}
         cmd = 'migrate_db'

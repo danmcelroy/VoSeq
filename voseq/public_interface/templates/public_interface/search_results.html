@@ -32,35 +32,39 @@
   {% endif %}
 
     <ul class="fa-ul">
-      {% for result in page.object_list %}
+      {% for result in results %}
         <li><i class="fa-li fa fa-circle"></i>
           <a href="/p/{{ result.code }}">{{ result.code }}</a>
 
             {% if result.genus %}
                <i>{{ result.genus }}</i>
             {% else %}
-               <i>{{ result.object.code.genus }}</i>
+               <i>{{ result.code.genus }}</i>
             {% endif %}
 
             {% if result.species %}
                <i>{{ result.species}}</i>
             {% else %}
-               <i>{{ result.object.code.species}}</i>
+               <i>{{ result.code.species}}</i>
             {% endif %}
 
           <br />
 
           <small>
-            {% if result.object.code.extractor != None %}
-              By {{ result.object.code.extractor }} on
-            {% else %}
+            {% if result.extractor %}
+              By {{ result.extractor }} on
+            {% elif result.code.extractor != None %}
+              By {{ result.code.extractor }} on
+            {% elif result.code.extractor != "None" %}
               By {{ result.object.extractor }} on
             {% endif %}
 
-            {% if result.object.modified != None %}
+            {% if result.modified %}
+               {{ result.modified|date }}
+            {% elif result.code.modified %}
+               {{ result.code.modified|date }}
+            {% elif result.object.modified %}
                {{ result.object.modified|date }}
-            {% else %}
-               {{ result.object.code.modified|date }}
             {% endif %}
           </small>
 

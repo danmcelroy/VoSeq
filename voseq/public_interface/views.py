@@ -3,25 +3,18 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import HttpResponseRedirect
-from django.http import Http404
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.views.decorators.csrf import csrf_protect
-from django.shortcuts import render
-from django.shortcuts import redirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render, redirect
 from django.conf import settings
 
 from haystack.forms import SearchForm
 from haystack.query import ValuesSearchQuerySet
 
-from core.utils import get_version_stats
-from core.utils import get_username
-from .utils import VoSeqSearchView
-from .models import Vouchers
-from .models import FlickrImages
-from .models import LocalImages
-from .models import Sequences
-from .models import Primers
+from core.utils import get_version_stats, get_username
+from .utils import VoSeqSearchView, get_simple_query, get_correct_url_query, get_voucher_code_list
+from .models import Vouchers, FlickrImages, LocalImages, Sequences, Primers
 from .forms import AdvancedSearchForm, BatchChangesForm
 
 
@@ -67,6 +60,8 @@ def browse(request):
 
 def search(request):
     """Simple search tool"""
+    version, stats = get_version_stats()
+    username = get_username(request)
     if 'q' not in request.GET:
         return redirect('/')
 
@@ -75,17 +70,37 @@ def search(request):
         return redirect('/')
 
     form = SearchForm(request.GET)
+    page = request.GET.get('page')
     if settings.ELASTICSEARCH is True:
         sqs = form.search()
         sqs.spelling_suggestion()
-        search_view = VoSeqSearchView(
-            template='public_interface/search_results.html',
-            searchqueryset=sqs,
-            form_class=SearchForm,
-            url_encoded_query=request.GET.urlencode(),
-        )
-        search_view.__call__(request)
-        return search_view.create_response()
+        results = ""
+        paginator = ""
+        if sqs:
+            paginator = Paginator(sqs, 25)
+            try:
+                results = paginator.page(page)
+            except PageNotAnInteger:
+                # If page is not an integer, deliver first page.
+                results = paginator.page(1)
+            except EmptyPage:
+                # If page is out of range (e.g. 9999), deliver last page of results.
+                results = paginator.page(paginator.num_pages)
+        return render(
+            request,
+            'public_interface/search_results.html',
+            {
+                'page': results,
+                'paginator': paginator,
+                'username': username,
+                'results': results,
+                'voucher_code_list': get_voucher_code_list(sqs),
+                'simple_query': get_simple_query(request),
+                'url_encoded_query': get_correct_url_query(request.GET.urlencode()),
+                'result_count': len(sqs),
+                'version': version,
+                'stats': stats,
+            })
     else:
         sqs = Vouchers.objects.filter(
             Q(genus__icontains=query) | Q(species__icontains=query) | Q(code__icontains=query),
@@ -143,19 +158,37 @@ def search_advanced(request):
     if request.method == 'GET' and bool(request.GET) is not False:
         form = AdvancedSearchForm(request.GET)
 
+        page = request.GET.get('page')
         if form.is_valid():
             sqs = form.search()
-            search_view = VoSeqSearchView(
-                url_encoded_query=request.GET.urlencode(),
-                template='public_interface/search_results.html',
-                searchqueryset=sqs,
-                form_class=AdvancedSearchForm,
-            )
-
+            results = ""
+            paginator = ""
+            if sqs:
+                paginator = Paginator(sqs, 25)
+                try:
+                    results = paginator.page(page)
+                except PageNotAnInteger:
+                    # If page is not an integer, deliver first page.
+                    results = paginator.page(1)
+                except EmptyPage:
+                    # If page is out of range (e.g. 9999), deliver last page of results.
+                    results = paginator.page(paginator.num_pages)
             if sqs is not None:
-                search_view.__call__(request)
-                search_view.query = sqs.query
-                return search_view.create_response()
+                return render(
+                    request,
+                    'public_interface/search_results.html',
+                    {
+                        'page': results,
+                        'paginator': paginator,
+                        'username': username,
+                        'results': results,
+                        'voucher_code_list': get_voucher_code_list(sqs),
+                        'simple_query': get_simple_query(request),
+                        'url_encoded_query': get_correct_url_query(request.GET.urlencode()),
+                        'result_count': len(sqs),
+                        'version': version,
+                        'stats': stats,
+                })
             else:
                 return render(request, 'public_interface/search_results.html',
                               {
