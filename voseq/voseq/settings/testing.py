@@ -21,6 +21,7 @@ if 'TRAVIS' in os.environ:
             'PORT':     '',
         }
     }
+    DB_NAME = "travis_ci_test"
 else:
     DATABASES = {
         'default': {
@@ -28,9 +29,9 @@ else:
             'NAME': 'test.db',
         }
     }
+    DB_NAME = "test"
 
 
-DB_NAME = "test"
 
 HAYSTACK_CONNECTIONS = {
     'default': {
