@@ -51,16 +51,20 @@
           <br />
 
           <small>
-            {% if result.code.extractor != None %}
-              By {{ result.code.extractor }} on
-            {% else %}
+            {% if result.extractor %}
               By {{ result.extractor }} on
+            {% elif result.code.extractor != None %}
+              By {{ result.code.extractor }} on
+            {% elif result.code.extractor != "None" %}
+              By {{ result.object.extractor }} on
             {% endif %}
 
-            {% if result.modified != None %}
+            {% if result.modified %}
                {{ result.modified|date }}
-            {% else %}
+            {% elif result.code.modified %}
                {{ result.code.modified|date }}
+            {% elif result.object.modified %}
+               {{ result.object.modified|date }}
             {% endif %}
           </small>
 

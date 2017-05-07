@@ -86,7 +86,6 @@ def search(request):
             except EmptyPage:
                 # If page is out of range (e.g. 9999), deliver last page of results.
                 results = paginator.page(paginator.num_pages)
-        print("#"*80, results)
         return render(
             request,
             'public_interface/search_results.html',
