@@ -1,10 +1,12 @@
 import re
 from urllib.parse import parse_qs
 
+from haystack.query import SearchQuerySet
 from haystack.views import SearchView
 
 from core.utils import get_version_stats
 from core.utils import get_username
+from public_interface.models import Vouchers
 
 
 def get_simple_query(request):
@@ -37,6 +39,10 @@ def recover_keyword(url_encoded_query):
 def get_voucher_code_list(sqs):
     if sqs is None:
         return None
+    if isinstance(sqs, SearchQuerySet):
+        ids = sqs.values_list("code", flat=True)
+        sqs = Vouchers.objects.filter(code__in=ids)
+
     try:
         # this is voucher queryset
         code = sqs[0].code
@@ -45,6 +51,7 @@ def get_voucher_code_list(sqs):
         # this is sequences queryset
         code_list = "\n".join(list(sqs.distinct("code").values_list("code__code", flat=True)))
     return code_list
+
 
 
 class VoSeqSearchView(SearchView):
