@@ -1,10 +1,13 @@
-from django.test import TestCase
 from django.core.management import call_command
-from django.test import Client
+from django.db import connection
+from django.test import Client, TestCase
 
 
 class TestGeneTable(TestCase):
     def setUp(self):
+        with connection.cursor() as cursor:
+            cursor.execute("alter sequence public_interface_taxonsets_id_seq restart with 1")
+            cursor.execute("alter sequence public_interface_genesets_id_seq restart with 1")
         args = []
         opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
         cmd = 'migrate_db'
