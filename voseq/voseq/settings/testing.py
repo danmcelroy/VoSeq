@@ -10,6 +10,7 @@ print('Testing')
 TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
 
 
+os.environ["TRAVIS"] = "True"
 if 'TRAVIS' in os.environ:
     DATABASES = {
         'default': {
@@ -18,7 +19,7 @@ if 'TRAVIS' in os.environ:
             'USER':     'postgres',
             'PASSWORD': '',
             'HOST':     'localhost',
-            'PORT':     '',
+            'PORT':     '5432',
         }
     }
     DB_NAME = "travis_ci_test"

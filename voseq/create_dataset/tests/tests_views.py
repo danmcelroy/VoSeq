@@ -14,7 +14,6 @@ class CreateDatasetViewsTest(TestCase):
         with connection.cursor() as cursor:
             cursor.execute("alter sequence public_interface_genesets_id_seq restart with 1")
             cursor.execute("alter sequence public_interface_taxonsets_id_seq restart with 1")
-            cursor.execute("alter sequence public_interface_vouchers_id_seq restart with 1")
             cursor.execute("alter sequence public_interface_sequences_id_seq restart with 1")
         args = []
         opts = {'dumpfile': 'test_db_dump2.xml', 'verbosity': 0}
