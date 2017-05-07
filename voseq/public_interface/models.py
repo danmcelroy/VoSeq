@@ -186,7 +186,7 @@ class Vouchers(TimeStampedModel):
     voucher_locality = models.TextField(blank=True, db_index=True)
     published_in = models.TextField(blank=True, null=True, db_index=True)
     notes = models.TextField(blank=True, null=True, db_index=True)
-    edits = models.TextField(blank=True, null=True, db_index=True)
+    edits = models.TextField(blank=True, null=True)
     latest_editor = models.TextField(blank=True, null=True, db_index=True)
     hostorg = models.TextField(help_text="Hostplant or other host.", blank=True, db_index=True)
     sex = models.CharField(max_length=100, choices=SEX_CHOICES, blank=True, db_index=True)
