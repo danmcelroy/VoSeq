@@ -63,6 +63,7 @@ INSTALLED_APPS = (
     'registration',
     'easy_thumbnails',
     'import_export',
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -80,6 +81,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
+            'core/templates',
             'voseq/public_interface/templates/public_interface',
         ],
         'APP_DIRS': True,
