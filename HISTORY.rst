@@ -1,6 +1,12 @@
 HISTORY
 -------
 
+2.1.1 (2017-08-26)
+++++++++++++++++++
+
+- Avoid error 500 when doing BLAST and there are no sequences in database to
+  create the BLAST database.
+
 2.1.0 (2017-05-07)
 ++++++++++++++++++
 
