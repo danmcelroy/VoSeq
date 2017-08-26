@@ -1,3 +1,5 @@
+from subprocess import CalledProcessError
+
 from django.shortcuts import render
 
 from core.utils import get_version_stats
@@ -13,7 +15,10 @@ def index(request, voucher_code, gene_code):
     blast.save_seqs_to_file()
 
     if not blast.is_blast_db_up_to_date():
-        blast.create_blast_db()
+        try:
+            blast.create_blast_db()
+        except CalledProcessError:
+            print("there are no sequences for gene {}".format(gene_code))
 
     good_sequence = blast.save_query_to_file()
     if good_sequence:
