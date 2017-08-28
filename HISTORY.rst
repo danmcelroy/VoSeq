@@ -1,6 +1,12 @@
 HISTORY
 -------
 
+2.1.3 (2017-08-28)
+++++++++++++++++++
+
+- Create log for django in tmp directory.
+- Install ncbi-blast+ when provisioning in vagrant.
+
 2.1.2 (2017-08-28)
 ++++++++++++++++++
 
