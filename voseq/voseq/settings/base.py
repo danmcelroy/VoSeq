@@ -95,7 +95,24 @@ TEMPLATES = [
         }
     },
 ]
-
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/tmp/voseq.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 ROOT_URLCONF = 'voseq.urls'
 
 WSGI_APPLICATION = 'voseq.wsgi.application'
