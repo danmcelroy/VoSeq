@@ -1,6 +1,12 @@
 HISTORY
 -------
 
+2.1.2 (2017-08-28)
+++++++++++++++++++
+
+- Strip sequences of line breaks before creating database for BLAST. This was
+  causing error 500.
+
 2.1.1 (2017-08-26)
 ++++++++++++++++++
 
