@@ -327,4 +327,4 @@ class BLAST(object):
         seq = re.sub('N+$', '', seq)
         seq = seq.replace('-', 'N')
         seq = seq.replace('?', 'N')
-        return seq
+        return seq.strip()
