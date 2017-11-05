@@ -7,9 +7,6 @@ python:
     - "3.5"
     - "3.6"
 
-services:
-    - elasticsearch
-
 before_script:
     - sleep 10
 
