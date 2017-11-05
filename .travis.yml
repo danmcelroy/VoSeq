@@ -7,8 +7,12 @@ python:
     - "3.5"
     - "3.6"
 
-services:
-    - elasticsearch
+addons:
+  apt:
+    sources:
+      - elasticsearch-1.7
+    packages:
+      - elasticsearch
 
 install: pip install -r requirements/testing.txt
 
