@@ -41,12 +41,12 @@ class CreateMEGADatasetTest(TestCase):
         self.assertTrue(expected in result)
 
     def test_sequence_line_breaks(self):
-        expected = '#CP100_10_Aus_aus\n?????????????????????????'
+        expected = '#CP100_10_Aus_aus\nCGACGACGACGACGACGAC'
         result = self.dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
     def test_sequence_concatenation(self):
-        expected = 'TTATTTTGATTTTTTGG???????????'
+        expected = 'CGACGACGACGACGACGACGAC'
         result = self.dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
@@ -55,7 +55,7 @@ class CreateMEGADatasetTest(TestCase):
         cleaned_data['aminoacids'] = True
         dataset_creator = CreateDataset(cleaned_data)
 
-        expected = 'MVGTSLSLIIRTELGNPGSLIGDDQIYNTIVTAHAFIMIF'
+        expected = 'DDDDDDDDDDDDDDDDDDDDDDDDDDD'
         result = dataset_creator.dataset_str
         self.assertTrue(expected in result)
 
@@ -66,7 +66,7 @@ class CreateMEGADatasetTest(TestCase):
 
         expected = ''
         result = dataset_creator.dataset_str
-        self.assertTrue(expected in result)
+        self.assertEqual(expected, result)
 
     def test_dataset_with_degen_tranlations(self):
         cleaned_data = self.cleaned_data
@@ -74,7 +74,7 @@ class CreateMEGADatasetTest(TestCase):
         cleaned_data['translations'] = True
         dataset_creator = CreateDataset(cleaned_data)
 
-        expected = 'ATHATHGGNGGNTTYGGNAAYTGAYTNATHCCNYTNATHYTNGGNGCNC'
+        expected = 'GAYGAYGAYGAYGAYGAYGAYGAY'
         result = dataset_creator.dataset_str.strip()
         self.assertTrue(expected in result)
 
