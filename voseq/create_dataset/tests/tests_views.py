@@ -105,7 +105,7 @@ class CreateDatasetViewsTest(TestCase):
         file_name = re.search('FASTA_\w+\.txt', html_page).group()
         file_content = self.c.get('/create_dataset/results/' + file_name, follow=True)
         expected = ">CP100_10_Aus_aus\nACGACGACGACGACGACGACGACGACGACGACGACGACGACGACGACGACGACGACGACG"
-        self.assertTrue(expected, file_content.content.decode('utf-8'))
+        self.assertTrue(expected in file_content.content.decode('utf-8'))
 
     def test_view_attemp_to_create_dataset_aa_with_bad_codon(self):
         """Test error when trying to translate 'N--' codon."""
