@@ -76,10 +76,11 @@ class CreateFASTADatasetTest(TestCase):
 
     def test_create_dataset_degenerated(self):
         self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
+        gene = Genes.objects.get(gene_code="RpS2")
         c = self.c.post('/create_dataset/results/',
                         {
                             'voucher_codes': 'CP100-10',
-                            'gene_codes': 3,  # wingless
+                            'gene_codes': gene.id,
                             'geneset': '',
                             'taxonset': '',
                             'translations': True,
@@ -95,7 +96,7 @@ class CreateFASTADatasetTest(TestCase):
                             'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
                         }
                         )
-        expected = 'TNGGNTTYATHGTNTGAGCNCAYCAYATHTTYACN'
+        expected = 'MGNMGNMGNMGNMGNMGNMGNMGNMG'
         self.assertTrue(expected in str(c.content))
 
     def test_create_dataset_degenerated_warning_data_cannot_be_partitioned(self):
@@ -148,10 +149,11 @@ class CreateFASTADatasetTest(TestCase):
 
     def test_fasta_as_aminoacids(self):
         self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
+        gene = Genes.objects.get(gene_code="RpS2")
         c = self.c.post('/create_dataset/results/',
                         {
                             'voucher_codes': 'CP100-10',
-                            'gene_codes': 3,  # wingless
+                            'gene_codes': gene.id,
                             'geneset': '',
                             'taxonset': '',
                             'translations': True,
@@ -167,7 +169,7 @@ class CreateFASTADatasetTest(TestCase):
                             'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
                         }
                         )
-        expected = 'IYAMLAIGLLGFIVWAHHM'
+        expected = 'RRRRRRRRRRRRRRRRRRRRRRRRRRR'
         self.assertTrue(expected in str(c.content))
 
     def test_fasta_with_seqs_of_different_sizes(self):

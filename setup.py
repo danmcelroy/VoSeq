@@ -27,8 +27,8 @@ requirements = [
     'django-haystack==2.4.0',
     'easy-thumbnails==2.2',
     'flickrapi==2.0',
-    'dataset-creator==0.3.14',
-    'seqrecord-expanded==0.2.6',
+    'dataset-creator==0.3.16',
+    'seqrecord-expanded==0.2.7',
     'degenerate-dna==0.0.9',
 ]
 

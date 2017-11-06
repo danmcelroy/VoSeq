@@ -109,9 +109,8 @@ class CreatePhylipDatasetTest(TestCase):
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
 
-        with open(self.dataset_file, "r") as handle:
-            expected = handle.read()
-        self.assertEqual(expected, result)
+        expected = "CP100_10_Aus_aus  ACGACGACGA CGACGACGAC GACGACGACG ACGACGACGA CGACGACGAC"
+        self.assertTrue(expected in result)
 
     def test_partitioned_each(self):
         cleaned_data = self.cleaned_data.copy()
@@ -119,9 +118,8 @@ class CreatePhylipDatasetTest(TestCase):
         dataset_creator = CreateDataset(cleaned_data)
         result = dataset_creator.dataset_str
 
-        with open(self.dataset_file, "r") as handle:
-            expected = handle.read()
-        self.assertEqual(expected, result)
+        expected = "CP100_10_Aus_aus  ACGACGACGA CGACGACGAC GACGACGACG ACGACGACGA CGACGACGAC"
+        self.assertTrue(expected in result)
 
     def test_dataset_1st_codon_partitioned_each(self):
         cleaned_data = self.cleaned_data.copy()

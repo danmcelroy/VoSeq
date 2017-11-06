@@ -104,7 +104,7 @@ class CreateDatasetViewsTest(TestCase):
         html_page = res.content.decode('utf-8')
         file_name = re.search('FASTA_\w+\.txt', html_page).group()
         file_content = self.c.get('/create_dataset/results/' + file_name, follow=True)
-        expected = ">CP100_10_Aus_aus\n????????????????????????????????????????????????????????????"
+        expected = ">CP100_10_Aus_aus\nACGACGACGACGACGACGACGACGACGACGACGACGACGACGACGACGACGACGACGACG"
         self.assertTrue(expected in file_content.content.decode('utf-8'))
 
     def test_view_attemp_to_create_dataset_aa_with_bad_codon(self):
