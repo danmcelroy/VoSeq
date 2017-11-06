@@ -1,6 +1,10 @@
 HISTORY
 -------
 
+2.1.4 (2017-11-06)
+++++++++++++++++++
+- Fixed bug when generating datasets with certain codon positions.
+
 2.1.3 (2017-08-28)
 ++++++++++++++++++
 
