@@ -13,3 +13,5 @@ ADMINS = ()
 ALLOWED_HOSTS = [
     '33.33.33.10',  # Your Domain or IP address
 ]
+
+LOGGING["handlers"]["file"]["filename"] = "/tmp/{}.log".format(ALLOWED_HOSTS[0])
