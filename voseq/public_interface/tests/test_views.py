@@ -6,7 +6,7 @@ from django.test.utils import override_settings
 
 import haystack
 
-from public_interface.views import VoSeqSearchView
+from public_interface.utils import VoSeqSearchView
 
 
 # Need to use a clean index for our tests
