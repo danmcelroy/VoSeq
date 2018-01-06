@@ -1,3 +1,4 @@
+import logging
 from subprocess import CalledProcessError
 
 from django.shortcuts import render
@@ -5,6 +6,9 @@ from django.shortcuts import render
 from core.utils import get_version_stats
 from core.utils import get_username
 from core.utils import BLAST
+
+
+log = logging.getLogger(__name__)
 
 
 def index(request, voucher_code, gene_code):
@@ -18,7 +22,7 @@ def index(request, voucher_code, gene_code):
         try:
             blast.create_blast_db()
         except CalledProcessError:
-            print("there are no sequences for gene {}".format(gene_code))
+            log.warning("there are no sequences for gene {}".format(gene_code))
 
     good_sequence = blast.save_query_to_file()
     if good_sequence:

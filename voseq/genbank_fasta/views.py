@@ -1,3 +1,4 @@
+import logging
 import os
 
 from django.contrib.auth.decorators import login_required
@@ -10,6 +11,9 @@ from core.utils import get_version_stats
 from core.utils import get_username
 from .forms import GenBankFastaForm
 from create_dataset.utils import CreateDataset
+
+
+log = logging.getLogger(__name__)
 
 
 @login_required
@@ -51,7 +55,7 @@ def results(request):
 
             dataset_creator = CreateDataset(cleaned_data)
             dataset = dataset_creator.dataset_str
-            dataset_short = dataset[0:1500] + '\n...\n\n\n' + '#######\nComplete dataset file available for download.\n#######'
+            dataset_short = dataset[0:1500] + '\n...\n\n\n' + '#######\nComplete dataset file available for download.\n#######'  # noqa
             errors = dataset_creator.errors
             warnings = dataset_creator.warnings
             dataset_file_abs = dataset_creator.dataset_file
@@ -98,7 +102,7 @@ def results(request):
 
 @login_required
 def serve_file(request, file_name):
-    print("Requested file by user: {0}".format(request.user))
+    log.debug("Requested file by user: {0}".format(request.user))
     cwd = os.path.dirname(__file__)
     fasta_file = os.path.join(cwd,
                               '..',

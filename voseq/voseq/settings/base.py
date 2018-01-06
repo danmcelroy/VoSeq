@@ -164,59 +164,59 @@ LOGGING = {
             'propagate': False,
         },
         'blast_local': {
-            'handlers': ['terminal', 'file', 'mail_admins'],
+            'handlers': ['terminal', 'file', 'file_debug', 'mail_admins'],
             'level': 'DEBUG',
         },
         'blast_local_full': {
-            'handlers': ['terminal', 'file', 'mail_admins'],
+            'handlers': ['terminal', 'file', 'file_debug', 'mail_admins'],
             'level': 'DEBUG',
         },
         'blast_ncbi': {
-            'handlers': ['terminal', 'file', 'mail_admins'],
+            'handlers': ['terminal', 'file', 'file_debug', 'mail_admins'],
             'level': 'DEBUG',
         },
         'blast_new': {
-            'handlers': ['terminal', 'file', 'mail_admins'],
+            'handlers': ['terminal', 'file', 'file_debug', 'mail_admins'],
             'level': 'DEBUG',
         },
         'core': {
-            'handlers': ['terminal', 'file', 'mail_admins'],
+            'handlers': ['terminal', 'file', 'file_debug', 'mail_admins'],
             'level': 'DEBUG',
         },
         'create_dataset': {
-            'handlers': ['terminal', 'file', 'mail_admins'],
+            'handlers': ['terminal', 'file', 'file_debug', 'mail_admins'],
             'level': 'DEBUG',
         },
         'gbif': {
-            'handlers': ['terminal', 'file', 'mail_admins'],
+            'handlers': ['terminal', 'file', 'file_debug', 'mail_admins'],
             'level': 'DEBUG',
         },
         'genbank_fasta': {
-            'handlers': ['terminal', 'file', 'mail_admins'],
+            'handlers': ['terminal', 'file', 'file_debug', 'mail_admins'],
             'level': 'DEBUG',
         },
         'gene_table': {
-            'handlers': ['terminal', 'file', 'mail_admins'],
+            'handlers': ['terminal', 'file', 'file_debug', 'mail_admins'],
             'level': 'DEBUG',
         },
         'overview_table': {
-            'handlers': ['terminal', 'file', 'mail_admins'],
+            'handlers': ['terminal', 'file', 'file_debug', 'mail_admins'],
             'level': 'DEBUG',
         },
         'public_interface': {
-            'handlers': ['terminal', 'file', 'mail_admins'],
+            'handlers': ['terminal', 'file', 'file_debug', 'mail_admins'],
             'level': 'DEBUG',
         },
         'stats': {
-            'handlers': ['terminal', 'file', 'mail_admins'],
+            'handlers': ['terminal', 'file', 'file_debug', 'mail_admins'],
             'level': 'DEBUG',
         },
         'view_genes': {
-            'handlers': ['terminal', 'file', 'mail_admins'],
+            'handlers': ['terminal', 'file', 'file_debug', 'mail_admins'],
             'level': 'DEBUG',
         },
         'voucher_table': {
-            'handlers': ['terminal', 'file', 'mail_admins'],
+            'handlers': ['terminal', 'file', 'file_debug', 'mail_admins'],
             'level': 'DEBUG',
         },
     },
