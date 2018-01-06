@@ -1,5 +1,6 @@
 import datetime
 import glob
+import logging
 import os
 import re
 import subprocess
@@ -17,6 +18,8 @@ from . import exceptions
 from stats.models import Stats
 from public_interface.models import Sequences
 
+
+log = logging.getLogger(__name__)
 
 
 def get_voucher_codes(cleaned_data):
@@ -120,7 +123,8 @@ def clean_positions(a_list):
         return ['1st-2nd']
     elif len(a_list) == 2:  # 1st and 3rd, or 2nd and 3rd
         raise exceptions.InadequateCodonPositions(
-            "Cannot create dataset for only codon positions {0} and {1}.".format(a_list[0], a_list[1])
+            "Cannot create dataset for only codon positions {0} and {1}."
+            "".format(a_list[0], a_list[1])
         )
     else:
         return a_list
@@ -235,7 +239,7 @@ class BLAST(object):
         Optionally eliminates low-complexity regions from the sequences.
 
         """
-        print("Creating blast db")
+        log.debug("Creating blast db")
         if self.mask:
             command = 'dustmasker -in ' + self.seq_file + ' -infmt fasta '
             command += '-outfmt maskinfo_asn1_bin -out ' + self.seq_file + '_dust.asnb'
@@ -243,7 +247,7 @@ class BLAST(object):
 
             command = 'makeblastdb -in ' + self.seq_file + ' -input_type fasta -dbtype nucl '
             command += '-mask_data ' + self.seq_file + '_dust.asnb '
-            command += '-out ' + self.seq_file + ' -title "Whole Genome without low-complexity regions"'
+            command += '-out ' + self.seq_file + ' -title "Whole Genome without low-complexity regions"'  # noqa
             subprocess.check_output(command, shell=True)  # Overwriting the genome file.
         else:
             command = 'makeblastdb -in ' + self.seq_file + ' -input_type fasta -dbtype nucl '

@@ -1,5 +1,6 @@
 from itertools import chain
 import json
+import logging
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -13,12 +14,16 @@ from haystack.forms import SearchForm
 from haystack.query import ValuesSearchQuerySet
 
 from core.utils import get_version_stats, get_username
-from .utils import VoSeqSearchView, get_simple_query, get_correct_url_query, get_voucher_code_list
+from .utils import get_simple_query, get_correct_url_query, get_voucher_code_list
 from .models import Vouchers, FlickrImages, LocalImages, Sequences, Primers
 from .forms import AdvancedSearchForm, BatchChangesForm
 
 
+log = logging.getLogger(__name__)
+
+
 def index(request):
+    log.debug("Index")
     version, stats = get_version_stats()
     username = get_username(request)
 
@@ -188,7 +193,7 @@ def search_advanced(request):
                         'result_count': len(sqs),
                         'version': version,
                         'stats': stats,
-                })
+                    })
             else:
                 return render(request, 'public_interface/search_results.html',
                               {
