@@ -108,7 +108,7 @@ class CreateDatasetViewsTest(TestCase):
         self.assertTrue(expected in file_content.content.decode('utf-8'))
 
     def test_view_attemp_to_create_dataset_aa_with_bad_codon(self):
-        """Test error when trying to translate 'N--' codon."""
+        """Test when trying to translate 'N--' codon. Should translate to X"""
         v = Vouchers.objects.get(code="CP100-10")
         seq = Sequences.objects.get(code=v, gene_code="COI-begin")
         seq.sequences = "TCAN--CGTCCC"
@@ -136,4 +136,4 @@ class CreateDatasetViewsTest(TestCase):
                           )
         html_page = res.content.decode('utf-8')
         expected = "Codon &#39;--C&#39; is invalid"
-        self.assertTrue(expected in html_page)
+        self.assertFalse(expected in html_page)
