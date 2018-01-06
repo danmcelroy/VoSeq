@@ -1,4 +1,4 @@
-from .local import *
+from .local import *  # noqa
 
 # you need to specify a public folder your your statics files during deployment
 STATIC_ROOT = "/var/www/VoSeq/static/"
@@ -13,5 +13,3 @@ ADMINS = ()
 ALLOWED_HOSTS = [
     '33.33.33.10',  # Your Domain or IP address
 ]
-
-LOGGING["handlers"]["file"]["filename"] = "/tmp/{}.log".format(ALLOWED_HOSTS[0])
