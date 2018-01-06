@@ -5,7 +5,7 @@ Pillow==3.3.1
 pyprind==2.9.3
 elasticsearch==1.4
 Unipath==1.1
-psycopg2==2.6.1
+psycopg2==2.7.3.2
 pytz>=2015.4
 django-crispy-forms==1.6.0
 django-import-export==0.5.0
