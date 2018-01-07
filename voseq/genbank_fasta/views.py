@@ -59,6 +59,7 @@ def results(request):
             errors = dataset_creator.errors
             warnings = dataset_creator.warnings
             dataset_file_abs = dataset_creator.dataset_file
+            items_with_accession = dataset_creator.sequences_skipped
             if dataset_file_abs is not None:
                 dataset_file = os.path.basename(dataset_file_abs)
             else:
@@ -76,7 +77,7 @@ def results(request):
             return render(request, 'genbank_fasta/results.html',
                           {
                               'username': username,
-                              'items_with_accession': '',
+                              'items_with_accession': items_with_accession,
                               'dataset': dataset_short,
                               'fasta_file': dataset_file,
                               'protein': aa_dataset,
