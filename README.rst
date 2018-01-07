@@ -582,3 +582,17 @@ and place them in the ``config.json`` configuration file of VoSeq:
     * Save and exit.
 
 Thus, every picture that you upload into your VoSeq installation will be uploaded into your Flickr account.
+
+Lineages
+========
+
+GenBank fasta files have the optional field Lineages. You can add lineages in the form:
+
+LINEAGES = {
+    # superfamily: lineage from domain Eukaryota to suborder Ditrysia
+    "Papilionoidea": "Eukaryota; Metazoa; Ecdysozoa; Arthropoda; Hexapoda; Insecta; Pterygota; Neoptera; Holometabola; Lepidoptera; Glossata; Ditrysia; ",
+    "Hesperioidea": "Eukaryota; Metazoa; Ecdysozoa; Arthropoda; Hexapoda; Insecta; Pterygota; Neoptera; Holometabola; Lepidoptera; Glossata; Ditrysia; ",
+    "Hedyloidea": "Eukaryota; Metazoa; Ecdysozoa; Arthropoda; Hexapoda; Insecta; Pterygota; Neoptera; Holometabola; Lepidoptera; Glossata; Ditrysia; ",
+}
+
+by editing the file `voseq/create_dataset/utils.py`.

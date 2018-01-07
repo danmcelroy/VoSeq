@@ -1,3 +1,5 @@
+import re
+
 from seqrecord_expanded import SeqRecordExpanded
 from seqrecord_expanded.exceptions import MissingParameterError
 from seqrecord_expanded.exceptions import TranslationErrorMixedGappedSeq
@@ -12,6 +14,13 @@ from .nexus import DatasetHandler
 from public_interface.models import Genes
 from public_interface.models import Sequences
 from public_interface.models import Vouchers
+
+LINEAGES = {
+    # superfamily: lineage from domain Eukaryota to suborder Ditrysia
+    "Papilionoidea": "Eukaryota; Metazoa; Ecdysozoa; Arthropoda; Hexapoda; Insecta; Pterygota; Neoptera; Holometabola; Lepidoptera; Glossata; Ditrysia; ",  # noqa
+    "Hesperioidea": "Eukaryota; Metazoa; Ecdysozoa; Arthropoda; Hexapoda; Insecta; Pterygota; Neoptera; Holometabola; Lepidoptera; Glossata; Ditrysia; ",  # noqa
+    "Hedyloidea": "Eukaryota; Metazoa; Ecdysozoa; Arthropoda; Hexapoda; Insecta; Pterygota; Neoptera; Holometabola; Lepidoptera; Glossata; Ditrysia; ",  # noqa
+}
 
 
 class CreateDataset(object):
@@ -171,6 +180,7 @@ class CreateDataset(object):
             seq = self.create_seq_record(this_voucher_seqs)
 
         if code in our_taxon_names:
+            lineage = self.get_lineage(code)
             seq_record = SeqRecordExpanded(
                 seq,
                 voucher_code=code.replace(" ", "_"),
@@ -178,22 +188,41 @@ class CreateDataset(object):
                 gene_code=gene_code,
                 reading_frame=self.gene_codes_metadata[gene_code]['reading_frame'],
                 table=self.gene_codes_metadata[gene_code]['genetic_code'],
+                lineage=lineage,
             )
             return seq_record
         else:
             return None
 
+    def get_lineage(self, code):
+        voucher = Vouchers.objects.get(code=code)
+        try:
+            lineage = LINEAGES[voucher.superfamily]
+        except KeyError:
+            lineage = ""
+
+        additional_lineage = ";".join([
+            voucher.family, voucher.subfamily, voucher.tribe, voucher.subtribe,
+            voucher.genus, voucher.species, voucher.subspecies,
+        ])
+        lineage += re.sub(";+", "; ", additional_lineage)
+        return lineage.strip()
+
     def extract_sequence_from_all_seqs_in_db(self, all_seqs, code, gene_code):
         try:
             voucher_sequences = all_seqs[code]
         except KeyError:
-            self.warnings += ['Could not find sequences for voucher {0} and gene_code {1}'.format(code, gene_code)]
+            self.warnings += [
+                'Could not find sequences for voucher {0} and gene_code {1}'.format(
+                    code, gene_code)]
             return '?'
 
         try:
             this_voucher_seqs = voucher_sequences[gene_code]
         except KeyError:
-            self.warnings += ['Could not find sequences for voucher {0} and gene_code {1}'.format(code, gene_code)]
+            self.warnings += [
+                'Could not find sequences for voucher {0} and gene_code {1}'.format(
+                    code, gene_code)]
             return '?'
         return this_voucher_seqs
 
@@ -242,7 +271,8 @@ class CreateDataset(object):
         """
         :return: dictionary with genecode and base pair number.
         """
-        queryset = Genes.objects.all().values('gene_code', 'length', 'reading_frame', 'genetic_code')
+        queryset = Genes.objects.all().values(
+            'gene_code', 'length', 'reading_frame', 'genetic_code')
         gene_codes_metadata = dict()
         for i in queryset:
             gene_code = i['gene_code']
