@@ -1,3 +1,4 @@
+import logging
 import re
 
 from seqrecord_expanded import SeqRecordExpanded
@@ -14,6 +15,10 @@ from .nexus import DatasetHandler
 from public_interface.models import Genes
 from public_interface.models import Sequences
 from public_interface.models import Vouchers
+
+
+log = logging.getLogger(__name__)
+
 
 LINEAGES = {
     # superfamily: lineage from domain Eukaryota to suborder Ditrysia
@@ -44,6 +49,8 @@ class CreateDataset(object):
 
     """
     def __init__(self, cleaned_data):
+        # skip sequences with accession numbers and building GenBank Fasta file
+        self.sequences_skipped = []
         self.cleaned_data = cleaned_data
         self.translations = None
         self.degen_translations = None
@@ -142,11 +149,28 @@ class CreateDataset(object):
 
         for gene_code in sorted_gene_codes:
             for code in self.voucher_codes:
-                seq_obj = self.build_seq_obj(code, gene_code, our_taxon_names, all_seqs)
+
+                try:
+                    accession_number = all_seqs[code][gene_code]["accession"]
+                except KeyError:
+                    accession_number = ""
+
+                seq_obj = self.build_seq_obj(code, gene_code, accession_number,
+                                             our_taxon_names, all_seqs)
                 if seq_obj is None:
                     self.warnings += ['Could not find voucher {0}'.format(code)]
                     continue
-                self.seq_objs.append(seq_obj)
+                if self.file_format == "GenBankFASTA" and seq_obj.accession_number:
+                    log.debug("Skipping seq {} {} because it has accession number {}"
+                              "".format(seq_obj.voucher_code, seq_obj.gene_code,
+                                        seq_obj.accession_number))
+                    self.sequences_skipped.append({
+                        "code": seq_obj.voucher_code,
+                        "gene_code": seq_obj.gene_code,
+                        "accession_number": seq_obj.accession_number,
+                    })
+                else:
+                    self.seq_objs.append(seq_obj)
 
     def get_all_sequences(self):
         """Return sequences as dict of lists containing sequence and related data.
@@ -157,7 +181,7 @@ class CreateDataset(object):
         all_seqs = Sequences.objects.filter(
             code__in=self.voucher_codes,
             gene_code__in=self.gene_codes,
-        ).values('code_id', 'gene_code', 'sequences').order_by('code_id')
+        ).values('code_id', 'gene_code', 'sequences', 'accession').order_by('code_id')
 
         for seq in all_seqs:
             code = seq['code_id']
@@ -168,7 +192,7 @@ class CreateDataset(object):
             seqs_dict[code][gene_code] = seq
         return seqs_dict
 
-    def build_seq_obj(self, code, gene_code, our_taxon_names, all_seqs):
+    def build_seq_obj(self, code, gene_code, accession_number, our_taxon_names, all_seqs):
         """Builds a SeqRecordExpanded object. If cannot be built, returns None.
 
         """
@@ -189,6 +213,7 @@ class CreateDataset(object):
                 reading_frame=self.gene_codes_metadata[gene_code]['reading_frame'],
                 table=self.gene_codes_metadata[gene_code]['genetic_code'],
                 lineage=lineage,
+                accession_number=accession_number,
             )
             return seq_record
         else:
