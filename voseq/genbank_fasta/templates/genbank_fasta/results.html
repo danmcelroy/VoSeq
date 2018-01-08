@@ -55,7 +55,7 @@
 
           <ul class="list-group">
             {% for i in items_with_accession %}
-              <li class="list-group-item">{{ i.voucher_code }} for {{ i.gene_code }} = {{ i.accession }}</li>
+              <li class="list-group-item">{{ i.code }} for {{ i.gene_code }} = {{ i.accession_number }}</li>
             {% endfor %}
           </ul>
         </div><!-- panel -->
