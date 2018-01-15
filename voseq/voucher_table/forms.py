@@ -19,11 +19,12 @@ class VoucherTableForm(BaseDatasetForm):
             ('subspecies', 'Subspecies'),
             ('author', 'Author'),
             ('hostorg', 'Host org.'),
+            ('type_species', 'Type species'),
         ],
         widget=forms.CheckboxSelectMultiple(),
         initial=['code', 'genus', 'species'],
         required=False,
-        help_text='If taxon_names is None, use standart code_genus_species',
+        help_text='If taxon_names is None, use standard code_genus_species',
     )
     collector_info = forms.MultipleChoiceField(
         label='Locality and collector info:',
@@ -51,7 +52,7 @@ class VoucherTableForm(BaseDatasetForm):
         required=False,
     )
     field_delimitor = forms.ChoiceField(
-        label='Choose your field delimitor:',
+        label='Choose your field delimiter:',
         choices=[
             ('COMMA', 'comma'),
             ('TAB', 'tab'),
