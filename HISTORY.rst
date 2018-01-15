@@ -1,6 +1,13 @@
 HISTORY
 -------
 
+2.1.5 (2018-01-15)
+++++++++++++++++++
+- Voucher table can include type_species.
+- Genbank fasta files do not include those with accession numbers.
+- Translation of triples with missing codons do not raise exception.
+- Lineage included in genbank fasta files.
+
 2.1.4 (2017-11-06)
 ++++++++++++++++++
 - Fixed bug when generating datasets with certain codon positions.
