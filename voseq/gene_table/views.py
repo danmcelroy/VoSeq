@@ -1,5 +1,6 @@
 import copy
 import csv
+import logging
 import os
 import uuid
 
@@ -14,6 +15,9 @@ from core.utils import get_gene_codes
 from core.utils import get_username
 from create_dataset.utils import CreateDataset
 from public_interface.models import Genes
+
+
+log = logging.getLogger(__name__)
 
 
 def index(request):
@@ -129,7 +133,7 @@ class GeneTable(object):
             try:
                 os.remove(in_file)
             except OSError as e:
-                print("There is no partition file to remove: {0}".format(e))
+                log.error("There is no partition file to remove: {0}".format(e))
         return stats
 
     def make_guid(self):
