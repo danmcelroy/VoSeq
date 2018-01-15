@@ -1,3 +1,4 @@
+import logging
 import os
 import re
 
@@ -10,6 +11,9 @@ from core.utils import get_version_stats
 from core.utils import get_username
 from .forms import CreateDatasetForm
 from .utils import CreateDataset
+
+
+log = logging.getLogger(__name__)
 
 
 @login_required
@@ -65,7 +69,7 @@ def results(request):
                           },
                           )
         else:
-            print("invalid form")
+            log.debug("invalid form")
             return render(request, 'create_dataset/index.html',
                           {
                               'username': username,
