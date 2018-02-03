@@ -1,6 +1,11 @@
 HISTORY
 -------
 
+2.1.6 (2018-02-03)
+++++++++++++++++++
+- Fixed error when doing simple search fro voucher code that does not exist in
+  the database. issue #381.
+
 2.1.5 (2018-01-15)
 ++++++++++++++++++
 - Voucher table can include type_species.
