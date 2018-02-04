@@ -12,6 +12,7 @@ from django.db.models import Q
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_protect
+import flickrapi
 from haystack.forms import SearchForm
 from haystack.query import ValuesSearchQuerySet
 
@@ -31,7 +32,6 @@ def login(request):
     errors = None
 
     if request.POST:
-        log.debug(request.POST)
         username = request.POST.get("username")
         password = request.POST.get("password")
         user = authenticate(username=username, password=password)
@@ -53,6 +53,10 @@ def login(request):
 
 
 def index(request):
+    if request.user.is_authenticated() and settings.FLICKR_API_KEY != "fake api key":
+        flickr = flickrapi.FlickrAPI(settings.FLICKR_API_KEY, settings.FLICKR_API_SECRET)
+        flickr.authenticate_via_browser(perms='write')
+
     version, stats = get_version_stats()
     username = get_username(request)
 
