@@ -4,6 +4,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles import views
 
+from public_interface.views import login
+
 
 urlpatterns = [
     url(r'^create_gene_table/', include('gene_table.urls', namespace='gene_table')),
@@ -22,6 +24,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
     # user auth urls
+    url(r'^accounts/login/', login),
     url(r'^accounts/', include('registration.backends.default.urls')),
 ] + static(
     settings.STATIC_URL,

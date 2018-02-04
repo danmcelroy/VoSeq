@@ -2,14 +2,16 @@ from itertools import chain
 import json
 import logging
 
+from django.conf import settings
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as django_login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.http import HttpResponseRedirect, Http404, HttpResponse
-from django.views.decorators.csrf import csrf_protect
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect
-from django.conf import settings
-
+from django.views.decorators.csrf import csrf_protect
 from haystack.forms import SearchForm
 from haystack.query import ValuesSearchQuerySet
 
@@ -18,12 +20,39 @@ from .utils import get_simple_query, get_correct_url_query, get_voucher_code_lis
 from .models import Vouchers, FlickrImages, LocalImages, Sequences, Primers
 from .forms import AdvancedSearchForm, BatchChangesForm
 
-
 log = logging.getLogger(__name__)
 
 
+def login(request):
+    log.debug("custom login form")
+    username = get_username(request)
+    version, stats = get_version_stats()
+    form = AuthenticationForm(request)
+    errors = None
+
+    if request.POST:
+        log.debug(request.POST)
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(username=username, password=password)
+        if user:
+            django_login(request, user)
+            return redirect("/")
+        else:
+            log.debug("form is not valid")
+            errors = "Either username or password is incorrect."
+
+    return render(request, 'registration/login.html',
+                  {
+                      'form': form,
+                      'errors': errors,
+                      'username': username,
+                      'version': version,
+                      'stats': stats,
+                  })
+
+
 def index(request):
-    log.debug("Index")
     version, stats = get_version_stats()
     username = get_username(request)
 

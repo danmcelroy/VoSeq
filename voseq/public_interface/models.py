@@ -1,11 +1,14 @@
 import json
+import logging
 import os
 
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
-
 import flickrapi
+
+
+log = logging.getLogger(__name__)
 
 
 class TimeStampedModel(models.Model):
@@ -261,15 +264,22 @@ class FlickrImages(models.Model):
     voucher_image = models.URLField(help_text="URLs of the Flickr page.", blank=True)
     thumbnail = models.URLField(help_text="URLs for the small sized image from Flickr.")
     flickr_id = models.CharField(max_length=100, help_text="ID numbers from Flickr for our photo.")
-    image_file = models.ImageField(help_text="Placeholder for image file so we can send it to Flickr. "
-                                             "The file has been deleted right after upload.", blank=True)
+    image_file = models.ImageField(
+        help_text="Placeholder for image file so we can send it to Flickr. The "
+                  "file has been deleted right after upload.",
+        blank=True)
 
     class Meta:
         verbose_name_plural = 'Flickr Images'
         app_label = 'public_interface'
 
     def save(self, *args, **kwargs):
-        post_save.connect(self.update_flickr_image, sender=FlickrImages, dispatch_uid="update_flickr_image_count")
+        log.debug("Saving flickr photo: %s", args)
+        post_save.connect(
+            self.update_flickr_image,
+            sender=FlickrImages,
+            dispatch_uid="update_flickr_image_count",
+        )
         self.delete_local_photo(self.image_file)
         super(FlickrImages, self).save(*args, **kwargs)
 

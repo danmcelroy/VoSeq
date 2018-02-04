@@ -9,11 +9,18 @@ Log in - VoSeq
 {% block content %}
 <div class="container">
 
+
   <div class='row'>
     <div class='col-xs-8 col-sm-6 col-lg-4 col-sm-offset-3'>
       <h1>Login</h1>
 
-      <form method="post" action=".">
+      {% if errors %}
+        <div class="alert alert-danger">
+          {{ errors }}
+        </div>
+      {% endif %}
+
+      <form method="post" action="/accounts/login/">
         {% csrf_token %}
         {{ form|crispy }}
 
