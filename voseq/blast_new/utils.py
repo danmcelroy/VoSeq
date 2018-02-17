@@ -28,7 +28,8 @@ class BLASTNew(BLAST):
 
         log.debug("Will do blastnew of %s", str(gene_codes))
         if gene_codes:
-            self.genes = gene_codes.order_by("gene_code")
+            self.genes = gene_codes.order_by(
+                "gene_code").values_list("gene_code", flat=True)
         else:
             self.genes = []
 
