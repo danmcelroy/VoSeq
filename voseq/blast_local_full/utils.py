@@ -22,7 +22,7 @@ class BLASTFull(BLAST):
         self.path = os.path.join(self.cwd, 'db', 'full_db_seqs.fas.n*')
         self.db = os.path.join(self.cwd, 'db', 'full_db_seqs.fas')
 
-    def save_seqs_to_file(self):
+    def save_seqs_to_file(self) -> None:
         """Query all sequences from our database and save them to local disk.
 
         Sets attribute `self.seq_file` containing necessary sequences from our
@@ -34,10 +34,10 @@ class BLASTFull(BLAST):
             queryset = Sequences.objects.all()
 
             my_records = []
-            for i in queryset:
-                item_id = i.code_id + '|' + i.gene_code
-                seq = self.strip_question_marks(i.sequences)
-                if seq != '':
-                    seq_record = SeqRecord(Seq(seq), id=item_id)
+            for seq_obj in queryset:
+                item_id = seq_obj.code_id + '|' + seq_obj.gene_code
+                seq_string = self.strip_question_marks(seq_obj.sequences)
+                if seq_string != '':
+                    seq_record = SeqRecord(Seq(seq_string), id=item_id)
                     my_records.append(seq_record)
             SeqIO.write(my_records, self.seq_file, "fasta")

@@ -324,7 +324,7 @@ class BLAST(object):
         if os.path.isfile(self.output_file):
             os.remove(self.output_file)
 
-    def strip_question_marks(self, seq):
+    def strip_question_marks(self, seq: str) -> str:
         seq = re.sub('^\?+', '', seq)
         seq = re.sub('\?+$', '', seq)
 
