@@ -1,10 +1,14 @@
+import logging
+
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
-from core.utils import get_version_stats
-from core.utils import get_username
+from core.utils import get_version_stats, get_username
 from .utils import BLASTNew
 from .forms import BLASTNewForm
+
+
+log = logging.getLogger(__name__)
 
 
 def index(request):
@@ -27,14 +31,18 @@ def results(request):
     username = get_username(request)
 
     if request.method == 'POST':
+        log.debug(request.POST)
         form = BLASTNewForm(request.POST)
 
         if form.is_valid():
             cleaned_data = form.cleaned_data
 
-            blast = BLASTNew(blast_type='new', name=cleaned_data['name'],
-                             sequence=cleaned_data['sequence'],
-                             gene_codes=cleaned_data['gene_codes'])
+            blast = BLASTNew(
+                blast_type='new',
+                name=cleaned_data['name'],
+                sequence=cleaned_data['sequence'],
+                gene_codes=cleaned_data['gene_codes'],
+            )
             blast.save_seqs_to_file()
 
             if not blast.is_blast_db_up_to_date():
