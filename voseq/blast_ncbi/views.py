@@ -1,11 +1,12 @@
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
-from core.utils import get_version_stats
-from core.utils import get_username
+from core.utils import get_version_stats, get_username
 from .utils import BLASTNcbi
 
 
-def index(request, voucher_code, gene_code):
+def index(request: HttpRequest, voucher_code: str, gene_code: str) -> HttpResponse:
+    """Executes blast of sequence against NCBI genbank"""
     version, stats = get_version_stats()
     username = get_username(request)
 
@@ -22,5 +23,4 @@ def index(request, voucher_code, gene_code):
                       'result': result,
                       'version': version,
                       'stats': stats,
-                  },
-                  )
+                  })
