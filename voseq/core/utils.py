@@ -254,11 +254,12 @@ class BLAST(object):
             command += '-out ' + self.seq_file + ' -title "Whole Genome unmasked"'
             subprocess.check_output(command, shell=True)
 
-    def save_query_to_file(self):
+    def save_query_to_file(self) -> bool:
         """Returns boolean to point out whether we could save a query file"""
-        b = Sequences.objects.get(code_id=self.voucher_code, gene_code=self.gene_code)
-        this_id = '{0}|{1}'.format(b.code_id, b.gene_code)
-        seq = self.strip_question_marks(b.sequences)
+        seq_obj = Sequences.objects.get(code_id=self.voucher_code,
+                                        gene_code=self.gene_code)
+        this_id = '{0}|{1}'.format(seq_obj.code_id, seq_obj.gene_code)
+        seq = self.strip_question_marks(seq_obj.sequences)
 
         if seq:
             seq_record = SeqRecord(Seq(seq), id=this_id)
