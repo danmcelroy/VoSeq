@@ -171,28 +171,25 @@ class AdvancedSearchForm(ModelSearchForm):
     def clean_search_keywords(self):
         keywords = {}
         sequence_keywords = {}
-        for k, v in self.cleaned_data.items():
-            if v != '' and v is not None:
-                # remove after adding this to index
-                if v == 'Select':
-                    continue
-                if k in ['date_collection', 'date_collection_end', 'date_extraction']:
-                    v = datetime.date.strftime(v, "%Y-%m-%d")
-                if k == 'models':
-                    continue
-                if k in ['lab_person', 'accession']:
-                    key = "{}__icontains".format(k)
-                    sequence_keywords[key] = v
-                if k == 'gene_code':
-                    key = "{}__icontains".format(k)
-                    sequence_keywords[key] = v.gene_code
-                if k == 'genbank' and v == 'y':
-                    sequence_keywords[k] = True
-                elif k == 'genbank':
-                    sequence_keywords[k] = False
-                if k not in ['lab_person', 'accession', 'genbank', 'gene_code']:
-                    key = "{}__icontains".format(k)
-                    keywords[key] = v
+        for key, value in self.cleaned_data.items():
+            if value in ['', None, 'Select', 'models'] or key == "models":
+                continue
+
+            if key in ['date_collection', 'date_collection_end', 'date_extraction']:
+                value = datetime.date.strftime(value, "%Y-%m-%d")
+            if key in ['lab_person', 'accession']:
+                new_key = "{}__icontains".format(key)
+                sequence_keywords[new_key] = value
+            if key == 'gene_code':
+                new_key = "{}__icontains".format(key)
+                sequence_keywords[new_key] = value.gene_code
+            if key == 'genbank' and value == 'y':
+                sequence_keywords[key] = True
+            elif key == 'genbank':
+                sequence_keywords[key] = False
+            if key not in ['lab_person', 'accession', 'genbank', 'gene_code']:
+                new_key = "{}__icontains".format(key)
+                keywords[new_key] = value
 
         return keywords, sequence_keywords
 
