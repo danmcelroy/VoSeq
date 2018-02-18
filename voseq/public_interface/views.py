@@ -13,7 +13,7 @@ from django.conf import settings
 from haystack.forms import SearchForm
 from haystack.query import ValuesSearchQuerySet
 
-from core.utils import get_version_stats, get_username
+from core.utils import get_context
 from .utils import get_simple_query, get_correct_url_query, get_voucher_code_list
 from .models import Vouchers, FlickrImages, LocalImages, Sequences, Primers
 from .forms import AdvancedSearchForm, BatchChangesForm
@@ -23,24 +23,12 @@ log = logging.getLogger(__name__)
 
 
 def index(request):
-    log.debug("Index")
-    version, stats = get_version_stats()
-    username = get_username(request)
-
-    return render(request,
-                  'public_interface/index.html',
-                  {
-                      'username': username,
-                      'version': version,
-                      'stats': stats,
-                  },
-                  )
+    context = get_context(request)
+    return render(request, 'public_interface/index.html', context)
 
 
 def browse(request):
-    version, stats = get_version_stats()
-    username = get_username(request)
-
+    context = get_context(request)
     queryset = Vouchers.objects.order_by('-modified')[:10]
 
     vouchers_with_images = []
@@ -52,21 +40,14 @@ def browse(request):
     for i in Vouchers.objects.filter(localimages__voucher_id__isnull=False):
         vouchers_with_images.append(i.code)
 
-    return render(request, 'public_interface/browse.html',
-                  {
-                      'username': username,
-                      'results': queryset,
-                      'vouchers_with_images': set(vouchers_with_images),
-                      'version': version,
-                      'stats': stats,
-                  },
-                  )
+    context["results"] = queryset
+    context['vouchers_with_images'] = set(vouchers_with_images)
+    return render(request, 'public_interface/browse.html', context)
 
 
 def search(request):
     """Simple search tool"""
-    version, stats = get_version_stats()
-    username = get_username(request)
+    context = get_context(request)
     if 'q' not in request.GET:
         return redirect('/')
 
@@ -91,33 +72,22 @@ def search(request):
             except EmptyPage:
                 # If page is out of range (e.g. 9999), deliver last page of results.
                 results = paginator.page(paginator.num_pages)
-        return render(
-            request,
-            'public_interface/search_results.html',
-            {
-                'page': results,
-                'paginator': paginator,
-                'username': username,
-                'results': results,
-                'voucher_code_list': get_voucher_code_list(sqs),
-                'simple_query': get_simple_query(request),
-                'url_encoded_query': get_correct_url_query(request.GET.urlencode()),
-                'result_count': len(sqs),
-                'version': version,
-                'stats': stats,
-            })
+
+        context['page'] = results
+        context['paginator'] = paginator
+        context['results'] = results
+        context['voucher_code_list'] = get_voucher_code_list(sqs)
+        context['simple_query'] = get_simple_query(request)
+        context['url_encoded_query'] = get_correct_url_query(request.GET.urlencode())
+        context['result_count'] = len(sqs)
+        return render(request, 'public_interface/search_results.html', context)
     else:
         sqs = Vouchers.objects.filter(
             Q(genus__icontains=query) | Q(species__icontains=query) | Q(code__icontains=query),
         )
-        return render(
-            request,
-            'public_interface/search_results.html',
-            {
-                'result_count': len(sqs),
-                'page': {'object_list': sqs},
-            },
-        )
+        context["result_count"] = len(sqs)
+        context["page"] = {'object_list': sqs}
+        return render(request, 'public_interface/search_results.html', context)
 
 
 def autocomplete(request):
@@ -157,8 +127,7 @@ def search_advanced(request):
     :param request: HTTP request from the url dispatcher.
     :return: response to html template.
     """
-    version, stats = get_version_stats()
-    username = get_username(request)
+    context = get_context(request)
 
     if request.method == 'GET' and bool(request.GET) is not False:
         form = AdvancedSearchForm(request.GET)
@@ -179,51 +148,28 @@ def search_advanced(request):
                     # If page is out of range (e.g. 9999), deliver last page of results.
                     results = paginator.page(paginator.num_pages)
             if sqs is not None:
-                return render(
-                    request,
-                    'public_interface/search_results.html',
-                    {
-                        'page': results,
-                        'paginator': paginator,
-                        'username': username,
-                        'results': results,
-                        'voucher_code_list': get_voucher_code_list(sqs),
-                        'simple_query': get_simple_query(request),
-                        'url_encoded_query': get_correct_url_query(request.GET.urlencode()),
-                        'result_count': len(sqs),
-                        'version': version,
-                        'stats': stats,
-                    })
+                context['page'] = results
+                context['paginator'] = paginator
+                context['results'] = results
+                context['voucher_code_list'] = get_voucher_code_list(sqs)
+                context['simple_query'] = get_simple_query(request)
+                context['url_encoded_query'] = get_correct_url_query(request.GET.urlencode())
+                context['result_count'] = len(sqs)
+                return render(request, 'public_interface/search_results.html', context)
             else:
-                return render(request, 'public_interface/search_results.html',
-                              {
-                                  'username': username,
-                                  'form': form,
-                                  'version': version,
-                                  'stats': stats,
-                              })
+                context["form"] = form
+                return render(request, 'public_interface/search_results.html', context)
         else:
-            return render(request, 'public_interface/search.html',
-                          {
-                              'username': username,
-                              'form': form,
-                              'version': version,
-                              'stats': stats,
-                          })
+            context["form"] = form
+            return render(request, 'public_interface/search.html', context)
     else:
         form = AdvancedSearchForm()
-        return render(request, 'public_interface/search.html',
-                      {
-                          'username': username,
-                          'form': form,
-                          'version': version,
-                          'stats': stats,
-                      })
+        context["form"] = form
+        return render(request, 'public_interface/search.html', context)
 
 
 def show_voucher(request, voucher_code):
-    version, stats = get_version_stats()
-    username = get_username(request)
+    context = get_context(request)
 
     try:
         voucher_queryset = Vouchers.objects.get(code__iexact=voucher_code)
@@ -244,22 +190,16 @@ def show_voucher(request, voucher_code):
     )
     sorted_seqs_queryset = sorted(seqs_queryset, key=lambda x: x['gene_code'].lower())
 
-    return render(request, 'public_interface/show_voucher.html',
-                  {
-                      'username': username,
-                      'voucher': voucher_queryset,
-                      'images': images_queryset,
-                      'sequences': sorted_seqs_queryset,
-                      'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
-                      'version': version,
-                      'stats': stats,
-                  })
+    context['voucher'] = voucher_queryset
+    context['images'] = images_queryset
+    context['sequences'] = sorted_seqs_queryset
+    context['google_maps_api_key'] = settings.GOOGLE_MAPS_API_KEY
+    return render(request, 'public_interface/show_voucher.html', context)
 
 
 @login_required
 def show_sequence(request, voucher_code, gene_code):
-    version, stats = get_version_stats()
-    username = get_username(request)
+    context = get_context(request)
 
     try:
         queryset = Vouchers.objects.get(code__iexact=voucher_code)
@@ -270,16 +210,12 @@ def show_sequence(request, voucher_code, gene_code):
     images_queryset = FlickrImages.objects.filter(voucher=voucher_code)
     primers_queryset = Primers.objects.filter(for_sequence=seqs_queryset)
 
-    return render(request, 'public_interface/show_sequence.html',
-                  {
-                      'username': username,
-                      'voucher': queryset,
-                      'sequence': seqs_queryset,
-                      'images': images_queryset,
-                      'primers': primers_queryset,
-                      'version': version,
-                      'stats': stats,
-                  },)
+    context['voucher'] = queryset
+    context['sequence'] = seqs_queryset
+    context['images'] = images_queryset
+    context['primers'] = primers_queryset
+
+    return render(request, 'public_interface/show_sequence.html', context)
 
 
 @csrf_protect
