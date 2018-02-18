@@ -135,8 +135,6 @@ def search_advanced(request):
         page = request.GET.get('page')
         if form.is_valid():
             sqs = form.search()
-            results = ""
-            paginator = ""
             if sqs:
                 paginator = Paginator(sqs, 25)
                 try:
@@ -147,7 +145,6 @@ def search_advanced(request):
                 except EmptyPage:
                     # If page is out of range (e.g. 9999), deliver last page of results.
                     results = paginator.page(paginator.num_pages)
-            if sqs is not None:
                 context['page'] = results
                 context['paginator'] = paginator
                 context['results'] = results
@@ -155,9 +152,6 @@ def search_advanced(request):
                 context['simple_query'] = get_simple_query(request)
                 context['url_encoded_query'] = get_correct_url_query(request.GET.urlencode())
                 context['result_count'] = len(sqs)
-                return render(request, 'public_interface/search_results.html', context)
-            else:
-                context["form"] = form
                 return render(request, 'public_interface/search_results.html', context)
         else:
             context["form"] = form
