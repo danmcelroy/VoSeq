@@ -4,7 +4,7 @@ from subprocess import CalledProcessError
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
-from core.utils import get_version_stats, get_username, BLAST
+from core.utils import BLAST, get_context
 
 
 log = logging.getLogger(__name__)
@@ -15,9 +15,6 @@ def index(request: HttpRequest, voucher_code: str, gene_code: str) -> HttpRespon
 
     Show results to user in a table
     """
-    version, stats = get_version_stats()
-    username = get_username(request)
-
     blast = BLAST('local', voucher_code, gene_code)
     blast.save_seqs_to_file()
 
@@ -36,12 +33,6 @@ def index(request: HttpRequest, voucher_code: str, gene_code: str) -> HttpRespon
         result = {
             "error": "Query sequence has no valid codons, only question marks",
         }
-    return render(
-        request, 'blast_local/index.html',
-        {
-            'username': username,
-            'result': result,
-            'version': version,
-            'stats': stats,
-        },
-    )
+    context = get_context(request)
+    context["result"] = result
+    return render(request, 'blast_local/index.html', context)

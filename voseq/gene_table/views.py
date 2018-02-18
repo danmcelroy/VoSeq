@@ -9,10 +9,7 @@ from django.http import HttpResponse
 from amas import AMAS
 
 from .forms import GeneTableForm
-from core.utils import get_version_stats
-from core.utils import get_voucher_codes
-from core.utils import get_gene_codes
-from core.utils import get_username
+from core.utils import get_context, get_voucher_codes, get_gene_codes
 from create_dataset.utils import CreateDataset
 from public_interface.models import Genes
 
@@ -21,23 +18,14 @@ log = logging.getLogger(__name__)
 
 
 def index(request):
-    version, stats = get_version_stats()
-    username = get_username(request)
     form = GeneTableForm()
-
-    return render(request, 'gene_table/index.html',
-                  {
-                      'username': username,
-                      'version': version,
-                      'stats': stats,
-                      'form': form,
-                  },
-                  )
+    context = get_context(request)
+    context["form"] = form
+    return render(request, 'gene_table/index.html', context)
 
 
 def results(request):
-    version, stats = get_version_stats()
-    username = get_username(request)
+    context = get_context(request)
     if request.method == 'POST':
         form = GeneTableForm(request.POST)
         if form.is_valid():
@@ -45,14 +33,8 @@ def results(request):
             response = create_excel_file(table.stats)
             return response
 
-    return render(request, 'gene_table/index.html',
-                  {
-                      'username': username,
-                      'version': version,
-                      'stats': stats,
-                      'form': GeneTableForm(),
-                  },
-                  )
+    context["form"] = GeneTableForm()
+    return render(request, 'gene_table/index.html', context)
 
 
 class GeneTable(object):

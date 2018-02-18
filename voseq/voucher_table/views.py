@@ -3,26 +3,17 @@ from django.http import HttpResponseRedirect
 
 from .forms import VoucherTableForm
 from .utils import VoucherTable
-from core.utils import get_version_stats
-from core.utils import get_username
+from core.utils import get_context
 
 
 def index(request):
-    VERSION, STATS = get_version_stats()
-    return render(
-        request,
-        'voucher_table/index.html',
-        {
-            'username': get_username(request),
-            'version': VERSION,
-            'stats': STATS,
-            'form': VoucherTableForm(),
-        },
-    )
+    context = get_context(request)
+    context["form"] = VoucherTableForm()
+    return render(request, 'voucher_table/index.html', context)
 
 
 def results(request):
-    VERSION, STATS = get_version_stats()
+    context = get_context(request)
     if request.method == 'POST':
         form = VoucherTableForm(request.POST)
         if form.is_valid():
@@ -30,14 +21,6 @@ def results(request):
             response = table.create_csv_file()
             return response
         else:
-            return render(
-                request,
-                'voucher_table/index.html',
-                {
-                    'username': get_username(request),
-                    'version': VERSION,
-                    'stats': STATS,
-                    'form': form,
-                }
-            )
+            context["form"] = form
+            return render(request, 'voucher_table/index.html', context)
     return HttpResponseRedirect('/create_voucher_table/')
