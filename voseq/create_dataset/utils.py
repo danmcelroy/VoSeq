@@ -93,13 +93,15 @@ class CreateDataset(object):
         if not self.codon_positions:
             return ''
 
+        error_msg = None
         if self.degen_translations is not None and self.codon_positions != ['ALL']:
-            msg = 'Cannot degenerate codons if you have not selected all codon positions'
-            self.errors.append(msg)
-            return ''
+            error_msg = 'Cannot degenerate codons if you have not selected all codon positions'
+            self.errors.append(error_msg)
         elif self.degen_translations is not None and self.partition_by_positions != 'by gene':
-            msg = 'Cannot degenerate codons if they go to different partitions'
-            self.errors.append(msg)
+            error_msg = 'Cannot degenerate codons if they go to different partitions'
+            self.errors.append(error_msg)
+
+        if error_msg:
             return ''
 
         self.voucher_codes = get_voucher_codes(self.cleaned_data)
@@ -117,18 +119,15 @@ class CreateDataset(object):
                     degenerate=self.degen_translations,
                     outgroup=self.outgroup,
                 )
-            except MissingParameterError as e:
+            except (MissingParameterError, ValueError, TranslationErrorMixedGappedSeq) as e:
                 self.errors.append(e)
-                return ''
-            except ValueError as e:
-                self.errors.append(e)
-                return ''
-            except TranslationErrorMixedGappedSeq as e:
-                self.errors.append(e)
-                return ''
+                dataset = None
             except NexusError as e:
                 self.errors.append(e.__str__())
-                return ''
+                dataset = None
+
+            if not dataset:
+                return ""
 
             self.warnings += dataset.warnings
             dataset_handler = DatasetHandler(dataset.dataset_str, self.file_format)
