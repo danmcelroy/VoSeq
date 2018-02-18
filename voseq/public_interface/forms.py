@@ -206,10 +206,10 @@ class AdvancedSearchForm(ModelSearchForm):
                 sqs = Sequences.objects.filter(**sequence_keywords).filter(
                     code__in=voucher_list).distinct("code")
             else:
-                sqs = self.no_query_found()
+                self.no_query_found()
 
         if not sqs:
-            sqs = self.no_query_found()
+            self.no_query_found()
         return sqs
 
     def clean_search_keywords(self) -> Tuple[Dict[str, str], Dict[str, str]]:
