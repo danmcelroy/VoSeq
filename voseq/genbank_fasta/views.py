@@ -18,7 +18,6 @@ log = logging.getLogger(__name__)
 @login_required
 def index(request):
     form = GenBankFastaForm()
-
     context = get_context(request)
     context["form"] = form
     return render(request, 'genbank_fasta/index.html', context)
