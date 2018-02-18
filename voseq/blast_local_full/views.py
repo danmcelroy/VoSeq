@@ -1,14 +1,13 @@
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
-from core.utils import get_version_stats
-from core.utils import get_username
+from core.utils import get_context
 from .utils import BLASTFull
 
 
-def index(request, voucher_code, gene_code):
-    version, stats = get_version_stats()
-    username = get_username(request)
-
+def index(request: HttpRequest, voucher_code: str, gene_code: str
+          ) -> HttpResponse:
+    """Execute a blast of sequence against all sequences in the database"""
     blast = BLASTFull('full', voucher_code, gene_code)
     blast.save_seqs_to_file()
 
@@ -19,11 +18,6 @@ def index(request, voucher_code, gene_code):
     blast.do_blast()
     result = blast.parse_blast_output()
     blast.delete_query_output_files()
-    return render(request, 'blast_local/index.html',
-                  {
-                      'username': username,
-                      'result': result,
-                      'version': version,
-                      'stats': stats,
-                  },
-                  )
+    context = get_context(request)
+    context['result'] = result
+    return render(request, 'blast_local/index.html', context)

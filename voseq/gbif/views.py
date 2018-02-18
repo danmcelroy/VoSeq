@@ -4,22 +4,14 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-from core.utils import get_version_stats
-from core.utils import get_username
+from core.utils import get_context
 from .utils import get_data_count
 from .utils import create_excel_file
 
 
 def index(request):
-    version, stats = get_version_stats()
-    username = get_username(request)
-    return render(request, 'gbif/index.html',
-                  {
-                      'username': username,
-                      'version': version,
-                      'stats': stats,
-                  },
-                  )
+    context = get_context(request)
+    return render(request, 'gbif/index.html', context)
 
 
 @csrf_exempt

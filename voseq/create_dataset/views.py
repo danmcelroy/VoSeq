@@ -7,8 +7,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 
-from core.utils import get_version_stats
-from core.utils import get_username
+from core.utils import get_context
 from .forms import CreateDatasetForm
 from .utils import CreateDataset
 
@@ -19,21 +18,15 @@ log = logging.getLogger(__name__)
 @login_required
 def index(request):
     form = CreateDatasetForm()
-    username = get_username(request)
+    context = get_context(request)
+    context["form"] = form
 
-    return render(request,
-                  'create_dataset/index.html',
-                  {
-                      'username': username,
-                      'form': form,
-                  },
-                  )
+    return render(request, 'create_dataset/index.html', context)
 
 
 @login_required
 def results(request):
-    version, stats = get_version_stats()
-    username = get_username(request)
+    context = get_context(request)
 
     if request.method == 'POST':
         form = CreateDatasetForm(request.POST)
@@ -51,33 +44,24 @@ def results(request):
 
             dataset_file_abs = dataset_creator.dataset_file
             if dataset_file_abs is not None:
-                dataset_file = re.search('([A-Z]+_[a-z0-9]+\.txt)', dataset_file_abs).groups()[0]
+                dataset_file = re.search(
+                    '([A-Z]+_[a-z0-9]+\.txt)',
+                    dataset_file_abs
+                ).groups()[0]
             else:
                 dataset_file = False
 
-            return render(request, 'create_dataset/results.html',
-                          {
-                              'username': username,
-                              'dataset_file': dataset_file,
-                              'charset_block': dataset_creator.charset_block,
-                              'dataset': dataset,
-                              'dataset_format': dataset_format,
-                              'errors': errors,
-                              'warnings': warnings,
-                              'version': version,
-                              'stats': stats,
-                          },
-                          )
+            context['dataset_file'] = dataset_file
+            context['charset_block'] = dataset_creator.charset_block
+            context['dataset'] = dataset
+            context['dataset_format'] = dataset_format
+            context['errors'] = errors
+            context['warnings'] = warnings
+            return render(request, 'create_dataset/results.html', context)
         else:
             log.debug("invalid form")
-            return render(request, 'create_dataset/index.html',
-                          {
-                              'username': username,
-                              'form': form,
-                              'version': version,
-                              'stats': stats,
-                          },
-                          )
+            context["form"] = form
+            return render(request, 'create_dataset/index.html', context)
     else:
         return HttpResponseRedirect('/create_dataset/')
 

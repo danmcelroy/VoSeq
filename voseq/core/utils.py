@@ -4,9 +4,11 @@ import logging
 import os
 import re
 import subprocess
+from typing import Dict, Any
 import uuid
 
 from django.conf import settings
+from django.http import HttpRequest
 from Bio import SeqIO
 from Bio.Blast.Applications import NcbiblastnCommandline
 from Bio.Blast import NCBIXML
@@ -94,20 +96,27 @@ def get_gene_codes(cleaned_data):
     return tuple(sorted(gene_codes, key=str.lower))
 
 
-def get_version_stats():
-    """Returns version and database statistics for page footer.
+def get_context(request: HttpRequest) -> Dict[str, Any]:
+    version, stats = get_version_stats()
+    context = {
+        "username": get_username(request),
+        "version": version,
+        "stats": stats,
+    }
+    return context
 
-    """
+
+def get_version_stats():
+    """Returns version and database statistics for page footer."""
     version = settings.VERSION
     try:
         stats = Stats.objects.get(pk=1)
     except Stats.DoesNotExist:
         stats = ''
-
     return version, stats
 
 
-def get_username(request):
+def get_username(request: HttpRequest) -> str:
     username = 'Guest'
     if request.user.is_authenticated():
         username = request.user.username
@@ -254,11 +263,12 @@ class BLAST(object):
             command += '-out ' + self.seq_file + ' -title "Whole Genome unmasked"'
             subprocess.check_output(command, shell=True)
 
-    def save_query_to_file(self):
+    def save_query_to_file(self) -> bool:
         """Returns boolean to point out whether we could save a query file"""
-        b = Sequences.objects.get(code_id=self.voucher_code, gene_code=self.gene_code)
-        this_id = '{0}|{1}'.format(b.code_id, b.gene_code)
-        seq = self.strip_question_marks(b.sequences)
+        seq_obj = Sequences.objects.get(code_id=self.voucher_code,
+                                        gene_code=self.gene_code)
+        this_id = '{0}|{1}'.format(seq_obj.code_id, seq_obj.gene_code)
+        seq = self.strip_question_marks(seq_obj.sequences)
 
         if seq:
             seq_record = SeqRecord(Seq(seq), id=this_id)
@@ -323,7 +333,7 @@ class BLAST(object):
         if os.path.isfile(self.output_file):
             os.remove(self.output_file)
 
-    def strip_question_marks(self, seq):
+    def strip_question_marks(self, seq: str) -> str:
         seq = re.sub('^\?+', '', seq)
         seq = re.sub('\?+$', '', seq)
 

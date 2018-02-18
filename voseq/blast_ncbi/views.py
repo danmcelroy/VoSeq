@@ -1,14 +1,12 @@
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
-from core.utils import get_version_stats
-from core.utils import get_username
+from core.utils import get_context
 from .utils import BLASTNcbi
 
 
-def index(request, voucher_code, gene_code):
-    version, stats = get_version_stats()
-    username = get_username(request)
-
+def index(request: HttpRequest, voucher_code: str, gene_code: str) -> HttpResponse:
+    """Executes blast of sequence against NCBI genbank"""
     blast = BLASTNcbi(blast_type="remote", voucher_code=voucher_code,
                       gene_code=gene_code)
     blast.save_query_to_file()
@@ -16,11 +14,6 @@ def index(request, voucher_code, gene_code):
     blast.do_blast()
     result = blast.parse_blast_output()
     blast.delete_query_output_files()
-    return render(request, 'blast_local/index.html',
-                  {
-                      'username': username,
-                      'result': result,
-                      'version': version,
-                      'stats': stats,
-                  },
-                  )
+    context = get_context(request)
+    context["result"] = result
+    return render(request, 'blast_local/index.html', context)

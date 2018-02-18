@@ -7,8 +7,7 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from core.utils import get_version_stats
-from core.utils import get_username
+from core.utils import get_context
 from .forms import GenBankFastaForm
 from create_dataset.utils import CreateDataset
 
@@ -18,26 +17,17 @@ log = logging.getLogger(__name__)
 
 @login_required
 def index(request):
-    version, stats = get_version_stats()
-    username = get_username(request)
-
     form = GenBankFastaForm()
-    return render(request,
-                  'genbank_fasta/index.html',
-                  {
-                      'username': username,
-                      'form': form,
-                      'version': version,
-                      'stats': stats,
-                  },
-                  )
+
+    context = get_context(request)
+    context["form"] = form
+    return render(request, 'genbank_fasta/index.html', context)
 
 
 @login_required
 @csrf_exempt
 def results(request):
-    version, stats = get_version_stats()
-    username = get_username(request)
+    context = get_context(request)
 
     if request.method == 'POST':
         form = GenBankFastaForm(request.POST)
@@ -74,29 +64,17 @@ def results(request):
             else:
                 aa_dataset_file = False
 
-            return render(request, 'genbank_fasta/results.html',
-                          {
-                              'username': username,
-                              'items_with_accession': items_with_accession,
-                              'dataset': dataset_short,
-                              'fasta_file': dataset_file,
-                              'protein': aa_dataset,
-                              'errors': errors,
-                              'protein_file': aa_dataset_file,
-                              'warnings': warnings,
-                              'version': version,
-                              'stats': stats,
-                          },
-                          )
+            context['items_with_accession'] = items_with_accession
+            context['dataset'] = dataset_short
+            context['fasta_file'] = dataset_file
+            context['protein'] = aa_dataset
+            context['errors'] = errors
+            context['protein_file'] = aa_dataset_file
+            context['warnings'] = warnings
+            return render(request, 'genbank_fasta/results.html', context)
         else:
-            return render(request, 'genbank_fasta/index.html',
-                          {
-                              'username': username,
-                              'form': form,
-                              'version': version,
-                              'stats': stats,
-                          },
-                          )
+            context["form"] = form
+            return render(request, 'genbank_fasta/index.html', context)
 
     return HttpResponseRedirect('/genbank_fasta/')
 
