@@ -5,7 +5,7 @@ from core.utils import BLAST
 
 class BLASTNcbi(BLAST):
     """Handles duties related to blast against sequences in NCBI GenBank."""
-    def do_blast(self):
+    def do_blast(self) -> None:
         """Blasts against NCBI and saves returned XML file to local disk."""
         with open(self.query_file) as handle:
             fasta_string = handle.read()
