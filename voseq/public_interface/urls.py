@@ -1,10 +1,12 @@
 from django.conf.urls import url
 
-from . import views
+from .views import public_views as views
+from .views import admin_views
 
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^vouchers/add/$', admin_views.add_voucher, name='add_voucher'),
     url(r'^browse/$', views.browse, name='browse'),
     url(r'^autocomplete/$', views.autocomplete, name='autocomplete'),
     url(r'^search/$', views.search, name='simple_search'),

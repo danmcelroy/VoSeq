@@ -15,8 +15,8 @@ from public_interface.models import Genes
 from public_interface.models import TaxonSets
 from public_interface.models import Sequences
 from public_interface.models import Vouchers
-from public_interface.views import change_selected
-from public_interface.forms import SequencesAdminForm
+from public_interface.views.public_views import change_selected
+from public_interface.forms.public_forms import SequencesAdminForm
 
 
 class ImageInLine(admin.StackedInline):

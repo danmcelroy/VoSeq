@@ -9,6 +9,7 @@ config.json
 *pdf
 *bak
 *.fasta
+env/
 
 # virtual machine in vagrant
 ./vagrant
