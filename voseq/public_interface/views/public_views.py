@@ -27,9 +27,10 @@ def index(request):
     return render(request, 'public_interface/index.html', context)
 
 
+@login_required
 def browse(request):
     context = get_context(request)
-    queryset = Vouchers.objects.order_by('-modified')[:10]
+    queryset = Vouchers.objects.filter(user=request.user).order_by('-modified')[:10]
 
     vouchers_with_images = []
     # Lookups that span relationships

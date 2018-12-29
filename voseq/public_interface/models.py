@@ -2,7 +2,9 @@ import json
 import os
 
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import ForeignKey
 from django.db.models.signals import post_save
 
 import flickrapi
@@ -147,6 +149,7 @@ class Vouchers(TimeStampedModel):
         (LOST, 'lost'),
         (UNKNOWN, 'unknown'),
     )
+    user = ForeignKey(User, null=True)
     code = models.CharField(
         max_length=300, unique=True, primary_key=True, db_index=True, help_text="Voucher code.")
     orden = models.TextField(blank=True, db_index=True)
