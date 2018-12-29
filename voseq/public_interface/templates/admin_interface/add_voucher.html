@@ -1,9 +1,10 @@
 {% extends 'public_interface/base.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}
   Add Voucher - VoSeq
 {% endblock title %}
 
 {% block content %}
-  {{ form }}
+  {{ form|crispy }}
 {% endblock content %}
