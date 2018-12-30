@@ -58,6 +58,7 @@
               {{ voucher.author }}
             {% endif %}
         </h3>
+        <a href="{% url 'public_interface:add_voucher' code=voucher.code %}">Edit voucher</a>
 
         <div class="panel panel-primary">
           <div class="panel-heading">

@@ -1,7 +1,7 @@
 amas==0.2
 biopython==1.68
 Django==1.11.17
-Pillow
+Pillow==5.3.0
 pyprind==2.9.3
 elasticsearch==1.4
 Unipath==1.1

@@ -16,9 +16,15 @@
           {% csrf_token %}
           {{ form|crispy }}
 
-          <button type="submit" class="btn btn-primary btn-lg">
-            Create
-          </button>
+          {% if update is True %}
+            <button type="submit" name="update" class="btn btn-primary btn-lg">
+              Update
+            </button>
+          {% else %}
+            <button type="submit" name="create" class="btn btn-primary btn-lg">
+              Create
+            </button>
+          {% endif %}
         </form>
       </div>
     </div>
