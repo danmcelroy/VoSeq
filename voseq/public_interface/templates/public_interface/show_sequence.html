@@ -16,6 +16,7 @@
           {{ item.author }}
           {% endif %}
         </h3>
+        <a href="{% url 'public_interface:add_sequence' sequence_id=sequence.id %}">Edit sequence</a>
 
         <div class="panel panel-primary">
           <div class="panel-heading">

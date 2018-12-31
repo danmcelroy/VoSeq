@@ -4,7 +4,7 @@ import logging
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import HttpResponseRedirect, Http404, HttpResponse
+from django.http import HttpResponseRedirect, Http404, HttpResponse, HttpRequest
 from django.views.decorators.csrf import csrf_protect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect
@@ -182,6 +182,7 @@ def show_voucher(request, voucher_code):
     images_queryset = list(chain(flickr_images_queryset, local_images_queryset))
 
     seqs_queryset = Sequences.objects.filter(code=voucher_code).values(
+        'id',
         'code',
         'gene_code',
         'number_ambiguous_bp',
@@ -199,19 +200,19 @@ def show_voucher(request, voucher_code):
 
 
 @login_required
-def show_sequence(request, voucher_code, gene_code):
+def show_sequence(request: HttpRequest, sequence_id: int):
     context = get_context(request)
 
     try:
-        queryset = Vouchers.objects.get(code__iexact=voucher_code)
-    except Vouchers.DoesNotExist:
+        voucher = Sequences.objects.get(id=sequence_id, user=request.user).code
+    except Sequences.DoesNotExist:
         raise Http404
 
-    seqs_queryset = Sequences.objects.get(code=voucher_code, gene_code=gene_code)
-    images_queryset = FlickrImages.objects.filter(voucher=voucher_code)
-    primers_queryset = Primers.objects.filter(for_sequence=seqs_queryset)
+    seqs_queryset = Sequences.objects.get(id=sequence_id, user=request.user)
+    images_queryset = FlickrImages.objects.filter(voucher=voucher, user=request.user)
+    primers_queryset = Primers.objects.filter(for_sequence=seqs_queryset, user=request.user)
 
-    context['voucher'] = queryset
+    context['voucher'] = voucher
     context['sequence'] = seqs_queryset
     context['images'] = images_queryset
     context['primers'] = primers_queryset

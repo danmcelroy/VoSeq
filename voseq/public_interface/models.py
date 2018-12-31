@@ -26,6 +26,7 @@ class TimeStampedModel(models.Model):
 
 
 class Genes(models.Model):
+    user = ForeignKey(User, null=True)
     gene_code = models.CharField(max_length=100)
     genetic_code = models.PositiveSmallIntegerField(
         null=True,
@@ -72,6 +73,7 @@ class Genes(models.Model):
 
 
 class GeneSets(models.Model):
+    user = ForeignKey(User, null=True)
     geneset_name = models.CharField(max_length=75, blank=False)
     geneset_creator = models.CharField(max_length=75, blank=False)
     geneset_description = models.CharField(max_length=140, blank=True)
@@ -91,6 +93,7 @@ class GeneSets(models.Model):
 
 
 class TaxonSets(models.Model):
+    user = ForeignKey(User, null=True)
     taxonset_name = models.CharField(max_length=75, blank=False)
     taxonset_creator = models.CharField(max_length=75, blank=False)
     taxonset_description = models.CharField(max_length=140, blank=True)
@@ -215,6 +218,7 @@ class Vouchers(TimeStampedModel):
 
 
 class Sequences(models.Model):
+    user = ForeignKey(User, null=True)
     code = models.ForeignKey(Vouchers, db_index=True, help_text='This is your voucher code.')
     gene_code = models.CharField(max_length=100, db_index=True)
     sequences = models.TextField(blank=True)
@@ -243,6 +247,7 @@ class Sequences(models.Model):
 
 
 class Primers(models.Model):
+    user = ForeignKey(User, null=True)
     for_sequence = models.ForeignKey(Sequences, help_text='relation to Sequences table with reference '
                                                           'for code and gene_code.')
     primer_f = models.CharField(max_length=100, blank=True)
@@ -256,6 +261,7 @@ class Primers(models.Model):
 
 
 class FlickrImages(models.Model):
+    user = ForeignKey(User, null=True)
     voucher = models.ForeignKey(
         Vouchers,
         help_text='Relation with id of voucher. Save as lower case.',
@@ -345,6 +351,7 @@ class FlickrImages(models.Model):
 
 class LocalImages(models.Model):
     """Voucher images saved in local system."""
+    user = ForeignKey(User, null=True)
     voucher = models.ForeignKey(
         Vouchers,
         help_text='Relation with id of voucher.',

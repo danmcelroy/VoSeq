@@ -1,0 +1,137 @@
+{% extends 'public_interface/base.html' %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+{% block additional_css %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/selectize.bootstrap3.css' %}" />
+{% endblock additional_css %}
+
+{% block title %}
+  Add Sequence - VoSeq
+{% endblock title %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <h2>Add a new sequence</h2>
+    </div>
+    <div class="row">
+      <div class="col-lg-10">
+        <form method="post" class="uniForm" action="{% url 'public_interface:add_sequence' %}">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="id_code" class="control-label requiredField">
+              Code <span class="asteriskField">*</span>
+            </label>
+            <div class="controls">
+              <select name="code" id="id_code" class="form-control" required>
+                {% for x, y in form.fields.code.choices %}
+                  {% if sequence.0.code.code == y %}
+                    <option value="{{ x }}" selected>{{ y }}</option>
+                  {% else %}
+                    <option value="{{ x }}">{{ y }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <p class="help-block">This is your voucher code.</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="id_gene_code" class="control-label requiredField">
+              Gene code
+              <span class="asteriskField">*</span>
+            </label>
+            <div class="controls">
+              <select name="gene_code" class="form-control" id="id_gene_code" required>
+                {% for x, y in form.fields.gene_code.choices %}
+                  {% if sequence.0.gene_code == y %}
+                    <option value="{{ x }}" selected>{{ y }}</option>
+                  {% else %}
+                    <option value="{{ x }}">{{ y }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="id_sequences" class="control-label">
+                Sequences
+            </label>
+            <div class="controls">
+              <textarea name="sequences" cols="40" rows="10" class="textarea form-control" id="id_sequences">{{ sequence.0.sequences }}</textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="id_accession" class="control-label">
+                Accession
+            </label>
+            <div class="controls">
+              <input type="text" name="accession" maxlength="100"
+                     class="textinput textInput form-control" id="id_accession"
+                     value="{{ sequence.0.accession }}" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="id_lab_person" class="control-label">
+                Lab person
+            </label>
+            <div class="controls">
+              <input type="text" name="lab_person" maxlength="100"
+                     class="textinput textInput form-control" id="id_lab_person"
+                     value="{{ sequence.0.lab_person }}" />
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label for="id_notes" class="control-label ">
+                Notes
+            </label>
+            <div class="controls">
+              <textarea name="notes" cols="40" rows="10" class="textarea form-control" id="id_notes">{{ sequence.0.notes }}</textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="id_genbank" class="control-label ">
+                Genbank
+            </label>
+            <div class="controls">
+              <select name="genbank" class="nullbooleanselect form-control" id="id_genbank">
+                <option value="1" selected="">Unknown</option>
+                <option value="2" {% if sequence.0.genbank == True %}selected{% endif %}>Yes</option>
+                <option value="3" {% if sequence.0.genbank == False %}selected{% endif %}>No</option>
+              </select>
+            </div>
+          </div>
+
+          {% if update is True %}
+            <button type="submit" name="update" class="btn btn-primary btn-lg">
+              Update
+            </button>
+          {% else %}
+            <button type="submit" name="create" class="btn btn-primary btn-lg">
+              Create
+            </button>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
+
+{% block additional_javascript_footer %}
+  <script type="text/javascript" src="{% static 'js/selectize.min.js' %}"></script>
+
+<script>
+  $(function() {
+    $('select').selectize();
+  });
+</script>
+{% endblock additional_javascript_footer %}
+

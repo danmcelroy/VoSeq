@@ -1,10 +1,13 @@
-from django.forms import ModelForm, TextInput
+from django.forms import ModelForm, TextInput, ModelChoiceField
 
-from public_interface.models import Vouchers
+from public_interface.models import Vouchers, Sequences, Genes
 
 
 
 class VoucherForm(ModelForm):
+    code = ModelChoiceField(queryset=Vouchers.objects.distinct("code"),
+                            empty_label="Choose a value")
+
     class Meta:
         model = Vouchers
         fields = "__all__"
@@ -34,3 +37,16 @@ class VoucherForm(ModelForm):
             "determined_by": TextInput,
             "author": TextInput,
         }
+
+
+class SequenceForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user", None)
+        super(SequenceForm, self).__init__(*args, **kwargs)
+        self.fields["gene_code"] = ModelChoiceField(
+            queryset=Genes.objects.filter(user=user), empty_label="Choose a value")
+
+    class Meta:
+        model =  Sequences
+        fields = "__all__"
+        exclude = ["user"]
