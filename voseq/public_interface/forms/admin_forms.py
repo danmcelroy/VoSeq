@@ -50,3 +50,10 @@ class SequenceForm(ModelForm):
         model =  Sequences
         fields = "__all__"
         exclude = ["user"]
+
+
+class GeneForm(ModelForm):
+    class Meta:
+        model = Genes
+        fields = "__all__"
+        exclude = ["user", "time_created"]

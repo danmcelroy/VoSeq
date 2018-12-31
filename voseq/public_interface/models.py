@@ -1,3 +1,4 @@
+from enum import IntEnum
 import json
 import os
 
@@ -7,6 +8,7 @@ from django.db import models
 from django.db.models import ForeignKey
 from django.db.models.signals import post_save
 
+from core.django_enum import django_enum
 import flickrapi
 
 
@@ -23,6 +25,14 @@ class TimeStampedModel(models.Model):
 
     def __str__(self):
         return "Time created"
+
+
+@django_enum
+class GeneType(IntEnum):
+    unknown = 0
+    mitochondrial = 1
+    nuclear = 2
+    ribosomal = 3
 
 
 class Genes(models.Model):
@@ -61,7 +71,8 @@ class Genes(models.Model):
         ),
         default='notset',
     )
-    gene_type = models.CharField(max_length=255, blank=True, help_text='Nuclear, mitochondrial.')
+    gene_type = models.IntegerField(
+        default=GeneType.unknown, choices=GeneType.get_choices())
     time_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

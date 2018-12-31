@@ -12,6 +12,8 @@ urlpatterns = [
     url(r'^sequences/add/$', admin_views.add_sequence, name='add_sequence'),
     url(r'^sequences/add/(?P<sequence_id>\d+)/$', admin_views.add_sequence, name='add_sequence'),
 
+    url(r'^genes/add/$', admin_views.add_gene, name='add_gene'),
+
     url(r'^browse/$', views.browse, name='browse'),
     url(r'^autocomplete/$', views.autocomplete, name='autocomplete'),
     url(r'^search/$', views.search, name='simple_search'),

@@ -8,12 +8,45 @@ from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect, reverse
 
 from core.utils import get_context
-from public_interface.forms.admin_forms import VoucherForm, SequenceForm
+from public_interface.forms.admin_forms import VoucherForm, SequenceForm, GeneForm
 from public_interface.models import Vouchers, Sequences, Genes
 
 
 log = logging.getLogger(__name__)
 
+
+@login_required
+def add_gene(request: HttpRequest, gene_id: str = None) -> HttpResponse:
+    context = get_context(request)
+    form = None
+    gene = None
+    if gene_id:
+        gene = Genes.objects.filter(id=gene_id)
+        if gene:
+            form = GeneForm(request.POST or None, initial=gene.values()[0])
+
+    if not form:
+        form = GeneForm(request.POST or None)
+
+    if form.is_valid():
+        voucher = form.save()
+        voucher.user = request.user
+        voucher.save()
+        return HttpResponse("form is valid")
+    elif "update" in request.POST:
+        data = clean_post_data(request)
+        gene = Genes.objects.filter(code=request.POST.get("code"))
+        gene.update(**data)
+        messages.add_message(request, messages.INFO,
+                             f"The gene of code {gene.first().gene_code} has been updated")
+        return redirect(reverse("public_interface:browse"))
+
+    if gene:
+        context["update"] = True
+    else:
+        context["update"] = False
+    context["form"] = form
+    return render(request, 'admin_interface/add_gene.html', context)
 
 @login_required
 def add_voucher(request: HttpRequest, code: str = None) -> HttpResponse:
