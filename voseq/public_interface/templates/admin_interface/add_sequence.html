@@ -102,12 +102,14 @@
             </label>
             <div class="controls">
               <select name="genbank" class="nullbooleanselect form-control" id="id_genbank">
-                <option value="1" selected="">Unknown</option>
-                <option value="2" {% if sequence.0.genbank == True %}selected{% endif %}>Yes</option>
-                <option value="3" {% if sequence.0.genbank == False %}selected{% endif %}>No</option>
+                <option value="None" {% if sequence.0.genbank == None %}selected{% endif %}>Unknown</option>
+                <option value="True" {% if sequence.0.genbank == True %}selected{% endif %}>Yes</option>
+                <option value="False" {% if sequence.0.genbank == False %}selected{% endif %}>No</option>
               </select>
             </div>
           </div>
+
+        <input type="hidden" name="sequence_id" value="{{ sequence.0.id }}" />
 
           {% if update is True %}
             <button type="submit" name="update" class="btn btn-primary btn-lg">

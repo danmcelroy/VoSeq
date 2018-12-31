@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect, reverse
 
 from core.utils import get_context
 from public_interface.forms.admin_forms import VoucherForm, SequenceForm
-from public_interface.models import Vouchers, Sequences
+from public_interface.models import Vouchers, Sequences, Genes
 
 
 log = logging.getLogger(__name__)
@@ -66,25 +66,22 @@ def add_sequence(request: HttpRequest, sequence_id: str = None) -> HttpResponse:
     if not form:
         form = SequenceForm(request.POST or None, user=request.user)
 
-    if form.is_valid():
+    if "update" in request.POST:
+        # we are editing this voucher
+        data = clean_post_data(request)
+        sequence = Sequences.objects.filter(id=data.pop("sequence_id"))
+        sequence.update(**data)
+        messages.add_message(request, messages.INFO,
+                             f"The sequence of code {sequence.first().code} "
+                             f"{sequence.first().gene_code} has been updated")
+        return redirect(reverse("public_interface:browse"))
+    elif form.is_valid():
         sequence = form.save()
         sequence.user = request.user
         sequence.save()
         messages.add_message(request, messages.INFO,
                              f"The sequence of code {sequence.code} "
                              f"{sequence.gene_code} has been created")
-        return redirect(reverse("public_interface:browse"))
-    elif "update" in request.POST:
-        # we are editing this voucher
-        data = clean_post_data(request)
-        sequence = Sequences.objects.filter(
-            code__code=request.POST.get("code"),
-            gene_code=request.POST.get("gene_code"),
-        )
-        sequence.update(**data)
-        messages.add_message(request, messages.INFO,
-                             f"The sequence of code {sequence.first().code} "
-                             f"{sequence.first().gene_code} has been updated")
         return redirect(reverse("public_interface:browse"))
     else:
         print(form.errors)
@@ -117,6 +114,16 @@ def clean_post_data(request: HttpRequest) -> Dict[str, Any]:
                 value = datetime.strptime(value, "%Y-%m-%d")
             except ValueError:
                 value = None
+        if key == "gene_code":
+            value = Genes.objects.get(id=value).gene_code
+
+        if value == "None":
+            value = None
+        elif value == "True":
+            value = True
+        elif value == "False":
+            value = False
+
         if key not in ["csrfmiddlewaretoken", "update"]:
             data[key] = value
     return data
