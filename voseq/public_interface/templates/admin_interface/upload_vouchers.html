@@ -1,0 +1,36 @@
+{% extends 'public_interface/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+  Upload Vouchers - VoSeq
+{% endblock title %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <h2>Upload vouchers from a CSV file</h2>
+    </div>
+    <div class="row">
+      <div class="col-lg-10">
+        <p>This importer will import the following fields:
+        <pre>code orden superfamily family subfamily tribe subtribe genus species
+        subspecies country specific_locality type_species latitude longitude
+        max_altitude min_altitude collector date_collection date_collection_end
+        extraction extraction_tube date_extraction voucher_locality published_in
+        notes hostorg sex voucher voucher_code determined_by author</pre></p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-10">
+        <form method="post" class="uniForm" action="{% url 'public_interface:upload_vouchers' %}"
+              method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="file" name="csv_file" accept="text/csv" />
+          <button type="submit" name="upload" class="btn btn-primary btn-lg">
+            Upload
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

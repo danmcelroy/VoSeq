@@ -9,6 +9,8 @@ urlpatterns = [
     url(r'^vouchers/add/$', admin_views.add_voucher, name='add_voucher'),
     url(r'^vouchers/add/(?P<code>\w+)/?$',admin_views.add_voucher, name='add_voucher'),
 
+    url(r'^vouchers/upload/$', admin_views.upload_vouchers, name='upload_vouchers'),
+
     url(r'^sequences/add/$', admin_views.add_sequence, name='add_sequence'),
     url(r'^sequences/add/(?P<sequence_id>\d+)/$', admin_views.add_sequence, name='add_sequence'),
 

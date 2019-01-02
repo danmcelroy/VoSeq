@@ -1,7 +1,10 @@
 from datetime import datetime
+import io
+import csv
 import logging
 from typing import Dict, Any
 
+import tablib
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpRequest
@@ -10,9 +13,30 @@ from django.shortcuts import render, redirect, reverse
 from core.utils import get_context
 from public_interface.forms.admin_forms import VoucherForm, SequenceForm, GeneForm
 from public_interface.models import Vouchers, Sequences, Genes
+from public_interface.admin import BatchImportVouchersResource
 
 
 log = logging.getLogger(__name__)
+
+
+@login_required
+def upload_vouchers(request: HttpRequest) -> HttpResponse:
+    print(request)
+    if request.POST:
+        csv_file = request.FILES.get("csv_file", None)
+        if csv_file:
+            f = io.StringIO(csv_file.read().decode())
+            reader = csv.DictReader(f.readlines())
+            dataset = tablib.Dataset(headers=reader.fieldnames)
+            for row in reader:
+                dataset.append(row.values())
+
+            resource = BatchImportVouchersResource()
+            resource.import_data(dataset, dry_run=False, user=request.user)
+        return HttpResponse("imported")
+
+    context = get_context(request)
+    return render(request, 'admin_interface/upload_vouchers.html', context)
 
 
 @login_required
@@ -47,6 +71,7 @@ def add_gene(request: HttpRequest, gene_id: str = None) -> HttpResponse:
         context["update"] = False
     context["form"] = form
     return render(request, 'admin_interface/add_gene.html', context)
+
 
 @login_required
 def add_voucher(request: HttpRequest, code: str = None) -> HttpResponse:
