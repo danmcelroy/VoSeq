@@ -13,15 +13,33 @@ from django.shortcuts import render, redirect, reverse
 from core.utils import get_context
 from public_interface.forms.admin_forms import VoucherForm, SequenceForm, GeneForm
 from public_interface.models import Vouchers, Sequences, Genes
-from public_interface.admin import BatchImportVouchersResource
+from public_interface.admin import BatchImportVouchersResource, BatchImportSequencesResource
 
 
 log = logging.getLogger(__name__)
 
 
 @login_required
+def upload_sequences(request: HttpRequest) -> HttpResponse:
+    if request.POST:
+        csv_file = request.FILES.get("csv_file", None)
+        if csv_file:
+            f = io.StringIO(csv_file.read().decode())
+            reader = csv.DictReader(f.readlines())
+            dataset = tablib.Dataset(headers=reader.fieldnames)
+            for row in reader:
+                dataset.append(row.values())
+
+            resource = BatchImportSequencesResource()
+            resource.import_data(dataset, dry_run=False, user=request.user)
+        return HttpResponse("imported")
+
+    context = get_context(request)
+    return render(request, 'admin_interface/upload_sequences.html', context)
+
+
+@login_required
 def upload_vouchers(request: HttpRequest) -> HttpResponse:
-    print(request)
     if request.POST:
         csv_file = request.FILES.get("csv_file", None)
         if csv_file:

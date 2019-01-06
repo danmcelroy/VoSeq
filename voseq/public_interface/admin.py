@@ -43,7 +43,6 @@ class BatchImportVouchersResource(resources.ModelResource):
                   'date_extraction', 'published_in', 'notes',
                   )
     def save_instance(self, instance, using_transactions, dry_run=False, **kwargs):
-        print(instance)
         instance.user = kwargs.get("user")
         instance.save()
         if dry_run:
@@ -76,7 +75,9 @@ class BatchImportSequencesResource(resources.ModelResource):
             'code', 'gene_code', 'accession', 'lab_person', 'genbank', 'notes',
             'sequences',
         )
-
+    def save_instance(self, instance, using_transactions, dry_run=False, **kwargs):
+        instance.user = kwargs.get("user")
+        instance.save()
 
 
 # Customize what and the way you show it

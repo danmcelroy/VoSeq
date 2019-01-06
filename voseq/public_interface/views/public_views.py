@@ -173,7 +173,10 @@ def show_voucher(request, voucher_code):
     context = get_context(request)
 
     try:
-        voucher_queryset = Vouchers.objects.get(code__iexact=voucher_code)
+        voucher_queryset = Vouchers.objects.get(
+            code__iexact=voucher_code,
+            user=request.user
+        )
     except Vouchers.DoesNotExist:
         raise Http404
 
@@ -181,7 +184,10 @@ def show_voucher(request, voucher_code):
     local_images_queryset = LocalImages.objects.filter(voucher=voucher_code)
     images_queryset = list(chain(flickr_images_queryset, local_images_queryset))
 
-    seqs_queryset = Sequences.objects.filter(code=voucher_code).values(
+    seqs_queryset = Sequences.objects.filter(
+        code=voucher_code,
+        user=request.user,
+    ).values(
         'id',
         'code',
         'gene_code',
