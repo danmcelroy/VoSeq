@@ -1,4 +1,5 @@
 import json
+import sys
 
 from django.core.exceptions import ImproperlyConfigured
 
@@ -103,3 +104,13 @@ HAYSTACK_DEFAULT_OPERATOR = 'AND'
 
 if DEBUG is True:
     INTERNAL_IPS = ["127.0.0.1"]
+
+
+# should be configured for others
+if sys.argv[1] != "test":
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST =  get_secret("EMAIL_HOST")
+    EMAIL_PORT = '587'
+    EMAIL_HOST_USER = get_secret('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = get_secret("EMAIL_HOST_PASSWORD")
+    EMAIL_USE_TLS = True

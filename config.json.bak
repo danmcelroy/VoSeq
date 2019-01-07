@@ -7,5 +7,11 @@
 "DB_HOST": "localhost",
 "GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key",
 "PHOTOS_REPOSITORY": "local",
-"ELASTICSEARCH": "true"
+"ELASTICSEARCH": "true",
+"EMAIL_HOST": "",
+"EMAIL_PORT": "587",
+"EMAIL_HOST_USER": "",
+"EMAIL_HOST_PASSWORD": "",
+"SERVER_EMAIL": "",
+"SUBMIT_EMAIL_LIST": [""],
 }
