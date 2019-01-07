@@ -32,11 +32,6 @@ conf.php
 # avoid including dataset files
 voseq/create_dataset/dataset_files/*txt
 
-# avoid including migrations files
-voseq/public_interface/migrations/*
-voseq/overview_table/migrations/*
-voseq/stats/migrations/*
-
 # avoid including doc files for modules
 docs/voseq.*
 docs/_build
