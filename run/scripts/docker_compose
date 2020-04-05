@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+. run/scripts/get_project_vars
+
+cd run/docker
+docker-compose ${COMPOSE_OPTS[@]} "$@"
