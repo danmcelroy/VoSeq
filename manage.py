@@ -7,6 +7,4 @@ if __name__ == "__main__":
 
     from django.core.management import execute_from_command_line
 
-    print('$$$$1', sys.argv)
     execute_from_command_line(sys.argv)
-    print('#### 2')
