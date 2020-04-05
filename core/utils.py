@@ -118,7 +118,7 @@ def get_version_stats():
 
 def get_username(request: HttpRequest) -> str:
     username = 'Guest'
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         username = request.user.username
     return username
 
