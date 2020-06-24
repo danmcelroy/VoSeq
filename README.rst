@@ -14,7 +14,7 @@ VoSeq
     :alt: Join the chat at https://gitter.im/VoSeq/VoSeq
     :target: https://gitter.im/VoSeq/VoSeq?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 
-.. |Python_versions| image:: https://img.shields.io/badge/python-3.5%203.6-blue.svg
+.. |Python_versions| image:: https://img.shields.io/badge/python-3.6-blue.svg
     :alt: Python versions
 
 
