@@ -16,7 +16,7 @@ install: pip install -r requirements/testing.txt
 
 before_install:
     - echo "Fetching and installing BLAST"
-    - apt-get install ncbi-blast+
+    - sudo apt-get install ncbi-blast+
     - psql -c 'create database travis_ci_test;' -U postgres
 
 script: make coverage
