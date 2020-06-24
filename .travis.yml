@@ -12,7 +12,7 @@ python:
 before_script:
     - sleep 10
 
-install: pip install -r requirements/testing.txt
+install: pip install -r run/requirements.txt
 
 before_install:
     - echo "Fetching and installing BLAST"
