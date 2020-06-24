@@ -95,6 +95,20 @@ VoSeq installed. To enter this virtual machine:
 
     ./run/scripts/docker_compose exec app bash
 
+To exit the virtual machine:
+
+.. code:: shell
+
+    exit
+
+Import a test database into your Voseq installation: (1) enter the virtual
+machine, (2) execute the command to import the database:
+
+.. code:: shell
+
+    ./run/scripts/docker_compose exec app bash
+    python manage.py import_test_db
+
 Set up an administrator account by using the command ``make admin``
 (see `Administrate the server`_).
 

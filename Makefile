@@ -35,49 +35,49 @@ docs:
 	$(MAKE) -C docs html
 
 serve: stats
-	python voseq/manage.py runserver --settings=voseq.settings.local
+	python manage.py runserver --settings=voseq.settings.local
 
 admin:
-	python voseq/manage.py createsuperuser --settings=voseq.settings.local
+	python manage.py createsuperuser --settings=voseq.settings.production
 
 migrations:
-	python voseq/manage.py makemigrations --settings=voseq.settings.local
-	python voseq/manage.py migrate --settings=voseq.settings.local
+	python manage.py makemigrations --settings=voseq.settings.local
+	python manage.py migrate --settings=voseq.settings.local
 
 import:
-	python voseq/manage.py migrate_db --dumpfile=dump.xml --settings=voseq.settings.local
+	python manage.py migrate_db --dumpfile=dump.xml --settings=voseq.settings.local
 
 test_migrations:
-	python voseq/manage.py makemigrations --settings=voseq.settings.testing
-	python voseq/manage.py migrate --settings=voseq.settings.testing
+	python manage.py makemigrations --settings=voseq.settings.testing
+	python manage.py migrate --settings=voseq.settings.testing
 
 test_import:
-	python voseq/manage.py migrate_db --dumpfile=test_db_dump.xml --settings=voseq.settings.local
+	python manage.py migrate_db --dumpfile=test_db_dump.xml --settings=voseq.settings.local
 
 index:
-	python voseq/manage.py rebuild_index --settings=voseq.settings.local
+	python manage.py rebuild_index --settings=voseq.settings.local
 
 update_index:
-	python voseq/manage.py update_index --age=1 --remove --settings=voseq.settings.local
+	python manage.py update_index --age=1 --remove --settings=voseq.settings.local
 
 update_index_production:
-	python voseq/manage.py update_index --age=$(age) --remove --settings=voseq.settings.local
+	python manage.py update_index --age=$(age) --remove --settings=voseq.settings.local
 
 stats:
-	python voseq/manage.py create_stats --settings=voseq.settings.local
+	python manage.py create_stats --settings=voseq.settings.local
 
 collectstatic:
-	python voseq/manage.py collectstatic --noinput --settings=voseq.settings.production
+	python manage.py collectstatic --noinput --settings=voseq.settings.production
 
 coverage: test
 	coverage report -m
 	coverage html
 
 test:
-	python voseq/manage.py makemigrations --settings=voseq.settings.testing
-	python voseq/manage.py migrate --settings=voseq.settings.testing
+	python manage.py makemigrations --settings=voseq.settings.testing
+	python manage.py migrate --settings=voseq.settings.testing
 	rm -rf htmlcov .coverage
-	coverage run --source voseq voseq/manage.py test -v 2 blast_local blast_local_full blast_ncbi blast_new \
+	coverage run --source voseq manage.py test -v 2 blast_local blast_local_full blast_ncbi blast_new \
 	    core create_dataset genbank_fasta public_interface stats view_genes genbank_fasta gene_table \
 	    voucher_table gbif overview_table \
 	    --settings=voseq.settings.testing
