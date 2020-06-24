@@ -22,7 +22,7 @@ services:
     command: |
       /wait_for_it.sh db:5432 -t 0 -- gunicorn
       --workers 8
-      --timeout 720
+      --timeout 120
       --worker-class aiohttp.worker.GunicornWebWorker
       --log-level debug
       --error-logfile=-

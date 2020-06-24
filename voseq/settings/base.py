@@ -33,8 +33,7 @@ TRAVIS = False
 
 # Application definition
 
-INSTALLED_APPS = (
-    'django.contrib.sites',
+INSTALLED_APPS = [
     'registration',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -67,8 +66,7 @@ INSTALLED_APPS = (
 
     'easy_thumbnails',
     'import_export',
-
-)
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -91,9 +89,11 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
             'debug': False,
         }
