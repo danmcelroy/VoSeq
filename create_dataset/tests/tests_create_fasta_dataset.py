@@ -14,7 +14,7 @@ class CreateFASTADatasetTest(TestCase):
             cursor.execute("alter sequence public_interface_genes_id_seq restart with 1")
             cursor.execute("alter sequence public_interface_taxonsets_id_seq restart with 1")
         args = []
-        opts = {'dumpfile': 'test_db_dump2.xml', 'verbosity': 0}
+        opts = {'dumpfile': 'test_data.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 
