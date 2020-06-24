@@ -9,7 +9,7 @@ from stats.models import VouchersPerGene
 class TestCustomCommand(TestCase):
     def setUp(self):
         args = []
-        opts = {'dumpfile': 'test_db_dump2.xml', 'verbosity': 0}
+        opts = {'dumpfile': 'test_data.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
         call_command('create_stats')

@@ -18,7 +18,7 @@ with open(os.path.join(TEST_PATH, "CP100-10_COI-begin.xml"), "r") as handle:
 class TestNcbiBlast(TestCase):
     def setUp(self):
         args = []
-        opts = {'dumpfile': 'test_db_dump2.xml', 'verbosity': 0}
+        opts = {'dumpfile': 'test_data.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 
