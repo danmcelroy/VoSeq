@@ -83,8 +83,9 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
+            'public_interface/templates/registration',
             'core/templates',
-            'voseq/public_interface/templates/public_interface',
+            'public_interface/templates/public_interface',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -242,7 +243,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
+CRISPY_TEMPLATE_PACK = 'uni_form'
 
 
 # Static files (CSS, JavaScript, Images)
