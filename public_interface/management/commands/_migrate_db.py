@@ -17,6 +17,7 @@ from Bio.Alphabet import IUPAC
 import pyprind
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 
 from public_interface.models import Vouchers
 from public_interface.models import FlickrImages
@@ -37,7 +38,7 @@ class ParseXML(object):
     """
     Parses MySQL dump as XML file.
     """
-    def __init__(self, xml_string, tables_prefix=None, verbosity=None):
+    def __init__(self, xml_string, tables_prefix = None, verbosity = 2):
         if tables_prefix is None:
             self.tables_prefix = ''
         else:
@@ -282,12 +283,24 @@ class ParseXML(object):
         self.table_vouchers_items = []
         for row in our_data.findall('row'):
             item = dict()
-            item['code'] = row.find("./field/[@name='code']").text
-            item['orden'] = row.find("./field/[@name='orden']").text
+            code = row.find("./field/[@name='code']").text
+            orden = row.find("./field/[@name='orden']").text
+
+            if code:
+                item['code'] = code.strip()
+            else:
+                item['code'] = None
+
+            if orden:
+                item['orden'] = orden.replace('NULL', '').strip()
+            else:
+                item['orden'] = None
+
             try:
                 item['superfamily'] = row.find("./field/[@name='superfamily']").text
             except AttributeError:
                 item['superfamily'] = ''
+
             item['family'] = row.find("./field/[@name='family']").text
             item['subfamily'] = row.find("./field/[@name='subfamily']").text
             item['tribe'] = row.find("./field/[@name='tribe']").text
@@ -311,6 +324,7 @@ class ParseXML(object):
             item['voucher_locality'] = row.find("./field/[@name='voucherLocality']").text
             item['published_in'] = row.find("./field/[@name='publishedIn']").text
             item['notes'] = row.find("./field/[@name='notes']").text
+
             try:
                 item['edits'] = row.find("./field/[@name='edits']").text
             except AttributeError:
@@ -496,7 +510,7 @@ class ParseXML(object):
             if item['genetic_code'] == '':
                 item['genetic_code'] = None
             item = self.clean_value(item, 'description')
-            Genes.objects.create(**item)
+            Genes.objects.get_or_create(**item)
 
     def save_table_genesets_to_db(self):
         if self.table_genesets_items is None:
@@ -506,7 +520,7 @@ class ParseXML(object):
             if item['geneset_description'] is None:
                 item['geneset_description'] = ''
             item['geneset_list'] = item['geneset_list'].replace(',', '\n')
-            GeneSets.objects.create(**item)
+            GeneSets.objects.get_or_create(**item)
 
     def save_table_members_to_db(self):
         if self.table_members_items is None:
@@ -520,12 +534,17 @@ class ParseXML(object):
                 first_name = "user"
             if not last_name:
                 last_name = "user"
-            user = User.objects.create_user(item['username'], email=None,
-                                            first_name=first_name,
-                                            last_name=last_name)
-            user.is_staff = True
-            user.is_superuser = bool(item['is_superuser'])
-            user.save()
+
+            try:
+                user = User.objects.create_user(item['username'],
+                                                email=None,
+                                                first_name=first_name,
+                                                last_name=last_name)
+                user.is_staff = True
+                user.is_superuser = bool(item['is_superuser'])
+                user.save()
+            except IntegrityError:
+                print(f"User {item['username']} already exists")
 
         if not TESTING:
             print("\nUploading table `public_interface_members`")
@@ -561,7 +580,9 @@ class ParseXML(object):
                 item['primer_f'] = i[0]
                 item['primer_r'] = i[1]
                 primers_objs.append(Primers(**item))
-        Primers.objects.bulk_create(primers_objs)
+
+        for item in primers_objs:
+            item.save()
 
         if not TESTING:
             print("\nUploading table `public_interface_primers`")
@@ -611,7 +632,8 @@ class ParseXML(object):
         if not TESTING:
             print("\nUploading table `public_interface_sequences`")
 
-        Sequences.objects.bulk_create(seqs_objects)
+        for seq in seqs_objects:
+            seq.save()
 
         if seqs_not_to_insert:
             print("ERROR: Couldn't insert {0} sequences due to lack of reference vouchers".format(len(seqs_not_to_insert)))
@@ -632,7 +654,7 @@ class ParseXML(object):
             self.import_table_taxonsets()
 
         for item in self.table_taxonsets_items:
-            TaxonSets.objects.create(**item)
+            TaxonSets.objects.get_or_create(**item)
 
     def test_if_photo_in_flickr(self, item):
         value = item['voucher_image']
@@ -694,10 +716,11 @@ class ParseXML(object):
                 for key, value in item.items():
                     print(key, value, type(value))
                 sys.exit(1)
+            except IntegrityError:
+                print(f"voucher already exists {item}")
 
             if not TESTING:
                 bar.update()
-        # Vouchers.objects.bulk_create(voucher_objs)
 
         flickr_objs = []
         for item in self.table_flickr_images_items:
@@ -707,7 +730,9 @@ class ParseXML(object):
         image_objs = []
         for item in self.table_local_images_items:
             image_objs.append(LocalImages(**item))
-        LocalImages.objects.bulk_create(image_objs)
+
+        for item in image_objs:
+            item.save()
 
         if not TESTING:
             print("\nUploading table `public_interface_flickrimages`")
