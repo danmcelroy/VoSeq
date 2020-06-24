@@ -23,7 +23,7 @@ Contents
 
 * `The new VoSeq is here`_
 * `New features`_
-* `Quick install of VoSeq using Vagrant (Recommended)`_
+* `Quick install of VoSeq using Docker (Recommended)`_
 * `Installation instructions`_
 * `Test database for development`_
 * `Start a test server`_
@@ -45,14 +45,12 @@ PostgreSQL.
 
 You can still download the old VoSeq v1.7.4 from
 `here <https://github.com/VoSeq/VoSeq/releases/tag/v1.7.4>`__. But
-be aware that we will not be doing major maintenance of that code.
+be aware that we will not be doing maintenance of that code.
 
 More details about the migration can be found in our `discussion
 list <https://groups.google.com/forum/#!topic/voseq-discussion-list/wQ-E0Xcimgw>`__.
 
 VoSeq 2.0.0 is the future!
-Here is a test installation of the new VoSeq (v2.0)
-http://try.voseq.com/
 
 
 New Features
@@ -61,17 +59,18 @@ Query suggestions for simple taxon searches:
 
 .. image:: https://raw.githubusercontent.com/VoSeq/VoSeq/master/imgs/simple_search_suggestion.png
 
-Quick install of VoSeq using Vagrant (Recommended)
-==================================================
-Vagrant allows setting up virtual machines that automatically installs all
-dependencies and sets up configuration from a *recipe* contained in the Vagrant
+Quick install of VoSeq using Docker (Recommended)
+=================================================
+Docker allows setting up virtual machines that automatically installs all
+dependencies and sets up configuration from a *recipe* contained in the Docker
 file.
 
-You need both `Vagrant <http://www.vagrantup.com/downloads.html>`__ and
-`VirtualBox <https://www.virtualbox.org/wiki/Downloads>`__ installed in your
+You need `Docker <https://www.docker.com/get-started>`__ installed in your
 computer or server.
 
-Assuming that you have installed [GIT](https://git-scm.com/downloads), you need to get a copy of VoSeq into your hard-disk. From a console or terminal type the following command:
+Assuming that you have installed [GIT](https://git-scm.com/downloads), you need
+to get a copy of VoSeq into your hard-disk. From a console or terminal type the
+following command:
 
 .. code:: shell
 
@@ -87,72 +86,26 @@ And execute the following command:
 
 .. code:: shell
 
-    vagrant up
-
-If the installation of packages gets interrupted you can relaunch the process
-with the following command:
-
-.. code:: shell
-
-    vagrant reload --provision
-
+    ./run/scripts/docker_upgrade
 
 Once the process has finished, you will have a new Ubuntu virtual machine with
 VoSeq installed. To enter this virtual machine:
 
 .. code:: shell
 
-    vagrant ssh
-
-Then you just need to run the following commands to set up your database:
-
-.. code:: shell
-
-    cd /vagrant
-    workon voseq
-    make migrations
-
-Additionally, you can import your old VoSeq database from a MySQL dump (see
-`Migrate VoSeq database`_). If you don't import anything your VoSeq
-installation will be usable, but empty. In such a case, you might want to
-import test data:
-
-.. code:: shell
-
-    make test_import
+    ./run/scripts/docker_compose exec app bash
 
 Set up an administrator account by using the command ``make admin``
 (see `Administrate the server`_).
 
-It is necessary to index your imported data:
-
-.. code:: shell
-
-    make index
-
-Since this installation of VoSeq will be running as a deployed application from
-inside the virtual machine you need to collect the static files in the correct
-locations:
-
-.. code:: shell
-
-    make collectstatic
-
-Then restart the web server:
-
-.. code:: shell
-
-    sudo supervisorctl restart voseq
-    sudo service nginx restart
-
 In your host system, open your brower and load this URL:
-http://33.33.33.10 to see your fresh installation of VoSeq.
+localhost:8081 to see your fresh installation of VoSeq.
 
 
 Installation instructions
 =========================
 
-These instructions assume that your libraries are up to date and that you have Python, pip, Java 7+ and
+These instructions assume that your libraries are up to date and that you have Python, pip and
 virtual environments installed. Python3 is recommended.
 
 **Step 1: get VoSeq.**
