@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import platform
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -290,3 +291,9 @@ LOGIN_REDIRECT_URL = '/browse/'
 
 # Change this after obtaining VoSeq and before deployments to production server
 SECRET_KEY = 'test_key'
+
+# assume we dont run on windows
+if 'linux' in platform.platform():
+    OS = 'linux'
+else:
+    OS = 'mac'

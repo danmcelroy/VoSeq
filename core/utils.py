@@ -166,7 +166,6 @@ class BLAST(object):
         self.cwd = os.path.dirname(__file__)
         self.seq_file = ""
         self.mask = bool(mask)
-
         self.path = os.path.join(self.cwd, 'db',
                                  "{0}_seqs.fas.n*".format(self.gene_code))
 
@@ -178,6 +177,10 @@ class BLAST(object):
 
         self.output_file = os.path.join(self.cwd, 'db',
                                         "output_{0}.xml".format(uuid.uuid4().hex))
+        if settings.OS == 'linux':
+            self.bin_path = '/usr/bin/'
+        else:
+            self.bin_path = '/usr/local/ncbi/blast/bin/'
 
     def have_blast_db(self):
         """Finds out whether we already have a blast db with our sequences.
@@ -250,16 +253,19 @@ class BLAST(object):
         """
         log.debug("Creating blast db")
         if self.mask:
-            command = 'dustmasker -in ' + self.seq_file + ' -infmt fasta '
+            command = self.bin_path
+            command += 'dustmasker -in ' + self.seq_file + ' -infmt fasta '
             command += '-outfmt maskinfo_asn1_bin -out ' + self.seq_file + '_dust.asnb'
             subprocess.check_output(command, shell=True)  # identifying low-complexity regions.
 
-            command = 'makeblastdb -in ' + self.seq_file + ' -input_type fasta -dbtype nucl '
+            command = self.bin_path
+            command += 'makeblastdb -in ' + self.seq_file + ' -input_type fasta -dbtype nucl '
             command += '-mask_data ' + self.seq_file + '_dust.asnb '
             command += '-out ' + self.seq_file + ' -title "Whole Genome without low-complexity regions"'  # noqa
             subprocess.check_output(command, shell=True)  # Overwriting the genome file.
         else:
-            command = 'makeblastdb -in ' + self.seq_file + ' -input_type fasta -dbtype nucl '
+            command = self.bin_path
+            command += 'makeblastdb -in ' + self.seq_file + ' -input_type fasta -dbtype nucl '
             command += '-out ' + self.seq_file + ' -title "Whole Genome unmasked"'
             subprocess.check_output(command, shell=True)
 
@@ -278,8 +284,14 @@ class BLAST(object):
             return False
 
     def do_blast(self):
-        blastn_cline = NcbiblastnCommandline(query=self.query_file, db=self.db,
-                                             evalue=self.e_value, outfmt=5, out=self.output_file)
+        blastn_cline = NcbiblastnCommandline(
+            cmd=self.bin_path + 'blastn',
+            query=self.query_file,
+            db=self.db,
+            evalue=self.e_value,
+            outfmt=5,
+            out=self.output_file
+        )
         blastn_cline()
         return self.output_file
 
