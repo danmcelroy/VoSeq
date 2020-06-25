@@ -29,7 +29,6 @@
         <span class="text-warning"><b>Did you mean:</b></span> <a href="/search/?q={{ suggestion }}">{{ suggestion }}</a>
       {% endif %}
     <hr>
-  {% endif %}
 
     <ul class="fa-ul">
       {% for result in results %}
@@ -69,12 +68,13 @@
           </small>
 
         </li>
-      {% empty %}
-        <p>
-        <i class="fa fa-search fa-2x"></i>
-        <b>No results found.</b></p> You could try an <a href="/search/advanced/">advanced search</a>.
       {% endfor %}
     </ul>
+  {% else %}
+    <p>
+      <i class="fa fa-search fa-2x"></i>
+      <b>No results found.</b></p> You could try an <a href="/search/advanced/">advanced search</a>.
+  {% endif %}
 
   {% if page.has_previous or page.has_next %}
     <nav>

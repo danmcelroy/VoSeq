@@ -48,6 +48,8 @@ def browse(request):
 def search(request):
     """Simple search tool"""
     context = get_context(request)
+    context['simple_query'] = get_simple_query(request)
+
     if 'q' not in request.GET:
         return redirect('/')
 
@@ -77,7 +79,6 @@ def search(request):
         context['paginator'] = paginator
         context['results'] = results
         context['voucher_code_list'] = get_voucher_code_list(sqs)
-        context['simple_query'] = get_simple_query(request)
         context['url_encoded_query'] = get_correct_url_query(request.GET.urlencode())
         context['result_count'] = len(sqs)
         return render(request, 'public_interface/search_results.html', context)
@@ -85,8 +86,22 @@ def search(request):
         sqs = Vouchers.objects.filter(
             Q(genus__icontains=query) | Q(species__icontains=query) | Q(code__icontains=query),
         )
-        context["result_count"] = len(sqs)
-        context["page"] = {'object_list': sqs}
+        results = ""
+        paginator = ""
+        if sqs:
+            paginator = Paginator(sqs, 25)
+            try:
+                results = paginator.page(page)
+            except PageNotAnInteger:
+                # If page is not an integer, deliver first page.
+                results = paginator.page(1)
+            except EmptyPage:
+                # If page is out of range (e.g. 9999), deliver last page of results.
+                results = paginator.page(paginator.num_pages)
+        context["result_count"] = sqs.count()
+        context['page'] = results
+        context['paginator'] = paginator
+        context['results'] = results
         return render(request, 'public_interface/search_results.html', context)
 
 

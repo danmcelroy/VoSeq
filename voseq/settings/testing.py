@@ -3,7 +3,7 @@ import sys
 from .base import *
 
 PHOTOS_REPOSITORY = "local"
-ELASTICSEARCH = True
+ELASTICSEARCH = False
 
 print('Testing')
 
