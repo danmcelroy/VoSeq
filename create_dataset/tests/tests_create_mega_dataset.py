@@ -9,7 +9,7 @@ from public_interface.models import Genes
 class CreateMEGADatasetTest(TestCase):
     def setUp(self):
         args = []
-        opts = {'dumpfile': 'test_data.xml', 'verbosity': 0}
+        opts = {'dumpfile': '../test_data.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 
@@ -68,7 +68,7 @@ class CreateMEGADatasetTest(TestCase):
         result = dataset_creator.dataset_str
         self.assertEqual(expected, result)
 
-    def test_dataset_with_degen_tranlations(self):
+    def test_dataset_with_degen_translations(self):
         cleaned_data = self.cleaned_data
         cleaned_data['degen_translations'] = 'S'
         cleaned_data['translations'] = True
@@ -78,7 +78,7 @@ class CreateMEGADatasetTest(TestCase):
         result = dataset_creator.dataset_str.strip()
         self.assertTrue(expected in result)
 
-    def test_dataset_with_partitions_and_degen_tranlations(self):
+    def test_dataset_with_partitions_and_degen_translations(self):
         cleaned_data = self.cleaned_data
         cleaned_data['partition_by_positions'] = '1st-2nd, 3rd'
         cleaned_data['translations'] = True
