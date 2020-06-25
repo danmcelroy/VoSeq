@@ -33,10 +33,8 @@ PHOTOS_REPOSITORY = get_secret("PHOTOS_REPOSITORY")
 if PHOTOS_REPOSITORY == 'flickr':
     FLICKR_API_KEY = get_secret("FLICKR_API_KEY")
     FLICKR_API_SECRET = get_secret("FLICKR_API_SECRET")
-if get_secret("ELASTICSEARCH") == "false":
-    ELASTICSEARCH = False
-else:
-    ELASTICSEARCH = True
+
+ELASTICSEARCH = False
 
 
 DATABASES = {
