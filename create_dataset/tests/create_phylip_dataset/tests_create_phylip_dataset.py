@@ -16,7 +16,7 @@ from public_interface.models import Vouchers
 class CreatePhylipDatasetTest(TestCase):
     def setUp(self):
         args = []
-        opts = {'dumpfile': 'test_data.xml', 'verbosity': 0}
+        opts = {'dumpfile': settings.MEDIA_ROOT + 'test_data.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 

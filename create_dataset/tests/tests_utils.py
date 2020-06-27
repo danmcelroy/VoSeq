@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.test.client import Client
+from django.conf import settings
 from django.core.management import call_command
 
 from create_dataset.utils import CreateDataset
@@ -11,7 +12,7 @@ from public_interface.models import TaxonSets
 class CreateDatasetUtilsTest(TestCase):
     def setUp(self):
         args = []
-        opts = {'dumpfile': 'test_data.xml', 'verbosity': 0}
+        opts = {'dumpfile': settings.MEDIA_ROOT + 'test_data.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 

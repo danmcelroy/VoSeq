@@ -1,5 +1,6 @@
 import re
 
+from django.conf import settings
 from django.core.management import call_command
 from django.contrib.auth.models import User
 from django.db import connection
@@ -16,7 +17,7 @@ class CreateDatasetViewsTest(TestCase):
             cursor.execute("alter sequence public_interface_taxonsets_id_seq restart with 1")
             cursor.execute("alter sequence public_interface_sequences_id_seq restart with 1")
         args = []
-        opts = {'dumpfile': 'test_data.xml', 'verbosity': 0}
+        opts = {'dumpfile': settings.MEDIA_ROOT + 'test_data.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 
