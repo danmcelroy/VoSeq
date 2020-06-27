@@ -295,7 +295,7 @@ LOGIN_REDIRECT_URL = '/browse/'
 SECRET_KEY = 'test_key'
 
 # assume we dont run on windows
-if 'linux' in platform.platform():
-    OS = 'linux'
-else:
+if 'Darwin' in platform.platform():
     OS = 'mac'
+else:
+    OS = 'linux'
