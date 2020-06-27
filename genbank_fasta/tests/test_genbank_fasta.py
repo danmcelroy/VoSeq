@@ -36,7 +36,7 @@ class TestGenBankFasta(TestCase):
                                  'voucher_codes': 'CP100-10\r\nCP100-11',
                                  'gene_codes': [],
                                  'geneset': '4genes',
-                                 'taxonset': None,
+                                 'taxonset': '',
                              }
                              )
         self.assertEqual(200, c.status_code)
@@ -60,7 +60,7 @@ class TestGenBankFasta(TestCase):
         self.client.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
         c = self.client.post('/genbank_fasta/results/',
                              {
-                                 'voucher_codes': None,
+                                 'voucher_codes': '',
                                  'gene_codes': [],
                                  'geneset': 1,
                                  'taxonset': 1,
@@ -75,7 +75,7 @@ class TestGenBankFasta(TestCase):
                                  'voucher_codes': '',
                                  'gene_codes': [],
                                  'geneset': 1,
-                                 'taxonset': None,
+                                 'taxonset': '',
                              }
                              )
         self.assertEqual(200, c.status_code)
@@ -84,7 +84,7 @@ class TestGenBankFasta(TestCase):
         self.client.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
         c = self.client.post('/genbank_fasta/results/',
                              {
-                                 'voucher_codes': None,
+                                 'voucher_codes': '',
                                  'gene_codes': [],
                                  'geneset': 1,
                                  'taxonset': 1,

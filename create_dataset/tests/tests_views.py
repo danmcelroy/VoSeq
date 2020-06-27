@@ -69,7 +69,7 @@ class CreateDatasetViewsTest(TestCase):
         self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
         res = self.c.post('/create_dataset/results/',
                           {
-                              'voucher_codes': None,
+                              'voucher_codes': '',
                               'gene_codes': [],
                               'geneset': 1,
                               'taxonset': 1,
