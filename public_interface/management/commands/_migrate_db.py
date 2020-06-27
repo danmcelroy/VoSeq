@@ -1,4 +1,4 @@
-#!-*- encoding: utf-8 -*-
+# -*- coding: future_fstrings -*-
 """
 Needs an XML file with the database dump from MySQL:
 
