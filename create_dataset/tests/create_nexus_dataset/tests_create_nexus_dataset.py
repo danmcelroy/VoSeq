@@ -14,9 +14,10 @@ from public_interface.models import TaxonSets
 class CreateNexusDatasetTest(TestCase):
     def setUp(self):
         args = []
-        opts = {'dumpfile': 'test_data.xml', 'verbosity': 0}
+        opts = {'dumpfile': settings.MEDIA_ROOT + 'test_data.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
+        self.base_dir = os.path.dirname(os.path.dirname(__file__))
 
         gene_set = GeneSets.objects.get(geneset_name='all_genes')
         taxon_set = TaxonSets.objects.get(taxonset_name='all_taxa')
@@ -41,8 +42,7 @@ class CreateNexusDatasetTest(TestCase):
         self.maxDiff = None
 
     def test_nexus_all_codons_as_one(self):
-        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
-                                    'tests', 'create_nexus_dataset', 'dataset.nex')
+        dataset_file = os.path.join(self.base_dir, 'create_nexus_dataset', 'dataset.nex')
         with open(dataset_file, 'r') as handle:
             expected = handle.read()
 
@@ -55,8 +55,8 @@ class CreateNexusDatasetTest(TestCase):
         self.assertEqual(expected.strip(), result)
 
     def test_nexus_all_codons_partitioned_as_each(self):
-        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
-                                    'tests', 'create_nexus_dataset', 'dataset_partitioned_as_each.nex')
+        dataset_file = os.path.join(
+            self.base_dir, 'create_nexus_dataset', 'dataset_partitioned_as_each.nex')
         with open(dataset_file, 'r') as handle:
             expected = handle.read()
 
@@ -69,8 +69,8 @@ class CreateNexusDatasetTest(TestCase):
         self.assertEqual(expected.strip(), result)
 
     def test_nexus_all_codons_partitioned_as_1st2nd_3rd(self):
-        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
-                                    'tests', 'create_nexus_dataset', 'dataset_partitioned_as_1st2nd_3rd.nex')
+        dataset_file = os.path.join(self.base_dir,
+                                    'create_nexus_dataset', 'dataset_partitioned_as_1st2nd_3rd.nex')
         with open(dataset_file, 'r') as handle:
             expected = handle.read()
 
@@ -83,8 +83,8 @@ class CreateNexusDatasetTest(TestCase):
         self.assertEqual(expected.strip(), result)
 
     def test_nexus_1st_codon_as_one(self):
-        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
-                                    'tests', 'create_nexus_dataset', 'dataset_1st_codon.nex')
+        dataset_file = os.path.join(self.base_dir,
+                                    'create_nexus_dataset', 'dataset_1st_codon.nex')
         with open(dataset_file, 'r') as handle:
             expected = handle.read()
 
@@ -97,8 +97,8 @@ class CreateNexusDatasetTest(TestCase):
         self.assertEqual(expected.strip(), result)
 
     def test_nexus_1st_codon_as_each(self):
-        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
-                                    'tests', 'create_nexus_dataset', 'dataset_1st_codon.nex')
+        dataset_file = os.path.join(self.base_dir,
+                                    'create_nexus_dataset', 'dataset_1st_codon.nex')
         with open(dataset_file, 'r') as handle:
             expected = handle.read()
 
@@ -111,8 +111,8 @@ class CreateNexusDatasetTest(TestCase):
         self.assertEqual(expected.strip(), result)
 
     def test_nexus_1st_codon_as_1st2nd_3rd(self):
-        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
-                                    'tests', 'create_nexus_dataset', 'dataset_1st_codon.nex')
+        dataset_file = os.path.join(self.base_dir,
+                                    'create_nexus_dataset', 'dataset_1st_codon.nex')
         with open(dataset_file, 'r') as handle:
             expected = handle.read()
 
@@ -125,8 +125,8 @@ class CreateNexusDatasetTest(TestCase):
         self.assertEqual(expected.strip(), result)
 
     def test_nexus_2nd_codon_as_one(self):
-        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
-                                    'tests', 'create_nexus_dataset', 'dataset_2nd_codon.nex')
+        dataset_file = os.path.join(self.base_dir,
+                                    'create_nexus_dataset', 'dataset_2nd_codon.nex')
         with open(dataset_file, 'r') as handle:
             expected = handle.read()
 
@@ -139,8 +139,8 @@ class CreateNexusDatasetTest(TestCase):
         self.assertEqual(expected.strip(), result)
 
     def test_nexus_2nd_codon_as_each(self):
-        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
-                                    'tests', 'create_nexus_dataset', 'dataset_2nd_codon.nex')
+        dataset_file = os.path.join(self.base_dir,
+                                    'create_nexus_dataset', 'dataset_2nd_codon.nex')
         with open(dataset_file, 'r') as handle:
             expected = handle.read()
 
@@ -153,8 +153,8 @@ class CreateNexusDatasetTest(TestCase):
         self.assertEqual(expected.strip(), result)
 
     def test_nexus_2nd_codon_as_1st2nd_3rd(self):
-        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
-                                    'tests', 'create_nexus_dataset', 'dataset_2nd_codon.nex')
+        dataset_file = os.path.join(self.base_dir,
+                                    'create_nexus_dataset', 'dataset_2nd_codon.nex')
         with open(dataset_file, 'r') as handle:
             expected = handle.read()
 
@@ -167,8 +167,8 @@ class CreateNexusDatasetTest(TestCase):
         self.assertEqual(expected.strip(), result)
 
     def test_nexus_3rd_codon_as_one(self):
-        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
-                                    'tests', 'create_nexus_dataset', 'dataset_3rd_codon.nex')
+        dataset_file = os.path.join(self.base_dir,
+                                    'create_nexus_dataset', 'dataset_3rd_codon.nex')
         with open(dataset_file, 'r') as handle:
             expected = handle.read()
 
@@ -181,8 +181,8 @@ class CreateNexusDatasetTest(TestCase):
         self.assertEqual(expected.strip(), result)
 
     def test_nexus_3rd_codon_as_each(self):
-        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
-                                    'tests', 'create_nexus_dataset', 'dataset_3rd_codon.nex')
+        dataset_file = os.path.join(self.base_dir,
+                                    'create_nexus_dataset', 'dataset_3rd_codon.nex')
         with open(dataset_file, 'r') as handle:
             expected = handle.read()
 
@@ -195,8 +195,8 @@ class CreateNexusDatasetTest(TestCase):
         self.assertEqual(expected.strip(), result)
 
     def test_nexus_3rd_codon_as_1st2nd_3rd(self):
-        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
-                                    'tests', 'create_nexus_dataset', 'dataset_3rd_codon.nex')
+        dataset_file = os.path.join(self.base_dir,
+                                    'create_nexus_dataset', 'dataset_3rd_codon.nex')
         with open(dataset_file, 'r') as handle:
             expected = handle.read()
 
@@ -209,8 +209,8 @@ class CreateNexusDatasetTest(TestCase):
         self.assertEqual(expected.strip(), result)
 
     def test_nexus_1st_2nd_codon_as_one(self):
-        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
-                                    'tests', 'create_nexus_dataset', 'dataset_1st2nd_codons.nex')
+        dataset_file = os.path.join(self.base_dir,
+                                    'create_nexus_dataset', 'dataset_1st2nd_codons.nex')
         with open(dataset_file, 'r') as handle:
             expected = handle.read()
 
@@ -223,8 +223,8 @@ class CreateNexusDatasetTest(TestCase):
         self.assertEqual(expected.strip(), result)
 
     def test_nexus_1st_2nd_codon_as_each(self):
-        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
-                                    'tests', 'create_nexus_dataset', 'dataset_1st2nd_codons_partitioned_as_each.nex')
+        dataset_file = os.path.join(self.base_dir,
+                                    'create_nexus_dataset', 'dataset_1st2nd_codons_partitioned_as_each.nex')
         with open(dataset_file, 'r') as handle:
             expected = handle.read()
 
@@ -237,8 +237,8 @@ class CreateNexusDatasetTest(TestCase):
         self.assertEqual(expected.strip(), result)
 
     def test_nexus_1st_2nd_codon_as_1st2nd_3rd(self):
-        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
-                                    'tests', 'create_nexus_dataset', 'dataset_1st2nd_codons_partitioned_as_1st2nd_3rd.nex')
+        dataset_file = os.path.join(self.base_dir,
+                                    'create_nexus_dataset', 'dataset_1st2nd_codons_partitioned_as_1st2nd_3rd.nex')
         with open(dataset_file, 'r') as handle:
             expected = handle.read()
 

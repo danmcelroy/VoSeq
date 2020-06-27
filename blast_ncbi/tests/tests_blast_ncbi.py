@@ -3,6 +3,7 @@ from io import StringIO
 import os
 from unittest.mock import patch
 
+from django.conf import settings
 from django.test import TestCase
 from django.core.management import call_command
 
@@ -18,7 +19,7 @@ with open(os.path.join(TEST_PATH, "CP100-10_COI-begin.xml"), "r") as handle:
 class TestNcbiBlast(TestCase):
     def setUp(self):
         args = []
-        opts = {'dumpfile': 'test_data.xml', 'verbosity': 0}
+        opts = {'dumpfile': settings.MEDIA_ROOT + 'test_data.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 

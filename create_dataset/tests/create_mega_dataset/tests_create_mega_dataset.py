@@ -14,7 +14,7 @@ from public_interface.models import TaxonSets
 class CreateMegaDatasetTest(TestCase):
     def setUp(self):
         args = []
-        opts = {'dumpfile': 'test_data.xml', 'verbosity': 0}
+        opts = {'dumpfile': settings.MEDIA_ROOT + 'test_data.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 
@@ -41,7 +41,8 @@ class CreateMegaDatasetTest(TestCase):
         self.maxDiff = None
 
     def test_all_codons_as_one(self):
-        dataset_file = os.path.join(settings.BASE_DIR, '..', 'create_dataset',
+        base_dir = os.path.dirname(os.path.dirname(__file__))
+        dataset_file = os.path.join(base_dir, '..',
                                     'tests', 'create_mega_dataset', 'dataset.meg')
         with open(dataset_file, 'r') as handle:
             expected = handle.read()
