@@ -21,6 +21,8 @@ COPY config.json /code/config.json
 RUN mkdir -p /code
 WORKDIR /code
 
+RUN mkdir -p /data/media/db
+
 ADD run/docker/wait_for_it.sh /wait_for_it.sh
 RUN chmod +x /wait_for_it.sh
 
