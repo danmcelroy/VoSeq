@@ -18,7 +18,7 @@ before_install:
     - sudo apt-get install ncbi-blast+
     - psql -c 'create database travis_ci_test;' -U postgres
 
-script: make coverage
+script: make coverage_travis
 
 after_success: coveralls
 

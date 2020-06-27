@@ -3,6 +3,7 @@ import os
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
+from django.conf import settings
 
 from core.utils import BLAST
 from public_interface.models import Sequences
@@ -19,8 +20,8 @@ class BLASTFull(BLAST):
     """
     def __init__(self, *args, **kwargs):
         super(BLASTFull, self).__init__(*args, **kwargs)
-        self.path = os.path.join(self.cwd, 'db', 'full_db_seqs.fas.n*')
-        self.db = os.path.join(self.cwd, 'db', 'full_db_seqs.fas')
+        self.path = os.path.join(settings.MEDIA_ROOT, 'db', 'full_db_seqs.fas.n*')
+        self.db = os.path.join(settings.MEDIA_ROOT, 'db', 'full_db_seqs.fas')
 
     def save_seqs_to_file(self) -> None:
         """Query all sequences from our database and save them to local disk.
@@ -30,7 +31,7 @@ class BLASTFull(BLAST):
 
         """
         if self.blast_type == 'full':
-            self.seq_file = os.path.join(self.cwd, 'db', 'full_db_seqs.fas')
+            self.seq_file = os.path.join(settings.MEDIA_ROOT, 'db', 'full_db_seqs.fas')
             queryset = Sequences.objects.all()
 
             my_records = []

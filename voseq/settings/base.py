@@ -249,6 +249,8 @@ CRISPY_TEMPLATE_PACK = 'uni_form'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
+MEDIA_ROOT = BASE_DIR + '/../run/media/'
+
 MEDIA_URL = '/media/'
 
 STATIC_URL = '/static/'

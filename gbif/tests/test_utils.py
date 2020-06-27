@@ -1,4 +1,5 @@
 from django.core.management import call_command
+from django.conf import settings
 from django.test import TestCase
 
 from gbif.utils import get_type_species
@@ -9,7 +10,7 @@ from gbif.utils import get_voucher_state
 class TestUtils(TestCase):
     def setUp(self):
         args = []
-        opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
+        opts = {'dumpfile': settings.MEDIA_ROOT + 'test_db_dump.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 

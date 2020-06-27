@@ -1,6 +1,6 @@
 import sys
 
-from .base import *
+from .local import *
 
 PHOTOS_REPOSITORY = "local"
 ELASTICSEARCH = False
@@ -9,28 +9,7 @@ print('Testing')
 
 TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
 
-
-os.environ["TRAVIS"] = "True"
-if 'TRAVIS' in os.environ:
-    DATABASES = {
-        'default': {
-            'ENGINE':   'django.db.backends.postgresql_psycopg2',
-            'NAME':     'travis_ci_test',
-            'USER':     'postgres',
-            'PASSWORD': '',
-            'HOST':     'localhost',
-            'PORT':     '5432',
-        }
-    }
-    DB_NAME = "travis_ci_test"
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': 'test.db',
-        }
-    }
-    DB_NAME = "test"
+DB_NAME = "test"
 
 
 HAYSTACK_CONNECTIONS = {

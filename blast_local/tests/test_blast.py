@@ -14,7 +14,7 @@ from public_interface.models import Sequences
 class BlastLocalTest(TestCase):
     def setUp(self):
         args = []
-        opts = {'dumpfile': '../test_db_dump.xml', 'verbosity': 0}
+        opts = {'dumpfile': settings.MEDIA_ROOT + 'test_db_dump.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 
@@ -25,9 +25,7 @@ class BlastLocalTest(TestCase):
         self.seq_file = ''
 
     def remove_blast_data_files(self):
-        path = os.path.join(settings.BASE_DIR,
-                            '..',
-                            'core',
+        path = os.path.join(settings.MEDIA_ROOT,
                             'db',
                             '*',
                             )
@@ -50,9 +48,7 @@ class BlastLocalTest(TestCase):
 
     def test_save_seqs_to_file(self):
         self.blast.save_seqs_to_file()
-        self.seq_file = os.path.join(settings.BASE_DIR,
-                                     '..',
-                                     'core',
+        self.seq_file = os.path.join(settings.MEDIA_ROOT,
                                      'db',
                                      'COI_seqs.fas',
                                      )
@@ -68,9 +64,7 @@ class BlastLocalTest(TestCase):
         blast.save_seqs_to_file()
         blast.create_blast_db()
         files = glob.glob(
-            os.path.join(settings.BASE_DIR,
-                         '..',
-                         'core',
+            os.path.join(settings.MEDIA_ROOT,
                          'db',
                          'COI_seqs.fas.n*')
         )
@@ -85,9 +79,7 @@ class BlastLocalTest(TestCase):
         blast.save_seqs_to_file()
         blast.create_blast_db()
         files = glob.glob(
-            os.path.join(settings.BASE_DIR,
-                         '..',
-                         'core',
+            os.path.join(settings.MEDIA_ROOT,
                          'db',
                          'COI_seqs.fas.n*')
         )

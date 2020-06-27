@@ -1,7 +1,7 @@
 from django.core.management import call_command
 from django.db import connection
-from django.test import Client
-from django.test import TestCase
+from django.test import Client, TestCase
+from django.conf import settings
 from django.test.utils import override_settings
 import haystack
 
@@ -59,7 +59,7 @@ class TestAdvancedSearch(TestCase):
         with connection.cursor() as cursor:
             cursor.execute("alter sequence public_interface_genes_id_seq restart with 1")
         args = []
-        opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
+        opts = {'dumpfile': settings.MEDIA_ROOT + 'test_db_dump.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 

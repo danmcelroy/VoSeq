@@ -2,13 +2,15 @@ import datetime
 import pytz
 
 from django.test import TestCase
+from django.conf import settings
 
 from public_interface.management.commands.migrate_db import ParseXML
 
 
 class TestParseXML(TestCase):
     def setUp(self):
-        with open('test_db_dump.xml') as handle:
+        file_name = settings.MEDIA_ROOT + 'test_db_dump.xml'
+        with open(file_name) as handle:
             self.xml_string = handle.read()
 
         self.parse_xml_to_fail = ParseXML(xml_string=self.xml_string, tables_prefix='voseq_',

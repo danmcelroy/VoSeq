@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.conf import settings
 from django.core.management import call_command
 
 from core import exceptions
@@ -13,7 +14,7 @@ from public_interface.models import Genes
 class TestCoreUtils(TestCase):
     def setUp(self):
         args = []
-        opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
+        opts = {'dumpfile': settings.MEDIA_ROOT + 'test_db_dump.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 
