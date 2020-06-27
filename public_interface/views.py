@@ -84,6 +84,7 @@ def search(request):
         return render(request, 'public_interface/search_results.html', context)
     else:
         sqs = Vouchers.objects.filter(
+            Q(orden__icontains=query) |
             Q(genus__icontains=query) | Q(species__icontains=query) | Q(code__icontains=query),
         )
         results = ""

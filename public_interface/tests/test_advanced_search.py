@@ -3,57 +3,8 @@ from django.db import connection
 from django.test import Client, TestCase
 from django.conf import settings
 from django.test.utils import override_settings
-import haystack
 
 
-# Need to use a clean index for our tests
-TEST_INDEX = {
-    'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'haystack',
-        'INCLUDE_SPELLING': True,
-        'EXCLUDED_INDEXES': [
-            'public_interface.search_indexes.AdvancedSearchIndex',
-            'public_interface.search_indexes.AutoCompleteIndex',
-            'public_interface.search_indexes.VouchersIndex',
-        ],
-    },
-    'autocomplete': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'autocomplete',
-        'INCLUDE_SPELLING': False,
-        'EXCLUDED_INDEXES': [
-            'public_interface.search_indexes.SimpleSearchIndex',
-            'public_interface.search_indexes.VouchersIndex',
-        ],
-    },
-    'vouchers': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'vouchers',
-        'INCLUDE_SPELLING': False,
-        'EXCLUDED_INDEXES': [
-            'public_interface.search_indexes.SimpleSearchIndex',
-            'public_interface.search_indexes.AdvancedSearchIndex',
-            'public_interface.search_indexes.AutoCompleteIndex',
-        ],
-    },
-    'advanced_search': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'advanced_search',
-        'INCLUDE_SPELLING': False,
-        'EXCLUDED_INDEXES': [
-            'public_interface.search_indexes.SimpleSearchIndex',
-            'public_interface.search_indexes.VouchersIndex',
-        ],
-    },
-}
-
-
-@override_settings(HAYSTACK_CONNECTIONS=TEST_INDEX)
 class TestAdvancedSearch(TestCase):
     def setUp(self):
         with connection.cursor() as cursor:
@@ -62,11 +13,6 @@ class TestAdvancedSearch(TestCase):
         opts = {'dumpfile': settings.MEDIA_ROOT + 'test_db_dump.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
-
-        # build index with our test data
-        haystack.connections.reload('default')
-        call_command('rebuild_index', interactive=False, verbosity=0)
-        super(TestAdvancedSearch, self).setUp()
 
         self.client = Client()
 
