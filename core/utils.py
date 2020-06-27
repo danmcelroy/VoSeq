@@ -166,16 +166,16 @@ class BLAST(object):
         self.cwd = os.path.dirname(__file__)
         self.seq_file = ""
         self.mask = bool(mask)
-        self.path = os.path.join(self.cwd, 'db',
+        self.path = os.path.join(settings.MEDIA_ROOT, 'db',
                                  "{0}_seqs.fas.n*".format(self.gene_code))
 
-        self.db = os.path.join(self.cwd, 'db',
+        self.db = os.path.join(settings.MEDIA_ROOT, 'db',
                                "{0}_seqs.fas".format(self.gene_code))
 
-        self.query_file = os.path.join(self.cwd, 'db',
+        self.query_file = os.path.join(settings.MEDIA_ROOT, 'db',
                                        "query_{0}.fas".format(uuid.uuid4().hex))
 
-        self.output_file = os.path.join(self.cwd, 'db',
+        self.output_file = os.path.join(settings.MEDIA_ROOT, 'db',
                                         "output_{0}.xml".format(uuid.uuid4().hex))
         if settings.OS == 'linux':
             self.bin_path = '/usr/bin/'
@@ -231,7 +231,7 @@ class BLAST(object):
 
         """
         if self.blast_type == 'local':
-            self.seq_file = os.path.join(self.cwd,
+            self.seq_file = os.path.join(settings.MEDIA_ROOT,
                                          'db',
                                          "{0}_seqs.fas".format(self.gene_code))
             queryset = Sequences.objects.all().filter(gene_code=self.gene_code)

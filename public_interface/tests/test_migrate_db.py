@@ -1,5 +1,5 @@
-from django.core.management import call_command
-from django.core.management import CommandError
+from django.core.management import call_command, CommandError
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import TestCase
 
@@ -17,7 +17,7 @@ from public_interface.management.commands import _migrate_db as migrate_script
 class TestCustomCommand(TestCase):
     def setUp(self):
         args = []
-        opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
+        opts = {'dumpfile': settings.MEDIA_ROOT + 'test_db_dump.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 
@@ -29,7 +29,7 @@ class TestCustomCommand(TestCase):
 
     def test_tables_prefix(self):
         args = []
-        opts = {'dumpfile': 'test_db_dump.xml', 'prefix': 'vosesq_', 'verbosity': 0}
+        opts = {'dumpfile': settings.MEDIA_ROOT + 'test_db_dump.xml', 'prefix': 'vosesq_', 'verbosity': 0}
         cmd = 'migrate_db'
         self.assertRaises(ValueError, call_command, cmd, *args, **opts)
 

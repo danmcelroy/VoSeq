@@ -1,5 +1,6 @@
 from django.core.management import call_command
 from django.db import connection
+from django.conf import settings
 from django.test import Client, TestCase
 
 
@@ -9,7 +10,7 @@ class TestGeneTable(TestCase):
             cursor.execute("alter sequence public_interface_taxonsets_id_seq restart with 1")
             cursor.execute("alter sequence public_interface_genesets_id_seq restart with 1")
         args = []
-        opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
+        opts = {'dumpfile': settings.MEDIA_ROOT + 'test_db_dump.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
         self.client = Client()

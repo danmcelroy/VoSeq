@@ -5,6 +5,7 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from django.db.models import Q, QuerySet
+from django.conf import settings
 
 from core.utils import BLAST
 from public_interface.models import Sequences
@@ -33,8 +34,8 @@ class BLASTNew(BLAST):
         else:
             self.genes = []
 
-        self.path = os.path.join(self.cwd, 'db', '_'.join(self.genes) + '_seqs.fas.n*')
-        self.db = os.path.join(self.cwd, 'db', '_'.join(self.genes) + '_seqs.fas')
+        self.path = os.path.join(settings.MEDIA_ROOT, 'db', '_'.join(self.genes) + '_seqs.fas.n*')
+        self.db = os.path.join(settings.MEDIA_ROOT, 'db', '_'.join(self.genes) + '_seqs.fas')
 
     def save_seqs_to_file(self):
         """Query sequences for each gene from database and save to local disk.
@@ -45,7 +46,7 @@ class BLASTNew(BLAST):
         """
         if self.blast_type == 'new':
             self.seq_file = os.path.join(
-                self.cwd,
+                settings.MEDIA_ROOT,
                 'db',
                 '_'.join(self.genes) + "_seqs.fas",
             )

@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.core.management import call_command
+from django.conf import settings
 
 from public_interface.models import GeneSets
 from public_interface.models import TaxonSets
@@ -9,7 +10,7 @@ from voucher_table.views import VoucherTable
 class TestVoucherTable(TestCase):
     def setUp(self):
         args = []
-        opts = {'dumpfile': 'test_db_dump.xml', 'verbosity': 0}
+        opts = {'dumpfile': settings.MEDIA_ROOT + 'test_db_dump.xml', 'verbosity': 0}
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 
