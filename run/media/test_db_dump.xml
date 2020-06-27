@@ -1,0 +1,916 @@
+<?xml version="1.0"?>
+<mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<database name="filemaker">
+	<table_structure name="genes">
+		<field Field="id" Type="smallint(5) unsigned" Null="NO" Key="PRI" Extra="auto_increment" Comment="" />
+		<field Field="geneCode" Type="varchar(255)" Null="YES" Key="UNI" Extra="" Comment="" />
+		<field Field="length" Type="smallint(4)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="description" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="readingframe" Type="tinyint(4)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="notes" Type="text" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="timestamp" Type="datetime" Null="NO" Key="" Default="0000-00-00 00:00:00" Extra="" Comment="" />
+		<field Field="genetic_code" Type="int(3)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="aligned" Type="enum('yes','no','notset')" Null="YES" Key="" Default="notset" Extra="" Comment="" />
+		<field Field="intron" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="prot_code" Type="enum('yes','no','notset')" Null="YES" Key="" Default="notset" Extra="" Comment="" />
+		<field Field="genetype" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<key Table="genes" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="id" Collation="A" Cardinality="30" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<key Table="genes" Non_unique="0" Key_name="geneCode" Seq_in_index="1" Column_name="geneCode" Collation="A" Null="YES" Index_type="BTREE" Comment="" Index_comment="" />
+		<options Name="genes" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="30" Avg_row_length="64" Data_length="1944" Max_data_length="281474976710655" Index_length="9216" Data_free="0" Auto_increment="130" Create_time="2014-12-09 13:27:08" Update_time="2014-12-09 13:27:08" Collation="utf8_general_ci" Create_options="" Comment="" />
+	</table_structure>
+	<table_data name="genes">
+	<row>
+		<field name="id">99</field>
+		<field name="geneCode">16S</field>
+		<field name="length">515</field>
+		<field name="description">16S ribosomal gene (16S)</field>
+		<field name="readingframe" xsi:nil="true" />
+		<field name="notes" xsi:nil="true" />
+		<field name="timestamp">2011-04-05 17:19:50</field>
+		<field name="genetic_code" xsi:nil="true" />
+		<field name="aligned">notset</field>
+		<field name="intron" xsi:nil="true" />
+		<field name="prot_code">notset</field>
+		<field name="genetype" xsi:nil="true" />
+	</row>
+	<row>
+		<field name="id">107</field>
+		<field name="geneCode">EF1a</field>
+		<field name="length">1240</field>
+		<field name="description">Elongation factor 1 alpha (EF-1alpha)</field>
+		<field name="readingframe">2</field>
+		<field name="notes">There are 2 copies in the B. mori genome: BGIBMGA003608, BGIBMGA007516</field>
+		<field name="timestamp">2013-10-03 15:20:41</field>
+		<field name="genetic_code">1</field>
+		<field name="aligned">yes</field>
+		<field name="intron" xsi:nil="true" />
+		<field name="prot_code">yes</field>
+		<field name="genetype">nuclear</field>
+	</row>
+	<row>
+		<field name="id">116</field>
+		<field name="geneCode">wingless</field>
+		<field name="length">412</field>
+		<field name="description">wingless (wgl)</field>
+		<field name="readingframe">2</field>
+        <field name="notes" xsi:nil="true" />
+		<field name="timestamp">2013-04-23</field>
+		<field name="genetic_code">1</field>
+		<field name="aligned">yes</field>
+		<field name="intron">101-103;125-127;131-133;146-148</field>
+		<field name="prot_code">yes</field>
+		<field name="genetype">nuclear</field>
+	</row>
+	<row>
+		<field name="id">128</field>
+		<field name="geneCode">COI</field>
+		<field name="length">1047</field>
+		<field name="description">cytochrome oxidase c subunit I</field>
+		<field name="readingframe">2</field>
+		<field name="notes">DNA barcode part</field>
+		<field name="timestamp">2013-11-02 11:10:26</field>
+		<field name="genetic_code">5</field>
+		<field name="aligned">yes</field>
+		<field name="intron" xsi:nil="true" />
+		<field name="prot_code">yes</field>
+		<field name="genetype">mitochondrial</field>
+	</row>
+	<row>
+		<field name="id">128</field>
+		<field name="geneCode">COII</field>
+		<field name="length">1047</field>
+		<field name="description">cytochrome oxidase c subunit II</field>
+		<field name="readingframe" xsi:nil="true" />
+		<field name="notes">DNA barcode part</field>
+		<field name="timestamp">2013-11-02 11:10:26</field>
+		<field name="genetic_code" xsi:nil="true" />
+		<field name="aligned" xsi:nil="true" />
+		<field name="intron" xsi:nil="true" />
+		<field name="prot_code" xsi:nil="true" />
+		<field name="genetype">mitochondrial</field>
+	</row>
+    </table_data>
+	<table_structure name="genesets">
+		<field Field="geneset_name" Type="varchar(75)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="geneset_creator" Type="varchar(75)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="geneset_description" Type="varchar(100)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="geneset_list" Type="text" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="geneset_id" Type="int(11)" Null="NO" Key="PRI" Extra="auto_increment" Comment="" />
+		<key Table="genesets" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="geneset_id" Collation="A" Cardinality="2" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<key Table="genesets" Non_unique="0" Key_name="geneset_id_UNIQUE" Seq_in_index="1" Column_name="geneset_id" Collation="A" Cardinality="2" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<options Name="genesets" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="2" Avg_row_length="106" Data_length="212" Max_data_length="281474976710655" Index_length="3072" Data_free="0" Auto_increment="8" Create_time="2014-12-09 13:27:08" Update_time="2014-12-09 13:27:08" Collation="utf8_general_ci" Create_options="" Comment="" />
+	</table_structure>
+	<table_data name="genesets">
+	<row>
+		<field name="geneset_name">3genes</field>
+		<field name="geneset_creator">Niklas</field>
+		<field name="geneset_description">3 standard genes</field>
+		<field name="geneset_list">COI,EF1a,wingless</field>
+		<field name="geneset_id">1</field>
+	</row>
+        <row>
+            <field name="geneset_name">2genes</field>
+            <field name="geneset_creator">Niklas</field>
+            <field name="geneset_description"></field>
+            <field name="geneset_list">COI,EF1a</field>
+            <field name="geneset_id">2</field>
+        </row>
+	</table_data>
+	<table_structure name="members">
+		<field Field="member_id" Type="int(11) unsigned" Null="NO" Key="PRI" Extra="auto_increment" Comment="" />
+		<field Field="firstname" Type="varchar(100)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="lastname" Type="varchar(100)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="login" Type="varchar(100)" Null="NO" Key="" Default="" Extra="" Comment="" />
+		<field Field="passwd" Type="varchar(100)" Null="NO" Key="" Default="" Extra="" Comment="" />
+		<field Field="admin" Type="tinyint(1)" Null="NO" Key="" Default="0" Extra="" Comment="" />
+		<key Table="members" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="member_id" Collation="A" Cardinality="9" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<options Name="members" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="9" Avg_row_length="74" Data_length="672" Max_data_length="281474976710655" Index_length="2048" Data_free="0" Auto_increment="11" Create_time="2014-12-09 13:27:08" Update_time="2014-12-09 13:27:08" Collation="utf8_general_ci" Create_options="" Comment="" />
+	</table_structure>
+	<table_data name="members">
+	<row>
+		<field name="member_id">2</field>
+		<field name="firstname">Admin</field>
+		<field name="lastname">admin</field>
+		<field name="login">admin</field>
+		<field name="passwd">a72bd08fb0f60fa5ea658d0fa24b55ea58f90b62</field>
+		<field name="admin">1</field>
+	</row>
+		<row>
+			<field name="member_id">1</field>
+			<field name="firstname">Carlos</field>
+			<field name="lastname">Pena</field>
+			<field name="login">carlosp420</field>
+			<field name="passwd">a72bd08fb0f60fa5ea658d0fa24b55ea58f90b62</field>
+			<field name="admin">0</field>
+		</row>
+	</table_data>
+	<table_structure name="primers">
+		<field Field="id" Type="smallint(5) unsigned" Null="NO" Key="PRI" Extra="auto_increment" Comment="" />
+		<field Field="code" Type="varchar(255)" Null="NO" Key="" Extra="" Comment="" />
+		<field Field="geneCode" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="primer1" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="primer2" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="primer3" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="primer4" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="primer5" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="primer6" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="timestamp" Type="datetime" Null="NO" Key="" Default="0000-00-00 00:00:00" Extra="" Comment="" />
+		<key Table="primers" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="id" Collation="A" Cardinality="4658" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<options Name="primers" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="4658" Avg_row_length="42" Data_length="199544" Max_data_length="281474976710655" Index_length="43008" Data_free="0" Auto_increment="7202" Create_time="2014-12-09 13:27:08" Update_time="2014-12-09 13:27:08" Collation="utf8_general_ci" Create_options="" Comment="" />
+	</table_structure>
+	<table_data name="primers">
+	<row>
+		<field name="id">1</field>
+		<field name="code">CP100-10</field>
+		<field name="geneCode">EF1a</field>
+		<field name="primer1">EFrcM4</field>
+		<field name="primer2">Verdi</field>
+		<field name="primer3">Cho</field>
+		<field name="primer4">Starsky</field>
+		<field name="primer5">EF51.9</field>
+		<field name="primer6">Luke</field>
+		<field name="timestamp">2008-07-17 17:26:12</field>
+	</row>
+	<row>
+		<field name="id">2</field>
+		<field name="code">CP100-10</field>
+		<field name="geneCode">wingless</field>
+		<field name="primer1">lep1</field>
+		<field name="primer2">lep2</field>
+		<field name="primer3" xsi:nil="true" />
+		<field name="primer4" xsi:nil="true" />
+		<field name="primer5" xsi:nil="true" />
+		<field name="primer6" xsi:nil="true" />
+		<field name="timestamp">2008-07-17 17:26:12</field>
+	</row>
+	<row>
+		<field name="id">3</field>
+		<field name="code">CP100-10</field>
+		<field name="geneCode">COI</field>
+		<field name="primer1">LCO</field>
+		<field name="primer2">HCO</field>
+		<field name="primer3" xsi:nil="true" />
+		<field name="primer4" xsi:nil="true" />
+		<field name="primer5" xsi:nil="true" />
+		<field name="primer6" xsi:nil="true" />
+		<field name="timestamp">2008-07-17 17:26:12</field>
+	</row>
+	<row>
+		<field name="id">4</field>
+		<field name="code">CP100-10</field>
+		<field name="geneCode">16S</field>
+		<field name="primer1">16S_F</field>
+		<field name="primer2">16S_R</field>
+		<field name="primer3" xsi:nil="true" />
+		<field name="primer4" xsi:nil="true" />
+		<field name="primer5" xsi:nil="true" />
+		<field name="primer6" xsi:nil="true" />
+		<field name="timestamp">2008-07-17 17:26:12</field>
+	</row>
+	</table_data>
+	<table_structure name="search">
+		<field Field="id" Type="int(11) unsigned" Null="NO" Key="PRI" Extra="auto_increment" Comment="" />
+		<field Field="timestamp" Type="datetime" Null="NO" Key="" Default="0000-00-00 00:00:00" Extra="" Comment="" />
+		<key Table="search" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="id" Collation="A" Cardinality="1" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<options Name="search" Engine="MyISAM" Version="10" Row_format="Fixed" Rows="1" Avg_row_length="13" Data_length="13" Max_data_length="3659174697238527" Index_length="2048" Data_free="0" Auto_increment="2" Create_time="2014-12-09 13:27:08" Update_time="2014-12-09 13:27:08" Collation="utf8_general_ci" Create_options="" Comment="" />
+	</table_structure>
+	<table_data name="search">
+	<row>
+		<field name="id">1</field>
+		<field name="timestamp">2014-12-07 12:06:17</field>
+	</row>
+	</table_data>
+	<table_structure name="search_results">
+		<field Field="id" Type="int(11) unsigned" Null="NO" Key="PRI" Extra="auto_increment" Comment="" />
+		<field Field="search_id" Type="int(11) unsigned" Null="NO" Key="" Extra="" Comment="" />
+		<field Field="record_id" Type="int(11) unsigned" Null="NO" Key="" Extra="" Comment="" />
+		<field Field="timestamp" Type="datetime" Null="NO" Key="" Default="0000-00-00 00:00:00" Extra="" Comment="" />
+		<key Table="search_results" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="id" Collation="A" Cardinality="3" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<options Name="search_results" Engine="MyISAM" Version="10" Row_format="Fixed" Rows="3" Avg_row_length="21" Data_length="63" Max_data_length="5910974510923775" Index_length="2048" Data_free="0" Auto_increment="4" Create_time="2014-12-09 13:27:08" Update_time="2014-12-09 13:27:08" Collation="utf8_general_ci" Create_options="" Comment="" />
+	</table_structure>
+	<table_data name="search_results">
+	<row>
+		<field name="id">1</field>
+		<field name="search_id">1</field>
+		<field name="record_id">9567</field>
+		<field name="timestamp">2014-12-07 12:06:17</field>
+	</row>
+	<row>
+		<field name="id">2</field>
+		<field name="search_id">1</field>
+		<field name="record_id">10971</field>
+		<field name="timestamp">2014-12-07 12:06:17</field>
+	</row>
+	<row>
+		<field name="id">3</field>
+		<field name="search_id">1</field>
+		<field name="record_id">11066</field>
+		<field name="timestamp">2014-12-07 12:06:17</field>
+	</row>
+	</table_data>
+	<table_structure name="sequences">
+		<field Field="code" Type="varchar(255)" Null="NO" Key="" Extra="" Comment="" />
+		<field Field="geneCode" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="sequences" Type="text" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="accession" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="labPerson" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="dateCreation" Type="date" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="dateModification" Type="date" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="notes" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="timestamp" Type="datetime" Null="NO" Key="" Default="0000-00-00 00:00:00" Extra="" Comment="" />
+		<field Field="id" Type="int(10) unsigned" Null="NO" Key="PRI" Extra="auto_increment" Comment="" />
+		<field Field="genbank" Type="tinyint(1)" Null="YES" Key="" Extra="" Comment="" />
+		<key Table="sequences" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="id" Collation="A" Cardinality="27312" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<options Name="sequences" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="27312" Avg_row_length="767" Data_length="20973212" Max_data_length="281474976710655" Index_length="326656" Data_free="0" Auto_increment="33711" Create_time="2014-12-09 13:27:08" Update_time="2014-12-09 13:27:09" Collation="utf8_general_ci" Create_options="" Comment="" />
+	</table_structure>
+	<table_data name="sequences">
+	<row>
+		<field name="code">CP100-18</field>
+		<field name="geneCode">COI</field>
+		<field name="sequences">?????????????????????????TGAGCAGGTATATTAGGAACTTCTCTTAGACTTTTAATTCGAACCGAATTAGGAAACCCCGGATCCTTAATTGGAGATGATCAAATTTATAATACCATTGTTACAGCTCATGCCTTTGTTATAATTTTTTTTATAGTTATACCTATTATAATTGGAGGATTTGGAAATTGATTAGTTCCTTTAATATTAGGAGCCCCTGATATAGCTTTTCCTCGAATAAATAATATAAGATTTTGATTACTCCCCCCATCATTAATTTTACTAATTTCAAGAAGAATTGTAGAAAATGGAGCAGGTACAGGATGAACAGTTTACCCCCCACTTTCATCTAATATTGCTCATAGAGGATCATCTGTTGATTTAGCAATTTTTTCCTTGCATTTAGCTGGAATCTCGTCAATTTTAGGAGCTATTAATTTTATCACAACAATTATTAATATACGTATCAATAATATATCATTTGATCAAATACCTTTATTTGTTTGAGCTGTTGGTATTACAGCTCTTTTATTACTATTATCTTTACCAGTATTAGCTGGAGCAATTACTATACTTCTTACTGATCGAAATATTAATACTTCATTTTTTGATCCAGCTGGAGGAGGTGACCCTATTTTATACCAACATTTATTT</field>
+		<field name="accession">AF187761</field>
+		<field name="labPerson">Niklas Wahlberg</field>
+		<field name="dateCreation">2005-10-17</field>
+		<field name="dateModification" xsi:nil="true" />
+		<field name="notes" xsi:nil="true" />
+		<field name="timestamp">2008-07-17 17:24:20</field>
+		<field name="id">1</field>
+		<field name="genbank">1</field>
+	</row>
+		<row>
+			<field name="code">CP100-18</field>
+			<field name="geneCode">EF1a</field>
+			<field name="sequences">ACACGTCGACTCCGGCAAGTCCACGACCACCGGTCACTTGATCTACAAATGCGGTGGTATCGACAAGCGTACCATCGAGAAGTTCGAGAAGGAGGCCCAGGAAATGGGCAAGGGGTCCTTCAAATATGCATGGGTATTGGACAAACTGAAGGCTGAGCGTGAACGTGGTATCACCATCGATATCGCTCTATGGAAGTTCGAAACCGCCAAATACTACGTCACCATCATTGACGCTCCTGGCCACAGAGATTTCATCAAGAACATGATCACCGGAACCTCACAGGCTGATTGCGCCGTGCTCATCGTCGCCGCTGGTACTGGTGAGTTTGAAGCCGGTATCTCAAAGAACGGCCAGACCCGTGAGCACGCTCTGCTCGCTTTCACCCTCGGTGTCAAGCAACTGATAGTYGGTGTCAACAAAATGGACTCCACTGAACCCCCATACAGTGAACCACGCTTCGAAGAAATTAAAAAGGAAGTTTCTTCCTACATCAAGAAGATCGGTTACAACCCAGCTGCCGTCGCTTTCGTACCCATTTCTGGCTGGCACGGAGACAACATGCTGGAGCCATCCACCAAAATGCCCTGGTTCAAGGGATGGCAAGTGGAGCGTAAAGAAGGCAAGGCTGAAGGTAAGTGCCTTATTGAGGCTCTGGATGCCATTCTTCCTCCAGCGCGTCCCACAGACAAGGCCCTGCGTCTTCCCCTGCAGGATGTCTACAAAATCGGTGGTATTGGTACAGTGCCAGTAGGCAGAGTTGAGACTGGTGTCCTCAAGCCCGGTACCATTGTTGTCTTTGCTCCTGCCAACATCACCACTGAAGTCAAGTCTGTGGAGATGCACCATGAAGCTCTCCAAGAGGCCGTGCCTGGAGACAATGTTGGTTTCAACGTAAAGAACGTATCCGTCAAGGAATTGCGTCGTGGTTACGTCGCTGGCGACTCCAAGAACAATCCACCCAAGGGAGCTGCTGACTTCACCGCTCAAGTCATTGTGCTCAACCATCCCGGTCAAATCTCCAATGGCTACACACCAGTACTTGATTGCCACACAGCCCACATTGCTTGCAAGTTCGCTGAAATAAAAGAGAAGGTTGACCGTCGTTCTGGTAAATCGACTGAAGAAAATCCCAAATCCATCAAATCTGGTGATGCTGCTATTGTCAATCTCGTACCTTCCAAGCCCCTCTGTGTTGAGGCCTTCCAAGAATTCCCACCTCTCGGTCGTTTCGCCGTGCGT</field>
+			<field name="accession">FJ462317</field>
+			<field name="labPerson">Niklas Wahlberg</field>
+			<field name="dateCreation">2005-10-17</field>
+			<field name="dateModification" xsi:nil="true" />
+			<field name="notes" xsi:nil="true" />
+			<field name="timestamp">2008-07-17 17:24:20</field>
+			<field name="id">1</field>
+			<field name="genbank">1</field>
+		</row>
+		<row>
+			<field name="code">CP100-17</field>
+			<field name="geneCode">COI</field>
+			<field name="sequences">?????????????????????????TGAGCAGGTATGTTAGGAACCTCATTAAGACTTTTAATTCGAACTGAGTTAGGAAATCCCGGATCTTTAATTGGAGATGATCAAATTTATAATACTATTGTTACTGCCCATGCTTTTATTATAATTTTTTTTATAGTTATACCTATTATAATTGGGGGATTTGGAAACTGATTAATTCCATTAATATTAGGAGCTCCTGATATGGCATTCCCTCGAATAAATAATATAAGATTTTGATTACTTCCCCCATCATTAATATTATTAATTTCTAGAAGAATTGTAGAAAATGGAGCAGGTACAGGGTGAACAGTTTATCCCCCACTTTCATCTAACATCGCTCATAGAGGATCTTCTGTTGATTTAGCAATCTTTTCATTACATTTAGCCGGAATTTCATCAATTTTAGGAGCTATTAATTTCATTACTACAATTATTAATATACGTATTAACAATATATCATTCGACCAAATACCCCTATTTGTTTGAGCTGTAGGTATTACAGCAGTTTTACTACTTTTATCTTTACCAGTACTGGCCGGAGCAATTACAATACTTTTAACCGATCGTAATATTAATACCTCATTTTTTGATCCTGCCGGAGGAGGAGATCCTATTTTATATCAACACTTATTTTGATTTTTTGGTNNNNNNGAAGTATATATTTTAATTTTACCAGGATTTGGTATAATTTCTCATATTATTTCTCAAGAAAGTGGAAAAAAAGAAACTTTTGGATGTTTAGGTATAATTTATGCAATAATAGCAATCGGATTATTAGGATTTATCGTTTGAGCTCACCACATATTTACAGTAGGAATAGATATTGATACTCGAGCTTATTTTACATCAGCAACTATAATTATTGCTGTACCAACAGGAATCAAGATTTTCAGTTGATTAGCAACTTTACATGGAACACAAATTAATTATAGACCCTCTATATTATGAAGTTTAGGTTTTATTTTTTTATTTACTGTAGGGGGATTAACAGGAGTTGTATTAGCTAATTCATCAATTGACATTACTTTACACGATACATATTATGTAGTAGCACATTTTCATTATGTTTTATCTATAGGTGCTGTATTTGCTATTATAGGAGGATTTATTCATTGATATCCTTTATTTACAGGACTAATAATAAATAATTATTTATTAAAAATCCAATTTATTTCAATATTTATTGGTGTAAATTTAACTTTTTTTCCACAACACTTTTTAGGTTTAGCAGGAATACCTCGACGATATTCAGACTATCCTGATAGATTTATATCATGAAATATTATTTCATCATTTGGTTCATATATTTCACTTATCTCTACAATAATAATAATAATAATTATCTGAGAATCAATAATTAACCAACGTATAATTTTATTCCCACTAAATATACCCACTTCAATCGAATGATATCAAAATTTACCCCCATCAGAACATTCATATAATGAAT</field>
+			<field name="accession">AY788656</field>
+			<field name="labPerson">Niklas Wahlberg</field>
+			<field name="dateCreation">2005-10-17</field>
+			<field name="dateModification" xsi:nil="true" />
+			<field name="notes" xsi:nil="true" />
+			<field name="timestamp">2008-07-17 17:24:20</field>
+			<field name="id">1</field>
+			<field name="genbank">1</field>
+		</row>
+		<row>
+			<field name="code">CP100-17</field>
+			<field name="geneCode">EF1a</field>
+			<field name="sequences">ACACGTCGACTCCGGCAAGTCCACGACCACCGGTCACTTGATCTACAAATGCGGTGGTATCGACAAGCGTACCATCGAGAAGTTCGAAAAGGAGGCCCAGGAAATGGGCAAGGGGTCCTTCAAATATGCCTGGGTATTAGACAAACTGAAGGCTGAGCGAGAACGTGGTATCACGATCGATATCGCTCTATGGAAGTTCGAAACCGCCAAATACTACGTCACCATCATCGACGCTCCTGGCCACAGAGATTTCATCAAGAACATGATCACCGGAACCTCKCAGGCCGATTGCGCCGTGCTTATCGTCGCTGCCGGTACTGGTGAATTCGAAGCCGGTATCTCAAAGAACGGCCAGACCCGTGAGCACGCTCTGCTCGCTTTCACTCTCGGTGTCAAGCAACTGATAGTCGGCGTCAACAAAATGGACTCAACTGAACCCCCTTACAGTGAGTCCCGTTTCGAGGAAATCAAGAAGGAAGTTTCTTCCTACATCAAGAAGATCGGTTACAACCCAGCTGCCGTCGCTTTCGTACCCATTTCTGGCTGGCACGGAGACAACATGCTGGAGCCATCCACCAAAATGCCTTGGTTCAAGGGATGGCAAGTGGAGCGTAAAGAAGGCAAGGCTGAAGGTAAGTGCCTTATTGAGGCTCTGGATGCCATCCTTCCTCCAGCGCGTCCCACAGACAAGGCTCTGCGTCTTCCCCTGCAGGACGTCTACAAAATCGGTGGTATTGGTACGGTGCCAGTAGGCAGAGTTGAGACTGGTGTTCTCAAACCTGGTACCATTGTCGTCTTCGCTCCCGCCAAYATCACCACTSAAGTCAAGTCTGTGGAGATGCACCACGAAGCTCTCCAAGAGGCCGTACCTGGAGACAATGTTGGTTTCAACGTAAAGAACGTTTCCGTCAAGGAATTGKGTCGTGGTTACGTCGCTGGCGACTCAAAGAACAATCCACCCAAGGGAGCTGCCGACTTCACCGCTCAAGTCATTGTGCTCAACCACCCCGGTCAAATCTCCAATGGCTACACACCAGTACTTGATTGTCACACAGCCCACATTGCTTGCAAGTTTGCTGAAATCAAAGAGAAGGTTGACCGTCGTTCTGGTAAATCAACTGAGGAAAATCCCAAATCCATCAAATCTGGTGATGCTGCCATCGTCAACCTCGTACCTTCCAAGCCCCTCTGTGTTGAGGCCTTCCAAGAATTCCCACCTCTCGGCCG</field>
+			<field name="accession">AY788776</field>
+			<field name="labPerson">Niklas Wahlberg</field>
+			<field name="dateCreation">2005-10-17</field>
+			<field name="dateModification" xsi:nil="true" />
+			<field name="notes" xsi:nil="true" />
+			<field name="timestamp">2008-07-17 17:24:20</field>
+			<field name="id">1</field>
+			<field name="genbank">1</field>
+		</row>
+		<row>
+			<field name="code">CP100-16</field>
+			<field name="geneCode">COI</field>
+			<field name="sequences">??????????????????????????????????????????????????????ACTTTTAATTCGAACTGAATTAGGTAATCCTGGATCTTTAATTGGTGATGATCAAATTTATAATACTATTGTTACAGCTCATGCTTTTATTATAATTTTTTTCATAGTTATACCTATTATAATTGGAGGATTTGGAAATTGATTAGTTCCTTTAATATTAGGTGCCCCTGATATAGCATTTCCTCGAATAAATAATATAAGATTTTGATTACTTCCCCCATCATTAATTTTATTAATTTCTAGAAGAATTGTAGAAAATGGTGCAGGTACAGGATGAACAGTTTACCCCCCACTTTCATCTAATATTGCTCATAGAGGATCATCAGTAGATTTAGCAATTTTTTCTTTACATTTAGCCGGAATTTCTTCAATTTTAGGAGCTATTAATTTTATTACTACAATTATTAATATACGAATTAATAATATATCATTTGATCAAATACCTTTATTTGTTTGAGCTGTTGGTATTACAGCTCTTTTATTATTATTATCTCTACCAGTATTAGCTGGAGCAATTACAATACTTCTTACTGACCGAAATATTAATACTTCATTTTTCGATCCTGCTGGAGGAGGAGACCCTATTTTATATCAACATTTATTTTGATTTTTTGGTCACCCTGAAGTTTACTTTCTCAANNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNGAAAGAGGAAAGAAAGAAACTTTCGGATGTTTAGGTATAATTTATGCTATAATAGCAATTGGATTATTAGGATTTATTGTTTGAGCACATCACATATTTACAGTAGGGATAGATATTGATACTCGAGCTTATTTCACATCAGCAACTATAATTATTGCTGTTCCAACAGGAATTAAAATTTTTAGTTGATTAGCAACTCTTCATGGAACACAAATTAACTATAGTCCATCTATATTATGAAGATTAGGATTTATTTTTTTATTTACTGTAGGAGGTTTAACAGGAGTTGTATTAGCTAACTCATCAATTGATATTACTCTTCATGATACATATTATGTTGTAGCTCATTTTCACTATGTTTTATCTATAGGAGCTGTATTTGCTATTATAGGAGGATTTATTCATTGATATCCCTTATTTACAGGATTAATAATAAATAATTATTTATTAAAAATTCAATTTATTTCTATATTTATTGGTGTTAATTTAACCTTTTTTCCTCAACATTTTTTAGGTTTAGCAGGTATACCACGACGATATTCTGATTATCCAGATAGATTTATATCCTGAAATATTATTTCATCATTTGGTTCATATATTTCCCTTATTTCAACAATAATAATAATAATTATTATTTGAGAATCAATAATTAATCAACGTATTATTTTATTCCCATTAAATATACCTTCTTCTATTGAATGATATCAAAATTTACCACCATCAGAACATTCATATAATGAAT</field>
+			<field name="accession">KT907190</field>
+			<field name="labPerson">Niklas Wahlberg</field>
+			<field name="dateCreation">2005-10-17</field>
+			<field name="dateModification" xsi:nil="true" />
+			<field name="notes" xsi:nil="true" />
+			<field name="timestamp">2008-07-17 17:24:20</field>
+			<field name="id">1</field>
+			<field name="genbank">1</field>
+		</row>
+		<row>
+			<field name="code">CP100-16</field>
+			<field name="geneCode">EF1a</field>
+			<field name="sequences">ACACGTCGACTCCGGCAAGTCCACGACCACCGGTCACTTGATCTACAAATGCGGTGGTATCGACAAGCGTACCATCGAGAAGTTCGAAAAGGAGGCCCAGGAAATGGGCAAGGGGTCCTTCAAATATGCCTGGGTATTAGACAAACTGAAGGCTGAGCGAGAACGTGGTATCACGATCGATATCGCTCTATGGAAGTTCGAAACCGCCAAATACTACGTCACCATCATCGACGCTCCTGGCCACAGAGATTTCATCAAGAACATGATCACCGGAACCTCKCAGGCCGATTGCGCCGTGCTTATCGTCGCTGCCGGTACTGGTGAATTCGAAGCCGGTATCTCAAAGAACGGCCAGACCCGTGAGCACGCTCTGCTCGCTTTCACTCTCGGTGTCAAGCAACTGATAGTCGGCGTCAACAAAATGGACTCAACTGAACCCCCTTACAGTGAGTCCCGTTTCGAGGAAATCAAGAAGGAAGTTTCTTCCTACATCAAGAAGATCGGTTACAACCCAGCTGCCGTCGCTTTCGTACCCATTTCTGGCTGGCACGGAGACAACATGCTGGAGCCATCCACCAAAATGCCTTGGTTCAAGGGATGGCAAGTGGAGCGTAAAGAAGGCAAGGCTGAAGGTAAGTGCCTTATTGAGGCTCTGGATGCCATCCTTCCTCCAGCGCGTCCCACAGACAAGGCTCTGCGTCTTCCCCTGCAGGACGTCTACAAAATCGGTGGTATTGGTACGGTGCCAGTAGGCAGAGTTGAGACTGGTGTTCTCAAACCTGGTACCATTGTCGTCTTCGCTCCCGCCAAYATCACCACTSAAGTCAAGTCTGTGGAGATGCACCACGAAGCTCTCCAAGAGGCCGTACCTGGAGACAATGTTGGTTTCAACGTAAAGAACGTTTCCGTCAAGGAATTGKGTCGTGGTTACGTCGCTGGCGACTCAAAGAACAATCCACCCAAGGGAGCTGCCGACTTCACCGCTCAAGTCATTGTGCTCAACCACCCCGGTCAAATCTCCAATGGCTACACACCAGTACTTGATTGTCACACAGCCCACATTGCTTGCAAGTTTGCTGAAATCAAAGAGAAGGTTGACCGTCGTTCTGGTAAATCAACTGAGGAAAATCCCAAATCCATCAAATCTGGTGATGCTGCCATCGTCAACCTCGTACCTTCCAAGCCCCTCTGTGTTGAGGCCTTCCAAGAATTCCCACCTCTCGGCCG</field>
+			<field name="accession">AY788776</field>
+			<field name="labPerson">Niklas Wahlberg</field>
+			<field name="dateCreation">2005-10-17</field>
+			<field name="dateModification" xsi:nil="true" />
+			<field name="notes" xsi:nil="true" />
+			<field name="timestamp">2008-07-17 17:24:20</field>
+			<field name="id">1</field>
+			<field name="genbank">1</field>
+		</row>
+	<row>
+		<field name="code">CP100-10</field>
+		<field name="geneCode">EF1a</field>
+		<field name="sequences">???????????????CAAGTCCACCACCACCGGCCACTTGATTTACAAATGTGGTGGTATCGACAAACGTACCATCGAGAAGTTCGAGAAGGAAGCCCAGGAAATGGGCAAGGGTTCCTTCAAGTACGCTTGGGTGTTGGACAAACTTAAGGCTGAGCGCGAGCGTGGTATCACTATTGATATTGCTCTGTGGAAGTTCGAGACTGCCAAATACTATGTAACCATCATCGATGCTCCCGGACACAGAGATTTCATCAAGAACATGATCACCGGAACATCACAAGCCGATTGCGCCGTACTTATCGTCGCCGCCGGTACTGGTGAGTTCGAAGCCGGTATCTCAAAGAACGGTCAGACCCGTGAGCACGCTCTGCTCGCCTTCACATTAGGTGTAAAGCAGCTGATTGTAGGAGTCAACAAAATGGACTCCACTGAGCCCCCATACAATGAGGGACGTTTCGAGGAAATCAAAAAGGAAGTGTCCTCTTACATCAAGAAGATCGGTTACAACCCAGCTGCCGTCGCTTTCGTACCCATTTCTGGCTGGCACGGAGACAACATGCTGGAGCCATCTACCAAAATGTCCCGGTTCAAGGGATGGCAAGTGGAGCGCAAAGAAGGCAAGG???AAGGTAAATGCCTCATTGAAGCTC???ACGCCATCCTTCCTCCGG?????CCCAC????????????????????????????????????????????????TATTGGTACAGTGCCCGTAGGCAGAGTAGAAACTGGTATCCTCAAACCAGGTACCATTGTTGTTTTCGCTCCCGCCAACATCACCACTGAAGTCAAATCTGTGGAGATGCACCACGAAGCTCTCCAAGAGGCTGTACCTGGAGACAATGTAGGTTTCAACGTCAAGAACGTTTCCGTCAAGGAATTACGTCGTGGTTATGTAGCTGGTGACTCCAAGAACAACCCACCCAAGGGAGCTGCTGACTTCACCGCACAAGTCATTGTGCTCAACCACCCCGGTCAAATCTCCAATGGCTACACACCTGTGCTCGATTGCCACACAGCTCACATTGCCTGCAAATTCGCCGAAATCAAAGAAAAGGTTGACCGTCGTTCCGGTAAATCYACTGAGGACAATCCTAAATCTATCAAATCTGGTGATGCTGCCATTGTGAACTTGGTACCTTCCAAACCCCTCTGTGTGGAGGCCTTCCAAGAATTCCCACCTCTTGGTCG</field>
+		<field name="accession">AY218269</field>
+		<field name="labPerson">Niklas Wahlberg</field>
+		<field name="dateCreation">2005-10-17</field>
+		<field name="dateModification" xsi:nil="true" />
+		<field name="notes" xsi:nil="true" />
+		<field name="timestamp">2008-07-17 17:24:20</field>
+		<field name="id">1</field>
+		<field name="genbank">1</field>
+	</row>
+	<row>
+		<field name="code">CP100-10</field>
+		<field name="geneCode">wingless</field>
+		<field name="sequences">ACACGTCGACTCCGGCAAGTCCACCACCACCGGTCACTTGATTTACAAATGTGGTGGTATCGACAaACGTACCATCGAGAAGTTCGAGAAGGAAGCCCAGGAAATGGGTAAGGGTTCCTTCAAATACGCCTGGGTATTGGACAAACTGAAGGCTGAGCGTGAACGTGGTATCACCATTGACATTGCTCTGTGGAAGTTCGAGACTGCCAAGTACTATGTCACCATCATCGACGCTCCCGGACACAGAGATTTCATCAAGAACATGATCACCGGAACCTCTCAAGCCGATTGCGCTGTGCTCATCGTCGCCGCCGGTACTGGTGAGTTCGAAGCCGGTATCTCAAAGAACGGTCAGACCCGTGAACACGCTCTGCTTGCCTTCACCCTCGGTGTCAAGCAGCTGATTGTAGGT</field>
+		<field name="accession">AY218260</field>
+		<field name="labPerson">Niklas Wahlberg</field>
+		<field name="dateCreation">2005-10-17</field>
+		<field name="dateModification" xsi:nil="true" />
+		<field name="notes" xsi:nil="true" />
+		<field name="timestamp">2008-07-17 17:24:20</field>
+		<field name="id">2</field>
+		<field name="genbank">1</field>
+	</row>
+	<row>
+		<field name="code">CP100-10</field>
+		<field name="geneCode">16S</field>
+		<field name="sequences">????CGTGGTATCACTATTGATATTGCTSTATGGAAGTTCGAAACGAGCAGATACTATGTCACCATCATTGATGCTCCCGGACACAGAGATTTCATCAAGGACATGATTACTGGGACATCACAAGCCGATTGCGCCGTGCTTATCGTCGCAGCCGGTACTGGTGAGTTCGAAGCTGGTATCTCGGAGGACGGACAAACCCGTGAGCATGCTCTTCTCGCATTCACACTCGGTGTAAAGCAGCTGATAGTGGGTGTCAACAAAATGGACTCTACTGAGCCCCCATACAGCGAGCCACGTTTTGAGGAAATCAAAAAAGAAGTGTCCTCATACATTAAGAAAATTGGTTACAACCCAGCTGCCGTCGCGTTCGTGCCCATTTCTGGCTGGCATGGAGACAACATGCTGGAGCCATCTACCAAGATGCCCTGGTTCAAGGGATGGCAAGTGGATCGCAAAGAAGGCAAGGGTGAAGGTAAATGCCTTATTGAAGCCCTGGACGCCATTCTGCCTCC??</field>
+		<field name="accession">AY218254</field>
+		<field name="labPerson">Niklas Wahlberg</field>
+		<field name="dateCreation">NULL</field>
+		<field name="dateModification" xsi:nil="true" />
+		<field name="notes" xsi:nil="true" />
+		<field name="timestamp">2008-07-17 17:24:20</field>
+		<field name="id">3</field>
+		<field name="genbank">1</field>
+	</row>
+	<row>
+		<field name="code">CP100-10</field>
+		<field name="geneCode">COI</field>
+		<field name="sequences">?????????????????????????TGAGCCGGTATAATTGGTACATCCCTAAGTCTTATTATTCGAACCGAATTAGGAAATCCTAGTTTTTTAATTGGAGATGATCAAATTTATAATACCATTGTAACAGCTCATGCTTTTATTATAATTTTTTTTATAGTTATGCCAATTATAATTGGAGGATTTGGTAATTGACTTGTACCATTAATATTGGGAGCCCCAGATATAGCTTTCCCCCGAATAAATTATATAAGATTTTGATTATTGCCTCCATCCTTAATTCTTTTAATTTCAAGTAGAATTGTAGAAAATGGGGCAGGAACTGGATGAACAGTTTACCCCCCACTTTCATCTAATATTGCCCATAGAGGAGCTTCAGTGGATTTAGCTATTTTTTCTTTACATTTAGCTGGGATTTCCTCTATCTTAGGAGCTATTAATTTTATTACTACAATTATTAATATACGAATTAATAATATATCTTATGATCAAATACCTTTATTTGTATGAGCAGTAGGAATTACAGCATTACTTCTCTTATTATCTTTACCAGTTTTAGCTGGAGCTATTACTATACTTTTAACGGATCGAAATCTTAATACCTCATTTTTTGATTCCTGCGGAGGAGGAGATCC?????????????????????????????????</field>
+		<field name="accession"></field>
+		<field name="labPerson">Niklas Wahlberg</field>
+		<field name="dateCreation">0000-00-00</field>
+		<field name="dateModification" xsi:nil="true" />
+		<field name="notes" xsi:nil="true" />
+		<field name="timestamp">2008-07-17 17:24:20</field>
+		<field name="id">4</field>
+		<field name="genbank" xsi:nil="true" />
+	</row>
+        <row>
+            <field name="code">CP100-11</field>
+            <field name="geneCode">COI</field>
+            <field name="sequences">??TGAGCCGGTATAATTGGTACATCCCTAAGTCTTATTATTCGAACCGAATTAGGAAATCCTAGTTTTTTAATTGGAGATGATCAAATTTATAATACCATTGTAACAGCTCATGCTTTTATTATAATTTTTTTTATAGTTATGCCAATTATAATTGGAGGATTTGGTAATTGACTTGTACCATTAATATTGGGAGCCCCAGATATAGCTTTCCCCCGAATAAATTATATAAGATTTTGATTATTGCCTCCATCCTTAATTCTTTTAATTTCAAGTAGAATTGTAGAAAATGGGGCAGGAACTGGATGAACAGTTTACCCCCCACTTTCATCTAATATTGCCCATAGAGGAGCTTCAGTGGATTTAGCTATTTTTTCTTTACATTTAGCTGGGATTTCCTCTATCTTAGGAGCTATTAATTTTATTACTACAATTATTAATATACGAATTAATAATATATCTTATGATCAAATACCTTTATTTGTATGAGCAGTAGGAATTACAGCATTACTTCTCTTATTATCTTTACCAGTTTTAGCTGGAGCTATTACTATACTTTTAACGGATCGAAATCTTAATACCTCATTTTTTGATTCCTGCGGAGGAGGAGATCC?????????????????????????????????</field>
+            <field name="accession"></field>
+            <field name="labPerson">Niklas Wahlberg</field>
+            <field name="dateCreation" xsi:nil="true" />
+            <field name="dateModification" xsi:nil="true" />
+            <field name="notes" xsi:nil="true" />
+            <field name="timestamp">2008-07-17 17:24:20</field>
+            <field name="id">5</field>
+            <field name="genbank">0</field>
+        </row>
+        <row>
+            <field name="code">CP100-15</field>
+            <field name="geneCode">COI</field>
+            <field name="sequences">??TGAGCCGGTATAATTGGTACATCCCTAAGTCTTATTATTCGAACCGAATTAGGAAATCCTAGTTTTTTAATTGGAGATGATCAAATTTATAATACCATTGTAACAGCTCATGCTTTTATTATAATTTTTTTTATAGTTATGCCAATTATAATTGGAGGATTTGGTAATTGACTTGTACCATTAATATTGGGAGCCCCAGATATAGCTTTCCCCCGAATAAATTATATAAGATTTTGATTATTGCCTCCATCCTTAATTCTTTTAATTTCAAGTAGAATTGTAGAAAATGGGGCAGGAACTGGATGAACAGTTTACCCCCCACTTTCATCTAATATTGCCCATAGAGGAGCTTCAGTGGATTTAGCTATTTTTTCTTTACATTTAGCTGGGATTTCCTCTATCTTAGGAGCTATTAATTTTATTACTACAATTATTAATATACGAATTAATAATATATCTTATGATCAAATACCTTTATTTGTATGAGCAGTAGGAATTACAGCATTACTTCTCTTATTATCTTTACCAGTTTTAGCTGGAGCTATTACTATACTTTTAACGGATCGAAATCTTAATACCTCATTTTTTGATTCCTGCGGAGGAGGAGATCC?????????????????????????????????</field>
+            <field name="accession" xsi:nil="true" />
+            <field name="labPerson">Niklas Wahlberg</field>
+            <field name="dateCreation" xsi:nil="true" />
+            <field name="dateModification" xsi:nil="true" />
+            <field name="notes" xsi:nil="true" />
+            <field name="timestamp">2008-07-17 17:24:20</field>
+            <field name="id">5</field>
+            <field name="genbank">0</field>
+        </row>
+		<row>
+			<field name="code">CP100-15</field>
+			<field name="geneCode">16S</field>
+			<field name="sequences" xsi:nil="true" />
+			<field name="accession" xsi:nil="true" />
+			<field name="labPerson">Niklas Wahlberg</field>
+			<field name="dateCreation" xsi:nil="true" />
+			<field name="dateModification" xsi:nil="true" />
+			<field name="notes" xsi:nil="true" />
+			<field name="timestamp">2008-07-17 17:24:20</field>
+			<field name="id">5</field>
+			<field name="genbank">0</field>
+		</row>
+		<row>
+			<field name="code">CP100-15</field>
+			<field name="geneCode">COII</field>
+			<field name="sequences">ACAA~ACAA</field>
+			<field name="accession" xsi:nil="true" />
+			<field name="labPerson">Carlos Pena</field>
+			<field name="dateCreation" xsi:nil="true" />
+			<field name="dateModification" xsi:nil="true" />
+			<field name="notes" xsi:nil="true" />
+			<field name="timestamp">2008-07-17 17:24:20</field>
+			<field name="id">5</field>
+			<field name="genbank">0</field>
+		</row>
+	</table_data>
+	<table_structure name="taxonsets">
+		<field Field="taxonset_name" Type="varchar(45)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="taxonset_creator" Type="varchar(75)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="taxonset_description" Type="varchar(100)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="taxonset_list" Type="text" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="taxonset_id" Type="int(11)" Null="NO" Key="PRI" Extra="auto_increment" Comment="" />
+		<key Table="taxonsets" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="taxonset_id" Collation="A" Cardinality="8" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<key Table="taxonsets" Non_unique="0" Key_name="id_taxonsets_UNIQUE" Seq_in_index="1" Column_name="taxonset_id" Collation="A" Cardinality="8" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<options Name="taxonsets" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="8" Avg_row_length="1415" Data_length="11320" Max_data_length="281474976710655" Index_length="3072" Data_free="0" Auto_increment="11" Create_time="2014-12-09 13:27:09" Update_time="2014-12-09 13:27:09" Collation="utf8_general_ci" Create_options="" Comment="" />
+	</table_structure>
+	<table_data name="taxonsets">
+	<row>
+		<field name="taxonset_name">Erebia</field>
+		<field name="taxonset_creator">Carlos Peña</field>
+		<field name="taxonset_description"></field>
+		<field name="taxonset_list">CP100-10,CP100-11</field>
+		<field name="taxonset_id">1</field>
+	</row>
+	</table_data>
+	<table_structure name="vouchers">
+		<field Field="code" Type="varchar(255)" Null="NO" Key="UNI" Extra="" Comment="" />
+		<field Field="orden" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="family" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="subfamily" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="tribe" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="subtribe" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="genus" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="species" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="subspecies" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="country" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="specificLocality" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="typeSpecies" Type="tinyint(1)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="latitude" Type="decimal(12,6)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="longitude" Type="decimal(12,6)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="altitude" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="collector" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="dateCollection" Type="date" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="voucherImage" Type="text" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="thumbnail" Type="text" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="extraction" Type="smallint(5)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="dateExtraction" Type="date" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="extractor" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="voucherLocality" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="publishedIn" Type="text" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="notes" Type="text" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="edits" Type="text" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="latesteditor" Type="text" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="hostorg" Type="text" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="sex" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="extractionTube" Type="smallint(5)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="voucher" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="voucherCode" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="flickr_id" Type="text" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="determinedBy" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="auctor" Type="varchar(255)" Null="YES" Key="" Extra="" Comment="" />
+		<field Field="timestamp" Type="datetime" Null="NO" Key="" Default="0000-00-00 00:00:00" Extra="" Comment="" />
+		<field Field="id" Type="int(10) unsigned" Null="NO" Key="PRI" Extra="auto_increment" Comment="" />
+		<key Table="vouchers" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="id" Collation="A" Cardinality="11103" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<key Table="vouchers" Non_unique="0" Key_name="code" Seq_in_index="1" Column_name="code" Collation="A" Cardinality="11103" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<options Name="vouchers" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="11103" Avg_row_length="335" Data_length="3729664" Max_data_length="281474976710655" Index_length="288768" Data_free="0" Auto_increment="11492" Create_time="2014-12-09 13:27:10" Update_time="2014-12-09 13:27:10" Collation="utf8_general_ci" Create_options="" Comment="" />
+	</table_structure>
+	<table_data name="vouchers">
+        <row>
+            <field name="code">CP100-09</field>
+            <field name="orden"></field>
+            <field name="superfamily">Papilionoidea</field>
+            <field name="family">Nymphalidae</field>
+            <field name="subfamily">Nymphalinae</field>
+            <field name="tribe">NULL </field>
+            <field name="subtribe">Melitaeina</field>
+            <field name="genus">Melitaea?</field>
+            <field name="species">diamina</field>
+            <field name="subspecies"></field>
+            <field name="country">FINLAND</field>
+            <field name="specificLocality">Orivesi, HämeenLääni</field>
+            <field name="typeSpecies">0</field>
+            <field name="latitude">61.664300</field>
+            <field name="longitude">24.293600</field>
+            <field name="altitude">NULL</field>
+            <field name="collector">Niklas Wahlberg</field>
+            <field name="dateCollection">1996-03-25</field>
+            <field name="voucherImage">|https://www.flickr.com/photos/nsg_db/15728978251/|https://www.flickr.com/photos/nsg_db/15110967254/</field>
+            <field name="thumbnail">|https://farm4.staticflickr.com/3948/15728978251_b471787559_m.jpg|https://farm6.staticflickr.com/5600/15110967254_baba59f0d7_m.jpg</field>
+            <field name="extraction">1</field>
+            <field name="dateExtraction">2008-07-17</field>
+            <field name="extractor">Niklas Wahlberg</field>
+            <field name="voucherLocality"></field>
+            <field name="publishedIn" xsi:nil="true" />
+            <field name="notes" xsi:nil="true" />
+            <field name="edits" xsi:nil="true" />
+            <field name="latesteditor" xsi:nil="true" />
+            <field name="hostorg" xsi:nil="true" />
+            <field name="sex">female</field>
+            <field name="extractionTube">09</field>
+            <field name="voucher">No voucher</field>
+            <field name="voucherCode" xsi:nil="true" />
+            <field name="flickr_id">|15728978251|15110967254</field>
+            <field name="determinedBy" xsi:nil="true" />
+            <field name="auctor" xsi:nil="true" />
+            <field name="timestamp">2007-08-27 07:51:24</field>
+            <field name="code_bold" xsi:nil="true" />
+            <field name="id">1</field>
+        </row>
+   	<row>
+		<field name="code">CP100-10</field>
+		<field name="orden">NULL</field>
+        <field name="superfamily">Papilionoidea</field>
+		<field name="family"></field>
+		<field name="subfamily"></field>
+		<field name="tribe">Melitaeini</field>
+		<field name="subtribe">Melitaeina</field>
+		<field name="genus">Melitaea</field>
+		<field name="species">diamina</field>
+		<field name="subspecies"></field>
+		<field name="country">FINLAND</field>
+		<field name="specificLocality">Orivesi, HämeenLääni</field>
+		<field name="typeSpecies">1</field>
+		<field name="latitude">61.664300</field>
+		<field name="longitude">24.293600</field>
+        <field name="altitude"> </field>
+		<field name="collector">Niklas Wahlberg</field>
+		<field name="dateCollection">1996-03-25</field>
+		<field name="voucherImage">|http://www.nymphalidae.net/VoSeq/pictures/kitten1.jpg|http://www.nymphalidae.net/VoSeq/pictures/kitten3.jpg</field>
+		<field name="thumbnail">|http://www.nymphalidae.net/VoSeq/pictures/thumbnails/tn_kitten1.jpg|http://www.nymphalidae.net/VoSeq/pictures/thumbnails/tn_kitten3.jpg</field>
+		<field name="extraction">1</field>
+		<field name="dateExtraction">2008-07-17</field>
+		<field name="extractor">Niklas Wahlberg</field>
+		<field name="voucherLocality"></field>
+		<field name="publishedIn" xsi:nil="true" />
+        <field name="notes" xsi:nil="true" />
+		<field name="edits" xsi:nil="true" />
+		<field name="latesteditor" xsi:nil="true" />
+		<field name="hostorg" xsi:nil="true" />
+		<field name="sex">male</field>
+		<field name="extractionTube">1</field>
+		<field name="voucher">Spread</field>
+		<field name="voucherCode" xsi:nil="true" />
+		<field name="flickr_id" xsi:nil="true" />
+		<field name="determinedBy" xsi:nil="true" />
+		<field name="auctor" xsi:nil="true" />
+		<field name="timestamp">2007-08-27 07:51:24</field>
+        <field name="code_bold" xsi:nil="true" />
+		<field name="id">2</field>
+	</row>
+  	<row>
+		<field name="code">CP100-11</field>
+		<field name="orden">Lepidoptera</field>
+		<field name="family"> </field>
+		<field name="subfamily"> </field>
+		<field name="tribe">Melitaeini</field>
+		<field name="subtribe">Melitaeina</field>
+		<field name="genus">Melitaea</field>
+		<field name="species">diamina</field>
+		<field name="subspecies"></field>
+		<field name="country">FINLAND</field>
+		<field name="specificLocality">Orivesi, HämeenLääni</field>
+		<field name="typeSpecies" xsi:nil="true" />
+		<field name="latitude">61.664300</field>
+		<field name="longitude">24.293600</field>
+		<field name="altitude" xsi:nil="true" />
+		<field name="collector">Niklas Wahlberg</field>
+		<field name="dateCollection">1996-03-25</field>
+		<field name="voucherImage">|http://www.nymphalidae.net/VoSeq/pictures/kitten2.jpg</field>
+		<field name="thumbnail">|http://www.nymphalidae.net/VoSeq/pictures/thumbnails/tn_kitten2.jpg</field>
+		<field name="extraction">1</field>
+		<field name="dateExtraction">2008-07-17</field>
+		<field name="extractor">Niklas Wahlberg</field>
+		<field name="voucherLocality"></field>
+        <field name="publishedIn" xsi:nil="true" />
+        <field name="notes" xsi:nil="true" />
+		<field name="edits" xsi:nil="true" />
+		<field name="latesteditor" xsi:nil="true" />
+		<field name="hostorg" xsi:nil="true" />
+		<field name="sex" xsi:nil="true" />
+		<field name="extractionTube">1</field>
+		<field name="voucher">Unspread</field>
+		<field name="voucherCode" xsi:nil="true" />
+		<field name="flickr_id" xsi:nil="true" />
+		<field name="determinedBy">R. Núñez</field>
+		<field name="auctor" xsi:nil="true" />
+		<field name="timestamp">2007-08-27 07:51:24</field>
+        <field name="code_bold" xsi:nil="true" />
+		<field name="id">3</field>
+	</row>
+    <row>
+        <field name="code">CP100-12</field>
+        <field name="orden"> </field>
+        <field name="family">Nymphalidae</field>
+        <field name="subfamily">NULL</field>
+        <field name="tribe">Melitaeini</field>
+        <field name="subtribe">Melitaeina</field>
+        <field name="genus">Melitaea</field>
+        <field name="species">diamina</field>
+        <field name="subspecies"></field>
+        <field name="country">FINLAND</field>
+        <field name="specificLocality">Orivesi, HämeenLääni</field>
+        <field name="typeSpecies">2</field>
+        <field name="latitude">61.664300</field>
+        <field name="longitude">24.293600</field>
+        <field name="altitude"> 600m</field>
+        <field name="collector">Niklas Wahlberg</field>
+        <field name="dateCollection">1996-03-25</field>
+        <field name="voucherImage">|http://www.nymphalidae.net/VoSeq/pictures/kitten2.jpg|http://www.nymphalidae.net/VoSeq/pictures/kitten3.jpg</field>
+        <field name="thumbnail">|http://www.nymphalidae.net/VoSeq/pictures/thumbnails/tn_kitten2.jpg|http://www.nymphalidae.net/VoSeq/pictures/thumbnails/tn_kitten3.jpg</field>
+        <field name="extraction">1</field>
+        <field name="dateExtraction">2008-07-17</field>
+        <field name="extractor">Niklas Wahlberg</field>
+        <field name="voucherLocality"></field>
+        <field name="publishedIn">BMC 2009</field>
+        <field name="notes">photo 30</field>
+        <field name="edits" xsi:nil="true" />
+        <field name="latesteditor" xsi:nil="true" />
+        <field name="hostorg" xsi:nil="true" />
+        <field name="sex">mae</field>
+        <field name="extractionTube">1</field>
+        <field name="voucher" xsi:nil="true" />
+        <field name="voucherCode" xsi:nil="true" />
+        <field name="flickr_id" xsi:nil="true" />
+        <field name="determinedBy">NULL</field>
+        <field name="auctor" xsi:nil="true" />
+        <field name="timestamp">2007-08-27 07:51:24</field>
+        <field name="code_bold" xsi:nil="true" />
+        <field name="id">4</field>
+    </row>
+        <row>
+            <field name="code">CP100-13</field>
+            <field name="orden">Lepidoptera</field>
+            <field name="family">Nymphalidae</field>
+            <field name="subfamily">NULL</field>
+            <field name="tribe">Melitaeini</field>
+            <field name="subtribe">Melitaeina</field>
+            <field name="genus">Melitaea</field>
+            <field name="species">diamina</field>
+            <field name="subspecies"></field>
+            <field name="country">FINLAND</field>
+            <field name="specificLocality">Orivesi, HämeenLääni</field>
+            <field name="typeSpecies">2</field>
+            <field name="latitude">61.664300</field>
+            <field name="longitude">24.293600</field>
+            <field name="altitude">2500 m</field>
+            <field name="collector">Niklas Wahlberg</field>
+            <field name="dateCollection">1996-03-25</field>
+            <field name="voucherImage">na.gif</field>
+            <field name="thumbnail">na.gif</field>
+            <field name="extraction">1</field>
+            <field name="dateExtraction">2008-07-17</field>
+            <field name="extractor">Niklas Wahlberg</field>
+            <field name="voucherLocality"></field>
+            <field name="publishedIn" xsi:nil="true" />
+            <field name="notes" xsi:nil="true" />
+            <field name="edits" xsi:nil="true" />
+            <field name="latesteditor" xsi:nil="true" />
+            <field name="hostorg" xsi:nil="true" />
+            <field name="sex">larva</field>
+            <field name="extractionTube">1</field>
+            <field name="voucher"></field>
+            <field name="voucherCode" xsi:nil="true" />
+            <field name="flickr_id" xsi:nil="true" />
+            <field name="determinedBy" xsi:nil="true" />
+            <field name="auctor" xsi:nil="true" />
+            <field name="timestamp">2007-08-27 07:51:24</field>
+            <field name="code_bold" xsi:nil="true" />
+            <field name="id">5</field>
+        </row>
+        <row>
+            <field name="code">CP100-14</field>
+            <field name="orden">Hymenoptera</field>
+            <field name="family">Nymphalidae</field>
+            <field name="subfamily">NULL</field>
+            <field name="tribe">Melitaeini</field>
+            <field name="subtribe">Melitaeina</field>
+            <field name="genus">Melitaea</field>
+            <field name="species">diamina</field>
+            <field name="subspecies"></field>
+            <field name="country">FINLAND</field>
+            <field name="specificLocality">Orivesi, HämeenLääni</field>
+            <field name="typeSpecies">2</field>
+            <field name="latitude">61.664300</field>
+            <field name="longitude">24.293600</field>
+            <field name="altitude">1800-2000m</field>
+            <field name="collector">Niklas Wahlberg</field>
+            <field name="dateCollection">1996-03-25</field>
+            <field name="voucherImage">na.gif</field>
+            <field name="thumbnail">na.gif</field>
+            <field name="extraction">1</field>
+            <field name="dateExtraction">2008-07-17</field>
+            <field name="extractor">Niklas Wahlberg</field>
+            <field name="voucherLocality"></field>
+            <field name="publishedIn" xsi:nil="true" />
+            <field name="notes" xsi:nil="true" />
+            <field name="edits" xsi:nil="true" />
+            <field name="latesteditor" xsi:nil="true" />
+            <field name="hostorg" xsi:nil="true" />
+            <field name="sex">queen</field>
+            <field name="extractionTube">1</field>
+            <field name="voucher">Voucher photo</field>
+            <field name="voucherCode" xsi:nil="true" />
+            <field name="flickr_id" xsi:nil="true" />
+            <field name="determinedBy" xsi:nil="true" />
+            <field name="auctor" xsi:nil="true" />
+            <field name="timestamp">2007-08-27 07:51:24</field>
+            <field name="code_bold" xsi:nil="true" />
+            <field name="id">6</field>
+        </row>
+        <row>
+            <field name="code">CP100-15</field>
+            <field name="orden"> </field>
+            <field name="family">Nymphalidae</field>
+            <field name="subfamily">NULL</field>
+            <field name="tribe">Melitaeini</field>
+            <field name="subtribe">Melitaeina</field>
+            <field name="genus">Melitaea</field>
+            <field name="species">diamina</field>
+            <field name="subspecies"></field>
+            <field name="country">FINLAND</field>
+            <field name="specificLocality">Orivesi, HämeenLääni</field>
+            <field name="typeSpecies">2</field>
+            <field name="latitude">61.664300</field>
+            <field name="longitude">24.293600</field>
+            <field name="altitude">1800-2000m</field>
+            <field name="collector">Niklas Wahlberg</field>
+            <field name="dateCollection">1996-03-25</field>
+            <field name="voucherImage">na.gif</field>
+            <field name="thumbnail">na.gif</field>
+            <field name="extraction">1</field>
+            <field name="dateExtraction">2008-07-17</field>
+            <field name="extractor">Niklas Wahlberg</field>
+            <field name="voucherLocality"></field>
+            <field name="publishedIn" xsi:nil="true" />
+            <field name="notes" xsi:nil="true" />
+            <field name="edits" xsi:nil="true" />
+            <field name="latesteditor" xsi:nil="true" />
+            <field name="hostorg" xsi:nil="true" />
+            <field name="sex">unknown</field>
+            <field name="extractionTube">1</field>
+            <field name="voucher">Voucher lost</field>
+            <field name="voucherCode">RN 76022 16192-6</field>
+            <field name="flickr_id" xsi:nil="true" />
+            <field name="determinedBy" xsi:nil="true" />
+            <field name="auctor" xsi:nil="true" />
+            <field name="timestamp">2007-08-27 07:51:24</field>
+            <field name="code_bold" xsi:nil="true" />
+            <field name="id">7</field>
+        </row>
+        <row>
+            <field name="code">CP100-16</field>
+            <field name="orden"> </field>
+            <field name="family">Nymphalidae</field>
+            <field name="subfamily">NULL</field>
+            <field name="tribe">Melitaeini</field>
+            <field name="subtribe">Melitaeina</field>
+            <field name="genus">Melitaea</field>
+            <field name="species">ornata</field>
+            <field name="subspecies">telona</field>
+            <field name="country">FINLAND</field>
+            <field name="specificLocality">Orivesi, HämeenLääni</field>
+            <field name="typeSpecies">2</field>
+            <field name="latitude">61.664300</field>
+            <field name="longitude">24.293600</field>
+            <field name="altitude">1800-2000m</field>
+            <field name="collector">Niklas Wahlberg</field>
+            <field name="dateCollection">1996-03-25</field>
+			<field name="voucherImage">|http://www.nymphalidae.net/VoSeq/pictures/kitten2.jpg|http://www.nymphalidae.net/VoSeq/pictures/kitten3.jpg</field>
+			<field name="thumbnail">|http://www.nymphalidae.net/VoSeq/pictures/thumbnails/tn_kitten2.jpg|http://www.nymphalidae.net/VoSeq/pictures/thumbnails/tn_kitten3.jpg</field>
+            <field name="extraction">1</field>
+            <field name="dateExtraction">2008-07-17</field>
+            <field name="extractor">Niklas Wahlberg</field>
+            <field name="voucherLocality">NSG coll</field>
+            <field name="publishedIn" xsi:nil="true" />
+            <field name="notes" xsi:nil="true" />
+            <field name="edits" xsi:nil="true" />
+            <field name="latesteditor" xsi:nil="true" />
+            <field name="hostorg">hostorg</field>
+            <field name="sex">null</field>
+            <field name="extractionTube">1</field>
+            <field name="voucher">Voucher destroyed</field>
+            <field name="voucherCode" xsi:nil="true" />
+            <field name="flickr_id" xsi:nil="true" />
+            <field name="determinedBy" xsi:nil="true" />
+            <field name="auctor" xsi:nil="true" />
+            <field name="timestamp">2007-08-27 07:51:24</field>
+            <field name="code_bold" xsi:nil="true" />
+            <field name="id">8</field>
+        </row>
+        <row>
+            <field name="code">CP100-17</field>
+            <field name="orden"> </field>
+            <field name="family">Nymphalidae</field>
+            <field name="subfamily">NULL</field>
+            <field name="tribe">Melitaeini</field>
+            <field name="subtribe">Melitaeina</field>
+            <field name="genus">Melitaea</field>
+            <field name="species">cinxia</field>
+            <field name="subspecies"></field>
+            <field name="country">FINLAND</field>
+            <field name="specificLocality">Orivesi, HämeenLääni</field>
+            <field name="typeSpecies">2</field>
+            <field name="latitude">61.664300</field>
+            <field name="longitude">24.293600</field>
+            <field name="altitude">1800-2000m</field>
+            <field name="collector">Niklas Wahlberg</field>
+            <field name="dateCollection">1996-03-25</field>
+			<field name="voucherImage">|http://www.nymphalidae.net/VoSeq/pictures/kitten2.jpg|http://www.nymphalidae.net/VoSeq/pictures/kitten3.jpg</field>
+			<field name="thumbnail">|http://www.nymphalidae.net/VoSeq/pictures/thumbnails/tn_kitten2.jpg|http://www.nymphalidae.net/VoSeq/pictures/thumbnails/tn_kitten3.jpg</field>
+            <field name="extraction">1</field>
+            <field name="dateExtraction">2008-07-17</field>
+            <field name="extractor">Niklas Wahlberg</field>
+            <field name="voucherLocality"></field>
+            <field name="publishedIn" xsi:nil="true" />
+            <field name="notes" xsi:nil="true" />
+            <field name="edits" xsi:nil="true" />
+            <field name="latesteditor" xsi:nil="true" />
+            <field name="hostorg" xsi:nil="true" />
+            <field name="sex">na</field>
+            <field name="extractionTube">1</field>
+            <field name="voucher">no photo</field>
+            <field name="voucherCode" xsi:nil="true" />
+            <field name="flickr_id" xsi:nil="true" />
+            <field name="determinedBy" xsi:nil="true" />
+            <field name="auctor">auctorum</field>
+            <field name="timestamp">2007-08-27 07:51:24</field>
+            <field name="code_bold" xsi:nil="true" />
+            <field name="id">9</field>
+        </row>
+        <row>
+            <field name="code">CP100-18</field>
+            <field name="orden"> </field>
+            <field name="family">Nymphalidae</field>
+            <field name="subfamily">NULL</field>
+            <field name="tribe">Melitaeini</field>
+            <field name="subtribe">Melitaeina</field>
+            <field name="genus">Melitaea</field>
+            <field name="species">diamina</field>
+            <field name="subspecies"></field>
+            <field name="country">FINLAND</field>
+            <field name="specificLocality">Orivesi, HämeenLääni</field>
+            <field name="typeSpecies">2</field>
+            <field name="latitude">61.664300</field>
+            <field name="longitude">24.293600</field>
+            <field name="altitude">1800-2000m</field>
+            <field name="collector">Niklas Wahlberg</field>
+            <field name="dateCollection">1996-03-25</field>
+			<field name="voucherImage">|http://www.nymphalidae.net/VoSeq/pictures/kitten2.jpg|http://www.nymphalidae.net/VoSeq/pictures/kitten3.jpg</field>
+			<field name="thumbnail">|http://www.nymphalidae.net/VoSeq/pictures/thumbnails/tn_kitten2.jpg|http://www.nymphalidae.net/VoSeq/pictures/thumbnails/tn_kitten3.jpg</field>
+            <field name="extraction">100</field>
+            <field name="dateExtraction">2008-07-17</field>
+            <field name="extractor">Niklas Wahlberg</field>
+            <field name="voucherLocality"></field>
+            <field name="publishedIn" xsi:nil="true" />
+            <field name="notes" xsi:nil="true" />
+            <field name="edits" xsi:nil="true" />
+            <field name="latesteditor" xsi:nil="true" />
+            <field name="hostorg" xsi:nil="true" />
+            <field name="sex">f</field>
+            <field name="extractionTube">1</field>
+            <field name="voucher">M-105</field>
+            <field name="voucherCode" xsi:nil="true" />
+            <field name="flickr_id" xsi:nil="true" />
+            <field name="determinedBy" xsi:nil="true" />
+            <field name="auctor" xsi:nil="true" />
+            <field name="timestamp">2007-08-27 07:51:24</field>
+            <field name="code_bold">BCIBT193-09</field>
+            <field name="id">10</field>
+        </row>
+	</table_data>
+</database>
+</mysqldump>
