@@ -234,7 +234,7 @@ and write in the following content:
     "DB_HOST": "localhost",
     "GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key",
     "PHOTOS_REPOSITORY": "local",
-    "ELASTICSEARCH": "true"
+    "ELASTICSEARCH": "false"
     }
 
 If you want to host your photos in Flickr you need to change the last parameter
