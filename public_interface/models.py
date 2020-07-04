@@ -212,7 +212,7 @@ class Vouchers(TimeStampedModel):
 
 
 class Sequences(models.Model):
-    voucher = models.ForeignKey(
+    code = models.ForeignKey(
         Vouchers, db_index=True, help_text='This is your voucher code.', on_delete=models.CASCADE
     )
     gene_code = models.CharField(max_length=100, db_index=True)

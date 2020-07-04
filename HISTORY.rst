@@ -7,6 +7,8 @@ X.Y.Z ()
 - allow partial match to voucher code, genus, species, accession numbers, gene_codes
   when searching for Vouchers or Sequences in the admin interface. Eg. searching
   for "Meli" will return matches to Melitaea, Melinaea, etc.
+- References to vouchers from Sequence objects will show voucher code, genus and
+  species.
 
 2.2.1 (2020-06-28)
 ++++++++++++++++++
