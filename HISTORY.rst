@@ -1,6 +1,10 @@
 HISTORY
 -------
 
+X.Y.Z ()
+++++++++++++++++++
+- fixed usage of django-suit for admin interface.
+
 2.2.1 (2020-06-28)
 ++++++++++++++++++
 - upgraded dataset-creator dependency to allow generating datasets with full taxon
