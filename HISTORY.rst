@@ -9,6 +9,7 @@ X.Y.Z ()
   for "Meli" will return matches to Melitaea, Melinaea, etc.
 - References to vouchers from Sequence objects will show voucher code, genus and
   species.
+- dropped support for python 3.5
 
 2.2.1 (2020-06-28)
 ++++++++++++++++++

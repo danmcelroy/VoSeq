@@ -6,8 +6,8 @@ services:
   - postgresql
 
 python:
-  - "3.5"
   - "3.6"
+  - "3.7"
 
 before_script:
     - sleep 10
