@@ -208,11 +208,11 @@ class Vouchers(TimeStampedModel):
         app_label = 'public_interface'
 
     def __str__(self):
-        return self.code
+        return f"{self.code} {self.genus} {self.species}"
 
 
 class Sequences(models.Model):
-    code = models.ForeignKey(
+    voucher = models.ForeignKey(
         Vouchers, db_index=True, help_text='This is your voucher code.', on_delete=models.CASCADE
     )
     gene_code = models.CharField(max_length=100, db_index=True)
