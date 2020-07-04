@@ -141,7 +141,7 @@ class SequencesAdmin(ImportExportModelAdmin):
     search_fields = ['code__code', 'gene_code', 'accession']
     list_display = ['code', 'gene_code', 'genbank', 'accession', 'lab_person',
                     'notes', 'time_edited', 'time_created']
-    fields = ['voucher', 'gene_code', 'sequences', 'genbank', 'accession',
+    fields = ['code', 'gene_code', 'sequences', 'genbank', 'accession',
               'lab_person', 'notes']
     form = SequencesAdminForm
     resource_class = BatchImportSequencesResource
