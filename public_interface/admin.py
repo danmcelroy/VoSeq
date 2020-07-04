@@ -138,8 +138,8 @@ class VouchersAdmin(ImportExportModelAdmin):
 
 class SequencesAdmin(ImportExportModelAdmin):
     # TODO let users know that code and genecode keywords act as AND boolean search
-    search_fields = ['voucher__code', 'gene_code', 'accession']
-    list_display = ['voucher', 'gene_code', 'genbank', 'accession', 'lab_person',
+    search_fields = ['code__code', 'gene_code', 'accession']
+    list_display = ['code', 'gene_code', 'genbank', 'accession', 'lab_person',
                     'notes', 'time_edited', 'time_created']
     fields = ['voucher', 'gene_code', 'sequences', 'genbank', 'accession',
               'lab_person', 'notes']
