@@ -81,7 +81,7 @@ class VouchersAdmin(ImportExportModelAdmin):
     import_template_name = 'admin/public_interface/vouchers/batch_import.html'
     list_display = ['code', 'genus', 'species', 'sex', 'voucher', 'country', 'collector']
     ordering = ['code']
-    search_fields = ['=code', '=genus', '=species']
+    search_fields = ['code', 'genus', 'species']
 
     # list_editable = ['genus', 'species', 'sex', 'voucher', 'country', 'collector']
 
@@ -138,7 +138,7 @@ class VouchersAdmin(ImportExportModelAdmin):
 
 class SequencesAdmin(ImportExportModelAdmin):
     # TODO let users know that code and genecode keywords act as AND boolean search
-    search_fields = ['=code__code', '=gene_code']
+    search_fields = ['code__code', 'gene_code', 'accession']
     list_display = ['code', 'gene_code', 'genbank', 'accession', 'lab_person',
                     'notes', 'time_edited', 'time_created']
     fields = ['code', 'gene_code', 'sequences', 'genbank', 'accession',

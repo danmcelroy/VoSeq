@@ -1,6 +1,13 @@
 HISTORY
 -------
 
+X.Y.Z ()
+++++++++++++++++++
+- fixed usage of django-suit for admin interface.
+- allow partial match to voucher code, genus, species, accession numbers, gene_codes
+  when searching for Vouchers or Sequences in the admin interface. Eg. searching
+  for "Meli" will return matches to Melitaea, Melinaea, etc.
+
 2.2.1 (2020-06-28)
 ++++++++++++++++++
 - upgraded dataset-creator dependency to allow generating datasets with full taxon

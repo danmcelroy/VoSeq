@@ -36,6 +36,7 @@ TRAVIS = False
 
 INSTALLED_APPS = [
     'registration',
+    'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,9 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django_extensions',
 
-    # added
-    'suit',
     'haystack',
     'crispy_forms',
 
