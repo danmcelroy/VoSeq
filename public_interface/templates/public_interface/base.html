@@ -182,7 +182,11 @@ email: mycalesis@gmail.com
       $('#simple-search').select2({
         ajax: {
           url: '/api/simple-search/',
-          dataType: 'json'
+          processResults: function(data) {
+            return {
+              results: data.results
+            };
+          }
         }
       });
   });
