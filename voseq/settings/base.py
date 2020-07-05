@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'voucher_table',
     'gbif',
     'overview_table',
+    'api',
 
     'easy_thumbnails',
     'import_export',

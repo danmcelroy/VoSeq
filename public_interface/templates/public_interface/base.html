@@ -62,6 +62,9 @@ email: mycalesis@gmail.com
 
   <!-- Bootstrap core CSS -->
   <link href="http://netdna.bootstrapcdn.com/bootswatch/3.2.0/lumen/bootstrap.min.css" rel="stylesheet">
+  <!-- Select2 -->
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+
   {% load staticfiles %}
   <link rel="stylesheet" href="{% static 'css/pi.css' %}">
   <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
@@ -85,14 +88,20 @@ email: mycalesis@gmail.com
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li><a href="/browse">Browse</a></li>
-            <li class="hidden-sm"><a href="http://mycalesis.me/">Contact</a></li>
+            <li class="hidden-sm"><a href="https://github.com/carlosp420/">Contact</a></li>
             <li>
 
               <form action="/search/" method="get" class="navbar-form navbar-right form-inline" role="search">
                 <div class="form-group">
-                    <input style="width:240px;" type="text" id="query" name="q"
-                            class="form-control" value="{{ simple_query }}"
-                             placeholder="Code or Taxon name">
+                    <input
+                      style="width:240px;"
+                      type="text"
+                      id="simple-search"
+                      name="q"
+                      class="form-control"
+                      value="{{ simple_query }}"
+                      placeholder="Code or Taxon name"
+                    />
                 </div>
                 <div class="form-group">
                   <button type="submit" class="btn btn-info" id="search_button">
@@ -162,8 +171,22 @@ email: mycalesis@gmail.com
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/jquery-ui.min.js' %}"></script>
 
+    <!-- Select2 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
     {% block additional_javascript_footer %}
     {% endblock additional_javascript_footer %}
+
+<script>
+  $(document).ready(function() {
+      $('#simple-search').select2({
+        ajax: {
+          url: '/api/hola',
+          dataType: 'json'
+        }
+      });
+  });
+</script>
 
 </body>
 </html>
