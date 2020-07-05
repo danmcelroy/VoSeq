@@ -16,6 +16,7 @@ from overview_table.urls import urlpatterns as overview_table_urls
 from view_genes.urls import urlpatterns as view_genes_urls
 from gbif.urls import urlpatterns as gbif_urls
 from public_interface.urls import urlpatterns as public_interface_urls
+from api.urls import urlpatterns as api_urls
 
 
 urlpatterns = [
@@ -30,6 +31,7 @@ urlpatterns = [
     url(r'^view_table/', include(overview_table_urls)),
     url(r'^genes/', include(view_genes_urls)),
     url(r'^share_data_gbif/', include(gbif_urls)),
+    path(r'api/', include(api_urls)),
     url(r'^', include(public_interface_urls)),
 
     path('admin/', admin.site.urls),

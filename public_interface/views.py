@@ -83,10 +83,7 @@ def search(request):
         context['result_count'] = len(sqs)
         return render(request, 'public_interface/search_results.html', context)
     else:
-        sqs = Vouchers.objects.filter(
-            Q(orden__icontains=query) |
-            Q(genus__icontains=query) | Q(species__icontains=query) | Q(code__icontains=query),
-        )
+        sqs = isearch_in_voucher(query)
         results = ""
         paginator = ""
         if sqs:
@@ -104,6 +101,14 @@ def search(request):
         context['paginator'] = paginator
         context['results'] = results
         return render(request, 'public_interface/search_results.html', context)
+
+
+def isearch_in_voucher(query):
+    """Do a icontains search in voucher code, genus, species"""
+    sqs = Vouchers.objects.filter(
+        Q(genus__icontains=query) | Q(species__icontains=query) | Q(code__icontains=query),
+    )
+    return sqs
 
 
 def autocomplete(request):
