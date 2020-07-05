@@ -1,0 +1,155 @@
+{% extends 'public_interface/base.html' %}
+
+{% block title %}
+ {{ sequence.gene_code }} - {{ voucher.code }} - VoSeq
+{% endblock title %}
+
+
+{% block content %}
+<div class="explorer-container">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-sm-6 col-md-5 col-lg-5">
+        <h3>{{ voucher.code }} <i>{{ voucher.genus }} {{ voucher.species }}</i>
+          {% if item.author != None %}
+          {{ item.author }}
+          {% endif %}
+        </h3>
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Specimen name</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Family:</b></td>
+              <td>{{ voucher.family }}</td>
+            </tr>
+            <tr>
+              <td><b>Subfamily:</b></td>
+              <td>{{ voucher.subfamily }}</td>
+            </tr>
+            <tr>
+              <td><b>Tribe:</b></td>
+              <td>{{ voucher.tribe }}</td>
+            </tr>
+            <tr>
+              <td><b>Genus:</b></td>
+              <td>{{ voucher.genus }}</td>
+            </tr>
+            <tr>
+              <td><b>Species:</b></td>
+              <td>{{ voucher.Species }}</td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Sequence</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Code:</b></td>
+              <td>{{ voucher.code }}</td>
+            </tr>
+            <tr>
+              <td><b>Type Species:</b></td>
+              <td>
+                {% if voucher.type_species == 'd' %}
+                  don't know
+                {% elif voucher.type_species == 'y' %}
+                  yes
+                {% elif voucher.type_species == 'n' %}
+                  no
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2"><b>Sequence:</b></td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <textarea readonly style="height: 250px; overflow: auto;" class="form-control">{{ sequence.sequences }}</textarea>
+              </td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+
+      </div><!-- col -->
+
+      <div class="col-sm-6 col-md-5 col-lg-5">
+        <h3>Voucher Images</h3>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            {% for image in images %}
+            <a href="{{ image.voucher_image }}"><img class="img-thumbnail" src="{{ image.thumbnail }}" /></a>
+            {% endfor %}
+          </div>
+        </div><!-- panel -->
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Lab work</b></h3>
+          </div>
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Lab Person:</b></td>
+              <td>{{ sequence.lab_person }}</td>
+            </tr>
+            <tr>
+              <td><b>Gene code:</b></td>
+              <td>{{ sequence.gene_code }}</td>
+            </tr>
+            <tr>
+              <td><b>Accession:</b></td>
+              <td>{{ sequence.accession }}</td>
+            </tr>
+            <tr>
+              <td><b>Date Creation:</b></td>
+              <td>{{ sequence.time_created|date }}</td>
+            </tr>
+            <tr>
+              <td><b>Date Modification:</b></td>
+              <td>{{ sequence.time_edited|date }}</td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Primers used</b></h3>
+          </div>
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Forward Primers:</b></td>
+              <td><b>Reverse Primers:</b></td>
+            </tr>
+            {% for i in primers %}
+            <tr>
+              <td>{{ i.primer_f }}</td>
+              <td>{{ i.primer_r }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div><!-- panel -->
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Notes</b></h3>
+          </div>
+          <div class="panel-body">
+            {{ sequence.notes }}
+          </div>
+        </div><!-- panel -->
+
+      </div><!-- col -->
+
+    </div><!-- row -->
+  </div><!-- container -->
+</div><!-- explorer container -->
+{% endblock content %}

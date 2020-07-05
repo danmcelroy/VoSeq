@@ -1,0 +1,28 @@
+{% load humanize %}
+
+<footer>
+  <div class="container">
+
+    <p class="text-center">
+      <small>
+        2015 VoSeq
+        <a href="https://github.com/carlosp420/VoSeq"> {{ version }}</a>.
+        {% if username != 'Guest' %}
+          Logged in as: <b>{{ username }}</b>.
+          <a href="/accounts/logout/">Logout.</a><br />
+        {% else %}
+          As Guest.
+          <a href="/accounts/login/">Login.</a><br />
+        {% endif %}
+
+        Now with {{ stats.vouchers|intcomma }} vouchers,
+        over {{ stats.orders|intcomma }} orders,
+        {{ stats.families|intcomma }} families,
+        {{ stats.genera|intcomma }} genera and
+        {{ stats.species|intcomma }} species,
+        with together {{ stats.sequences|intcomma }} sequences!
+      </small>
+    </p>
+
+  </div>
+</footer>

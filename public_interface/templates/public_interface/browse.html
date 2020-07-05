@@ -1,0 +1,65 @@
+{% extends 'public_interface/base.html' %}
+
+{% block title %}
+ Browse - VoSeq
+{% endblock title %}
+
+
+{% block content %}
+<div class="explorer-container">
+  <div class="container">
+    <h3>Browse VoSeq</h3>
+
+    This is the user/public interface of this manager. <i>Mortal</i>
+users can search for voucher and taxonomic information,
+photos and access molecular sequences that have been flagged as
+being deposited in GenBank (hence public).
+
+    <div class="container">
+      <div class="row">
+
+        <div class="col-sm-6 col-md-5 col-md-offset-1 col-lg-4 col-lg-offset-2">
+          {% if results|length > 1 %}
+            <h2>Lastest entries:</h2>
+            <ul class="fa-ul">
+
+              {% for i in results %}
+              <li><i class="fa-li fa fa-circle"></i>
+                <b><a href="/p/{{ i.code }}">{{ i.code }}</a></b>
+                <i>{{ i.genus }} {{ i.species }}</i>
+                {% if i.author != None %}
+                  {{ author }}
+                {% endif %}
+
+                {% load staticfiles %}
+                {% if i.code in vouchers_with_images %}
+                  <a href="/p/{{ i.code }}"><img src="{% static 'img/icon_image.png' %}" title="See photos"/></a>
+                {% endif %}
+                <br />
+
+                <small>
+                  {% if i.extractor != '' %}
+                    By {{ i.extractor }} on
+                  {% endif %}
+
+                  {{ i.modified|date }}
+                </small>
+
+              </li>
+              {% endfor %}
+
+            </ul>
+          {% endif %}
+        </div><!-- col -->
+
+        <div class="col-sm-6 col-md-5 col-md-offset-1 col-lg-4 col-lg-offset-2">
+          {% block toolbox %}
+            {% include "public_interface/toolbox.html" %}
+          {% endblock toolbox %}
+        </div><!-- col -->
+
+      </div><!-- row -->
+    </div><!-- container -->
+  </div>
+</div>
+{% endblock content %}

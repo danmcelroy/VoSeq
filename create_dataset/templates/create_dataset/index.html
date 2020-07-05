@@ -1,0 +1,192 @@
+{% extends 'public_interface/base.html' %}
+
+{% block title %}
+ Create dataset - VoSeq
+{% endblock title %}
+
+{% block additional_css %}
+  {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/tooltipster.css' %}" />
+{% endblock additional_css %}
+
+
+{% block content %}
+<div class="explorer-container">
+  <div class="container">
+    <h3>Create dataset:</h3>
+
+    <div class="alert alert-info" role="alert">
+      <b>Select sequences you want for a dataset by entering the voucher codes and gene codes.</b>
+    </div>
+
+    {% if form.non_field_errors %}
+      <div class="alert alert-warning" role="alert">
+        {% for i in form.non_field_errors %}
+          <b>{{ i }}</b>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xs-12 col-sm-12  col-md-11 col-lg-11 ">
+
+        <form action="/create_dataset/results/" method="post">
+        <div class="panel panel-primary" style="min-width: 790px;">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Enter the required info to make yourself a ready-to-run dataset</b></h3>
+          </div>
+
+
+          <table class="table table-striped">
+
+            <tr>
+              <td>
+                {{ form.file_format.label }}
+              </td>
+              <td>
+                {% for error in form.file_format.errors %}
+                  <p class="text-danger">{{ error }}</p>
+                {% endfor %}
+                {{ form.file_format }}
+
+                {{ form.outgroup.label }} {{ form.outgroup }}<br />
+                <i class="fa fa-exclamation-triangle"></i> Warning! your dataset will not necessarily be properly aligned!
+                <i class="fa fa-question-circle" title="You need to be sure that your data is aligned!"></i>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                Only for Protein coding:<br />
+                (others will be output as standard) <br />
+                Choose codon positions to use <br />
+                    <br />
+                (Override priority: <br />
+                Amino Acids->Special->Degen->All->1st—2nd,3rd):
+              </td>
+              <td>
+                {% for error in form.positions.errors %}
+                <p class="text-danger">{{ error }}</p>
+                {% endfor %}
+                <b>{{ form.positions.label }}</b>
+                {{ form.positions }}
+
+                <b>{{ form.partition_by_positions.label }}</b>
+                {{ form.partition_by_positions }}
+
+                <b>Translations</b> <br />
+                {{ form.translations }}
+                {{ form.translations.label }}
+                <i id="translations-tooltip" class="fa fa-question-circle"></i>
+                <i class="fa fa-arrow-right"></i>&nbsp;&nbsp;as:
+                  {% for i in form.degen_translations %}
+                    &nbsp;{{ i }}
+                    <i title="{% cycle 'Normal' 'Degen S: alternative degen encoding of Serin 1 to Serin 2' 'Degen Z: alternative degen encoding of Serin 2 to Serin 1' 'Degen SZ: alternative degen encoding of Serin 1 and Serin 2 to NNN' %}" class="fa fa-question-circle"></i>
+                  {% endfor %}
+
+                <br />
+
+                {{ form.aminoacids }}
+                {{ form.aminoacids.label }}
+
+                <br />
+
+                <b>{{ form.special.label }}</b><br />
+                {{ form.special }}
+                {{ form.special.label }}
+                <i class="fa fa-question-circle" title="Will enable you to specify different translations, positions and partitions for each gene/alignment"></i>
+              </td>
+            </tr>
+
+            <tr>
+              <td>{{ form.taxon_names.label }}</td>
+              <td>{{ form.taxon_names }}</td>
+            </tr>
+
+            <tr>
+              <td>
+                For multigene datasets, <br />
+                exclude taxa with less than X genes?
+              </td>
+              <td>
+                {{ form.number_genes.label }}
+                {{ form.number_genes }}
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                Ignore introns? <br />
+                ('yes' will not use them in the data set)
+              </td>
+              <td>{{ form.introns }}</td>
+            </tr>
+          </table>
+
+              {% csrf_token %}
+
+        <table class="table table-bordered"><!-- big -->
+            <tr>
+                <td>
+
+                  {% include "core/form_taxonset.html" %}
+
+                </td>
+
+                <td>
+                  {% include 'core/form_geneset.html' %}
+                </td>
+
+            </tr>
+        </table><!-- big -->
+
+        </div><!-- panel -->
+
+
+        </form>
+
+
+
+
+
+
+
+        </div><!-- col -->
+
+      </div><!-- row -->
+    </div><!-- container -->
+
+
+  </div>
+</div>
+{% endblock content %}
+
+
+{% block additional_javascript_footer %}
+  {% load staticfiles %}
+    <script type="text/javascript" src="{% static 'js/jquery.tooltipster.min.js' %}"></script>
+<script>
+$(document).ready(function() {
+    $("i.fa").tooltipster({'trigger':'hover'});
+
+    $('#translations-tooltip').tooltipster({
+        content: $('<span>Degenerating nucleotides to IUPAC ambiguity codes at all sites that can potentially undergo<br />' +
+									 'synonymous change in any and all pairwise comparisons of sequences in the data matrix,<br />' +
+ 									 'thereby making synonymous change largely invisible and reducing the effect of<br />' +
+									 'compositional heterogeneity but leaving the inference of non-synonymous change largely intact.<br /><br />' +
+									 'From: "degen_v1_4.pl"; author: A. Zwick &amp; A. Hussey; www.phylotools.com<br /><br />Cite:<br />' +
+									 'Zwick, A., Regier, J.C. & Zwickl, D.J. (2012). "Resolving Discrepancy between Nucleotides and<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+									 'Amino Acids in Deep-Level Arthropod Phylogenomics:Differentiating Serine Codons in 21-<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+								   'Amino-Acid Models". PLoS ONE 7(11): e47450.<br />' +
+									 'Regier, J.C., Shultz, J.W., Zwick, A., Hussey, A., Ball, B., Wetzer, R. Martin, J.W. &<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+								   'Cunningham, C.W. (2010). "Arthropod relationships revealed by phylogenomic analysis of<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+				           'nuclear protein-coding sequences". Nature 463: 1079-1083.' +
+                   '</span>'),
+        multiple: true
+    });
+});
+</script>
+{% endblock additional_javascript_footer %}

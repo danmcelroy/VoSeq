@@ -1,0 +1,291 @@
+{% extends 'public_interface/base.html' %}
+
+{% block title %}
+ Advanced Search - VoSeq
+{% endblock title %}
+
+
+{% block additional_css %}
+  {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.structure.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.theme.min.css' %}" />
+{% endblock additional_css %}
+
+
+{% block content %}
+
+
+   <form method="get" action="/search/advanced/" class="autocomplete-me">
+
+<div class="explorer-container">
+  <div class="container">
+    <div class="row">
+      <h3>Search by querying a single field for any combination of fields</h3>
+    </div><!-- row -->
+
+    <div class="row">
+
+    {% if results == 'No results' %}
+       <div class="alert alert-warning"><b>No results were found</b></div>
+    {% endif %}
+
+    {% if form.errors %}
+    <div class="alert alert-warning">
+      <b>
+        {{ form.errors }}
+      </b>
+    </div>
+    {% endif %}
+
+      <div class="col-lg-6">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Search by taxonomy</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped advanced-search">
+            <tr>
+              <td><label for="id_orden"><b>Order:</b></label></td>
+              <td>{{ form.orden }}</td>
+
+              <td><b>Genus:</b></td>
+              <td>{{ form.genus }}</td>
+            </tr>
+            <tr>
+              <td><b>Superfamily:</b></td>
+              <td>{{ form.superfamily }}</td>
+
+              <td><b>Species:</b></td>
+              <td>{{ form.species }}</td>
+            </tr>
+            <tr>
+              <td><b>Family:</b></td>
+              <td>{{ form.family }}</td>
+
+              <td><b>Subspecies:</b></td>
+              <td>{{ form.subspecies }}</td>
+            </tr>
+            <tr>
+              <td><b>Subfamily:</b></td>
+              <td>{{ form.subfamily }}</td>
+
+              <td><b>Host org.:</b></td>
+              <td>{{ form.hostorg }}</td>
+            </tr>
+            <tr>
+              <td><b>Tribe:</b></td>
+              <td>{{ form.tribe }}</td>
+
+              <td><b>Author:</b></td>
+              <td>{{ form.author }}</td>
+            </tr>
+            <tr>
+              <td><b>Subtribe:</b></td>
+              <td>{{ form.subtribe }}</td>
+
+              <td><b>Type species?</b></td>
+              <td>{{ form.type_species }}</td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Search by locality</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped advanced-search">
+             <tr>
+                <td colspan="2"><b>Country:</b></td>
+                <td colspan="2">{{ form.country }}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><b>Specific Locality:</b></td>
+                <td colspan="2">{{ form.specific_locality }}</td>
+            </tr>
+
+            <tr>
+              <td><b>Latitude:</b></td>
+              <td>{{ form.latitude }}</td>
+              <td><b>Max. altitude:</b></td>
+              <td>{{ form.max_altitude }}</td>
+            </tr>
+            <tr>
+              <td><b>Longitude:</b></td>
+              <td>{{ form.longitude }}</td>
+              <td><b>Min. altitude:</b></td>
+              <td>{{ form.min_altitude }}</td>
+            <tr>
+          </table>
+        </div><!-- panel -->
+
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Search by collection data</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped advanced-search">
+            <tr>
+              <td><b>Code in VoSeq:</b></td>
+              <td><b>Voucher locality:</b></td>
+              <td><b>Collector:</b></td>
+            </tr>
+            <tr>
+              <td>{{ form.code }}</td>
+              <td>{{ form.voucher_locality }}</td>
+              <td>{{ form.collector }}</td>
+            </tr>
+            <tr>
+              <td><b>Code in BOLD:</b></td>
+              <td><b>Voucher status:</b></td>
+              <td><b>Collection date:</b></td>
+            </tr>
+            <tr>
+              <td>{{ form.code_bold }}</td>
+              <td>{{ form.voucher }}</td>
+              <td>{{ form.date_collection }}</td>
+            </tr>
+            <tr>
+              <td><b>Alternative voucher code:</b></td>
+              <td><b>Determined by:</b></td>
+              <td><b>Sex:</b></td>
+            </tr>
+            <tr>
+              <td>{{ form.voucher_code }}</td>
+              <td>{{ form.determined_by }}</td>
+              <td>{{ form.sex }}</td>
+            </tr>
+          </table>
+          </div><!-- panel -->
+
+      </div><!-- col -->
+
+
+      <div class="col-sm-6 col-md-5 col-lg-6">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Search by extraction data. DNA</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped advanced-search">
+            <tr>
+              <td><b>Extraction:</b></td>
+              <td><b>Tube:</b></td>
+            </tr>
+            <tr>
+              <td>{{ form.extraction }}</td>
+              <td>{{ form.extraction_tube }}</td>
+            </tr>
+            <tr>
+              <td><b>Extractor:</b></td>
+              <td><b>Date:</b></td>
+            </tr>
+            <tr>
+              <td>{{ form.extractor }}</td>
+              <td>{{ form.date_extraction }}</td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Search by sequence information</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped advanced-search">
+            <tr>
+              <td><b>Gene region</b></td>
+              <td>
+                {{ form.gene_code }}
+              </td>
+            </tr>
+            <tr>
+              <td><b>In Genbank?</b></td>
+              <td>
+                {% for radio in form.genbank %}
+                  {{ radio }}
+                {% endfor %}
+              </td>
+            </tr>
+            <tr>
+              <td><b>Accession number</b></td>
+              <td>{{ form.accession }}</td>
+            </tr>
+            <tr>
+              <td><b>Lab. person</b></td>
+              <td>{{ form.lab_person }}</td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Search by publication and notes</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped advanced-search">
+            <tr>
+              <td><b>Published in:</b></td>
+              <td><b>Notes:</b></td>
+            </tr>
+            <tr>
+              <td>{{ form.published_in }}</td>
+              <td>{{ form.notes }}</td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+
+        <button type="submit" class="btn btn-primary">
+          <span class="glyphicon glyphicon-search"></span>
+          SEARCH
+        </button>
+
+    </div><!-- row -->
+  </div>
+</div>
+</form>
+
+{% endblock content %}
+
+{% block additional_javascript_footer %}
+  {% load staticfiles %}
+  <script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}"></script>
+
+  <script type="text/javascript">
+    $("[id^=id_]").autocomplete({
+        source: function ( request, response) {
+          var this_id = $(this)[0].element[0].id.replace('id_', '');
+          $.ajax({
+            url: '/autocomplete/',
+            data: {
+                field: this_id,
+                term: request.term
+            },
+            success: function( data ) {
+                response( data );
+            }
+          });
+        },
+        minLength: 2,
+        open: function() {
+          $(this).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+        },
+        close: function() {
+          $(this).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+        }
+    });
+  </script>
+
+  <script>
+  $(function() {
+    $("#id_dateCollection").datepicker({
+        dateFormat: "yy-mm-dd"
+    });
+    $("#id_dateExtraction").datepicker({
+        dateFormat: "yy-mm-dd"
+    });
+  });
+  </script>
+{% endblock additional_javascript_footer %}

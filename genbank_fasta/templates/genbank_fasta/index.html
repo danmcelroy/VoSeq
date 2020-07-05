@@ -1,0 +1,62 @@
+{% extends 'public_interface/base.html' %}
+
+{% block title %}
+ Create GenBank FASTA file - VoSeq
+{% endblock title %}
+
+{% block content %}
+<div class="explorer-container">
+  <div class="container">
+    <h3>Create GenBank FASTA file:</h3>
+
+
+    <div class="container">
+      <div class="row">
+
+        <div class="col-xs-12 col-sm-12  col-md-11 col-lg-11">
+
+        <form action="/genbank_fasta/results/" method="post">
+        <div class="panel panel-primary" style="min-width: 790px;">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Enter the required info to make yourself a FASTA file to be submitted to GenBank</b></h3>
+          </div>
+
+
+          {% for i in form.non_field_errors %}
+          <div class="alert alert-warning">{{ i }}</div>
+          {% endfor %}
+        <table class="table table-bordered"><!-- big -->
+            <tr>
+                <td>
+
+                  {% include 'core/form_taxonset.html' %}
+
+                </td>
+
+                <td>
+                  {% include 'core/form_geneset.html' %}
+                </td>
+
+            </tr>
+        </table><!-- big -->
+
+        </div><!-- panel -->
+
+
+        </form>
+
+
+
+
+
+
+
+        </div><!-- col -->
+
+      </div><!-- row -->
+    </div><!-- container -->
+
+
+  </div>
+</div>
+{% endblock content %}

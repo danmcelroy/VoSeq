@@ -1,0 +1,316 @@
+{% extends 'public_interface/base.html' %}
+
+{% load thumbnail %}
+
+{% block title %}
+ {{ voucher.code }} - VoSeq
+{% endblock title %}
+
+
+{% block additional_css %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/jquery-ui.structure.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/jquery-ui.theme.min.css' %}">
+
+<style type="text/css">
+  #map-canvas { height: 200px; margin: 0px 0px 20px 0px; padding: 0px;}
+  label {
+    display: inline-block;
+    width: 5em;
+  }
+</style>
+{% endblock additional_css %}
+
+
+{% block additional_javascript_header %}
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}">
+</script>
+
+<script type="text/javascript">
+  function initialize() {
+    var myLatlng = new google.maps.LatLng({{ voucher.latitude }}, {{ voucher.longitude }});
+    var mapOptions = {
+      center: myLatlng,
+      zoom: 8
+    };
+    var map = new google.maps.Map(document.getElementById('map-canvas'),
+        mapOptions);
+    var marker = new google.maps.Marker({
+        position: myLatlng,
+        map: map,
+        title: "{{ voucher.specific_locality }}"
+    });
+  }
+  google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+{% endblock additional_javascript_header %}
+
+
+{% block content %}
+<div class="explorer-container">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-sm-6 col-md-5 col-lg-6">
+        <h3>{{ voucher.code }} <i>{{ voucher.genus }} {{ voucher.species }}</i>
+            {% if voucher.author != None %}
+              {{ voucher.author }}
+            {% endif %}
+        </h3>
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Specimen name</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Order:</b></td>
+              <td>{{ voucher.orden }}</td>
+
+              <td><b>Genus:</b></td>
+              <td>{{ voucher.genus }}</td>
+            </tr>
+            <tr>
+              <td><b>Superfamily:</b></td>
+              <td>{{ voucher.superfamily }}</td>
+
+              <td><b>Species:</b></td>
+              <td>{{ voucher.species }}</td>
+            </tr>
+            <tr>
+              <td><b>Family:</b></td>
+              <td>{{ voucher.family }}</td>
+
+              <td><b>Subspecies:</b></td>
+              <td>{{ voucher.subspecies }}</td>
+            </tr>
+            <tr>
+              <td><b>Subfamily:</b></td>
+              <td>{{ voucher.subfamily }}</td>
+
+              <td><b>Host org.:</b></td>
+              <td>{{ voucher.hostorg }}</td>
+            </tr>
+            <tr>
+              <td><b>Tribe:</b></td>
+              <td>{{ voucher.tribe }}</td>
+
+              <td><b>Author:</b></td>
+              <td>{{ voucher.author }}</td>
+            </tr>
+            <tr>
+              <td><b>Subtribe:</b></td>
+              <td>{{ voucher.subtribe }}</td>
+
+              <td><b>Type species?</b></td>
+              <td>
+                {{ voucher.type_species }}
+              </td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Locality Information</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+                <td colspan="2"><b>Country:</b></td>
+                <td colspan="2">{{ voucher.country }}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><b>Specific Locality:</b></td>
+                <td colspan="2">{{ voucher.specific_locality }}</td>
+            </tr>
+
+            <tr>
+              <td><b>Latitude:</b></td>
+              <td>{{ voucher.latitude }}</td>
+              <td><b>Max. altitude:</b></td>
+              <td>{{ voucher.max_altitude }}</td>
+            </tr>
+            <tr>
+              <td><b>Longitude:</b></td>
+              <td>{{ voucher.longitude }}</td>
+              <td><b>Min. altitude:</b></td>
+              <td>{{ voucher.min_altitude }}</td>
+            <tr>
+          </table>
+        </div><!-- panel -->
+
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Collector Information</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Code in VoSeq:</b></td>
+              <td><b>Voucher locality:</b></td>
+              <td><b>Collector:</b></td>
+            </tr>
+            <tr>
+              <td>{{ voucher.code }}</td>
+              <td>{{ voucher.voucher_locality }}</td>
+              <td>{{ voucher.collector }}</td>
+            </tr>
+            <tr>
+              <td><b>Code in BOLD:</b></td>
+              <td><b>Voucher status:</b></td>
+              <td><b>Collection date:</b></td>
+            </tr>
+            <tr>
+              <td>
+                {% if voucher.code_bold %}
+                  <a href="http://boldsystems.org/index.php/Public_RecordView?processid={{ voucher.code_bold }}">{{ voucher.code_bold }}</a>
+                {% endif %}
+              </td>
+
+              <td>{{ voucher.voucher }}</td>
+              <td>
+                {{ voucher.date_collection }}
+                {% if voucher.date_collection_end %}
+                  / {{ voucher.date_collection_end }}
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td><b>Alternative voucher code:</b></td>
+              <td><b>Determined by:</b></td>
+              <td><b>Sex:</b></td>
+            </tr>
+            <tr>
+              <td>{{ voucher.voucher_code }}</td>
+              <td>{{ voucher.determined_by }}</td>
+              <td>{{ voucher.sex }}</td>
+
+            </tr>
+          </table>
+        </div><!-- panel -->
+
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Publication and Notes</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Published in:</b></td>
+              <td><b>Notes:</b></td>
+            </tr>
+            <tr>
+              <td>{{ voucher.published_in }}</td>
+              <td>{{ voucher.notes }}</td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+
+      </div><!-- col -->
+
+
+      <div class="col-sm-6 col-md-5 col-lg-6">
+        <h3>Voucher Images</h3>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            {% for image in images %}
+              {% if 'static.flickr.com/' in image.thumbnail or 'staticflickr.com/' in image.thumbnail %}
+                <a href="{{ image.voucher_image }}">
+                  <img class="img-thumbnail" src="{{ image.thumbnail }}" />
+                </a>
+              {% else %}
+                <a href="/media/{{ image.voucher_image }}">
+                  <img class="img-thumbnail" src="{{ image.voucher_image|thumbnail_url:'thumb' }}" />
+                </a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div><!-- panel -->
+
+      {% if voucher.latitude != None %}
+        <div id="map-canvas">
+        </div>
+      {% endif %}
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>DNA</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Extraction:</b></td>
+              <td><b>Tube:</b></td>
+            </tr>
+            <tr>
+              <td>{{ voucher.extraction }}</td>
+              <td>{{ voucher.extraction_tube }}</td>
+            </tr>
+            <tr>
+              <td><b>Extractor:</b></td>
+              <td><b>Date:</b></td>
+            </tr>
+            <tr>
+              <td>{{ voucher.extractor }}</td>
+              <td>{{ voucher.date_extraction }}</td>
+            </tr>
+          </table>
+        </div><!-- panel -->
+
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><b>Sequence Information</b></h3>
+          </div>
+
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td><b>Region</b></td>
+              <td><b>bp</b></td>
+              <td><b>amb.</b></td>
+              <td><b>Lab.</b></td>
+              <td><b>Accession</b></td>
+              <td><b>local Blast</b></td>
+              <td><b>NCBI Blast</b></td>
+            </tr>
+            {% for item in sequences %}
+            <tr>
+              <td><a href="/s/{{ item.code }}/{{ item.gene_code }}/">{{ item.gene_code }}</a></td>
+              <td>{{ item.total_number_bp }}</td>
+              <td>{{ item.number_ambiguous_bp }}</td>
+              <td>{{ item.lab_person }}</td>
+              <td><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Search&db=nucleotide&term={{ item.accession }}[accn]&doptcmdl=GenBank">{{ item.accession }}</a></td>
+              <td class="text-center">
+                <a title="Blast this sequence against all sequences of the same gene code" href="/blast_local/{{ voucher.code }}/{{ item.gene_code }}/"><i class="fa fa-bomb"></i></a>
+                &nbsp;&nbsp;
+                <a title="Full blast: this sequence against the full database" href="/blast_local_full/{{ voucher.code }}/{{ item.gene_code }}"><i class="fa fa-database"></i></a>
+              </td>
+              <td class="text-center">
+                <a title="Blast against GenBank" href="/blast_ncbi/{{ voucher.code }}/{{ item.gene_code }}"><i class="fa fa-bomb"></i></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div><!-- panel -->
+
+
+      </div><!-- col -->
+
+    </div><!-- row -->
+  </div><!-- container -->
+</div>
+{% endblock content %}
+
+
+{% block additional_javascript_footer %}
+<script>
+  $(function() {
+    $( document ).tooltip();
+  });
+</script>
+{% endblock additional_javascript_footer %}

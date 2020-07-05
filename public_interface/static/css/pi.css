@@ -1,0 +1,84 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway);
+@import url(http://fonts.googleapis.com/css?family=Reenie+Beanie);
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro);
+
+.navbar {
+    margin-bottom: 0px;
+}
+.jumbotron {
+    background: #437487;
+    color: white;
+}
+.jumbotron h2 {
+    color: white;
+}
+body {
+    font-size: 16px;
+    font-family: 'Raleway', Verdana, Arial, sans-serif;
+}
+
+.advanced-search {
+    font-size: 12px;
+}
+
+.explorer-container {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    clear: both;
+}
+
+#id_file_format {
+    list-style-type: none;
+}
+
+#id_positions li {
+    display: inline-block;
+    padding-right: 15px;
+}
+
+#id_partition_by_positions li {
+    display: inline-block;
+    padding-right: 15px;
+}
+
+#id_degen_translations li {
+    display: inline-block;
+    padding-right: 15px;
+}
+
+#id_taxon_names li {
+    display: inline-block;
+    padding-right: 15px;
+}
+
+#id_exclude li {
+    display: inline-block;
+    padding-right: 15px;
+}
+
+#id_introns li {
+    display: inline-block;
+    padding-right: 15px;
+}
+
+.dataset {
+    font-family: 'Source Code Pro', Courier, serif;
+    font-weight: 600;
+}
+
+.small_fonts {
+    font-family: 'Source Code Pro', sans-serif;
+    font-size: 12px;
+}
+
+footer {
+  position: relative;
+  padding-top: 12px;
+  margin-top: 80px;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 80px;
+  background-color: #f5f5f5;
+}

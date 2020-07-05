@@ -1,6 +1,28 @@
 HISTORY
 -------
 
+X.Y.Z ()
+++++++++++++++++++
+- fixed usage of django-suit for admin interface.
+- allow partial match to voucher code, genus, species, accession numbers, gene_codes
+  when searching for Vouchers or Sequences in the admin interface. Eg. searching
+  for "Meli" will return matches to Melitaea, Melinaea, etc.
+- References to vouchers from Sequence objects will show voucher code, genus and
+  species.
+- dropped support for python 3.5
+
+2.2.1 (2020-06-28)
+++++++++++++++++++
+- upgraded dataset-creator dependency to allow generating datasets with full taxon
+  names even if names are longer than 54 characters.
+
+2.2.0 (2020-06-27)
+++++++++++++++++++
+- dropped support for vagrant
+- start using docker
+- fix 500 error when creating report selecting altitude. Now you can select either
+  max or min altitude.
+
 2.1.6 (2018-02-03)
 ++++++++++++++++++
 - Fixed error when doing simple search fro voucher code that does not exist in

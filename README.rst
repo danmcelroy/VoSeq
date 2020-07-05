@@ -14,7 +14,7 @@ VoSeq
     :alt: Join the chat at https://gitter.im/VoSeq/VoSeq
     :target: https://gitter.im/VoSeq/VoSeq?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 
-.. |Python_versions| image:: https://img.shields.io/badge/python-3.5%203.6-blue.svg
+.. |Python_versions| image:: https://img.shields.io/badge/python-3.6%203.7-blue.svg
     :alt: Python versions
 
 
@@ -23,7 +23,11 @@ Contents
 
 * `The new VoSeq is here`_
 * `New features`_
+<<<<<<< HEAD
 * `Quick install of VoSeq using Vagrant (Recommended)`_
+=======
+* `Quick install of VoSeq using Docker (Recommended)`_
+>>>>>>> 3fc8b755031525b0199b7056380312dfe1a90d76
 * `Installation instructions`_
 * `Test database for development`_
 * `Start a test server`_
@@ -45,14 +49,21 @@ PostgreSQL.
 
 You can still download the old VoSeq v1.7.4 from
 `here <https://github.com/VoSeq/VoSeq/releases/tag/v1.7.4>`__. But
+<<<<<<< HEAD
 be aware that we will not be doing major maintenance of that code.
+=======
+be aware that we will not be doing maintenance of that code.
+>>>>>>> 3fc8b755031525b0199b7056380312dfe1a90d76
 
 More details about the migration can be found in our `discussion
 list <https://groups.google.com/forum/#!topic/voseq-discussion-list/wQ-E0Xcimgw>`__.
 
 VoSeq 2.0.0 is the future!
+<<<<<<< HEAD
 Here is a test installation of the new VoSeq (v2.0)
 http://try.voseq.com/
+=======
+>>>>>>> 3fc8b755031525b0199b7056380312dfe1a90d76
 
 
 New Features
@@ -61,6 +72,7 @@ Query suggestions for simple taxon searches:
 
 .. image:: https://raw.githubusercontent.com/VoSeq/VoSeq/master/imgs/simple_search_suggestion.png
 
+<<<<<<< HEAD
 Quick install of VoSeq using Vagrant (Recommended)
 ==================================================
 Vagrant allows setting up virtual machines that automatically installs all
@@ -72,6 +84,20 @@ You need both `Vagrant <http://www.vagrantup.com/downloads.html>`__ and
 computer or server.
 
 Assuming that you have installed [GIT](https://git-scm.com/downloads), you need to get a copy of VoSeq into your hard-disk. From a console or terminal type the following command:
+=======
+Quick install of VoSeq using Docker (Recommended)
+=================================================
+Docker allows setting up virtual machines that automatically installs all
+dependencies and sets up configuration from a *recipe* contained in the Docker
+file.
+
+You need `Docker <https://www.docker.com/get-started>`__ installed in your
+computer or server.
+
+Assuming that you have installed [GIT](https://git-scm.com/downloads), you need
+to get a copy of VoSeq into your hard-disk. From a console or terminal type the
+following command:
+>>>>>>> 3fc8b755031525b0199b7056380312dfe1a90d76
 
 .. code:: shell
 
@@ -87,6 +113,7 @@ And execute the following command:
 
 .. code:: shell
 
+<<<<<<< HEAD
     vagrant up
 
 If the installation of packages gets interrupted you can relaunch the process
@@ -96,12 +123,16 @@ with the following command:
 
     vagrant reload --provision
 
+=======
+    ./run/scripts/docker_upgrade
+>>>>>>> 3fc8b755031525b0199b7056380312dfe1a90d76
 
 Once the process has finished, you will have a new Ubuntu virtual machine with
 VoSeq installed. To enter this virtual machine:
 
 .. code:: shell
 
+<<<<<<< HEAD
     vagrant ssh
 
 Then you just need to run the following commands to set up your database:
@@ -120,10 +151,28 @@ import test data:
 .. code:: shell
 
     make test_import
+=======
+    ./run/scripts/docker_compose exec app bash
+
+To exit the virtual machine:
+
+.. code:: shell
+
+    exit
+
+Import a test database into your Voseq installation: (1) enter the virtual
+machine, (2) execute the command to import the database:
+
+.. code:: shell
+
+    ./run/scripts/docker_compose exec app bash
+    python manage.py import_test_db
+>>>>>>> 3fc8b755031525b0199b7056380312dfe1a90d76
 
 Set up an administrator account by using the command ``make admin``
 (see `Administrate the server`_).
 
+<<<<<<< HEAD
 It is necessary to index your imported data:
 
 .. code:: shell
@@ -147,12 +196,20 @@ Then restart the web server:
 
 In your host system, open your brower and load this URL:
 http://33.33.33.10 to see your fresh installation of VoSeq.
+=======
+In your host system, open your brower and load this URL:
+localhost:8081 to see your fresh installation of VoSeq.
+>>>>>>> 3fc8b755031525b0199b7056380312dfe1a90d76
 
 
 Installation instructions
 =========================
 
+<<<<<<< HEAD
 These instructions assume that your libraries are up to date and that you have Python, pip, Java 7+ and
+=======
+These instructions assume that your libraries are up to date and that you have Python, pip and
+>>>>>>> 3fc8b755031525b0199b7056380312dfe1a90d76
 virtual environments installed. Python3 is recommended.
 
 **Step 1: get VoSeq.**
@@ -267,7 +324,11 @@ and write in the following content:
     "DB_HOST": "localhost",
     "GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key",
     "PHOTOS_REPOSITORY": "local",
+<<<<<<< HEAD
     "ELASTICSEARCH": "true"
+=======
+    "ELASTICSEARCH": "false"
+>>>>>>> 3fc8b755031525b0199b7056380312dfe1a90d76
     }
 
 If you want to host your photos in Flickr you need to change the last parameter

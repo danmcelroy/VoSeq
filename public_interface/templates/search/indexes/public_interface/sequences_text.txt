@@ -1,0 +1,5 @@
+{{ object.vouchers.code }}
+{{ object.lab_person }}
+{{ object.accession }}
+{{ object.genbank }}
+{{ object.gene_code }}
