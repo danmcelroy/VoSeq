@@ -50,8 +50,6 @@ be aware that we will not be doing maintenance of that code.
 More details about the migration can be found in our `discussion
 list <https://groups.google.com/forum/#!topic/voseq-discussion-list/wQ-E0Xcimgw>`__.
 
-VoSeq 2.0.0 is the future!
-
 
 New Features
 ============
