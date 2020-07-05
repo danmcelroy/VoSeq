@@ -1,6 +1,5 @@
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
-
 from django import forms
 from django.conf import settings
 from django.contrib import admin
@@ -8,13 +7,8 @@ from django.core.exceptions import PermissionDenied
 from django.db import models
 from django.http import HttpRequest
 
-from public_interface.models import FlickrImages
-from public_interface.models import LocalImages
-from public_interface.models import GeneSets
-from public_interface.models import Genes
-from public_interface.models import TaxonSets
-from public_interface.models import Sequences
-from public_interface.models import Vouchers
+from public_interface.models import FlickrImages, LocalImages, GeneSets, Genes, \
+    TaxonSets, Sequences, Vouchers
 from public_interface.views import change_selected
 from public_interface.forms import SequencesAdminForm
 
@@ -73,7 +67,6 @@ class BatchImportSequencesResource(resources.ModelResource):
             'code', 'gene_code', 'accession', 'lab_person', 'genbank', 'notes',
             'sequences',
         )
-
 
 
 # Customize what and the way you show it

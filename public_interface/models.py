@@ -208,7 +208,7 @@ class Vouchers(TimeStampedModel):
         app_label = 'public_interface'
 
     def __str__(self):
-        return self.code
+        return f"{self.code} {self.genus} {self.species}"
 
 
 class Sequences(models.Model):

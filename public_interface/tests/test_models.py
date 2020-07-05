@@ -15,7 +15,7 @@ class TestModels(TestCase):
 
     def test_voucher_str(self):
         voucher_model = Vouchers.objects.get(code='CP100-18')
-        expected = 'CP100-18'
+        expected = 'CP100-18 Melitaea diamina'
         self.assertEqual(expected, voucher_model.__str__())
 
     def test_sequences_str(self):
