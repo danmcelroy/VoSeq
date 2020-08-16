@@ -1,7 +1,7 @@
 HISTORY
 -------
 
-X.Y.Z ()
+2.2.2 (2020-08-16)
 ++++++++++++++++++
 - fixed usage of django-suit for admin interface.
 - allow partial match to voucher code, genus, species, accession numbers, gene_codes
@@ -10,6 +10,7 @@ X.Y.Z ()
 - References to vouchers from Sequence objects will show voucher code, genus and
   species.
 - dropped support for python 3.5
+- added config.json for initial deployment.
 
 2.2.1 (2020-06-28)
 ++++++++++++++++++
