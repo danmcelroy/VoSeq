@@ -1,6 +1,10 @@
 HISTORY
 -------
 
+2.2.3 (2020-08-17)
+++++++++++++++++++
+- upgraded Dockerfile to use debian-stretch
+
 2.2.2 (2020-08-16)
 ++++++++++++++++++
 - fixed usage of django-suit for admin interface.
