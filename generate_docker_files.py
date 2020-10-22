@@ -16,6 +16,8 @@ def open_file(app_name):
         # file, data to replace, data to replace with
         ('run/docker/.env', 'voseq', app_name),
         ('run/docker/postgres/init-user-db.sh', 'voseq', app_name),
+        ('run/scripts/get_project_vars', 'voseq', app_name),
+        ('run/docker/docker-compose.yml', 'image: voseq', f'image: {app_name}'),
         ('run/docker/docker-compose.yml', '8081', app_data['http_port']),
         ('run/docker/docker-compose.yml', '4431', app_data['https_port']),
     ]
