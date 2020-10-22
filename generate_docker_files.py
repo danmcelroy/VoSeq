@@ -14,6 +14,8 @@ def open_file(app_name):
 
     files_and_data = [
         # file, data to replace, data to replace with
+        ('voseq/settings/base.py', 'voseq', app_name),
+        ('config.json', 'voseq', app_name),
         ('run/docker/.env', 'voseq', app_name),
         ('run/docker/postgres/init-user-db.sh', 'voseq', app_name),
         ('run/scripts/get_project_vars', 'voseq', app_name),
