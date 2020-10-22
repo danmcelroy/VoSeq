@@ -21,6 +21,9 @@ def open_file(app_name):
         ('run/docker/docker-compose.yml', 'image: voseq', f'image: {app_name}'),
         ('run/docker/docker-compose.yml', '8081', app_data['http_port']),
         ('run/docker/docker-compose.yml', '4431', app_data['https_port']),
+        ('run/docker/docker-compose.yml', 'voseq_db', f'{app_name}_db'),
+        ('run/docker/docker-compose.yml', 'voseq_app', f'{app_name}_app'),
+        ('run/docker/docker-compose.yml', 'voseq_nginx', f'{app_name}_nginx'),
     ]
     for item in files_and_data:
         with open(item[0], 'r') as handle:
