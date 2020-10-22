@@ -13,3 +13,13 @@ voseq:
   name: voseq
   http_port: 8081
   https_port: 4431
+
+ins_db:
+  name: ins_db
+  http_port: 8082
+  https_port: 4432
+
+lepidoptera:
+  name: lepidoptera
+  http_port: 8083
+  https_port: 4433
