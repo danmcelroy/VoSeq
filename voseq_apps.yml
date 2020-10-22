@@ -1,0 +1,25 @@
+# This is a list of app names that can be used to generate docker files and ports
+# so that we can run several Voseq installations in a single server without
+# port or name conflicts.
+# Write here the apps that you want to install in your single server.
+# Run the script to regenerate such files (under the run folder) in case they
+# get overwritten by updates to the Voseq repository.
+#
+# Usage:
+# python generate_docker_files.py APP_NAME
+
+# default app
+voseq:
+  name: voseq
+  http_port: 8081
+  https_port: 4431
+
+ins_db:
+  name: ins_db
+  http_port: 8082
+  https_port: 4432
+
+lepidoptera:
+  name: lepidoptera
+  http_port: 8083
+  https_port: 4433
