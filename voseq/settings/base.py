@@ -16,7 +16,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # replace with any name if you have more than one installation. This name will
 # be used to generate the log filenames
-APP_NAME = "voseq"
+APP_NAME = "ins_db"
 
 DEBUG = True
 

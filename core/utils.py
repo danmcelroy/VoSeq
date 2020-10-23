@@ -102,6 +102,7 @@ def get_context(request: HttpRequest) -> Dict[str, Any]:
         "username": get_username(request),
         "version": version,
         "stats": stats,
+        "app_name": settings.APP_NAME.title(),
     }
     return context
 

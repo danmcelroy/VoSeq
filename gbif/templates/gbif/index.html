@@ -1,6 +1,6 @@
 {% extends 'public_interface/base.html' %}
 {% block title %}
- Share data with GBIF - VoSeq
+ Share data with GBIF - {{ app_name }}
 {% endblock title %}
 
 
@@ -16,19 +16,19 @@
 
         <div class="col-xs-12 col-sm-12  col-md-11 col-lg-11 ">
           <p>
-            You can share your information hosted in VoSeq with GBIF.
+            You can share your information hosted in {{ app_name }} with GBIF.
           </p>
 
           <p>
             <b>GBIF</b> prefers data owners to use their
             <a href="http://www.gbif.org/ipt">Integrated Publishing Toolkit (IPT)</a>. This means that
             you can install their IPT software to produce a resource in Darwin Core format that can be
-            harvested by GBIF. In addition to the actual data in your VoSeq installation, <b>IPT allows you
+            harvested by GBIF. In addition to the actual data in your {{ app_name }} installation, <b>IPT allows you
             to include a rich variety of metadata</b> for GBIF.
           </p>
 
           <p>
-            VoSeq is able to produce a <b>dump file</b> containing all the data you own. Then you can import
+            {{ app_name }} is able to produce a <b>dump file</b> containing all the data you own. Then you can import
             this file into a IPT installation and choose which types of data you want to publish via
             GBIF. Once you include all the metadata required by GBIF you have two choices in order to
             expose your data taken from GBIF website:
