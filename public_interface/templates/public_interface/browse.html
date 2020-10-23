@@ -1,16 +1,16 @@
 {% extends 'public_interface/base.html' %}
 
 {% block title %}
- Browse - VoSeq
+ Browse - {{ app_name }}
 {% endblock title %}
 
 
 {% block content %}
 <div class="explorer-container">
   <div class="container">
-    <h3>Browse VoSeq</h3>
+    <h3>Browse {{ app_name }}</h3>
 
-    This is the user/public interface of this manager. <i>Mortal</i>
+    This is the user/public interface of this manager. <i>Non-admin</i>
 users can search for voucher and taxonomic information,
 photos and access molecular sequences that have been flagged as
 being deposited in GenBank (hence public).

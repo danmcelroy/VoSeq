@@ -3,7 +3,7 @@
 {% load thumbnail %}
 
 {% block title %}
- {{ voucher.code }} - VoSeq
+ {{ voucher.code }} - {{ app_name }}
 {% endblock title %}
 
 
@@ -151,7 +151,7 @@
 
           <table class="table table-condensed table-striped">
             <tr>
-              <td><b>Code in VoSeq:</b></td>
+              <td><b>Code in {{ app_name }}:</b></td>
               <td><b>Voucher locality:</b></td>
               <td><b>Collector:</b></td>
             </tr>
