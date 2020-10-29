@@ -1,6 +1,7 @@
 import logging
 import os
 import re
+from uuid import uuid4
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -9,6 +10,7 @@ from django.http import HttpResponse
 
 from core.utils import get_context
 from .forms import CreateDatasetForm
+from .tasks import create_dataset
 from .utils import CreateDataset
 
 
@@ -33,6 +35,7 @@ def results(request):
 
         if form.is_valid():
             dataset_format = form.cleaned_data['file_format']
+            job_id = schedule_dataset(form.cleaned_data)
             dataset_creator = CreateDataset(form.cleaned_data)
             dataset = "{}{}{}".format(
                 dataset_creator.dataset_str[0:1500],
@@ -96,3 +99,45 @@ def guess_file_extension(file_name):
 
     name = file_name.replace('.txt', '')
     return '{0}.{1}'.format(name, extension)
+
+
+def schedule_dataset(cleaned_data):
+    taxonset_id = cleaned_data['taxonset'].id
+    geneset_id = cleaned_data['geneset'].id
+    gene_codes_ids = cleaned_data['gene_codes'].values_list('id', flat=True)
+    voucher_codes = cleaned_data['voucher_codes']
+    file_format = cleaned_data['file_format']
+    outgroup = cleaned_data['outgroup']
+    positions = cleaned_data['positions']
+    partition_by_positions = cleaned_data['partition_by_positions']
+    translations = cleaned_data['translations']
+    aminoacids = cleaned_data['aminoacids']
+    degen_translations = cleaned_data['degen_translations']
+    special = cleaned_data['special']
+    taxon_names = cleaned_data['taxon_names']
+    number_genes = cleaned_data['number_genes']
+    introns = cleaned_data['introns']
+    task_id = str(uuid4())
+
+    task = create_dataset.si(
+        (
+            taxonset_id,
+            geneset_id,
+            gene_codes_ids,
+            voucher_codes,
+            file_format,
+            outgroup,
+            positions,
+            partition_by_positions,
+            translations,
+            aminoacids,
+            degen_translations,
+            special,
+            taxon_names,
+            number_genes,
+            introns,
+        ),
+        task_id=task_id,
+    )
+    task.apply_async()
+    return task_id
