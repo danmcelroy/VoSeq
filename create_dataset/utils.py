@@ -148,7 +148,7 @@ class CreateDataset(object):
 
         for gene_code in sorted_gene_codes:
             for code in self.voucher_codes:
-                
+
                 try:
                     accession_number = all_seqs[code][gene_code]["accession"]
                 except KeyError:

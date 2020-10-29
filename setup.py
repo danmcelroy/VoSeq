@@ -13,7 +13,7 @@ requirements = [
     'amas==0.2',
     'biopython==1.68',
     'Django==2.2.13',
-    'Pillow==6.2.2',
+    'Pillow==8.0.1',
     'pyprind==2.9.3',
     'Unipath==1.1',
     'psycopg2==2.6.1',
