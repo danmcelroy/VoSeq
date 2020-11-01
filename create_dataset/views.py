@@ -74,8 +74,16 @@ def serve_file(request, dataset_id):
 
 
 def schedule_dataset(cleaned_data, user) -> int:
-    taxonset_id = cleaned_data['taxonset'].id
-    geneset_id = cleaned_data['geneset'].id
+    if cleaned_data['taxonset']:
+        taxonset_id = cleaned_data['taxonset'].id
+    else:
+        taxonset_id = None
+
+    if cleaned_data['geneset']:
+        geneset_id = cleaned_data['geneset'].id
+    else:
+        geneset_id = None
+
     gene_codes_ids = list(cleaned_data['gene_codes'].values_list('id', flat=True))
     voucher_codes = cleaned_data['voucher_codes']
     file_format = cleaned_data['file_format']

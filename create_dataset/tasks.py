@@ -16,8 +16,15 @@ def create_dataset(
     dataset_obj_id
 ):
     cleaned_data = dict()
-    taxon_set = TaxonSets.objects.get(id=taxonset_id)
-    gene_set = GeneSets.objects.get(id=geneset_id)
+    if taxonset_id:
+        taxon_set = TaxonSets.objects.get(id=taxonset_id)
+    else:
+        taxon_set = None
+
+    if geneset_id:
+        gene_set = GeneSets.objects.get(id=geneset_id)
+    else:
+        gene_set = None
     cleaned_data['taxonset'] = taxon_set
     cleaned_data['geneset'] = gene_set
     cleaned_data['gene_codes'] = Genes.objects.filter(id__in=gene_codes_ids)
