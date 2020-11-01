@@ -34,17 +34,18 @@ def create_dataset(
     cleaned_data['number_genes'] = number_genes
     cleaned_data['introns'] = introns
     dataset_creator = CreateDataset(cleaned_data)
-    dataset_obj = Dataset.objects.get(id=dataset_obj_id)
-    dataset_obj.content = dataset_creator.dataset_str
-    dataset_obj.completed = timezone.now()
-    dataset_obj.save()
     dataset = "{}{}{}".format(
         dataset_creator.dataset_str[0:1500],
         '\n...\n\n\n',
         '#######\nComplete dataset file available for download.\n#######',
     )
-    errors = dataset_creator.errors
-    warnings = set(dataset_creator.warnings)
+
+    dataset_obj = Dataset.objects.get(id=dataset_obj_id)
+    dataset_obj.content = dataset_creator.dataset_str
+    dataset_obj.completed = timezone.now()
+    dataset_obj.errors = dataset_creator.errors
+    dataset_obj.warnings = list(set(dataset_creator.warnings))
+    dataset_obj.save()
 
     dataset_file_abs = dataset_creator.dataset_file
     if dataset_file_abs is not None:
@@ -60,6 +61,6 @@ def create_dataset(
     context['charset_block'] = dataset_creator.charset_block
     context['dataset'] = dataset
     context['dataset_format'] = file_format
-    context['errors'] = errors
-    context['warnings'] = warnings
+    context['errors'] = dataset_obj.errors
+    context['warnings'] = dataset_obj.warnings
 

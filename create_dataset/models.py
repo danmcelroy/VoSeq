@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import JSONField
 from django.db import models
 
 
@@ -8,4 +9,5 @@ class Dataset(models.Model):
     completed = models.DateTimeField(null=True)
     content = models.TextField(null=True)
     task_id = models.TextField(null=True)
-    # TODO: add warnings
+    errors = JSONField(blank=True, null=True)
+    warnings = JSONField(blank=True, null=True)

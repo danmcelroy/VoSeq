@@ -6,6 +6,8 @@ from django.db import connection
 from django.test import TestCase
 from django.test.client import Client
 
+from create_dataset.models import Dataset
+from create_dataset.tasks import create_dataset
 from public_interface.models import Genes, Sequences, Vouchers
 from django.contrib.auth.models import User
 
@@ -43,28 +45,28 @@ class CreateDatasetViewsTest(TestCase):
         self.assertEqual(200, res.status_code)
 
     def test_view_result(self):
-        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
-        res = self.c.post('/create_dataset/results/',
-                          {
-                              'voucher_codes': 'CP100-10',
-                              'gene_codes': [],
-                              'geneset': 1,
-                              'taxonset': 1,
-                              'introns': 'YES',
-                              'positions': 'ALL',
-                              'translations': False,
-                              'partition_by_positions': 'ONE',
-                              'file_format': 'FASTA',
-                              'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
-                              'degen_translations': 'NORMAL',
-                              'exclude': 'YES',
-                              'aminoacids': False,
-                              'special': False,
-                              'outgroup': '',
-                          }
-                          )
-        self.assertEqual(200, res.status_code)
-        self.assertEqual('', res)
+        dataset_obj = Dataset.objects.create()
+        create_dataset(
+            taxonset_id=1,
+            geneset_id=1,
+            gene_codes_ids=[],
+            voucher_codes='CP100-10',
+            file_format='FASTA',
+            outgroup='',
+            positions='ALL',
+            partition_by_positions='by codon position',
+            translations=False,
+            aminoacids=False,
+            degen_translations='NORMAL',
+            special=False,
+            taxon_names=['CODE', 'GENUS', 'SPECIES'],
+            number_genes='',
+            introns='YES',
+            dataset_obj_id=dataset_obj.id,
+        )
+        dataset_obj.refresh_from_db()
+        expected = 'ACGACGACGACGACGACGACGACGACGACGACGACGACGACGACGACGACGACGACGACG'
+        self.assertIn(expected, dataset_obj.content)
 
     def test_view_result_invalid_form(self):
         self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
@@ -83,59 +85,55 @@ class CreateDatasetViewsTest(TestCase):
         self.assertEqual(302, res.status_code)
 
     def test_view_getting_file(self):
-        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
-        res = self.c.post('/create_dataset/results/',
-                          {
-                              'voucher_codes': 'CP100-10',
-                              'gene_codes': [],
-                              'geneset': 1,
-                              'taxonset': 1,
-                              'introns': 'YES',
-                              'positions': 'ALL',
-                              'translations': False,
-                              'partition_by_positions': 'by gene',
-                              'file_format': 'FASTA',
-                              'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
-                              'degen_translations': 'normal',
-                              'exclude': 'YES',
-                              'aminoacids': False,
-                              'special': False,
-                              'outgroup': '',
-                          }
-                          )
-        html_page = res.content.decode('utf-8')
-        file_name = re.search('FASTA_\w+\.txt', html_page).group()
-        file_content = self.c.get('/create_dataset/results/' + file_name, follow=True)
+        dataset_obj = Dataset.objects.create()
+        create_dataset(
+            taxonset_id=1,
+            geneset_id=1,
+            gene_codes_ids=[],
+            voucher_codes='CP100-10',
+            file_format='FASTA',
+            outgroup='',
+            positions='ALL',
+            partition_by_positions='by gene',
+            translations=False,
+            aminoacids=False,
+            degen_translations='normal',
+            special=False,
+            taxon_names=['CODE', 'GENUS', 'SPECIES'],
+            number_genes='',
+            introns='YES',
+            dataset_obj_id=dataset_obj.id,
+        )
         expected = ">CP100_10_Aus_aus\nACGACGACGACGACGACGACGACGACGACGACGACGACGACGACGACGACGACGACGACG"
-        self.assertTrue(expected in file_content.content.decode('utf-8'))
+        dataset_obj.refresh_from_db()
+        self.assertIn(expected, dataset_obj.content)
 
-    def test_view_attemp_to_create_dataset_aa_with_bad_codon(self):
+    def test_view_attempt_to_create_dataset_aa_with_bad_codon(self):
         """Test when trying to translate 'N--' codon. Should translate to X"""
+        dataset_obj = Dataset.objects.create()
         v = Vouchers.objects.get(code="CP100-10")
         seq = Sequences.objects.get(code=v, gene_code="COI-begin")
         seq.sequences = "TCAN--CGTCCC"
         seq.save()
 
-        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
-        res = self.c.post('/create_dataset/results/',
-                          {
-                              'voucher_codes': 'CP100-10',
-                              'gene_codes': [],
-                              'geneset': 1,
-                              'taxonset': 1,
-                              'introns': 'YES',
-                              'positions': 'ALL',
-                              'translations': False,
-                              'partition_by_positions': 'by gene',
-                              'file_format': 'FASTA',
-                              'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
-                              'degen_translations': 'normal',
-                              'exclude': 'YES',
-                              'aminoacids': True,
-                              'special': False,
-                              'outgroup': '',
-                          }
-                          )
-        html_page = res.content.decode('utf-8')
-        expected = "Codon &#39;--C&#39; is invalid"
-        self.assertFalse(expected in html_page)
+        create_dataset(
+            taxonset_id=1,
+            geneset_id=1,
+            gene_codes_ids=[],
+            voucher_codes='CP100-10',
+            file_format='FASTA',
+            outgroup='',
+            positions='ALL',
+            partition_by_positions='by gene',
+            translations=False,
+            aminoacids=True,
+            degen_translations='normal',
+            special=False,
+            taxon_names=['CODE', 'GENUS', 'SPECIES'],
+            number_genes='',
+            introns='YES',
+            dataset_obj_id=dataset_obj.id,
+        )
+        dataset_obj.refresh_from_db()
+        self.assertEqual([], dataset_obj.warnings)
+        self.assertEqual([], dataset_obj.errors)
