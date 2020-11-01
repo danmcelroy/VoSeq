@@ -1,4 +1,5 @@
 import re
+from unittest import skip
 
 from django.core.management import call_command
 from django.contrib.auth.models import User
@@ -80,6 +81,7 @@ class TestGenBankFasta(TestCase):
                              )
         self.assertEqual(200, c.status_code)
 
+    @skip('enable after implementing celery for genbank fasta')
     def test_results_fasta_file(self):
         self.client.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
         c = self.client.post('/genbank_fasta/results/',
