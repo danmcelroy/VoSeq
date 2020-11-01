@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 import platform
 
+from kombu import Exchange, Queue
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # replace with any name if you have more than one installation. This name will
@@ -35,16 +37,16 @@ TRAVIS = False
 # Application definition
 
 INSTALLED_APPS = [
-    'registration',
-    'suit',
+    'django.contrib.contenttypes',
     'django.contrib.admin',
     'django.contrib.auth',
-    'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django_extensions',
+    'registration',
+    'suit',
 
     'haystack',
     'crispy_forms',
@@ -299,3 +301,14 @@ if 'Darwin' in platform.platform():
     OS = 'mac'
 else:
     OS = 'linux'
+
+BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+
+default_exchange = Exchange('default', type='direct')
+CELERY_QUEUES = (
+    Queue('default', default_exchange, routing_key='default'),
+)
+CELERY_DEFAULT_QUEUE = 'default'
+CELERY_DEFAULT_EXCHANGE = 'default'
+CELERY_DEFAULT_ROUTING_KEY = 'default'

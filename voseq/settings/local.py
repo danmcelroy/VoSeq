@@ -25,6 +25,8 @@ def get_secret(setting, secrets=secrets):
         error_msg = "Set the {0} environment variable".format(setting)
         raise ImproperlyConfigured(error_msg)
 
+
+BASE_URL = get_secret("BASE_URL")
 SECRET_KEY = get_secret("SECRET_KEY")
 
 GOOGLE_MAPS_API_KEY = get_secret("GOOGLE_MAPS_API_KEY")
@@ -101,3 +103,10 @@ HAYSTACK_DEFAULT_OPERATOR = 'AND'
 
 if DEBUG is True:
     INTERNAL_IPS = ["127.0.0.1"]
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = get_secret("EMAIL_HOST")
+EMAIL_PORT = get_secret("EMAIL_PORT")
+EMAIL_HOST_USER = get_secret("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = get_secret("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = get_secret("EMAIL_USE_TLS")

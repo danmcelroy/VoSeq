@@ -1,6 +1,12 @@
 HISTORY
 -------
 
+2.2.4 (2020-11-01)
+++++++++++++++++++
+- implement script to handle several voseq installations running in the same server
+- implemented celery queue
+- dataset creation is done asynchronously
+
 2.2.3 (2020-08-17)
 ++++++++++++++++++
 - upgraded Dockerfile to use debian-stretch

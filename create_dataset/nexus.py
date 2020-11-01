@@ -19,7 +19,6 @@ class DatasetHandler(object):
                                             'dataset_files',
                                             self.file_format + '_aa_' + self.guid + '.txt',
                                             )
-        self.save_dataset_to_file()
 
     def save_dataset_to_file(self):
         with open(self.dataset_file, 'w') as handle:
