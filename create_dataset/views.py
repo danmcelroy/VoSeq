@@ -1,13 +1,12 @@
 import logging
-import os
 import re
-from uuid import uuid4
 
 from celery import chord
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.http import HttpResponse
+from django.urls import reverse
 
 from core.utils import get_context
 from public_interface.tasks import log_email_error, notify_user
@@ -29,39 +28,45 @@ def index(request):
 
 
 @login_required
-def results(request):
+def results(request, dataset_id):
     context = get_context(request)
 
     if request.method == 'POST':
         form = CreateDatasetForm(request.POST)
 
         if form.is_valid():
-            task_id = schedule_dataset(form.cleaned_data, request.user)
-            context['task_id'] = task_id
-            return render(request, 'create_dataset/results.html', context)
+            dataset_obj_id = schedule_dataset(form.cleaned_data, request.user)
+            return reverse('create-dataset-results', kwargs={'dataset_id': dataset_obj_id})
         else:
             log.debug("invalid form")
             context["form"] = form
             return render(request, 'create_dataset/index.html', context)
     else:
-        return HttpResponseRedirect('/create_dataset/')
+        try:
+            dataset = Dataset.objects.get(id=dataset_id)
+        except Dataset.DoesNotExist:
+            raise Http404(f'such dataset {dataset_id} does not exist')
+
+        context['dataset'] = dataset
+        return render(request, 'create_dataset/results.html', context)
 
 
 @login_required
-def serve_file(request, file_name):
-    final_name = guess_file_extension(file_name)
-    cwd = os.path.dirname(__file__)
-    dataset_file = os.path.join(cwd,
-                                'dataset_files',
-                                file_name,
-                                )
-    if os.path.isfile(dataset_file):
-        response = HttpResponse(open(dataset_file, 'r').read(), content_type='application/text')
+def serve_file(request, dataset_id):
+    # final_name = guess_file_extension(file_name)
+    final_name = f'dataset_{dataset_id}.txt'
+    try:
+        dataset = Dataset.objects.get(id=dataset_id)
+    except Dataset.DoesNotExist:
+        raise Http404(f'such dataset {dataset_id} does not exist')
+
+    if dataset.completed:
+        response = HttpResponse(dataset.content, content_type='application/text')
         response['Content-Disposition'] = 'attachment; filename={}'.format(final_name)
-        os.remove(dataset_file)
         return response
     else:
-        return render(request, 'create_dataset/missing_file.html')
+        context = {'dataset_job_id': dataset_id}
+        return render(request, 'create_dataset/results.html', context)
 
 
 def guess_file_extension(file_name):
@@ -79,7 +84,7 @@ def guess_file_extension(file_name):
     return '{0}.{1}'.format(name, extension)
 
 
-def schedule_dataset(cleaned_data, user):
+def schedule_dataset(cleaned_data, user) -> int:
     taxonset_id = cleaned_data['taxonset'].id
     geneset_id = cleaned_data['geneset'].id
     gene_codes_ids = list(cleaned_data['gene_codes'].values_list('id', flat=True))
@@ -95,7 +100,6 @@ def schedule_dataset(cleaned_data, user):
     taxon_names = cleaned_data['taxon_names']
     number_genes = cleaned_data['number_genes']
     introns = cleaned_data['introns']
-    task_id = str(uuid4())
 
     dataset_obj = Dataset.objects.create(
         user=user
@@ -120,7 +124,7 @@ def schedule_dataset(cleaned_data, user):
             introns,
             dataset_obj.id,
         ).on_error(log_email_error.s(user.id)),
-        body=notify_user.si(task_id, user.id)
+        body=notify_user.si(dataset_obj.id, user.id)
     )
-    tasks.apply_async(task_id=task_id)
-    return task_id
+    tasks.apply_async()
+    return dataset_obj.id

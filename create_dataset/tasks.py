@@ -1,5 +1,7 @@
 import re
 
+from django.utils import timezone
+
 from public_interface.models import TaxonSets, GeneSets, Genes
 from voseq.celery import app
 from .models import Dataset
@@ -34,6 +36,7 @@ def create_dataset(
     dataset_creator = CreateDataset(cleaned_data)
     dataset_obj = Dataset.objects.get(id=dataset_obj_id)
     dataset_obj.content = dataset_creator.dataset_str
+    dataset_obj.completed = timezone.now()
     dataset_obj.save()
     dataset = "{}{}{}".format(
         dataset_creator.dataset_str[0:1500],

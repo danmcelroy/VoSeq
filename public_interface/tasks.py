@@ -23,33 +23,32 @@ def log_email_error(
 
 
 @app.task
-def notify_user(job, user_id) -> None:
+def notify_user(dataset_obj_id, user_id) -> None:
     """Send an email notification to user
 
     If the gui_user is specified, we will send the notification to the person
     that is doing actions via the GUI. Otherwise, we will notify the user that
     created the ContactJob.
     """
-    gui_user = User.objects.get(id=user_id)
-    user = gui_user if gui_user else job.user
-    log.debug("notify_user " + str(job))
+    user = User.objects.get(id=user_id)
+    log.debug(f"notify_user {dataset_obj_id}")
 
-    subject = "Person Job Completed - " + str(job.name)
-    relative_url = reverse('create_dataset.results', args=(job.id,))
-    result_url = "http://app.hiplead.com" + relative_url
-    content = "Your contact job {0} has successfully completed. " \
+    subject = f"Dataset creation completed - {dataset_obj_id}"
+    relative_url = reverse('create_dataset.results', args=(dataset_obj_id,))
+    result_url = "http://voseq.com" + relative_url
+    content = "Your dataset has successfully completed. " \
               "Please verify and download the results from: " \
-              "{1}".format(job.name, result_url)
-    from_email = 'noreply@hiplead.com'
+              f"{result_url}"
+    from_email = 'noreply@voseq.com'
 
     if user and user.email:
         to_emails = [user.email] + [email for name, email in settings.ADMINS]
         try:
             send_mail(subject, content, from_email, to_emails)
         except SMTPException:
-            log.exception("Failed to notify_list_users for job " + str(job))
+            log.exception("Failed to notify_user for dataset " + str(dataset_obj_id))
         else:
-            log.debug("sent list change status email to " + str(to_emails))
+            log.debug("sent dataset status email to " + str(to_emails))
     else:
         log.debug('Cannot send notification email. '
-                  'No user / email assigned to job ' + str(job))
+                  'No user / email assigned to job ' + str(dataset_obj_id))

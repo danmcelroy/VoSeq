@@ -5,6 +5,6 @@ from . import views
 app_name = 'create_dataset'
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^results/$', views.results, name='results'),
-    url(r'^results/(?P<file_name>.+\.txt)/$', views.serve_file, name='serve_file'),
+    url(r'^results/(?P<dataset_id>[0-9]+)/$', views.results, name='create-dataset-results'),
+    url(r'^download/(?P<dataset_id>[0-9]+)/$', views.serve_file, name='download-dataset-results'),
 ]
