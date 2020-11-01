@@ -5,8 +5,10 @@ from django.db import connection
 from django.test import TestCase
 from django.test.client import Client
 
+from create_dataset.models import Dataset
+from create_dataset.tasks import create_dataset
 from create_dataset.utils import CreateDataset
-from public_interface.models import Genes, Sequences
+from public_interface.models import Genes, Sequences, TaxonSets, GeneSets
 
 
 class CreateFASTADatasetTest(TestCase):
@@ -53,27 +55,28 @@ class CreateFASTADatasetTest(TestCase):
         seq.sequences = "".join(this_seq)
         seq.save()
 
-        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
-        c = self.c.post('/create_dataset/results/',
-                        {
-                            'voucher_codes': 'CP100-10',
-                            'gene_codes': 2,  # COI-begin
-                            'geneset': '',
-                            'taxonset': '',
-                            'translations': False,
-                            'introns': 'YES',
-                            'file_format': 'FASTA',
-                            'degen_translations': 'normal',
-                            'exclude': 'YES',
-                            'aminoacids': False,
-                            'special': False,
-                            'outgroup': '',
-                            'positions': 'ALL',
-                            'partition_by_positions': 'by gene',
-                            'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
-                        }
-                        )
-        self.assertFalse("___" in str(c.content))
+        dataset_obj = Dataset.objects.create()
+
+        create_dataset(
+            taxonset_id=TaxonSets.objects.last().id,
+            geneset_id=GeneSets.objects.last().id,
+            gene_codes_ids=[2],  # COI-begin
+            voucher_codes='CP100-10',
+            file_format='FASTA',
+            outgroup='',
+            positions='ALL',
+            partition_by_positions='by gene',
+            translations=False,
+            aminoacids=False,
+            degen_translations='NORMAL',
+            special=False,
+            taxon_names=['CODE', 'GENUS', 'SPECIES'],
+            number_genes='',
+            introns='YES',
+            dataset_obj_id=dataset_obj.id,
+        )
+        dataset_obj.refresh_from_db()
+        self.assertFalse("___" in str(dataset_obj.content))
 
     def test_create_dataset_degenerated(self):
         self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
@@ -101,28 +104,28 @@ class CreateFASTADatasetTest(TestCase):
         self.assertTrue(expected in str(c.content))
 
     def test_create_dataset_degenerated_warning_data_cannot_be_partitioned(self):
-        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
-        c = self.c.post('/create_dataset/results/',
-                        {
-                            'voucher_codes': 'CP100-10',
-                            'gene_codes': 4,
-                            'geneset': '',
-                            'taxonset': '',
-                            'introns': 'YES',
-                            'file_format': 'FASTA',
-                            'translations': True,
-                            'degen_translations': 'normal',
-                            'exclude': 'YES',
-                            'aminoacids': False,
-                            'special': False,
-                            'outgroup': '',
-                            'positions': 'ALL',
-                            'partition_by_positions': 'by codon position',
-                            'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
-                        }
-                        )
+        dataset_obj = Dataset.objects.create()
+        create_dataset(
+            taxonset_id=TaxonSets.objects.last().id,
+            geneset_id=GeneSets.objects.last().id,
+            gene_codes_ids=[4],
+            voucher_codes='CP100-10',
+            file_format='FASTA',
+            outgroup='',
+            positions='ALL',
+            partition_by_positions='by codon position',
+            translations=True,
+            aminoacids=False,
+            degen_translations='normal',
+            special=False,
+            taxon_names=['CODE', 'GENUS', 'SPECIES'],
+            number_genes='',
+            introns='YES',
+            dataset_obj_id=dataset_obj.id,
+        )
+        dataset_obj.refresh_from_db()
         expected = 'Cannot degenerate codons if they go to different partitions'
-        self.assertTrue(expected in str(c.content))
+        self.assertTrue(expected in dataset_obj.errors)
 
     def test_create_dataset_degenerated_warning_data_cannot_be_of_partial_codons(self):
         self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
