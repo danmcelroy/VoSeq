@@ -73,21 +73,6 @@ def serve_file(request, dataset_id):
         return render(request, 'create_dataset/results.html', context)
 
 
-def guess_file_extension(file_name):
-    try:
-        prefix = re.search('^(\w+)\_', file_name).group()
-    except AttributeError:
-        return file_name
-
-    if prefix == 'MEGA_':
-        extension = 'meg'
-    else:
-        return file_name
-
-    name = file_name.replace('.txt', '')
-    return '{0}.{1}'.format(name, extension)
-
-
 def schedule_dataset(cleaned_data, user) -> int:
     taxonset_id = cleaned_data['taxonset'].id
     geneset_id = cleaned_data['geneset'].id

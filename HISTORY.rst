@@ -1,8 +1,8 @@
 HISTORY
 -------
 
-x.y.z
-+++++
+2.2.4 (2020-11-01)
+++++++++++++++++++
 - implement script to handle several voseq installations running in the same server
 - implemented celery queue
 - dataset creation is done asynchronously

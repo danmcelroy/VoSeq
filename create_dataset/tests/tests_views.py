@@ -1,4 +1,4 @@
-import re
+from unittest.mock import patch
 
 from django.conf import settings
 from django.core.management import call_command
@@ -23,10 +23,10 @@ class CreateDatasetViewsTest(TestCase):
         cmd = 'migrate_db'
         call_command(cmd, *args, **opts)
 
-        g1 = Genes.objects.get(gene_code='COI-begin')
+        self.g1 = Genes.objects.get(gene_code='COI-begin')
         g2 = Genes.objects.get(gene_code='ef1a')
         self.cleaned_data = {
-            'gene_codes': [g1, g2],
+            'gene_codes': [self.g1, g2],
             'taxonset': None,
             'voucher_codes': 'CP100-10\r\nCP100-11',
             'geneset': None,
@@ -44,7 +44,7 @@ class CreateDatasetViewsTest(TestCase):
         res = self.c.get('/create_dataset/')
         self.assertEqual(200, res.status_code)
 
-    def test_view_result(self):
+    def test_create_dataset(self):
         dataset_obj = Dataset.objects.create()
         create_dataset(
             taxonset_id=1,
@@ -84,7 +84,7 @@ class CreateDatasetViewsTest(TestCase):
         res = self.c.get('/create_dataset/results/')
         self.assertEqual(302, res.status_code)
 
-    def test_view_getting_file(self):
+    def test_create_dataset2(self):
         dataset_obj = Dataset.objects.create()
         create_dataset(
             taxonset_id=1,
@@ -108,7 +108,7 @@ class CreateDatasetViewsTest(TestCase):
         dataset_obj.refresh_from_db()
         self.assertIn(expected, dataset_obj.content)
 
-    def test_view_attempt_to_create_dataset_aa_with_bad_codon(self):
+    def test_create_dataset__aa_with_bad_codon(self):
         """Test when trying to translate 'N--' codon. Should translate to X"""
         dataset_obj = Dataset.objects.create()
         v = Vouchers.objects.get(code="CP100-10")
@@ -137,3 +137,39 @@ class CreateDatasetViewsTest(TestCase):
         dataset_obj.refresh_from_db()
         self.assertEqual([], dataset_obj.warnings)
         self.assertEqual([], dataset_obj.errors)
+
+    @patch('create_dataset.views.schedule_dataset')
+    def test_create_dataset3(self, mock_schedule_dataset):
+        mock_schedule_dataset.return_value = 1
+        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
+        res = self.c.post('/create_dataset/results/',
+                          {
+                              'voucher_codes': 'CP100-10',
+                              'gene_codes': self.g1.id,  # COI-begin
+                              'geneset': '',
+                              'taxonset': '',
+                              'translations': False,
+                              'introns': 'YES',
+                              'file_format': 'FASTA',
+                              'degen_translations': 'normal',
+                              'exclude': 'YES',
+                              'aminoacids': False,
+                              'special': False,
+                              'outgroup': '',
+                              'positions': 'ALL',
+                              'partition_by_positions': 'by gene',
+                              'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
+                          },
+                          )
+        self.assertEqual(302, res.status_code)
+
+    def test_results(self):
+        dataset = Dataset.objects.create()
+        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
+        res = self.c.post(f'/create_dataset/results/{dataset.id}/')
+        self.assertEqual(200, res.status_code)
+
+    def test_results__not_found(self):
+        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
+        res = self.c.post('/create_dataset/results/1/')
+        self.assertEqual(404, res.status_code)

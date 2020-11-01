@@ -4,7 +4,6 @@ from django.conf import settings
 from django.core.management import call_command
 
 from create_dataset.utils import CreateDataset
-from create_dataset.views import guess_file_extension
 from public_interface.models import Genes
 from public_interface.models import TaxonSets
 
@@ -975,9 +974,3 @@ GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
         cleaned_data['voucher_codes'] = 'CP100-10\r\nCP100-11\r\nCP1000'
         dataset_creator = CreateDataset(cleaned_data)
         self.assertTrue('Could not find voucher CP1000' in dataset_creator.warnings)
-
-    def test_creating_dataset_filename(self):
-        tmp_file_name = 'MEGA_b879d2a046d04821be618bf481b6b08d.txt'
-        result = guess_file_extension(tmp_file_name)
-        expected = 'MEGA_b879d2a046d04821be618bf481b6b08d.meg'
-        self.assertEqual(expected, result)
