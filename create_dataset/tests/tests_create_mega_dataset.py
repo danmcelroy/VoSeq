@@ -7,7 +7,7 @@ from create_dataset.utils import CreateDataset
 from public_interface.models import Genes
 
 
-class CreateMEGADatasetTest(TestCase):
+class CreateMEGADatasetTest1(TestCase):
     def setUp(self):
         args = []
         opts = {'dumpfile': settings.MEDIA_ROOT + 'test_data.xml', 'verbosity': 0}
