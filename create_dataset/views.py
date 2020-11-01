@@ -11,7 +11,7 @@ from django.urls import reverse
 from core.utils import get_context
 from public_interface.tasks import log_email_error, notify_user
 from .forms import CreateDatasetForm
-from .models import Dataset
+from create_dataset.models import Dataset
 from .tasks import create_dataset
 
 
@@ -28,7 +28,7 @@ def index(request):
 
 
 @login_required
-def results(request, dataset_id):
+def generate_results(request):
     context = get_context(request)
 
     if request.method == 'POST':
@@ -36,19 +36,23 @@ def results(request, dataset_id):
 
         if form.is_valid():
             dataset_obj_id = schedule_dataset(form.cleaned_data, request.user)
-            return reverse('create-dataset-results', kwargs={'dataset_id': dataset_obj_id})
+            return HttpResponseRedirect(reverse('create-dataset-results', kwargs={'dataset_id': dataset_obj_id}))
         else:
             log.debug("invalid form")
             context["form"] = form
             return render(request, 'create_dataset/index.html', context)
-    else:
-        try:
-            dataset = Dataset.objects.get(id=dataset_id)
-        except Dataset.DoesNotExist:
-            raise Http404(f'such dataset {dataset_id} does not exist')
 
-        context['dataset'] = dataset
-        return render(request, 'create_dataset/results.html', context)
+
+@login_required
+def results(request, dataset_id):
+    context = get_context(request)
+    try:
+        dataset = Dataset.objects.get(id=dataset_id)
+    except Dataset.DoesNotExist:
+        raise Http404(f'such dataset {dataset_id} does not exist')
+
+    context['dataset'] = dataset
+    return render(request, 'create_dataset/results.html', context)
 
 
 @login_required
@@ -61,7 +65,7 @@ def serve_file(request, dataset_id):
         raise Http404(f'such dataset {dataset_id} does not exist')
 
     if dataset.completed:
-        response = HttpResponse(dataset.content, content_type='application/text')
+        response = HttpResponse(dataset.content, content_type='text/plain')
         response['Content-Disposition'] = 'attachment; filename={}'.format(final_name)
         return response
     else:

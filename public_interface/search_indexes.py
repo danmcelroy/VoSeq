@@ -2,8 +2,8 @@ import datetime
 
 from haystack import indexes
 
-from .models import Vouchers
-from .models import Sequences
+from public_interface.models import Vouchers
+from public_interface.models import Sequences
 
 
 class SimpleSearchIndex(indexes.SearchIndex, indexes.Indexable):

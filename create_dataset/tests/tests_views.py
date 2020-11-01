@@ -2,12 +2,12 @@ import re
 
 from django.conf import settings
 from django.core.management import call_command
-from django.contrib.auth.models import User
 from django.db import connection
 from django.test import TestCase
 from django.test.client import Client
 
 from public_interface.models import Genes, Sequences, Vouchers
+from django.contrib.auth.models import User
 
 
 class CreateDatasetViewsTest(TestCase):
@@ -64,6 +64,7 @@ class CreateDatasetViewsTest(TestCase):
                           }
                           )
         self.assertEqual(200, res.status_code)
+        self.assertEqual('', res)
 
     def test_view_result_invalid_form(self):
         self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})

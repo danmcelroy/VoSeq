@@ -4,7 +4,7 @@ from django.utils import timezone
 
 from public_interface.models import TaxonSets, GeneSets, Genes
 from voseq.celery import app
-from .models import Dataset
+from create_dataset.models import Dataset
 from .utils import CreateDataset
 
 

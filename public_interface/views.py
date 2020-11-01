@@ -15,7 +15,7 @@ from haystack.query import ValuesSearchQuerySet
 
 from core.utils import get_context
 from .utils import get_simple_query, get_correct_url_query, get_voucher_code_list
-from .models import Vouchers, FlickrImages, LocalImages, Sequences, Primers
+from public_interface.models import Vouchers, FlickrImages, LocalImages, Sequences, Primers
 from .forms import AdvancedSearchForm, BatchChangesForm
 
 
