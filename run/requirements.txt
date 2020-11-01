@@ -30,4 +30,4 @@ aiohttp==1.3.5
 future-fstrings
 elasticsearch==1.4.0
 ipython
-celery[redis]
+celery[redis]==4.3.1
