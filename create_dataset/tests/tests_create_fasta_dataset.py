@@ -79,29 +79,29 @@ class CreateFASTADatasetTest(TestCase):
         self.assertFalse("___" in str(dataset_obj.content))
 
     def test_create_dataset_degenerated(self):
-        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
+        dataset_obj = Dataset.objects.create()
         gene = Genes.objects.get(gene_code="RpS2")
-        c = self.c.post('/create_dataset/results/',
-                        {
-                            'voucher_codes': 'CP100-10',
-                            'gene_codes': gene.id,
-                            'geneset': '',
-                            'taxonset': '',
-                            'translations': True,
-                            'introns': 'YES',
-                            'file_format': 'FASTA',
-                            'degen_translations': 'normal',
-                            'exclude': 'YES',
-                            'aminoacids': False,
-                            'special': False,
-                            'outgroup': '',
-                            'positions': 'ALL',
-                            'partition_by_positions': 'by gene',
-                            'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
-                        }
-                        )
+        create_dataset(
+            taxonset_id=TaxonSets.objects.last().id,
+            geneset_id=GeneSets.objects.last().id,
+            gene_codes_ids=[gene.id],
+            voucher_codes='CP100-10',
+            file_format='FASTA',
+            outgroup='',
+            positions='ALL',
+            partition_by_positions='by gene',
+            translations=True,
+            aminoacids=False,
+            degen_translations='normal',
+            special=False,
+            taxon_names=['CODE', 'GENUS', 'SPECIES'],
+            number_genes='',
+            introns='YES',
+            dataset_obj_id=dataset_obj.id,
+        )
         expected = 'MGNMGNMGNMGNMGNMGNMGNMGNMG'
-        self.assertTrue(expected in str(c.content))
+        dataset_obj.refresh_from_db()
+        self.assertTrue(expected in str(dataset_obj.content))
 
     def test_create_dataset_degenerated_warning_data_cannot_be_partitioned(self):
         dataset_obj = Dataset.objects.create()
@@ -128,53 +128,53 @@ class CreateFASTADatasetTest(TestCase):
         self.assertTrue(expected in dataset_obj.errors)
 
     def test_create_dataset_degenerated_warning_data_cannot_be_of_partial_codons(self):
-        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
-        c = self.c.post('/create_dataset/results/',
-                        {
-                            'voucher_codes': 'CP100-10',
-                            'gene_codes': 4,
-                            'geneset': '',
-                            'taxonset': '',
-                            'introns': 'YES',
-                            'file_format': 'FASTA',
-                            'translations': True,
-                            'degen_translations': 'normal',
-                            'exclude': 'YES',
-                            'aminoacids': False,
-                            'special': False,
-                            'outgroup': '',
-                            'positions': '1st',
-                            'partition_by_positions': 'by gene',
-                            'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
-                        }
-                        )
+        dataset_obj = Dataset.objects.create()
+        create_dataset(
+            taxonset_id=TaxonSets.objects.last().id,
+            geneset_id=GeneSets.objects.last().id,
+            gene_codes_ids=[4],
+            voucher_codes='CP100-10',
+            file_format='FASTA',
+            outgroup='',
+            positions='1st',
+            partition_by_positions='by gene',
+            translations=True,
+            aminoacids=False,
+            degen_translations='normal',
+            special=False,
+            taxon_names=['CODE', 'GENUS', 'SPECIES'],
+            number_genes='',
+            introns='YES',
+            dataset_obj_id=dataset_obj.id,
+        )
+        dataset_obj.refresh_from_db()
         expected = 'Cannot degenerate codons if you have not selected all codon positions'
-        self.assertTrue(expected in str(c.content))
+        self.assertTrue(expected in dataset_obj.errors)
 
     def test_fasta_as_aminoacids(self):
-        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
+        dataset_obj = Dataset.objects.create()
         gene = Genes.objects.get(gene_code="RpS2")
-        c = self.c.post('/create_dataset/results/',
-                        {
-                            'voucher_codes': 'CP100-10',
-                            'gene_codes': gene.id,
-                            'geneset': '',
-                            'taxonset': '',
-                            'translations': True,
-                            'introns': 'YES',
-                            'file_format': 'FASTA',
-                            'degen_translations': 'normal',
-                            'exclude': 'YES',
-                            'aminoacids': True,
-                            'special': False,
-                            'outgroup': '',
-                            'positions': 'ALL',
-                            'partition_by_positions': 'by gene',
-                            'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
-                        }
-                        )
+        create_dataset(
+            taxonset_id=TaxonSets.objects.last().id,
+            geneset_id=GeneSets.objects.last().id,
+            gene_codes_ids=[gene.id],
+            voucher_codes='CP100-10',
+            file_format='FASTA',
+            outgroup='',
+            positions='ALL',
+            partition_by_positions='by gene',
+            translations=True,
+            aminoacids=True,
+            degen_translations='normal',
+            special=False,
+            taxon_names=['CODE', 'GENUS', 'SPECIES'],
+            number_genes='',
+            introns='YES',
+            dataset_obj_id=dataset_obj.id,
+        )
         expected = 'RRRRRRRRRRRRRRRRRRRRRRRRRRR'
-        self.assertTrue(expected in str(c.content))
+        dataset_obj.refresh_from_db()
+        self.assertTrue(expected in str(dataset_obj.content))
 
     def test_fasta_with_seqs_of_different_sizes(self):
         """Test that an error message is shown to the users GUI."""
@@ -182,25 +182,25 @@ class CreateFASTADatasetTest(TestCase):
         seq.sequences += 'AAAAAAAAAA'
         seq.save()
 
-        self.c.post('/accounts/login/', {'username': 'admin', 'password': 'pass'})
-        c = self.c.post('/create_dataset/results/',
-                        {
-                            'voucher_codes': '',
-                            'gene_codes': 2,
-                            'geneset': '',
-                            'taxonset': '1',
-                            'introns': 'YES',
-                            'file_format': 'FASTA',
-                            'translations': False,
-                            'degen_translations': 'normal',
-                            'exclude': 'YES',
-                            'aminoacids': False,
-                            'special': False,
-                            'outgroup': '',
-                            'positions': 'ALL',
-                            'partition_by_positions': 'by gene',
-                            'taxon_names': ['CODE', 'GENUS', 'SPECIES'],
-                        }
-                        )
-        expected = "Matrix Nchar 679 does not match data length (669) for taxon"
-        self.assertTrue(expected in str(c.content))
+        dataset_obj = Dataset.objects.create()
+        create_dataset(
+            taxonset_id=TaxonSets.objects.last().id,
+            geneset_id=GeneSets.objects.last().id,
+            gene_codes_ids=[2],
+            voucher_codes='',
+            file_format='FASTA',
+            outgroup='',
+            positions='ALL',
+            partition_by_positions='by gene',
+            translations=False,
+            aminoacids=False,
+            degen_translations='normal',
+            special=False,
+            taxon_names=['CODE', 'GENUS', 'SPECIES'],
+            number_genes='',
+            introns='YES',
+            dataset_obj_id=dataset_obj.id,
+        )
+        expected = "Matrix Nchar 4749 does not match data length (4739) for taxon"
+        dataset_obj.refresh_from_db()
+        self.assertTrue(expected in str(dataset_obj.errors))
