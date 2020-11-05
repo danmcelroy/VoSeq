@@ -8,6 +8,7 @@
 <div class="explorer-container">
   <div class="container">
 
+    <br />
     <div class="container">
       <div class="row">
 
@@ -46,16 +47,16 @@
             {% endif %}
 
 
-            {% if errors|length > 0 %}
+            {% if dataset.errors|length > 0 %}
             <div class="panel panel-danger" style="min-width: 790px;">
               <div class="panel-heading">
                 <h3 class="panel-title"><b>During the processing of you dataset some errors were found
-                  <span class="badge"><b>{{ errors|length }}</b></span>
+                  <span class="badge"><b>{{ dataset.errors|length }}</b></span>
                   </b></h3>
               </div>
 
               <ul class="list-group">
-                {% for i in errors %}
+                {% for i in dataset.errors %}
                   <li class="list-group-item">{{ i }}</li>
                 {% endfor %}
               </ul>
@@ -99,14 +100,14 @@
             {% endif %}
 
 
-            {% if warnings|length > 0 %}
+            {% if dataset.warnings|length > 0 %}
               <div class="panel panel-warning" style="min-width: 790px;">
                 <div class="panel-heading">
                   <h3 class="panel-title"><b>Full list of warnings</b></h3>
                 </div>
 
                 <ul class="list-group">
-                  {% for i in warnings %}
+                  {% for i in dataset.warnings %}
                   <li class="list-group-item">{{ i }}</li>
                   {% endfor %}
                 </ul>
