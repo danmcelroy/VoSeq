@@ -1,6 +1,10 @@
 HISTORY
 -------
 
+2.2.5 (2020-11-15)
+++++++++++++++++++
+- serve css files over https
+
 2.2.4 (2020-11-01)
 ++++++++++++++++++
 - implement script to handle several voseq installations running in the same server
