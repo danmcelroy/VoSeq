@@ -216,6 +216,7 @@ class Sequences(models.Model):
     code = models.ForeignKey(
         Vouchers, db_index=True, help_text='This is your voucher code.', on_delete=models.CASCADE
     )
+    gene_code = models.CharField(max_length=100, db_index=True)
     gene = models.ForeignKey(Genes, null=True, on_delete=SET_NULL)
     sequences = models.TextField(blank=True)
     accession = models.CharField(max_length=100, blank=True, db_index=True)
