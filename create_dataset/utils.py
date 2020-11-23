@@ -251,7 +251,7 @@ class CreateDataset(object):
         :param s:
         :return: str.
         """
-        gene_code = s['gene_code']
+        gene_code = s['gene__gene_code']
         length = self.gene_codes_metadata[gene_code]['length']
         sequence = s['sequences']
         length_difference = length - len(sequence)
