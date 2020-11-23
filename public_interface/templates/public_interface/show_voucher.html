@@ -280,18 +280,18 @@
             </tr>
             {% for item in sequences %}
             <tr>
-              <td><a href="/s/{{ item.code }}/{{ item.gene_code }}/">{{ item.gene_code }}</a></td>
+              <td><a href="/s/{{ item.code.code }}/{{ item.gene }}/">{{ item.gene }}</a></td>
               <td>{{ item.total_number_bp }}</td>
               <td>{{ item.number_ambiguous_bp }}</td>
               <td>{{ item.lab_person }}</td>
               <td><a href="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Search&db=nucleotide&term={{ item.accession }}[accn]&doptcmdl=GenBank">{{ item.accession }}</a></td>
               <td class="text-center">
-                <a title="Blast this sequence against all sequences of the same gene code" href="/blast_local/{{ voucher.code }}/{{ item.gene_code }}/"><i class="fa fa-bomb"></i></a>
+                <a title="Blast this sequence against all sequences of the same gene code" href="/blast_local/{{ voucher.code }}/{{ item.gene.gene_code }}/"><i class="fa fa-bomb"></i></a>
                 &nbsp;&nbsp;
-                <a title="Full blast: this sequence against the full database" href="/blast_local_full/{{ voucher.code }}/{{ item.gene_code }}"><i class="fa fa-database"></i></a>
+                <a title="Full blast: this sequence against the full database" href="/blast_local_full/{{ voucher.code }}/{{ item.gene.gene_code }}"><i class="fa fa-database"></i></a>
               </td>
               <td class="text-center">
-                <a title="Blast against GenBank" href="/blast_ncbi/{{ voucher.code }}/{{ item.gene_code }}"><i class="fa fa-bomb"></i></a>
+                <a title="Blast against GenBank" href="/blast_ncbi/{{ voucher.code }}/{{ item.gene.gene_code }}"><i class="fa fa-bomb"></i></a>
               </td>
             </tr>
             {% endfor %}

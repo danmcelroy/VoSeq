@@ -196,19 +196,11 @@ def show_voucher(request, voucher_code):
     local_images_queryset = LocalImages.objects.filter(voucher=voucher_code)
     images_queryset = list(chain(flickr_images_queryset, local_images_queryset))
 
-    seqs_queryset = Sequences.objects.filter(code=voucher_code).values(
-        'code',
-        'gene_code',
-        'number_ambiguous_bp',
-        'accession',
-        'lab_person',
-        'total_number_bp',
-    )
-    sorted_seqs_queryset = sorted(seqs_queryset, key=lambda x: x['gene_code'].lower())
+    seqs_queryset = Sequences.objects.filter(code=voucher_code).order_by('gene__gene_code')
 
     context['voucher'] = voucher_queryset
     context['images'] = images_queryset
-    context['sequences'] = sorted_seqs_queryset
+    context['sequences'] = seqs_queryset
     context['google_maps_api_key'] = settings.GOOGLE_MAPS_API_KEY
     return render(request, 'public_interface/show_voucher.html', context)
 
@@ -222,7 +214,7 @@ def show_sequence(request, voucher_code, gene_code):
     except Vouchers.DoesNotExist:
         raise Http404
 
-    seqs_queryset = Sequences.objects.get(code=voucher_code, gene_code=gene_code)
+    seqs_queryset = Sequences.objects.get(code=voucher_code, gene__gene_code=gene_code)
     images_queryset = FlickrImages.objects.filter(voucher=voucher_code)
     primers_queryset = Primers.objects.filter(for_sequence=seqs_queryset)
 
