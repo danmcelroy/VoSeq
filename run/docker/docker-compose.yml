@@ -27,12 +27,12 @@ services:
       --log-level debug
       --error-logfile=-
       --preload
-      -b 0.0.0.0:8000 voseq.wsgi
+      -b 0.0.0.0:8001 voseq.wsgi
     volumes:
       - app_data:/data
       - /logs
     expose:
-      - "8000"
+      - "8001"
     depends_on:
       - db
     environment:

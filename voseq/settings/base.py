@@ -29,7 +29,7 @@ ADMINS = ()
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'app']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'app', 'lepdb.net', 'nymphalidae.lepdb.net']
 
 # for testing in Travis CI
 TRAVIS = False
