@@ -179,7 +179,7 @@ class CreateDataset(object):
 
         for seq in all_seqs:
             code = seq['code_id']
-            gene_code = seq['gene_code']
+            gene_code = seq['gene__gene_code']
 
             if code not in seqs_dict:
                 seqs_dict[code] = {gene_code: ''}
