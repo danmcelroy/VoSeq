@@ -196,7 +196,7 @@ def show_voucher(request, voucher_code):
     local_images_queryset = LocalImages.objects.filter(voucher=voucher_code)
     images_queryset = list(chain(flickr_images_queryset, local_images_queryset))
 
-    seqs_queryset = Sequences.objects.filter(code=voucher_code).order_by('gene__gene_code')
+    seqs_queryset = Sequences.objects.filter(code=voucher_queryset).order_by('gene__gene_code')
 
     context['voucher'] = voucher_queryset
     context['images'] = images_queryset
