@@ -225,7 +225,7 @@ class AdvancedSearchForm(ModelSearchForm):
                 new_key = "{}__icontains".format(key)
                 sequence_keywords[new_key] = value
             if key == 'gene_code':
-                new_key = "{}__icontains".format(key)
+                new_key = "gene__gene_code"
                 sequence_keywords[new_key] = value.gene_code
             if key == 'genbank' and value == 'y':
                 sequence_keywords[key] = True

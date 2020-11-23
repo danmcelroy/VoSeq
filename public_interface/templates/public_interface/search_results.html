@@ -33,7 +33,11 @@
     <ul class="fa-ul">
       {% for result in results %}
         <li><i class="fa-li fa fa-circle"></i>
-          <a href="/p/{{ result.code }}">{{ result.code }}</a>
+          {% if result.code.code %}
+            <a href="/p/{{ result.code.code }}">{{ result.code.code }}</a>
+          {% else %}
+            <a href="/p/{{ result.code }}">{{ result.code }}</a>
+          {% endif %}
 
             {% if result.genus %}
                <i>{{ result.genus }}</i>
