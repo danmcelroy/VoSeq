@@ -7,7 +7,7 @@ services:
     build:
       context: ../../
       dockerfile: run/docker/postgres/Dockerfile
-    image: voseq/voseq_db
+    image: lepidoptera/lepidoptera_db
     volumes:
       - db_data:/srv/postgresql/data/
     expose:
@@ -18,7 +18,7 @@ services:
     build:
       context: ../../
       dockerfile: run/docker/app/Dockerfile
-    image: voseq/voseq_app
+    image: lepidoptera/lepidoptera_app
     command: |
       /wait_for_it.sh db:5432 -t 0 -- gunicorn
       --workers 8
@@ -41,12 +41,12 @@ services:
     build:
       context: ../../
       dockerfile: run/docker/nginx/Dockerfile
-    image: voseq/voseq_nginx
+    image: lepidoptera/lepidoptera_nginx
     volumes:
       - app_data:/data
     ports:
-      - "8081:80"
-      - "4431:443"
+      - "8083:80"
+      - "4433:443"
     depends_on:
       - app
   celery_worker:
