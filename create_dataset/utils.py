@@ -2,19 +2,14 @@ import logging
 import re
 
 from seqrecord_expanded import SeqRecordExpanded
-from seqrecord_expanded.exceptions import MissingParameterError
-from seqrecord_expanded.exceptions import TranslationErrorMixedGappedSeq
+from seqrecord_expanded.exceptions import MissingParameterError, TranslationErrorMixedGappedSeq
 from dataset_creator import Dataset
 from Bio.Nexus.Nexus import NexusError
 
 from core import exceptions
-from core.utils import get_voucher_codes
-from core.utils import get_gene_codes
-from core.utils import clean_positions
+from core.utils import get_voucher_codes, get_gene_codes, clean_positions
 from .nexus import DatasetHandler
-from public_interface.models import Genes
-from public_interface.models import Sequences
-from public_interface.models import Vouchers
+from public_interface.models import Genes, Sequences, Vouchers
 
 
 log = logging.getLogger(__name__)
@@ -179,8 +174,8 @@ class CreateDataset(object):
 
         all_seqs = Sequences.objects.filter(
             code__in=self.voucher_codes,
-            gene_code__in=self.gene_codes,
-        ).values('code_id', 'gene_code', 'sequences', 'accession').order_by('code_id')
+            gene__gene_code__in=self.gene_codes,
+        ).values('code_id', 'gene__gene_code', 'sequences', 'accession').order_by('code_id')
 
         for seq in all_seqs:
             code = seq['code_id']
