@@ -1,7 +1,7 @@
 {
-"BASE_URL": "http://your.domain.com",
-"SECRET_KEY": "create_a_secret_key",
-"DB_USER": "carlosp420",
+"BASE_URL": "http://insdb.lepdb.net",
+"SECRET_KEY": "create_a_secret_keyinsdb",
+"DB_USER": "postgres",
 "DB_PASS": "",
 "DB_NAME": "insdb",
 "DB_PORT": "5432",
