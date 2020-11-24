@@ -50,7 +50,7 @@ services:
     depends_on:
       - app
   celery_worker:
-    image: voseq/voseq_app
+    image: lepidoptera/lepidoptera_app
     command: /wait_for_it.sh redis:6379
       --timeout=0 --
       /wait_for_it.sh db:5432
