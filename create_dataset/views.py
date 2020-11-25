@@ -1,5 +1,4 @@
 import logging
-import re
 
 from celery import chord
 from django.contrib.auth.decorators import login_required

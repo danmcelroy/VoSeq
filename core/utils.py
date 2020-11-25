@@ -272,8 +272,9 @@ class BLAST(object):
 
     def save_query_to_file(self) -> bool:
         """Returns boolean to point out whether we could save a query file"""
-        seq_obj = Sequences.objects.get(code_id=self.voucher_code,
-                                        gene__gene_code=self.gene_code)
+        seq_obj = Sequences.objects.filter(
+            code_id=self.voucher_code, gene__gene_code=self.gene_code
+        ).first()
         this_id = '{0}|{1}'.format(seq_obj.code_id, seq_obj.gene.gene_code)
         seq = self.strip_question_marks(seq_obj.sequences)
 
