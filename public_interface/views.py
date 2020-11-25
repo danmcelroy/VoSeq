@@ -214,7 +214,9 @@ def show_sequence(request, voucher_code, gene_code):
     except Vouchers.DoesNotExist:
         raise Http404
 
-    seqs_queryset = Sequences.objects.get(code=voucher_code, gene__gene_code=gene_code)
+    seqs_queryset = Sequences.objects.filter(
+        code=voucher_code, gene__gene_code=gene_code
+    ).first()
     images_queryset = FlickrImages.objects.filter(voucher=voucher_code)
     primers_queryset = Primers.objects.filter(for_sequence=seqs_queryset)
 
