@@ -1,15 +1,19 @@
 import logging
 import os
 
+from celery import chord, chain
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.http import HttpResponse
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
+from create_dataset.tasks import create_dataset
 from core.utils import get_context
+from create_dataset.models import Dataset
+from public_interface.tasks import log_email_error, notify_user
 from .forms import GenBankFastaForm
-from create_dataset.utils import CreateDataset
 
 
 log = logging.getLogger(__name__)
@@ -24,58 +28,126 @@ def index(request):
 
 
 @login_required
-@csrf_exempt
-def results(request):
+def generate_results(request):
     context = get_context(request)
 
     if request.method == 'POST':
         form = GenBankFastaForm(request.POST)
 
         if form.is_valid():
-            cleaned_data = form.cleaned_data
-            cleaned_data['file_format'] = 'GenBankFASTA'
-            cleaned_data['number_genes'] = ''
-            cleaned_data['translations'] = False
-            cleaned_data['aminoacids'] = False
-            cleaned_data['positions'] = 'ALL'
-            cleaned_data['partition_by_positions'] = 'by gene'
-            cleaned_data['taxon_names'] = ['CODE', 'GENUS', 'SPECIES']
-            cleaned_data['outgroup'] = ''
-
-            dataset_creator = CreateDataset(cleaned_data)
-            dataset = dataset_creator.dataset_str
-            dataset_short = dataset[0:1500] + '\n...\n\n\n' + '#######\nComplete dataset file available for download.\n#######'  # noqa
-            errors = dataset_creator.errors
-            warnings = dataset_creator.warnings
-            dataset_file_abs = dataset_creator.dataset_file
-            items_with_accession = dataset_creator.sequences_skipped
-            if dataset_file_abs is not None:
-                dataset_file = os.path.basename(dataset_file_abs)
-            else:
-                dataset_file = False
-
-            cleaned_data['aminoacids'] = True
-            dataset_creator = CreateDataset(cleaned_data)
-            aa_dataset = dataset_creator.dataset_str
-            aa_dataset_file_abs = dataset_creator.dataset_file
-            if aa_dataset_file_abs is not None:
-                aa_dataset_file = os.path.basename(aa_dataset_file_abs)
-            else:
-                aa_dataset_file = False
-
-            context['items_with_accession'] = items_with_accession
-            context['dataset'] = dataset_short
-            context['fasta_file'] = dataset_file
-            context['protein'] = aa_dataset
-            context['errors'] = errors
-            context['protein_file'] = aa_dataset_file
-            context['warnings'] = warnings
-            return render(request, 'genbank_fasta/results.html', context)
+            dataset_obj_id = schedule_genbank_fasta(form.cleaned_data, request.user)
+            return HttpResponseRedirect(
+                reverse(
+                    'create-genbank-results',
+                    kwargs={'dataset_id': dataset_obj_id}
+                )
+            )
         else:
+            log.debug("invalid form")
             context["form"] = form
             return render(request, 'genbank_fasta/index.html', context)
 
-    return HttpResponseRedirect('/genbank_fasta/')
+
+def schedule_genbank_fasta(cleaned_data, user) -> int:
+    if cleaned_data['taxonset']:
+        taxonset_id = cleaned_data['taxonset'].id
+    else:
+        taxonset_id = None
+
+    if cleaned_data['geneset']:
+        geneset_id = cleaned_data['geneset'].id
+    else:
+        geneset_id = None
+
+    gene_codes_ids = list(cleaned_data['gene_codes'].values_list('id', flat=True))
+    voucher_codes = cleaned_data['voucher_codes']
+    file_format = 'GenBankFASTA'
+    outgroup = ''
+    positions = 'ALL'
+    partition_by_positions = 'by gene'
+    translations = False
+    aminoacids = False
+    degen_translations = ''
+    special = ''
+    taxon_names = ['CODE', 'GENUS', 'SPECIES']
+    number_genes = ''
+    introns = ''
+
+    nucleotide_dataset_obj = Dataset.objects.create(
+        user=user
+    )
+    aa_dataset_obj = Dataset.objects.create(
+        user=user,
+        sister_dataset_id=nucleotide_dataset_obj.id,
+    )
+    dataset_tasks = chain(
+        create_dataset.si(
+            taxonset_id,
+            geneset_id,
+            gene_codes_ids,
+            voucher_codes,
+            file_format,
+            outgroup,
+            positions,
+            partition_by_positions,
+            translations,
+            aminoacids,
+            degen_translations,
+            special,
+            taxon_names,
+            number_genes,
+            introns,
+            nucleotide_dataset_obj.id,
+        ).on_error(log_email_error.s(user.id)),
+        create_dataset.si(
+            taxonset_id,
+            geneset_id,
+            gene_codes_ids,
+            voucher_codes,
+            file_format,
+            outgroup,
+            positions,
+            partition_by_positions,
+            translations,
+            True,
+            degen_translations,
+            special,
+            taxon_names,
+            number_genes,
+            introns,
+            aa_dataset_obj.id,
+        ).on_error(log_email_error.s(user.id)),
+    )
+    tasks = chord(
+        header=dataset_tasks,
+        body=notify_user.si(aa_dataset_obj.id, user.id)
+    )
+    tasks.apply_async()
+    return aa_dataset_obj.id
+
+
+@login_required
+@csrf_exempt
+def results(request, dataset_id):
+    context = get_context(request)
+
+    try:
+        aa_dataset = Dataset.objects.get(id=dataset_id)
+    except Dataset.DoesNotExist:
+        raise Http404(f'such dataset {dataset_id} does not exist')
+
+    try:
+        nucleotide_dataset = Dataset.objects.get(
+            id=aa_dataset.sister_dataset_id
+        )
+    except Dataset.DoesNotExist:
+        raise Http404(f'such dataset {dataset_id} does not exist')
+
+    context['errors'] = list(nucleotide_dataset.errors or []) + list(aa_dataset.errors or [])
+    context['warnings'] = list(nucleotide_dataset.warnings or []) + list(aa_dataset.warnings or [])
+    context['nucleotide_dataset'] = nucleotide_dataset
+    context['aa_dataset'] = aa_dataset
+    return render(request, 'genbank_fasta/results.html', context)
 
 
 @login_required
