@@ -11,3 +11,5 @@ class Dataset(models.Model):
     task_id = models.TextField(null=True)
     errors = JSONField(blank=True, null=True)
     warnings = JSONField(blank=True, null=True)
+    # genbank datasets require nucleotidae and aminoacid datasets
+    sister_dataset_id = models.IntegerField(null=True, blank=True)
