@@ -42,8 +42,8 @@ ELASTICSEARCH = False
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': get_secret('DB_NAME'),
-        'USER': get_secret('DB_USER'),
+        'NAME': 'voseq',
+        'USER': 'carlosp420',
         'PASSWORD': get_secret('DB_PASS'),
         'HOST': 'localhost',
         'PORT': get_secret('DB_PORT'),

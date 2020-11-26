@@ -7,3 +7,4 @@ DEBUG = False
 
 DATABASES['default']['HOST'] = 'db'
 DATABASES['default']['USER'] = 'postgres'
+DATABASES['default']['NAME'] = get_secret('DB_NAME')
