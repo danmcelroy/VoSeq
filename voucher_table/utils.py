@@ -44,11 +44,13 @@ class VoucherTable(object):
 
     def get_sequence_info(self):
         seq_values = OrderedDict()
-        seq_info = Sequences.objects.all().values('code', 'gene_code', 'sequences', 'accession')
+        seq_info = Sequences.objects.all().values(
+            'code', 'gene__gene_code', 'sequences', 'accession'
+        )
 
         for seq in seq_info:
             code = seq['code']
-            gene_code = seq['gene_code']
+            gene_code = seq['gene__gene_code']
             if code in self.voucher_codes and gene_code in self.gene_codes:
                 if code not in seq_values:
                     seq_values[code] = OrderedDict()
