@@ -1,6 +1,11 @@
 HISTORY
 -------
 
+2.3.0 (2020-11-xy)
+++++++++++++++++++
+- use Genes in Sequences model as foreign key
+- implement celery queue to generate datasets
+
 2.2.5 (2020-11-15)
 ++++++++++++++++++
 - serve css files over https
