@@ -49,6 +49,7 @@ def create_dataset(
 
     dataset_obj = Dataset.objects.get(id=dataset_obj_id)
     dataset_obj.content = dataset_creator.dataset_str
+    dataset_obj.charset_block = dataset_creator.charset_block
     dataset_obj.completed = timezone.now()
     dataset_obj.errors = dataset_creator.errors
     dataset_obj.warnings = list(set(dataset_creator.warnings))
