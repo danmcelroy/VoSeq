@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /blast_ncbi/
+Disallow: /blast_local/
+Disallow: /blast_local_full/
+Disallow: /blast_ncbi/
+Disallow: /blast_new/
+Disallow: /search/
