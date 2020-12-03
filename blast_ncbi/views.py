@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
@@ -5,6 +6,7 @@ from core.utils import get_context
 from .utils import BLASTNcbi
 
 
+@login_required
 def index(request: HttpRequest, voucher_code: str, gene_code: str) -> HttpResponse:
     """Executes blast of sequence against NCBI genbank"""
     blast = BLASTNcbi(blast_type="remote", voucher_code=voucher_code,
