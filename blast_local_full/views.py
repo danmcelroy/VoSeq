@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
@@ -5,6 +6,7 @@ from core.utils import get_context
 from .utils import BLASTFull
 
 
+@login_required
 def index(request: HttpRequest, voucher_code: str, gene_code: str
           ) -> HttpResponse:
     """Execute a blast of sequence against all sequences in the database"""
