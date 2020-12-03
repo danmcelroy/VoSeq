@@ -1,6 +1,7 @@
 import logging
 from subprocess import CalledProcessError
 
+from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
@@ -10,6 +11,7 @@ from core.utils import BLAST, get_context
 log = logging.getLogger(__name__)
 
 
+@login_required
 def index(request: HttpRequest, voucher_code: str, gene_code: str) -> HttpResponse:
     """Runs a local blast for voucher code and gene code
 

@@ -1,5 +1,6 @@
 import logging
 
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
@@ -11,6 +12,7 @@ from .forms import BLASTNewForm
 log = logging.getLogger(__name__)
 
 
+@login_required
 def index(request):
     form = BLASTNewForm()
     context = get_context(request)
@@ -18,6 +20,7 @@ def index(request):
     return render(request, 'blast_new/index.html', context=context)
 
 
+@login_required
 def results(request):
     context = get_context(request)
 
