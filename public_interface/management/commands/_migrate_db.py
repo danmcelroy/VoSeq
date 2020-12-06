@@ -510,7 +510,13 @@ class ParseXML(object):
             if item['genetic_code'] == '':
                 item['genetic_code'] = None
             item = self.clean_value(item, 'description')
-            Genes.objects.get_or_create(**item)
+            gene, _ = Genes.objects.get_or_create(gene_code=item['gene_code'])
+            gene.length = item['length']
+            gene.description = item['description']
+            gene.reading_frame = item['reading_frame']
+            gene.aligned = item['aligned']
+            gene.prot_code = item['prot_code']
+            gene.save()
 
     def save_table_genesets_to_db(self):
         if self.table_genesets_items is None:
@@ -553,7 +559,7 @@ class ParseXML(object):
         if self.table_primers_items is None:
             self.import_table_primers()
 
-        primers_queryset = Sequences.objects.all().values('code', 'gene_code')
+        primers_queryset = Sequences.objects.all().values('code', 'gene__gene_code')
         primers_objs = []
         for item in self.table_primers_items:
             if {'gene_code': item['gene_code'], 'code': item['code']} in primers_queryset:
@@ -625,7 +631,11 @@ class ParseXML(object):
             item = self.clean_value(item, 'notes')
             item = self.clean_value(item, 'sequences')
             item = self.clean_value(item, 'accession')
-            seqs_objects.append(Sequences(**item))
+            gene, _ = Genes.objects.get_or_create(gene_code=item['gene_code'])
+            del item['gene_code']
+            seq = Sequences(**item)
+            seq.gene = gene
+            seqs_objects.append(seq)
             if not TESTING:
                 bar.update()
 
