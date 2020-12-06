@@ -1,4 +1,4 @@
-from import_export import resources
+from import_export import resources, fields
 from import_export.admin import ImportExportModelAdmin
 from django import forms
 from django.conf import settings
@@ -6,6 +6,7 @@ from django.contrib import admin
 from django.core.exceptions import PermissionDenied
 from django.db import models
 from django.http import HttpRequest
+from import_export.widgets import ForeignKeyWidget
 
 from public_interface.models import FlickrImages, LocalImages, GeneSets, Genes, \
     TaxonSets, Sequences, Vouchers
@@ -36,6 +37,7 @@ class BatchImportVouchersResource(resources.ModelResource):
                   'determined_by', 'sex', 'extraction', 'extraction_tube',
                   'date_extraction', 'published_in', 'notes',
                   )
+
     def save_instance(self, instance, using_transactions, dry_run=False):
         if dry_run:
             if instance.latitude and not coordinate_validated(instance.latitude):
@@ -60,11 +62,17 @@ def coordinate_validated(coord):
 
 
 class BatchImportSequencesResource(resources.ModelResource):
+    gene = fields.Field(
+        column_name='gene',
+        attribute='gene',
+        widget=ForeignKeyWidget(Genes, 'gene_code'),
+    )
+
     class Meta:
         model = Sequences
-        import_id_fields = ('code', 'gene_code')
+        import_id_fields = ('code', 'gene')
         fields = (
-            'code', 'gene_code', 'accession', 'lab_person', 'genbank', 'notes',
+            'code', 'gene', 'accession', 'lab_person', 'genbank', 'notes',
             'sequences',
         )
 
@@ -130,11 +138,12 @@ class VouchersAdmin(ImportExportModelAdmin):
 
 
 class SequencesAdmin(ImportExportModelAdmin):
+    import_template_name = 'admin/public_interface/sequences/batch_import.html'
     # TODO let users know that code and genecode keywords act as AND boolean search
-    search_fields = ['code__code', 'gene_code', 'accession']
-    list_display = ['code', 'gene_code', 'genbank', 'accession', 'lab_person',
+    search_fields = ['code__code', 'gene__gene_code', 'accession']
+    list_display = ['code', 'gene', 'genbank', 'accession', 'lab_person',
                     'notes', 'time_edited', 'time_created']
-    fields = ['code', 'gene_code', 'sequences', 'genbank', 'accession',
+    fields = ['code', 'gene', 'sequences', 'genbank', 'accession',
               'lab_person', 'notes']
     form = SequencesAdminForm
     resource_class = BatchImportSequencesResource

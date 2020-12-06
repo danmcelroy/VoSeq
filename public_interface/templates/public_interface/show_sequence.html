@@ -1,7 +1,7 @@
 {% extends 'public_interface/base.html' %}
 
 {% block title %}
- {{ sequence.gene_code }} - {{ voucher.code }} - {{ app_name }}
+ {{ sequence.gene.gene_code }} - {{ voucher.code }} - {{ app_name }}
 {% endblock title %}
 
 
@@ -103,7 +103,7 @@
             </tr>
             <tr>
               <td><b>Gene code:</b></td>
-              <td>{{ sequence.gene_code }}</td>
+              <td>{{ sequence.gene.gene_code }}</td>
             </tr>
             <tr>
               <td><b>Accession:</b></td>

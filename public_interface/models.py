@@ -3,6 +3,7 @@ import os
 
 from django.conf import settings
 from django.db import models
+from django.db.models import SET_NULL
 from django.db.models.signals import post_save
 
 import flickrapi
@@ -24,7 +25,7 @@ class TimeStampedModel(models.Model):
 
 
 class Genes(models.Model):
-    gene_code = models.CharField(max_length=100)
+    gene_code = models.CharField(max_length=100, unique=True)
     genetic_code = models.PositiveSmallIntegerField(
         null=True,
         help_text='Translation table (as number). '
@@ -215,7 +216,7 @@ class Sequences(models.Model):
     code = models.ForeignKey(
         Vouchers, db_index=True, help_text='This is your voucher code.', on_delete=models.CASCADE
     )
-    gene_code = models.CharField(max_length=100, db_index=True)
+    gene = models.ForeignKey(Genes, null=True, on_delete=SET_NULL)
     sequences = models.TextField(blank=True)
     accession = models.CharField(max_length=100, blank=True, db_index=True)
     lab_person = models.CharField(max_length=100, blank=True, db_index=True)
@@ -231,6 +232,9 @@ class Sequences(models.Model):
         app_label = 'public_interface'
 
     def save(self, *args, **kwargs):
+        if not self.gene:
+            raise Exception(f'It is necessary to provide a value for column `gene`.')
+
         ambiguous_seq_length = self.sequences.count('?') + self.sequences.count('-')
         ambiguous_seq_length += self.sequences.count('N') + self.sequences.count('n')
         self.number_ambiguous_bp = ambiguous_seq_length

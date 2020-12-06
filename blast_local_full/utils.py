@@ -36,7 +36,7 @@ class BLASTFull(BLAST):
 
             my_records = []
             for seq_obj in queryset:
-                item_id = seq_obj.code_id + '|' + seq_obj.gene_code
+                item_id = seq_obj.code_id + '|' + seq_obj.gene.gene_code
                 seq_string = self.strip_question_marks(seq_obj.sequences)
                 if seq_string != '':
                     seq_record = SeqRecord(Seq(seq_string), id=item_id)

@@ -53,8 +53,8 @@ class BLASTNew(BLAST):
             if self.genes:
                 # Taken from http://stackoverflow.com/a/1239602
                 Qr = None
-                for gene_code in self.genes:
-                    q = Q(gene_code=gene_code)
+                for gene in self.genes:
+                    q = Q(gene__gene_code=gene)
                     if Qr:
                         Qr = Qr | q
                     else:
@@ -65,7 +65,7 @@ class BLASTNew(BLAST):
 
             my_records = []
             for i in queryset:
-                item_id = i.code_id + '|' + i.gene_code
+                item_id = i.code_id + '|' + i.gene.gene_code
                 seq = self.strip_question_marks(i.sequences)
                 if seq != '':
                     seq_record = SeqRecord(Seq(seq), id=item_id)

@@ -235,11 +235,11 @@ class BLAST(object):
             self.seq_file = os.path.join(settings.MEDIA_ROOT,
                                          'db',
                                          "{0}_seqs.fas".format(self.gene_code))
-            queryset = Sequences.objects.all().filter(gene_code=self.gene_code)
+            queryset = Sequences.objects.all().filter(gene__gene_code=self.gene_code)
 
             my_records = []
             for i in queryset:
-                item_id = i.code_id + '|' + i.gene_code
+                item_id = i.code_id + '|' + i.gene.gene_code
                 seq = self.strip_question_marks(i.sequences)
                 if seq != '':
                     seq_record = SeqRecord(Seq(seq), id=item_id)
@@ -272,9 +272,10 @@ class BLAST(object):
 
     def save_query_to_file(self) -> bool:
         """Returns boolean to point out whether we could save a query file"""
-        seq_obj = Sequences.objects.get(code_id=self.voucher_code,
-                                        gene_code=self.gene_code)
-        this_id = '{0}|{1}'.format(seq_obj.code_id, seq_obj.gene_code)
+        seq_obj = Sequences.objects.filter(
+            code_id=self.voucher_code, gene__gene_code=self.gene_code
+        ).first()
+        this_id = '{0}|{1}'.format(seq_obj.code_id, seq_obj.gene.gene_code)
         seq = self.strip_question_marks(seq_obj.sequences)
 
         if seq:
