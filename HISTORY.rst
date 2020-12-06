@@ -1,10 +1,12 @@
 HISTORY
 -------
 
-2.3.0 (2020-11-xy)
+2.3.0 (2020-12-06)
 ++++++++++++++++++
 - use Genes in Sequences model as foreign key
 - implement celery queue to generate datasets
+- added login required to run blast
+- added warning to avoid batch upload of sequences with no gene column
 
 2.2.5 (2020-11-15)
 ++++++++++++++++++
