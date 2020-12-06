@@ -65,7 +65,7 @@ class BatchImportSequencesResource(resources.ModelResource):
     gene = fields.Field(
         column_name='gene',
         attribute='gene',
-        widget=ForeignKeyWidget(Genes, 'gene_code')
+        widget=ForeignKeyWidget(Genes, 'gene_code'),
     )
 
     class Meta:
