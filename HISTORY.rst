@@ -1,6 +1,10 @@
 HISTORY
 -------
 
+--
+++
+- updated the flickrapi dependency
+
 2.3.0 (2020-12-06)
 ++++++++++++++++++
 - use Genes in Sequences model as foreign key
