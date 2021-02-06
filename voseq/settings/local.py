@@ -5,7 +5,7 @@ from django.core.exceptions import ImproperlyConfigured
 from .base import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 
 MANAGERS = ()
