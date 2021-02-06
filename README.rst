@@ -547,6 +547,7 @@ and place them in the ``config.json`` configuration file of VoSeq:
     * Save and exit.
 
 Thus, every picture that you upload into your VoSeq installation will be uploaded into your Flickr account.
+It is necessary to get a flickr token using instructions from the flickrapi <https://stuvel.eu/flickrapi-doc/3-auth.html>.
 
 Lineages
 ========
