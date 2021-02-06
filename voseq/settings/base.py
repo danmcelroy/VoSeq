@@ -274,7 +274,6 @@ GOOGLE_MAPS_API_KEY = 'fake api key'
 
 FLICKR_API_KEY = "fake api key"
 FLICKR_API_SECRET = "fake api secret"
-FLICKR_VERIFIER_CODE = "fake verifier code"
 
 
 # This VoSeq version
