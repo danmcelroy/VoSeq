@@ -295,8 +295,11 @@ class FlickrImages(models.Model):
         my_secret = settings.FLICKR_API_SECRET
         flickr = flickrapi.FlickrAPI(my_api_key, my_secret)
         if not flickr.token_valid(perms="write"):
-            flickr.get_request_token(oauth_callback='oob')
-            flickr.get_access_token(settings.FLICKR_VERIFIER_CODE)
+            raise Exception(
+                "It is not possible to authenticate flickr automatically. "
+                "It is necessary to do it manually. Contact your developer."
+            )
+            # flickr.get_request_token(oauth_callback='oob')
 
         filename = os.path.join(settings.MEDIA_ROOT, str(instance.image_file))
 
