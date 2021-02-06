@@ -10,6 +10,7 @@
 "PHOTOS_REPOSITORY": "local",
 "FLICKR_API_KEY": "get your api key",
 "FLICKR_API_SECRET": "get your api secret",
+"FLICKR_VERIFIER_CODE": "get your verifier code using docs from flickrapi",
 "ELASTICSEARCH": "false",
 "EMAIL_HOST": "smtp.gmail.com",
 "EMAIL_PORT": "587",

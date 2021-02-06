@@ -294,7 +294,8 @@ class FlickrImages(models.Model):
         my_api_key = settings.FLICKR_API_KEY
         my_secret = settings.FLICKR_API_SECRET
         flickr = flickrapi.FlickrAPI(my_api_key, my_secret)
-        flickr.authenticate_via_browser(perms='write')
+        # flickr.authenticate_via_browser(perms='write')
+        flickr.get_access_token(settings.FLICKR_VERIFIER_CODE)
 
         filename = os.path.join(settings.MEDIA_ROOT, str(instance.image_file))
 
