@@ -8,6 +8,8 @@
 "DB_HOST": "localhost",
 "GOOGLE_MAPS_API_KEY": "get_a_google_map_api_key",
 "PHOTOS_REPOSITORY": "local",
+"FLICKR_API_KEY": "get your api key",
+"FLICKR_API_SECRET": "get your api secret",
 "ELASTICSEARCH": "false",
 "EMAIL_HOST": "smtp.gmail.com",
 "EMAIL_PORT": "587",
