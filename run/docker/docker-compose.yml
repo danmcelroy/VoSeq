@@ -15,14 +15,19 @@ services:
     environment:
       POSTGRES_HOST_AUTH_METHOD: 'trust'
   app:
+    restart: always
     build:
       context: ../../
       dockerfile: run/docker/app/Dockerfile
     image: lepidoptera/lepidoptera_app
     command: |
       /wait_for_it.sh db:5432 -t 0 -- gunicorn
-      --workers 8
+      --workers 5
+      --threads 5
       --timeout 120
+      --max-requests 800
+      --max-requests-jitter 50
+      --graceful-timeout 30
       --worker-class aiohttp.worker.GunicornWebWorker
       --log-level debug
       --error-logfile=-

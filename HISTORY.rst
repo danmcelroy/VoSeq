@@ -1,6 +1,12 @@
 HISTORY
 -------
 
+2.3.1 (2021-03-13)
+++++++++++++++++++
+- updated the flickrapi dependency
+- allow users to add voucher photos by pasting URLs of photos in Flickr
+- added max requests to gunicorn workers
+
 2.3.0 (2020-12-06)
 ++++++++++++++++++
 - use Genes in Sequences model as foreign key
