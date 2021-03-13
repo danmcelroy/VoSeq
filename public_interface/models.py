@@ -1,5 +1,6 @@
 import json
 import os
+import re
 
 from django.conf import settings
 from django.db import models
@@ -262,6 +263,20 @@ class Primers(models.Model):
         return "{0} -> <- {1}".format(self.primer_f, self.primer_r)
 
 
+def make_flickr_thumbnail_url(info, photo_id):
+    """
+    Construct a url for the flicker photo using id and photo information as
+    returned by their api method getInfo().
+    """
+    farm = info['photo']['farm']
+    server = info['photo']['server']
+    secret = info['photo']['secret']
+    thumbnail_url = 'https://farm{0}.staticflickr.com/{1}/{2}_{3}_m_d.jpg'.format(
+        farm, server, photo_id, secret
+    )
+    return thumbnail_url
+
+
 class FlickrImages(models.Model):
     voucher = models.ForeignKey(
         Vouchers,
@@ -270,20 +285,47 @@ class FlickrImages(models.Model):
         null=True,
         on_delete=models.SET_NULL,
     )
-    voucher_image = models.URLField(help_text="URLs of the Flickr page.", blank=True)
+    voucher_image = models.URLField(
+        help_text="Paste the URL of any Flicker image. Eg: https://www.flickr.com/photos/nsg_db/50905900296",
+        blank=True,
+    )
     thumbnail = models.URLField(help_text="URLs for the small sized image from Flickr.")
     flickr_id = models.CharField(max_length=100, help_text="ID numbers from Flickr for our photo.")
-    image_file = models.ImageField(help_text="Placeholder for image file so we can send it to Flickr. "
-                                             "The file has been deleted right after upload.", blank=True)
+    image_file = models.ImageField(
+        help_text="Upload a photo from your computer so we can send it to Flickr. ",
+        blank=True
+    )
 
     class Meta:
         verbose_name_plural = 'Flickr Images'
         app_label = 'public_interface'
 
     def save(self, *args, **kwargs):
-        post_save.connect(self.update_flickr_image, sender=FlickrImages, dispatch_uid="update_flickr_image_count")
-        self.delete_local_photo(self.image_file)
-        super(FlickrImages, self).save(*args, **kwargs)
+        if self.voucher_image:
+            # User pasted a photo url
+            res = re.search(r'photos/\S+/([0-9]+)/?$', self.voucher_image)
+            if res:
+                photo_id = res.group(1)
+                flickr = flickrapi.FlickrAPI(settings.FLICKR_API_KEY, settings.FLICKR_API_SECRET)
+                try:
+                    info = flickr.photos.getInfo(photo_id=photo_id, format="json")
+                except ConnectionError:
+                    try:
+                        info = flickr.photos.getInfo(photo_id=photo_id, format="json")
+                    except ConnectionError:
+                        info = None
+
+                if not info:
+                    return
+                info = json.loads(info.decode('utf-8'))
+                thumbnail_url = make_flickr_thumbnail_url(info, photo_id)
+                self.thumbnail = thumbnail_url
+                self.flickr_id = photo_id
+                super(FlickrImages, self).save(*args, **kwargs)
+        else:
+            post_save.connect(self.update_flickr_image, sender=FlickrImages, dispatch_uid="update_flickr_image_count")
+            self.delete_local_photo(self.image_file)
+            super(FlickrImages, self).save(*args, **kwargs)
 
     def delete_local_photo(self, image_filename):
         file_path = os.path.join(settings.MEDIA_ROOT, str(image_filename))
@@ -317,10 +359,7 @@ class FlickrImages(models.Model):
             info = json.loads(info.decode('utf-8'))
             instance.voucher_image = info['photo']['urls']['url'][0]['_content']
 
-            farm = info['photo']['farm']
-            server = info['photo']['server']
-            secret = info['photo']['secret']
-            thumbnail_url = 'https://farm{0}.staticflickr.com/{1}/{2}_{3}_m_d.jpg'.format(farm, server, instance.flickr_id, secret)
+            thumbnail_url = make_flickr_thumbnail_url(info, instance.flickr_id)
             instance.thumbnail = thumbnail_url
             instance.save()
 
