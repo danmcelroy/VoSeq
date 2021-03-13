@@ -1,6 +1,7 @@
 import json
 import os
 import re
+from time import sleep
 
 from django.conf import settings
 from django.db import models
@@ -311,6 +312,7 @@ class FlickrImages(models.Model):
                     info = flickr.photos.getInfo(photo_id=photo_id, format="json")
                 except ConnectionError:
                     try:
+                        sleep(2)
                         info = flickr.photos.getInfo(photo_id=photo_id, format="json")
                     except ConnectionError:
                         info = None
