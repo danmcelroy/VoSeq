@@ -21,7 +21,7 @@ class ImageInLine(admin.StackedInline):
 
 class FlickImageInLine(admin.StackedInline):
     model = FlickrImages
-    fields = ['image_file']
+    fields = ['image_file', 'voucher_image']
 
 
 class BatchImportVouchersResource(resources.ModelResource):
