@@ -1,6 +1,10 @@
 HISTORY
 -------
 
+2.4.0 (2021-03-14)
+++++++++++++++++++
+- allow batch upload of vouchers with Flickr photos urls.
+
 2.3.1 (2021-03-13)
 ++++++++++++++++++
 - updated the flickrapi dependency
