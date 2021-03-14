@@ -28,7 +28,9 @@ class BatchImportVouchersResource(resources.ModelResource):
     class Meta:
         model = Vouchers
         import_id_fields = ('code',)
-        fields = ('code', 'orden', 'superfamily', 'family', 'subfamily', 'tribe',
+        fields = ('code',
+                  'flickr_photo_url',
+                  'orden', 'superfamily', 'family', 'subfamily', 'tribe',
                   'subtribe', 'genus', 'species', 'subspecies', 'author',
                   'hostorg', 'type_species', 'country', 'specific_locality',
                   'collector', 'date_collection', 'date_collection_end',
@@ -83,8 +85,6 @@ class VouchersAdmin(ImportExportModelAdmin):
     list_display = ['code', 'genus', 'species', 'sex', 'voucher', 'country', 'collector']
     ordering = ['code']
     search_fields = ['code', 'genus', 'species']
-
-    # list_editable = ['genus', 'species', 'sex', 'voucher', 'country', 'collector']
 
     actions = ['batch_changes']
 
