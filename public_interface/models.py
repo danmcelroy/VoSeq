@@ -218,7 +218,6 @@ class Vouchers(TimeStampedModel):
     def save(self, *args, **kwargs):
         super(Vouchers, self).save(*args, **kwargs)
         if self.flickr_photo_url and settings.PHOTOS_REPOSITORY == "flickr":
-            print('create flicker image object and thumbnail url')
             photo_info = get_flickr_photo_info(self.flickr_photo_url)
             if photo_info:
                 try:
