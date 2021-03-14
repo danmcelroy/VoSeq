@@ -205,6 +205,8 @@ class Vouchers(TimeStampedModel):
         help_text="Person that identified the taxon for this specimen.", blank=True, db_index=True)
     author = models.TextField(
         help_text="Person that described this taxon.", blank=True, db_index=True)
+    # temporal url used for batch upload
+    flickr_photo_url = models.TextField(blank=True, null=True)
 
     class Meta:
         verbose_name_plural = 'Vouchers'
@@ -212,6 +214,49 @@ class Vouchers(TimeStampedModel):
 
     def __str__(self):
         return f"{self.code} {self.genus} {self.species}"
+
+    def save(self, *args, **kwargs):
+        super(Vouchers, self).save(*args, **kwargs)
+        if self.flickr_photo_url and settings.PHOTOS_REPOSITORY == "flickr":
+            photo_info = get_flickr_photo_info(self.flickr_photo_url)
+            if photo_info:
+                try:
+                    FlickrImages.objects.get_or_create(
+                        voucher=self,
+                        thumbnail=photo_info['thumbnail_url'],
+                        flickr_id=photo_info['photo_id'],
+                        voucher_image=self.flickr_photo_url,
+                    )
+                except FlickrImages.MultipleObjectsReturned:
+                    pass
+
+
+def get_flickr_photo_info(flickr_photo_url):
+    photo_info = {
+        'thumbnail_url': '',
+        'photo_id': '',
+    }
+    res = re.search(r'photos/\S+/([0-9]+)/?', flickr_photo_url)
+    if res:
+        photo_id = res.group(1)
+        flickr = flickrapi.FlickrAPI(settings.FLICKR_API_KEY, settings.FLICKR_API_SECRET)
+        try:
+            info = flickr.photos.getInfo(photo_id=photo_id, format="json")
+        except ConnectionError:
+            try:
+                sleep(2)
+                info = flickr.photos.getInfo(photo_id=photo_id, format="json")
+            except ConnectionError:
+                info = None
+
+        if not info:
+            return None
+        info = json.loads(info.decode('utf-8'))
+        photo_info['thumbnail_url'] = make_flickr_thumbnail_url(info, photo_id)
+        photo_info['photo_id'] = photo_id
+        return photo_info
+
+    return None
 
 
 class Sequences(models.Model):
@@ -304,26 +349,12 @@ class FlickrImages(models.Model):
     def save(self, *args, **kwargs):
         if self.voucher_image:
             # User pasted a photo url
-            res = re.search(r'photos/\S+/([0-9]+)/?$', self.voucher_image)
-            if res:
-                photo_id = res.group(1)
-                flickr = flickrapi.FlickrAPI(settings.FLICKR_API_KEY, settings.FLICKR_API_SECRET)
-                try:
-                    info = flickr.photos.getInfo(photo_id=photo_id, format="json")
-                except ConnectionError:
-                    try:
-                        sleep(2)
-                        info = flickr.photos.getInfo(photo_id=photo_id, format="json")
-                    except ConnectionError:
-                        info = None
-
-                if not info:
-                    return
-                info = json.loads(info.decode('utf-8'))
-                thumbnail_url = make_flickr_thumbnail_url(info, photo_id)
-                self.thumbnail = thumbnail_url
-                self.flickr_id = photo_id
-                super(FlickrImages, self).save(*args, **kwargs)
+            photo_info = get_flickr_photo_info(self.voucher_image)
+            if not photo_info:
+                return
+            self.thumbnail = photo_info['thumbnail_url']
+            self.flickr_id = photo_info['photo_id']
+            super(FlickrImages, self).save(*args, **kwargs)
         else:
             post_save.connect(self.update_flickr_image, sender=FlickrImages, dispatch_uid="update_flickr_image_count")
             self.delete_local_photo(self.image_file)
